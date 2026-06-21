@@ -2,13 +2,19 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function RegisterForm() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    if (new URLSearchParams(window.location.search).has("error")) {
+      router.replace("/register", { scroll: false });
+    }
+  }, [router]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -37,7 +43,7 @@ export default function RegisterForm() {
         return;
       }
 
-      router.replace(`/verify-email?email=${encodeURIComponent(email)}`);
+      router.replace("/login?registered=1");
       router.refresh();
     } catch {
       setError("Unable to create your account right now. Please try again.");
