@@ -1,0 +1,38 @@
+export type GrowthService = {
+  slug: string;
+  name: string;
+  shortName: string;
+  platform: string;
+  icon: "instagram" | "youtube" | "facebook" | "linkedin" | "twitter";
+  description: string;
+  longDescription: string;
+  idealFor: string[];
+  benefits: string[];
+  delivery: string;
+  successRate: string;
+  rating: string;
+  reviews: string;
+  popular: boolean;
+  faqs: { question: string; answer: string }[];
+};
+
+const commonFaq = (platform: string) => [
+  { question: "How does campaign onboarding work?", answer: `Choose a package, share your ${platform} campaign destination, and confirm your objective. Your dashboard will show progress after activation.` },
+  { question: "Can I monitor campaign performance?", answer: "Yes. Campaign status, investment activity, and delivery progress remain available from your SocialRUSH dashboard." },
+  { question: "Is this suitable for agencies?", answer: "Yes. The workflow supports creators, in-house teams, and agencies coordinating campaigns across multiple client accounts." },
+];
+
+export const growthServices: GrowthService[] = [
+  { slug: "instagram-audience-growth", name: "Instagram Audience Growth", shortName: "Audience Growth", platform: "Instagram", icon: "instagram", description: "Increase profile visibility and attract a larger audience to your Instagram presence.", longDescription: "A structured audience development campaign designed to improve how your profile is perceived, discovered, and positioned. SocialRUSH coordinates gradual campaign delivery with transparent performance tracking.", idealFor: ["Personal Brands", "Influencers", "Businesses", "Creators"], benefits: ["Improved profile authority", "Enhanced social proof", "Better first impressions", "Stronger brand presence"], delivery: "Gradual and natural distribution over the selected campaign duration", successRate: "97.2%", rating: "4.9", reviews: "1,840", popular: true, faqs: commonFaq("Instagram") },
+  { slug: "instagram-engagement-boost", name: "Instagram Engagement Boost", shortName: "Engagement Boost", platform: "Instagram", icon: "instagram", description: "Increase engagement on your content and improve audience interaction.", longDescription: "A content engagement program that supports stronger interaction signals across priority creative. Ideal for teams seeking a more credible, active presence around campaigns and launches.", idealFor: ["Reels", "Posts", "Brand Campaigns"], benefits: ["Higher engagement rates", "Improved content performance", "Increased social proof", "Better audience trust"], delivery: "Progressive activation aligned to content and campaign timing", successRate: "96.8%", rating: "4.8", reviews: "1,520", popular: true, faqs: commonFaq("Instagram") },
+  { slug: "instagram-content-reach", name: "Instagram Content Reach", shortName: "Content Reach", platform: "Instagram", icon: "instagram", description: "Expand the visibility of your content to reach a broader audience.", longDescription: "A visibility-focused campaign for creators and brands that want priority content to earn broader discovery. Track campaign progress from activation through completion in one workspace.", idealFor: ["Content Creators", "Product Launches", "Campaign Teams", "Growing Brands"], benefits: ["Increased content exposure", "Better discovery potential", "Enhanced profile growth", "Improved campaign performance"], delivery: "Managed distribution throughout the selected campaign window", successRate: "96.4%", rating: "4.8", reviews: "1,310", popular: false, faqs: commonFaq("Instagram") },
+  { slug: "youtube-channel-growth", name: "YouTube Channel Growth", shortName: "Channel Growth", platform: "YouTube", icon: "youtube", description: "Accelerate channel growth and strengthen audience credibility.", longDescription: "A channel-level growth program created to improve authority, presentation, and long-term audience confidence. Suitable for creators and teams building a durable video presence.", idealFor: ["Video Creators", "Education Brands", "Media Teams", "Expert Channels"], benefits: ["Stronger channel authority", "Increased audience trust", "Better channel presentation", "Improved growth potential"], delivery: "Steady campaign activity across the selected program duration", successRate: "95.9%", rating: "4.9", reviews: "1,180", popular: true, faqs: commonFaq("YouTube") },
+  { slug: "youtube-video-promotion", name: "YouTube Video Promotion", shortName: "Video Promotion", platform: "YouTube", icon: "youtube", description: "Increase the reach and visibility of your video content.", longDescription: "A content promotion campaign built to expand discovery for priority videos, launches, and evergreen content. Designed around clear campaign milestones and performance visibility.", idealFor: ["Video Launches", "Short-Form Content", "Educational Content", "Brand Stories"], benefits: ["More content exposure", "Improved audience reach", "Better video performance", "Enhanced discoverability"], delivery: "Campaign pacing matched to your selected package and content goals", successRate: "96.1%", rating: "4.8", reviews: "1,460", popular: true, faqs: commonFaq("YouTube") },
+  { slug: "facebook-brand-engagement", name: "Facebook Brand Engagement", shortName: "Brand Engagement", platform: "Facebook", icon: "facebook", description: "Strengthen your Facebook presence and improve audience interaction.", longDescription: "A professional brand engagement campaign for businesses that want a more active, credible Facebook presence around pages, campaigns, and business updates.", idealFor: ["Local Businesses", "Consumer Brands", "Community Pages", "Campaign Teams"], benefits: ["Increased page activity", "Stronger brand trust", "Better business visibility", "Enhanced social proof"], delivery: "Controlled activation throughout the campaign timeline", successRate: "95.7%", rating: "4.7", reviews: "920", popular: false, faqs: commonFaq("Facebook") },
+  { slug: "linkedin-professional-growth", name: "LinkedIn Professional Growth", shortName: "Professional Growth", platform: "LinkedIn", icon: "linkedin", description: "Build authority and strengthen your professional presence.", longDescription: "A credibility-led LinkedIn growth program for executives, experts, teams, and company pages. Improve professional positioning while keeping campaign activity organized and measurable.", idealFor: ["Executives", "Consultants", "B2B Brands", "Company Pages"], benefits: ["Increased professional credibility", "Stronger personal branding", "Better networking opportunities", "Enhanced profile visibility"], delivery: "Measured professional growth across the selected program period", successRate: "96.9%", rating: "4.9", reviews: "780", popular: true, faqs: commonFaq("LinkedIn") },
+  { slug: "x-authority-growth", name: "X Authority Growth", shortName: "Authority Growth", platform: "X / Twitter", icon: "twitter", description: "Expand your influence and strengthen your presence on X.", longDescription: "An authority-building campaign for thought leaders, creators, and brands participating in fast-moving public conversations. Strengthen visibility and account credibility through a structured program.", idealFor: ["Thought Leaders", "Founders", "Creators", "Media Brands"], benefits: ["Improved social authority", "Enhanced account visibility", "Better audience perception", "Increased profile credibility"], delivery: "Progressive campaign activation with ongoing status visibility", successRate: "95.8%", rating: "4.8", reviews: "860", popular: false, faqs: commonFaq("X") },
+];
+
+export function getGrowthService(slug: string) {
+  return growthServices.find((service) => service.slug === slug);
+}

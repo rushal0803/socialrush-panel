@@ -1,0 +1,25 @@
+# Supabase setup
+
+1. Create a Supabase project.
+2. Copy `.env.example` to `.env.local` and add the project URL and anon key from **Project Settings > API**.
+3. Apply `supabase/migrations/202606190001_initial_schema.sql` with the Supabase CLI (`supabase db push`) or the SQL editor.
+4. In **Authentication > URL Configuration**, set the site URL and add these redirect URLs:
+   - `http://localhost:3000/auth/callback`
+   - your production domain followed by `/auth/callback`
+5. Keep email confirmation enabled in **Authentication > Providers > Email** to require email verification.
+6. Install dependencies and start the app:
+
+   ```bash
+   npm install
+   npm run dev
+   ```
+
+To promote a user to admin, update the profile from the Supabase SQL editor using a trusted administrator connection:
+
+```sql
+update public.profiles
+set role = 'admin'
+where email = 'admin@example.com';
+```
+
+Never expose the Supabase service-role key in this Next.js application. The app uses the anon key with authenticated sessions and database Row Level Security.

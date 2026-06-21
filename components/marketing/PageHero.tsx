@@ -1,0 +1,5 @@
+import Link from "next/link";
+
+export default function PageHero({ eyebrow, title, description, action = "Discuss your project" }: { eyebrow: string; title: string; description: string; action?: string }) {
+  return <section className="relative overflow-hidden bg-[linear-gradient(180deg,#f3f7ff_0%,#fff_100%)] px-5 py-20 sm:px-6 lg:px-8 lg:py-28"><div className="hero-grid absolute inset-0 opacity-50"/><div className="absolute -left-20 top-10 h-72 w-72 rounded-full bg-blue-200/40 blur-3xl"/><div className="relative mx-auto max-w-4xl text-center"><p className="text-xs font-bold uppercase tracking-[.2em] text-blue-600">{eyebrow}</p><h1 className="mt-5 text-4xl font-bold leading-tight tracking-[-.045em] text-[#07152f] sm:text-5xl lg:text-6xl">{title}</h1><p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-slate-600">{description}</p><Link href="/contact" className="mt-8 inline-flex rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-bold text-white shadow-xl shadow-blue-600/20">{action} →</Link></div></section>;
+}

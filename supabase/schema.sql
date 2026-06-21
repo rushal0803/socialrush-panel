@@ -1,0 +1,11 @@
+-- Canonical SocialRUSH database schema
+--
+-- The complete executable schema, RLS policies, indexes, auth trigger, and
+-- starter service catalog live in:
+--   migrations/202606190001_initial_schema.sql
+--
+-- Apply it locally with:
+--   supabase db reset
+--
+-- Apply it to a linked project with:
+--   supabase db push

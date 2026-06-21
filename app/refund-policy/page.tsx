@@ -1,0 +1,14 @@
+import PolicyPage from "@/components/marketing/PolicyPage";
+
+const sections = [
+  { title: "Policy overview", body: ["This policy applies to payments made for SocialRUSH digital marketing, development, automation, consulting, campaign management, and account-based platform services. Refund eligibility depends on the purchased scope, work completed, committed costs, and written agreement."] },
+  { title: "Before work begins", body: ["A cancellation request received before work starts may qualify for a refund, less payment processing fees and any non-recoverable third-party costs already approved or incurred."] },
+  { title: "Work in progress", body: ["Once discovery, strategy, creative production, development, campaign setup, automation configuration, or other delivery has begun, fees for completed work and committed resources are non-refundable. Any remaining unearned portion will be reviewed against the agreed scope."] },
+  { title: "Advertising and third-party costs", body: ["Media spend, domain fees, software subscriptions, messaging charges, platform fees, and other third-party costs are generally non-refundable after purchase or commitment. Third-party refunds remain subject to the provider's policy."] },
+  { title: "Wallet and duplicate payments", body: ["Verified duplicate payments or confirmed technical payment errors will be investigated. Unused wallet credits may be reviewed where required by applicable law and where they are not promotional, transferred, disputed, or connected to delivered services."] },
+  { title: "Performance expectations", body: ["Marketing, search, advertising, and automation outcomes depend on market conditions, platform decisions, budgets, offers, competition, and client participation. Failure to achieve a hoped-for commercial result does not by itself create refund eligibility where agreed work was delivered."] },
+  { title: "How to request a refund", body: ["Email support@socialrush.in with the account email, payment reference, service, reason, and relevant evidence. Requests should be made within seven days of the relevant payment or issue unless the written agreement states another period."] },
+  { title: "Review and processing", body: ["We acknowledge eligible requests and may seek additional information. Approved refunds are normally returned to the original payment method. Bank or payment-provider processing times are outside our control."] },
+  { title: "Chargebacks and disputes", body: ["Please contact us before initiating a payment dispute so we can investigate. Fraudulent or abusive disputes may result in account restrictions and submission of service and communication records to the payment provider."] },
+];
+export default function RefundPolicyPage() { return <PolicyPage title="Refund Policy" summary="A clear framework for cancellations, delivered work, third-party costs, wallet credits, and payment errors." sections={sections}/>; }
