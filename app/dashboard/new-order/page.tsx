@@ -1,7 +1,7 @@
 "use client";
 
 import { AnimatePresence, motion } from "framer-motion";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
@@ -49,23 +49,78 @@ export default function NewCampaignPage() {
   const [databaseIds, setDatabaseIds] = useState<Record<PlatformId, number>>({ instagram: 0, youtube: 0, facebook: 0, twitter: 0 });
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [success, setSuccess] = useState(false);
+  const checkoutInFlight = useRef(false);
+  const checkoutRequestId = useRef<string | null>(null);
 
   useEffect(() => {
-    void createClient().from("services").select("id, categories(name)").eq("status", "active").then(({ data }) => {
+    const supabase = createClient();
+    void supabase.from("services").select("id, categories(name)").eq("status", "active").then(({ data }) => {
       const ids = { instagram: 0, youtube: 0, facebook: 0, twitter: 0 };
       for (const row of data ?? []) { const name = ((row.categories as unknown as { name?: string } | null)?.name || "").toLowerCase(); const key = name.includes("instagram") ? "instagram" : name.includes("youtube") ? "youtube" : name.includes("facebook") ? "facebook" : name.includes("twitter") || name.includes("x/") ? "twitter" : null; if (key && !ids[key]) ids[key] = row.id; }
       setDatabaseIds(ids);
+    });
+    void supabase.auth.getUser().then(async ({ data: { user } }) => {
+      if (!user) return;
+      const { data } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
+      setWalletBalance(Number(data?.balance ?? 0));
     });
   }, []);
 
   const visibleServices = useMemo(() => services.filter((service) => service.platform === platform), [platform]);
   const selected = services.find((service) => service.id === selectedId) ?? visibleServices[0];
-  const total = Math.max(0, selected.rate / 1000 * quantity);
+  const total = Math.max(0, Math.round((selected.rate / 1000 * quantity) * 100) / 100);
+  const hasEnoughBalance = walletBalance !== null && walletBalance + 0.0001 >= total;
   const currentPlatform = platforms.find((item) => item.id === platform)!;
 
   function choosePlatform(id: PlatformId) { setPlatform(id); const first = services.find((service) => service.platform === id); if (first) setSelectedId(first.id); }
-  function packageForQuantity(value: number) { return value <= 1000 ? "starter" : value <= 5000 ? "growth" : value <= 15000 ? "professional" : "premium"; }
-  async function submit(event: React.FormEvent) { event.preventDefault(); setError(""); const serviceId = databaseIds[platform]; if (!serviceId) { setError("This platform is still being configured. Please try again shortly."); return; } setSubmitting(true); const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceId, link, package: packageForQuantity(quantity) }) }); const payload = await response.json() as { error?: string }; setSubmitting(false); if (!response.ok) { setError(payload.error || "Unable to create campaign."); return; } router.push("/dashboard/order-history"); router.refresh(); }
+  async function submit(event: React.FormEvent) {
+    event.preventDefault();
+    if (checkoutInFlight.current) return;
+    setError("");
+    setSuccess(false);
+    const serviceId = databaseIds[platform];
+    if (!serviceId) { setError("This platform is still being configured. Please try again shortly."); return; }
+    if (quantity < selected.minimum || quantity > selected.maximum) { setError(`Quantity must be between ${selected.minimum.toLocaleString("en-IN")} and ${selected.maximum.toLocaleString("en-IN")}.`); return; }
+
+    const supabase = createClient();
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) { router.replace("/login"); return; }
+    const { data: profile, error: balanceError } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
+    if (balanceError) { setError("Unable to verify your wallet balance. Please refresh and try again."); return; }
+    const currentBalance = Number(profile.balance ?? 0);
+    setWalletBalance(currentBalance);
+    if (currentBalance + 0.0001 < total) { setError("Insufficient campaign budget. Add funds to continue."); return; }
+
+    checkoutInFlight.current = true;
+    setSubmitting(true);
+    checkoutRequestId.current ||= crypto.randomUUID();
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ serviceId, serviceCode: selected.id, link, quantity, requestId: checkoutRequestId.current }),
+      });
+      const payload = await response.json() as { data?: { id: string; charge: number; balance: number; duplicate?: boolean }; error?: string };
+      if (!response.ok || !payload.data) {
+        setError(payload.error || "Unable to create campaign.");
+        setSubmitting(false);
+        checkoutInFlight.current = false;
+        return;
+      }
+      const updatedBalance = Number(payload.data.balance);
+      setWalletBalance(updatedBalance);
+      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
+      setSuccess(true);
+      router.refresh();
+      window.setTimeout(() => router.replace("/dashboard"), 800);
+    } catch {
+      setError("Checkout could not be completed. Please try again.");
+      setSubmitting(false);
+      checkoutInFlight.current = false;
+    }
+  }
 
   return <main className="min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_top_right,#dbeafe_0,transparent_28%),linear-gradient(180deg,#f8faff_0%,#f4f7fb_100%)] p-4 sm:p-6 lg:p-8">
     <motion.section {...fadeUp} className="mx-auto max-w-[1650px]"><div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end"><div><span className="inline-flex rounded-full border border-blue-200 bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-blue-700 shadow-sm backdrop-blur">Campaign studio</span><h1 className="mt-4 text-3xl font-bold tracking-[-.035em] text-[#07152f] sm:text-4xl">Create a new growth campaign</h1><p className="mt-2 text-sm text-slate-500">Select a platform, choose a service, and configure your campaign with live pricing.</p></div><div className="flex gap-2 text-[10px] font-semibold text-slate-500">{["Premium quality", "Secure checkout", "Live tracking"].map((item) => <span key={item} className="rounded-full border border-white bg-white/70 px-3 py-2 shadow-sm">✓ {item}</span>)}</div></div>
@@ -83,7 +138,7 @@ export default function NewCampaignPage() {
         </section>
 
         <aside className="h-fit overflow-hidden rounded-3xl border border-white/80 bg-white/80 shadow-[0_25px_80px_-35px_rgba(15,45,95,.45)] backdrop-blur-xl xl:sticky xl:top-24"><div className="bg-gradient-to-br from-[#07152f] to-[#123a78] p-6 text-white"><div className="flex items-center justify-between"><div><p className="text-[9px] font-bold uppercase tracking-[.18em] text-blue-300">Live campaign preview</p><h2 className="mt-2 text-lg font-bold">Order summary</h2></div><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10"><PlatformIcon platform={selected.platform} className="h-5 w-5"/></span></div><div className="mt-5 rounded-2xl border border-white/10 bg-white/5 p-4"><p className="text-xs font-bold">{selected.name}</p><p className="mt-1 text-[10px] text-slate-400">{currentPlatform.name} · {selected.quality}</p></div><div className="mt-5 space-y-3 text-[10px]"><div className="flex justify-between"><span className="text-slate-400">Rate</span><span className="font-bold">₹{selected.rate} / 1000</span></div><div className="flex justify-between"><span className="text-slate-400">Quantity</span><span className="font-bold">{quantity.toLocaleString("en-IN")}</span></div><div className="flex justify-between"><span className="text-slate-400">Estimated delivery</span><span className="font-bold">{selected.delivery}</span></div><div className="flex justify-between"><span className="text-slate-400">Quality score</span><span className="font-bold text-emerald-400">9.7 / 10</span></div><div className="flex justify-between"><span className="text-slate-400">Refill status</span><span className="font-bold text-blue-300">{selected.refill} available</span></div></div><div className="mt-5 flex items-end justify-between border-t border-white/10 pt-5"><span className="text-xs text-slate-300">Total price</span><motion.span key={total} initial={{ scale: .9, opacity: .5 }} animate={{ scale: 1, opacity: 1 }} className="text-3xl font-bold">₹{total.toFixed(2)}</motion.span></div></div>
-          <form onSubmit={submit} className="p-6"><label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Profile or content link<input type="url" required value={link} onChange={(event) => setLink(event.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10" placeholder="https://social-platform.com/profile"/></label><label className="mt-5 block text-[10px] font-bold uppercase tracking-wider text-slate-500">Campaign quantity<input type="number" required min={100} max={10000} step={100} value={quantity} onChange={(event) => setQuantity(Math.max(0, Number(event.target.value)))} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"/></label><div className="mt-3 grid grid-cols-5 gap-1.5">{[100,500,1000,5000,10000].map((value) => <button key={value} type="button" onClick={() => setQuantity(value)} className={`rounded-lg py-2 text-[9px] font-bold transition ${quantity === value ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600"}`}>{value >= 1000 ? `${value / 1000}K` : value}</button>)}</div>{error && <p className="mt-4 rounded-xl bg-rose-50 p-3 text-[10px] leading-5 text-rose-700">{error}</p>}<button disabled={submitting} className="mt-5 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 py-3.5 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:shadow-xl disabled:opacity-50">{submitting ? "Processing..." : "Proceed to checkout →"}</button><div className="mt-4 grid grid-cols-2 gap-2">{["Premium quality","Refill available","Fast delivery","Secure checkout"].map((badge) => <span key={badge} className="text-[9px] font-semibold text-slate-500">✓ {badge}</span>)}</div></form>
+          <form onSubmit={submit} className="p-6"><label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">Profile or content link<input type="url" required value={link} onChange={(event) => setLink(event.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10" placeholder="https://social-platform.com/profile"/></label><label className="mt-5 block text-[10px] font-bold uppercase tracking-wider text-slate-500">Campaign quantity<input type="number" required min={selected.minimum} max={selected.maximum} step={100} value={quantity} onChange={(event) => setQuantity(Math.max(0, Number(event.target.value)))} className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-bold outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"/></label><div className="mt-3 grid grid-cols-5 gap-1.5">{[100,500,1000,5000,10000].map((value) => <button key={value} type="button" onClick={() => setQuantity(value)} className={`rounded-lg py-2 text-[9px] font-bold transition ${quantity === value ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600"}`}>{value >= 1000 ? `${value / 1000}K` : value}</button>)}</div><div className="mt-4 flex items-center justify-between rounded-xl bg-slate-50 p-3 text-[10px]"><span className="text-slate-500">Available wallet balance</span><span className="font-bold text-[#07152f]">{walletBalance === null ? "Loading..." : `₹${walletBalance.toFixed(2)}`}</span></div>{walletBalance !== null && !hasEnoughBalance && <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-[10px] leading-5 text-amber-800">Insufficient campaign budget. You need ₹{Math.max(total-walletBalance,0).toFixed(2)} more. <a href="/dashboard/wallet" className="font-bold underline">Add funds</a></div>}{error && <p className="mt-3 rounded-xl bg-rose-50 p-3 text-[10px] leading-5 text-rose-700">{error}</p>}{success && <p className="mt-3 rounded-xl bg-emerald-50 p-3 text-[10px] font-semibold leading-5 text-emerald-700">Campaign created successfully. Taking you to your dashboard...</p>}<button disabled={submitting || walletBalance === null || !hasEnoughBalance || success} className="mt-5 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 py-3.5 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50">{submitting ? "Processing..." : "Proceed to checkout →"}</button><div className="mt-4 grid grid-cols-2 gap-2">{["Premium quality","Refill available","Fast delivery","Secure checkout"].map((badge) => <span key={badge} className="text-[9px] font-semibold text-slate-500">✓ {badge}</span>)}</div></form>
         </aside>
       </div>
 
