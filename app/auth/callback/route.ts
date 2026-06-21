@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { absoluteUrl, getSiteUrl } from "@/lib/auth/site-url";
+import { ensureUserProfile } from "@/lib/auth/ensure-profile";
 
 const callbackDestinations = new Set(["/dashboard", "/reset-password"]);
 
@@ -14,10 +15,12 @@ export async function GET(request: NextRequest) {
   if (code) {
     const supabase = await createClient();
     const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) return NextResponse.redirect(absoluteUrl(next, siteUrl));
+    if (!error) {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (user) await ensureUserProfile(supabase, user).catch(() => null);
+      return NextResponse.redirect(absoluteUrl(next, siteUrl));
+    }
   }
 
-  const errorUrl = new URL("/login", `${siteUrl}/`);
-  errorUrl.searchParams.set("error", "Authentication link is invalid or expired.");
-  return NextResponse.redirect(errorUrl);
+  return NextResponse.redirect(absoluteUrl("/login", siteUrl));
 }

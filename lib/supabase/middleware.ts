@@ -1,9 +1,11 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 
-const authPages = ["/login", "/register", "/forgot-password"];
-
 export async function updateSession(request: NextRequest) {
+  const pathname = request.nextUrl.pathname;
+  const isProtected = pathname === "/dashboard" || pathname.startsWith("/dashboard/") || pathname === "/admin" || pathname.startsWith("/admin/");
+  if (!isProtected) return NextResponse.next({ request });
+
   let response = NextResponse.next({ request });
 
   const supabase = createServerClient(
@@ -22,18 +24,9 @@ export async function updateSession(request: NextRequest) {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-  const pathname = request.nextUrl.pathname;
-
-  if ((pathname.startsWith("/dashboard") || pathname.startsWith("/admin")) && !user) {
+  if (!user) {
     const url = request.nextUrl.clone();
     url.pathname = "/login";
-    url.searchParams.set("next", pathname);
-    return NextResponse.redirect(url);
-  }
-
-  if (user && authPages.includes(pathname)) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/dashboard";
     url.search = "";
     return NextResponse.redirect(url);
   }

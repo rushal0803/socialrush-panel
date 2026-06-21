@@ -23,17 +23,6 @@ function callbackUrl(siteUrl: string, next: "/dashboard" | "/reset-password") {
   return url.toString();
 }
 
-export async function login(formData: FormData) {
-  const email = String(formData.get("email") || "").trim();
-  const password = String(formData.get("password") || "");
-  const siteUrl = await getRequestSiteUrl();
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) redirect(authErrorUrl(siteUrl, "/login", error.message));
-  revalidatePath("/", "layout");
-  redirect(absoluteUrl("/dashboard", siteUrl));
-}
-
 export async function forgotPassword(formData: FormData) {
   const email = String(formData.get("email") || "").trim();
   const siteUrl = await getRequestSiteUrl();

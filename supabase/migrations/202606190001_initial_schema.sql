@@ -126,37 +126,61 @@ alter table public.support_messages enable row level security;
 alter table public.api_keys enable row level security;
 
 -- Profiles
+drop policy if exists "profiles_select_own_or_admin" on public.profiles;
 create policy "profiles_select_own_or_admin" on public.profiles for select to authenticated using (id = auth.uid() or public.is_admin());
+drop policy if exists "profiles_update_admin" on public.profiles;
 create policy "profiles_update_admin" on public.profiles for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
 -- Public catalog is readable to authenticated users; only admins mutate it.
+drop policy if exists "categories_read_authenticated" on public.categories;
 create policy "categories_read_authenticated" on public.categories for select to authenticated using (true);
+drop policy if exists "categories_admin_insert" on public.categories;
 create policy "categories_admin_insert" on public.categories for insert to authenticated with check (public.is_admin());
+drop policy if exists "categories_admin_update" on public.categories;
 create policy "categories_admin_update" on public.categories for update to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "categories_admin_delete" on public.categories;
 create policy "categories_admin_delete" on public.categories for delete to authenticated using (public.is_admin());
+drop policy if exists "services_read_active_or_admin" on public.services;
 create policy "services_read_active_or_admin" on public.services for select to authenticated using (status = 'active' or public.is_admin());
+drop policy if exists "services_admin_insert" on public.services;
 create policy "services_admin_insert" on public.services for insert to authenticated with check (public.is_admin());
+drop policy if exists "services_admin_update" on public.services;
 create policy "services_admin_update" on public.services for update to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "services_admin_delete" on public.services;
 create policy "services_admin_delete" on public.services for delete to authenticated using (public.is_admin());
 
 -- Orders and transactions
+drop policy if exists "orders_select_own_or_admin" on public.orders;
 create policy "orders_select_own_or_admin" on public.orders for select to authenticated using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "orders_admin_update" on public.orders;
 create policy "orders_admin_update" on public.orders for update to authenticated using (public.is_admin()) with check (public.is_admin());
+drop policy if exists "transactions_select_own_or_admin" on public.transactions;
 create policy "transactions_select_own_or_admin" on public.transactions for select to authenticated using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "transactions_admin_insert" on public.transactions;
 create policy "transactions_admin_insert" on public.transactions for insert to authenticated with check (public.is_admin());
+drop policy if exists "transactions_admin_update" on public.transactions;
 create policy "transactions_admin_update" on public.transactions for update to authenticated using (public.is_admin()) with check (public.is_admin());
 
 -- Tickets and their messages
+drop policy if exists "tickets_select_own_or_admin" on public.support_tickets;
 create policy "tickets_select_own_or_admin" on public.support_tickets for select to authenticated using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "tickets_insert_own" on public.support_tickets;
 create policy "tickets_insert_own" on public.support_tickets for insert to authenticated with check (user_id = auth.uid());
+drop policy if exists "tickets_update_own_or_admin" on public.support_tickets;
 create policy "tickets_update_own_or_admin" on public.support_tickets for update to authenticated using (user_id = auth.uid() or public.is_admin()) with check (user_id = auth.uid() or public.is_admin());
+drop policy if exists "messages_select_ticket_owner_or_admin" on public.support_messages;
 create policy "messages_select_ticket_owner_or_admin" on public.support_messages for select to authenticated using (public.is_admin() or exists (select 1 from public.support_tickets t where t.id = ticket_id and t.user_id = auth.uid()));
+drop policy if exists "messages_insert_ticket_participant" on public.support_messages;
 create policy "messages_insert_ticket_participant" on public.support_messages for insert to authenticated with check (sender_id = auth.uid() and (public.is_admin() or exists (select 1 from public.support_tickets t where t.id = ticket_id and t.user_id = auth.uid())));
 
 -- API keys
+drop policy if exists "api_keys_select_own_or_admin" on public.api_keys;
 create policy "api_keys_select_own_or_admin" on public.api_keys for select to authenticated using (user_id = auth.uid() or public.is_admin());
+drop policy if exists "api_keys_insert_own" on public.api_keys;
 create policy "api_keys_insert_own" on public.api_keys for insert to authenticated with check (user_id = auth.uid());
+drop policy if exists "api_keys_update_own" on public.api_keys;
 create policy "api_keys_update_own" on public.api_keys for update to authenticated using (user_id = auth.uid()) with check (user_id = auth.uid());
+drop policy if exists "api_keys_delete_own_or_admin" on public.api_keys;
 create policy "api_keys_delete_own_or_admin" on public.api_keys for delete to authenticated using (user_id = auth.uid() or public.is_admin());
 
 -- Orders are placed atomically so users cannot choose their own price or
