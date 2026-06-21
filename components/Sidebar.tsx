@@ -9,12 +9,13 @@ import { createClient } from "@/lib/supabase/client";
 
 export const dashboardLinks = [
   { label: "Dashboard", href: "/dashboard", icon: "grid" },
-  { label: "New Campaign", href: "/dashboard/new-order", icon: "plus" },
-  { label: "Add Funds", href: "/dashboard/add-funds", icon: "wallet" },
-  { label: "Campaign History", href: "/dashboard/order-history", icon: "orders" },
-  { label: "API Docs", href: "/dashboard/api-docs", icon: "code" },
+  { label: "New Campaign", href: "/dashboard/new-campaign", icon: "plus" },
+  { label: "Services", href: "/dashboard/services", icon: "code" },
+  { label: "Orders", href: "/dashboard/orders", icon: "orders" },
+  { label: "Wallet", href: "/dashboard/wallet", icon: "wallet" },
+  { label: "Billing", href: "/dashboard/billing", icon: "orders" },
   { label: "Support", href: "/dashboard/support", icon: "support" },
-  { label: "Settings", href: "/dashboard/settings", icon: "settings" },
+  { label: "Account", href: "/dashboard/account", icon: "settings" },
 ] as const;
 
 function NavIcon({ name }: { name: string }) {
@@ -55,7 +56,7 @@ export default function Sidebar() {
       <div className="px-2"><Logo light /></div>
       <p className="mb-3 mt-9 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-600">Main menu</p>
       <NavLinks />
-      <div className="mt-auto rounded-2xl border border-white/10 bg-white/5 p-4 text-white"><div className="flex items-center justify-between"><p className="text-xs text-slate-400">Available balance</p><span className="h-2 w-2 rounded-full bg-emerald-400" /></div>{balance === null ? <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-white/10"/> : <p className="mt-2 text-2xl font-bold">{new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(balance)}</p>}<Link href="/dashboard/add-funds" className="mt-4 block w-full rounded-lg bg-blue-600 py-2.5 text-center text-xs font-bold transition hover:bg-blue-500">Add funds</Link></div>
+      <div className="mt-auto rounded-2xl border border-white/10 bg-white/5 p-4 text-white"><div className="flex items-center justify-between"><p className="text-xs text-slate-400">Available balance</p><span className="h-2 w-2 rounded-full bg-emerald-400" /></div>{balance === null ? <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-white/10"/> : <p className="mt-2 text-2xl font-bold">{new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(balance)}</p>}<Link href="/dashboard/wallet" className="mt-4 block w-full rounded-lg bg-blue-600 py-2.5 text-center text-xs font-bold transition hover:bg-blue-500">Add funds</Link></div>
       <form action={logout} className="mt-4"><button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-500 hover:bg-white/5 hover:text-white"><span>↪</span> Log out</button></form>
     </aside>
   );

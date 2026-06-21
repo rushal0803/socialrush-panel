@@ -3,8 +3,8 @@ import Logo from "@/components/Logo";
 
 const groups = [
   { title: "Services", links: [["SEO Services","/services#seo"],["Performance Advertising","/services#google-ads"],["Website Development","/services#web-development"],["AI & CRM Automation","/services#ai-chatbots"]] },
-  { title: "Company", links: [["About","/about"],["Case Studies","/case-studies"],["Testimonials","/testimonials"],["FAQ","/faq"]] },
-  { title: "Trust", links: [["Contact","/contact"],["Privacy Policy","/privacy-policy"],["Refund Policy","/refund-policy"],["Terms & Conditions","/terms-and-conditions"]] },
+  { title: "Company", links: [["About","/about"],["Pricing","/pricing"],["Case Studies","/case-studies"],["Blog","/blog"],["FAQ","/faq"]] },
+  { title: "Trust", links: [["Contact","/contact"],["Privacy Policy","/privacy"],["Refund Policy","/refund-policy"],["Terms & Conditions","/terms"]] },
 ];
 
 export default function MarketingFooter() {
