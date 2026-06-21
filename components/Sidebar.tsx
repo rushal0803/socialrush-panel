@@ -31,11 +31,11 @@ function NavIcon({ name }: { name: string }) {
   return <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>;
 }
 
-export function NavLinks({ mobile = false }: { mobile?: boolean }) {
+export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
   return <nav className={mobile ? "grid gap-1" : "space-y-1"} aria-label="Dashboard navigation">{dashboardLinks.map((item) => {
     const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
-    return <Link key={item.href} href={item.href} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${active ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}><NavIcon name={item.icon} />{item.label}</Link>;
+    return <Link key={item.href} href={item.href} onClick={onNavigate} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${active ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}><NavIcon name={item.icon} />{item.label}</Link>;
   })}</nav>;
 }
 
