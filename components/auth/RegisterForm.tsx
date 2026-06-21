@@ -8,11 +8,13 @@ import { createClient } from "@/lib/supabase/client";
 export default function RegisterForm() {
   const router = useRouter();
   const [error, setError] = useState("");
+  const [attempted, setAttempted] = useState(false);
   const [loading, setLoading] = useState(false);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setError("");
+    setAttempted(true);
     setLoading(true);
 
     const formData = new FormData(event.currentTarget);
@@ -46,7 +48,7 @@ export default function RegisterForm() {
   }
 
   return <>
-    {error && <div role="alert" className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs leading-5 text-rose-700">{error}</div>}
+    {attempted && error && <div role="alert" aria-live="polite" className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs leading-5 text-rose-700">{error}</div>}
     <form onSubmit={handleSubmit} className="mt-8 space-y-5">
       <div className="grid gap-4 sm:grid-cols-2"><div><label htmlFor="firstName" className="text-sm font-medium text-slate-700">First name</label><input id="firstName" name="firstName" required placeholder="Alex" className="field" /></div><div><label htmlFor="lastName" className="text-sm font-medium text-slate-700">Last name</label><input id="lastName" name="lastName" required placeholder="Morgan" className="field" /></div></div>
       <div><label htmlFor="email" className="text-sm font-medium text-slate-700">Work email</label><input id="email" name="email" type="email" autoComplete="email" required placeholder="you@company.com" className="field" /></div>
