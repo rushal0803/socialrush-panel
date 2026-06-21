@@ -20,27 +20,29 @@ export default function RegisterForm() {
     const password = String(formData.get("password") || "");
     const fullName = `${String(formData.get("firstName") || "").trim()} ${String(formData.get("lastName") || "").trim()}`.trim();
 
-    // This runs only in the browser, so production uses the exact live origin.
-    // new URL guarantees Supabase receives an absolute callback URL.
-    const emailRedirectTo = new URL("/auth/callback", window.location.origin).toString();
-    const supabase = createClient();
-    const { error: signupError } = await supabase.auth.signUp({
-      email,
-      password,
-      options: {
-        data: { full_name: fullName },
-        emailRedirectTo,
-      },
-    });
+    try {
+      const supabase = createClient();
+      const { error: signupError } = await supabase.auth.signUp({
+        email,
+        password,
+        options: {
+          data: { full_name: fullName },
+          emailRedirectTo: "https://socialrush-panel.vercel.app/auth/callback",
+        },
+      });
 
-    if (signupError) {
-      setError(signupError.message);
+      if (signupError) {
+        setError(signupError.message);
+        setLoading(false);
+        return;
+      }
+
+      router.replace(`/verify-email?email=${encodeURIComponent(email)}`);
+      router.refresh();
+    } catch {
+      setError("Unable to create your account right now. Please try again.");
       setLoading(false);
-      return;
     }
-
-    router.push(`/verify-email?email=${encodeURIComponent(email)}`);
-    router.refresh();
   }
 
   return <>

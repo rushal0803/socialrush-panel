@@ -26,38 +26,12 @@ function callbackUrl(siteUrl: string, next: "/dashboard" | "/reset-password") {
 export async function login(formData: FormData) {
   const email = String(formData.get("email") || "").trim();
   const password = String(formData.get("password") || "");
-  const next = String(formData.get("next") || "/dashboard");
   const siteUrl = await getRequestSiteUrl();
   const supabase = await createClient();
   const { error } = await supabase.auth.signInWithPassword({ email, password });
-  if (error) {
-    const errorUrl = new URL(authErrorUrl(siteUrl, "/login", error.message));
-    if (next === "/dashboard" || next.startsWith("/dashboard/")) errorUrl.searchParams.set("next", next);
-    redirect(errorUrl.toString());
-  }
+  if (error) redirect(authErrorUrl(siteUrl, "/login", error.message));
   revalidatePath("/", "layout");
-  const destination = next === "/dashboard" || next.startsWith("/dashboard/") ? next : "/dashboard";
-  redirect(absoluteUrl(destination, siteUrl));
-}
-
-export async function register(formData: FormData) {
-  const email = String(formData.get("email") || "").trim();
-  const password = String(formData.get("password") || "");
-  const fullName = `${String(formData.get("firstName") || "").trim()} ${String(formData.get("lastName") || "").trim()}`.trim();
-  const siteUrl = await getRequestSiteUrl();
-  const supabase = await createClient();
-  const { error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { full_name: fullName },
-      emailRedirectTo: callbackUrl(siteUrl, "/dashboard"),
-    },
-  });
-  if (error) redirect(authErrorUrl(siteUrl, "/register", error.message));
-  const verifyUrl = new URL("/verify-email", `${siteUrl}/`);
-  verifyUrl.searchParams.set("email", email);
-  redirect(verifyUrl.toString());
+  redirect(absoluteUrl("/dashboard", siteUrl));
 }
 
 export async function forgotPassword(formData: FormData) {
