@@ -1,12 +1,13 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -27,7 +28,8 @@ export default function LoginForm() {
         setLoading(false);
         return;
       }
-      router.replace("/dashboard");
+      const nextPath = searchParams.get("next");
+      router.replace(nextPath && nextPath.startsWith("/") ? nextPath : "/dashboard");
       router.refresh();
     } catch {
       setError("Unable to sign in right now. Please try again.");
