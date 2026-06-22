@@ -7,10 +7,10 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 
 export const metadata: Metadata = {
   title: {
-    default: "SocialRUSH Panel",
+    default: "SocialRUSH | Social Media Growth Platform",
     template: "%s | SocialRUSH",
   },
-  description: "Manage social media growth campaigns, brand visibility, content reach, and marketing automation from one professional workspace.",
+  description: "Order and track premium social media growth services for Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
