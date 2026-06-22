@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import PageHero from "@/components/marketing/PageHero";
+import MarketingIcon from "@/components/marketing/MarketingIcon";
 import PublicShell from "@/components/marketing/PublicShell";
 import { agencyServices, publicFaqs } from "@/lib/marketing/content";
 
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function ContactPage() {
+  const whatsappUrl = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim();
   return (
     <PublicShell>
       <PageHero
@@ -35,22 +37,24 @@ export default function ContactPage() {
           </form>
           <aside className="space-y-5">
             <div className="rounded-3xl bg-[#07152f] p-7 text-white">
-              <p className="text-[10px] font-bold uppercase tracking-wider text-blue-400">Customer support</p>
+              <span className="grid h-11 w-11 place-items-center rounded-xl bg-blue-500/15 text-blue-300"><MarketingIcon name="message" className="h-5 w-5" /></span>
+              <p className="mt-5 text-[10px] font-bold uppercase tracking-wider text-blue-400">Customer support</p>
               <a href="mailto:support@socialrush.in" className="mt-4 block text-lg font-bold">support@socialrush.in</a>
               <p className="mt-2 text-xs leading-6 text-slate-400">Typical response target: within one business day.</p>
+              {whatsappUrl ? <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-emerald-600"><MarketingIcon name="message" className="h-4 w-4" />Open WhatsApp support</a> : <a href="mailto:support@socialrush.in?subject=SocialRUSH%20support" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-blue-600 px-4 py-2.5 text-xs font-bold text-white transition hover:bg-blue-500"><MarketingIcon name="message" className="h-4 w-4" />Message support</a>}
             </div>
             <div className="rounded-3xl border border-slate-200 p-7">
-              <h2 className="font-bold text-[#07152f]">Support availability</h2>
-              <p className="mt-3 text-xs leading-6 text-slate-500">SocialRUSH supports creators, businesses, and agencies in India and international markets through an online-first service model.</p>
-              <div className="mt-5 grid h-36 place-items-center rounded-2xl bg-[linear-gradient(135deg,#eff6ff,#f8fafc)] text-center text-xs font-semibold text-slate-400">Online-first support<br />India · International</div>
+              <h2 className="font-bold text-[#07152f]">What we can help with</h2>
+              <div className="mt-5 space-y-3">{["Choosing the right service", "Wallet or payment questions", "Order status and delivery", "Eligible refill requests"].map((item) => <div key={item} className="flex items-center gap-3 rounded-xl bg-slate-50 p-3 text-xs font-semibold text-slate-600"><span className="grid h-7 w-7 place-items-center rounded-lg bg-blue-50 text-blue-600"><MarketingIcon name="check" className="h-3.5 w-3.5" /></span>{item}</div>)}</div>
             </div>
           </aside>
         </div>
       </section>
       <section className="bg-[#f6f9ff] px-5 py-16">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-center text-2xl font-bold text-[#07152f]">Before you enquire</h2>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">{publicFaqs.slice(1, 4).map(([question, answer]) => <article key={question} className="rounded-2xl border border-white bg-white p-5 shadow-sm"><h3 className="text-sm font-bold">{question}</h3><p className="mt-3 text-xs leading-6 text-slate-500">{answer}</p></article>)}</div>
+          <div className="text-center"><p className="text-xs font-bold uppercase tracking-[.18em] text-blue-600">Support paths</p><h2 className="mt-4 text-2xl font-bold text-[#07152f]">Get the right help without repeating your story.</h2></div>
+          <div className="mt-8 grid gap-4 md:grid-cols-3">{[["search", "Pre-sales guidance", "Ask which service, link type, or campaign setup fits your goal."], ["card", "Payment and wallet help", "Include your payment reference when reporting a missing credit or failed payment."], ["message", "Order and refill support", "Use your dashboard ticket area so the team can review the relevant order context."]].map(([icon, title, text]) => <article key={title} className="rounded-2xl border border-white bg-white p-5 shadow-sm"><span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-600"><MarketingIcon name={icon as "search" | "card" | "message"} className="h-5 w-5" /></span><h3 className="mt-4 text-sm font-bold text-[#07152f]">{title}</h3><p className="mt-3 text-xs leading-6 text-slate-500">{text}</p></article>)}</div>
+          <div className="mt-10 grid gap-4 md:grid-cols-3">{publicFaqs.slice(1, 4).map(([question, answer]) => <article key={question} className="rounded-2xl border border-blue-100 bg-blue-50 p-5"><h3 className="text-sm font-bold text-[#07152f]">{question}</h3><p className="mt-3 text-xs leading-6 text-slate-600">{answer}</p></article>)}</div>
         </div>
       </section>
     </PublicShell>

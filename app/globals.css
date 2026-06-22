@@ -68,9 +68,23 @@ body {
   animation: landing-float 5s ease-in-out 1.4s infinite;
 }
 
+@keyframes campaign-shimmer {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+.campaign-progress {
+  background-size: 200% 100%;
+  animation: campaign-shimmer 2.8s ease-in-out infinite alternate;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .landing-float,
   .landing-float-delayed {
+    animation: none;
+  }
+
+  .campaign-progress {
     animation: none;
   }
 }

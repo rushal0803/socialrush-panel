@@ -27,6 +27,8 @@ export const publicFaqs = [
   ["Which platforms do you support?","The public catalog covers Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X. Live availability is shown inside the campaign dashboard."],
   ["What if my order is delayed?","Check the delivery estimate first. If processing exceeds that window, create a support ticket and the team will review the order."],
   ["Can agencies use SocialRUSH?","Yes. The wallet, order history, service catalog, and support workflow are suitable for agencies and social media managers handling multiple campaigns."],
+  ["Which link should I submit?","Submit the exact public destination required by the service: a profile for followers, a post or video for likes and views, or a public channel for subscribers. Review it carefully before checkout."],
+  ["Can I order multiple services?","Yes. You can place separate campaigns for different services or platforms and track every order independently from Campaign History."],
 ];
 
 export const caseStudies = [
@@ -41,4 +43,6 @@ export const testimonials = [
   ["Wallet funding and campaign history made repeat orders much easier for our small marketing team.","RS","Local business owner"],
   ["We manage several creator campaigns, so having order IDs, amounts, and support in one place is genuinely useful.","NM","Agency manager"],
   ["The delivery estimate was clear and support responded with an order-specific update when I needed help.","VP","YouTube creator"],
+  ["I used the campaign history to coordinate a release across Instagram and TikTok without losing track of links or totals.","MJ","Independent artist"],
+  ["Being able to review the exact charge before wallet checkout made budgeting much easier for our launch campaigns.","DT","Startup founder"],
 ];
