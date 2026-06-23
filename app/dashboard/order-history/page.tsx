@@ -4,15 +4,17 @@ import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import { formatCurrency } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 type Campaign = { id: string; service: string; platform: string; link: string; quantity: number; amount: number; status: string; createdAt: string; packageName: string | null };
 const statuses = ["all","pending","processing","in_progress","completed","partial","cancelled","refunded","failed"];
 const statusStyle: Record<string,string> = { pending: "bg-amber-50 text-amber-700", processing: "bg-blue-50 text-blue-700", in_progress: "bg-cyan-50 text-cyan-700", completed: "bg-emerald-50 text-emerald-700", partial: "bg-violet-50 text-violet-700", cancelled: "bg-slate-100 text-slate-600", refunded: "bg-indigo-50 text-indigo-700", failed: "bg-rose-50 text-rose-700" };
-const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
 
 function StatusBadge({ status }: { status: string }) { return <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold capitalize ${statusStyle[status] || statusStyle.pending}`}><i className="h-1.5 w-1.5 rounded-full bg-current"/>{status.replaceAll("_"," ")}</span>; }
 
 export default function CampaignHistoryPage() {
+  const { currency } = usePreferredCurrency("INR"); const money = (value: number) => formatCurrency(value, currency);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]); const [loading, setLoading] = useState(true); const [search, setSearch] = useState(""); const [status, setStatus] = useState("all"); const [platform, setPlatform] = useState("all"); const [date, setDate] = useState(""); const [selected, setSelected] = useState<Campaign | null>(null);
   useEffect(() => { const supabase = createClient(); void supabase.from("orders").select("id, service_name, platform, link, quantity, charge, status, created_at, package_name, services(name, categories(name))").order("created_at", { ascending: false }).then(({ data }) => { setCampaigns((data ?? []).map((row) => { const service = row.services as unknown as { name?: string; categories?: { name?: string } | null } | null; return { id: row.id, service: row.service_name || service?.name || "Growth service", platform: row.platform || service?.categories?.name?.split(" ")[0] || "Other", link: row.link, quantity: Number(row.quantity), amount: Number(row.charge), status: row.status, createdAt: row.created_at, packageName: row.package_name }; })); setLoading(false); }); }, []);
   const platforms = useMemo(() => Array.from(new Set(campaigns.map((item) => item.platform))).sort(), [campaigns]);

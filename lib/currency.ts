@@ -24,6 +24,10 @@ export function convertCurrency(amountINR: number, targetCurrency: Currency): nu
   return Math.round(amountINR * rate * 100) / 100; // Round to 2 decimals
 }
 
+export function formatCurrency(amountINR: number, targetCurrency: Currency): string {
+  return formatPrice(convertCurrency(amountINR, targetCurrency), targetCurrency);
+}
+
 export function formatPrice(amount: number, currency: Currency): string {
   const currencyConfig = currencies.find((c) => c.code === currency);
   const symbol = currencyConfig?.symbol || "₹";

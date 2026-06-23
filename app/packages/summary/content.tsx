@@ -8,13 +8,15 @@ import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
 import { getPackageById } from "@/lib/big-packages";
 import { convertCurrency, formatPrice, type Currency, currencies } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
 
 export default function PackageSummaryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const packageId = searchParams.get("packageId");
-  const currency = (searchParams.get("currency") || "INR") as Currency;
+  const queryCurrency = searchParams.get("currency") as Currency | null;
+  const { currency } = usePreferredCurrency(queryCurrency || "INR");
 
   const [pkg] = useState(getPackageById(packageId || ""));
   const [profileLink, setProfileLink] = useState("");
