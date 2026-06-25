@@ -13,9 +13,9 @@ export default function MarketingFooter() {
     "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service";
 
   return (
-    <footer className="relative bg-[#050f23] px-5 pb-8 pt-16 text-white sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute -left-24 top-8 h-64 w-64 rounded-full bg-violet-500/15 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-8 h-64 w-64 rounded-full bg-cyan-400/12 blur-3xl" />
+    <footer className="relative bg-brand-navy px-5 pb-8 pt-16 text-white sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute -left-24 top-8 h-64 w-64 rounded-full bg-blue-600/15 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-8 h-64 w-64 rounded-full bg-cyan-400/15 blur-3xl" />
       <div className="relative mx-auto max-w-7xl">
         <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]">
           <div>

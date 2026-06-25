@@ -16,36 +16,107 @@ html {
 
 body {
   margin: 0;
-  color: #101828;
-  background: #fafafa;
+  color: #E2E8F0;
+  background: #07111F;
+  min-height: 100vh;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
 }
 
 ::selection {
   color: white;
-  background: #2563eb;
+  background: #38BDF8;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 @layer components {
   .btn-primary {
-    @apply inline-flex items-center justify-center rounded-xl bg-rush-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-rush-500/20 transition hover:-translate-y-0.5 hover:bg-rush-700;
+    @apply inline-flex items-center justify-center rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700;
   }
 
   .btn-secondary {
-    @apply inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-rush-100 hover:bg-rush-50;
+    @apply inline-flex items-center justify-center rounded-xl border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:border-slate-400 hover:bg-slate-50;
   }
 
   .field {
-    @apply mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none transition placeholder:text-slate-400 focus:border-rush-500 focus:ring-4 focus:ring-rush-500/10;
+    @apply mt-2 w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10;
   }
 
   .panel-card {
-    @apply rounded-2xl border border-slate-200/80 bg-white shadow-sm;
+    @apply rounded-3xl border border-white/10 bg-[#07152f] shadow-lg shadow-slate-900/20;
+  }
+
+  .panel-card-light {
+    @apply rounded-3xl border border-slate-200/80 bg-white shadow-sm;
   }
 
   .dashboard-input {
-    @apply w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10;
+    @apply w-full rounded-xl border border-slate-700 bg-[#0b1628] px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10;
   }
+
+  .field-dark {
+    @apply mt-2 w-full rounded-xl border border-slate-700 bg-[#0b1628] px-4 py-3 text-sm text-slate-100 outline-none transition placeholder:text-slate-500 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10;
+  }
+
+  .auth-field {
+    @apply mt-2 w-full rounded-xl border border-slate-200 bg-white/80 px-4 py-3 text-sm text-slate-800 outline-none transition placeholder:text-slate-400 focus:border-pink-400 focus:ring-4 focus:ring-pink-400/15 backdrop-blur;
+  }
+}
+
+@keyframes auth-float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-14px); }
+}
+
+@keyframes auth-fade-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-auth-float {
+  animation: auth-float 5.5s ease-in-out infinite;
+}
+
+.animate-auth-fade-up {
+  animation: auth-fade-up 0.55s ease-out both;
+}
+
+.bg-brand-dark {
+  background-color: #07111F;
+}
+
+.bg-brand-card {
+  background-color: #0B1628;
+}
+
+.text-brand-dark {
+  color: #0F172A;
+}
+
+.text-muted {
+  color: #64748B;
+}
+
+.border-soft {
+  border-color: #E2E8F0;
+}
+
+.btn-accent {
+  @apply inline-flex items-center justify-center rounded-xl bg-cyan-400 px-5 py-3 text-sm font-semibold text-slate-950 shadow-lg shadow-cyan-400/25 transition hover:bg-cyan-300;
+}
+
+.card-surface {
+  @apply rounded-3xl border border-slate-200/80 bg-white shadow-sm;
+}
+
+.card-surface-dark {
+  @apply rounded-3xl border border-slate-800 bg-[#0B1628] shadow-lg shadow-slate-900/10;
 }
 
 .hero-grid {

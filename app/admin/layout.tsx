@@ -10,5 +10,5 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect("/login");
   const profile = await ensureUserProfile(supabase, user).catch(() => null);
   if (!profile || profile.role !== "admin") redirect("/dashboard");
-  return <div className="flex min-h-screen bg-[#f7f9fc]"><AdminSidebar/><div className="min-w-0 flex-1"><AdminHeader name={profile.full_name} email={user.email || ""}/>{children}</div></div>;
+  return <div className="flex min-h-screen bg-[#07111F]"><AdminSidebar/><div className="min-w-0 flex-1"><AdminHeader name={profile.full_name} email={user.email || ""}/>{children}</div></div>;
 }

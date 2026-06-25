@@ -1,26 +1,221 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import MarketingIcon, { type MarketingIconName } from "@/components/marketing/MarketingIcon";
+import MarketingIcon from "@/components/marketing/MarketingIcon";
 import PageHero from "@/components/marketing/PageHero";
-import PortalCTA from "@/components/marketing/PortalCTA";
 import PublicShell from "@/components/marketing/PublicShell";
 import { agencyServices } from "@/lib/marketing/content";
 
-export const metadata: Metadata = { title: "Social Media Growth Services", description: "Browse SocialRUSH Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X followers, likes, views, and subscriber services." };
+export const metadata: Metadata = {
+  title: "Social Media Growth Services",
+  description:
+    "Explore premium social growth services for Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X with secure dashboard checkout and campaign tracking.",
+};
 
 const platforms = [
-  { name: "Instagram", short: "IG", gradient: "from-fuchsia-500 via-pink-500 to-orange-400", description: "Followers, likes, and video views for creators, brands, and public profiles." },
-  { name: "YouTube", short: "YT", gradient: "from-red-500 to-rose-700", description: "Subscriber, like, and view campaigns for channels and public videos." },
-  { name: "Facebook", short: "FB", gradient: "from-blue-500 to-blue-800", description: "Page followers, post likes, and video views for public business content." },
-  { name: "LinkedIn", short: "IN", gradient: "from-sky-500 to-blue-800", description: "Profile followers and post likes for professional visibility." },
-  { name: "TikTok", short: "TT", gradient: "from-slate-950 via-fuchsia-700 to-cyan-500", description: "Follower, like, and view campaigns for public creator content." },
-  { name: "Twitter/X", short: "X", gradient: "from-slate-700 to-slate-950", description: "Follower growth campaigns for public profiles on X." },
+  {
+    name: "Instagram",
+    short: "IG",
+    gradient: "from-fuchsia-500 via-pink-500 to-orange-400",
+    description: "Followers, likes, and video views for creators, brands, and public profiles.",
+  },
+  {
+    name: "YouTube",
+    short: "YT",
+    gradient: "from-red-500 to-rose-700",
+    description: "Subscriber, like, and view campaigns for channels and public videos.",
+  },
+  {
+    name: "Facebook",
+    short: "FB",
+    gradient: "from-blue-500 to-blue-800",
+    description: "Page followers, post likes, and video views for public business content.",
+  },
+  {
+    name: "LinkedIn",
+    short: "IN",
+    gradient: "from-sky-500 to-blue-800",
+    description: "Profile followers and post likes for professional visibility.",
+  },
+  {
+    name: "TikTok",
+    short: "TT",
+    gradient: "from-slate-950 via-fuchsia-700 to-cyan-500",
+    description: "Follower, like, and view campaigns for public creator content.",
+  },
+  {
+    name: "Twitter/X",
+    short: "X",
+    gradient: "from-slate-700 to-slate-950",
+    description: "Follower growth campaigns for public profiles on X.",
+  },
+] as const;
+
+const serviceSteps = [
+  "Login or create your account to access protected pricing.",
+  "Review the service type, destination requirements, and delivery window.",
+  "Add your public profile or content link in the dashboard.",
+  "Confirm budget and track the campaign from order history.",
+] as const;
+
+const trustItems = [
+  "Secure dashboard checkout",
+  "Wallet funding and budgeting",
+  "Protected public destination flow",
+  "Verified campaign tracking",
 ] as const;
 
 export default function ServicesPage() {
-  return <PublicShell><PageHero eyebrow="Premium service catalog" title="Social growth services organized around your goal." description="Browse each platform, understand what the service supports, and open your protected dashboard only when you are ready to review live availability and checkout." />
-    <section className="border-b border-slate-100 px-5 py-12 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{platforms.map((platform) => <a key={platform.name} href={`#${platform.name.toLowerCase().replace("/", "-")}`} className="group flex items-center gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"><span className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br text-xs font-black text-white shadow-lg ${platform.gradient}`}>{platform.short}</span><div><h2 className="text-sm font-bold text-[#07152f]">{platform.name} Growth</h2><p className="mt-1 text-[10px] leading-5 text-slate-500">{platform.description}</p></div><MarketingIcon name="arrow" className="ml-auto h-4 w-4 shrink-0 text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600" /></a>)}</div></div></section>
-    <section className="bg-[#f7f9fe] px-5 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl space-y-20">{platforms.map((platform) => { const services = agencyServices.filter((service) => service.platform === platform.name); return <section id={platform.name.toLowerCase().replace("/", "-")} key={platform.name} className="scroll-mt-28"><div className="grid gap-6 lg:grid-cols-[.62fr_1.38fr] lg:items-end"><div><span className={`grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br text-sm font-black text-white shadow-xl ${platform.gradient}`}>{platform.short}</span><p className="mt-5 text-xs font-bold uppercase tracking-[.18em] text-blue-600">{platform.name} growth</p><h2 className="mt-3 text-3xl font-bold tracking-tight text-[#07152f]">{platform.name} services</h2></div><p className="max-w-2xl text-sm leading-7 text-slate-600">{platform.description} Every card explains its purpose, starting rate, checkout protections, and suitable audience.</p></div><div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">{services.map((service, index) => <article id={service.slug} key={service.slug} className="group flex flex-col scroll-mt-28 overflow-hidden rounded-3xl border border-white bg-white shadow-[0_12px_45px_-24px_rgba(7,21,47,.25)] transition duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"><div className={`h-1.5 bg-gradient-to-r ${platform.gradient}`} /><div className="flex flex-1 flex-col p-6"><div className="flex items-center justify-between"><span className="grid h-11 w-11 place-items-center rounded-xl bg-blue-50 text-blue-600"><MarketingIcon name={service.name.includes("Views") ? "eye" : service.name.includes("Likes") ? "heart" : "users"} className="h-5 w-5" /></span><span className={`rounded-full px-3 py-1.5 text-[9px] font-bold ${index === 0 ? "bg-blue-50 text-blue-700" : "bg-emerald-50 text-emerald-700"}`}>{index === 0 ? "Popular choice" : "Tracked delivery"}</span></div><h3 className="mt-5 text-xl font-bold text-[#07152f]">{service.name}</h3><p className="mt-3 flex-1 text-sm leading-7 text-slate-500">{service.summary}</p><div className="mt-5 flex items-end justify-between gap-3 border-t border-slate-100 pt-5"><div><p className="text-[9px] uppercase tracking-wider text-slate-400">Starting rate</p><p className="mt-1 text-2xl font-bold text-blue-600">{service.price}</p></div><div className="flex items-center gap-1.5 text-[9px] text-slate-500"><MarketingIcon name="clock" className="h-3.5 w-3.5 text-blue-500" />Estimate shown before checkout</div></div><ul className="mt-5 grid gap-2 sm:grid-cols-2">{service.deliverables.map((item) => <li key={item} className="flex gap-2 text-[10px] leading-5 text-slate-600"><MarketingIcon name="check" className="mt-0.5 h-3.5 w-3.5 shrink-0 text-emerald-600" />{item}</li>)}</ul><p className="mt-5 rounded-xl bg-slate-50 p-3 text-[10px] leading-5 text-slate-500"><strong className="text-slate-700">Recommended for:</strong> {service.ideal}</p><PortalCTA className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#07152f] px-5 py-3 text-xs font-bold text-white transition group-hover:bg-blue-600">Launch this campaign <MarketingIcon name="arrow" className="h-4 w-4" /></PortalCTA></div></article>)}</div></section>; })}</div></section>
-    <section className="px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-6xl gap-5 lg:grid-cols-[1fr_.7fr]"><div className="rounded-3xl bg-[#07152f] p-7 text-white sm:p-9"><span className="grid h-12 w-12 place-items-center rounded-xl bg-blue-500/15 text-blue-300"><MarketingIcon name="message" className="h-6 w-6" /></span><h2 className="mt-6 text-2xl font-bold">Need help choosing the right service?</h2><p className="mt-3 text-sm leading-7 text-slate-300">Tell support which platform, public destination, and outcome you are considering. We can explain the ordering flow before you launch.</p><Link href="/contact" className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-bold text-[#07152f]">Talk to support <MarketingIcon name="arrow" className="h-4 w-4" /></Link></div><div className="rounded-3xl border border-blue-100 bg-blue-50 p-7"><MarketingIcon name="shield" className="h-7 w-7 text-blue-600" /><h2 className="mt-5 text-lg font-bold text-[#07152f]">Public links only</h2><p className="mt-3 text-xs leading-6 text-slate-600">SocialRUSH does not request your social account password for standard campaigns. Submit only the exact public destination required by the selected service.</p><Link href="/faq" className="mt-5 inline-flex items-center gap-2 text-xs font-bold text-blue-700">Read service FAQs <MarketingIcon name="arrow" className="h-4 w-4" /></Link></div></div></section>
-  </PublicShell>;
+  return (
+    <PublicShell>
+      <PageHero
+        eyebrow="Premium service catalog"
+        title="Social growth services organized around your goal."
+        description="Browse each platform, understand the service outcome, and open your protected dashboard only when you are ready to complete checkout."
+      />
+
+      <section className="px-5 pb-14 pt-10 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="grid gap-8 rounded-[32px] border border-slate-200 bg-white p-8 shadow-xl sm:grid-cols-[1.3fr_0.7fr] sm:items-center sm:p-10">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[.24em] text-slate-500">Service discovery</p>
+              <h2 className="mt-3 text-3xl font-bold text-slate-900 sm:text-4xl">
+                High-value growth services for campaigns that need a premium launch.
+              </h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
+                This catalog highlights platform coverage, campaign outcomes, and delivery confidence. Exact pricing and checkout are available inside the SocialRUSH dashboard.
+              </p>
+            </div>
+            <div className="flex flex-col gap-3 sm:items-end">
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:shadow-xl">
+                Start Order
+              </Link>
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition hover:border-blue-200">
+                View Packages
+              </Link>
+            </div>
+          </div>
+
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {trustItems.map((item) => (
+              <div key={item} className="rounded-3xl border border-slate-200 bg-slate-50 p-6 shadow-sm">
+                <div className="inline-flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-600 text-white">
+                  <MarketingIcon name="shield" className="h-5 w-5" />
+                </div>
+                <h3 className="mt-5 text-lg font-bold text-slate-900">{item}</h3>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-slate-50 px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl space-y-20">
+          {platforms.map((platform) => {
+            const services = agencyServices.filter((service) => service.platform === platform.name);
+            return (
+              <section key={platform.name} id={platform.name.toLowerCase().replace("/", "-")} className="scroll-mt-24">
+                <div className="grid gap-6 lg:grid-cols-[.62fr_1.38fr] lg:items-end">
+                  <div>
+                    <span className={`grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br text-sm font-black text-white shadow-xl ${platform.gradient}`}>
+                      {platform.short}
+                    </span>
+                    <p className="mt-5 text-xs font-bold uppercase tracking-[.18em] text-blue-600">{platform.name} growth</p>
+                    <h2 className="mt-3 text-3xl font-bold tracking-tight text-slate-900">{platform.name} services</h2>
+                  </div>
+                  <p className="max-w-2xl text-sm leading-7 text-slate-600">
+                    {platform.description} Each service explains the outcome, destination requirement, and support process. Pricing is finalized in the authenticated dashboard.
+                  </p>
+                </div>
+
+                <div className="mt-8 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+                  {services.map((service, index) => (
+                    <article key={service.slug} className="group flex flex-col overflow-hidden rounded-3xl border border-white bg-white shadow-[0_16px_40px_-26px_rgba(15,23,42,.16)] transition duration-300 hover:-translate-y-1 hover:shadow-xl">
+                      <div className={`h-1.5 bg-gradient-to-r ${platform.gradient}`} />
+                      <div className="flex flex-1 flex-col p-6">
+                        <div className="flex items-center justify-between">
+                          <span className="grid h-11 w-11 place-items-center rounded-xl bg-blue-50 text-blue-600">
+                            <MarketingIcon
+                              name={service.name.includes("Views") ? "eye" : service.name.includes("Likes") ? "heart" : "users"}
+                              className="h-5 w-5"
+                            />
+                          </span>
+                          <span className={`rounded-full px-3 py-1.5 text-[9px] font-bold ${index === 0 ? "bg-blue-50 text-blue-700" : "bg-emerald-50 text-emerald-700"}`}>
+                            {index === 0 ? "Popular choice" : "Tracked delivery"}
+                          </span>
+                        </div>
+                        <h3 className="mt-5 text-xl font-bold text-slate-900">{service.name}</h3>
+                        <p className="mt-3 flex-1 text-sm leading-7 text-slate-600">{service.summary}</p>
+
+                        <div className="mt-6 space-y-3 text-sm text-slate-600">
+                          {service.deliverables.slice(0, 3).map((item) => (
+                            <div key={item} className="flex gap-2">
+                              <span className="mt-1 h-2.5 w-2.5 rounded-full bg-blue-600" />
+                              <span>{item}</span>
+                            </div>
+                          ))}
+                        </div>
+
+                        <div className="mt-6 rounded-3xl border border-slate-200 bg-slate-50 p-4 text-sm text-slate-700">
+                          Starting from {service.price}
+                          <div className="mt-2 text-xs text-slate-500">Delivery: 1–7 days</div>
+                          <div className="mt-1 text-xs text-slate-500">Refill support: available</div>
+                        </div>
+
+                        <div className="mt-6 grid gap-3">
+                          <Link
+                            href={`/order-summary?service=${service.slug}`}
+                            className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-bold text-white transition hover:shadow-xl"
+                          >
+                            Start Order
+                          </Link>
+                          <Link
+                            href="/packages"
+                            className="inline-flex w-full items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition hover:border-blue-200"
+                          >
+                            View Packages
+                          </Link>
+                        </div>
+                      </div>
+                    </article>
+                  ))}
+                </div>
+              </section>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl rounded-[32px] border border-slate-200 bg-white p-8 shadow-xl sm:p-10">
+          <div className="grid gap-8 lg:grid-cols-[.85fr_1fr] lg:items-center">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[.24em] text-blue-600">How it works</p>
+              <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900">Order growth services in four premium steps.</h2>
+              <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-600">
+                Preview service outcomes here, then use your dashboard to configure quantity, submit the exact public destination, and complete secure checkout.
+              </p>
+            </div>
+
+            <div className="grid gap-3">
+              {serviceSteps.map((step, index) => (
+                <div key={step} className="rounded-3xl border border-slate-200 bg-slate-50 p-5">
+                  <p className="text-xs font-semibold uppercase tracking-[.24em] text-slate-500">Step {index + 1}</p>
+                  <p className="mt-3 text-sm font-semibold text-slate-900">{step}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="mt-10 flex flex-col gap-3 sm:flex-row sm:items-center">
+            <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20 transition hover:shadow-xl">
+              Start Order
+            </Link>
+            <Link href="/faq" className="inline-flex min-h-[52px] items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-900 transition hover:border-blue-200">
+              View FAQ
+            </Link>
+          </div>
+        </div>
+      </section>
+    </PublicShell>
+  );
 }

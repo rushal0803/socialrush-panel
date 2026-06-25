@@ -112,41 +112,41 @@ export default function PackageSummaryContent() {
                 {/* Header */}
                 <div>
                   <div className="flex items-center gap-3">
-                    <div className="text-4xl font-bold text-[#0b1635]">{pkg.platform}</div>
-                    <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-bold uppercase text-blue-700">
+                    <div className="text-4xl font-bold text-white">{pkg.platform}</div>
+                    <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-bold uppercase text-cyan-200">
                       {pkg.service}
                     </span>
                   </div>
-                  <h1 className="mt-3 text-3xl font-extrabold text-[#0b1635]">{pkg.title}</h1>
+                  <h1 className="mt-3 text-3xl font-extrabold text-white">{pkg.title}</h1>
                   {pkg.discountBadge && (
-                    <p className="mt-2 text-sm font-bold text-emerald-700">✓ {pkg.discountBadge}</p>
+                    <p className="mt-2 text-sm font-bold text-emerald-300">✓ {pkg.discountBadge}</p>
                   )}
                 </div>
 
                 {/* Description */}
-                <div className="rounded-2xl border border-slate-200 bg-slate-50 p-5">
-                  <p className="text-sm leading-7 text-slate-700">{pkg.description}</p>
+                <div className="rounded-2xl border border-white/10 bg-[#0A1628] p-5">
+                  <p className="text-sm leading-7 text-slate-300">{pkg.description}</p>
                 </div>
 
                 {/* Key Info */}
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl border border-slate-200 bg-white p-4">
-                    <p className="text-xs font-bold uppercase text-slate-500">Quantity</p>
-                    <p className="mt-2 text-2xl font-extrabold text-[#0b1635]">{pkg.quantityLabel}</p>
+                  <div className="rounded-xl border border-white/10 bg-[#0A1628] p-4">
+                    <p className="text-xs font-bold uppercase text-slate-400">Quantity</p>
+                    <p className="mt-2 text-2xl font-extrabold text-white">{pkg.quantityLabel}</p>
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-white p-4">
-                    <p className="text-xs font-bold uppercase text-slate-500">Delivery</p>
-                    <p className="mt-2 text-sm font-bold text-blue-700">{pkg.deliveryTime}</p>
+                  <div className="rounded-xl border border-white/10 bg-[#0A1628] p-4">
+                    <p className="text-xs font-bold uppercase text-slate-400">Delivery</p>
+                    <p className="mt-2 text-sm font-bold text-cyan-200">{pkg.deliveryTime}</p>
                   </div>
-                  <div className="rounded-xl border border-slate-200 bg-white p-4">
-                    <p className="text-xs font-bold uppercase text-slate-500">Best for</p>
-                    <p className="mt-2 text-xs font-bold text-slate-700">{pkg.bestFor}</p>
+                  <div className="rounded-xl border border-white/10 bg-[#0A1628] p-4">
+                    <p className="text-xs font-bold uppercase text-slate-400">Best for</p>
+                    <p className="mt-2 text-xs font-bold text-slate-200">{pkg.bestFor}</p>
                   </div>
                 </div>
 
                 {/* Profile Link Input */}
                 <div>
-                  <label className="block text-sm font-bold text-slate-700">Profile / Post / Video / Channel Link</label>
+                  <label className="block text-sm font-bold text-slate-200">Profile / Post / Video / Channel Link</label>
                   <input
                     type="url"
                     value={profileLink}
@@ -155,20 +155,20 @@ export default function PackageSummaryContent() {
                       setProfileError("");
                     }}
                     placeholder="e.g., https://instagram.com/yourprofile"
-                    className={`mt-2 w-full rounded-xl border px-4 py-3 text-sm transition focus:outline-none ${
+                    className={`mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-100 transition focus:outline-none ${
                       profileError
-                        ? "border-rose-300 bg-rose-50 focus:border-rose-500 focus:ring-2 focus:ring-rose-200"
-                        : "border-slate-200 bg-white focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
+                        ? "border-rose-300 bg-[#1E1E2A] text-slate-100 focus:border-rose-500 focus:ring-rose-200"
+                        : "border-white/10 bg-[#0A1628] text-slate-100 focus:border-cyan-500 focus:ring-cyan-500/10"
                     }`}
                   />
-                  <p className="mt-2 text-xs text-slate-500">Make sure your link is public and correct before continuing.</p>
-                  {profileError && <p className="mt-2 text-sm font-bold text-rose-700">{profileError}</p>}
+                  <p className="mt-2 text-xs text-slate-400">Make sure your link is public and correct before continuing.</p>
+                  {profileError && <p className="mt-2 text-sm font-bold text-rose-300">{profileError}</p>}
                 </div>
 
                 {/* Important Notes */}
-                <div className="rounded-xl border border-blue-200 bg-blue-50 p-4">
-                  <p className="text-xs font-bold uppercase text-blue-700">Important</p>
-                  <p className="mt-2 text-sm text-blue-900">
+                <div className="rounded-xl border border-cyan-400/20 bg-[#0B1628] p-4">
+                  <p className="text-xs font-bold uppercase text-cyan-300">Important</p>
+                  <p className="mt-2 text-sm text-slate-300">
                     Prices are displayed in {currencies.find((c) => c.code === currency)?.name} for convenience. Final checkout may be processed in INR depending on payment method.
                   </p>
                 </div>
@@ -177,21 +177,21 @@ export default function PackageSummaryContent() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:sticky lg:top-24">
-              <div className="rounded-3xl border border-slate-200 bg-white p-6 shadow-xl">
-                <h3 className="text-lg font-bold text-[#0b1635]">Order Summary</h3>
+              <div className="rounded-3xl border border-white/10 bg-[#0A1628] p-6 shadow-2xl shadow-slate-950/40">
+                <h3 className="text-lg font-bold text-white">Order Summary</h3>
 
-                <div className="mt-6 space-y-4 border-t border-slate-200 pt-6">
+                <div className="mt-6 space-y-4 border-t border-white/10 pt-6">
                   {/* Package Line */}
                   <div className="flex justify-between">
                     <div>
-                      <p className="text-sm font-bold text-slate-700">{pkg.platform} – {pkg.service}</p>
-                      <p className="mt-1 text-xs text-slate-500">{pkg.quantityLabel} units</p>
+                      <p className="text-sm font-bold text-slate-200">{pkg.platform} – {pkg.service}</p>
+                      <p className="mt-1 text-xs text-slate-400">{pkg.quantityLabel} units</p>
                     </div>
-                    <p className="text-right text-lg font-extrabold text-blue-600">{formattedPrice}</p>
+                    <p className="text-right text-lg font-extrabold text-cyan-300">{formattedPrice}</p>
                   </div>
 
                   {currency !== "INR" && (
-                    <div className="flex justify-between text-xs text-slate-500">
+                    <div className="flex justify-between text-xs text-slate-400">
                       <span>Base price (INR):</span>
                       <span>{basePrice}</span>
                     </div>
@@ -199,18 +199,18 @@ export default function PackageSummaryContent() {
                 </div>
 
                 {/* Total */}
-                <div className="mt-6 border-t border-slate-200 pt-6">
+                <div className="mt-6 border-t border-white/10 pt-6">
                   <div className="flex justify-between">
-                    <p className="text-sm font-bold text-slate-700">Total Amount</p>
-                    <p className="text-2xl font-extrabold text-blue-600">{formattedPrice}</p>
+                    <p className="text-sm font-bold text-slate-200">Total Amount</p>
+                    <p className="text-2xl font-extrabold text-cyan-300">{formattedPrice}</p>
                   </div>
                 </div>
 
                 {/* Wallet Balance Note */}
                 {lowWalletBalance && (
-                  <div className="mt-6 rounded-lg border border-amber-200 bg-amber-50 p-3">
-                    <p className="text-xs font-bold text-amber-700">Low Wallet Balance</p>
-                    <p className="mt-1 text-xs text-amber-900">Add funds from your wallet to complete this order.</p>
+                  <div className="mt-6 rounded-lg border border-amber-400/30 bg-amber-500/10 p-3">
+                    <p className="text-xs font-bold text-amber-200">Low Wallet Balance</p>
+                    <p className="mt-1 text-xs text-amber-100/90">Add funds from your wallet to complete this order.</p>
                   </div>
                 )}
 
@@ -227,7 +227,7 @@ export default function PackageSummaryContent() {
                   {lowWalletBalance && (
                     <Link
                       href="/dashboard/wallet"
-                      className="inline-flex w-full items-center justify-center rounded-xl border border-blue-200 bg-blue-50 px-6 py-3 text-sm font-bold text-blue-700 transition hover:bg-blue-100"
+                      className="inline-flex w-full items-center justify-center rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-6 py-3 text-sm font-bold text-cyan-200 transition hover:bg-cyan-500/15"
                     >
                       Add Funds to Wallet
                     </Link>
@@ -237,16 +237,16 @@ export default function PackageSummaryContent() {
                     href={process.env.NEXT_PUBLIC_WHATSAPP_URL || "https://wa.me/918860330771"}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="inline-flex w-full items-center justify-center rounded-xl border border-emerald-200 bg-emerald-50 px-6 py-3 text-sm font-bold text-emerald-700 transition hover:bg-emerald-100"
+                    className="inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-6 py-3 text-sm font-bold text-emerald-200 transition hover:bg-emerald-500/15"
                   >
                     Chat on WhatsApp
                   </a>
                 </div>
 
                 {/* Support Badge */}
-                <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-slate-50 px-3 py-2">
+                <div className="mt-4 flex items-center justify-center gap-2 rounded-lg bg-slate-900/80 px-3 py-2">
                   <div className="h-2 w-2 rounded-full bg-emerald-500" />
-                  <p className="text-xs font-bold text-slate-600">Support Available</p>
+                  <p className="text-xs font-bold text-slate-300">Support Available</p>
                 </div>
               </div>
             </div>

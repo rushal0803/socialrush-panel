@@ -1,7 +1,7 @@
 import Link from "next/link";
 
-export function PageHeader({ title, description, action }: { title: string; description: string; action?: React.ReactNode }) {
-  return <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><h1 className="text-2xl font-bold tracking-tight text-slate-900">{title}</h1><p className="mt-1.5 text-sm text-slate-500">{description}</p></div>{action}</div>;
+export function PageHeader({ title, description, action, variant = "light" }: { title: string; description: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
+  return <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center"><div><h1 className={`text-2xl font-bold tracking-tight ${variant === "dark" ? "text-white" : "text-slate-900"}`}>{title}</h1><p className={`mt-1.5 text-sm ${variant === "dark" ? "text-slate-300" : "text-slate-500"}`}>{description}</p></div>{action}</div>;
 }
 
 export type Status = "Pending" | "Processing" | "Completed" | "Partial" | "Cancelled" | "Open" | "Answered" | "Closed";
@@ -25,6 +25,6 @@ export function EmptyAction({ href, children }: { href: string; children: React.
   return <Link href={href} className="inline-flex items-center justify-center rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-md shadow-blue-600/20 transition hover:-translate-y-0.5 hover:bg-blue-700">{children}</Link>;
 }
 
-export function SectionTitle({ title, description, action }: { title: string; description?: string; action?: React.ReactNode }) {
-  return <div className="flex items-center justify-between border-b border-slate-100 px-5 py-4 sm:px-6"><div><h2 className="text-sm font-bold text-slate-800">{title}</h2>{description && <p className="mt-1 text-xs text-slate-400">{description}</p>}</div>{action}</div>;
+export function SectionTitle({ title, description, action, variant = "light" }: { title: string; description?: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
+  return <div className={`flex items-center justify-between border-b ${variant === "dark" ? "border-slate-700" : "border-slate-100"} px-5 py-4 sm:px-6`}><div><h2 className={`text-sm font-bold ${variant === "dark" ? "text-white" : "text-slate-800"}`}>{title}</h2>{description && <p className={`mt-1 text-xs ${variant === "dark" ? "text-slate-400" : "text-slate-400"}`}>{description}</p>}</div>{action}</div>;
 }

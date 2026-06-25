@@ -2,7 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { convertCurrency, formatPrice } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -71,6 +71,7 @@ function PlatformIcon({ platform, className = "h-5 w-5" }: { platform: PlatformI
 
 export default function NewCampaignPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { currency: selectedCurrency } = usePreferredCurrency("INR");
 
   const [platform, setPlatform] = useState<PlatformId>("instagram");
@@ -118,6 +119,41 @@ export default function NewCampaignPage() {
     });
   }, []);
 
+  useEffect(() => {
+    const serviceQuery = searchParams.get("service");
+    const quantityQuery = Number(searchParams.get("quantity") || "0");
+    const linkQuery = searchParams.get("link");
+
+    const serviceMap: Record<string, string> = {
+      "instagram-followers": "ig-followers",
+      "instagram-likes": "ig-likes",
+      "instagram-views": "ig-views",
+      "youtube-subscribers": "yt-subscribers",
+      "youtube-likes": "yt-likes",
+      "youtube-views": "yt-views",
+      "facebook-followers": "fb-followers",
+      "facebook-likes": "fb-likes",
+      "facebook-views": "fb-views",
+      "twitter-followers": "x-followers",
+    };
+
+    if (serviceQuery) {
+      const mappedId = serviceMap[serviceQuery];
+      const matched = services.find((service) => service.id === mappedId);
+      if (matched) {
+        setSelectedId(matched.id);
+        setPlatform(matched.platform);
+      }
+    }
+
+    if (quantityQuery && quantityQuery >= 100) {
+      setQuantity(quantityQuery);
+    }
+    if (linkQuery) {
+      setLink(linkQuery);
+    }
+  }, [searchParams]);
+
   const visibleServices = useMemo(() => services.filter((service) => service.platform === platform), [platform]);
   const selected = services.find((service) => service.id === selectedId) ?? visibleServices[0];
   const totalINR = Math.max(0, Math.round(((selected.rate / 1000) * quantity) * 100) / 100);
@@ -157,7 +193,7 @@ export default function NewCampaignPage() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      router.replace("/login");
+      router.replace(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
       return;
     }
 

@@ -1,6 +1,6 @@
 import { createServerClient } from "@supabase/ssr";
+import { getSupabaseConfig } from "@/lib/supabase/config";
 import { NextResponse, type NextRequest } from "next/server";
-import { getSupabaseConfig } from "./config";
 
 const PUBLIC_PATHS = [
   "/",
@@ -25,6 +25,14 @@ const PUBLIC_PATHS = [
 
 const PROTECTED_ROOTS = [
   "/dashboard",
+  "/dashboard/new-order",
+  "/dashboard/services",
+  "/dashboard/orders",
+  "/dashboard/wallet",
+  "/dashboard/billing",
+  "/dashboard/support",
+  "/dashboard/account",
+  "/dashboard/settings",
   "/packages/summary",
   "/checkout",
   "/order",
@@ -43,36 +51,27 @@ function shouldProtect(pathname: string) {
   return PROTECTED_ROOTS.some((root) => pathname === root || pathname.startsWith(`${root}/`));
 }
 
-export async function updateSession(request: NextRequest) {
+export async function requireAuth(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
-  const isProtected = shouldProtect(pathname);
-  if (!isProtected) return NextResponse.next({ request });
-
-  let response = NextResponse.next({ request });
-  const { url, key } = getSupabaseConfig();
-
-  const supabase = createServerClient(
-    url,
-    key,
-    {
-      cookies: {
-        getAll: () => request.cookies.getAll(),
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request });
-          cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
-        },
-      },
-    },
-  );
-
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) {
-    const loginUrl = request.nextUrl.clone();
-    loginUrl.pathname = "/login";
-    loginUrl.search = `next=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
-    return NextResponse.redirect(loginUrl);
+  if (!shouldProtect(pathname)) {
+    return null;
   }
 
-  return response;
+  const { url, key } = getSupabaseConfig();
+  const supabase = createServerClient(url, key, {
+    cookies: {
+      getAll: () => request.cookies.getAll(),
+      setAll(cookiesToSet) {
+        cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+      },
+    },
+  });
+
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) return null;
+
+  const loginUrl = request.nextUrl.clone();
+  loginUrl.pathname = "/login";
+  loginUrl.search = `next=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
+  return NextResponse.redirect(loginUrl);
 }
