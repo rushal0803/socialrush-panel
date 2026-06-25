@@ -1,15 +1,64 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import { AdminPageHeader, AdminStatus } from "@/components/admin/AdminUI";
-
-const money = (value: number | string) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(Number(value));
+import AdminOverviewContent from "@/components/admin/AdminOverviewContent";
 
 export default async function AdminDashboardPage() {
   const supabase = await createClient();
-  const [{ count: users }, { count: orders }, { count: pending }, { data: charges }, { data: recentUsers }, { data: transactions }] = await Promise.all([
-    supabase.from("profiles").select("id", { count: "exact", head: true }), supabase.from("orders").select("id", { count: "exact", head: true }), supabase.from("orders").select("id", { count: "exact", head: true }).in("status", ["pending", "processing"]), supabase.from("orders").select("charge").eq("status", "completed"), supabase.from("profiles").select("id, email, full_name, role, created_at").order("created_at", { ascending: false }).limit(5), supabase.from("transactions").select("id, amount, type, status, created_at, profiles(email, full_name)").order("created_at", { ascending: false }).limit(5),
+
+  const [
+    { count: totalUsers },
+    { count: pendingOrders },
+    { count: completedOrders },
+    { count: paymentRequests },
+    { data: completedCharges },
+    { data: users },
+    { data: transactions },
+  ] = await Promise.all([
+    supabase.from("profiles").select("id", { count: "exact", head: true }),
+    supabase.from("orders").select("id", { count: "exact", head: true }).in("status", ["pending", "processing", "in_progress"]),
+    supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "completed"),
+    supabase.from("transactions").select("id", { count: "exact", head: true }).eq("type", "credit").eq("status", "pending"),
+    supabase.from("orders").select("charge").eq("status", "completed"),
+    supabase.from("profiles").select("id, full_name, email, role, created_at").order("created_at", { ascending: false }).limit(6),
+    supabase
+      .from("transactions")
+      .select("id, amount, type, status, created_at, profiles(full_name, email)")
+      .order("created_at", { ascending: false })
+      .limit(6),
   ]);
-  const revenue = (charges ?? []).reduce((sum, item) => sum + Number(item.charge), 0);
-  const stats = [["Total users", users ?? 0, "Registered accounts", "bg-blue-600"], ["Total orders", orders ?? 0, "All-time orders", "bg-[#0a1b3d]"], ["Total revenue", money(revenue), "Completed order value", "bg-emerald-500"], ["Pending orders", pending ?? 0, "Requires monitoring", "bg-amber-500"]];
-  return <main className="mx-auto max-w-[1600px] p-5 sm:p-8"><AdminPageHeader title="Admin overview" description="Monitor platform activity, revenue, users, and operations." action={<Link href="/admin/orders" className="rounded-xl bg-blue-600 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-blue-600/20">Manage orders</Link>}/><section className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map(([label,value,note,color]) => <article key={String(label)} className="panel-card p-5 transition hover:-translate-y-0.5 hover:shadow-lg"><div className="flex justify-between"><div><p className="text-xs font-medium text-slate-500">{label}</p><p className="mt-2 text-2xl font-bold text-[#0a1733]">{value}</p></div><span className={`h-10 w-2 rounded-full ${color}`}/></div><p className="mt-4 text-[11px] text-slate-400">{note}</p></article>)}</section><div className="mt-6 grid gap-6 xl:grid-cols-2"><section className="panel-card overflow-hidden"><div className="flex items-center justify-between border-b border-slate-100 px-6 py-5"><div><h2 className="text-sm font-bold">Recent users</h2><p className="mt-1 text-xs text-slate-400">Latest registrations</p></div><Link href="/admin/users" className="text-xs font-semibold text-blue-600">View all →</Link></div><div className="divide-y divide-slate-100">{(recentUsers ?? []).map((user) => <div key={user.id} className="flex items-center gap-3 px-6 py-4"><span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-[10px] font-bold text-blue-600">{(user.full_name || user.email).slice(0,2).toUpperCase()}</span><div className="min-w-0 flex-1"><p className="truncate text-xs font-semibold">{user.full_name || "New user"}</p><p className="mt-1 truncate text-[10px] text-slate-400">{user.email}</p></div><span className={`rounded-full px-2 py-1 text-[9px] font-bold capitalize ${user.role === "admin" ? "bg-violet-50 text-violet-700" : "bg-slate-100 text-slate-600"}`}>{user.role}</span></div>)}{!recentUsers?.length && <p className="p-10 text-center text-xs text-slate-400">No users found.</p>}</div></section><section className="panel-card overflow-hidden"><div className="flex items-center justify-between border-b border-slate-100 px-6 py-5"><div><h2 className="text-sm font-bold">Recent transactions</h2><p className="mt-1 text-xs text-slate-400">Latest wallet activity</p></div><Link href="/admin/transactions" className="text-xs font-semibold text-blue-600">View all →</Link></div><div className="divide-y divide-slate-100">{(transactions ?? []).map((item) => { const profile = item.profiles as unknown as { full_name?: string; email?: string } | null; return <div key={item.id} className="flex items-center gap-3 px-6 py-4"><span className={`grid h-9 w-9 place-items-center rounded-xl text-sm font-bold ${item.type === "credit" ? "bg-emerald-50 text-emerald-600" : "bg-rose-50 text-rose-600"}`}>{item.type === "credit" ? "+" : "-"}</span><div className="min-w-0 flex-1"><p className="truncate text-xs font-semibold">{profile?.full_name || profile?.email || "User"}</p><p className="mt-1 text-[10px] text-slate-400">{new Date(item.created_at).toLocaleDateString("en-IN")}</p></div><p className="text-xs font-bold">{money(item.amount)}</p><AdminStatus value={item.status}/></div>; })}{!transactions?.length && <p className="p-10 text-center text-xs text-slate-400">No transactions found.</p>}</div></section></div></main>;
+
+  const totalRevenue = (completedCharges ?? []).reduce((sum, item) => sum + Number(item.charge ?? 0), 0);
+
+  const recentUsers = (users ?? []).map((item) => ({
+    id: item.id,
+    fullName: item.full_name || "New user",
+    email: item.email || "",
+    role: item.role || "user",
+    createdAt: item.created_at,
+  }));
+
+  const recentTransactions = (transactions ?? []).map((item) => {
+    const profile = item.profiles as unknown as { full_name?: string; email?: string } | null;
+    return {
+      id: item.id,
+      amount: Number(item.amount ?? 0),
+      type: item.type || "credit",
+      status: item.status || "pending",
+      userName: profile?.full_name || profile?.email || "Unknown user",
+      createdAt: item.created_at,
+    };
+  });
+
+  return (
+    <AdminOverviewContent
+      stats={{
+        totalUsers: totalUsers ?? 0,
+        totalRevenue,
+        pendingOrders: pendingOrders ?? 0,
+        completedOrders: completedOrders ?? 0,
+        paymentRequests: paymentRequests ?? 0,
+      }}
+      recentUsers={recentUsers}
+      recentTransactions={recentTransactions}
+    />
+  );
 }

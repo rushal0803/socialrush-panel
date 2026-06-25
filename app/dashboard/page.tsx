@@ -1,19 +1,107 @@
-import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import CurrencyAmount from "@/components/currency/CurrencyAmount";
-import { EmptyAction, PageHeader, SectionTitle, StatusBadge, type Status } from "@/components/dashboard/Ui";
-
-const titleCase = (value: string) => `${value.charAt(0).toUpperCase()}${value.slice(1)}`;
+import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
 
 export default async function DashboardPage() {
   const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  const [{ data: profile }, { data: campaigns }, { data: activity }, { count: total }, { count: completed }, { count: active }] = await Promise.all([
-    supabase.from("profiles").select("balance, full_name").eq("id", user!.id).single(),
-    supabase.from("orders").select("id, service_name, platform, package_name, charge, status, services(name)").order("created_at", { ascending: false }).limit(5),
-    supabase.from("transactions").select("id, amount, type, created_at").order("created_at", { ascending: false }).limit(4),
-    supabase.from("orders").select("id", { count: "exact", head: true }), supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "completed"), supabase.from("orders").select("id", { count: "exact", head: true }).in("status", ["pending", "processing"]),
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const userId = user?.id;
+
+  const [
+    { data: profile },
+    { data: orderRows },
+    { data: transactionRows },
+    { count: totalOrdersCount },
+    { count: completedOrdersCount },
+    { count: activeOrdersCount },
+    { count: supportTicketsCount },
+  ] = await Promise.all([
+    supabase.from("profiles").select("balance, full_name").eq("id", userId!).maybeSingle(),
+    supabase
+      .from("orders")
+      .select("id, service_name, quantity, status, charge, created_at")
+      .eq("user_id", userId!)
+      .order("created_at", { ascending: false })
+      .limit(6),
+    supabase
+      .from("transactions")
+      .select("id, amount, type, status, payment_method, created_at")
+      .eq("user_id", userId!)
+      .order("created_at", { ascending: false })
+      .limit(5),
+    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId!),
+    supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId!)
+      .eq("status", "completed"),
+    supabase
+      .from("orders")
+      .select("id", { count: "exact", head: true })
+      .eq("user_id", userId!)
+      .in("status", ["pending", "processing", "in_progress"]),
+    supabase.from("support_tickets").select("id", { count: "exact", head: true }).eq("user_id", userId!),
   ]);
-  const stats = [["Campaign wallet", <CurrencyAmount amountINR={Number(profile?.balance ?? 0)} />, "Available marketing budget", "bg-blue-600"], ["Total campaigns", total ?? 0, "All-time programs", "bg-[#0b1e42]"], ["Completed", completed ?? 0, "Successfully delivered", "bg-emerald-500"], ["Active", active ?? 0, "Currently in progress", "bg-amber-500"]];
-  return <main className="mx-auto max-w-[1600px] p-5 sm:p-8"><PageHeader title="Growth dashboard" description={`Welcome back${profile?.full_name ? `, ${profile.full_name.split(" ")[0]}` : ""}. Track campaigns, investments, and performance.`} action={<EmptyAction href="/dashboard/new-campaign">+ Launch campaign</EmptyAction>}/><section className="mt-7 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">{stats.map(([label,value,note,color]) => <article key={String(label)} className="panel-card p-5 transition hover:-translate-y-1 hover:shadow-lg"><div className="flex justify-between"><div><p className="text-xs text-slate-500">{label}</p><p className="mt-2 text-2xl font-bold">{value}</p></div><span className={`h-10 w-2 rounded-full ${color}`}/></div><p className="mt-4 text-xs text-slate-400">{note}</p></article>)}</section><section className="mt-6 grid gap-4 sm:grid-cols-3"><Link href="/dashboard/new-campaign" className="rounded-2xl bg-blue-600 p-5 text-white shadow-lg shadow-blue-600/15"><p className="font-semibold">Launch growth campaign</p><p className="mt-1 text-xs text-blue-100">Select a professional package</p></Link><Link href="/dashboard/wallet" className="rounded-2xl bg-[#0b1e42] p-5 text-white"><p className="font-semibold">Fund campaign wallet</p><p className="mt-1 text-xs text-slate-400">Manage marketing investment</p></Link><Link href="/dashboard/api-docs" className="panel-card p-5"><p className="font-semibold">Automate workflows</p><p className="mt-1 text-xs text-slate-400">Connect through the campaign API</p></Link></section><div className="mt-6 grid gap-6 2xl:grid-cols-[1.35fr_1fr]"><section className="panel-card overflow-hidden"><SectionTitle title="Recent campaigns" description="Your latest growth programs"/><div className="overflow-x-auto"><table className="w-full min-w-[620px] text-left text-xs"><thead className="bg-slate-50 text-[10px] uppercase text-slate-400"><tr><th className="px-6 py-3">Campaign</th><th className="px-4 py-3">Objective</th><th className="px-4 py-3">Package</th><th className="px-4 py-3">Investment</th><th className="px-6 py-3">Status</th></tr></thead><tbody className="divide-y divide-slate-100">{(campaigns ?? []).map((item) => <tr key={item.id}><td className="px-6 py-4 font-bold text-blue-600">#{item.id.slice(0,8).toUpperCase()}</td><td className="px-4 py-4 font-semibold">{item.service_name || (item.services as unknown as { name?: string } | null)?.name || "Growth campaign"}</td><td className="px-4 py-4 font-semibold capitalize text-blue-600">{item.platform || item.package_name || "Standard"}</td><td className="px-4 py-4 font-bold"><CurrencyAmount amountINR={Number(item.charge)} /></td><td className="px-6 py-4"><StatusBadge status={titleCase(item.status) as Status}/></td></tr>)}{!campaigns?.length && <tr><td colSpan={5} className="p-12 text-center text-slate-400">Launch your first campaign to begin.</td></tr>}</tbody></table></div></section><section className="panel-card overflow-hidden"><SectionTitle title="Investment activity" description="Recent campaign wallet movements"/><div className="divide-y divide-slate-100">{(activity ?? []).map((item) => <div key={item.id} className="flex items-center gap-3 px-6 py-4"><span className={`grid h-9 w-9 place-items-center rounded-xl font-bold ${item.type === "debit" ? "bg-rose-50 text-rose-600" : "bg-emerald-50 text-emerald-600"}`}>{item.type === "debit" ? "-" : "+"}</span><div className="flex-1"><p className="text-xs font-semibold">{item.type === "debit" ? "Campaign investment" : item.type === "refund" ? "Investment returned" : "Wallet funded"}</p><p className="mt-1 text-[10px] text-slate-400">{new Date(item.created_at).toLocaleDateString("en-IN")}</p></div><p className="text-xs font-bold"><CurrencyAmount amountINR={Number(item.amount)} /></p></div>)}</div></section></div></main>;
+
+  const orders = (orderRows ?? []).map((item) => ({
+    id: item.id,
+    serviceName: item.service_name || "Growth service",
+    quantity: Number(item.quantity ?? 0),
+    status: item.status || "pending",
+    price: Number(item.charge ?? 0),
+    createdAt: item.created_at,
+  }));
+
+  const transactions = (transactionRows ?? []).map((item) => ({
+    id: item.id,
+    amount: Number(item.amount ?? 0),
+    type: item.type || "credit",
+    status: item.status || "pending",
+    paymentMethod: item.payment_method || "wallet",
+    createdAt: item.created_at,
+  }));
+
+  const totalSpend = transactions
+    .filter((item) => item.type === "debit" && item.status === "completed")
+    .reduce((sum, item) => sum + item.amount, 0);
+
+  const monthlySpendMap = new Map<string, number>();
+  for (const item of transactions.filter((entry) => entry.type === "debit")) {
+    const label = new Date(item.createdAt).toLocaleDateString("en-IN", { month: "short" });
+    monthlySpendMap.set(label, (monthlySpendMap.get(label) ?? 0) + item.amount);
+  }
+
+  const monthlySpend = Array.from(monthlySpendMap.entries())
+    .slice(-4)
+    .map(([month, value]) => ({ month, value }));
+
+  const serviceCounter = new Map<string, number>();
+  for (const order of orders) {
+    serviceCounter.set(order.serviceName, (serviceCounter.get(order.serviceName) ?? 0) + 1);
+  }
+
+  const serviceUsage = Array.from(serviceCounter.entries())
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name, count]) => ({ name, count }));
+
+  return (
+    <DashboardOverviewContent
+      userName={profile?.full_name?.split(" ")[0] || "Client"}
+      stats={{
+        totalOrders: totalOrdersCount ?? 0,
+        activeOrders: activeOrdersCount ?? 0,
+        completedOrders: completedOrdersCount ?? 0,
+        walletBalance: Number(profile?.balance ?? 0),
+        totalSpend,
+        supportTickets: supportTicketsCount ?? 0,
+      }}
+      transactions={transactions}
+      orders={orders}
+      monthlySpend={monthlySpend.length ? monthlySpend : [{ month: "This month", value: 0 }]}
+      serviceUsage={serviceUsage.length ? serviceUsage : [{ name: "No campaign data", count: 0 }]}
+    />
+  );
 }

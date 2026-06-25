@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
+import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { logout } from "@/app/auth/actions";
 import { createClient } from "@/lib/supabase/client";
@@ -77,9 +78,25 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
       {dashboardLinks.map((item) => {
         const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
         return (
-          <Link key={item.href} href={item.href} onClick={onNavigate} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition-all ${active ? "bg-blue-600 text-white shadow-md shadow-blue-600/20" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}>
-            <NavIcon name={item.icon} />
-            {item.label}
+          <Link
+            key={item.href}
+            href={item.href}
+            onClick={onNavigate}
+            className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+              active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
+            }`}
+          >
+            {active && (
+              <motion.span
+                layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"}
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] shadow-[0_12px_26px_rgba(117,109,255,.35)]"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            <span className="relative z-10">
+              <NavIcon name={item.icon} />
+            </span>
+            <span className="relative z-10">{item.label}</span>
           </Link>
         );
       })}
@@ -143,28 +160,37 @@ export default function Sidebar() {
   }, [pathname]);
 
   return (
-    <aside className="hidden h-screen w-64 shrink-0 flex-col bg-[#08152f] px-4 py-6 lg:sticky lg:top-0 lg:flex">
+    <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
-        <Logo light />
+        <Logo />
       </div>
-      <p className="mb-3 mt-9 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-slate-600">Main menu</p>
+
+      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(85,113,175,.12)]">
+        <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#4f6daa]">Dashboard</p>
+        <p className="mt-1 text-xs font-semibold text-[#1e3d77]">Growth control center</p>
+      </div>
+
+      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f85b0]">Main menu</p>
       <NavLinks />
-      <div className="mt-auto rounded-2xl border border-white/10 bg-white/5 p-4 text-white">
+
+      <div className="mt-auto rounded-2xl border border-white/85 bg-white/86 p-4 text-[#1f3a72] shadow-[0_14px_30px_rgba(81,108,168,.14)]">
         <div className="flex items-center justify-between">
-          <p className="text-xs text-slate-400">Available balance</p>
+          <p className="text-xs font-semibold text-[#6b82af]">Available balance</p>
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
         </div>
         {balance === null ? (
-          <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-white/10" />
+          <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-[#e2ebff]" />
         ) : (
-          <p className="mt-2 text-2xl font-bold">{formatCurrency(balance, currency)}</p>
+          <p className="mt-2 text-2xl font-black text-[#16346c]">{formatCurrency(balance, currency)}</p>
         )}
-        <Link href="/dashboard/wallet" className="mt-4 block w-full rounded-lg bg-blue-600 py-2.5 text-center text-xs font-bold transition hover:bg-blue-500">
+
+        <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex w-full justify-center py-2.5 text-xs">
           Add funds
         </Link>
       </div>
+
       <form action={logout} className="mt-4">
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-500 hover:bg-white/5 hover:text-white">
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#5e77a6] hover:bg-white/70 hover:text-[#1f3b75]">
           <span>↪</span> Log out
         </button>
       </form>

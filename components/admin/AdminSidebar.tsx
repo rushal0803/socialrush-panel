@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion } from "framer-motion";
 import Logo from "@/components/Logo";
 import { logout } from "@/app/auth/actions";
 
@@ -24,9 +25,61 @@ function NavIcon({ name }: { name: string }) {
 
 export function AdminNav({ mobile = false }: { mobile?: boolean }) {
   const pathname = usePathname();
-  return <nav className={mobile ? "grid gap-1" : "space-y-1"}>{links.map(([label, href, icon]) => { const active = href === "/admin" ? pathname === href : pathname.startsWith(href); return <Link key={href} href={href} className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium transition ${active ? "bg-blue-600 text-white shadow-lg shadow-blue-950/20" : "text-slate-400 hover:bg-white/5 hover:text-white"}`}><NavIcon name={icon}/>{label}</Link>; })}</nav>;
+  return (
+    <nav className={mobile ? "grid gap-1" : "space-y-1"}>
+      {links.map(([label, href, icon]) => {
+        const active = href === "/admin" ? pathname === href : pathname.startsWith(href);
+        return (
+          <Link
+            key={href}
+            href={href}
+            className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
+              active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
+            }`}
+          >
+            {active && (
+              <motion.span
+                layoutId={mobile ? "mobile-admin-active" : "admin-active"}
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] shadow-[0_12px_26px_rgba(117,109,255,.35)]"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            <span className="relative z-10">
+              <NavIcon name={icon} />
+            </span>
+            <span className="relative z-10">{label}</span>
+          </Link>
+        );
+      })}
+    </nav>
+  );
 }
 
 export default function AdminSidebar() {
-  return <aside className="hidden h-screen w-64 shrink-0 flex-col bg-[#06142f] px-4 py-6 lg:sticky lg:top-0 lg:flex"><div className="px-2"><Logo light /></div><div className="mx-2 mt-6 rounded-xl border border-blue-400/20 bg-blue-500/10 px-3 py-2"><p className="text-[9px] font-bold uppercase tracking-[.18em] text-blue-400">Administration</p><p className="mt-1 text-xs text-slate-300">Control center</p></div><p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-slate-600">Management</p><AdminNav/><div className="mt-auto"><Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-500 hover:bg-white/5 hover:text-white">← Customer dashboard</Link><form action={logout}><button className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-medium text-slate-500 hover:bg-white/5 hover:text-white">↪ Sign out</button></form></div></aside>;
+  return (
+    <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
+      <div className="px-2">
+        <Logo />
+      </div>
+
+      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(85,113,175,.12)]">
+        <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#4f6daa]">Administration</p>
+        <p className="mt-1 text-xs font-semibold text-[#1f3d77]">Control center</p>
+      </div>
+
+      <p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#6f85b0]">Management</p>
+      <AdminNav />
+
+      <div className="mt-auto">
+        <Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#5e77a6] hover:bg-white/70 hover:text-[#1f3b75]">
+          ← Customer dashboard
+        </Link>
+        <form action={logout}>
+          <button className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#5e77a6] hover:bg-white/70 hover:text-[#1f3b75]">
+            ↪ Sign out
+          </button>
+        </form>
+      </div>
+    </aside>
+  );
 }

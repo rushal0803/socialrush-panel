@@ -1,22 +1,12 @@
 import type { Metadata } from "next";
-import Link from "next/link";
-import MarketingIcon from "@/components/marketing/MarketingIcon";
-import PageHero from "@/components/marketing/PageHero";
-import PublicShell from "@/components/marketing/PublicShell";
+import BlogPageContent from "@/components/marketing/blog/BlogPageContent";
 
-export const metadata: Metadata = { title: "Social Media Growth Guides", description: "Practical SocialRUSH guides about Instagram, YouTube, LinkedIn, TikTok, service selection, wallet checkout, tracking, safety, and refill support." };
-const posts = [
-  ["Instagram", "How to prepare your Instagram profile before a growth campaign", "A checklist covering profile clarity, public access, content consistency, and the correct campaign link."],
-  ["YouTube", "Subscribers, likes, or views: choosing the right YouTube service", "Understand how each service supports channel presentation, content visibility, or public engagement."],
-  ["LinkedIn", "Building professional visibility with a clearer profile strategy", "Prepare your public profile and choose between follower and post engagement campaigns."],
-  ["TikTok", "How to structure a TikTok visibility campaign", "Match follower, like, and view services to the public content you want to support."],
-  ["Safety", "Why SocialRUSH never asks for your social media password", "Learn why public-link ordering is enough and how wallet checkout keeps campaign activity organized."],
-  ["Tracking", "Understanding pending, processing, and completed statuses", "A plain-language guide to the campaign status updates shown in your order history."],
-];
+export const metadata: Metadata = {
+  title: "SocialRUSH Blog | Growth Insights & Strategies",
+  description:
+    "SocialRUSH resource hub with practical social growth insights, campaign strategies, and platform-specific tips for creators, brands, and agencies.",
+};
 
 export default function BlogPage() {
-  return <PublicShell><PageHero eyebrow="SocialRUSH learning hub" title="Practical guidance for smarter campaign decisions." description="Explore platform preparation, service selection, public-link safety, order tracking, and refill guidance without exaggerated growth promises." />
-    <section className="px-5 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["Instagram", "Profile and content growth"], ["YouTube", "Channel and video visibility"], ["Professional", "LinkedIn and business profiles"], ["Campaign help", "Safety, tracking, and refills"]].map(([title, text], index) => <article key={title} className="rounded-2xl border border-slate-200 bg-white p-5"><span className="grid h-9 w-9 place-items-center rounded-xl bg-blue-50 text-[10px] font-black text-blue-600">0{index + 1}</span><h2 className="mt-4 text-sm font-bold text-[#07152f]">{title}</h2><p className="mt-1 text-[10px] leading-5 text-slate-500">{text}</p></article>)}</div></section>
-    <section className="bg-[#f6f9ff] px-5 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="grid gap-6 lg:grid-cols-[1.15fr_.85fr]"><article className="relative overflow-hidden rounded-[32px] bg-[#07152f] p-7 text-white sm:p-10"><div className="absolute -right-20 -top-20 h-64 w-64 rounded-full bg-blue-500/20 blur-3xl" /><span className="relative grid h-12 w-12 place-items-center rounded-xl bg-white/10 text-blue-300"><MarketingIcon name="sparkles" className="h-6 w-6" /></span><p className="relative mt-8 text-xs font-bold uppercase tracking-[.18em] text-blue-300">Featured guide</p><h2 className="relative mt-4 max-w-xl text-3xl font-bold leading-tight">Choosing the right service for your actual campaign goal</h2><p className="relative mt-4 max-w-xl text-sm leading-7 text-slate-300">Learn when followers, likes, views, or subscribers make sense—and why the correct public destination matters before checkout.</p><Link href="/faq" className="relative mt-7 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-5 py-3 text-xs font-bold text-[#07152f]">Read buyer guidance <MarketingIcon name="arrow" className="h-4 w-4" /></Link></article><aside className="rounded-[32px] border border-blue-100 bg-blue-50 p-7"><MarketingIcon name="shield" className="h-8 w-8 text-blue-600" /><h2 className="mt-5 text-xl font-bold text-[#07152f]">Campaign basics</h2><div className="mt-5 space-y-3">{["Use the exact public destination", "Never share account passwords", "Review rate and quantity", "Check refill eligibility", "Track status in your dashboard"].map((item) => <div key={item} className="flex gap-3 rounded-xl bg-white p-3 text-xs font-semibold text-slate-600"><MarketingIcon name="check" className="h-4 w-4 shrink-0 text-emerald-600" />{item}</div>)}</div></aside></div><div className="mt-8 grid gap-6 md:grid-cols-2 lg:grid-cols-3">{posts.map(([tag, title, text]) => <article key={title} className="group rounded-3xl border border-white bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-xl"><div className="flex items-center justify-between"><p className="text-[10px] font-bold uppercase tracking-wider text-blue-600">{tag}</p><MarketingIcon name="arrow" className="h-4 w-4 text-slate-300 transition group-hover:translate-x-1 group-hover:text-blue-600" /></div><h2 className="mt-4 text-xl font-bold leading-7 text-[#07152f]">{title}</h2><p className="mt-3 text-sm leading-7 text-slate-500">{text}</p><Link href="/faq" className="mt-6 inline-flex min-h-11 items-center text-xs font-bold text-blue-600">Explore the topic</Link></article>)}</div></div></section>
-  </PublicShell>;
+  return <BlogPageContent />;
 }
