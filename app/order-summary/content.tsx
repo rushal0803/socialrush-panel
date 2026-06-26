@@ -12,6 +12,11 @@ import { formatCurrency } from "@/lib/currency";
 export const dynamic = "force-dynamic";
 const quantityOptions = [1000, 5000, 10000];
 
+type ServiceDetails = {
+  delivery?: string;
+  refill?: string;
+};
+
 function parseRate(price: string) {
   const digits = price.match(/\d[\d,]*/);
   if (!digits) return 0;
@@ -35,7 +40,6 @@ export default function OrderSummaryPage() {
 
   useEffect(() => {
     if (!service) return;
-    const platform = service.platform;
     const match = agencyServices.find((item) => item.slug === serviceSlug);
     if (match) {
       setQuantity(1000);
@@ -119,11 +123,11 @@ export default function OrderSummaryPage() {
                   </div>
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Delivery</span>
-                    <span className="font-semibold text-white">{(service as any).delivery ?? "1–7 days"}</span>
+                    <span className="font-semibold text-white">{(service as ServiceDetails).delivery ?? "1–7 days"}</span>
                   </div>
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Refill support</span>
-                    <span className="font-semibold text-white">{(service as any).refill ?? "Available"}</span>
+                    <span className="font-semibold text-white">{(service as ServiceDetails).refill ?? "Available"}</span>
                   </div>
                 </div>
               </div>

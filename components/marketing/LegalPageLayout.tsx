@@ -4,9 +4,17 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import type { PolicySection } from "./PolicyPage";
 
-type PolicyPageContentProps = {
+type TocItem = {
+  id: string;
+  label: string;
+};
+
+type LegalPageLayoutProps = {
   title: string;
-  summary: string;
+  subtitle: string;
+  badge: string;
+  breadcrumbLabel: string;
+  tableOfContentsItems: TocItem[];
   sections: PolicySection[];
 };
 
@@ -21,9 +29,16 @@ function isImportantSection(title: string) {
   return /(liability|refund|dispute|retention|security|billing|payment|wallet|cancellations)/i.test(title);
 }
 
-export default function PolicyPageContent({ title, summary, sections }: PolicyPageContentProps) {
+export default function LegalPageLayout({
+  title,
+  subtitle,
+  badge,
+  breadcrumbLabel,
+  tableOfContentsItems,
+  sections,
+}: LegalPageLayoutProps) {
   return (
-    <div className="relative overflow-x-clip pb-20 pt-8 sm:pb-24 lg:pt-10">
+    <div className="relative overflow-x-clip bg-[radial-gradient(circle_at_18%_18%,rgba(121,177,255,.16),transparent_38%),radial-gradient(circle_at_84%_12%,rgba(255,147,214,.17),transparent_42%),radial-gradient(circle_at_52%_84%,rgba(111,224,255,.15),transparent_45%)] pb-20 pt-8 sm:pb-24 lg:pt-10">
       <div className="pointer-events-none absolute inset-0">
         <motion.div
           aria-hidden
@@ -58,36 +73,35 @@ export default function PolicyPageContent({ title, summary, sections }: PolicyPa
               Home
             </Link>
             <span>/</span>
-            <span className="text-[#2d4f90]">{title}</span>
+            <span className="text-[#2d4f90]">{breadcrumbLabel}</span>
           </motion.nav>
 
           <motion.div
             initial={{ opacity: 0, y: 14 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.45 }}
-            className="rounded-[2rem] border border-white/80 bg-white/72 p-6 shadow-[0_28px_64px_-34px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:p-8"
+            className="relative overflow-hidden rounded-[2rem] border border-white/80 bg-white/72 p-6 shadow-[0_28px_64px_-34px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:p-8"
           >
+            <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(135deg,rgba(255,255,255,.22),rgba(255,255,255,0)_42%,rgba(121,177,255,.14)_78%,rgba(255,147,214,.1))]" />
             <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-start">
               <div>
                 <span className="inline-flex rounded-full border border-white/85 bg-white/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.16em] text-[#48649e] shadow-sm">
-                  SocialRUSH policy center
+                  {badge}
                 </span>
                 <h1 className="mt-5 text-4xl font-black leading-tight tracking-[-0.03em] text-[#102858] sm:text-5xl">
                   {title}
                 </h1>
-                <p className="mt-4 max-w-3xl text-sm leading-8 text-[#4d6796] sm:text-base">
-                  {summary || "Please review the following information carefully to understand our policies and service terms."}
-                </p>
+                <p className="mt-4 max-w-3xl text-sm leading-8 text-[#4d6796] sm:text-base">{subtitle}</p>
                 <div className="mt-6 flex flex-wrap gap-3">
                   <Link
                     href="/"
-                    className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d6e3ff] bg-white/90 px-5 py-2 text-sm font-bold text-[#1f3b75] shadow-[0_10px_24px_rgba(82,111,171,.12)] transition hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white/90 px-5 py-2 text-sm font-bold text-[#1f3b75] shadow-[0_10px_24px_rgba(82,111,171,.12)] transition hover:-translate-y-0.5 sm:w-auto"
                   >
                     Back to Home
                   </Link>
                   <Link
                     href="/contact"
-                    className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2 text-sm font-bold text-white shadow-[0_14px_30px_rgba(117,109,255,.35)] transition hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2 text-sm font-bold text-white shadow-[0_14px_30px_rgba(117,109,255,.35)] transition hover:-translate-y-0.5 sm:w-auto"
                   >
                     Contact Support
                   </Link>
@@ -136,13 +150,13 @@ export default function PolicyPageContent({ title, summary, sections }: PolicyPa
             <details className="rounded-2xl border border-white/80 bg-white/80 p-4 shadow-[0_18px_44px_-30px_rgba(15,23,42,.38)] backdrop-blur-xl lg:hidden">
               <summary className="cursor-pointer list-none text-sm font-black text-[#17366f]">On this page</summary>
               <nav className="mt-3 space-y-2">
-                {sections.map((section, index) => (
+                {tableOfContentsItems.map((item, index) => (
                   <a
-                    key={section.title}
-                    href={`#section-${index + 1}`}
+                    key={item.id}
+                    href={`#${item.id}`}
                     className="block rounded-lg px-2 py-1.5 text-xs leading-5 text-[#6079ab] transition hover:bg-[#f4f8ff] hover:text-[#1f3d77]"
                   >
-                    {index + 1}. {section.title}
+                    {index + 1}. {item.label}
                   </a>
                 ))}
               </nav>
@@ -151,13 +165,13 @@ export default function PolicyPageContent({ title, summary, sections }: PolicyPa
             <div className="hidden rounded-2xl border border-white/80 bg-white/80 p-5 shadow-[0_18px_44px_-30px_rgba(15,23,42,.38)] backdrop-blur-xl lg:block lg:sticky lg:top-28">
               <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5b76aa]">On this page</p>
               <nav className="mt-4 space-y-2">
-                {sections.map((section, index) => (
+                {tableOfContentsItems.map((item, index) => (
                   <a
-                    key={section.title}
-                    href={`#section-${index + 1}`}
+                    key={item.id}
+                    href={`#${item.id}`}
                     className="block rounded-lg px-2 py-1.5 text-xs leading-5 text-[#6079ab] transition hover:bg-[#f4f8ff] hover:text-[#1f3d77]"
                   >
-                    {index + 1}. {section.title}
+                    {index + 1}. {item.label}
                   </a>
                 ))}
               </nav>
@@ -174,13 +188,15 @@ export default function PolicyPageContent({ title, summary, sections }: PolicyPa
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true, amount: 0.1 }}
             transition={{ duration: 0.45 }}
-            className="rounded-[2rem] border border-white/85 bg-white/90 p-6 shadow-[0_24px_60px_-36px_rgba(15,23,42,.42)] backdrop-blur-xl sm:p-8 lg:p-10"
+            className="relative overflow-hidden rounded-[2rem] border border-white/85 bg-white/90 p-6 shadow-[0_24px_60px_-36px_rgba(15,23,42,.42)] backdrop-blur-xl sm:p-8 lg:p-10"
           >
+            <div className="pointer-events-none absolute inset-0 rounded-[2rem] bg-[linear-gradient(140deg,rgba(255,255,255,.36),rgba(255,255,255,0)_36%,rgba(110,205,255,.08)_73%,rgba(255,120,188,.08))]" />
             {sections.map((section, index) => {
               const important = isImportantSection(section.title);
+              const sectionId = tableOfContentsItems[index]?.id || `section-${index + 1}`;
               return (
                 <motion.section
-                  id={`section-${index + 1}`}
+                  id={sectionId}
                   key={section.title}
                   initial={{ opacity: 0, y: 12 }}
                   whileInView={{ opacity: 1, y: 0 }}
@@ -188,9 +204,12 @@ export default function PolicyPageContent({ title, summary, sections }: PolicyPa
                   transition={{ duration: 0.35, delay: index * 0.02 }}
                   className="scroll-mt-28 border-b border-[#e8efff] py-8 first:pt-0 last:border-0 last:pb-0"
                 >
-                  <h2 className="text-xl font-black tracking-[-0.01em] text-[#102858] sm:text-2xl">
-                    {index + 1}. {section.title}
-                  </h2>
+                  <div className="inline-flex max-w-full items-center gap-2 rounded-xl border border-[#dce8ff] bg-white/85 px-3 py-1.5 shadow-[0_10px_22px_-16px_rgba(15,23,42,.3)]">
+                    <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[#ff67b2] to-[#46c3ff]" />
+                    <h2 className="truncate text-xl font-black tracking-[-0.01em] text-[#102858] sm:text-2xl">
+                      {index + 1}. {section.title}
+                    </h2>
+                  </div>
 
                   {important ? (
                     <div className="mt-4 rounded-2xl border border-[#f2d7b7] bg-[linear-gradient(145deg,rgba(255,248,236,.95),rgba(255,255,255,.95))] px-4 py-3 text-xs font-semibold leading-6 text-[#8a6130] shadow-[0_10px_24px_-18px_rgba(138,97,48,.4)]">

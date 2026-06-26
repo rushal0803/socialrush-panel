@@ -161,7 +161,7 @@ export default function PackageSummaryContent() {
                         : "border-white/10 bg-[#0A1628] text-slate-100 focus:border-cyan-500 focus:ring-cyan-500/10"
                     }`}
                   />
-                  <p className="mt-2 text-xs text-slate-400">Make sure your link is public and correct before continuing.</p>
+                  <p className="mt-2 text-xs text-slate-400">{getProfileLinkHelper()}</p>
                   {profileError && <p className="mt-2 text-sm font-bold text-rose-300">{profileError}</p>}
                 </div>
 

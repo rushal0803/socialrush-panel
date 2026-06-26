@@ -15,4 +15,15 @@ const sections = [
   { title: "Updates and contact", body: ["We may update this policy as our platform or legal obligations change. Privacy questions may be sent to support@socialrush.in."] },
 ];
 
-export default function PrivacyPolicyPage() { return <PolicyPage title="Privacy Policy" summary="How SocialRUSH handles account, campaign, support, transaction, and technical information." sections={sections} />; }
+export default function PrivacyPolicyPage() {
+  return (
+    <PolicyPage
+      title="Privacy Policy"
+      subtitle="How SocialRUSH handles account, campaign, support, transaction, and technical information."
+      badge="SocialRUSH policy center"
+      breadcrumbLabel="Privacy Policy"
+      tone="light3d"
+      sections={sections}
+    />
+  );
+}

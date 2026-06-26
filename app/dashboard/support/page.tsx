@@ -229,7 +229,7 @@ export default function SupportPage() {
               </motion.article>
             );
 
-            if (card.href) {
+            if ("href" in card && card.href) {
               return (
                 <Link key={card.title} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noreferrer" : undefined}>
                   {cardContent}

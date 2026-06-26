@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import PolicyPage from "@/components/marketing/PolicyPage";
+import RefundPolicyView from "@/components/marketing/RefundPolicyPage";
 
 export const metadata: Metadata = { title: "Refund Policy", description: "SocialRUSH refund rules for wallet payments, duplicate charges, campaign orders, partial delivery, and payment errors." };
 
@@ -15,4 +15,14 @@ const sections = [
   { title: "Disputes", body: ["Please contact support before initiating a payment dispute so we can investigate. Fraudulent or abusive disputes may result in account restrictions and submission of relevant transaction and delivery records to the payment provider."] },
 ];
 
-export default function RefundPolicyPage() { return <PolicyPage title="Refund Policy" summary="A clear framework for wallet payments, campaign delivery, refill coverage, duplicate charges, and payment errors." sections={sections} />; }
+export default function RefundPolicyRoute() {
+  return (
+    <RefundPolicyView
+      title="Refund Policy"
+      subtitle="Review how refunds, wallet credits, cancellations, and payment issues are handled on SocialRUSH."
+      badge="Refund Policy"
+      breadcrumbLabel="Refund Policy"
+      sections={sections}
+    />
+  );
+}

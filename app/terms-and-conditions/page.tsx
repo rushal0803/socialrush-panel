@@ -17,4 +17,15 @@ const sections = [
   { title: "Changes and contact", body: ["We may update these terms prospectively as the platform changes. Questions or formal notices may be sent to support@socialrush.in."] },
 ];
 
-export default function TermsPage() { return <PolicyPage title="Terms & Conditions" summary="The operating terms for SocialRUSH accounts, wallets, campaigns, delivery, refills, billing, and support." sections={sections} />; }
+export default function TermsPage() {
+  return (
+    <PolicyPage
+      title="Terms & Conditions"
+      subtitle="The operating terms for SocialRUSH accounts, wallets, campaigns, delivery, refills, billing, and support."
+      badge="SocialRUSH policy center"
+      breadcrumbLabel="Terms & Conditions"
+      tone="light3d"
+      sections={sections}
+    />
+  );
+}
