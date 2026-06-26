@@ -1,4 +1,42 @@
 import { createClient } from "@/lib/supabase/server";
-import { PageHeader } from "@/components/dashboard/Ui";
-import CurrencyAmount from "@/components/currency/CurrencyAmount";
-export default async function BillingPage(){const supabase=await createClient();const [{data:invoices,error},{data:payments}]=await Promise.all([supabase.from("invoices").select("id,invoice_number,amount,status,created_at,order_id").order("created_at",{ascending:false}),supabase.from("transactions").select("id,amount,status,payment_method,provider_payment_id,created_at").eq("type","credit").order("created_at",{ascending:false}).limit(25)]);return <main className="mx-auto max-w-[1500px] p-5 sm:p-8"><PageHeader title="Billing & invoices" description="Review invoices, wallet receipts, and payment references."/><section className="mt-7 panel-card overflow-hidden"><div className="border-b border-slate-100 p-6"><h2 className="font-bold">Invoices</h2></div>{error?<p className="p-8 text-sm text-amber-700">Invoice metadata requires the latest client portal migration.</p>:<div className="overflow-x-auto"><table className="w-full min-w-[700px] text-left text-xs"><thead className="bg-slate-50 text-slate-400"><tr>{["Invoice","Date","Order","Amount","Status","Receipt"].map(h=><th key={h} className="px-6 py-3">{h}</th>)}</tr></thead><tbody>{(invoices??[]).map(item=><tr key={item.id} className="border-t border-slate-100"><td className="px-6 py-4 font-bold">{item.invoice_number}</td><td className="px-6 py-4">{new Date(item.created_at).toLocaleDateString("en-IN")}</td><td className="px-6 py-4">{item.order_id?`#${item.order_id.slice(0,8)}`:"—"}</td><td className="px-6 py-4 font-bold"><CurrencyAmount amountINR={Number(item.amount)} /></td><td className="px-6 py-4 capitalize">{item.status}</td><td className="px-6 py-4 text-slate-400">PDF available after issue</td></tr>)}{!invoices?.length&&<tr><td colSpan={6} className="p-12 text-center text-slate-400">No invoices issued yet.</td></tr>}</tbody></table></div>}</section><section className="mt-6 panel-card overflow-hidden"><div className="border-b border-slate-100 p-6"><h2 className="font-bold">Payment receipts</h2></div><div className="divide-y divide-slate-100">{(payments??[]).map(item=><div key={item.id} className="grid gap-2 px-6 py-4 text-xs sm:grid-cols-5"><span>{new Date(item.created_at).toLocaleDateString("en-IN")}</span><span className="font-bold"><CurrencyAmount amountINR={Number(item.amount)} /></span><span className="capitalize">{(item.payment_method||"wallet").replaceAll("_"," ")}</span><span className="capitalize">{item.status}</span><span className="truncate text-slate-400">{item.provider_payment_id||item.id}</span></div>)}</div></section></main>}
+import BillingDashboardContent from "@/components/dashboard/BillingDashboardContent";
+
+export default async function BillingPage() {
+  const supabase = await createClient();
+  const {
+    data: { user },
+  } = await supabase.auth.getUser();
+
+  const [{ data: invoices, error }, { data: payments }, { data: profile }] = await Promise.all([
+    supabase
+      .from("invoices")
+      .select("id,invoice_number,amount,status,created_at,order_id")
+      .order("created_at", { ascending: false }),
+    supabase
+      .from("transactions")
+      .select("id,amount,status,payment_method,provider_payment_id,created_at")
+      .eq("type", "credit")
+      .order("created_at", { ascending: false })
+      .limit(25),
+    user ? supabase.from("profiles").select("balance").eq("id", user.id).maybeSingle() : Promise.resolve({ data: null }),
+  ]);
+
+  const normalizedInvoices = (invoices ?? []).map((item) => ({
+    ...item,
+    amount: Number(item.amount ?? 0),
+  }));
+
+  const normalizedPayments = (payments ?? []).map((item) => ({
+    ...item,
+    amount: Number(item.amount ?? 0),
+  }));
+
+  return (
+    <BillingDashboardContent
+      invoices={normalizedInvoices}
+      payments={normalizedPayments}
+      invoiceError={error ? "Invoice metadata requires the latest client portal migration." : undefined}
+      walletBalance={Number(profile?.balance ?? 0)}
+    />
+  );
+}

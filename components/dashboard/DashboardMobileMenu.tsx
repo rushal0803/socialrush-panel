@@ -24,6 +24,29 @@ export default function DashboardMobileMenu() {
     return () => document.removeEventListener("mousedown", closeOutside);
   }, [isOpen]);
 
+  useEffect(() => {
+    if (!isOpen) {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      return;
+    }
+
+    document.body.style.overflow = "hidden";
+    document.documentElement.style.overflow = "hidden";
+
+    const handleEscape = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setIsOpen(false);
+    };
+
+    document.addEventListener("keydown", handleEscape);
+
+    return () => {
+      document.body.style.overflow = "";
+      document.documentElement.style.overflow = "";
+      document.removeEventListener("keydown", handleEscape);
+    };
+  }, [isOpen]);
+
   async function handleLogout() {
     setIsOpen(false);
     await createClient().auth.signOut();
@@ -32,27 +55,57 @@ export default function DashboardMobileMenu() {
   }
 
   return (
-    <div ref={menuRef} className="relative lg:hidden">
+    <div className="lg:hidden">
       <button
         type="button"
         aria-label="Toggle dashboard navigation"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
-        className="grid h-10 w-10 place-items-center rounded-xl border border-white/80 bg-white/80 text-[#4a6398]"
+        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/80 bg-white/85 text-[#4a6398] shadow-[0_10px_24px_rgba(79,108,168,.15)]"
       >
         <span className="text-lg">{isOpen ? "×" : "☰"}</span>
       </button>
       {isOpen && (
-        <div className="absolute right-0 top-12 z-40 w-72 rounded-2xl border border-white/85 bg-white/92 p-3 shadow-[0_20px_40px_rgba(76,106,170,.22)] backdrop-blur-xl">
-          <NavLinks mobile onNavigate={() => setIsOpen(false)} />
-          <div className="mt-2 border-t border-[#e3ebff] pt-2">
-            <button
-              type="button"
-              onClick={handleLogout}
-              className="w-full rounded-xl px-3 py-2.5 text-left text-sm font-semibold text-[#5f78a7] hover:bg-[#f2f7ff] hover:text-[#1f3b75]"
+        <div className="fixed inset-0 z-[70] lg:hidden">
+          <button
+            type="button"
+            aria-label="Close dashboard navigation"
+            onClick={() => setIsOpen(false)}
+            className="absolute inset-0 bg-[#dfeaff]/35 backdrop-blur-md"
+          />
+
+          <div className="absolute inset-x-0 top-[4.75rem] px-4 sm:px-5">
+            <div
+              ref={menuRef}
+              className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.75rem] border border-white/85 bg-white/90 p-4 shadow-[0_24px_60px_-24px_rgba(76,106,170,.38)] backdrop-blur-xl"
             >
-              ↪ Log out
-            </button>
+              <div className="mb-3 flex items-center justify-between gap-3 border-b border-[#e3ebff] pb-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#5b74a5]">Dashboard Menu</p>
+                  <p className="mt-1 text-sm font-bold text-[#17366f]">Quick navigation</p>
+                </div>
+                <button
+                  type="button"
+                  aria-label="Close menu"
+                  onClick={() => setIsOpen(false)}
+                  className="grid h-10 w-10 place-items-center rounded-xl border border-white/80 bg-white/80 text-lg font-semibold text-[#4a6398] shadow-[0_8px_18px_rgba(90,117,173,.12)]"
+                >
+                  ×
+                </button>
+              </div>
+
+              <NavLinks mobile onNavigate={() => setIsOpen(false)} />
+
+              <div className="mt-3 border-t border-[#e3ebff] pt-3">
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  className="w-full rounded-2xl border border-[#deebff] bg-[#f8fbff] px-4 py-3 text-left text-sm font-semibold text-[#5f78a7] shadow-[0_10px_24px_-18px_rgba(30,58,138,.35)] transition hover:bg-[#f2f7ff] hover:text-[#1f3b75]"
+                >
+                  ↪ Log out
+                </button>
+              </div>
+            </div>
           </div>
         </div>
       )}

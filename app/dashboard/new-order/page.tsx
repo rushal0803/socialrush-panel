@@ -13,20 +13,6 @@ import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-s
 type PlatformId = SmmPlatformId;
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 
-const serviceToLegacyCode: Record<string, string> = {
-  "instagram-followers": "ig-followers",
-  "instagram-likes": "ig-likes",
-  "instagram-views": "ig-views",
-  "youtube-subscribers": "yt-subscribers",
-  "youtube-likes": "yt-likes",
-  "youtube-views": "yt-views",
-  "facebook-followers": "fb-followers",
-  "facebook-likes": "fb-likes",
-  "facebook-views": "fb-views",
-  "x-followers": "x-followers",
-  "x-likes": "x-likes",
-};
-
 type ApiOrderData = {
   id: string;
   charge: number;
@@ -40,6 +26,12 @@ const sectionMotion = {
   viewport: { once: true, amount: 0.2 as const },
   transition: { duration: 0.45, ease: "easeOut" as const },
 };
+
+function cleanNumberInput(value: string) {
+  const digitsOnly = value.replace(/\D/g, "");
+  if (!digitsOnly) return "";
+  return digitsOnly.replace(/^0+(?=\d)/, "");
+}
 
 function buildReadableOrderId(id: string) {
   const compact = id.replace(/-/g, "");
@@ -59,7 +51,7 @@ export default function NewCampaignPage() {
   const [platform, setPlatform] = useState<PlatformId>(initialService.platform);
   const [serviceCode, setServiceCode] = useState(initialService.code);
   const [targetLink, setTargetLink] = useState(searchParams.get("link") ?? "");
-  const [quantity, setQuantity] = useState(Number(searchParams.get("quantity") || initialService.minQuantity));
+  const [quantityInput, setQuantityInput] = useState(() => cleanNumberInput(searchParams.get("quantity") ?? ""));
   const [notes, setNotes] = useState("");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [loadingBalance, setLoadingBalance] = useState(false);
@@ -93,6 +85,8 @@ export default function NewCampaignPage() {
     () => activeSmmServices.find((service) => service.code === serviceCode) ?? servicesForPlatform[0],
     [serviceCode, servicesForPlatform],
   );
+
+  const quantity = useMemo(() => Number(quantityInput || 0), [quantityInput]);
 
   const totalPrice = useMemo(
     () => Math.round(((Math.max(quantity, 0) / 1000) * selectedService.pricePer1000) * 100) / 100,
@@ -137,23 +131,24 @@ export default function NewCampaignPage() {
     const firstService = activeSmmServices.find((service) => service.platform === nextPlatform);
     if (firstService) {
       setServiceCode(firstService.code);
-      setQuantity(Math.max(quantity, firstService.minQuantity));
+      if (!quantityInput) return;
+      const clampedQuantity = Math.min(Math.max(quantity, firstService.minQuantity), firstService.maxQuantity);
+      setQuantityInput(String(clampedQuantity));
     }
   }
 
   function switchService(nextServiceCode: string) {
     setServiceCode(nextServiceCode);
     const nextService = activeSmmServices.find((service) => service.code === nextServiceCode);
-    if (nextService) {
-      if (quantity < nextService.minQuantity) setQuantity(nextService.minQuantity);
-      if (quantity > nextService.maxQuantity) setQuantity(nextService.maxQuantity);
-    }
+    if (!nextService || !quantityInput) return;
+    const clampedQuantity = Math.min(Math.max(quantity, nextService.minQuantity), nextService.maxQuantity);
+    setQuantityInput(String(clampedQuantity));
   }
 
   function resetForm() {
     setTargetLink("");
     setNotes("");
-    setQuantity(selectedService.minQuantity);
+    setQuantityInput("");
     setError("");
   }
 
@@ -253,7 +248,7 @@ export default function NewCampaignPage() {
   }
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] p-4 sm:p-6 lg:p-8">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip overflow-y-visible bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] px-4 pb-24 pt-4 sm:p-6 lg:p-8">
       <div className="pointer-events-none absolute inset-0">
         <motion.div
           aria-hidden
@@ -275,31 +270,31 @@ export default function NewCampaignPage() {
         />
       </div>
 
-      <div className="relative mx-auto max-w-[1550px]">
+      <div className="relative mx-auto max-w-[1550px] min-w-0">
         <motion.div
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="relative rounded-[2rem] border border-white/60 bg-white/55 p-4 shadow-[0_28px_70px_-36px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-5"
+          className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white/55 p-4 shadow-[0_28px_70px_-36px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-5"
         >
           <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div>
+          <div className="min-w-0 max-w-4xl pr-0 sm:pr-12">
             <p className="inline-flex rounded-full border border-blue-100 bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700 shadow-sm">
               New Order
             </p>
-            <h1 className="mt-3 text-3xl font-black tracking-[-0.03em] text-[#0f2b61]">Professional SMM Order Workspace</h1>
-            <p className="mt-2 text-sm text-[#5a6f99]">Premium campaign console with real-time pricing, validation, and wallet-safe checkout.</p>
+            <h1 className="mt-3 max-w-3xl text-[clamp(1.85rem,7vw,3rem)] font-black leading-[1.05] tracking-[-0.03em] text-[#0f2b61]">Professional SMM Order Workspace</h1>
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#5a6f99]">Premium campaign console with real-time pricing, validation, and wallet-safe checkout.</p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5">
-            <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)]">
+          <div className="flex w-full flex-col items-stretch gap-2.5 sm:flex-row sm:flex-wrap sm:items-center md:w-auto md:justify-end">
+            <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)] sm:w-auto">
               <Wallet className="mr-2 inline h-4 w-4" />
               Wallet: {walletBalance === null ? "Not loaded" : money(walletBalance)}
             </motion.div>
-            <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(168,85,247,.5)]">
+            <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(168,85,247,.5)] sm:w-auto">
               <Layers3 className="mr-2 inline h-4 w-4" /> New Campaign
             </motion.div>
-            <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(6,182,212,.6)]">
+            <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(6,182,212,.6)] sm:w-auto">
               <User className="mr-2 inline h-4 w-4" /> {loadingProfile ? "Loading..." : profileChip}
             </motion.div>
           </div>
@@ -327,9 +322,9 @@ export default function NewCampaignPage() {
           </motion.div>
         </motion.div>
 
-        <div className="relative mt-6 grid gap-5 xl:grid-cols-[1fr_360px]">
+        <div className="relative mt-5 grid min-w-0 gap-4 sm:mt-6 sm:gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="pointer-events-none absolute left-3 top-6 hidden h-[92%] w-[2px] rounded-full bg-gradient-to-b from-cyan-300/20 via-violet-300/35 to-orange-200/25 xl:block" />
-          <section className="space-y-5">
+          <section className="min-w-0 space-y-4 sm:space-y-5">
             <motion.article
               {...sectionMotion}
               whileHover={{ y: -4, scale: 1.002 }}
@@ -403,7 +398,7 @@ export default function NewCampaignPage() {
                 </motion.div>
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)] sm:col-span-2 lg:col-span-1">
                   <p className="text-[10px] uppercase text-[#6d83b2]">Important Instruction</p>
-                  <p className="mt-1 text-xs font-semibold text-[#36558f]">{selectedService.importantInstruction}</p>
+                  <p className="mt-1 break-words text-xs font-semibold text-[#36558f]">{selectedService.importantInstruction}</p>
                 </motion.div>
               </div>
             </motion.article>
@@ -438,11 +433,12 @@ export default function NewCampaignPage() {
                       <Hash className="h-4 w-4" />
                     </span>
                     <input
-                      type="number"
-                      min={selectedService.minQuantity}
-                      max={selectedService.maxQuantity}
-                      value={Number.isFinite(quantity) ? quantity : ""}
-                      onChange={(event) => setQuantity(Number(event.target.value || 0))}
+                      type="text"
+                      inputMode="numeric"
+                      pattern="[0-9]*"
+                      value={quantityInput}
+                      onChange={(event) => setQuantityInput(cleanNumberInput(event.target.value))}
+                      placeholder={`${selectedService.minQuantity}`}
                       className="w-full rounded-2xl border border-[#d4e1ff] bg-white/95 px-12 py-3.5 text-sm text-[#1c3a71] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_4px_rgba(143,174,255,.22)]"
                     />
                   </div>
@@ -522,18 +518,18 @@ export default function NewCampaignPage() {
               </motion.section>
             )}
 
-            <motion.div {...sectionMotion} className="flex flex-wrap gap-3">
+            <motion.div {...sectionMotion} className="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <button
                 type="button"
                 onClick={openConfirmation}
-                className="inline-flex min-h-12 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.55)] transition hover:-translate-y-1 hover:shadow-[0_20px_38px_-12px_rgba(117,109,255,.65)]"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.55)] transition hover:-translate-y-1 hover:shadow-[0_20px_38px_-12px_rgba(117,109,255,.65)] sm:w-auto"
               >
                 Review Order
               </button>
               <button
                 type="button"
                 onClick={resetForm}
-                className="inline-flex min-h-12 items-center rounded-xl border border-[#d6e3ff] bg-white/95 px-6 py-3 text-sm font-bold text-[#1e3d77] shadow-[0_12px_28px_-18px_rgba(30,58,138,.6)] transition hover:-translate-y-0.5 hover:border-[#b8cbff]"
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white/95 px-6 py-3 text-sm font-bold text-[#1e3d77] shadow-[0_12px_28px_-18px_rgba(30,58,138,.6)] transition hover:-translate-y-0.5 hover:border-[#b8cbff] sm:w-auto"
               >
                 Reset Form
               </button>
@@ -541,7 +537,7 @@ export default function NewCampaignPage() {
                 <button
                   type="button"
                   onClick={() => router.push("/dashboard/add-funds")}
-                  className="inline-flex min-h-12 items-center rounded-xl border border-[#d6e3ff] bg-white/95 px-6 py-3 text-sm font-bold text-[#1e3d77] shadow-[0_12px_28px_-18px_rgba(30,58,138,.6)] transition hover:-translate-y-0.5 hover:border-[#b8cbff]"
+                  className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white/95 px-6 py-3 text-sm font-bold text-[#1e3d77] shadow-[0_12px_28px_-18px_rgba(30,58,138,.6)] transition hover:-translate-y-0.5 hover:border-[#b8cbff] sm:w-auto"
                 >
                   Add Funds
                 </button>
@@ -552,12 +548,12 @@ export default function NewCampaignPage() {
           <motion.aside
             {...sectionMotion}
             whileHover={{ y: -3 }}
-            className="h-fit rounded-3xl border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(56,189,248,.35),rgba(168,85,247,.35),rgba(251,146,60,.35))_border-box] p-5 shadow-[0_26px_62px_-28px_rgba(15,23,42,.55)] xl:sticky xl:top-20"
+            className="order-last h-fit rounded-3xl border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(56,189,248,.35),rgba(168,85,247,.35),rgba(251,146,60,.35))_border-box] p-5 shadow-[0_26px_62px_-28px_rgba(15,23,42,.55)] xl:sticky xl:top-20"
           >
             <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Sticky Order Summary</p>
             <h2 className="mt-2 text-lg font-black text-[#15356f]">Current Configuration</h2>
 
-            <div className="mt-4 space-y-2 text-sm text-[#3c5b90]">
+            <div className="mt-4 space-y-2 break-words text-sm text-[#3c5b90]">
               <p><b>Platform:</b> {platformMeta[selectedService.platform].label}</p>
               <p><b>Service:</b> {selectedService.name}</p>
               <p><b>Price / 1000:</b> {money(selectedService.pricePer1000)}</p>
@@ -626,11 +622,11 @@ export default function NewCampaignPage() {
                 </div>
               )}
 
-              <div className="mt-5 flex flex-wrap gap-3">
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
                 <button
                   type="button"
                   onClick={() => setConfirmOpen(false)}
-                  className="inline-flex min-h-11 items-center rounded-xl border border-[#d6e3ff] bg-white px-5 py-2 text-sm font-bold text-[#1e3d77] transition hover:-translate-y-0.5"
+                  className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white px-5 py-2 text-sm font-bold text-[#1e3d77] transition hover:-translate-y-0.5 sm:w-auto"
                 >
                   Back / Edit
                 </button>
@@ -640,7 +636,7 @@ export default function NewCampaignPage() {
                     type="button"
                     disabled={!confirmedDetails || submitting}
                     onClick={confirmOrder}
-                    className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(117,109,255,.6)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(117,109,255,.6)] transition hover:-translate-y-0.5 disabled:opacity-60 sm:w-auto"
                   >
                     {submitting ? "Placing Order..." : "Confirm Order"}
                   </button>
@@ -648,7 +644,7 @@ export default function NewCampaignPage() {
                   <button
                     type="button"
                     onClick={() => router.push("/dashboard/add-funds")}
-                    className="inline-flex min-h-11 items-center rounded-xl bg-blue-600 px-5 py-2 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(37,99,235,.6)] transition hover:-translate-y-0.5"
+                    className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-blue-600 px-5 py-2 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(37,99,235,.6)] transition hover:-translate-y-0.5 sm:w-auto"
                   >
                     Add Funds
                   </button>

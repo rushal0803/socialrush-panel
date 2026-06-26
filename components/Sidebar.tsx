@@ -74,7 +74,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
   const pathname = usePathname();
 
   return (
-    <nav className={mobile ? "grid gap-1" : "space-y-1"} aria-label="Dashboard navigation">
+    <nav className={mobile ? "grid gap-2" : "space-y-1"} aria-label="Dashboard navigation">
       {dashboardLinks.map((item) => {
         const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
         return (
@@ -82,7 +82,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
             key={item.href}
             href={item.href}
             onClick={onNavigate}
-            className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
+            className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${
               active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
             }`}
           >
