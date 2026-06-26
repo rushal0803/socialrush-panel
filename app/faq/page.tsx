@@ -6,7 +6,7 @@ import PublicShell from "@/components/marketing/PublicShell";
 export const metadata: Metadata = {
   title: "Frequently Asked Questions",
   description:
-    "Everything you need to know about SocialRUSH AI services, automation, pricing, payments, delivery, and support.",
+    "Everything you need to know about SocialRUSH services, pricing, payments, delivery, and support.",
 };
 
 const faqCategories: FaqCategory[] = [
@@ -15,19 +15,19 @@ const faqCategories: FaqCategory[] = [
     label: "General",
     items: [
       {
-        question: "What is SocialRUSH AI?",
+        question: "What is SocialRUSH?",
         answer:
-          "SocialRUSH AI is a growth and automation platform that helps businesses run social media campaigns, AI-led engagement workflows, and marketing services from one streamlined dashboard.",
+          "SocialRUSH is a growth platform that helps businesses run social media campaigns, manage services from one dashboard, and keep ordering, payment, and support in one place.",
       },
       {
-        question: "Who can use SocialRUSH AI?",
+        question: "Who can use SocialRUSH?",
         answer:
-          "Creators, startups, agencies, local businesses, ecommerce brands, and marketing teams can use SocialRUSH AI to improve social visibility, automate repetitive tasks, and manage growth operations efficiently.",
+          "Creators, startups, agencies, local businesses, ecommerce brands, and marketing teams can use SocialRUSH to improve social visibility and manage growth operations efficiently.",
       },
       {
-        question: "Is SocialRUSH AI suitable for small businesses?",
+        question: "Is SocialRUSH suitable for small businesses?",
         answer:
-          "Yes. SocialRUSH AI is built for both small and large teams, with flexible service options, transparent pricing, and support guidance so smaller businesses can scale at their own pace.",
+          "Yes. SocialRUSH is built for both small and large teams, with flexible service options, transparent pricing, and support guidance so smaller businesses can scale at their own pace.",
       },
     ],
   },
@@ -48,7 +48,7 @@ const faqCategories: FaqCategory[] = [
       {
         question: "Do you provide SEO, social media marketing, Meta Ads, and Google Ads?",
         answer:
-          "Yes. SocialRUSH AI supports SEO-focused growth planning, social media marketing, Meta Ads management, and Google Ads strategy depending on your business objectives.",
+          "Yes. SocialRUSH supports SEO-focused growth planning, social media marketing, Meta Ads management, and Google Ads strategy depending on your business objectives.",
       },
     ],
   },
@@ -122,7 +122,7 @@ const faqCategories: FaqCategory[] = [
       {
         question: "How can I contact support?",
         answer:
-          "You can contact support via the support page, dashboard support section, or direct contact channels listed on SocialRUSH AI for quick assistance.",
+          "You can contact support via the support page, dashboard support section, or direct contact channels listed on SocialRUSH for quick assistance.",
       },
       {
         question: "Do you provide support after service delivery?",
@@ -154,7 +154,7 @@ export default function FaqPage() {
   };
 
   return (
-    <PublicShell>
+    <PublicShell tone="light3d">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <FaqPageContent categories={faqCategories} />
     </PublicShell>

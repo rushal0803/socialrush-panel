@@ -1,8 +1,8 @@
 export type KnowledgeEntry = { id: string; question: string; keywords: string[]; answer: string };
 
 export const chatbotPolicies = {
-  assistantName: "SocialRUSH AI Assistant",
-  welcomeMessage: "Hi! I’m the SocialRUSH AI Assistant. I can guide you through campaigns, payments, delivery, refills, and account help.",
+  assistantName: "SocialRUSH Assistant",
+  welcomeMessage: "Hi! I’m the SocialRUSH Assistant. I can guide you through campaigns, payments, delivery, refills, and account help.",
   accountDisclaimer: "I can help guide you, but for account-specific issues please open a support ticket.",
   escalationMessage: "Please create a support ticket and our team will assist you.",
 };

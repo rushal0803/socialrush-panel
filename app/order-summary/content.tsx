@@ -6,27 +6,18 @@ import { useRouter, useSearchParams } from "next/navigation";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingHeader from "@/components/marketing/MarketingHeader";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
-import { agencyServices } from "@/lib/marketing/content";
+import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { createClient } from "@/lib/supabase/client";
-import { formatCurrency } from "@/lib/currency";
+import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
 export const dynamic = "force-dynamic";
 const quantityOptions = [1000, 5000, 10000];
-
-type ServiceDetails = {
-  delivery?: string;
-  refill?: string;
-};
-
-function parseRate(price: string) {
-  const digits = price.match(/\d[\d,]*/);
-  if (!digits) return 0;
-  return Number(digits[0].replace(/,/g, ""));
-}
 
 export default function OrderSummaryPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const serviceSlug = searchParams.get("service") || "";
+  const { currency } = usePreferredCurrency("INR");
   const [quantity, setQuantity] = useState(1000);
   const [link, setLink] = useState("");
   const [error, setError] = useState("");
@@ -34,13 +25,13 @@ export default function OrderSummaryPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   const service = useMemo(
-    () => agencyServices.find((item) => item.slug === serviceSlug),
+    () => activeSmmServices.find((item) => item.code === serviceSlug),
     [serviceSlug],
   );
 
   useEffect(() => {
     if (!service) return;
-    const match = agencyServices.find((item) => item.slug === serviceSlug);
+    const match = activeSmmServices.find((item) => item.code === serviceSlug);
     if (match) {
       setQuantity(1000);
     }
@@ -71,9 +62,9 @@ export default function OrderSummaryPage() {
     );
   }
 
-  const startingPrice = parseRate(service.price);
+  const startingPrice = service.pricePer1000;
   const totalPrice = Math.round((startingPrice / 1000) * quantity * 100) / 100;
-  const formattedTotal = formatCurrency(totalPrice, "INR");
+  const formattedTotal = formatCurrency(totalPrice, currency);
 
   const handleCheckout = async () => {
     if (!link.trim()) {
@@ -89,19 +80,19 @@ export default function OrderSummaryPage() {
 
     setError("");
     setIsSubmitting(true);
-    router.push(`/dashboard/new-order?service=${service.slug}&quantity=${quantity}&link=${encodeURIComponent(link)}`);
+    router.push(`/dashboard/new-order?service=${service.code}&quantity=${quantity}&link=${encodeURIComponent(link)}`);
   };
 
   return (
     <main className="min-h-screen bg-[#030613] text-white">
       <MarketingHeader />
-      <section className="px-5 py-16 sm:px-6 lg:px-8">
+      <section className="px-5 py-10 pb-36 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="rounded-[32px] border border-slate-800 bg-slate-950/90 p-6 shadow-2xl shadow-cyan-500/10 sm:p-10">
+          <div className="rounded-[28px] border border-slate-800 bg-slate-950/90 p-5 shadow-2xl shadow-cyan-500/10 sm:rounded-[32px] sm:p-10">
             <div className="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] lg:items-start">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Order summary</p>
-                <h1 className="mt-4 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                <h1 className="mt-4 text-2xl font-bold tracking-tight text-white sm:text-4xl">
                   Review your campaign before checkout
                 </h1>
                 <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300">
@@ -111,30 +102,30 @@ export default function OrderSummaryPage() {
               <div className="rounded-3xl border border-slate-800 bg-slate-900/70 p-5">
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-slate-500">Selected service</p>
                 <h2 className="mt-3 text-xl font-bold text-white">{service.name}</h2>
-                <p className="mt-2 text-sm text-slate-300">{service.summary}</p>
+                <p className="mt-2 text-sm text-slate-300">{service.description}</p>
                 <div className="mt-6 space-y-3 text-sm text-slate-300">
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Platform</span>
-                    <span className="font-semibold text-white">{service.platform}</span>
+                    <span className="font-semibold text-white">{platformMeta[service.platform].label}</span>
                   </div>
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Starting price</span>
-                    <span className="font-semibold text-white">{service.price}</span>
+                    <span className="font-semibold text-white">{formatCurrency(service.pricePer1000, currency)} / 1000</span>
                   </div>
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Delivery</span>
-                    <span className="font-semibold text-white">{(service as ServiceDetails).delivery ?? "1–7 days"}</span>
+                    <span className="font-semibold text-white">{service.deliveryTime}</span>
                   </div>
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Refill support</span>
-                    <span className="font-semibold text-white">{(service as ServiceDetails).refill ?? "Available"}</span>
+                    <span className="font-semibold text-white">{service.refillPolicy}</span>
                   </div>
                 </div>
               </div>
             </div>
 
             <div className="mt-10 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
-              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-6">
+              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-5 sm:p-6">
                 <div className="grid gap-4">
                   <label className="text-sm font-semibold text-white">Destination profile or content link</label>
                   <input
@@ -177,20 +168,21 @@ export default function OrderSummaryPage() {
                 </div>
               </div>
 
-              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-6">
+              <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-5 sm:p-6">
                 <div className="rounded-3xl bg-slate-900/80 p-5">
                   <div className="flex items-center justify-between text-sm text-slate-400">
                     <span>Estimated total</span>
                     <span className="font-semibold text-white">{formattedTotal}</span>
                   </div>
+                  <p className="mt-3 text-xs text-slate-500">{getCurrencyDisclaimer()}</p>
                   <div className="mt-6 space-y-3 text-sm text-slate-300">
                     <div className="flex items-center gap-2 text-slate-400">
                       <MarketingIcon name="clock" className="h-4 w-4" />
-                      <span>Delivery estimate: 1–7 days</span>
+                      <span>Delivery estimate: {service.deliveryTime}</span>
                     </div>
                     <div className="flex items-center gap-2 text-slate-400">
                       <MarketingIcon name="shield" className="h-4 w-4" />
-                      <span>Refill support: Available</span>
+                      <span>Refill support: {service.refillPolicy}</span>
                     </div>
                   </div>
                 </div>
@@ -212,6 +204,23 @@ export default function OrderSummaryPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+      <section className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030613]/95 px-4 pb-[calc(0.9rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-300">Quick checkout</p>
+            <p className="truncate text-sm font-bold text-white">{service.name}</p>
+            <p className="text-xs text-slate-400">{formattedTotal}</p>
+          </div>
+          <button
+            type="button"
+            disabled={isSubmitting}
+            onClick={handleCheckout}
+            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:shadow-xl disabled:opacity-60"
+          >
+            {isAuthenticated === false ? "Sign in" : isSubmitting ? "Continuing…" : "Continue"}
+          </button>
         </div>
       </section>
       <MarketingFooter />

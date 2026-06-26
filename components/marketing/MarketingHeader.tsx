@@ -102,8 +102,8 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
-            transition={{ duration: 0.2 }}
-            className={isLight3d ? "mx-4 mt-2 rounded-3xl border border-white/80 bg-white/90 px-4 py-5 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl sm:mx-6 lg:hidden" : "border-t border-violet-300/20 bg-[#070c1d] px-4 py-5 shadow-xl lg:hidden"}
+            transition={{ duration: 0.22, ease: "easeOut" }}
+            className={isLight3d ? "mx-4 mt-2 max-h-[calc(100vh-5.5rem)] overflow-y-auto rounded-3xl border border-white/80 bg-white/92 px-4 py-5 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl sm:mx-6 lg:hidden" : "border-t border-violet-300/20 bg-[#070c1d] px-4 py-5 shadow-xl lg:hidden"}
           >
             <nav className="mx-auto grid max-w-7xl gap-1">
               {nav.map(([label, href]) => (

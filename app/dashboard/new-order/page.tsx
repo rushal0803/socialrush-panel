@@ -3,11 +3,11 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { CheckCircle2, Sparkles, User, Wallet, Layers3, Link as LinkIcon, Hash, StickyNote, BarChart3, ShieldCheck, Clock3, Gem } from "lucide-react";
 import Link from "next/link";
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { createClient } from "@/lib/supabase/client";
-import { formatCurrency } from "@/lib/currency";
+import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { createClient } from "@/lib/supabase/client";
 import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
 
 type PlatformId = SmmPlatformId;
@@ -43,7 +43,6 @@ export default function NewCampaignPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { currency } = usePreferredCurrency("INR");
-  const money = (value: number) => formatCurrency(value, currency);
 
   const initialServiceCode = searchParams.get("service") ?? "instagram-followers";
   const initialService = activeSmmServices.find((service) => service.code === initialServiceCode) ?? activeSmmServices[0];
@@ -54,7 +53,8 @@ export default function NewCampaignPage() {
   const [quantityInput, setQuantityInput] = useState(() => cleanNumberInput(searchParams.get("quantity") ?? ""));
   const [notes, setNotes] = useState("");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
-  const [loadingBalance, setLoadingBalance] = useState(false);
+  const [walletLoading, setWalletLoading] = useState(false);
+  const [walletError, setWalletError] = useState<string | null>(null);
   const [loadingProfile, setLoadingProfile] = useState(false);
   const [profileChip, setProfileChip] = useState("Client Workspace");
   const [submitting, setSubmitting] = useState(false);
@@ -62,6 +62,7 @@ export default function NewCampaignPage() {
   const [confirmOpen, setConfirmOpen] = useState(false);
   const [confirmedDetails, setConfirmedDetails] = useState(false);
   const [successOrder, setSuccessOrder] = useState<ApiOrderData | null>(null);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   const inFlight = useRef(false);
   const requestId = useRef<string>("");
@@ -101,30 +102,76 @@ export default function NewCampaignPage() {
   }, [quantity, selectedService.minQuantity, selectedService.maxQuantity]);
 
   const hasEnoughWallet = walletBalance !== null && walletBalance + 0.0001 >= totalPrice;
+  const walletLabel = walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency);
+  const totalLabel = formatCurrency(totalPrice, currency);
+  const baseRateLabel = formatCurrency(selectedService.pricePer1000, "INR");
+  const baseTotalLabel = formatCurrency(totalPrice, "INR");
+  const canCheckPayment = quantity > 0 && totalPrice > 0 && !quantityError;
+  const canReviewOrder = !walletLoading && walletBalance !== null && canCheckPayment && hasEnoughWallet;
 
-  async function loadWalletBalance() {
-    if (loadingBalance) return;
-    setLoadingBalance(true);
-
-    const supabase = createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
-
-    if (!user) {
-      router.replace(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
-      return;
+  const paymentStatus = useMemo(() => {
+    if (walletLoading) {
+      return { message: "Checking wallet balance...", tone: "text-[#1f3f77]" };
     }
 
-    const { data: profile } = await supabase
-      .from("profiles")
-      .select("balance")
-      .eq("id", user.id)
-      .single();
+    if (walletBalance === null) {
+      return {
+        message: "Wallet balance unavailable. Please refresh or add funds.",
+        tone: "text-amber-700",
+      };
+    }
 
-    setWalletBalance(Number(profile?.balance ?? 0));
-    setLoadingBalance(false);
-  }
+    if (!canCheckPayment) {
+      return { message: "Enter quantity to check payment.", tone: "text-amber-700" };
+    }
+
+    if (hasEnoughWallet) {
+      return { message: "Balance looks good for this order.", tone: "text-emerald-600" };
+    }
+
+    return { message: "Insufficient wallet balance. Please add funds.", tone: "text-rose-600" };
+  }, [walletLoading, walletBalance, canCheckPayment, hasEnoughWallet]);
+
+  const loadWalletBalance = useCallback(async () => {
+    setWalletLoading(true);
+    setWalletError(null);
+
+    const supabase = createClient();
+    try {
+      const {
+        data: { user },
+      } = await supabase.auth.getUser();
+
+      if (!user) {
+        setWalletBalance(0);
+        router.replace(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
+        return;
+      }
+
+      const { data: profile, error: profileError } = await supabase
+        .from("profiles")
+        .select("balance")
+        .eq("id", user.id)
+        .single();
+
+      if (profileError) {
+        setWalletBalance(0);
+        setWalletError("Wallet balance could not be loaded. Showing ₹0 for now.");
+        return;
+      }
+
+      setWalletBalance(Number(profile?.balance ?? 0));
+    } catch {
+      setWalletBalance(0);
+      setWalletError("Wallet balance unavailable right now. Showing ₹0 as fallback.");
+    } finally {
+      setWalletLoading(false);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    void loadWalletBalance();
+  }, [loadWalletBalance]);
 
   function switchPlatform(nextPlatform: PlatformId) {
     setPlatform(nextPlatform);
@@ -152,6 +199,10 @@ export default function NewCampaignPage() {
     setError("");
   }
 
+  function closeMobileMenu() {
+    setMobileMenuOpen(false);
+  }
+
   async function openConfirmation() {
     setError("");
 
@@ -165,8 +216,24 @@ export default function NewCampaignPage() {
       return;
     }
 
+    if (walletLoading) {
+      setError("Checking wallet balance...");
+      return;
+    }
+
     if (walletBalance === null) {
-      await loadWalletBalance();
+      setError("Wallet balance unavailable. Please refresh or add funds.");
+      return;
+    }
+
+    if (totalPrice <= 0) {
+      setError("Enter quantity to check payment.");
+      return;
+    }
+
+    if (!hasEnoughWallet) {
+      setError("Insufficient wallet balance. Please add funds.");
+      return;
     }
 
     setConfirmOpen(true);
@@ -277,28 +344,78 @@ export default function NewCampaignPage() {
           transition={{ duration: 0.4 }}
           className="relative overflow-hidden rounded-[2rem] border border-white/60 bg-white/55 p-4 shadow-[0_28px_70px_-36px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-5"
         >
-          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
-          <div className="min-w-0 max-w-4xl pr-0 sm:pr-12">
-            <p className="inline-flex rounded-full border border-blue-100 bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700 shadow-sm">
-              New Order
-            </p>
-            <h1 className="mt-3 max-w-3xl text-[clamp(1.85rem,7vw,3rem)] font-black leading-[1.05] tracking-[-0.03em] text-[#0f2b61]">Professional SMM Order Workspace</h1>
-            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#5a6f99]">Premium campaign console with real-time pricing, validation, and wallet-safe checkout.</p>
+          <div className="flex items-center justify-between gap-3 sm:hidden">
+            <div className="min-w-0">
+              <p className="inline-flex rounded-full border border-blue-100 bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700 shadow-sm">
+                New Order
+              </p>
+              <h1 className="mt-2 text-[1.45rem] font-black leading-tight tracking-[-0.03em] text-[#0f2b61]">Professional SMM Order Workspace</h1>
+            </div>
+            <div className="flex shrink-0 items-center gap-2">
+              <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/88 px-3 py-2 text-[11px] font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)]">
+                <Wallet className="mr-1 inline h-4 w-4" />
+                {walletLabel}
+              </motion.div>
+              <button
+                type="button"
+                onClick={() => setMobileMenuOpen((value) => !value)}
+                aria-expanded={mobileMenuOpen}
+                aria-label="Toggle order menu"
+                className="grid h-10 w-10 place-items-center rounded-xl border border-white/80 bg-white/88 text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)]"
+              >
+                {mobileMenuOpen ? "×" : "☰"}
+              </button>
+            </div>
           </div>
 
-          <div className="flex w-full flex-col items-stretch gap-2.5 sm:flex-row sm:flex-wrap sm:items-center md:w-auto md:justify-end">
-            <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)] sm:w-auto">
-              <Wallet className="mr-2 inline h-4 w-4" />
-              Wallet: {walletBalance === null ? "Not loaded" : money(walletBalance)}
-            </motion.div>
-            <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(168,85,247,.5)] sm:w-auto">
-              <Layers3 className="mr-2 inline h-4 w-4" /> New Campaign
-            </motion.div>
-            <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(6,182,212,.6)] sm:w-auto">
-              <User className="mr-2 inline h-4 w-4" /> {loadingProfile ? "Loading..." : profileChip}
-            </motion.div>
+          <div className="hidden flex-col justify-between gap-4 md:flex md:flex-row md:items-end">
+            <div className="min-w-0 max-w-4xl pr-0 sm:pr-12">
+              <p className="inline-flex rounded-full border border-blue-100 bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700 shadow-sm">
+                New Order
+              </p>
+              <h1 className="mt-3 max-w-3xl text-[clamp(1.85rem,7vw,3rem)] font-black leading-[1.05] tracking-[-0.03em] text-[#0f2b61]">Professional SMM Order Workspace</h1>
+              <p className="mt-2 max-w-2xl text-sm leading-6 text-[#5a6f99]">Premium campaign console with real-time pricing, validation, and wallet-safe checkout.</p>
+            </div>
+
+            <div className="flex w-full flex-col items-stretch gap-2.5 sm:flex-row sm:flex-wrap sm:items-center md:w-auto md:justify-end">
+              <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)] sm:w-auto">
+                <Wallet className="mr-2 inline h-4 w-4" />
+                Wallet: {walletLabel}
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(168,85,247,.5)] sm:w-auto">
+                <Layers3 className="mr-2 inline h-4 w-4" /> New Order
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} className="w-full rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(6,182,212,.6)] sm:w-auto">
+                <User className="mr-2 inline h-4 w-4" /> {loadingProfile ? "Loading..." : profileChip}
+              </motion.div>
+            </div>
           </div>
-        </div>
+
+          {mobileMenuOpen ? (
+            <div className="mt-3 space-y-2 rounded-2xl border border-white/80 bg-white/85 p-3 shadow-[0_16px_34px_-20px_rgba(15,23,42,.35)] sm:hidden">
+              <div className="rounded-xl border border-white/80 bg-white px-4 py-3 text-xs font-semibold text-[#36548f]">
+                <Wallet className="mr-2 inline h-4 w-4" /> Wallet: {walletLabel}
+              </div>
+              <div className="rounded-xl border border-white/80 bg-white px-4 py-3 text-xs font-semibold text-[#36548f]">
+                <User className="mr-2 inline h-4 w-4" /> {loadingProfile ? "Loading..." : profileChip}
+              </div>
+              <button type="button" onClick={() => router.push("/dashboard/new-order")} className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white px-4 py-3 text-sm font-bold text-[#1e3d77]">
+                New Order
+              </button>
+              <button type="button" onClick={() => router.push("/dashboard/account")} className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white px-4 py-3 text-sm font-bold text-[#1e3d77]">
+                Profile & Account
+              </button>
+              <button type="button" onClick={() => router.push("/dashboard/orders")} className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white px-4 py-3 text-sm font-bold text-[#1e3d77]">
+                Orders
+              </button>
+              <button type="button" onClick={() => router.push("/dashboard/add-funds")} className="inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#d6e3ff] bg-white px-4 py-3 text-sm font-bold text-[#1e3d77]">
+                Add Funds
+              </button>
+              <button type="button" onClick={closeMobileMenu} className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-3 text-sm font-bold text-white">
+                Close Menu
+              </button>
+            </div>
+          ) : null}
 
           <motion.div
             initial={{ opacity: 0, scale: 0.96, y: 8 }}
@@ -322,7 +439,7 @@ export default function NewCampaignPage() {
           </motion.div>
         </motion.div>
 
-        <div className="relative mt-5 grid min-w-0 gap-4 sm:mt-6 sm:gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
+          <div className="relative mt-5 grid min-w-0 gap-4 sm:mt-6 sm:gap-5 xl:grid-cols-[minmax(0,1fr)_360px]">
           <div className="pointer-events-none absolute left-3 top-6 hidden h-[92%] w-[2px] rounded-full bg-gradient-to-b from-cyan-300/20 via-violet-300/35 to-orange-200/25 xl:block" />
           <section className="min-w-0 space-y-4 sm:space-y-5">
             <motion.article
@@ -377,27 +494,28 @@ export default function NewCampaignPage() {
               <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Service Details</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Price per 1000</p>
-                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{money(selectedService.pricePer1000)}</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Price per 1000</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{formatCurrency(selectedService.pricePer1000, currency)}</p>
+                  {currency !== "INR" ? <p className="mt-1 text-[11px] font-semibold text-[#5f76a8]">Base: {baseRateLabel}</p> : null}
                 </motion.div>
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Quantity Range</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Quantity Range</p>
                   <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.minQuantity.toLocaleString("en-IN")} - {selectedService.maxQuantity.toLocaleString("en-IN")}</p>
                 </motion.div>
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Delivery Time</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Delivery Time</p>
                   <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.deliveryTime}</p>
                 </motion.div>
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Refill Policy</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Refill Policy</p>
                   <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.refillPolicy}</p>
                 </motion.div>
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Quality Type</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Quality Type</p>
                   <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.qualityType}</p>
                 </motion.div>
                 <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)] sm:col-span-2 lg:col-span-1">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Important Instruction</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Important Instruction</p>
                   <p className="mt-1 break-words text-xs font-semibold text-[#36558f]">{selectedService.importantInstruction}</p>
                 </motion.div>
               </div>
@@ -470,26 +588,35 @@ export default function NewCampaignPage() {
               <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Balance / Payment</p>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <div className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-4 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Wallet Balance</p>
-                  <p className="mt-1 text-lg font-black text-[#1f3f77]">{walletBalance === null ? "Not loaded" : money(walletBalance)}</p>
-                  <button
-                    type="button"
-                    onClick={loadWalletBalance}
-                    className="mt-2 text-xs font-bold text-blue-700 underline"
-                  >
-                    {loadingBalance ? "Checking..." : "Refresh balance"}
-                  </button>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Wallet Balance</p>
+                  <p className="mt-1 text-lg font-black text-[#1f3f77]">{walletLabel}</p>
+                  <div className="mt-2 flex flex-wrap items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={loadWalletBalance}
+                      className="text-xs font-bold text-blue-700 underline"
+                    >
+                      {walletLoading ? "Refreshing..." : "Refresh balance"}
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => router.push("/dashboard/add-funds")}
+                      className="inline-flex min-h-9 items-center justify-center rounded-lg border border-[#d6e3ff] bg-white px-3 py-1.5 text-xs font-bold text-[#1e3d77]"
+                    >
+                      Add Funds
+                    </button>
+                  </div>
+                  {walletError ? <p className="mt-2 text-xs font-semibold text-amber-700">{walletError}</p> : null}
                 </div>
                 <div className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-4 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
-                  <p className="text-[10px] uppercase text-[#6d83b2]">Payment Method</p>
+                  <p className="text-[11px] uppercase tracking-[0.08em] text-[#6d83b2]">Payment Method</p>
                   <p className="mt-1 text-sm font-black text-[#1f3f77]">Wallet Balance</p>
-                  {!hasEnoughWallet && walletBalance !== null ? (
-                    <p className="mt-2 text-xs font-semibold text-rose-600">Insufficient balance. Add funds to continue.</p>
-                  ) : (
-                    <p className="mt-2 text-xs font-semibold text-emerald-600">Balance looks good for this order.</p>
-                  )}
+                  <p className={`mt-2 text-xs font-semibold ${paymentStatus.tone}`}>
+                    {paymentStatus.message}
+                  </p>
                 </div>
               </div>
+              <p className="mt-3 text-xs font-semibold text-[#5873a7]">{getCurrencyDisclaimer()}</p>
             </motion.article>
 
             {error && (
@@ -522,7 +649,8 @@ export default function NewCampaignPage() {
               <button
                 type="button"
                 onClick={openConfirmation}
-                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.55)] transition hover:-translate-y-1 hover:shadow-[0_20px_38px_-12px_rgba(117,109,255,.65)] sm:w-auto"
+                disabled={!canReviewOrder}
+                className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.55)] transition hover:-translate-y-1 hover:shadow-[0_20px_38px_-12px_rgba(117,109,255,.65)] disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
               >
                 Review Order
               </button>
@@ -556,12 +684,13 @@ export default function NewCampaignPage() {
             <div className="mt-4 space-y-2 break-words text-sm text-[#3c5b90]">
               <p><b>Platform:</b> {platformMeta[selectedService.platform].label}</p>
               <p><b>Service:</b> {selectedService.name}</p>
-              <p><b>Price / 1000:</b> {money(selectedService.pricePer1000)}</p>
+              <p><b>Price / 1000:</b> {formatCurrency(selectedService.pricePer1000, currency)}</p>
               <p><b>Quantity:</b> {quantity.toLocaleString("en-IN")}</p>
-              <p><b>Total:</b> {money(totalPrice)}</p>
+              <p><b>Total:</b> {totalLabel}</p>
+              {currency !== "INR" ? <p><b>Base Total (INR):</b> {baseTotalLabel}</p> : null}
               <p><b>Delivery:</b> {selectedService.deliveryTime}</p>
               <p><b>Refill:</b> {selectedService.refillPolicy}</p>
-              <p><b>Wallet:</b> {walletBalance === null ? "Not loaded" : money(walletBalance)}</p>
+              <p><b>Wallet:</b> {walletLabel}</p>
             </div>
 
             <div className="mt-4 rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-4 text-xs text-[#5470a3] shadow-[0_12px_24px_-16px_rgba(30,58,138,.45)]">
@@ -601,11 +730,14 @@ export default function NewCampaignPage() {
                 <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Platform:</b> {platformMeta[selectedService.platform].label}</p>
                 <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Link / Username:</b> {targetLink}</p>
                 <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Quantity:</b> {quantity.toLocaleString("en-IN")}</p>
-                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Total:</b> {money(totalPrice)}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Total:</b> {totalLabel}</p>
+                {currency !== "INR" ? <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Base Total (INR):</b> {baseTotalLabel}</p> : null}
                 <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Delivery:</b> {selectedService.deliveryTime}</p>
                 <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Refill:</b> {selectedService.refillPolicy}</p>
-                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Wallet:</b> {walletBalance === null ? "Not loaded" : money(walletBalance)}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Wallet:</b> {walletLabel}</p>
               </div>
+
+              <p className="mt-3 text-xs font-semibold text-[#5873a7]">{getCurrencyDisclaimer()}</p>
 
               <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-semibold text-amber-700">
                 Please check your link carefully. Wrong link orders cannot be cancelled.
@@ -654,6 +786,24 @@ export default function NewCampaignPage() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      <section className="fixed inset-x-0 bottom-0 z-40 border-t border-white/70 bg-white/90 px-4 pb-[calc(0.9rem+env(safe-area-inset-bottom))] pt-3 shadow-[0_-18px_40px_-20px_rgba(15,23,42,.28)] backdrop-blur-xl lg:hidden">
+        <div className="mx-auto flex max-w-6xl items-center gap-3">
+          <div className="min-w-0 flex-1">
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#5d77a8]">Order Summary</p>
+            <p className="truncate text-sm font-bold text-[#17366f]">{totalPrice > 0 ? `${totalLabel} | Review Order` : "Enter quantity to review"}</p>
+            <p className="text-xs text-[#6b82ac]">{selectedService.name}</p>
+          </div>
+          <button
+            type="button"
+            onClick={openConfirmation}
+            disabled={!canReviewOrder}
+            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-3 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(117,109,255,.55)] disabled:cursor-not-allowed disabled:opacity-50"
+          >
+            Review Order
+          </button>
+        </div>
+      </section>
     </main>
   );
 }

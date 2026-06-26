@@ -1,10 +1,16 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import AuthShell from "@/components/AuthShell";
 import LoginForm from "@/components/auth/LoginForm";
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 
-export const metadata = { title: "Log in" };
+export const metadata: Metadata = {
+  title: "Log in to SocialRUSH",
+  description: "Access your SocialRUSH dashboard to manage campaigns, wallet funds, orders, and support.",
+  robots: { index: false, follow: false },
+  alternates: { canonical: "/login" },
+};
 
 export default async function LoginPage() {
   const supabase = await createClient();

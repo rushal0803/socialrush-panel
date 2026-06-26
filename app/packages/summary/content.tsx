@@ -7,7 +7,7 @@ import MarketingHeader from "@/components/marketing/MarketingHeader";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
 import { getPackageById } from "@/lib/big-packages";
-import { convertCurrency, formatPrice, type Currency, currencies } from "@/lib/currency";
+import { convertCurrency, formatPrice, getCurrencyDisclaimer, currencies } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
 
@@ -15,8 +15,7 @@ export default function PackageSummaryContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const packageId = searchParams.get("packageId");
-  const queryCurrency = searchParams.get("currency") as Currency | null;
-  const { currency } = usePreferredCurrency(queryCurrency || "INR");
+  const { currency } = usePreferredCurrency();
 
   const [pkg] = useState(getPackageById(packageId || ""));
   const [profileLink, setProfileLink] = useState("");
@@ -169,7 +168,7 @@ export default function PackageSummaryContent() {
                 <div className="rounded-xl border border-cyan-400/20 bg-[#0B1628] p-4">
                   <p className="text-xs font-bold uppercase text-cyan-300">Important</p>
                   <p className="mt-2 text-sm text-slate-300">
-                    Prices are displayed in {currencies.find((c) => c.code === currency)?.name} for convenience. Final checkout may be processed in INR depending on payment method.
+                    Prices are displayed in {currencies.find((c) => c.code === currency)?.name} for convenience. {getCurrencyDisclaimer()}
                   </p>
                 </div>
               </div>

@@ -3,11 +3,15 @@
 import { motion } from "framer-motion";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import OrderNowButton from "@/components/marketing/OrderNowButton";
+import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
 
 const platformOrder: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 
 export default function ServicesPageContent() {
+  const { currency } = usePreferredCurrency("INR");
+
   return (
     <BlogShell>
       <main className="relative overflow-x-clip pb-20">
@@ -29,6 +33,7 @@ export default function ServicesPageContent() {
               Browse platforms, compare starting prices, delivery windows, and refill policy, then continue directly to
               secure dashboard ordering. No cart. No checkout box. Just clean service selection.
             </p>
+            <p className="mt-4 text-xs font-semibold text-[#5a71a1]">{getCurrencyDisclaimer()}</p>
           </div>
         </section>
 
@@ -77,7 +82,9 @@ export default function ServicesPageContent() {
                             <h3 className="text-sm font-black text-[#163165] sm:text-base">{service.name}</h3>
                             <p className="mt-1 text-xs leading-6 text-[#5b719f] sm:text-sm">{service.description}</p>
                           </div>
-                          <p className="rounded-xl bg-white px-3 py-2 text-xs font-black text-[#204083] shadow-sm">₹{service.pricePer1000.toLocaleString("en-IN")} / 1000</p>
+                          <p className="rounded-xl bg-white px-3 py-2 text-xs font-black text-[#204083] shadow-sm">
+                            {formatCurrency(service.pricePer1000, currency)} / 1000
+                          </p>
                         </div>
 
                         <div className="mt-3 flex flex-wrap items-center gap-2.5 text-[11px] font-bold">
@@ -97,7 +104,7 @@ export default function ServicesPageContent() {
                           nextPath={nextPath}
                           className="mt-4 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2.5 text-xs font-black uppercase tracking-wide text-white shadow-[0_12px_26px_rgba(122,113,241,.35)] transition hover:-translate-y-0.5 sm:text-sm"
                         >
-                          Order Now
+                          Start Order
                         </OrderNowButton>
                       </div>
                     );

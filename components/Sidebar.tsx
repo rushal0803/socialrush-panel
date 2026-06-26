@@ -13,7 +13,8 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 export const dashboardLinks = [
   { label: "Dashboard", href: "/dashboard", icon: "grid" },
-  { label: "New Campaign", href: "/dashboard/new-order", icon: "plus" },
+  { label: "New Order", href: "/dashboard/new-order", icon: "plus" },
+  { label: "Packages", href: "/dashboard/packages", icon: "packages" },
   { label: "Orders", href: "/dashboard/orders", icon: "orders" },
   { label: "Wallet", href: "/dashboard/wallet", icon: "wallet" },
   { label: "Billing", href: "/dashboard/billing", icon: "orders" },
@@ -47,6 +48,13 @@ function NavIcon({ name }: { name: string }) {
       <>
         <path d="M6 3h12v18H6z" />
         <path d="M9 8h6M9 12h6M9 16h4" />
+      </>
+    ),
+    packages: (
+      <>
+        <rect x="4" y="4" width="16" height="6" rx="2" />
+        <rect x="4" y="14" width="16" height="6" rx="2" />
+        <path d="M12 4v16" />
       </>
     ),
     support: (
@@ -185,7 +193,7 @@ export default function Sidebar() {
         )}
 
         <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex w-full justify-center py-2.5 text-xs">
-          Add funds
+          Add Funds
         </Link>
       </div>
 

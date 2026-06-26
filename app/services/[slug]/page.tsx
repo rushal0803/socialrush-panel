@@ -1,5 +1,245 @@
-import { permanentRedirect } from "next/navigation";
+import type { Metadata } from "next";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import CurrencyAmount from "@/components/currency/CurrencyAmount";
+import PublicShell from "@/components/marketing/PublicShell";
+import { getCurrencyDisclaimer } from "@/lib/currency";
+import { getGrowthService, growthServices } from "@/lib/growth-services";
+import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 
-export default function LegacyServicePage() {
-  permanentRedirect("/services");
+const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://socialrush.in";
+
+function formatInr(value: number) {
+  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+}
+
+function routeTitle(slug: string) {
+  switch (slug) {
+    case "instagram-followers": return "Instagram Followers India";
+    case "instagram-likes": return "Instagram Likes India";
+    case "instagram-views": return "Instagram Views India";
+    case "youtube-subscribers": return "YouTube Subscribers Service India";
+    case "youtube-likes": return "YouTube Likes India";
+    case "youtube-views": return "YouTube Views India";
+    case "linkedin-followers": return "LinkedIn Followers India";
+    case "telegram-members": return "Telegram Members India";
+    case "facebook-followers": return "Facebook Followers India";
+    case "smm-panel-india": return "SMM Panel India";
+    default: return slug.replace(/-/g, " ");
+  }
+}
+
+function getFaqs(slug: string, title: string, price: string, delivery: string) {
+  return [
+    { question: `How do I buy ${title}?`, answer: `Open Packages or New Order, choose ${title}, add your public link, and confirm the checkout flow.` },
+    { question: "Is this page suitable for India?", answer: `Yes. This page targets buyers searching for ${routeTitle(slug).toLowerCase()} and related SMM panel services in India.` },
+    { question: "Can I track the order?", answer: "Yes. You can track status from the dashboard after checkout." },
+    { question: "What is the starting price?", answer: `Starting price is ${price} with delivery around ${delivery}.` },
+  ];
+}
+
+export async function generateStaticParams() {
+  return [
+    ...growthServices.map((service) => ({ slug: service.slug })),
+    ...activeSmmServices.map((service) => ({ slug: service.code })),
+    { slug: "smm-panel-india" },
+  ];
+}
+
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const seo = getSeoData(params.slug);
+  if (!seo) return {};
+
+  return {
+    metadataBase: new URL(siteUrl),
+    title: seo.title,
+    description: seo.description,
+    alternates: { canonical: `/services/${params.slug}` },
+    openGraph: {
+      type: "article",
+      siteName: "SocialRUSH",
+      title: seo.title,
+      description: seo.description,
+      url: `/services/${params.slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: seo.title,
+      description: seo.description,
+    },
+  };
+}
+
+function getSeoData(slug: string) {
+  const growthService = getGrowthService(slug);
+  if (growthService) {
+    return {
+      title: `${growthService.name} | SocialRUSH`,
+      description: `${growthService.description} Explore benefits, FAQs, and direct links to packages and pricing.`,
+      headline: growthService.name,
+      intro: growthService.longDescription,
+      price: "View packages for live pricing",
+      delivery: growthService.delivery,
+      audience: growthService.idealFor,
+      benefits: growthService.benefits,
+      faqs: growthService.faqs,
+      platform: growthService.platform,
+    };
+  }
+
+  const smmService = activeSmmServices.find((service) => service.code === slug);
+  if (smmService) {
+    const platform = platformMeta[smmService.platform];
+    const title = `${routeTitle(slug)} | SocialRUSH`;
+    const price = formatInr(smmService.pricePer1000);
+    return {
+      title,
+      description: `Buy ${smmService.name.toLowerCase()} from SocialRUSH with transparent pricing, dashboard tracking, and support for India-focused growth campaigns.`,
+      headline: smmService.name,
+      intro: `${smmService.description} SocialRUSH gives you a clean ordering flow, live tracking, and support for campaign management across India and global audiences.`,
+      price,
+      pricePer1000INR: smmService.pricePer1000,
+      delivery: smmService.deliveryTime,
+      audience: ["Creators", "Agencies", "Brands", "Marketing teams"],
+      benefits: ["Transparent starting price", `Delivery: ${smmService.deliveryTime}`, `Refill: ${smmService.refillPolicy}`, `Quality: ${smmService.qualityType}`],
+      faqs: getFaqs(slug, smmService.name, price, smmService.deliveryTime),
+      platform: platform.label,
+    };
+  }
+
+  if (slug === "smm-panel-india") {
+    return {
+      title: "SMM Panel India | SocialRUSH",
+      description: "SocialRUSH is a production-ready SMM panel India platform for Instagram followers, YouTube subscribers, LinkedIn followers, Telegram members, and more.",
+      headline: "SMM Panel India",
+      intro: "SocialRUSH gives Indian buyers a modern SMM panel with secure checkout, transparent starting rates, and clean dashboard tracking for social growth services.",
+      price: "Live pricing in dashboard",
+      delivery: "Platform dependent",
+      audience: ["Agencies", "Creators", "Resellers", "Brands"],
+      benefits: ["Instagram followers India", "YouTube subscribers India", "LinkedIn followers India", "Telegram members India"],
+      faqs: getFaqs(slug, "SMM Panel India", "Live pricing", "platform dependent"),
+      platform: "India-wide SMM panel",
+    };
+  }
+
+  return null;
+}
+
+export default function ServiceSeoPage({ params }: { params: { slug: string } }) {
+  const seo = getSeoData(params.slug);
+  if (!seo) notFound();
+  const hasBasePrice = "pricePer1000INR" in seo && typeof seo.pricePer1000INR === "number";
+
+  const faqSchema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: seo.faqs.map((faq) => ({
+      "@type": "Question",
+      name: faq.question,
+      acceptedAnswer: { "@type": "Answer", text: faq.answer },
+    })),
+  };
+
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@type": "Service",
+    name: seo.title,
+    description: seo.description,
+    provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
+    areaServed: "IN",
+    serviceType: seo.headline,
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+      { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` },
+      { "@type": "ListItem", position: 3, name: seo.headline, item: `${siteUrl}/services/${params.slug}` },
+    ],
+  };
+
+  return (
+    <PublicShell tone="light3d">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+
+      <main className="px-5 pb-20 pt-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl space-y-8">
+          <section className="rounded-[32px] border border-white/80 bg-white/78 p-6 shadow-[0_24px_54px_-34px_rgba(15,23,42,.42)] backdrop-blur-xl sm:p-10">
+            <p className="inline-flex rounded-full border border-[#dce8ff] bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#4f6ca8]">
+              {routeTitle(params.slug)}
+            </p>
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-[#102858] sm:text-5xl">{seo.headline}</h1>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#4d6796] sm:text-base">{seo.intro}</p>
+            <div className="mt-6 flex flex-wrap gap-2">
+              <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">
+                {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}
+              </span>
+              <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">{seo.platform}</span>
+              <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">{seo.delivery}</span>
+            </div>
+            {hasBasePrice ? <p className="mt-3 text-xs font-semibold text-[#5b76aa]">{getCurrencyDisclaimer()}</p> : null}
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="/packages" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white">View Packages</Link>
+              <Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white px-5 py-3 text-sm font-bold text-[#1f3f77]">Pricing</Link>
+              <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-5 py-3 text-sm font-bold text-[#35548d]">Contact Support</Link>
+            </div>
+          </section>
+
+          <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+            {seo.benefits.map((item) => (
+              <article key={item} className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-[0_16px_34px_-26px_rgba(15,23,42,.35)]">
+                <p className="text-sm font-bold text-[#17366f]">{item}</p>
+              </article>
+            ))}
+          </section>
+
+          <section className="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
+            <article className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
+              <h2 className="text-2xl font-black text-[#102858]">Why this page matters</h2>
+              <p className="mt-4 text-sm leading-7 text-[#4d6796]">This landing page is built to rank for buyer intent terms, explain the service quickly, and link people into the right conversion path without extra friction.</p>
+              <div className="mt-6 space-y-3 text-sm leading-7 text-[#4d6796]">
+                <p>Ideal for: {seo.audience.join(", ")}</p>
+                <p>Internal links: Home, Services, Packages, Pricing, Blog, FAQ, and Contact.</p>
+              </div>
+            </article>
+            <aside className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#5b76aa]">Service snapshot</p>
+              <div className="mt-4 space-y-3 text-sm text-[#4d6796]">
+                <p><span className="font-bold text-[#17366f]">Price:</span> {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}</p>
+                <p><span className="font-bold text-[#17366f]">Delivery:</span> {seo.delivery}</p>
+                <p><span className="font-bold text-[#17366f]">Platform:</span> {seo.platform}</p>
+              </div>
+            </aside>
+          </section>
+
+          <section className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
+            <h2 className="text-2xl font-black text-[#102858]">Frequently Asked Questions</h2>
+            <div className="mt-5 grid gap-3">
+              {seo.faqs.map((faq) => (
+                <details key={faq.question} className="group rounded-2xl border border-[#e4ecff] bg-[#f7faff] p-4">
+                  <summary className="cursor-pointer list-none text-sm font-bold text-[#17366f]">{faq.question}</summary>
+                  <p className="mt-3 text-sm leading-7 text-[#4d6796]">{faq.answer}</p>
+                </details>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-[28px] border border-[#dce8ff] bg-[#f7fbff] p-6 sm:p-8">
+            <h2 className="text-2xl font-black text-[#102858]">Explore more</h2>
+            <div className="mt-4 flex flex-wrap gap-3 text-sm font-bold text-[#1f3f77]">
+              {[["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Pricing", "/pricing"], ["Blog", "/blog"], ["FAQ", "/faq"], ["Contact", "/contact"]].map(([label, href]) => (
+                <Link key={href} href={href} className="rounded-xl border border-[#d7e4ff] bg-white px-4 py-2 transition hover:bg-[#eef4ff]">
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </section>
+        </div>
+      </main>
+    </PublicShell>
+  );
 }

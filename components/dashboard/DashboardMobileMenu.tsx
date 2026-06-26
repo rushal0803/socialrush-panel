@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { NavLinks } from "@/components/Sidebar";
 import { createClient } from "@/lib/supabase/client";
+import { Menu, X } from "lucide-react";
 
 export default function DashboardMobileMenu() {
   const pathname = usePathname();
@@ -61,9 +62,9 @@ export default function DashboardMobileMenu() {
         aria-label="Toggle dashboard navigation"
         aria-expanded={isOpen}
         onClick={() => setIsOpen((open) => !open)}
-        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/80 bg-white/85 text-[#4a6398] shadow-[0_10px_24px_rgba(79,108,168,.15)]"
+        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/80 bg-white/85 text-[#4a6398] shadow-[0_10px_24px_rgba(79,108,168,.15)] transition hover:-translate-y-0.5 hover:bg-white"
       >
-        <span className="text-lg">{isOpen ? "×" : "☰"}</span>
+        {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
       {isOpen && (
         <div className="fixed inset-0 z-[70] lg:hidden">

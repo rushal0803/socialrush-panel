@@ -16,10 +16,11 @@ html {
 
 body {
   margin: 0;
-  color: #E2E8F0;
-  background: #07111F;
+  color: #0f172a;
+  background: #ffffff;
   min-height: 100vh;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  overflow-x: hidden;
 }
 
 ::selection {
@@ -33,6 +34,30 @@ body {
 
 html {
   scroll-behavior: smooth;
+}
+
+a,
+button,
+input,
+select,
+textarea {
+  touch-action: manipulation;
+}
+
+img,
+video,
+canvas,
+svg {
+  max-width: 100%;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  text-wrap: balance;
 }
 
 @layer components {
@@ -187,5 +212,15 @@ html {
 
   .campaign-progress {
     animation: none;
+  }
+}
+
+@media (max-width: 640px) {
+  h1 {
+    letter-spacing: -0.025em;
+  }
+
+  h2 {
+    letter-spacing: -0.02em;
   }
 }

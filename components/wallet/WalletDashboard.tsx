@@ -3,7 +3,7 @@
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { formatCurrency } from "@/lib/currency";
+import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 export type WalletTransaction = {
@@ -639,6 +639,9 @@ export default function WalletDashboard({
                     Manage campaign funds, payments, spending, and transaction
                     activity securely.
                   </p>
+                  <p className="mt-2 max-w-2xl text-xs font-semibold text-[#59709b]">
+                    {getCurrencyDisclaimer()}
+                  </p>
                 </div>
 
                 <div className="inline-flex items-center gap-2 rounded-2xl border border-emerald-200/70 bg-white/75 px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700 shadow-[0_16px_36px_-24px_rgba(16,185,129,.45)] backdrop-blur-xl">
@@ -885,6 +888,9 @@ export default function WalletDashboard({
                       className="h-16 w-full rounded-[1.5rem] border border-[#d6e4ff] bg-white pl-20 pr-5 text-2xl font-black tracking-[-0.03em] text-[#16346c] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_5px_rgba(143,174,255,.18),0_18px_42px_-28px_rgba(79,108,168,.4)]"
                     />
                   </div>
+                    <p className="mt-2 text-xs font-semibold text-[#6882b5]">
+                      Amount is charged in INR. {currency !== "INR" ? `Approx in ${currency}: ${money(amount)}.` : ""}
+                    </p>
 
                   <div className="mt-4 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-6">
                     {quickAmounts.map((value) => {
@@ -963,6 +969,14 @@ export default function WalletDashboard({
                           {money(balance)}
                         </span>
                       </div>
+                      {currency !== "INR" ? (
+                        <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/75 bg-white/75 px-4 py-3">
+                          <span className="font-semibold">Wallet base (INR)</span>
+                          <span className="text-right font-black text-[#15356f]">
+                            {formatCurrency(balance, "INR")}
+                          </span>
+                        </div>
+                      ) : null}
                       <div className="flex items-center justify-between gap-4 rounded-2xl border border-white/75 bg-white/75 px-4 py-3">
                         <span className="font-semibold">Final payable amount</span>
                         <span className="text-right font-black text-[#15356f]">

@@ -78,7 +78,7 @@ export default function FaqPageContent({ categories }: { categories: FaqCategory
               Frequently Asked Questions
             </h1>
             <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-              Everything you need to know about SocialRUSH AI services, automation, pricing, payments, and support.
+              Everything you need to know about SocialRUSH services, pricing, payments, and support.
             </p>
           </div>
 
@@ -119,7 +119,7 @@ export default function FaqPageContent({ categories }: { categories: FaqCategory
             </span>
             <div>
               <h2 className="text-lg font-extrabold sm:text-xl">{selectedCategory.label} FAQs</h2>
-              <p className="text-xs text-slate-500 sm:text-sm">Clear answers to help you choose the right SocialRUSH AI solution.</p>
+              <p className="text-xs text-slate-500 sm:text-sm">Clear answers to help you choose the right SocialRUSH service.</p>
             </div>
           </div>
 

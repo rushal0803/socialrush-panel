@@ -7,6 +7,8 @@ import { useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { createClient } from "@/lib/supabase/client";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
+import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 type PlatformFilter = "All" | BigPackage["platform"];
 
@@ -62,14 +64,6 @@ const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Suppo
 
 const PENDING_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
-function formatInr(value: number) {
-  return new Intl.NumberFormat("en-IN", {
-    style: "currency",
-    currency: "INR",
-    maximumFractionDigits: 2,
-  }).format(value);
-}
-
 function toTitleCase(value: string) {
   return value.charAt(0).toUpperCase() + value.slice(1);
 }
@@ -80,6 +74,7 @@ function getServiceCode(pkg: BigPackage) {
 
 export default function PackagesPageContent() {
   const router = useRouter();
+  const { currency } = usePreferredCurrency("INR");
 
   const [selectedPlatform, setSelectedPlatform] = useState<PlatformFilter>("All");
   const [selectedPackageId, setSelectedPackageId] = useState<string>(bigPackages[0]?.packageId ?? "");
@@ -261,6 +256,7 @@ export default function PackagesPageContent() {
               <p className="mt-4 max-w-3xl text-base leading-8 text-[#4a6290] sm:text-lg">
                 Select a package, review details, and place your order securely.
               </p>
+              <p className="mt-3 text-xs font-semibold text-[#5a72a3]">{getCurrencyDisclaimer()}</p>
               <div className="mt-6 flex flex-wrap gap-2.5">
                 {trustBadges.map((chip) => (
                   <span
@@ -329,7 +325,7 @@ export default function PackagesPageContent() {
                     </p>
 
                     <div className="mt-4 rounded-2xl border border-[#d9e5ff] bg-[#f7faff] px-4 py-3">
-                      <p className="text-sm font-extrabold text-[#355186]">{formatInr(pkg.basePriceINR)}</p>
+                      <p className="text-sm font-extrabold text-[#355186]">{formatCurrency(pkg.basePriceINR, currency)}</p>
                       <p className="mt-1 text-xs font-medium text-[#6078ab]">Quantity: {pkg.quantityLabel}</p>
                       <p className="mt-1 text-xs font-medium text-[#6078ab]">Delivery: {pkg.deliveryTime}</p>
                     </div>
@@ -411,7 +407,7 @@ export default function PackagesPageContent() {
                     <p className="text-[#496292]">Delivery: {selectedPackage.deliveryTime}</p>
                     <div className="border-t border-[#dce7ff] pt-3">
                       <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#5c76ac]">Total Payable</p>
-                      <p className="mt-1 text-2xl font-black text-[#14316a]">{formatInr(selectedPackage.basePriceINR)}</p>
+                      <p className="mt-1 text-2xl font-black text-[#14316a]">{formatCurrency(selectedPackage.basePriceINR, currency)}</p>
                     </div>
                   </div>
                 ) : (
@@ -421,7 +417,7 @@ export default function PackagesPageContent() {
                 <div className="mt-5 rounded-2xl border border-[#dce7ff] bg-white p-4 text-sm">
                   <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[#5c76ac]">Wallet Balance</p>
                   <p className="mt-1 text-lg font-black text-[#14316a]">
-                    {isAuthLoading ? "Checking..." : isLoggedIn ? formatInr(walletBalance ?? 0) : "Login required"}
+                    {isAuthLoading ? "Checking..." : isLoggedIn ? formatCurrency(walletBalance ?? 0, currency) : "Login required"}
                   </p>
                   {!hasEnoughBalance && isLoggedIn ? (
                     <p className="mt-2 font-semibold text-[#b03361]">Balance is lower than the package total.</p>
@@ -439,7 +435,7 @@ export default function PackagesPageContent() {
                 <div>
                   <p className="text-xs font-bold uppercase tracking-[0.12em] text-[#5c76ac]">Summary</p>
                   <p className="text-sm font-bold text-[#1d3b74]">{selectedPackage.title}</p>
-                  <p className="text-xs text-[#4d6696]">{formatInr(selectedPackage.basePriceINR)}</p>
+                  <p className="text-xs text-[#4d6696]">{formatCurrency(selectedPackage.basePriceINR, currency)}</p>
                 </div>
                 <button
                   type="button"

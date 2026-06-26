@@ -187,7 +187,7 @@ function BlogHeader() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.18 }}
-              className="border-t border-[#e4ebff] px-4 pb-5 pt-3 lg:hidden"
+              className="max-h-[calc(100vh-5.25rem)] overflow-y-auto border-t border-[#e4ebff] px-4 pb-5 pt-3 lg:hidden"
             >
               <nav className="grid gap-1">
                 {navLinks.map(([label, href]) => (
