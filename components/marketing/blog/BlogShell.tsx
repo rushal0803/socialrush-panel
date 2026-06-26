@@ -6,6 +6,7 @@ import { useEffect, useRef, useState } from "react";
 import { usePathname } from "next/navigation";
 import { currencies, type Currency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { createClient } from "@/lib/supabase/client";
 
 const navLinks = [
   ["Home", "/"],
@@ -104,8 +105,23 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
 function BlogHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    void supabase.auth.getSession().then(({ data }) => setIsLoggedIn(Boolean(data.session)));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setIsLoggedIn(Boolean(session)));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  async function logout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setOpen(false);
+    window.location.href = "/login";
+  }
 
   return (
     <header className="sticky top-3 z-50 px-4 sm:px-6 lg:px-8">
@@ -130,12 +146,24 @@ function BlogHeader() {
 
           <div className="hidden items-center gap-2 lg:flex">
             <BlogCurrencyDropdown compact />
-            <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]">
-              Login
-            </Link>
-            <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-[#f5f8ff] px-4 py-2 text-sm font-bold text-[#244385] transition hover:bg-[#e9f0ff]">
-              Sign Up
-            </Link>
+            {isLoggedIn ? (
+              <button
+                type="button"
+                onClick={logout}
+                className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]"
+              >
+                Logout
+              </button>
+            ) : (
+              <>
+                <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]">
+                  Login
+                </Link>
+                <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-[#f5f8ff] px-4 py-2 text-sm font-bold text-[#244385] transition hover:bg-[#e9f0ff]">
+                  Sign Up
+                </Link>
+              </>
+            )}
             <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-2 text-sm font-bold text-white shadow-[0_12px_26px_rgba(122,113,241,.35)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(122,113,241,.42)]">
               Start Order
             </Link>
@@ -173,12 +201,24 @@ function BlogHeader() {
                 <div className="w-fit">
                   <BlogCurrencyDropdown />
                 </div>
-                <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]">
-                  Login
-                </Link>
-                <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-[#f6f9ff] px-4 py-3 text-sm font-bold text-[#1f3b74]">
-                  Sign Up
-                </Link>
+                {isLoggedIn ? (
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]"
+                  >
+                    Logout
+                  </button>
+                ) : (
+                  <>
+                    <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]">
+                      Login
+                    </Link>
+                    <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-[#f6f9ff] px-4 py-3 text-sm font-bold text-[#1f3b74]">
+                      Sign Up
+                    </Link>
+                  </>
+                )}
                 <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-3 text-sm font-bold text-white">
                   Start Order
                 </Link>

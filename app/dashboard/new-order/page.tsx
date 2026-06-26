@@ -1,189 +1,192 @@
-﻿"use client";
+"use client";
 
 import { AnimatePresence, motion } from "framer-motion";
+import { CheckCircle2, Sparkles, User, Wallet, Layers3, Link as LinkIcon, Hash, StickyNote, BarChart3, ShieldCheck, Clock3, Gem } from "lucide-react";
+import Link from "next/link";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
-import { convertCurrency, formatPrice } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
 
-type PlatformId = "instagram" | "youtube" | "facebook" | "twitter";
-type Service = {
-  id: string;
-  platform: PlatformId;
-  name: string;
-  description: string;
-  rate: number;
-  delivery: string;
-  quality: string;
-  refill: string;
-  minimum: number;
-  maximum: number;
-  features: string[];
-  popular?: boolean;
+type PlatformId = SmmPlatformId;
+const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
+
+const serviceToLegacyCode: Record<string, string> = {
+  "instagram-followers": "ig-followers",
+  "instagram-likes": "ig-likes",
+  "instagram-views": "ig-views",
+  "youtube-subscribers": "yt-subscribers",
+  "youtube-likes": "yt-likes",
+  "youtube-views": "yt-views",
+  "facebook-followers": "fb-followers",
+  "facebook-likes": "fb-likes",
+  "facebook-views": "fb-views",
+  "x-followers": "x-followers",
+  "x-likes": "x-likes",
 };
 
-const platforms: { id: PlatformId; name: string; description: string; gradient: string }[] = [
-  { id: "instagram", name: "Instagram", description: "Audience, engagement and content visibility", gradient: "from-fuchsia-500 to-rose-500" },
-  { id: "youtube", name: "YouTube", description: "Channel growth and video promotion", gradient: "from-red-500 to-rose-600" },
-  { id: "facebook", name: "Facebook", description: "Page authority and brand engagement", gradient: "from-blue-500 to-blue-700" },
-  { id: "twitter", name: "Twitter / X", description: "Profile authority and conversation reach", gradient: "from-slate-700 to-slate-950" },
-];
+type ApiOrderData = {
+  id: string;
+  charge: number;
+  balance: number;
+  duplicate?: boolean;
+};
 
-const services: Service[] = [
-  { id: "ig-followers", platform: "instagram", name: "Instagram Real Followers", description: "Increase your Instagram presence with high-quality followers delivered gradually.", rate: 599, delivery: "1-7 days", quality: "Premium", refill: "30 days", minimum: 100, maximum: 100000, features: ["Gradual delivery", "Refill support", "Premium quality", "Safe ordering"], popular: true },
-  { id: "ig-likes", platform: "instagram", name: "Instagram Real Likes", description: "Improve engagement and content performance with quality likes.", rate: 299, delivery: "1-3 days", quality: "Quality Checked", refill: "30 days", minimum: 100, maximum: 50000, features: ["Fast delivery", "Higher engagement", "Refill available", "Quality checked"] },
-  { id: "ig-views", platform: "instagram", name: "Instagram Video Views", description: "Increase video visibility across reels and video content.", rate: 49, delivery: "1-2 days", quality: "Premium", refill: "15 days", minimum: 500, maximum: 500000, features: ["Fast delivery", "Content exposure", "Safe service", "Quality checked"] },
-  { id: "yt-subscribers", platform: "youtube", name: "YouTube Subscribers", description: "Build channel authority with premium subscriber growth.", rate: 3999, delivery: "3-10 days", quality: "Premium", refill: "30 days", minimum: 100, maximum: 50000, features: ["Premium quality", "Gradual delivery", "Refill support", "Long-term growth"], popular: true },
-  { id: "yt-likes", platform: "youtube", name: "YouTube Likes", description: "Increase engagement and improve social proof on videos.", rate: 899, delivery: "1-4 days", quality: "High", refill: "30 days", minimum: 100, maximum: 50000, features: ["Fast delivery", "Premium quality", "Refill available", "Safe ordering"] },
-  { id: "yt-views", platform: "youtube", name: "YouTube Views", description: "Boost discoverability through increased video exposure.", rate: 499, delivery: "2-7 days", quality: "High Retention", refill: "30 days", minimum: 500, maximum: 500000, features: ["High retention", "Gradual delivery", "Refill support", "Quality checked"] },
-  { id: "fb-followers", platform: "facebook", name: "Facebook Followers", description: "Grow page audience and improve brand credibility.", rate: 499, delivery: "2-8 days", quality: "Premium", refill: "30 days", minimum: 100, maximum: 100000, features: ["Premium quality", "Gradual delivery", "Refill support", "Safe service"], popular: true },
-  { id: "fb-likes", platform: "facebook", name: "Facebook Post Likes", description: "Increase engagement on Facebook posts.", rate: 299, delivery: "1-5 days", quality: "High", refill: "30 days", minimum: 100, maximum: 50000, features: ["Fast delivery", "Higher engagement", "Refill available", "Quality checked"] },
-  { id: "fb-views", platform: "facebook", name: "Facebook Video Views", description: "Expand reach and improve video performance.", rate: 199, delivery: "1-3 days", quality: "Premium", refill: "15 days", minimum: 500, maximum: 500000, features: ["Fast delivery", "Content reach", "Safe service", "Quality checked"] },
-  { id: "x-followers", platform: "twitter", name: "Twitter/X Followers", description: "Build authority and profile visibility on X.", rate: 999, delivery: "2-7 days", quality: "Premium", refill: "30 days", minimum: 100, maximum: 100000, features: ["Premium quality", "Gradual delivery", "Refill support", "Safe ordering"], popular: true },
-];
+const sectionMotion = {
+  initial: { opacity: 0, y: 14 },
+  whileInView: { opacity: 1, y: 0 },
+  viewport: { once: true, amount: 0.2 as const },
+  transition: { duration: 0.45, ease: "easeOut" as const },
+};
 
-function PlatformIcon({ platform, className = "h-5 w-5" }: { platform: PlatformId; className?: string }) {
-  const paths = {
-    instagram: (
-      <>
-        <rect x="3" y="3" width="18" height="18" rx="5" />
-        <circle cx="12" cy="12" r="4" />
-        <path d="M17.5 6.5h.01" />
-      </>
-    ),
-    youtube: (
-      <>
-        <path d="M21 12s0-4-1-5-1-1-7-1-7-1-1 0-1 1-1 5-1 5 0 4 1 5 1 1 7 1 7 1s6 0 7-1c1-1 1-5 1-5Z" />
-        <path d="m10 9 5 3-5 3Z" />
-      </>
-    ),
-    facebook: <path d="M14 8h3V4h-3c-3 0-5 2-5 5v3H6v4h3v6h4v-6h3l1-4h-4V9c0-.6.4-1 1-1Z" />,
-    twitter: <path d="M4 4l16 16M20 4 4 20M9 4l11 16M4 4l11 16" />,
-  };
-
-  return (
-    <svg viewBox="0 0 24 24" className={className} fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      {paths[platform]}
-    </svg>
-  );
+function buildReadableOrderId(id: string) {
+  const compact = id.replace(/-/g, "");
+  const seed = Number.parseInt(compact.slice(0, 8), 16);
+  return `SR-${String(Math.abs(seed % 900000) + 1000).padStart(4, "0")}`;
 }
 
 export default function NewCampaignPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { currency: selectedCurrency } = usePreferredCurrency("INR");
+  const { currency } = usePreferredCurrency("INR");
+  const money = (value: number) => formatCurrency(value, currency);
 
-  const [platform, setPlatform] = useState<PlatformId>("instagram");
-  const [selectedId, setSelectedId] = useState("ig-followers");
-  const [link, setLink] = useState("");
-  const [quantity, setQuantity] = useState(1000);
-  const [databaseIds, setDatabaseIds] = useState<Record<PlatformId, number>>({ instagram: 0, youtube: 0, facebook: 0, twitter: 0 });
+  const initialServiceCode = searchParams.get("service") ?? "instagram-followers";
+  const initialService = activeSmmServices.find((service) => service.code === initialServiceCode) ?? activeSmmServices[0];
+
+  const [platform, setPlatform] = useState<PlatformId>(initialService.platform);
+  const [serviceCode, setServiceCode] = useState(initialService.code);
+  const [targetLink, setTargetLink] = useState(searchParams.get("link") ?? "");
+  const [quantity, setQuantity] = useState(Number(searchParams.get("quantity") || initialService.minQuantity));
+  const [notes, setNotes] = useState("");
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [loadingBalance, setLoadingBalance] = useState(false);
+  const [loadingProfile, setLoadingProfile] = useState(false);
+  const [profileChip, setProfileChip] = useState("Client Workspace");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
-  const [walletBalance, setWalletBalance] = useState<number | null>(null);
-  const [success, setSuccess] = useState(false);
+  const [confirmOpen, setConfirmOpen] = useState(false);
+  const [confirmedDetails, setConfirmedDetails] = useState(false);
+  const [successOrder, setSuccessOrder] = useState<ApiOrderData | null>(null);
 
-  const checkoutInFlight = useRef(false);
-  const checkoutRequestId = useRef<string | null>(null);
+  const inFlight = useRef(false);
+  const requestId = useRef<string>("");
 
   useEffect(() => {
     const supabase = createClient();
-
-    void supabase
-      .from("services")
-      .select("id, categories(name)")
-      .eq("status", "active")
-      .then(({ data }) => {
-        const ids = { instagram: 0, youtube: 0, facebook: 0, twitter: 0 };
-        for (const row of data ?? []) {
-          const name = ((row.categories as unknown as { name?: string } | null)?.name || "").toLowerCase();
-          const key = name.includes("instagram")
-            ? "instagram"
-            : name.includes("youtube")
-              ? "youtube"
-              : name.includes("facebook")
-                ? "facebook"
-                : name.includes("twitter") || name.includes("x/")
-                  ? "twitter"
-                  : null;
-          if (key && !ids[key]) ids[key] = row.id;
-        }
-        setDatabaseIds(ids);
-      });
-
-    void supabase.auth.getUser().then(async ({ data: { user } }) => {
-      if (!user) return;
-      const { data } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
-      setWalletBalance(Number(data?.balance ?? 0));
+    setLoadingProfile(true);
+    void supabase.auth.getUser().then(({ data }) => {
+      const user = data.user;
+      setProfileChip(user?.email ? user.email.split("@")[0] : "Client Workspace");
+      setLoadingProfile(false);
     });
   }, []);
 
-  useEffect(() => {
-    const serviceQuery = searchParams.get("service");
-    const quantityQuery = Number(searchParams.get("quantity") || "0");
-    const linkQuery = searchParams.get("link");
+  const servicesForPlatform = useMemo(
+    () => activeSmmServices.filter((service) => service.platform === platform),
+    [platform],
+  );
 
-    const serviceMap: Record<string, string> = {
-      "instagram-followers": "ig-followers",
-      "instagram-likes": "ig-likes",
-      "instagram-views": "ig-views",
-      "youtube-subscribers": "yt-subscribers",
-      "youtube-likes": "yt-likes",
-      "youtube-views": "yt-views",
-      "facebook-followers": "fb-followers",
-      "facebook-likes": "fb-likes",
-      "facebook-views": "fb-views",
-      "twitter-followers": "x-followers",
-    };
+  const selectedService = useMemo(
+    () => activeSmmServices.find((service) => service.code === serviceCode) ?? servicesForPlatform[0],
+    [serviceCode, servicesForPlatform],
+  );
 
-    if (serviceQuery) {
-      const mappedId = serviceMap[serviceQuery];
-      const matched = services.find((service) => service.id === mappedId);
-      if (matched) {
-        setSelectedId(matched.id);
-        setPlatform(matched.platform);
-      }
-    }
+  const totalPrice = useMemo(
+    () => Math.round(((Math.max(quantity, 0) / 1000) * selectedService.pricePer1000) * 100) / 100,
+    [quantity, selectedService.pricePer1000],
+  );
 
-    if (quantityQuery && quantityQuery >= 100) {
-      setQuantity(quantityQuery);
-    }
-    if (linkQuery) {
-      setLink(linkQuery);
-    }
-  }, [searchParams]);
+  const quantityError = useMemo(() => {
+    if (!Number.isFinite(quantity) || quantity <= 0) return "Enter a valid quantity.";
+    if (quantity < selectedService.minQuantity) return `Minimum quantity is ${selectedService.minQuantity.toLocaleString("en-IN")}.`;
+    if (quantity > selectedService.maxQuantity) return `Maximum quantity is ${selectedService.maxQuantity.toLocaleString("en-IN")}.`;
+    return "";
+  }, [quantity, selectedService.minQuantity, selectedService.maxQuantity]);
 
-  const visibleServices = useMemo(() => services.filter((service) => service.platform === platform), [platform]);
-  const selected = services.find((service) => service.id === selectedId) ?? visibleServices[0];
-  const totalINR = Math.max(0, Math.round(((selected.rate / 1000) * quantity) * 100) / 100);
-  const hasEnoughBalance = walletBalance !== null && walletBalance + 0.0001 >= totalINR;
-  const currentPlatform = platforms.find((item) => item.id === platform)!;
+  const hasEnoughWallet = walletBalance !== null && walletBalance + 0.0001 >= totalPrice;
 
-  const displayRate = (inr: number) => formatPrice(convertCurrency(inr, selectedCurrency), selectedCurrency);
-  const displayMoney = (inr: number) => formatPrice(convertCurrency(inr, selectedCurrency), selectedCurrency);
+  async function loadWalletBalance() {
+    if (loadingBalance) return;
+    setLoadingBalance(true);
 
-  function choosePlatform(id: PlatformId) {
-    setPlatform(id);
-    const first = services.find((service) => service.platform === id);
-    if (first) setSelectedId(first.id);
-  }
+    const supabase = createClient();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
 
-  async function submit(event: React.FormEvent) {
-    event.preventDefault();
-    if (checkoutInFlight.current) return;
-
-    setError("");
-    setSuccess(false);
-
-    const serviceId = databaseIds[platform];
-    if (!serviceId) {
-      setError("This platform is still being configured. Please try again shortly.");
+    if (!user) {
+      router.replace(`/login?next=${encodeURIComponent(window.location.pathname + window.location.search)}`);
       return;
     }
 
-    if (quantity < selected.minimum || quantity > selected.maximum) {
-      setError(`Quantity must be between ${selected.minimum.toLocaleString("en-IN")} and ${selected.maximum.toLocaleString("en-IN")}.`);
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("balance")
+      .eq("id", user.id)
+      .single();
+
+    setWalletBalance(Number(profile?.balance ?? 0));
+    setLoadingBalance(false);
+  }
+
+  function switchPlatform(nextPlatform: PlatformId) {
+    setPlatform(nextPlatform);
+    const firstService = activeSmmServices.find((service) => service.platform === nextPlatform);
+    if (firstService) {
+      setServiceCode(firstService.code);
+      setQuantity(Math.max(quantity, firstService.minQuantity));
+    }
+  }
+
+  function switchService(nextServiceCode: string) {
+    setServiceCode(nextServiceCode);
+    const nextService = activeSmmServices.find((service) => service.code === nextServiceCode);
+    if (nextService) {
+      if (quantity < nextService.minQuantity) setQuantity(nextService.minQuantity);
+      if (quantity > nextService.maxQuantity) setQuantity(nextService.maxQuantity);
+    }
+  }
+
+  function resetForm() {
+    setTargetLink("");
+    setNotes("");
+    setQuantity(selectedService.minQuantity);
+    setError("");
+  }
+
+  async function openConfirmation() {
+    setError("");
+
+    if (!targetLink.trim()) {
+      setError("Link / username is required.");
+      return;
+    }
+
+    if (quantityError) {
+      setError(quantityError);
+      return;
+    }
+
+    if (walletBalance === null) {
+      await loadWalletBalance();
+    }
+
+    setConfirmOpen(true);
+    setConfirmedDetails(false);
+  }
+
+  async function confirmOrder() {
+    if (inFlight.current || submitting) return;
+    if (!confirmedDetails) {
+      setError("Please confirm all details before placing your order.");
+      return;
+    }
+
+    if (!hasEnoughWallet) {
+      setError("Insufficient balance");
       return;
     }
 
@@ -197,270 +200,464 @@ export default function NewCampaignPage() {
       return;
     }
 
-    const { data: profile, error: balanceError } = await supabase
-      .from("profiles")
-      .select("balance")
-      .eq("id", user.id)
-      .single();
-
-    if (balanceError) {
-      setError("Unable to verify your wallet balance. Please refresh and try again.");
-      return;
-    }
-
-    const currentBalance = Number(profile.balance ?? 0);
-    setWalletBalance(currentBalance);
-
-    if (currentBalance + 0.0001 < totalINR) {
-      setError("Insufficient campaign budget. Add funds to continue.");
-      return;
-    }
-
-    checkoutInFlight.current = true;
+    inFlight.current = true;
     setSubmitting(true);
-    checkoutRequestId.current ||= crypto.randomUUID();
+    setError("");
+
+    if (!requestId.current) {
+      requestId.current = crypto.randomUUID();
+    }
+
+    const payload = {
+      serviceCode,
+      serviceId: 0,
+      quantity,
+      link: targetLink.trim(),
+      requestId: requestId.current,
+      notes: notes.trim() || null,
+      fallbackPrice: selectedService.pricePer1000,
+      fallbackName: selectedService.name,
+      fallbackPlatform: selectedService.platform,
+      fallbackMin: selectedService.minQuantity,
+      fallbackMax: selectedService.maxQuantity,
+    };
 
     try {
       const response = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          serviceId,
-          serviceCode: selected.id,
-          link,
-          quantity,
-          requestId: checkoutRequestId.current,
-        }),
+        body: JSON.stringify(payload),
       });
 
-      const payload = (await response.json()) as {
-        data?: { id: string; charge: number; balance: number; duplicate?: boolean };
-        error?: string;
-      };
+      const result = (await response.json()) as { data?: ApiOrderData; error?: string };
 
-      if (!response.ok || !payload.data) {
-        setError(payload.error || "Unable to create campaign.");
+      if (!response.ok || !result.data) {
+        setError(result.error || "Unable to place order right now.");
         setSubmitting(false);
-        checkoutInFlight.current = false;
+        inFlight.current = false;
         return;
       }
 
-      const updatedBalance = Number(payload.data.balance);
-      setWalletBalance(updatedBalance);
-      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
-      setSuccess(true);
-      router.refresh();
-      window.setTimeout(() => router.replace("/dashboard"), 800);
-    } catch {
-      setError("Checkout could not be completed. Please try again.");
+      setWalletBalance(Number(result.data.balance));
+      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: Number(result.data.balance) }));
+      setSuccessOrder(result.data);
+      setConfirmOpen(false);
       setSubmitting(false);
-      checkoutInFlight.current = false;
+      inFlight.current = false;
+      requestId.current = "";
+    } catch {
+      setError("Unable to place order right now.");
+      setSubmitting(false);
+      inFlight.current = false;
     }
   }
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_top_right,#dbeafe_0,transparent_24%),linear-gradient(180deg,#f8faff_0%,#f4f7fb_100%)] p-3 sm:p-5 lg:p-6">
-      <section className="mx-auto max-w-[1380px]">
-        <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-end">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-hidden bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] p-4 sm:p-6 lg:p-8">
+      <div className="pointer-events-none absolute inset-0">
+        <motion.div
+          aria-hidden
+          animate={{ y: [0, -12, 0], x: [0, 8, 0] }}
+          transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-cyan-200/40 blur-3xl"
+        />
+        <motion.div
+          aria-hidden
+          animate={{ y: [0, 14, 0], x: [0, -10, 0] }}
+          transition={{ duration: 12, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl"
+        />
+        <motion.div
+          aria-hidden
+          animate={{ y: [0, -10, 0] }}
+          transition={{ duration: 9, repeat: Infinity, ease: "easeInOut" }}
+          className="absolute bottom-6 left-1/3 h-64 w-64 rounded-full bg-orange-100/45 blur-3xl"
+        />
+      </div>
+
+      <div className="relative mx-auto max-w-[1550px]">
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4 }}
+          className="relative rounded-[2rem] border border-white/60 bg-white/55 p-4 shadow-[0_28px_70px_-36px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-5"
+        >
+          <div className="flex flex-col justify-between gap-4 md:flex-row md:items-end">
           <div>
-            <span className="inline-flex rounded-full border border-blue-200 bg-white/70 px-3 py-1 text-[10px] font-bold uppercase tracking-[.16em] text-blue-700 shadow-sm backdrop-blur">Campaign studio</span>
-            <h1 className="mt-3 text-2xl font-bold tracking-[-.03em] text-[#07152f] sm:text-3xl">Create a new growth campaign</h1>
-            <p className="mt-1 text-xs text-slate-500 sm:text-sm">Select a platform, choose a service, and configure your campaign with live pricing.</p>
+            <p className="inline-flex rounded-full border border-blue-100 bg-white/95 px-3 py-1 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700 shadow-sm">
+              New Order
+            </p>
+            <h1 className="mt-3 text-3xl font-black tracking-[-0.03em] text-[#0f2b61]">Professional SMM Order Workspace</h1>
+            <p className="mt-2 text-sm text-[#5a6f99]">Premium campaign console with real-time pricing, validation, and wallet-safe checkout.</p>
           </div>
-          <div className="flex flex-wrap gap-2 text-[10px] font-semibold text-slate-500">
-            {["Premium quality", "Secure checkout", "Live tracking"].map((item) => (
-              <span key={item} className="rounded-full border border-white bg-white/70 px-3 py-1.5 shadow-sm">✓ {item}</span>
-            ))}
+
+          <div className="flex flex-wrap items-center gap-2.5">
+            <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(30,58,138,.6)]">
+              <Wallet className="mr-2 inline h-4 w-4" />
+              Wallet: {walletBalance === null ? "Not loaded" : money(walletBalance)}
+            </motion.div>
+            <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(168,85,247,.5)]">
+              <Layers3 className="mr-2 inline h-4 w-4" /> New Campaign
+            </motion.div>
+            <motion.div whileHover={{ y: -2 }} className="rounded-xl border border-white/80 bg-white/85 px-4 py-3 text-xs font-semibold text-[#36548f] shadow-[0_10px_22px_-16px_rgba(6,182,212,.6)]">
+              <User className="mr-2 inline h-4 w-4" /> {loadingProfile ? "Loading..." : profileChip}
+            </motion.div>
           </div>
         </div>
 
-        <div className="mt-5 grid gap-4 xl:grid-cols-[220px_minmax(0,1fr)_320px]">
-          <aside className="rounded-2xl border border-white/80 bg-white/75 p-3 shadow-[0_16px_40px_-28px_rgba(15,45,95,.4)] backdrop-blur-xl">
-            <p className="px-2 text-[10px] font-bold uppercase tracking-[.16em] text-slate-400">Choose platform</p>
-            <div className="mt-3 space-y-2">
-              {platforms.map((item) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() => choosePlatform(item.id)}
-                  className={`w-full rounded-xl border p-3 text-left transition ${platform === item.id ? "border-blue-200 bg-blue-50 shadow-sm" : "border-transparent hover:border-slate-200 hover:bg-white"}`}
-                >
-                  <div className="flex items-center gap-2.5">
-                    <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-white shadow-md ${item.gradient}`}>
-                      <PlatformIcon platform={item.id} className="h-4 w-4" />
-                    </span>
-                    <div className="min-w-0">
-                      <p className={`text-xs font-bold ${platform === item.id ? "text-blue-700" : "text-slate-700"}`}>{item.name}</p>
-                      <p className="mt-0.5 line-clamp-2 text-[9px] leading-4 text-slate-400">{item.description}</p>
-                    </div>
-                  </div>
-                </button>
-              ))}
-            </div>
-          </aside>
-
-          <section className="min-w-0">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.96, y: 8 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            transition={{ delay: 0.1, duration: 0.45 }}
+            className="pointer-events-none absolute -right-3 -top-5 hidden w-56 rotate-2 rounded-2xl border border-white/70 bg-gradient-to-br from-white/80 via-cyan-50/90 to-violet-50/90 p-4 shadow-[0_22px_44px_-24px_rgba(30,58,138,.55)] backdrop-blur-md xl:block"
+          >
             <div className="flex items-center justify-between">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[.16em] text-blue-600">{currentPlatform.name} services</p>
-                <h2 className="mt-1 text-lg font-bold text-[#07152f]">Choose your growth objective</h2>
-              </div>
-              <span className="rounded-full bg-white px-3 py-1.5 text-[10px] font-semibold text-slate-400 shadow-sm">{visibleServices.length} services</span>
+              <span className="text-[10px] font-black uppercase tracking-[0.15em] text-[#4c63a0]">Live Metrics</span>
+              <Gem className="h-4 w-4 text-violet-500" />
             </div>
+            <div className="mt-3 grid grid-cols-3 gap-2">
+              <span className="rounded-lg bg-white/70 px-2 py-1 text-center text-[10px] font-bold text-[#3d5893]">95%</span>
+              <span className="rounded-lg bg-white/70 px-2 py-1 text-center text-[10px] font-bold text-[#3d5893]">24h</span>
+              <span className="rounded-lg bg-white/70 px-2 py-1 text-center text-[10px] font-bold text-[#3d5893]">SLA</span>
+            </div>
+            <div className="mt-3 h-1.5 rounded-full bg-slate-200/70">
+              <div className="h-1.5 w-3/4 rounded-full bg-gradient-to-r from-cyan-400 via-blue-500 to-violet-500" />
+            </div>
+            <BarChart3 className="mt-3 h-4 w-4 text-sky-500" />
+          </motion.div>
+        </motion.div>
 
-            <AnimatePresence mode="wait">
-              <motion.div
-                key={platform}
-                initial={{ opacity: 0, y: 8 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -6 }}
-                transition={{ duration: 0.2 }}
-                className="mt-3 grid gap-3 md:grid-cols-2 xl:grid-cols-3"
-              >
-                {visibleServices.map((service) => (
+        <div className="relative mt-6 grid gap-5 xl:grid-cols-[1fr_360px]">
+          <div className="pointer-events-none absolute left-3 top-6 hidden h-[92%] w-[2px] rounded-full bg-gradient-to-b from-cyan-300/20 via-violet-300/35 to-orange-200/25 xl:block" />
+          <section className="space-y-5">
+            <motion.article
+              {...sectionMotion}
+              whileHover={{ y: -4, scale: 1.002 }}
+              className="group rounded-3xl border border-white/80 bg-white/70 p-5 shadow-[0_24px_56px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl transition sm:p-6"
+            >
+              <div className="mb-4 flex items-center gap-2 text-[#214184]">
+                <Sparkles className="h-4 w-4" />
+                <p className="text-xs font-black uppercase tracking-[0.14em]">Campaign Setup</p>
+              </div>
+
+              <div className="grid gap-4 md:grid-cols-2">
+                <label className="text-xs font-bold text-[#35548d]">
+                  Platform
+                  <select
+                    value={platform}
+                    onChange={(event) => switchPlatform(event.target.value as PlatformId)}
+                    className="mt-2 w-full rounded-2xl border border-[#d4e1ff] bg-white/95 px-4 py-3.5 text-sm font-semibold text-[#1c3a71] outline-none ring-0 transition focus:border-[#8faeff] focus:shadow-[0_0_0_4px_rgba(143,174,255,.22)]"
+                  >
+                    {platformOrder.map((platformId) => (
+                      <option key={platformId} value={platformId}>
+                        {platformMeta[platformId].label}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+
+                <label className="text-xs font-bold text-[#35548d]">
+                  Service
+                  <select
+                    value={serviceCode}
+                    onChange={(event) => switchService(event.target.value)}
+                    className="mt-2 w-full rounded-2xl border border-[#d4e1ff] bg-white/95 px-4 py-3.5 text-sm font-semibold text-[#1c3a71] outline-none ring-0 transition focus:border-[#8faeff] focus:shadow-[0_0_0_4px_rgba(143,174,255,.22)]"
+                  >
+                    {!servicesForPlatform.length && <option value="">No active services</option>}
+                    {servicesForPlatform.map((service) => (
+                      <option key={service.code} value={service.code}>
+                        {service.name}
+                      </option>
+                    ))}
+                  </select>
+                </label>
+              </div>
+            </motion.article>
+
+            <motion.article
+              {...sectionMotion}
+              whileHover={{ y: -4, scale: 1.002 }}
+              className="rounded-3xl border border-white/80 bg-white/70 p-5 shadow-[0_24px_56px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl sm:p-6"
+            >
+              <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Service Details</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Price per 1000</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{money(selectedService.pricePer1000)}</p>
+                </motion.div>
+                <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Quantity Range</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.minQuantity.toLocaleString("en-IN")} - {selectedService.maxQuantity.toLocaleString("en-IN")}</p>
+                </motion.div>
+                <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Delivery Time</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.deliveryTime}</p>
+                </motion.div>
+                <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Refill Policy</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.refillPolicy}</p>
+                </motion.div>
+                <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Quality Type</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">{selectedService.qualityType}</p>
+                </motion.div>
+                <motion.div whileHover={{ y: -3 }} className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-3 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)] sm:col-span-2 lg:col-span-1">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Important Instruction</p>
+                  <p className="mt-1 text-xs font-semibold text-[#36558f]">{selectedService.importantInstruction}</p>
+                </motion.div>
+              </div>
+            </motion.article>
+
+            <motion.article
+              {...sectionMotion}
+              whileHover={{ y: -4, scale: 1.002 }}
+              className="rounded-3xl border border-white/80 bg-white/70 p-5 shadow-[0_24px_56px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl sm:p-6"
+            >
+              <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Order Inputs</p>
+
+              <div className="mt-4 grid gap-4">
+                <label className="text-xs font-bold text-[#35548d]">
+                  Link / Username
+                  <div className="relative mt-2">
+                    <span className="pointer-events-none absolute left-3 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg bg-[#eef4ff] text-[#34589b]">
+                      <LinkIcon className="h-4 w-4" />
+                    </span>
+                    <input
+                      value={targetLink}
+                      onChange={(event) => setTargetLink(event.target.value)}
+                      placeholder="https://example.com/profile-or-post"
+                      className="w-full rounded-2xl border border-[#d4e1ff] bg-white/95 px-12 py-3.5 text-sm text-[#1c3a71] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_4px_rgba(143,174,255,.22)]"
+                    />
+                  </div>
+                </label>
+
+                <label className="text-xs font-bold text-[#35548d]">
+                  Quantity
+                  <div className="relative mt-2">
+                    <span className="pointer-events-none absolute left-3 top-1/2 inline-flex h-7 w-7 -translate-y-1/2 items-center justify-center rounded-lg bg-[#eef4ff] text-[#34589b]">
+                      <Hash className="h-4 w-4" />
+                    </span>
+                    <input
+                      type="number"
+                      min={selectedService.minQuantity}
+                      max={selectedService.maxQuantity}
+                      value={Number.isFinite(quantity) ? quantity : ""}
+                      onChange={(event) => setQuantity(Number(event.target.value || 0))}
+                      className="w-full rounded-2xl border border-[#d4e1ff] bg-white/95 px-12 py-3.5 text-sm text-[#1c3a71] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_4px_rgba(143,174,255,.22)]"
+                    />
+                  </div>
+                  <p className="mt-2 text-[11px] font-semibold text-[#5f76a8]">Allowed range: 100 to 1,000,000</p>
+                </label>
+
+                <label className="text-xs font-bold text-[#35548d]">
+                  Optional Notes
+                  <div className="relative mt-2">
+                    <span className="pointer-events-none absolute left-3 top-3 inline-flex h-7 w-7 items-center justify-center rounded-lg bg-[#eef4ff] text-[#34589b]">
+                      <StickyNote className="h-4 w-4" />
+                    </span>
+                    <textarea
+                      value={notes}
+                      onChange={(event) => setNotes(event.target.value)}
+                      placeholder="Any specific instruction for this order"
+                      className="min-h-28 w-full resize-none rounded-2xl border border-[#d4e1ff] bg-white/95 px-12 py-3.5 text-sm text-[#1c3a71] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_4px_rgba(143,174,255,.22)]"
+                    />
+                  </div>
+                </label>
+              </div>
+            </motion.article>
+
+            <motion.article
+              {...sectionMotion}
+              whileHover={{ y: -4, scale: 1.002 }}
+              className="rounded-3xl border border-white/80 bg-white/70 p-5 shadow-[0_24px_56px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl sm:p-6"
+            >
+              <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Balance / Payment</p>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-4 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Wallet Balance</p>
+                  <p className="mt-1 text-lg font-black text-[#1f3f77]">{walletBalance === null ? "Not loaded" : money(walletBalance)}</p>
                   <button
                     type="button"
-                    key={service.id}
-                    onClick={() => setSelectedId(service.id)}
-                    className={`relative overflow-hidden rounded-2xl border bg-white p-4 text-left shadow-sm transition ${selected.id === service.id ? "border-blue-500 ring-2 ring-blue-500/10 shadow-lg shadow-blue-900/10" : "border-slate-200/80 hover:border-blue-200 hover:shadow-lg"}`}
+                    onClick={loadWalletBalance}
+                    className="mt-2 text-xs font-bold text-blue-700 underline"
                   >
-                    {service.popular && (
-                      <span className="absolute right-3 top-3 rounded-full bg-amber-50 px-2 py-0.5 text-[8px] font-black uppercase tracking-wider text-amber-700">
-                        Popular
-                      </span>
-                    )}
-                    <span className={`grid h-9 w-9 place-items-center rounded-lg bg-gradient-to-br text-white shadow-md ${currentPlatform.gradient}`}>
-                      <PlatformIcon platform={service.platform} className="h-4 w-4" />
-                    </span>
-                    <h3 className="mt-3 pr-12 text-sm font-bold text-[#07152f]">{service.name}</h3>
-                    <p className="mt-1 text-[11px] leading-5 text-slate-500">{service.description}</p>
-                    <div className="mt-3 flex items-end justify-between border-t border-slate-100 pt-3">
-                      <div>
-                        <p className="text-[8px] uppercase tracking-wider text-slate-400">Rate</p>
-                        <p className="mt-1 text-sm font-bold text-blue-600">
-                          {displayRate(service.rate)} <span className="text-[9px] font-medium text-slate-400">/ 1000</span>
-                        </p>
-                      </div>
-                      <div className="text-right">
-                        <p className="text-[8px] uppercase text-slate-400">Delivery</p>
-                        <p className="mt-1 text-[10px] font-bold text-slate-600">{service.delivery}</p>
-                      </div>
-                    </div>
+                    {loadingBalance ? "Checking..." : "Refresh balance"}
                   </button>
-                ))}
-              </motion.div>
-            </AnimatePresence>
-
-            <div className="mt-4 rounded-2xl border border-slate-200/80 bg-white p-4 shadow-sm">
-              <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
-                <div>
-                  <p className="text-[9px] font-bold uppercase tracking-wider text-blue-600">Selected service</p>
-                  <h3 className="mt-1 text-sm font-bold">{selected.name}</h3>
-                  <p className="mt-1 text-xs text-slate-500">{selected.description}</p>
                 </div>
-                <div className="flex flex-wrap gap-2">
-                  {[ ["Quality", selected.quality], ["Delivery", selected.delivery], ["Refill", selected.refill] ].map(([label, value]) => (
-                    <div key={label} className="rounded-lg bg-slate-50 px-3 py-2">
-                      <p className="text-[8px] uppercase text-slate-400">{label}</p>
-                      <p className="mt-1 text-[10px] font-bold">{value}</p>
-                    </div>
-                  ))}
+                <div className="rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-4 shadow-[0_10px_24px_-18px_rgba(30,58,138,.45)]">
+                  <p className="text-[10px] uppercase text-[#6d83b2]">Payment Method</p>
+                  <p className="mt-1 text-sm font-black text-[#1f3f77]">Wallet Balance</p>
+                  {!hasEnoughWallet && walletBalance !== null ? (
+                    <p className="mt-2 text-xs font-semibold text-rose-600">Insufficient balance. Add funds to continue.</p>
+                  ) : (
+                    <p className="mt-2 text-xs font-semibold text-emerald-600">Balance looks good for this order.</p>
+                  )}
                 </div>
               </div>
-            </div>
+            </motion.article>
+
+            {error && (
+              <div className="rounded-2xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-700">{error}</div>
+            )}
+
+            {successOrder && (
+              <motion.section
+                initial={{ opacity: 0, y: 16 }}
+                animate={{ opacity: 1, y: 0 }}
+                className="rounded-3xl border border-emerald-200 bg-emerald-50/80 p-6"
+              >
+                <div className="flex items-start gap-3">
+                  <CheckCircle2 className="mt-0.5 h-5 w-5 text-emerald-600" />
+                  <div>
+                    <h2 className="text-xl font-black text-emerald-700">Order Placed Successfully</h2>
+                    <p className="mt-1 text-sm font-semibold text-emerald-700">Order ID: {buildReadableOrderId(successOrder.id)}</p>
+                    <p className="mt-2 text-sm text-emerald-800">Service: {selectedService.name}</p>
+                    <p className="text-sm text-emerald-800">Quantity: {quantity.toLocaleString("en-IN")}</p>
+                    <p className="text-sm text-emerald-800">Status: Pending</p>
+                    <Link href="/dashboard/order-history" className="mt-4 inline-flex rounded-xl bg-emerald-600 px-4 py-2 text-xs font-black text-white">
+                      View Order History
+                    </Link>
+                  </div>
+                </div>
+              </motion.section>
+            )}
+
+            <motion.div {...sectionMotion} className="flex flex-wrap gap-3">
+              <button
+                type="button"
+                onClick={openConfirmation}
+                className="inline-flex min-h-12 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.55)] transition hover:-translate-y-1 hover:shadow-[0_20px_38px_-12px_rgba(117,109,255,.65)]"
+              >
+                Review Order
+              </button>
+              <button
+                type="button"
+                onClick={resetForm}
+                className="inline-flex min-h-12 items-center rounded-xl border border-[#d6e3ff] bg-white/95 px-6 py-3 text-sm font-bold text-[#1e3d77] shadow-[0_12px_28px_-18px_rgba(30,58,138,.6)] transition hover:-translate-y-0.5 hover:border-[#b8cbff]"
+              >
+                Reset Form
+              </button>
+              {!hasEnoughWallet && walletBalance !== null && (
+                <button
+                  type="button"
+                  onClick={() => router.push("/dashboard/add-funds")}
+                  className="inline-flex min-h-12 items-center rounded-xl border border-[#d6e3ff] bg-white/95 px-6 py-3 text-sm font-bold text-[#1e3d77] shadow-[0_12px_28px_-18px_rgba(30,58,138,.6)] transition hover:-translate-y-0.5 hover:border-[#b8cbff]"
+                >
+                  Add Funds
+                </button>
+              )}
+            </motion.div>
           </section>
 
-          <aside className="h-fit overflow-hidden rounded-2xl border border-white/80 bg-white/85 shadow-[0_22px_65px_-32px_rgba(15,45,95,.45)] backdrop-blur-xl xl:sticky xl:top-20">
-            <div className="bg-gradient-to-br from-[#07152f] to-[#123a78] p-5 text-white">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-[9px] font-bold uppercase tracking-[.16em] text-blue-300">Live campaign preview</p>
-                  <h2 className="mt-1 text-base font-bold">Order summary</h2>
-                </div>
-                <span className="grid h-9 w-9 place-items-center rounded-lg bg-white/10">
-                  <PlatformIcon platform={selected.platform} className="h-4 w-4" />
-                </span>
-              </div>
+          <motion.aside
+            {...sectionMotion}
+            whileHover={{ y: -3 }}
+            className="h-fit rounded-3xl border border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(56,189,248,.35),rgba(168,85,247,.35),rgba(251,146,60,.35))_border-box] p-5 shadow-[0_26px_62px_-28px_rgba(15,23,42,.55)] xl:sticky xl:top-20"
+          >
+            <p className="text-xs font-black uppercase tracking-[0.14em] text-[#36558f]">Sticky Order Summary</p>
+            <h2 className="mt-2 text-lg font-black text-[#15356f]">Current Configuration</h2>
 
-              <div className="mt-4 rounded-xl border border-white/10 bg-white/5 p-3">
-                <p className="text-xs font-bold">{selected.name}</p>
-                <p className="mt-1 text-[10px] text-slate-300">{currentPlatform.name} · {selected.quality}</p>
-              </div>
-
-              <div className="mt-4 space-y-2.5 text-[10px]">
-                <div className="flex justify-between"><span className="text-slate-300">Rate</span><span className="font-bold">{displayRate(selected.rate)} / 1000</span></div>
-                <div className="flex justify-between"><span className="text-slate-300">Quantity</span><span className="font-bold">{quantity.toLocaleString("en-IN")}</span></div>
-                <div className="flex justify-between"><span className="text-slate-300">Estimated delivery</span><span className="font-bold">{selected.delivery}</span></div>
-                <div className="flex justify-between"><span className="text-slate-300">Refill status</span><span className="font-bold text-blue-300">{selected.refill} available</span></div>
-              </div>
-
-              <div className="mt-4 flex items-end justify-between border-t border-white/10 pt-4">
-                <span className="text-xs text-slate-300">Total price</span>
-                <motion.span key={totalINR} initial={{ scale: 0.94, opacity: 0.6 }} animate={{ scale: 1, opacity: 1 }} className="text-2xl font-bold">
-                  {displayMoney(totalINR)}
-                </motion.span>
-              </div>
+            <div className="mt-4 space-y-2 text-sm text-[#3c5b90]">
+              <p><b>Platform:</b> {platformMeta[selectedService.platform].label}</p>
+              <p><b>Service:</b> {selectedService.name}</p>
+              <p><b>Price / 1000:</b> {money(selectedService.pricePer1000)}</p>
+              <p><b>Quantity:</b> {quantity.toLocaleString("en-IN")}</p>
+              <p><b>Total:</b> {money(totalPrice)}</p>
+              <p><b>Delivery:</b> {selectedService.deliveryTime}</p>
+              <p><b>Refill:</b> {selectedService.refillPolicy}</p>
+              <p><b>Wallet:</b> {walletBalance === null ? "Not loaded" : money(walletBalance)}</p>
             </div>
 
-            <form onSubmit={submit} className="p-5">
-              <label className="text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                Profile or content link
-                <input
-                  type="url"
-                  required
-                  value={link}
-                  onChange={(event) => setLink(event.target.value)}
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                  placeholder="https://social-platform.com/profile"
-                />
-              </label>
+            <div className="mt-4 rounded-2xl border border-[#dce7ff] bg-[#f8fbff]/95 p-4 text-xs text-[#5470a3] shadow-[0_12px_24px_-16px_rgba(30,58,138,.45)]">
+              <div className="mb-2 flex items-center gap-2 text-[#4f6ea6]">
+                <ShieldCheck className="h-3.5 w-3.5" />
+                <Clock3 className="h-3.5 w-3.5" />
+              </div>
+              Total Price Formula: quantity / 1000 * service price
+            </div>
+          </motion.aside>
+        </div>
+      </div>
 
-              <label className="mt-4 block text-[10px] font-bold uppercase tracking-wider text-slate-500">
-                Campaign quantity
-                <input
-                  type="number"
-                  required
-                  min={selected.minimum}
-                  max={selected.maximum}
-                  step={100}
-                  value={quantity}
-                  onChange={(event) => setQuantity(Math.max(0, Number(event.target.value)))}
-                  className="mt-2 w-full rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-sm font-bold outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
-                />
-              </label>
-
-              <div className="mt-3 grid grid-cols-5 gap-1.5">
-                {[100, 500, 1000, 5000, 10000].map((value) => (
-                  <button key={value} type="button" onClick={() => setQuantity(value)} className={`rounded-lg py-1.5 text-[9px] font-bold transition ${quantity === value ? "bg-blue-600 text-white" : "bg-slate-100 text-slate-500 hover:bg-blue-50 hover:text-blue-600"}`}>
-                    {value >= 1000 ? `${value / 1000}K` : value}
-                  </button>
-                ))}
+      <AnimatePresence>
+        {confirmOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 grid place-items-center bg-slate-950/45 p-4 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ opacity: 0, y: 16, scale: 0.98 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 10, scale: 0.98 }}
+              className="w-full max-w-2xl rounded-3xl border border-white/80 bg-white/95 p-6 shadow-[0_36px_80px_-30px_rgba(15,23,42,.72)] backdrop-blur-md"
+            >
+              <div className="flex items-center justify-between">
+                <h2 className="text-xl font-black text-[#17366f]">Confirm Your Order</h2>
+                <button type="button" onClick={() => setConfirmOpen(false)} className="rounded-lg bg-slate-100 px-2.5 py-1 text-xs font-black transition hover:bg-slate-200">
+                  Close
+                </button>
               </div>
 
-              <div className="mt-4 flex items-center justify-between rounded-xl bg-slate-50 p-3 text-[10px]">
-                <span className="text-slate-500">Available wallet balance</span>
-                <span className="font-bold text-[#07152f]">{walletBalance === null ? "Loading..." : displayMoney(walletBalance)}</span>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Service:</b> {selectedService.name}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Platform:</b> {platformMeta[selectedService.platform].label}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Link / Username:</b> {targetLink}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Quantity:</b> {quantity.toLocaleString("en-IN")}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Total:</b> {money(totalPrice)}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Delivery:</b> {selectedService.deliveryTime}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Refill:</b> {selectedService.refillPolicy}</p>
+                <p className="rounded-xl bg-slate-50 p-3 text-xs"><b>Wallet:</b> {walletBalance === null ? "Not loaded" : money(walletBalance)}</p>
               </div>
 
-              {walletBalance !== null && !hasEnoughBalance && (
-                <div className="mt-3 rounded-xl border border-amber-200 bg-amber-50 p-3 text-[10px] leading-5 text-amber-800">
-                  Insufficient campaign budget. You need {displayMoney(Math.max(totalINR - walletBalance, 0))} more. <a href="/dashboard/wallet" className="font-bold underline">Add funds</a>
+              <div className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-semibold text-amber-700">
+                Please check your link carefully. Wrong link orders cannot be cancelled.
+              </div>
+
+              <label className="mt-4 flex items-center gap-2 text-sm font-semibold text-[#2f4e84]">
+                <input type="checkbox" checked={confirmedDetails} onChange={(event) => setConfirmedDetails(event.target.checked)} />
+                I confirm all details are correct.
+              </label>
+
+              {!hasEnoughWallet && walletBalance !== null && (
+                <div className="mt-4 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-700">
+                  Insufficient balance
                 </div>
               )}
 
-              {error && <p className="mt-3 rounded-xl bg-rose-50 p-3 text-[10px] leading-5 text-rose-700">{error}</p>}
-              {success && <p className="mt-3 rounded-xl bg-emerald-50 p-3 text-[10px] font-semibold leading-5 text-emerald-700">Campaign created successfully. Taking you to your dashboard...</p>}
+              <div className="mt-5 flex flex-wrap gap-3">
+                <button
+                  type="button"
+                  onClick={() => setConfirmOpen(false)}
+                  className="inline-flex min-h-11 items-center rounded-xl border border-[#d6e3ff] bg-white px-5 py-2 text-sm font-bold text-[#1e3d77] transition hover:-translate-y-0.5"
+                >
+                  Back / Edit
+                </button>
 
-              <button
-                disabled={submitting || walletBalance === null || !hasEnoughBalance || success}
-                className="mt-4 w-full rounded-xl bg-gradient-to-r from-blue-600 to-blue-700 py-3 text-xs font-bold text-white shadow-lg shadow-blue-600/20 transition hover:-translate-y-0.5 hover:shadow-xl disabled:cursor-not-allowed disabled:opacity-50"
-              >
-                {submitting ? "Processing..." : "Proceed to checkout →"}
-              </button>
-            </form>
-          </aside>
-        </div>
-      </section>
+                {hasEnoughWallet ? (
+                  <button
+                    type="button"
+                    disabled={!confirmedDetails || submitting}
+                    onClick={confirmOrder}
+                    className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(117,109,255,.6)] transition hover:-translate-y-0.5 disabled:opacity-60"
+                  >
+                    {submitting ? "Placing Order..." : "Confirm Order"}
+                  </button>
+                ) : (
+                  <button
+                    type="button"
+                    onClick={() => router.push("/dashboard/add-funds")}
+                    className="inline-flex min-h-11 items-center rounded-xl bg-blue-600 px-5 py-2 text-sm font-black text-white shadow-[0_16px_30px_-14px_rgba(37,99,235,.6)] transition hover:-translate-y-0.5"
+                  >
+                    Add Funds
+                  </button>
+                )}
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </main>
   );
 }

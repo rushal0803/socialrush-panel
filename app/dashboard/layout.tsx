@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login");
+  if (!user) redirect("/login?next=/dashboard");
   try {
     await ensureUserProfile(supabase, user);
   } catch (error) {

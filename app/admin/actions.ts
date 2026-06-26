@@ -18,13 +18,43 @@ function number(formData: FormData, name: string) { return Number(formData.get(n
 
 export async function addService(formData: FormData) {
   const { supabase } = await requireAdmin();
-  await supabase.from("services").insert({ category_id: number(formData, "category_id"), name: text(formData, "name"), rate: number(formData, "rate"), min: number(formData, "min"), max: number(formData, "max"), delivery_time: text(formData, "delivery_time") || "1-7 days", description: text(formData, "description"), status: text(formData, "status") || "active" });
+  const isActive = text(formData, "is_active") !== "false";
+  await supabase.from("services").insert({
+    category_id: number(formData, "category_id"),
+    name: text(formData, "name"),
+    rate: number(formData, "rate"),
+    min: number(formData, "min"),
+    max: number(formData, "max") || 1000000,
+    delivery_time: text(formData, "delivery_time") || "1-7 days",
+    refill_policy: text(formData, "refill_policy") || "Refill eligible",
+    quality_type: text(formData, "quality_type") || "Premium",
+    important_instruction: text(formData, "important_instruction") || "Use a public URL only.",
+    platform: text(formData, "platform") || null,
+    description: text(formData, "description"),
+    is_active: isActive,
+    status: isActive ? "active" : "inactive",
+  });
   revalidatePath("/admin/services");
 }
 
 export async function updateService(formData: FormData) {
   const { supabase } = await requireAdmin();
-  await supabase.from("services").update({ category_id: number(formData, "category_id"), name: text(formData, "name"), rate: number(formData, "rate"), min: number(formData, "min"), max: number(formData, "max"), delivery_time: text(formData, "delivery_time") || "1-7 days", description: text(formData, "description"), status: text(formData, "status") }).eq("id", number(formData, "id"));
+  const isActive = text(formData, "is_active") !== "false";
+  await supabase.from("services").update({
+    category_id: number(formData, "category_id"),
+    name: text(formData, "name"),
+    rate: number(formData, "rate"),
+    min: number(formData, "min"),
+    max: number(formData, "max") || 1000000,
+    delivery_time: text(formData, "delivery_time") || "1-7 days",
+    refill_policy: text(formData, "refill_policy") || "Refill eligible",
+    quality_type: text(formData, "quality_type") || "Premium",
+    important_instruction: text(formData, "important_instruction") || "Use a public URL only.",
+    platform: text(formData, "platform") || null,
+    description: text(formData, "description"),
+    is_active: isActive,
+    status: isActive ? "active" : "inactive",
+  }).eq("id", number(formData, "id"));
   revalidatePath("/admin/services");
 }
 
@@ -54,7 +84,61 @@ export async function deleteCategory(formData: FormData) {
 
 export async function updateOrder(formData: FormData) {
   const { supabase } = await requireAdmin();
-  await supabase.from("orders").update({ status: text(formData, "status"), provider_order_id: text(formData, "provider_order_id") || null, admin_notes: text(formData, "admin_notes") || null }).eq("id", text(formData, "id"));
+
+  const orderId = text(formData, "id");
+  const nextStatus = text(formData, "status");
+  const providerOrderId = text(formData, "provider_order_id") || null;
+  const adminNotes = text(formData, "admin_notes") || null;
+  const startCount = Number(formData.get("start_count") || 0);
+  const remains = Number(formData.get("remains") || 0);
+
+  const { data: currentOrder } = await supabase
+    .from("orders")
+    .select("id, user_id, charge, status")
+    .eq("id", orderId)
+    .single();
+
+  if (!currentOrder) {
+    revalidatePath("/admin/orders");
+    return;
+  }
+
+  await supabase
+    .from("orders")
+    .update({
+      status: nextStatus,
+      provider_order_id: providerOrderId,
+      admin_notes: adminNotes,
+      start_count: Number.isFinite(startCount) ? Math.max(0, startCount) : 0,
+      remains: Number.isFinite(remains) ? Math.max(0, remains) : 0,
+    })
+    .eq("id", orderId);
+
+  const refundStatuses = new Set(["cancelled", "refunded"]);
+  const shouldRefund = refundStatuses.has(nextStatus) && !refundStatuses.has(currentOrder.status);
+
+  if (shouldRefund) {
+    const amount = Number(currentOrder.charge ?? 0);
+    if (amount > 0) {
+      await supabase.rpc("admin_adjust_balance", {
+        p_user_id: currentOrder.user_id,
+        p_amount: amount,
+        p_operation: "add",
+      });
+
+      await supabase
+        .from("transactions")
+        .insert({
+          user_id: currentOrder.user_id,
+          amount,
+          type: "refund",
+          status: "completed",
+          payment_method: "wallet",
+          description: `Refund issued for cancelled order ${orderId}`,
+        });
+    }
+  }
+
   revalidatePath("/admin/orders"); revalidatePath("/admin");
 }
 

@@ -1,12 +1,162 @@
 import type { Metadata } from "next";
-import PageHero from "@/components/marketing/PageHero";
-import PortalCTA from "@/components/marketing/PortalCTA";
+import FaqPageContent from "@/components/marketing/FaqPageContent";
+import type { FaqCategory } from "@/components/marketing/FaqPageContent";
 import PublicShell from "@/components/marketing/PublicShell";
-import { publicFaqs } from "@/lib/marketing/content";
 
-export const metadata: Metadata = { title: "Frequently Asked Questions", description: "Get answers about SocialRUSH ordering, wallet funding, delivery, refills, public links, campaign tracking, and support." };
+export const metadata: Metadata = {
+  title: "Frequently Asked Questions",
+  description:
+    "Everything you need to know about SocialRUSH AI services, automation, pricing, payments, delivery, and support.",
+};
+
+const faqCategories: FaqCategory[] = [
+  {
+    key: "general",
+    label: "General",
+    items: [
+      {
+        question: "What is SocialRUSH AI?",
+        answer:
+          "SocialRUSH AI is a growth and automation platform that helps businesses run social media campaigns, AI-led engagement workflows, and marketing services from one streamlined dashboard.",
+      },
+      {
+        question: "Who can use SocialRUSH AI?",
+        answer:
+          "Creators, startups, agencies, local businesses, ecommerce brands, and marketing teams can use SocialRUSH AI to improve social visibility, automate repetitive tasks, and manage growth operations efficiently.",
+      },
+      {
+        question: "Is SocialRUSH AI suitable for small businesses?",
+        answer:
+          "Yes. SocialRUSH AI is built for both small and large teams, with flexible service options, transparent pricing, and support guidance so smaller businesses can scale at their own pace.",
+      },
+    ],
+  },
+  {
+    key: "services",
+    label: "Services",
+    items: [
+      {
+        question: "What services do you provide?",
+        answer:
+          "We provide social media growth services, paid ad support, chatbot workflows, automation setup, and performance-focused campaign assistance for modern digital businesses.",
+      },
+      {
+        question: "Do you offer AI chatbots and WhatsApp automation?",
+        answer:
+          "Yes. We offer AI chatbot implementation and WhatsApp automation solutions to help businesses capture leads, respond faster, and improve customer communication flows.",
+      },
+      {
+        question: "Do you provide SEO, social media marketing, Meta Ads, and Google Ads?",
+        answer:
+          "Yes. SocialRUSH AI supports SEO-focused growth planning, social media marketing, Meta Ads management, and Google Ads strategy depending on your business objectives.",
+      },
+    ],
+  },
+  {
+    key: "pricing",
+    label: "Pricing",
+    items: [
+      {
+        question: "Do you have fixed pricing?",
+        answer:
+          "Many services have clear baseline pricing for easier decision-making, while advanced or large-scale requirements may vary based on campaign scope and platform needs.",
+      },
+      {
+        question: "Can I get a custom package?",
+        answer:
+          "Absolutely. We can create custom packages based on your goals, timeline, target platform, and budget to ensure the plan fits your exact growth strategy.",
+      },
+      {
+        question: "Do you offer monthly plans?",
+        answer:
+          "Yes. Monthly and ongoing plans are available for businesses that need continuous growth support, recurring optimization, and long-term campaign consistency.",
+      },
+    ],
+  },
+  {
+    key: "payments",
+    label: "Payments",
+    items: [
+      {
+        question: "Which payment methods do you accept?",
+        answer:
+          "We support secure online payment options via integrated gateways including UPI, cards, net banking, and other supported digital payment modes.",
+      },
+      {
+        question: "Is online payment secure?",
+        answer:
+          "Yes. Payments are processed through secure channels with industry-standard safeguards, and wallet transactions are reflected in your account for transparency.",
+      },
+      {
+        question: "Can I add funds to my wallet?",
+        answer:
+          "Yes. You can add funds to your wallet and use that balance for faster checkout on campaigns and services whenever you place new orders.",
+      },
+    ],
+  },
+  {
+    key: "delivery",
+    label: "Delivery",
+    items: [
+      {
+        question: "How long does service delivery take?",
+        answer:
+          "Delivery timelines depend on service type, order size, and platform dynamics. Estimated windows are visible during ordering and progress can be tracked from your account.",
+      },
+      {
+        question: "How can I track my order?",
+        answer:
+          "You can track order status directly in your dashboard, including processing stage, updates, and completion details for each campaign request.",
+      },
+      {
+        question: "What happens if my order is delayed?",
+        answer:
+          "If delivery exceeds the expected window, our support team reviews the campaign status and provides the next action, update timeline, or suitable resolution.",
+      },
+    ],
+  },
+  {
+    key: "support",
+    label: "Support",
+    items: [
+      {
+        question: "How can I contact support?",
+        answer:
+          "You can contact support via the support page, dashboard support section, or direct contact channels listed on SocialRUSH AI for quick assistance.",
+      },
+      {
+        question: "Do you provide support after service delivery?",
+        answer:
+          "Yes. Post-delivery support is available to help with campaign follow-up, clarifications, and recommendations for your next growth steps.",
+      },
+      {
+        question: "Can I request changes after placing an order?",
+        answer:
+          "Depending on order stage and service type, modifications may be possible. Contact support promptly with your order details to check available change options.",
+      },
+    ],
+  },
+];
 
 export default function FaqPage() {
-  const schema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: publicFaqs.map(([question, answer]) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) };
-  return <PublicShell><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} /><PageHero eyebrow="Frequently asked questions" title="Clear answers before you place a campaign." description="Learn how SocialRUSH services, wallet payments, delivery, refills, order tracking, and support work." /><section className="bg-[#f6f9ff] px-5 py-16 sm:px-6 lg:px-8 lg:py-20"><div className="mx-auto max-w-4xl space-y-3">{publicFaqs.map(([question, answer], index) => <details key={question} className="group rounded-2xl border border-white bg-white shadow-sm transition open:border-blue-200 open:shadow-lg"><summary className="flex min-h-16 cursor-pointer list-none items-center gap-3 p-4 sm:gap-4 sm:p-5"><span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-blue-50 text-xs font-bold text-blue-600">{String(index + 1).padStart(2, "0")}</span><h2 className="flex-1 text-sm font-bold leading-6 text-[#07152f]">{question}</h2><span className="grid h-8 w-8 shrink-0 place-items-center rounded-full bg-slate-50 text-blue-600 transition group-open:rotate-45">+</span></summary><p className="border-t border-blue-50 px-4 py-5 text-sm leading-7 text-slate-600 sm:px-5 sm:pl-[5.25rem]">{answer}</p></details>)}</div><div className="mx-auto mt-10 flex max-w-4xl flex-col items-center justify-between gap-5 rounded-2xl bg-[#07152f] p-6 text-white sm:flex-row"><div><h2 className="font-bold">Still need help choosing a service?</h2><p className="mt-1 text-xs leading-6 text-slate-300">Create an account to browse campaigns, or contact us before ordering.</p></div><div className="flex flex-wrap gap-2"><a href="/contact" className="inline-flex min-h-11 items-center rounded-xl border border-white/15 px-4 py-2 text-xs font-bold">Contact support</a><PortalCTA className="inline-flex min-h-11 items-center rounded-xl bg-blue-600 px-4 py-2 text-xs font-bold">Open services</PortalCTA></div></div></section></PublicShell>;
+  const allFaqs = faqCategories.flatMap((category) => category.items);
+  const schema = {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: allFaqs.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: item.answer,
+      },
+    })),
+  };
+
+  return (
+    <PublicShell>
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <FaqPageContent categories={faqCategories} />
+    </PublicShell>
+  );
 }

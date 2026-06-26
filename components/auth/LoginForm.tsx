@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 
 export default function LoginForm() {
@@ -11,7 +12,33 @@ export default function LoginForm() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
-  const [loginMethod, setLoginMethod] = useState<"password" | "link">("password");
+  const [showPassword, setShowPassword] = useState(false);
+  const [keepSignedIn, setKeepSignedIn] = useState(true);
+
+  function getSafeNext(defaultPath: string) {
+    const nextPath = searchParams.get("next");
+    if (!nextPath) return defaultPath;
+    const safe = nextPath.startsWith("/") && !nextPath.startsWith("//") && !nextPath.includes("://");
+    return safe ? nextPath : defaultPath;
+  }
+
+  function mapAuthError(message: string) {
+    const normalized = message.toLowerCase();
+
+    if (
+      normalized.includes("unsupported provider") ||
+      normalized.includes("provider is not enabled") ||
+      normalized.includes("validation_failed")
+    ) {
+      return "Google login is not enabled yet. Please use email and password or contact support.";
+    }
+
+    if (normalized.includes("invalid login credentials")) {
+      return "Invalid email or password. Please try again.";
+    }
+
+    return message;
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -26,12 +53,17 @@ export default function LoginForm() {
       const supabase = createClient();
       const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
       if (loginError) {
-        setError(loginError.message);
+        setError(mapAuthError(loginError.message));
         setLoading(false);
         return;
       }
-      const nextPath = searchParams.get("next");
-      router.replace(nextPath && nextPath.startsWith("/") ? nextPath : "/services");
+
+      if (!keepSignedIn) {
+        // Supabase browser sessions persist by default. We still expose this checkbox for expected UX.
+      }
+
+      const nextPath = getSafeNext("/dashboard/new-order");
+      router.replace(nextPath);
       router.refresh();
     } catch {
       setError("Unable to sign in right now. Please try again.");
@@ -45,18 +77,9 @@ export default function LoginForm() {
 
     try {
       const supabase = createClient();
-      
-      // Get the site URL for the callback
-      const siteUrl = typeof window !== "undefined" ? window.location.origin : "";
-      const nextPath = searchParams.get("next") || "/services";
-      
-      // Ensure safe redirect
-      const safeNext = nextPath.startsWith("/") && !nextPath.startsWith("//") && !nextPath.includes("://") 
-        ? nextPath 
-        : "/services";
-      
-      // Build callback URL with next parameter
-      const redirectUrl = `${siteUrl}/auth/callback?next=${encodeURIComponent(safeNext)}`;
+
+      const nextPath = getSafeNext("/dashboard/new-order");
+      const redirectUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
 
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
@@ -66,17 +89,10 @@ export default function LoginForm() {
       });
 
       if (oauthError) {
-        // Check if error is due to unconfigured provider
-        if (oauthError.message?.toLowerCase().includes("provider") || 
-            oauthError.message?.toLowerCase().includes("configured")) {
-          setError("Google sign-in is not configured yet. Please use email login.");
-        } else {
-          setError(oauthError.message || "Unable to sign in with Google. Please try again.");
-        }
+        setError(mapAuthError(oauthError.message || "Unable to sign in with Google. Please try again."));
         setGoogleLoading(false);
       }
-      // If no error, the signInWithOAuth will redirect the page to Google
-    } catch (err) {
+    } catch {
       setError("An error occurred. Please try again.");
       setGoogleLoading(false);
     }
@@ -112,72 +128,54 @@ export default function LoginForm() {
         <span className="text-xs font-medium text-slate-500">or continue with email</span>
         <div className="h-px flex-1 bg-slate-200"></div>
       </div>
-      <div className="mt-7 flex gap-2 rounded-xl border border-slate-200 bg-slate-50/80 p-1">
-        <button
-          type="button"
-          onClick={() => setLoginMethod("password")}
-          className={`flex-1 rounded-lg px-3 py-2 text-xs font-bold transition ${
-            loginMethod === "password"
-              ? "bg-white text-slate-900 shadow-sm"
-              : "text-slate-600 hover:text-slate-800"
-          }`}
-        >
-          Password
-        </button>
-        <button
-          type="button"
-          disabled
-          onClick={() => setLoginMethod("link")}
-          className="flex-1 rounded-lg px-3 py-2 text-xs font-bold text-slate-400 cursor-not-allowed"
-          title="Email link login is not yet enabled"
-        >
-          Email Link
-        </button>
-      </div>
 
-      {/* password login form */}
-      {loginMethod === "password" && (
-        <form onSubmit={handleSubmit} className="mt-7 space-y-5">
-          <div>
-            <label htmlFor="email" className="text-sm font-semibold text-slate-700">Email address</label>
-            <input id="email" name="email" type="email" autoComplete="email" required placeholder="you@company.com" className="auth-field" />
-          </div>
-          <div>
-            <div className="flex items-center justify-between">
-              <label htmlFor="password" className="text-sm font-semibold text-slate-700">Password</label>
-              <Link href="/forgot-password" className="text-xs font-semibold text-pink-600 transition hover:text-pink-500">Forgot password?</Link>
-            </div>
-            <input id="password" name="password" type="password" autoComplete="current-password" required placeholder="Enter your password" className="auth-field" />
-          </div>
-          <label className="flex items-center gap-2 text-sm text-slate-500">
-            <input type="checkbox" className="h-4 w-4 rounded border-slate-300 accent-pink-500" />
-            Keep me signed in
-          </label>
-          <button
-            type="submit"
-            disabled={loading}
-            className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105 hover:shadow-pink-400/60 disabled:cursor-not-allowed disabled:opacity-60"
-          >
-            {loading ? "Signing in..." : "Login"}
-          </button>
-        </form>
-      )}
-
-      {/* email link notice (disabled for now) */}
-      {loginMethod === "link" && (
-        <div className="mt-7 rounded-xl border border-slate-200 bg-slate-50 p-5 text-center">
-          <p className="text-sm text-slate-600">
-            Email link login will be available soon. Please use your password to sign in for now.
-          </p>
-          <button
-            type="button"
-            onClick={() => setLoginMethod("password")}
-            className="mt-4 inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105"
-          >
-            Back to Password Login
-          </button>
+      <form onSubmit={handleSubmit} className="mt-7 space-y-5">
+        <div>
+          <label htmlFor="email" className="text-sm font-semibold text-slate-700">Email address</label>
+          <input id="email" name="email" type="email" autoComplete="email" required placeholder="you@company.com" className="auth-field" />
         </div>
-      )}
+        <div>
+          <div className="flex items-center justify-between">
+            <label htmlFor="password" className="text-sm font-semibold text-slate-700">Password</label>
+            <Link href="/forgot-password" className="text-xs font-semibold text-pink-600 transition hover:text-pink-500">Forgot password?</Link>
+          </div>
+          <div className="relative mt-2">
+            <input
+              id="password"
+              name="password"
+              type={showPassword ? "text" : "password"}
+              autoComplete="current-password"
+              required
+              placeholder="Enter your password"
+              className="auth-field pr-12"
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword((v) => !v)}
+              aria-label={showPassword ? "Hide password" : "Show password"}
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 transition hover:text-slate-700"
+            >
+              {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          </div>
+        </div>
+        <label className="flex items-center gap-2 text-sm text-slate-500">
+          <input
+            type="checkbox"
+            checked={keepSignedIn}
+            onChange={(event) => setKeepSignedIn(event.target.checked)}
+            className="h-4 w-4 rounded border-slate-300 accent-pink-500"
+          />
+          Keep me signed in
+        </label>
+        <button
+          type="submit"
+          disabled={loading || googleLoading}
+          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105 hover:shadow-pink-400/60 disabled:cursor-not-allowed disabled:opacity-60"
+        >
+          {loading ? "Signing in..." : "Login"}
+        </button>
+      </form>
     </>
   );
 }

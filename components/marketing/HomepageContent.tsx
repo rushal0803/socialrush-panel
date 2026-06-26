@@ -4,7 +4,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import type { Variants } from "framer-motion";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 
 /* ─────────────────── animation variants ─────────────────── */
 const fadeUp: Variants = {
@@ -320,7 +321,22 @@ function SvgIcon({ path, size = 20, className = "" }: { path: string; size?: num
 export default function HomepageContent() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const startOrderHref = "/login?next=/dashboard/new-order";
+
+  useEffect(() => {
+    const supabase = createClient();
+    void supabase.auth.getSession().then(({ data }) => setIsLoggedIn(Boolean(data.session)));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setIsLoggedIn(Boolean(session)));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  async function logout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setMenuOpen(false);
+    window.location.href = "/login";
+  }
 
   return (
     <main className="overflow-x-hidden bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
@@ -346,8 +362,20 @@ export default function HomepageContent() {
               ))}
             </nav>
             <div className="hidden items-center gap-2 lg:flex">
-              <Link href="/login" className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">Login</Link>
-              <Link href="/register" className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm transition hover:bg-violet-100">Sign Up</Link>
+              {isLoggedIn ? (
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link href="/login" className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">Login</Link>
+                  <Link href="/register" className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm transition hover:bg-violet-100">Sign Up</Link>
+                </>
+              )}
               <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-pink-300/50 transition hover:brightness-105 hover:shadow-pink-300/70">Start Order</Link>
             </div>
             <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((v) => !v)} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm lg:hidden">
@@ -368,8 +396,20 @@ export default function HomepageContent() {
                     ))}
                   </nav>
                   <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
-                    <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700">Login</Link>
-                    <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-violet-200 bg-violet-50 px-3 py-2.5 text-center text-sm font-semibold text-violet-700">Sign Up</Link>
+                    {isLoggedIn ? (
+                      <button
+                        type="button"
+                        onClick={logout}
+                        className="col-span-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700"
+                      >
+                        Logout
+                      </button>
+                    ) : (
+                      <>
+                        <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700">Login</Link>
+                        <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-violet-200 bg-violet-50 px-3 py-2.5 text-center text-sm font-semibold text-violet-700">Sign Up</Link>
+                      </>
+                    )}
                     <Link href={startOrderHref} onClick={() => setMenuOpen(false)} className="col-span-2 rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-3 py-2.5 text-center text-sm font-bold text-white shadow-lg shadow-pink-300/40">Start Order</Link>
                   </div>
                 </div>
@@ -441,7 +481,7 @@ export default function HomepageContent() {
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((s) => (
             <motion.article key={s.label} variants={cardAnim} whileHover={{ y: -8, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_20px_50px_-20px_rgba(15,23,42,.18)] ${s.border} ${s.bg}`}>
-              <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg shadow-md ${s.iconBg}`}>
+              <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${s.iconBg}`}>
                 <SvgIcon path={s.icon} size={20} />
               </div>
               <p className="mt-4 text-3xl font-extrabold text-slate-900">{s.value}</p>

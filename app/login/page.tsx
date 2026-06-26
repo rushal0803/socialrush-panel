@@ -1,10 +1,16 @@
 import { Suspense } from "react";
 import AuthShell from "@/components/AuthShell";
 import LoginForm from "@/components/auth/LoginForm";
+import { createClient } from "@/lib/supabase/server";
+import { redirect } from "next/navigation";
 
 export const metadata = { title: "Log in" };
 
-export default function LoginPage() {
+export default async function LoginPage() {
+  const supabase = await createClient();
+  const { data: { session } } = await supabase.auth.getSession();
+  if (session) redirect("/dashboard/new-order");
+
   return (
     <AuthShell
       title="Welcome back to SocialRUSH"

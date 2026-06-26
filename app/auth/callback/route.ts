@@ -5,23 +5,25 @@ import { ensureUserProfile } from "@/lib/auth/ensure-profile";
 
 /**
  * OAuth Callback Route
- * 
+ *
  * Handles authentication callbacks for:
  * - Email/Password confirmation links
  * - OAuth providers (Google, GitHub, etc.)
- * 
- * GOOGLE OAUTH CONFIGURATION:
- * Google Sign-In requires enabling the Google provider in Supabase:
- * 1. Go to Supabase Dashboard > Authentication > Providers
- * 2. Enable Google provider
- * 3. Add your Google OAuth Client ID and Secret (from Google Cloud Console)
- * 4. Add authorized redirect URIs in Google Cloud Console:
- *    - For local: http://localhost:3000/auth/callback
- *    - For production: https://yourdomain.com/auth/callback
- * 5. The system will automatically handle the OAuth flow
+ *
+ * SUPABASE GOOGLE OAUTH CONFIGURATION REMINDER:
+ * 1. In Supabase Dashboard go to Authentication > Providers > Google.
+ * 2. Enable Google provider.
+ * 3. Add Google Client ID and Google Client Secret.
+ * 4. In Google Cloud Console OAuth app, add redirect URI:
+ *    https://YOUR_SUPABASE_PROJECT.supabase.co/auth/v1/callback
+ * 5. In Supabase Authentication > URL Configuration:
+ *    Site URL: https://www.socialrush.site (or your production Vercel URL)
+ * 6. Additional Redirect URLs should include:
+ *    http://localhost:3000/**
+ *    https://www.socialrush.site/**
+ *    https://socialrush.site/**
+ *    https://your-vercel-domain.vercel.app/**
  */
-
-const callbackDestinations = new Set(["/dashboard", "/reset-password"]);
 
 function isSafeRedirect(path: string) {
   return path.startsWith("/") && !path.startsWith("//") && !path.includes("://");

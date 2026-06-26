@@ -15,11 +15,9 @@ type RazorpayOptions = { key: string; amount: number; currency: string; name: st
 declare global { interface Window { Razorpay?: new (options: RazorpayOptions) => { open: () => void } } }
 
 const methods = [
-  { id: "upi", name: "UPI", detail: "Google Pay, PhonePe & UPI", icon: "UPI" },
+  { id: "upi", name: "UPI QR", detail: "Scan and pay via UPI apps", icon: "UPI" },
+  { id: "manual_upi", name: "Manual UPI", detail: "Collect request / manual transfer", icon: "MUPI" },
   { id: "razorpay", name: "Razorpay", detail: "Secure hosted checkout", icon: "R" },
-  { id: "credit_card", name: "Credit Card", detail: "Visa, Mastercard & RuPay", icon: "CC" },
-  { id: "debit_card", name: "Debit Card", detail: "All major bank cards", icon: "DC" },
-  { id: "net_banking", name: "Net Banking", detail: "50+ supported banks", icon: "NB" },
 ];
 
 function Counter({ value, moneyValue = false, formatter }: { value: number; moneyValue?: boolean; formatter?: (value: number) => string }) {

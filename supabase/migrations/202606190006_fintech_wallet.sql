@@ -16,7 +16,7 @@ declare v_id uuid;
 begin
   if auth.uid() is null then raise exception 'Authentication required'; end if;
   if p_amount < 100 or p_amount > 500000 then raise exception 'Amount must be between 100 and 500000'; end if;
-  if p_method not in ('upi','razorpay','credit_card','debit_card','net_banking') then raise exception 'Unsupported payment method'; end if;
+  if p_method not in ('upi','manual_upi','razorpay','credit_card','debit_card','net_banking') then raise exception 'Unsupported payment method'; end if;
   insert into public.transactions (user_id, amount, type, status, payment_method, provider_order_id, description)
   values (auth.uid(), p_amount, 'credit', 'pending', p_method, p_provider_order_id, 'Wallet funding') returning id into v_id;
   return v_id;

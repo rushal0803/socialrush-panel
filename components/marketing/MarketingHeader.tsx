@@ -7,6 +7,7 @@ import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import PortalCTA from "./PortalCTA";
 import CurrencyDropdown from "./CurrencyDropdown";
+import { createClient } from "@/lib/supabase/client";
 
 const nav = [
   ["Home", "/"],
@@ -20,8 +21,23 @@ const nav = [
 export default function MarketingHeader() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    const supabase = createClient();
+    void supabase.auth.getSession().then(({ data }) => setIsLoggedIn(Boolean(data.session)));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setIsLoggedIn(Boolean(session)));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  async function logout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setOpen(false);
+    window.location.href = "/login";
+  }
 
   return (
     <header className="sticky top-0 z-50 border-b border-violet-300/20 bg-[#070c1d]/85 backdrop-blur-2xl">
@@ -40,12 +56,24 @@ export default function MarketingHeader() {
 
         <div className="hidden items-center gap-2 lg:flex">
           <CurrencyDropdown compact />
-          <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200">
-            Login
-          </Link>
-          <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-400/20">
-            Sign Up
-          </Link>
+          {isLoggedIn ? (
+            <button
+              type="button"
+              onClick={logout}
+              className="inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200"
+            >
+              Logout
+            </button>
+          ) : (
+            <>
+              <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200">
+                Login
+              </Link>
+              <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-400/20">
+                Sign Up
+              </Link>
+            </>
+          )}
           <PortalCTA className="inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition hover:shadow-cyan-400/30">
             Start Order
           </PortalCTA>
@@ -77,12 +105,24 @@ export default function MarketingHeader() {
               <div className="w-fit">
                 <CurrencyDropdown />
               </div>
-              <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100">
-                Login
-              </Link>
-              <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-fuchsia-300/35 bg-fuchsia-400/10 px-4 py-3 text-sm font-bold text-fuchsia-100">
-                Sign Up
-              </Link>
+              {isLoggedIn ? (
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"
+                >
+                  Logout
+                </button>
+              ) : (
+                <>
+                  <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100">
+                    Login
+                  </Link>
+                  <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-fuchsia-300/35 bg-fuchsia-400/10 px-4 py-3 text-sm font-bold text-fuchsia-100">
+                    Sign Up
+                  </Link>
+                </>
+              )}
               <PortalCTA className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-3 text-sm font-bold text-white">
                 Start Order
               </PortalCTA>
