@@ -156,6 +156,89 @@ export async function changeUserRole(formData: FormData) {
   revalidatePath("/admin/users");
 }
 
+export async function setUserBlocked(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  await supabase.rpc("admin_set_user_blocked", {
+    p_user_id: text(formData, "user_id"),
+    p_blocked: text(formData, "blocked") === "true",
+  });
+  revalidatePath("/admin/users");
+}
+
+export async function addPackage(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  await supabase.from("packages").insert({
+    name: text(formData, "name"),
+    platform: text(formData, "platform"),
+    price: number(formData, "price"),
+    features: text(formData, "features").split("\n").map((item) => item.trim()).filter(Boolean),
+    is_active: text(formData, "is_active") !== "false",
+  });
+  revalidatePath("/admin/packages");
+}
+
+export async function updatePackage(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  await supabase.from("packages").update({
+    name: text(formData, "name"),
+    platform: text(formData, "platform"),
+    price: number(formData, "price"),
+    features: text(formData, "features").split("\n").map((item) => item.trim()).filter(Boolean),
+    is_active: text(formData, "is_active") !== "false",
+    updated_at: new Date().toISOString(),
+  }).eq("id", number(formData, "id"));
+  revalidatePath("/admin/packages");
+}
+
+export async function deletePackage(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  await supabase.from("packages").delete().eq("id", number(formData, "id"));
+  revalidatePath("/admin/packages");
+}
+
+export async function reviewPayment(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  await supabase.rpc("admin_review_payment", {
+    p_transaction_id: text(formData, "id"),
+    p_decision: text(formData, "decision"),
+  });
+  revalidatePath("/admin/payments");
+  revalidatePath("/admin/users");
+  revalidatePath("/admin");
+}
+
+export async function setTicketStatus(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  await supabase.from("support_tickets").update({ status: text(formData, "status") }).eq("id", text(formData, "ticket_id"));
+  revalidatePath("/admin/support");
+}
+
+export async function updateWebsiteSettings(formData: FormData) {
+  const { supabase, user } = await requireAdmin();
+  const rates = {
+    INR: 1,
+    USD: number(formData, "rate_USD"),
+    EUR: number(formData, "rate_EUR"),
+    GBP: number(formData, "rate_GBP"),
+    AED: number(formData, "rate_AED"),
+    CAD: number(formData, "rate_CAD"),
+    AUD: number(formData, "rate_AUD"),
+  };
+  await supabase.from("website_settings").upsert({
+    key: "general",
+    value: {
+      whatsapp_number: text(formData, "whatsapp_number"),
+      support_email: text(formData, "support_email"),
+      currency_rates: rates,
+      payment_instructions: text(formData, "payment_instructions"),
+      notice_text: text(formData, "notice_text"),
+    },
+    updated_at: new Date().toISOString(),
+    updated_by: user.id,
+  });
+  revalidatePath("/admin/settings");
+}
+
 export async function updateTransactionStatus(formData: FormData) {
   const { supabase } = await requireAdmin();
   await supabase.from("transactions").update({ status: text(formData, "status") }).eq("id", text(formData, "id"));

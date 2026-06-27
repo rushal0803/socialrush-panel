@@ -6,17 +6,21 @@ export default async function AdminDashboardPage() {
 
   const [
     { count: totalUsers },
+    { count: totalOrders },
     { count: pendingOrders },
     { count: completedOrders },
-    { count: paymentRequests },
+    { count: walletTopUps },
+    { count: supportTickets },
     { data: completedCharges },
     { data: users },
     { data: transactions },
   ] = await Promise.all([
     supabase.from("profiles").select("id", { count: "exact", head: true }),
+    supabase.from("orders").select("id", { count: "exact", head: true }),
     supabase.from("orders").select("id", { count: "exact", head: true }).in("status", ["pending", "processing", "in_progress"]),
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "completed"),
-    supabase.from("transactions").select("id", { count: "exact", head: true }).eq("type", "credit").eq("status", "pending"),
+    supabase.from("transactions").select("id", { count: "exact", head: true }).eq("type", "credit").eq("status", "completed"),
+    supabase.from("support_tickets").select("id", { count: "exact", head: true }),
     supabase.from("orders").select("charge").eq("status", "completed"),
     supabase.from("profiles").select("id, full_name, email, role, created_at").order("created_at", { ascending: false }).limit(6),
     supabase
@@ -52,10 +56,12 @@ export default async function AdminDashboardPage() {
     <AdminOverviewContent
       stats={{
         totalUsers: totalUsers ?? 0,
+        totalOrders: totalOrders ?? 0,
         totalRevenue,
         pendingOrders: pendingOrders ?? 0,
         completedOrders: completedOrders ?? 0,
-        paymentRequests: paymentRequests ?? 0,
+        walletTopUps: walletTopUps ?? 0,
+        supportTickets: supportTickets ?? 0,
       }}
       recentUsers={recentUsers}
       recentTransactions={recentTransactions}

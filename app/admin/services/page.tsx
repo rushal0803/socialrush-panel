@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { addService, deleteService, updateService } from "@/app/admin/actions";
 import { AdminPageHeader, AdminStatus, Modal, inputClass, primaryButton } from "@/components/admin/AdminUI";
+import ConfirmSubmitButton from "@/components/admin/ConfirmSubmitButton";
 
 type ServiceRow = {
   id: number;
@@ -210,7 +211,7 @@ export default async function ServicesPage() {
 
                       <form action={deleteService}>
                         <input type="hidden" name="id" value={service.id} />
-                        <button className="rounded-xl bg-rose-50 px-4 py-3 text-xs font-bold text-rose-600">Delete</button>
+                        <ConfirmSubmitButton message={`Delete ${service.name}? Existing orders may prevent deletion.`} className="rounded-xl bg-rose-50 px-4 py-3 text-xs font-bold text-rose-600">Delete</ConfirmSubmitButton>
                       </form>
                     </div>
                   </td>

@@ -7,8 +7,8 @@ import Logo from "@/components/Logo";
 import { logout } from "@/app/auth/actions";
 
 const links = [
-  ["Overview", "/admin", "grid"], ["Services", "/admin/services", "layers"], ["Categories", "/admin/categories", "tag"],
-  ["Orders", "/admin/orders", "cart"], ["Users", "/admin/users", "users"], ["Transactions", "/admin/transactions", "wallet"],
+  ["Overview", "/admin/dashboard", "grid"], ["Services", "/admin/services", "layers"], ["Packages", "/admin/packages", "tag"],
+  ["Orders", "/admin/orders", "cart"], ["Users", "/admin/users", "users"], ["Payments", "/admin/payments", "wallet"],
   ["Support", "/admin/support", "support"], ["Settings", "/admin/settings", "settings"],
 ] as const;
 
@@ -28,11 +28,16 @@ export function AdminNav({ mobile = false }: { mobile?: boolean }) {
   return (
     <nav className={mobile ? "grid gap-1" : "space-y-1"}>
       {links.map(([label, href, icon]) => {
-        const active = href === "/admin" ? pathname === href : pathname.startsWith(href);
+        const active = href === "/admin/dashboard" ? pathname === href || pathname === "/admin" : pathname.startsWith(href);
         return (
           <Link
             key={href}
             href={href}
+            onClick={(event) => {
+              if (mobile) {
+                event.currentTarget.closest("details")?.removeAttribute("open");
+              }
+            }}
             className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
               active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
             }`}

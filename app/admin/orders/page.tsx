@@ -7,7 +7,7 @@ const statuses = ["all", "pending", "processing", "in_progress", "completed", "p
 const money = (value: number | string) =>
   new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(Number(value));
 
-export default async function AdminOrdersPage({ searchParams }: { searchParams?: { status?: string } }) {
+export default async function AdminOrdersPage({ searchParams }: { searchParams?: { status?: string; q?: string } }) {
   const supabase = await createClient();
   const filter = statuses.includes(searchParams?.status || "") ? searchParams!.status! : "all";
 
@@ -17,6 +17,8 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams?:
     .order("created_at", { ascending: false });
 
   if (filter !== "all") query = query.eq("status", filter);
+  const search = String(searchParams?.q || "").trim().replace(/[^\p{L}\p{N}:/?&=._+\-\s]/gu, "").slice(0, 120);
+  if (search) query = query.or(`link.ilike.%${search}%,provider_order_id.ilike.%${search}%,admin_notes.ilike.%${search}%`);
   const { data: orders } = await query.limit(200);
 
   return (
@@ -39,6 +41,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams?:
           </Link>
         ))}
       </div>
+      <form className="mt-4 flex max-w-xl gap-2"><input type="hidden" name="status" value={filter === "all" ? "" : filter}/><input name="q" defaultValue={search} className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm outline-none focus:border-blue-500" placeholder="Search link, provider ID, or admin notes"/><button className="rounded-xl bg-[#0a1b3d] px-5 py-3 text-xs font-bold text-white">Search</button></form>
 
       <section className="panel-card mt-5 overflow-hidden">
         <div className="overflow-x-auto">

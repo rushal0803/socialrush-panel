@@ -7,10 +7,12 @@ import { formatCurrency } from "@/lib/currency";
 type AdminOverviewProps = {
   stats: {
     totalUsers: number;
+    totalOrders: number;
     totalRevenue: number;
     pendingOrders: number;
     completedOrders: number;
-    paymentRequests: number;
+    walletTopUps: number;
+    supportTickets: number;
   };
   recentUsers: Array<{
     id: string;
@@ -45,10 +47,12 @@ const statusTone: Record<string, string> = {
 export default function AdminOverviewContent({ stats, recentUsers, recentTransactions }: AdminOverviewProps) {
   const cards = [
     { title: "Total Users", value: stats.totalUsers.toLocaleString("en-IN"), note: "Registered accounts" },
+    { title: "Total Orders", value: stats.totalOrders.toLocaleString("en-IN"), note: "All customer orders" },
     { title: "Total Revenue", value: formatCurrency(stats.totalRevenue, "INR"), note: "Completed order value" },
     { title: "Pending Orders", value: stats.pendingOrders.toLocaleString("en-IN"), note: "Awaiting fulfillment" },
     { title: "Completed Orders", value: stats.completedOrders.toLocaleString("en-IN"), note: "Delivered successfully" },
-    { title: "Payment Requests", value: stats.paymentRequests.toLocaleString("en-IN"), note: "Pending credits" },
+    { title: "Wallet Top-ups", value: stats.walletTopUps.toLocaleString("en-IN"), note: "Successful wallet credits" },
+    { title: "Support Tickets", value: stats.supportTickets.toLocaleString("en-IN"), note: "All customer tickets" },
   ] as const;
 
   return (
@@ -66,7 +70,7 @@ export default function AdminOverviewContent({ stats, recentUsers, recentTransac
         </div>
       </motion.section>
 
-      <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
+      <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         {cards.map((card, index) => (
           <motion.article
             key={card.title}
@@ -137,7 +141,7 @@ export default function AdminOverviewContent({ stats, recentUsers, recentTransac
               <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5672aa]">Transactions</p>
               <h2 className="mt-1 text-lg font-black text-[#1a376f]">Recent payment activity</h2>
             </div>
-            <Link href="/admin/transactions" className="btn-dashboard-secondary px-3.5 py-2 text-xs">
+            <Link href="/admin/payments" className="btn-dashboard-secondary px-3.5 py-2 text-xs">
               View all
             </Link>
           </div>
