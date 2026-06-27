@@ -1,6 +1,6 @@
-import { createClient } from "@/lib/supabase/server";
 import { updateAccount } from "./actions";
 import AccountDashboardContent from "@/components/dashboard/AccountDashboardContent";
+import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
 type AccountSearchParams = {
   saved?: string;
@@ -12,10 +12,7 @@ export default async function AccountPage({
 }: {
   searchParams?: AccountSearchParams;
 }) {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, user } = await getDashboardContext();
 
   const { data: profile } = await supabase
     .from("profiles")

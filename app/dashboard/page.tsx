@@ -1,16 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
 import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
+import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
 export default async function DashboardPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
-
-  const userId = user?.id;
+  const { supabase, user, profile } = await getDashboardContext();
+  const userId = user!.id;
 
   const [
-    { data: profile },
     { data: orderRows },
     { data: transactionRows },
     { count: totalOrdersCount },
@@ -18,7 +13,6 @@ export default async function DashboardPage() {
     { count: activeOrdersCount },
     { count: supportTicketsCount },
   ] = await Promise.all([
-    supabase.from("profiles").select("balance, full_name").eq("id", userId!).maybeSingle(),
     supabase
       .from("orders")
       .select("id, service_name, quantity, status, charge, created_at")

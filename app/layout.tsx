@@ -1,10 +1,16 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
-import AIChatbot from "@/components/AIChatbot";
+import AIChatbotLoader from "@/components/AIChatbotLoader";
 import ClientProviders from "@/components/providers/ClientProviders";
 
-const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
+const inter = Inter({
+  subsets: ["latin"],
+  variable: "--font-inter",
+  display: "swap",
+  preload: true,
+  fallback: ["system-ui", "Arial"],
+});
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://socialrush.in";
 
 export const metadata: Metadata = {
@@ -14,9 +20,6 @@ export const metadata: Metadata = {
     template: "%s | SocialRUSH",
   },
   description: "Order and track premium social media growth services for Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X.",
-  alternates: {
-    canonical: "/",
-  },
   openGraph: {
     type: "website",
     siteName: "SocialRUSH",
@@ -44,7 +47,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 "@type": "Organization",
                 name: "SocialRUSH",
                 url: siteUrl,
-                logo: new URL("/images/logo.png", siteUrl).toString(),
+                logo: new URL("/logo.svg", siteUrl).toString(),
                 sameAs: [process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || "https://wa.me/918860330771"],
               }),
             }}
@@ -66,7 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             }}
           />
           {children}
-          <AIChatbot />
+          <AIChatbotLoader />
         </ClientProviders>
       </body>
     </html>

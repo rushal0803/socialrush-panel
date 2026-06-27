@@ -24,8 +24,8 @@ export function Modal({ label, title, children }: { label: string; title: string
   return (
     <details className="group">
       <summary className="btn-dashboard-primary cursor-pointer list-none px-4 py-3 text-sm font-semibold">{label}</summary>
-      <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-4 backdrop-blur-sm">
-        <div className="max-h-[90vh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/80 bg-white p-6 shadow-2xl">
+      <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-3 backdrop-blur-sm sm:p-4">
+        <div className="max-h-[90dvh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-white/80 bg-white p-4 shadow-2xl sm:p-6">
           <div className="flex items-center justify-between">
             <h2 className="text-lg font-black text-[#122b61]">{title}</h2>
             <span className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg bg-slate-100 text-slate-500">x</span>

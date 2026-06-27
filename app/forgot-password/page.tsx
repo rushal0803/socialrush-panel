@@ -2,7 +2,10 @@ import AuthShell from "@/components/AuthShell";
 import AuthMessage from "@/components/AuthMessage";
 import { forgotPassword } from "@/app/auth/actions";
 
-export const metadata = { title: "Forgot password" };
+export const metadata = {
+  title: "Forgot password",
+  robots: { index: false, follow: false },
+};
 
 export default function ForgotPasswordPage({ searchParams }: { searchParams?: { error?: string; sent?: string } }) {
   return <AuthShell title="Reset your password" subtitle="Enter your email and we’ll send you a secure recovery link." footerText="Remember your password?" footerLink="/login" footerLabel="Back to login">

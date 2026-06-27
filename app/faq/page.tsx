@@ -7,6 +7,7 @@ export const metadata: Metadata = {
   title: "Frequently Asked Questions",
   description:
     "Everything you need to know about SocialRUSH services, pricing, payments, delivery, and support.",
+  alternates: { canonical: "/faq" },
 };
 
 const faqCategories: FaqCategory[] = [

@@ -3,10 +3,11 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { currencies, type Currency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
+import Logo from "@/components/Logo";
 
 const navLinks = [
   ["Home", "/"],
@@ -104,6 +105,7 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
 
 function BlogHeader() {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -120,21 +122,15 @@ function BlogHeader() {
     const supabase = createClient();
     await supabase.auth.signOut();
     setOpen(false);
-    window.location.href = "/login";
+    router.replace("/login");
+    router.refresh();
   }
 
   return (
     <header className="sticky top-3 z-50 px-4 sm:px-6 lg:px-8">
       <div className="mx-auto mt-3 max-w-7xl rounded-3xl border border-white/85 bg-white/82 shadow-[0_16px_40px_rgba(88,114,173,.16)] backdrop-blur-xl">
         <div className="flex min-h-[76px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-7">
-          <Link href="/" aria-label="SocialRUSH home" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-[#18366f]">
-            <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#ff69b4] via-[#8f92ff] to-[#52c8ff] text-sm font-black text-white shadow-[0_10px_24px_rgba(124,114,239,.32)]">
-              S
-            </span>
-            <span>
-              Social<span className="text-[#4e71ff]">RUSH</span>
-            </span>
-          </Link>
+          <Logo priority />
 
           <nav className="hidden items-center gap-1.5 xl:flex">
             {navLinks.map(([label, href]) => (
@@ -191,7 +187,7 @@ function BlogHeader() {
             >
               <nav className="grid gap-1">
                 {navLinks.map(([label, href]) => (
-                  <Link key={href} href={href} className="rounded-xl px-3 py-3 text-sm font-semibold text-[#294478] transition hover:bg-[#f2f7ff]">
+                  <Link key={href} href={href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-sm font-semibold text-[#294478] transition hover:bg-[#f2f7ff]">
                     {label}
                   </Link>
                 ))}
@@ -239,14 +235,7 @@ function BlogFooter() {
       <div className="relative mx-auto max-w-7xl rounded-[30px] border border-white/85 bg-white/82 p-7 shadow-[0_20px_45px_rgba(86,112,171,.16)] backdrop-blur sm:p-10">
         <div className="grid gap-9 border-b border-[#e9efff] pb-9 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
           <div>
-            <Link href="/" aria-label="SocialRUSH home" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-[#18366f]">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#ff69b4] via-[#8f92ff] to-[#52c8ff] text-sm font-black text-white shadow-[0_10px_24px_rgba(124,114,239,.32)]">
-                S
-              </span>
-              <span>
-                Social<span className="text-[#4e71ff]">RUSH</span>
-              </span>
-            </Link>
+            <Logo />
             <p className="mt-4 max-w-sm text-sm leading-7 text-[#5a6f98]">
               Premium social media growth support for creators, brands, and agencies focused on smarter campaign execution and measurable visibility.
             </p>

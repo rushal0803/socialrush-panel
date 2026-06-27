@@ -20,18 +20,7 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
       <div className="relative mx-auto max-w-7xl">
         <div className={isLight3d ? "grid gap-10 rounded-3xl border border-white/80 bg-white/72 p-6 shadow-[0_24px_54px_-34px_rgba(15,23,42,.42)] backdrop-blur-2xl sm:p-8 lg:grid-cols-[1.4fr_1fr_1fr_1fr]" : "grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.4fr_1fr_1fr_1fr]"}>
           <div className={isLight3d ? "rounded-2xl border border-[#dce8ff] bg-white/80 p-4 sm:p-5" : ""}>
-            {isLight3d ? (
-              <Link href="/" className="inline-flex items-center gap-2.5 font-bold tracking-tight text-[#17366f]">
-                <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-sm font-extrabold text-white shadow-[0_12px_28px_-14px_rgba(117,109,255,.7)]">
-                  SR
-                </span>
-                <span>
-                  Social<span className="bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] bg-clip-text text-transparent">RUSH</span>
-                </span>
-              </Link>
-            ) : (
-              <Logo light />
-            )}
+            <Logo light={!isLight3d} />
             <p className={isLight3d ? "mt-5 max-w-sm text-xs leading-6 text-[#5f79ab]" : "mt-5 max-w-sm text-xs leading-6 text-slate-400"}>
               Premium social media growth services for creators, influencers,
               brands, agencies, and businesses across India and global markets.

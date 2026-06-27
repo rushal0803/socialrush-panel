@@ -51,6 +51,11 @@ svg {
   max-width: 100%;
 }
 
+.content-auto {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 800px;
+}
+
 h1,
 h2,
 h3,
@@ -216,6 +221,41 @@ h6 {
 }
 
 @media (max-width: 640px) {
+  html {
+    scroll-padding-top: 6rem;
+  }
+
+  body {
+    min-width: 0;
+    overflow-x: clip;
+  }
+
+  main,
+  section,
+  article,
+  aside,
+  header,
+  footer,
+  nav,
+  form {
+    min-width: 0;
+    max-width: 100%;
+  }
+
+  img,
+  video,
+  canvas,
+  svg {
+    max-width: 100%;
+  }
+
+  input,
+  select,
+  textarea {
+    max-width: 100%;
+    font-size: 16px;
+  }
+
   h1 {
     letter-spacing: -0.025em;
   }

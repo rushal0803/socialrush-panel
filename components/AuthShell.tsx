@@ -1,5 +1,6 @@
 ﻿import Link from "next/link";
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
+import Logo from "@/components/Logo";
 
 interface AuthShellProps {
   title: string;
@@ -36,26 +37,19 @@ export default function AuthShell({
         <div className="flex flex-col">
           {/* top bar */}
           <div className="flex items-center justify-between">
-            <Link href="/" className="flex items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-sky-500 text-sm font-extrabold text-white shadow-lg shadow-pink-300/50">
-                SR
-              </span>
-              <span className="text-lg font-extrabold tracking-tight text-slate-900">
-                Social<span className="bg-gradient-to-r from-pink-500 to-sky-500 bg-clip-text text-transparent">RUSH</span>
-              </span>
-            </Link>
+            <Logo priority />
             <Link
               href="/"
               className="flex items-center gap-1.5 rounded-xl border border-slate-200 bg-white/80 px-3.5 py-2 text-xs font-semibold text-slate-600 shadow-sm backdrop-blur transition hover:text-sky-600"
             >
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round"><path d="M19 12H5M12 5l-7 7 7 7" /></svg>
-              Back to Home
+              <span className="hidden min-[390px]:inline">Back to Home</span>
             </Link>
           </div>
 
           {/* card */}
           <div className="my-auto animate-auth-fade-up pt-8 pb-6 lg:pb-0">
-            <div className="rounded-3xl border border-white/90 bg-white/80 p-7 shadow-[0_20px_60px_-15px_rgba(15,23,42,.18)] backdrop-blur sm:p-9">
+            <div className="rounded-3xl border border-white/90 bg-white/80 p-5 shadow-[0_20px_60px_-15px_rgba(15,23,42,.18)] backdrop-blur sm:p-9">
               <span className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-sky-600">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-500" />
                 SocialRUSH Platform
@@ -82,13 +76,14 @@ export default function AuthShell({
           <div className="hidden items-center justify-center lg:flex">
             <div className="animate-auth-float w-full max-w-lg">
               <div className="overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-fuchsia-50 via-sky-50 to-pink-50 p-5 shadow-[0_40px_80px_-20px_rgba(99,102,241,.30)]">
-                <Image
+                <SafeImage
                   src={image}
+                  fallbackSrc={image.replace(/\.png$/i, ".webp")}
                   alt={imageAlt}
                   width={600}
-                  height={600}
+                  height={750}
+                  sizes="(min-width: 1024px) 42vw, 0px"
                   className="h-auto w-full rounded-3xl object-cover"
-                  priority
                 />
               </div>
             </div>

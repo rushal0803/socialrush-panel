@@ -4,6 +4,7 @@ import Link from "next/link";
 import { agencyServices } from "@/lib/marketing/content";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import PlatformIcon from "@/components/PlatformIcon";
 
 const platformNames = ["Instagram", "YouTube", "Facebook", "LinkedIn", "TikTok", "Twitter/X"];
 
@@ -28,7 +29,7 @@ export default function PricingGrid() {
               <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5">
                 <div className="flex items-center gap-3">
                   <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-[10px] font-black text-blue-700">
-                    {platform.slice(0, 2).toUpperCase()}
+                    <PlatformIcon platform={platform} className="h-5 w-5" />
                   </span>
                   <h2 className="text-lg font-bold text-[#07152f]">{platform}</h2>
                 </div>

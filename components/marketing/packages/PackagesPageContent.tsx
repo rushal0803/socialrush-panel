@@ -7,18 +7,19 @@ import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import PlatformIcon from "@/components/PlatformIcon";
 
 type Platform = BigPackage["platform"];
 type Service = BigPackage["service"];
 
-const platforms: Array<{ key: Platform; label: string; short: string }> = [
-  { key: "Instagram", label: "Instagram", short: "IG" },
-  { key: "YouTube", label: "YouTube", short: "YT" },
-  { key: "Facebook", label: "Facebook", short: "FB" },
-  { key: "LinkedIn", label: "LinkedIn", short: "IN" },
-  { key: "Telegram", label: "Telegram", short: "TG" },
-  { key: "TikTok", label: "TikTok", short: "TT" },
-  { key: "X", label: "X / Twitter", short: "X" },
+const platforms: Array<{ key: Platform; label: string }> = [
+  { key: "Instagram", label: "Instagram" },
+  { key: "YouTube", label: "YouTube" },
+  { key: "Facebook", label: "Facebook" },
+  { key: "LinkedIn", label: "LinkedIn" },
+  { key: "Telegram", label: "Telegram" },
+  { key: "TikTok", label: "TikTok" },
+  { key: "X", label: "X / Twitter" },
 ];
 
 const platformGradient: Record<Platform, string> = {
@@ -128,8 +129,8 @@ export default function PackagesPageContent() {
                         : "border-white/85 bg-white/80 hover:border-[#c9d9ff]"
                     }`}
                   >
-                    <span className={`grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br text-xs font-black text-white shadow-[0_10px_22px_rgba(80,105,167,.28)] ${platformGradient[platform.key]}`}>
-                      {platform.short}
+                    <span className={`grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br text-white shadow-[0_10px_22px_rgba(80,105,167,.28)] ${platformGradient[platform.key]}`}>
+                      <PlatformIcon platform={platform.label} className="h-5 w-5" />
                     </span>
                     <span className="mt-3 block truncate text-xs font-bold text-[#1f3b75]">{platform.label}</span>
                   </button>
@@ -183,8 +184,8 @@ export default function PackagesPageContent() {
                   className="flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/92 p-5 shadow-[0_16px_36px_rgba(81,108,169,.18)] sm:p-6"
                 >
                   <div className="flex items-start justify-between gap-3">
-                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-xs font-black text-white shadow-[0_10px_22px_rgba(80,105,167,.28)] ${platformGradient[pkg.platform]}`}>
-                      {platforms.find((item) => item.key === pkg.platform)?.short}
+                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-[0_10px_22px_rgba(80,105,167,.28)] ${platformGradient[pkg.platform]}`}>
+                      <PlatformIcon platform={pkg.platform} className="h-5 w-5" />
                     </span>
                     {pkg.discountBadge ? (
                       <span className="rounded-full border border-[#d6e2ff] bg-[#f6f9ff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#5670aa]">

@@ -112,36 +112,18 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
   );
 }
 
-export default function Sidebar() {
-  const pathname = usePathname();
+export default function Sidebar({
+  initialBalance,
+  userId,
+}: {
+  initialBalance: number;
+  userId: string;
+}) {
   const { currency } = usePreferredCurrency("INR");
-  const [balance, setBalance] = useState<number | null>(null);
+  const [balance, setBalance] = useState<number>(initialBalance);
 
   useEffect(() => {
     const supabase = createClient();
-    let userId = "";
-
-    const load = async () => {
-      const {
-        data: { user },
-      } = await supabase.auth.getUser();
-
-      if (!user) {
-        setBalance(0);
-        return;
-      }
-
-      userId = user.id;
-      const { data } = await supabase
-        .from("profiles")
-        .select("balance")
-        .eq("id", user.id)
-        .maybeSingle();
-
-      setBalance(Number(data?.balance ?? 0));
-    };
-
-    void load();
 
     const handleBalance = (event: Event) => {
       setBalance(Number((event as CustomEvent<number>).detail ?? 0));
@@ -165,12 +147,12 @@ export default function Sidebar() {
       window.removeEventListener("wallet-balance-updated", handleBalance);
       void supabase.removeChannel(channel);
     };
-  }, [pathname]);
+  }, [userId]);
 
   return (
     <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
-        <Logo />
+        <Logo priority />
       </div>
 
       <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(85,113,175,.12)]">
@@ -186,11 +168,7 @@ export default function Sidebar() {
           <p className="text-xs font-semibold text-[#6b82af]">Available balance</p>
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
         </div>
-        {balance === null ? (
-          <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-[#e2ebff]" />
-        ) : (
-          <p className="mt-2 text-2xl font-black text-[#16346c]">{formatCurrency(balance, currency)}</p>
-        )}
+        <p className="mt-2 text-2xl font-black text-[#16346c]">{formatCurrency(balance, currency)}</p>
 
         <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex w-full justify-center py-2.5 text-xs">
           Add Funds

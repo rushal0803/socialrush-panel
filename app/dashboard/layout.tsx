@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";
-import { createClient } from "@/lib/supabase/server";
-import { ensureUserProfile, ProfileSetupError } from "@/lib/auth/ensure-profile";
+import { ProfileSetupError } from "@/lib/auth/ensure-profile";
+import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -10,11 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) redirect("/login?next=/dashboard");
+  let context;
   try {
-    await ensureUserProfile(supabase, user);
+    context = await getDashboardContext();
   } catch (error) {
     const message = error instanceof ProfileSetupError ? error.message : "Unable to prepare your account profile.";
     return (
@@ -30,12 +28,17 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
       </main>
     );
   }
+  if (!context.user || !context.profile) redirect("/login?next=/dashboard");
 
   return (
     <div className="dashboard-shell relative flex min-h-screen">
-      <Sidebar />
+      <Sidebar initialBalance={context.profile.balance} userId={context.user.id} />
       <div className="min-w-0 flex-1">
-        <Header />
+        <Header
+          email={context.user.email || ""}
+          fullName={context.profile.full_name}
+          role={context.profile.role}
+        />
         {children}
       </div>
     </div>

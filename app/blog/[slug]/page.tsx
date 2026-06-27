@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { articleSlugs, getArticleBySlug } from "@/components/marketing/blog/blogData";
+import SafeImage from "@/components/SafeImage";
 
 export function generateStaticParams() {
   return articleSlugs.map((slug) => ({ slug }));
@@ -21,6 +21,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: `${article.title} | SocialRUSH Blog`,
     description: article.description,
+    alternates: { canonical: `/blog/${article.slug}` },
   };
 }
 
@@ -46,12 +47,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
           <div className="mt-6 overflow-hidden rounded-[30px] border border-white/85 bg-white/86 p-4 shadow-[0_20px_48px_rgba(86,114,175,.17)] backdrop-blur sm:p-6">
             <div className="relative h-[220px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#f6f0ff] via-[#ebf4ff] to-[#e3f9ff] sm:h-[310px]">
-              <Image
+              <SafeImage
                 src={article.image}
+                fallbackSrc={article.image.replace(/\.png$/i, ".webp")}
                 alt={article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 960px"
                 className="object-cover"
+                priority
               />
             </div>
 

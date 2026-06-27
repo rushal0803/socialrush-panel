@@ -2,7 +2,10 @@ import AuthShell from "@/components/AuthShell";
 import AuthMessage from "@/components/AuthMessage";
 import { resetPassword } from "@/app/auth/actions";
 
-export const metadata = { title: "Set new password" };
+export const metadata = {
+  title: "Set new password",
+  robots: { index: false, follow: false },
+};
 
 export default function ResetPasswordPage({ searchParams }: { searchParams?: { error?: string } }) {
   return <AuthShell title="Choose a new password" subtitle="Your new password must be at least eight characters." footerText="Return to" footerLink="/login" footerLabel="login">

@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
@@ -121,7 +121,7 @@ export default function ContactPageContent() {
           <div className="mx-auto grid w-full max-w-7xl items-center gap-8 lg:grid-cols-[1.05fr_.95fr]">
             <motion.div
               variants={fadeUp}
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65 }}
@@ -174,7 +174,7 @@ export default function ContactPageContent() {
 
             <motion.div
               variants={fadeUp}
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65, delay: 0.12 }}
@@ -186,11 +186,13 @@ export default function ContactPageContent() {
                   className="relative overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-br from-white to-[#edf5ff] p-3"
                 >
                   {!heroImageError ? (
-                    <Image
+                    <SafeImage
                       src="/images/contact/contact-3d.png"
+                      fallbackSrc="/images/contact/contact-3d.webp"
                       alt="SocialRUSH contact support"
                       width={900}
-                      height={700}
+                      height={900}
+                      sizes="(max-width: 1023px) 100vw, 50vw"
                       className="h-auto w-full rounded-2xl object-cover"
                       priority
                       onError={() => setHeroImageError(true)}

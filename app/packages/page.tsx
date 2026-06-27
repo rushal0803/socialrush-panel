@@ -5,6 +5,7 @@ export const metadata: Metadata = {
   title: "SocialRUSH Packages | Premium Growth Plans",
   description:
     "Explore premium SocialRUSH growth packages for Instagram, YouTube, Facebook, LinkedIn, TikTok, and X/Twitter with secure checkout and campaign tracking.",
+  alternates: { canonical: "/packages" },
 };
 
 export default function PackagesPage() {

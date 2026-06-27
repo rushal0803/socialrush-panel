@@ -1,13 +1,11 @@
-import { createClient } from "@/lib/supabase/server";
 import WalletDashboard, { type WalletInitialData, type WalletOrder, type WalletTransaction } from "@/components/wallet/WalletDashboard";
 import { redirect } from "next/navigation";
+import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
 export default async function AddFundsPage() {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
+  const { supabase, user, profile } = await getDashboardContext();
   if (!user) redirect("/login?next=/dashboard/add-funds");
-  const [{ data: profile }, { data: transactionRows }, { data: orderRows, count: orderCount }] = await Promise.all([
-    supabase.from("profiles").select("balance").eq("id", user.id).single(),
+  const [{ data: transactionRows }, { data: orderRows, count: orderCount }] = await Promise.all([
     supabase.from("transactions").select("id, amount, type, status, payment_method, description, created_at").order("created_at", { ascending: false }).limit(100),
     supabase.from("orders").select("id, charge, status, created_at, service_name, services(name)", { count: "exact" }).order("created_at", { ascending: false }).limit(100),
   ]);

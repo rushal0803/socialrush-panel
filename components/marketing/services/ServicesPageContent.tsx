@@ -6,6 +6,7 @@ import OrderNowButton from "@/components/marketing/OrderNowButton";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
+import PlatformIcon from "@/components/PlatformIcon";
 
 const platformOrder: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 
@@ -55,7 +56,7 @@ export default function ServicesPageContent() {
                   <span
                     className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br text-xs font-black text-white shadow-[0_10px_20px_rgba(76,108,168,.3)] ${block.gradient}`}
                   >
-                    {block.short}
+                    <PlatformIcon platform={block.label} className="h-5 w-5" />
                   </span>
                   <div>
                     <h2 className="text-xl font-black text-[#163165]">{block.label}</h2>

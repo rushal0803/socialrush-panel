@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 import PortalCTA from "./PortalCTA";
 import CurrencyDropdown from "./CurrencyDropdown";
@@ -20,6 +20,7 @@ const nav = [
 
 export default function MarketingHeader({ tone = "default" }: { tone?: "default" | "light3d" }) {
   const pathname = usePathname();
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const isLight3d = tone === "light3d";
@@ -37,26 +38,14 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
     const supabase = createClient();
     await supabase.auth.signOut();
     setOpen(false);
-    window.location.href = "/login";
+    router.replace("/login");
+    router.refresh();
   }
 
   return (
     <header className={isLight3d ? "sticky top-0 z-50 px-4 pt-3 sm:px-6" : "sticky top-0 z-50 border-b border-violet-300/20 bg-[#070c1d]/85 backdrop-blur-2xl"}>
       <div className={isLight3d ? "mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/80 bg-white/72 px-4 shadow-[0_22px_44px_-30px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:gap-4 sm:px-5 lg:px-6" : "mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8"}>
-        <Link href="/" aria-label="SocialRUSH home" className="shrink-0 pr-1">
-          {isLight3d ? (
-            <span className="inline-flex items-center gap-2.5 font-bold tracking-tight text-[#17366f]">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-sm font-extrabold text-white shadow-[0_12px_28px_-14px_rgba(117,109,255,.7)]">
-                SR
-              </span>
-              <span>
-                Social<span className="bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] bg-clip-text text-transparent">RUSH</span>
-              </span>
-            </span>
-          ) : (
-            <Logo light />
-          )}
-        </Link>
+        <Logo light={!isLight3d} priority className="shrink-0 pr-1" />
 
         <nav className={isLight3d ? "hidden items-center gap-3 text-sm font-semibold text-[#3f5f97] xl:flex" : "hidden items-center gap-3 text-sm font-semibold text-slate-200 xl:flex"}>
           {nav.map(([label, href]) => (
@@ -107,7 +96,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           >
             <nav className="mx-auto grid max-w-7xl gap-1">
               {nav.map(([label, href]) => (
-                <Link key={href} href={href} className={isLight3d ? "rounded-xl px-3 py-3 text-sm font-semibold text-[#41619a] transition hover:bg-[#edf4ff] hover:text-[#193a73]" : "rounded-xl px-3 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-cyan-200"}>
+                <Link key={href} href={href} onClick={() => setOpen(false)} className={isLight3d ? "rounded-xl px-3 py-3 text-sm font-semibold text-[#41619a] transition hover:bg-[#edf4ff] hover:text-[#193a73]" : "rounded-xl px-3 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-cyan-200"}>
                   {label}
                 </Link>
               ))}
@@ -127,10 +116,10 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                 </button>
               ) : (
                 <>
-                  <Link href="/login" className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
+                  <Link href="/login" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
                     Login
                   </Link>
-                  <Link href="/register" className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-3 text-sm font-bold text-[#35548d]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-fuchsia-300/35 bg-fuchsia-400/10 px-4 py-3 text-sm font-bold text-fuchsia-100"}>
+                  <Link href="/register" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-3 text-sm font-bold text-[#35548d]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-fuchsia-300/35 bg-fuchsia-400/10 px-4 py-3 text-sm font-bold text-fuchsia-100"}>
                     Sign Up
                   </Link>
                 </>

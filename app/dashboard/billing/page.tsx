@@ -1,13 +1,10 @@
-import { createClient } from "@/lib/supabase/server";
 import BillingDashboardContent from "@/components/dashboard/BillingDashboardContent";
+import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
 export default async function BillingPage() {
-  const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { supabase, profile } = await getDashboardContext();
 
-  const [{ data: invoices, error }, { data: payments }, { data: profile }] = await Promise.all([
+  const [{ data: invoices, error }, { data: payments }] = await Promise.all([
     supabase
       .from("invoices")
       .select("id,invoice_number,amount,status,created_at,order_id")
@@ -18,7 +15,6 @@ export default async function BillingPage() {
       .eq("type", "credit")
       .order("created_at", { ascending: false })
       .limit(25),
-    user ? supabase.from("profiles").select("balance").eq("id", user.id).maybeSingle() : Promise.resolve({ data: null }),
   ]);
 
   const normalizedInvoices = (invoices ?? []).map((item) => ({

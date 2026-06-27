@@ -1,11 +1,14 @@
 ﻿"use client";
 
-import Image from "next/image";
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { useRouter } from "next/navigation";
+import { AnimatePresence, LazyMotion, domAnimation, m as motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
+import Logo from "@/components/Logo";
+import PlatformIcon from "@/components/PlatformIcon";
+import SafeImage from "@/components/SafeImage";
 
 /* ─────────────────── animation variants ─────────────────── */
 const fadeUp: Variants = {
@@ -35,12 +38,12 @@ const navLinks = [
 ] as const;
 
 const platforms = [
-  { name: "Facebook", abbr: "f", grad: "from-sky-500 to-blue-600" },
-  { name: "Instagram", abbr: "ig", grad: "from-pink-500 to-fuchsia-600" },
-  { name: "LinkedIn", abbr: "in", grad: "from-cyan-500 to-blue-500" },
-  { name: "TikTok", abbr: "tt", grad: "from-violet-500 to-fuchsia-500" },
-  { name: "YouTube", abbr: "yt", grad: "from-rose-500 to-red-600" },
-  { name: "X / Twitter", abbr: "x", grad: "from-indigo-500 to-slate-600" },
+  { name: "Facebook", grad: "from-sky-500 to-blue-600" },
+  { name: "Instagram", grad: "from-pink-500 to-fuchsia-600" },
+  { name: "LinkedIn", grad: "from-cyan-500 to-blue-500" },
+  { name: "TikTok", grad: "from-violet-500 to-fuchsia-500" },
+  { name: "YouTube", grad: "from-rose-500 to-red-600" },
+  { name: "X / Twitter", grad: "from-indigo-500 to-slate-600" },
 ] as const;
 
 const stats = [
@@ -319,6 +322,7 @@ function SvgIcon({ path, size = 20, className = "" }: { path: string; size?: num
 
 /* ─────────────────── main component ─────────────────── */
 export default function HomepageContent() {
+  const router = useRouter();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -335,11 +339,13 @@ export default function HomepageContent() {
     const supabase = createClient();
     await supabase.auth.signOut();
     setMenuOpen(false);
-    window.location.href = "/login";
+    router.replace("/login");
+    router.refresh();
   }
 
   return (
-    <main className="overflow-x-hidden bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
+    <LazyMotion features={domAnimation}>
+      <main className="overflow-x-hidden bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
       {/* ambient blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-cyan-200/40 blur-3xl" />
@@ -352,10 +358,7 @@ export default function HomepageContent() {
       <header id="home" className="sticky top-0 z-50 px-4 pt-3 sm:px-6">
         <div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/90 bg-white/80 px-4 py-3 shadow-[0_8px_40px_-8px_rgba(15,23,42,.15)] backdrop-blur-xl sm:px-5">
           <div className="flex items-center justify-between gap-4">
-            <Link href="/" className="flex shrink-0 items-center gap-2.5">
-              <span className="grid h-9 w-9 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-sky-500 text-sm font-extrabold text-white shadow-lg shadow-pink-300/50">SR</span>
-              <span className="text-lg font-extrabold tracking-tight text-slate-900">Social<span className="bg-gradient-to-r from-pink-500 to-sky-500 bg-clip-text text-transparent">RUSH</span></span>
-            </Link>
+            <Logo priority />
             <nav className="hidden items-center gap-1 text-sm font-semibold text-slate-600 lg:flex">
               {navLinks.map((item) => (
                 <Link key={item.label} href={item.href} className="rounded-lg px-3 py-2 transition-colors hover:bg-slate-50 hover:text-sky-600">{item.label}</Link>
@@ -389,7 +392,7 @@ export default function HomepageContent() {
           <AnimatePresence initial={false}>
             {menuOpen && (
               <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25, ease: "easeOut" }} className="overflow-hidden">
-                <div className="mt-3 border-t border-slate-100 pt-3">
+                <div className="mt-3 max-h-[calc(100dvh-6.5rem)] overflow-y-auto border-t border-slate-100 pt-3">
                   <nav className="grid gap-0.5">
                     {navLinks.map((item) => (
                       <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-600">{item.label}</Link>
@@ -420,7 +423,7 @@ export default function HomepageContent() {
       </header>
 
       {/* HERO */}
-      <motion.section variants={fadeUp} initial="hidden" animate="show" className="relative px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+      <motion.section variants={fadeUp} initial={false} animate="show" className="relative px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pt-12">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div className="relative z-10">
             <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-sky-600 shadow-sm backdrop-blur">
@@ -457,7 +460,7 @@ export default function HomepageContent() {
             ))}
             <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }} className="relative overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-white/80 to-white/60 p-5 shadow-[0_40px_80px_-20px_rgba(99,102,241,.30)] backdrop-blur">
               <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-fuchsia-50 via-sky-50 to-pink-50">
-                <Image src="/images/hero-3d.png" alt="SocialRUSH premium social growth" width={680} height={680} className="h-auto w-full rounded-3xl object-cover" priority />
+                <SafeImage src="/images/hero-3d.png" fallbackSrc="/images/hero-3d.webp" alt="SocialRUSH premium social growth" width={680} height={510} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full rounded-3xl object-cover" priority />
               </div>
             </motion.div>
           </div>
@@ -469,7 +472,7 @@ export default function HomepageContent() {
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto flex max-w-7xl flex-wrap gap-3">
           {platforms.map((p) => (
             <motion.div key={p.name} variants={cardAnim} whileHover={{ y: -5, scale: 1.05 }} className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/85 px-4 py-2.5 shadow-[0_6px_20px_-6px_rgba(15,23,42,.15)] backdrop-blur transition">
-              <span className={`grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br text-[10px] font-extrabold uppercase text-white shadow-md ${p.grad}`}>{p.abbr}</span>
+              <span className={`grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br text-white shadow-md ${p.grad}`}><PlatformIcon platform={p.name} className="h-4 w-4" /></span>
               <span className="text-sm font-semibold text-slate-700">{p.name}</span>
             </motion.div>
           ))}
@@ -477,7 +480,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* STATS */}
-      <motion.section id="about" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="px-4 py-12 sm:px-6 lg:px-8">
+      <motion.section id="about" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
         <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 xl:grid-cols-4">
           {stats.map((s) => (
             <motion.article key={s.label} variants={cardAnim} whileHover={{ y: -8, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_20px_50px_-20px_rgba(15,23,42,.18)] ${s.border} ${s.bg}`}>
@@ -493,7 +496,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* WHY SOCIALRUSH */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-12 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-pink-600">Why SocialRUSH</span>
@@ -512,7 +515,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* SERVICES / BENEFITS */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-cyan-600">Services</span>
@@ -520,7 +523,7 @@ export default function HomepageContent() {
           </div>
           <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
             <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="overflow-hidden rounded-3xl border border-white/80 bg-gradient-to-br from-cyan-50 via-blue-50 to-fuchsia-50 p-5 shadow-[0_30px_60px_-20px_rgba(99,102,241,.25)]">
-              <Image src="/images/services-3d.png" alt="SocialRUSH services visual" width={640} height={480} className="h-auto w-full rounded-2xl object-cover" />
+              <SafeImage src="/images/services-3d.png" fallbackSrc="/images/services-3d.webp" alt="SocialRUSH services visual" width={640} height={480} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full rounded-2xl object-cover" />
             </motion.div>
             <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2">
               {benefits.map((b) => (
@@ -536,14 +539,14 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* HOW IT WORKS */}
-      <motion.section id="how-it-works" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section id="how-it-works" variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="inline-flex rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-violet-600">How It Works</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Get Started in <span className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">4 Simple Steps</span></h2>
           </div>
           <div className="mx-auto mb-10 max-w-3xl overflow-hidden rounded-3xl border border-white/80 bg-gradient-to-br from-violet-50 via-fuchsia-50 to-pink-50 p-4 shadow-[0_30px_60px_-20px_rgba(139,92,246,.25)]">
-            <Image src="/images/process-3d.png" alt="How it works process visual" width={1000} height={480} className="h-auto w-full rounded-2xl object-cover" />
+            <SafeImage src="/images/process-3d.png" fallbackSrc="/images/process-3d.webp" alt="How it works process visual" width={1000} height={750} sizes="(max-width: 768px) 100vw, 768px" className="h-auto w-full rounded-2xl object-cover" />
           </div>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-5 md:grid-cols-4">
             {steps.map((step, idx) => (
@@ -560,7 +563,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* FEATURED SERVICES */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -589,14 +592,14 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* TESTIMONIALS */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">Testimonials</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Satisfied Clients Share Their <span className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent">Success Stories</span></h2>
           </div>
           <div className="mb-8 overflow-hidden rounded-3xl border border-white/80 bg-gradient-to-br from-amber-50 via-pink-50 to-violet-50 p-4 shadow-[0_30px_60px_-20px_rgba(245,158,11,.22)]">
-            <Image src="/images/testimonal-visual.png" alt="SocialRUSH trusted growth platform" width={1200} height={400} className="h-auto w-full rounded-2xl object-cover" />
+            <SafeImage src="/images/testimonal-visual.png" fallbackSrc="/images/testimonal-visual.webp" alt="SocialRUSH trusted growth platform" width={1200} height={900} sizes="(max-width: 1280px) 100vw, 1200px" className="h-auto w-full rounded-2xl object-cover" />
           </div>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 md:grid-cols-3">
             {testimonials.map((t) => (
@@ -627,7 +630,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* BLOG */}
-      <motion.section id="blog" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section id="blog" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
@@ -657,7 +660,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* FAQ */}
-      <motion.section id="faq" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section id="faq" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="inline-flex rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-violet-600">FAQ</span>
@@ -692,7 +695,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* FINAL CTA */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="px-4 pb-10 pt-4 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 pb-10 pt-4 sm:px-6 lg:px-8">
         <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-[linear-gradient(135deg,#fdf2ff_0%,#eff6ff_35%,#fce7f3_65%,#f0fdf4_100%)] p-8 shadow-[0_30px_60px_-20px_rgba(139,92,246,.25)] sm:p-12">
           <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-fuchsia-300/30 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-sky-300/25 blur-3xl" />
@@ -713,10 +716,7 @@ export default function HomepageContent() {
         <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-white/80 p-7 shadow-sm backdrop-blur sm:p-10">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
             <div>
-              <Link href="/" className="flex items-center gap-2.5">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-sky-500 text-sm font-extrabold text-white shadow-lg shadow-pink-300/40">SR</span>
-                <span className="text-xl font-extrabold tracking-tight text-slate-900">Social<span className="bg-gradient-to-r from-pink-500 to-sky-500 bg-clip-text text-transparent">RUSH</span></span>
-              </Link>
+              <Logo />
               <p className="mt-3 text-sm leading-7 text-slate-500">Premium social growth panel for creators, brands, and agencies. Trusted, fast, and transparent.</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 <Link href="/packages" className="rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-3.5 py-2 text-xs font-bold text-white shadow-sm">View Packages</Link>
@@ -740,6 +740,7 @@ export default function HomepageContent() {
           </div>
         </div>
       </footer>
-    </main>
+      </main>
+    </LazyMotion>
   );
 }

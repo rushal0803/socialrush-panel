@@ -1,6 +1,6 @@
 "use client";
 
-import Image from "next/image";
+import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
@@ -43,7 +43,7 @@ export default function BlogPageContent() {
           <div className="mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
             <motion.div
               variants={fadeUp}
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65 }}
@@ -76,7 +76,7 @@ export default function BlogPageContent() {
 
             <motion.div
               variants={fadeUp}
-              initial="hidden"
+              initial={false}
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65, delay: 0.12 }}
@@ -88,11 +88,13 @@ export default function BlogPageContent() {
                   className="relative overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-br from-white to-[#f2f7ff] p-3"
                 >
                   {!heroImageError ? (
-                    <Image
+                    <SafeImage
                       src="/images/blog/blog-hero.png"
+                      fallbackSrc="/images/blog/blog-hero.webp"
                       alt="SocialRUSH blog hero"
                       width={900}
-                      height={620}
+                      height={507}
+                      sizes="(max-width: 1023px) 100vw, 50vw"
                       className="h-auto w-full rounded-2xl object-cover"
                       priority
                       onError={() => setHeroImageError(true)}
@@ -194,8 +196,9 @@ export default function BlogPageContent() {
                 >
                   <div className="relative h-44 overflow-hidden rounded-2xl bg-gradient-to-br from-[#f6f2ff] via-[#edf6ff] to-[#e8fbff]">
                     {post.hasImage ? (
-                      <Image
+                      <SafeImage
                         src={post.image as string}
+                        fallbackSrc={(post.image as string).replace(/\.png$/i, ".webp")}
                         alt={post.title}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
