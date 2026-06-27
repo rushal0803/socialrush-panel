@@ -5,8 +5,8 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
   const initials = name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase() || "AD";
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/70 bg-white/72 px-4 py-3 backdrop-blur-xl sm:px-8 sm:py-3.5">
-      <div className="mx-auto flex h-14 max-w-[1800px] items-center justify-between gap-2 sm:gap-4">
+    <header className="sticky top-0 z-30 border-b border-white/70 bg-white/72 px-5 py-3.5 backdrop-blur-xl sm:px-8">
+      <div className="mx-auto flex h-14 max-w-[1800px] items-center justify-between gap-4">
         <div className="lg:hidden">
           <Logo />
         </div>
@@ -30,7 +30,7 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
             <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-white/80 bg-white/80 text-[#4a6398]">
               ☰
             </summary>
-            <div className="absolute right-0 top-12 max-h-[calc(100dvh-5.5rem)] w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/85 bg-white/92 p-3 shadow-[0_20px_40px_rgba(76,106,170,.22)] backdrop-blur-xl">
+            <div className="absolute right-0 top-12 w-64 rounded-2xl border border-white/85 bg-white/92 p-3 shadow-[0_20px_40px_rgba(76,106,170,.22)] backdrop-blur-xl">
               <AdminNav mobile />
             </div>
           </details>

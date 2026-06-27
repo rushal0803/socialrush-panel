@@ -33,11 +33,6 @@ export function AdminNav({ mobile = false }: { mobile?: boolean }) {
           <Link
             key={href}
             href={href}
-            onClick={(event) => {
-              if (mobile) {
-                event.currentTarget.closest("details")?.removeAttribute("open");
-              }
-            }}
             className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
               active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
             }`}

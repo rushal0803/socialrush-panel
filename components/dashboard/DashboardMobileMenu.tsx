@@ -75,10 +75,10 @@ export default function DashboardMobileMenu() {
             className="absolute inset-0 bg-[#dfeaff]/35 backdrop-blur-md"
           />
 
-          <div className="absolute inset-x-0 top-[4.75rem] max-h-[calc(100dvh-5.5rem)] overflow-y-auto px-3 pb-4 sm:px-5">
+          <div className="absolute inset-x-0 top-[4.75rem] px-4 sm:px-5">
             <div
               ref={menuRef}
-              className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.5rem] border border-white/85 bg-white/90 p-3.5 shadow-[0_24px_60px_-24px_rgba(76,106,170,.38)] backdrop-blur-xl sm:rounded-[1.75rem] sm:p-4"
+              className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.75rem] border border-white/85 bg-white/90 p-4 shadow-[0_24px_60px_-24px_rgba(76,106,170,.38)] backdrop-blur-xl"
             >
               <div className="mb-3 flex items-center justify-between gap-3 border-b border-[#e3ebff] pb-3">
                 <div>
