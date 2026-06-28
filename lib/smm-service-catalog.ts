@@ -15,14 +15,14 @@ export type SmmService = {
   isActive: boolean;
 };
 
-export const platformMeta: Record<SmmPlatformId, { label: string; short: string; gradient: string }> = {
-  instagram: { label: "Instagram", short: "IG", gradient: "from-pink-500 via-fuchsia-500 to-sky-500" },
-  youtube: { label: "YouTube", short: "YT", gradient: "from-rose-500 to-red-600" },
-  facebook: { label: "Facebook", short: "FB", gradient: "from-blue-500 to-indigo-600" },
-  linkedin: { label: "LinkedIn", short: "IN", gradient: "from-cyan-500 to-blue-600" },
-  telegram: { label: "Telegram", short: "TG", gradient: "from-sky-500 to-cyan-600" },
-  tiktok: { label: "TikTok", short: "TT", gradient: "from-violet-500 to-fuchsia-600" },
-  x: { label: "Twitter / X", short: "X", gradient: "from-slate-600 to-slate-900" },
+export const platformMeta: Record<SmmPlatformId, { label: string; short: string; icon: string; gradient: string }> = {
+  instagram: { label: "Instagram", short: "IG", icon: "instagram", gradient: "from-pink-500 via-fuchsia-500 to-sky-500" },
+  youtube: { label: "YouTube", short: "YT", icon: "youtube", gradient: "from-rose-500 to-red-600" },
+  facebook: { label: "Facebook", short: "FB", icon: "facebook", gradient: "from-blue-500 to-indigo-600" },
+  linkedin: { label: "LinkedIn", short: "IN", icon: "linkedin", gradient: "from-cyan-500 to-blue-600" },
+  telegram: { label: "Telegram", short: "TG", icon: "telegram", gradient: "from-sky-500 to-cyan-600" },
+  tiktok: { label: "TikTok", short: "TT", icon: "tiktok", gradient: "from-violet-500 to-fuchsia-600" },
+  x: { label: "Twitter / X", short: "X", icon: "twitter", gradient: "from-slate-600 to-slate-900" },
 };
 
 export const smmServiceCatalog: SmmService[] = [

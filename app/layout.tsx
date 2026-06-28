@@ -1,16 +1,8 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
 import "./globals.css";
-import AIChatbotLoader from "@/components/AIChatbotLoader";
+import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
 
-const inter = Inter({
-  subsets: ["latin"],
-  variable: "--font-inter",
-  display: "swap",
-  preload: true,
-  fallback: ["system-ui", "Arial"],
-});
 const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://socialrush.in";
 
 export const metadata: Metadata = {
@@ -37,7 +29,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body className={`${inter.className} overflow-x-clip bg-white text-slate-950`}>
+      <body className="overflow-x-clip bg-white text-slate-950">
         <ClientProviders>
           <script
             type="application/ld+json"
@@ -48,7 +40,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 name: "SocialRUSH",
                 url: siteUrl,
                 logo: new URL("/logo.svg", siteUrl).toString(),
-                sameAs: [process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() || "https://wa.me/918860330771"],
+                sameAs: ["https://wa.me/918860330771"],
               }),
             }}
           />
@@ -69,7 +61,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             }}
           />
           {children}
-          <AIChatbotLoader />
+          <FloatingWhatsAppButton />
         </ClientProviders>
       </body>
     </html>

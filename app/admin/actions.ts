@@ -248,9 +248,19 @@ export async function updateTransactionStatus(formData: FormData) {
 export async function replyToTicket(formData: FormData) {
   const { supabase, user } = await requireAdmin();
   const ticketId = text(formData, "ticket_id");
-  await supabase.from("support_messages").insert({ ticket_id: ticketId, sender_id: user.id, message: text(formData, "message") });
-  await supabase.from("support_tickets").update({ status: "answered" }).eq("id", ticketId);
+  const message = text(formData, "message");
+  if (!ticketId || !message) return;
+  const { error } = await supabase.from("support_messages").insert({
+    ticket_id: ticketId,
+    sender_id: user.id,
+    message,
+  });
+  if (error) throw new Error(`Unable to send support reply: ${error.message}`);
+  const { error: statusError } = await supabase.from("support_tickets").update({ status: "answered" }).eq("id", ticketId);
+  if (statusError) throw new Error(`Reply sent, but ticket status could not be updated: ${statusError.message}`);
   revalidatePath("/admin/support");
+  revalidatePath("/dashboard/support");
+  redirect(`/admin/support?ticket=${encodeURIComponent(ticketId)}`);
 }
 
 export async function closeTicket(formData: FormData) {

@@ -101,9 +101,7 @@ const fadeUp = {
 };
 
 export default function ContactPageContent() {
-  const whatsappUrl =
-    process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() ||
-    "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20with%20my%20growth%20campaign";
+  const whatsappUrl = "https://wa.me/918860330771";
 
   const [openFaq, setOpenFaq] = useState<string | null>(faqs[0]?.question ?? null);
   const [heroImageError, setHeroImageError] = useState(false);

@@ -9,14 +9,16 @@ export function BrandMark({
   priority?: boolean;
 }) {
   return (
-    <Image
-      src="/logo.svg"
-      alt="SocialRUSH Logo"
-      width={48}
-      height={48}
-      priority={priority}
-      className={`h-8 w-8 shrink-0 object-contain sm:h-9 sm:w-9 md:h-11 md:w-11 ${className}`}
-    />
+    <span className={`relative h-8 w-8 shrink-0 overflow-hidden sm:h-9 sm:w-9 md:h-11 md:w-11 ${className}`}>
+      <Image
+        src="/logo.svg"
+        alt="SocialRUSH Logo"
+        width={48}
+        height={48}
+        priority={priority}
+        className="h-full w-full scale-[2.35] object-contain"
+      />
+    </span>
   );
 }
 

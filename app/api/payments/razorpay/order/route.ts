@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { razorpayConfig, razorpayRequest } from "@/lib/payments/razorpay";
+import { isPaymentMethod } from "@/lib/payments/methods";
 
 type RazorpayOrder = { id: string; amount: number; currency: string; status: string };
 
@@ -9,8 +10,16 @@ export async function POST(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const body = await request.json().catch(() => null) as { amount?: number; method?: string } | null;
-  const amount = Number(body?.amount); const method = String(body?.method || "razorpay");
-  if (!Number.isFinite(amount) || amount < 100 || amount > 500000) return NextResponse.json({ error: "Enter an amount between ₹100 and ₹5,00,000" }, { status: 422 });
+  const amount = Number(body?.amount);
+  const method = body?.method;
+  if (!Number.isFinite(amount) || amount <= 0 || amount > 500000) return NextResponse.json({ error: "Enter an amount greater than ₹0 and up to ₹5,00,000" }, { status: 422 });
+  if (!isPaymentMethod(method)) return NextResponse.json({ error: "Unsupported payment method" }, { status: 422 });
+  if (method === "international_card" && process.env.RAZORPAY_INTERNATIONAL_ENABLED !== "true") {
+    return NextResponse.json(
+      { error: "International payments are currently being activated. Please contact WhatsApp support." },
+      { status: 409 },
+    );
+  }
   try {
     const { keyId } = razorpayConfig();
     const order = await razorpayRequest<RazorpayOrder>("/orders", { method: "POST", body: JSON.stringify({ amount: Math.round(amount * 100), currency: "INR", receipt: `wallet_${user.id.slice(0, 8)}_${Date.now()}`, notes: { user_id: user.id, payment_method: method } }) });

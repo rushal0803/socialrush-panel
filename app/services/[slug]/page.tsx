@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
 import CurrencyAmount from "@/components/currency/CurrencyAmount";
+import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
 import { getCurrencyDisclaimer } from "@/lib/currency";
 import { getGrowthService, growthServices } from "@/lib/growth-services";
@@ -178,7 +179,7 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
               <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">
                 {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}
               </span>
-              <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">{seo.platform}</span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]"><PlatformIcon platform={seo.platform} className="h-4 w-4" />{seo.platform}</span>
               <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">{seo.delivery}</span>
             </div>
             {hasBasePrice ? <p className="mt-3 text-xs font-semibold text-[#5b76aa]">{getCurrencyDisclaimer()}</p> : null}
@@ -211,7 +212,7 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
               <div className="mt-4 space-y-3 text-sm text-[#4d6796]">
                 <p><span className="font-bold text-[#17366f]">Price:</span> {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}</p>
                 <p><span className="font-bold text-[#17366f]">Delivery:</span> {seo.delivery}</p>
-                <p><span className="font-bold text-[#17366f]">Platform:</span> {seo.platform}</p>
+                <p className="flex items-center gap-2"><PlatformIcon platform={seo.platform} className="h-4 w-4 text-[#5270aa]" /><span><span className="font-bold text-[#17366f]">Platform:</span> {seo.platform}</span></p>
               </div>
             </aside>
           </section>

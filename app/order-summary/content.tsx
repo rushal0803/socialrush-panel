@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingHeader from "@/components/marketing/MarketingHeader";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
+import PlatformIcon from "@/components/PlatformIcon";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
@@ -106,7 +107,7 @@ export default function OrderSummaryPage() {
                 <div className="mt-6 space-y-3 text-sm text-slate-300">
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Platform</span>
-                    <span className="font-semibold text-white">{platformMeta[service.platform].label}</span>
+                    <span className="inline-flex items-center gap-2 font-semibold text-white"><PlatformIcon platform={platformMeta[service.platform].label} className="h-4 w-4" />{platformMeta[service.platform].label}</span>
                   </div>
                   <div className="flex items-center justify-between rounded-2xl bg-slate-900/80 px-4 py-3">
                     <span>Starting price</span>

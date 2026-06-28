@@ -62,7 +62,7 @@ export default function AdminSidebar() {
   return (
     <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
-        <Logo priority />
+        <Logo />
       </div>
 
       <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(85,113,175,.12)]">

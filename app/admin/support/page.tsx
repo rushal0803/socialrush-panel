@@ -3,14 +3,161 @@ import { replyToTicket, setTicketStatus } from "@/app/admin/actions";
 import { AdminPageHeader, AdminStatus, primaryButton } from "@/components/admin/AdminUI";
 import { createClient } from "@/lib/supabase/server";
 
-export default async function AdminSupportPage({ searchParams }: { searchParams?: { ticket?: string; status?: string } }) {
+const ticketStatuses = ["open", "pending", "answered", "solved", "closed"] as const;
+
+export default async function AdminSupportPage({
+  searchParams,
+}: {
+  searchParams?: { ticket?: string; status?: string };
+}) {
   const supabase = await createClient();
-  let query = supabase.from("support_tickets").select("id,subject,status,created_at,user_id,profiles(email,full_name)").order("created_at", { ascending: false });
-  if (searchParams?.status && searchParams.status !== "all") query = query.eq("status", searchParams.status);
+  let query = supabase
+    .from("support_tickets")
+    .select("id,subject,status,created_at,user_id,profiles(email,full_name)")
+    .order("created_at", { ascending: false });
+
+  if (searchParams?.status && searchParams.status !== "all") {
+    query = query.eq("status", searchParams.status);
+  }
+
   const { data: tickets } = await query.limit(200);
   const selectedId = searchParams?.ticket || tickets?.[0]?.id;
   const selected = tickets?.find((ticket) => ticket.id === selectedId);
-  const { data: messages } = selectedId ? await supabase.from("support_messages").select("id,sender_id,message,created_at,profiles(full_name,role)").eq("ticket_id", selectedId).order("created_at") : { data: [] };
+  const { data: messages } = selectedId
+    ? await supabase
+        .from("support_messages")
+        .select("id,sender_id,message,created_at,profiles(full_name,role)")
+        .eq("ticket_id", selectedId)
+        .order("created_at")
+    : { data: [] };
 
-  return <main className="mx-auto max-w-[1500px] p-5 sm:p-8"><AdminPageHeader title="Support tickets" description="Review customer issues, reply to conversations, and manage ticket status." /><div className="mt-5 flex flex-wrap gap-2">{["all","open","pending","answered","solved","closed"].map((status) => <Link key={status} href={status === "all" ? "/admin/support" : `/admin/support?status=${status}`} className={`rounded-xl px-3 py-2 text-xs font-semibold capitalize ${searchParams?.status === status || (!searchParams?.status && status === "all") ? "bg-blue-600 text-white" : "border bg-white text-slate-500"}`}>{status}</Link>)}</div><div className="mt-6 grid gap-6 xl:grid-cols-[380px_1fr]"><section className="panel-card overflow-hidden"><div className="border-b border-slate-100 p-5"><h2 className="text-sm font-bold">Ticket queue</h2><p className="mt-1 text-xs text-slate-400">{tickets?.length ?? 0} conversations</p></div><div className="max-h-[700px] divide-y divide-slate-100 overflow-y-auto">{(tickets ?? []).map((ticket) => { const profile = ticket.profiles as unknown as { full_name?: string; email?: string } | null; return <Link key={ticket.id} href={`/admin/support?ticket=${ticket.id}`} className={`block p-5 ${selectedId === ticket.id ? "bg-blue-50" : "hover:bg-slate-50"}`}><div className="flex items-center justify-between"><span className="text-[10px] font-bold text-blue-600">#{ticket.id.slice(0,8).toUpperCase()}</span><AdminStatus value={ticket.status}/></div><p className="mt-3 truncate text-xs font-semibold">{ticket.subject}</p><p className="mt-2 truncate text-[10px] text-slate-400">{profile?.full_name || profile?.email || "User"} · {new Date(ticket.created_at).toLocaleDateString("en-IN")}</p></Link>; })}{!tickets?.length && <p className="p-10 text-center text-xs text-slate-400">No support tickets found.</p>}</div></section><section className="panel-card flex min-h-[620px] flex-col overflow-hidden">{selected ? <><header className="flex flex-col gap-4 border-b border-slate-100 p-5 sm:flex-row sm:items-center sm:justify-between"><div><div className="flex items-center gap-2"><span className="text-[10px] font-bold text-blue-600">#{selected.id.slice(0,8).toUpperCase()}</span><AdminStatus value={selected.status}/></div><h2 className="mt-2 text-sm font-bold">{selected.subject}</h2></div><form action={setTicketStatus} className="flex gap-2"><input type="hidden" name="ticket_id" value={selected.id}/><select name="status" defaultValue={selected.status} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-[10px] font-bold">{["open","pending","answered","solved","closed"].map((status) => <option key={status}>{status}</option>)}</select><button className="rounded-xl bg-[#0a1b3d] px-4 py-2.5 text-[10px] font-bold text-white">Update</button></form></header><div className="flex-1 space-y-4 bg-slate-50/60 p-5 sm:p-7">{(messages ?? []).map((message) => { const sender = message.profiles as unknown as { full_name?: string; role?: string } | null; const admin = sender?.role === "admin"; return <div key={message.id} className={`flex max-w-2xl gap-3 ${admin ? "ml-auto flex-row-reverse" : ""}`}><span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[9px] font-bold text-white ${admin ? "bg-blue-600" : "bg-[#0a1b3d]"}`}>{admin ? "ADM" : "USR"}</span><div><div className={`rounded-2xl p-4 text-xs leading-6 shadow-sm ${admin ? "rounded-tr-sm bg-blue-600 text-white" : "rounded-tl-sm bg-white text-slate-600"}`}>{message.message}</div><p className={`mt-2 text-[9px] text-slate-400 ${admin ? "text-right" : ""}`}>{sender?.full_name || (admin ? "Administrator" : "Customer")} · {new Date(message.created_at).toLocaleString("en-IN")}</p></div></div>; })}{!messages?.length && <p className="text-center text-xs text-slate-400">No messages in this conversation.</p>}</div>{selected.status !== "closed" && <form action={replyToTicket} className="border-t border-slate-100 bg-white p-4"><input type="hidden" name="ticket_id" value={selected.id}/><div className="flex flex-col gap-3 sm:flex-row"><textarea name="message" required className="min-h-16 flex-1 resize-none rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-blue-500" placeholder="Write an admin reply..." /><button className={`${primaryButton} self-end`}>Send reply</button></div></form>}</> : <div className="grid flex-1 place-items-center p-8 text-center text-sm text-slate-400">Choose a ticket to view its conversation.</div>}</section></div></main>;
+  return (
+    <main className="mx-auto max-w-[1500px] p-4 sm:p-8">
+      <AdminPageHeader
+        title="Support tickets"
+        description="Review customer issues, reply to conversations, and manage ticket status."
+      />
+
+      <div className="mt-5 flex flex-wrap gap-2">
+        {["all", ...ticketStatuses].map((status) => (
+          <Link
+            key={status}
+            href={status === "all" ? "/admin/support" : `/admin/support?status=${status}`}
+            className={`rounded-xl px-3 py-2 text-xs font-semibold capitalize ${
+              searchParams?.status === status || (!searchParams?.status && status === "all")
+                ? "bg-blue-600 text-white"
+                : "border bg-white text-slate-500"
+            }`}
+          >
+            {status}
+          </Link>
+        ))}
+      </div>
+
+      <div className="mt-6 grid min-w-0 gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
+        <section className="panel-card min-w-0 overflow-hidden">
+          <div className="border-b border-slate-100 p-5">
+            <h2 className="text-sm font-bold">Ticket queue</h2>
+            <p className="mt-1 text-xs text-slate-400">{tickets?.length ?? 0} conversations</p>
+          </div>
+          <div className="max-h-[440px] divide-y divide-slate-100 overflow-y-auto xl:max-h-[700px]">
+            {(tickets ?? []).map((ticket) => {
+              const profile = ticket.profiles as unknown as { full_name?: string; email?: string } | null;
+              return (
+                <Link
+                  key={ticket.id}
+                  href={`/admin/support?ticket=${ticket.id}`}
+                  className={`block p-4 sm:p-5 ${selectedId === ticket.id ? "bg-blue-50" : "hover:bg-slate-50"}`}
+                >
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="text-[10px] font-bold text-blue-600">#{ticket.id.slice(0, 8).toUpperCase()}</span>
+                    <AdminStatus value={ticket.status} />
+                  </div>
+                  <p className="mt-3 truncate text-xs font-semibold">{ticket.subject}</p>
+                  <p className="mt-2 truncate text-[10px] text-slate-400">
+                    {profile?.full_name || profile?.email || "User"} · {new Date(ticket.created_at).toLocaleDateString("en-IN")}
+                  </p>
+                </Link>
+              );
+            })}
+            {!tickets?.length && <p className="p-10 text-center text-xs text-slate-400">No support tickets found.</p>}
+          </div>
+        </section>
+
+        <section className="panel-card flex min-h-[560px] min-w-0 flex-col overflow-hidden xl:max-h-[calc(100dvh-9rem)]">
+          {selected ? (
+            <>
+              <header className="flex flex-col gap-4 border-b border-slate-100 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="min-w-0">
+                  <div className="flex flex-wrap items-center gap-2">
+                    <span className="text-[10px] font-bold text-blue-600">#{selected.id.slice(0, 8).toUpperCase()}</span>
+                    <AdminStatus value={selected.status} />
+                  </div>
+                  <h2 className="mt-2 break-words text-sm font-bold">{selected.subject}</h2>
+                </div>
+                <form action={setTicketStatus} className="flex w-full gap-2 sm:w-auto">
+                  <input type="hidden" name="ticket_id" value={selected.id} />
+                  <select
+                    name="status"
+                    defaultValue={selected.status}
+                    className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold capitalize sm:flex-none"
+                  >
+                    {ticketStatuses.map((status) => (
+                      <option key={status} value={status}>{status[0].toUpperCase() + status.slice(1)}</option>
+                    ))}
+                  </select>
+                  <button className="min-h-11 rounded-xl bg-[#0a1b3d] px-4 text-xs font-bold text-white">Update</button>
+                </form>
+              </header>
+
+              <div className="max-h-[420px] flex-1 space-y-4 overflow-y-auto bg-slate-50/60 p-4 sm:max-h-[520px] sm:p-6 xl:max-h-none">
+                {(messages ?? []).map((message) => {
+                  const sender = message.profiles as unknown as { full_name?: string; role?: string } | null;
+                  const admin = sender?.role === "admin" || message.sender_id !== selected.user_id;
+                  return (
+                    <div key={message.id} className={`flex w-full gap-3 ${admin ? "justify-end" : "justify-start"}`}>
+                      <div className={`flex max-w-[92%] gap-3 sm:max-w-[78%] ${admin ? "flex-row-reverse" : ""}`}>
+                        <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[9px] font-bold text-white ${admin ? "bg-blue-600" : "bg-[#0a1b3d]"}`}>
+                          {admin ? "ADM" : "USR"}
+                        </span>
+                        <div className="min-w-0">
+                          <div className={`break-words rounded-2xl p-4 text-xs leading-6 shadow-sm ${admin ? "rounded-tr-sm bg-blue-600 text-white" : "rounded-tl-sm bg-white text-slate-600"}`}>
+                            {message.message}
+                          </div>
+                          <p className={`mt-2 text-[9px] text-slate-400 ${admin ? "text-right" : ""}`}>
+                            {admin ? "SocialRUSH Support" : sender?.full_name || "Customer"} · {new Date(message.created_at).toLocaleString("en-IN")}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  );
+                })}
+                {!messages?.length && <p className="py-10 text-center text-xs text-slate-400">No messages in this conversation.</p>}
+              </div>
+
+              <form action={replyToTicket} className="sticky bottom-0 z-10 shrink-0 border-t border-slate-100 bg-white p-4 shadow-[0_-12px_30px_-24px_rgba(15,23,42,.45)] sm:p-5">
+                <input type="hidden" name="ticket_id" value={selected.id} />
+                <label htmlFor="admin-reply" className="text-xs font-bold text-slate-700">Reply as SocialRUSH Support</label>
+                <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end">
+                  <textarea
+                    id="admin-reply"
+                    name="message"
+                    required
+                    rows={3}
+                    className="min-h-24 min-w-0 flex-1 resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    placeholder={selected.status === "closed" ? "Replying will reopen this ticket as Answered." : "Write your reply to the customer..."}
+                  />
+                  <button className={`${primaryButton} min-h-11 w-full shrink-0 sm:w-auto`}>Send Reply</button>
+                </div>
+              </form>
+            </>
+          ) : (
+            <div className="grid flex-1 place-items-center p-8 text-center text-sm text-slate-400">
+              Choose a ticket to view its conversation.
+            </div>
+          )}
+        </section>
+      </div>
+    </main>
+  );
 }

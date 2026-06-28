@@ -4,6 +4,7 @@ import { ArrowLeft, CheckCircle2, Clock3, Hash, Link as LinkIcon, ShieldCheck, W
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { FaWhatsapp } from "react-icons/fa";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
@@ -15,6 +16,8 @@ import {
   validateCampaignLink,
 } from "@/lib/order-service-experience";
 import PlatformIcon from "@/components/PlatformIcon";
+
+const whatsappSupportUrl = "https://wa.me/918860330771";
 
 type ApiOrderData = {
   id: string;
@@ -64,8 +67,21 @@ export default function DashboardOrderSummaryPage() {
   const totalLabel = formatCurrency(totalPrice, currency);
   const walletLabel = walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency);
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
+  const amountToPay = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
+  const amountToPayLabel = formatCurrency(amountToPay, currency);
+  const amountToPayInrLabel = formatCurrency(amountToPay, "INR");
+  const walletInrLabel = formatCurrency(walletBalance ?? 0, "INR");
+  const requiresPayment = walletBalance !== null && totalPrice > 0 && !hasEnoughWallet;
   const currentLinkError = targetLink.trim() ? validateCampaignLink(targetLink, linkRule) : "";
-  const canSubmit = !quantityError && !currentLinkError && Boolean(targetLink.trim()) && hasEnoughWallet && !walletLoading;
+  const formIsValid = !quantityError && !currentLinkError && Boolean(targetLink.trim());
+  const canSubmit = formIsValid && hasEnoughWallet && !walletLoading;
+  const canAddFunds = formIsValid && requiresPayment && !walletLoading;
+  const shortfallMessage = `Your wallet balance is ${walletInrLabel}. Please add ${amountToPayInrLabel} to place this order.`;
+  const returnParams = new URLSearchParams({ service: selectedService.code });
+  if (quantityInput) returnParams.set("quantity", quantityInput);
+  if (targetLink.trim()) returnParams.set("link", targetLink.trim());
+  const returnTo = `/dashboard/order-summary?${returnParams.toString()}`;
+  const addFundsHref = `/dashboard/wallet?amount=${encodeURIComponent(String(amountToPay))}&returnTo=${encodeURIComponent(returnTo)}`;
 
   const loadWalletBalance = useCallback(async () => {
     setWalletLoading(true);
@@ -123,7 +139,7 @@ export default function DashboardOrderSummaryPage() {
       setError("Your wallet balance is still being checked. Please try again.");
       return;
     }
-    if (!hasEnoughWallet) {
+    if (walletBalance + 0.0001 < totalPrice) {
       setError("Your wallet balance is lower than this order total.");
       return;
     }
@@ -183,7 +199,7 @@ export default function DashboardOrderSummaryPage() {
   }
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] px-4 pb-48 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-20">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] px-4 pb-24 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-20">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-cyan-200/40 blur-3xl" />
         <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl" />
@@ -202,7 +218,7 @@ export default function DashboardOrderSummaryPage() {
                 <span className={`grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${platformMeta[selectedService.platform].gradient} text-xs font-black text-white shadow-lg`}>
                   <PlatformIcon platform={platformMeta[selectedService.platform].label} className="h-6 w-6" />
                 </span>
-                <p className="mt-4 text-[10px] font-black uppercase tracking-[0.14em] text-[#5270aa]">Order summary</p>
+                <p className="mt-4 text-[10px] font-black uppercase tracking-[0.14em] text-[#5270aa]">Service details</p>
                 <h1 className="mt-2 text-2xl font-black text-[#14316a] sm:text-3xl">{experience.name}</h1>
                 <p className="mt-3 max-w-2xl text-sm leading-7 text-[#526d9f]">{selectedService.description}</p>
                 <div className="mt-5 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
@@ -263,6 +279,70 @@ export default function DashboardOrderSummaryPage() {
               </div>
             </section>
 
+            <section className="rounded-3xl border border-white/85 bg-white/82 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl lg:hidden">
+              <div className="flex items-center justify-between gap-3">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#6079aa]">Order summary</p>
+                  <h2 className="mt-1 truncate text-base font-black text-[#14316a]">{experience.name}</h2>
+                </div>
+                <Wallet className="h-5 w-5 shrink-0 text-[#5270aa]" />
+              </div>
+              <dl className="mt-4 grid gap-2 text-xs min-[400px]:grid-cols-2">
+                <SummaryRow label="Quantity" value={quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"} />
+                <SummaryRow label="Delivery" value={selectedService.deliveryTime} />
+                <div className="min-[400px]:col-span-2">
+                  <SummaryRow label="Refill support" value={selectedService.refillPolicy} />
+                </div>
+                <div className="min-[400px]:col-span-2">
+                  <SummaryRow label="Link" value={targetLink.trim() || "Not entered"} />
+                </div>
+                <SummaryRow label="Wallet balance" value={walletLabel} />
+                {requiresPayment ? <SummaryRow label="Amount needed" value={amountToPayLabel} /> : null}
+              </dl>
+              <div className="mt-3 flex items-end justify-between gap-3 rounded-2xl border border-[#dce7ff] bg-[#f8fbff] p-4">
+                <span className="text-xs font-semibold text-[#6079a7]">Total price</span>
+                <b className="text-2xl text-[#17366f]">{totalLabel}</b>
+              </div>
+            </section>
+
+            <section className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl lg:hidden">
+              <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#dce7ff] bg-[#f8fbff] p-4">
+                <span className="text-xs font-semibold text-[#6079a7]">Wallet balance</span>
+                <b className="text-base text-[#17366f]">{walletLabel}</b>
+              </div>
+              {requiresPayment ? (
+                <>
+                  <p className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-xs font-semibold leading-5 text-[#36578f]">
+                    {shortfallMessage}
+                  </p>
+                  {canAddFunds ? (
+                    <Link
+                      href={addFundsHref}
+                      className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)]"
+                    >
+                      Add Funds
+                    </Link>
+                  ) : (
+                    <button type="button" disabled className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-50">
+                      Add Funds
+                    </button>
+                  )}
+                </>
+              ) : (
+                <button type="button" disabled={!canSubmit || submitting} onClick={() => void placeOrder()} className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)] disabled:opacity-50">
+                  {submitting ? "Placing order..." : "Place Order"}
+                </button>
+              )}
+              <a
+                href={whatsappSupportUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="mt-4 flex min-h-11 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-xs font-black text-emerald-700"
+              >
+                <FaWhatsapp className="h-4 w-4" /> Need help? WhatsApp Support
+              </a>
+            </section>
+
             <section className="rounded-3xl border border-white/85 bg-white/72 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
               <div className="flex items-start gap-3">
                 <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600" />
@@ -288,36 +368,25 @@ export default function DashboardOrderSummaryPage() {
               selectedServiceName={experience.name}
               rate={formatCurrency(selectedService.pricePer1000, currency)}
               quantity={quantity}
+              targetLink={targetLink}
               delivery={selectedService.deliveryTime}
               support={selectedService.refillPolicy}
               total={totalLabel}
               wallet={walletLabel}
+              amountToPay={requiresPayment ? amountToPayLabel : formatCurrency(0, currency)}
+              shortfallMessage={shortfallMessage}
+              addFundsHref={addFundsHref}
               hasEnoughWallet={hasEnoughWallet}
               walletLoading={walletLoading}
               canSubmit={canSubmit}
+              canAddFunds={canAddFunds}
               submitting={submitting}
-              onSubmit={placeOrder}
+              onSubmit={() => void placeOrder()}
             />
           </aside>
         </div>
       </div>
 
-      <section className="fixed inset-x-3 bottom-[4.75rem] z-40 rounded-2xl border border-white/80 bg-white/92 p-3 shadow-[0_18px_50px_rgba(15,23,42,.28)] backdrop-blur-2xl lg:hidden">
-        <div className="mx-auto flex max-w-3xl items-center gap-3">
-          <div className="min-w-0 flex-1">
-            <p className="truncate text-[10px] font-black uppercase tracking-[0.12em] text-[#6079aa]">{experience.name}</p>
-            <p className="mt-1 text-lg font-black text-[#17366f]">{totalLabel}</p>
-            <p className="truncate text-[10px] text-[#6b82ac]">Quantity: {quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"} · Wallet: {walletLabel}</p>
-          </div>
-          {!walletLoading && walletBalance !== null && totalPrice > 0 && !hasEnoughWallet ? (
-            <Link href="/dashboard/wallet" className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-amber-600 px-4 py-3 text-xs font-black text-white shadow-lg">Add Funds</Link>
-          ) : (
-            <button type="button" disabled={!canSubmit || submitting} onClick={placeOrder} className="inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-3 text-xs font-black text-white shadow-lg disabled:opacity-50">
-              {submitting ? "Placing..." : "Place Order"}
-            </button>
-          )}
-        </div>
-      </section>
     </main>
   );
 }
@@ -335,26 +404,36 @@ function CheckoutCard({
   selectedServiceName,
   rate,
   quantity,
+  targetLink,
   delivery,
   support,
   total,
   wallet,
+  amountToPay,
+  shortfallMessage,
+  addFundsHref,
   hasEnoughWallet,
   walletLoading,
   canSubmit,
+  canAddFunds,
   submitting,
   onSubmit,
 }: {
   selectedServiceName: string;
   rate: string;
   quantity: number;
+  targetLink: string;
   delivery: string;
   support: string;
   total: string;
   wallet: string;
+  amountToPay: string;
+  shortfallMessage: string;
+  addFundsHref: string;
   hasEnoughWallet: boolean;
   walletLoading: boolean;
   canSubmit: boolean;
+  canAddFunds: boolean;
   submitting: boolean;
   onSubmit: () => void;
 }) {
@@ -367,18 +446,36 @@ function CheckoutCard({
       <dl className="mt-5 space-y-3 text-sm">
         <SummaryRow label="Service price" value={`${rate} for 1,000`} />
         <SummaryRow label="Quantity" value={quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"} />
+        <SummaryRow label="Link" value={targetLink.trim() || "Not entered"} />
         <SummaryRow label="Delivery" value={delivery} />
         <SummaryRow label="Refill & support" value={support} />
       </dl>
       <div className="mt-4 rounded-2xl border border-[#dce7ff] bg-[#f8fbff] p-4">
         <div className="flex justify-between gap-3 text-sm"><span className="text-[#6079a7]">Wallet balance</span><b className="text-[#17366f]">{wallet}</b></div>
         <div className="mt-3 flex items-end justify-between gap-3 border-t border-[#e1eaff] pt-3"><span className="text-sm font-semibold text-[#6079a7]">Total price</span><b className="text-2xl text-[#17366f]">{total}</b></div>
+        {!hasEnoughWallet ? <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#e1eaff] pt-3 text-sm"><span className="text-[#6079a7]">Amount needed</span><b className="text-[#17366f]">{amountToPay}</b></div> : null}
       </div>
       {!walletLoading && quantity > 0 && !hasEnoughWallet ? (
-        <Link href="/dashboard/wallet" className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-amber-600 px-4 py-3 text-sm font-black text-white">Add Funds</Link>
+        <>
+          <p className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-xs font-semibold leading-5 text-[#36578f]">
+            {shortfallMessage}
+          </p>
+          {canAddFunds ? (
+            <Link
+              href={addFundsHref}
+              className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)]"
+            >
+              Add Funds
+            </Link>
+          ) : (
+            <button type="button" disabled className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-50">
+              Add Funds
+            </button>
+          )}
+        </>
       ) : (
         <button type="button" disabled={!canSubmit || submitting} onClick={onSubmit} className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)] disabled:opacity-50">
-          {submitting ? "Placing order..." : "Place Order Securely"}
+          {submitting ? "Placing order..." : "Place Order"}
         </button>
       )}
       <p className="mt-4 text-center text-[10px] font-semibold leading-5 text-[#7890ba]">{getCurrencyDisclaimer()}</p>

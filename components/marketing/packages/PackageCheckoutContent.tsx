@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
+import PlatformIcon from "@/components/PlatformIcon";
 import { getPackageById, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -223,7 +224,7 @@ export default function PackageCheckoutContent() {
                 <div className="mt-6 rounded-2xl border border-[#dce7ff] bg-[#f7faff] p-4 sm:p-5">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                     <div>
-                      <p className="text-xs font-semibold uppercase tracking-[0.1em] text-[#5b75ab]">{platformLabel} · {serviceLabel[pkg.service]}</p>
+                      <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#5b75ab]"><PlatformIcon platform={platformLabel} className="h-4 w-4" />{platformLabel} · {serviceLabel[pkg.service]}</p>
                       <h2 className="mt-2 text-xl font-black text-[#122a5c]">{pkg.title}</h2>
                       <p className="mt-2 text-sm leading-6 text-[#4f6795]">{pkg.description}</p>
                     </div>

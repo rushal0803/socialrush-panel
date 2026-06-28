@@ -6,6 +6,7 @@ import Link from "next/link";
 import MarketingHeader from "@/components/marketing/MarketingHeader";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
+import PlatformIcon from "@/components/PlatformIcon";
 import { getPackageById } from "@/lib/big-packages";
 import { convertCurrency, formatPrice, getCurrencyDisclaimer, currencies } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -111,7 +112,7 @@ export default function PackageSummaryContent() {
                 {/* Header */}
                 <div>
                   <div className="flex items-center gap-3">
-                    <div className="text-4xl font-bold text-white">{pkg.platform}</div>
+                    <div className="inline-flex items-center gap-3 text-2xl font-bold text-white sm:text-4xl"><PlatformIcon platform={pkg.platform} className="h-8 w-8 sm:h-10 sm:w-10" />{pkg.platform}</div>
                     <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-bold uppercase text-cyan-200">
                       {pkg.service}
                     </span>
@@ -233,7 +234,7 @@ export default function PackageSummaryContent() {
                   )}
 
                   <a
-                    href={process.env.NEXT_PUBLIC_WHATSAPP_URL || "https://wa.me/918860330771"}
+                    href="https://wa.me/918860330771"
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex w-full items-center justify-center rounded-xl border border-emerald-400/30 bg-emerald-500/10 px-6 py-3 text-sm font-bold text-emerald-200 transition hover:bg-emerald-500/15"

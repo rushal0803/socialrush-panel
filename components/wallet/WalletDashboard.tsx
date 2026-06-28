@@ -2,9 +2,15 @@
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import {
+  isPaymentMethod,
+  PAYMENT_METHODS,
+  paymentMethodLabel,
+  type PaymentMethodId,
+} from "@/lib/payments/methods";
 
 export type WalletTransaction = {
   id: string;
@@ -49,33 +55,19 @@ type RazorpayOptions = {
   theme: { color: string };
   handler: (response: RazorpayResponse) => void | Promise<void>;
   modal?: { ondismiss?: () => void };
+  method?: { upi?: boolean; card?: boolean; netbanking?: boolean };
+};
+type RazorpayCheckout = {
+  open: () => void;
+  on: (event: "payment.failed", callback: (response: { error?: { description?: string } }) => void) => void;
 };
 declare global {
   interface Window {
-    Razorpay?: new (options: RazorpayOptions) => { open: () => void };
+    Razorpay?: new (options: RazorpayOptions) => RazorpayCheckout;
   }
 }
 
-const methods = [
-  {
-    id: "upi",
-    name: "UPI QR",
-    detail: "Scan and pay via UPI apps",
-    icon: "UPI",
-  },
-  {
-    id: "manual_upi",
-    name: "Manual UPI",
-    detail: "Collect request / manual transfer",
-    icon: "MUPI",
-  },
-  {
-    id: "razorpay",
-    name: "Razorpay",
-    detail: "Secure hosted checkout",
-    icon: "R",
-  },
-];
+const methods = PAYMENT_METHODS;
 
 const quickAmounts = [100, 500, 1000, 2000, 5000, 10000];
 
@@ -224,7 +216,7 @@ function PaymentMethodIcon({
     );
   }
 
-  if (methodId === "manual_upi") {
+  if (methodId === "card" || methodId === "international_card") {
     return (
       <svg
         viewBox="0 0 24 24"
@@ -235,8 +227,16 @@ function PaymentMethodIcon({
         strokeLinecap="round"
         strokeLinejoin="round"
       >
-        <path d="M7 4h10a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2Z" />
-        <path d="M9 9h6M9 13h6M9 17h4" />
+        <path d="M3 8.5h18" />
+        <rect x="3" y="5" width="18" height="14" rx="3" />
+        {methodId === "international_card" ? (
+          <>
+            <circle cx="16.5" cy="14.5" r="2.5" />
+            <path d="M14 14.5h5M16.5 12v5" />
+          </>
+        ) : (
+          <path d="M7 15h3M15 15h2" />
+        )}
       </svg>
     );
   }
@@ -251,10 +251,8 @@ function PaymentMethodIcon({
       strokeLinecap="round"
       strokeLinejoin="round"
     >
-      <path d="M3 8.5h18" />
-      <rect x="3" y="5" width="18" height="14" rx="3" />
-      <path d="M7 15h3" />
-      <path d="M15 15h2" />
+      <path d="m3 10 9-6 9 6" />
+      <path d="M5 10h14M6 10v8m4-8v8m4-8v8m4-8v8M4 20h16" />
     </svg>
   );
 }
@@ -433,10 +431,14 @@ export default function WalletDashboard({
   initial: WalletInitialData;
 }) {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { currency } = usePreferredCurrency("INR");
   const money = (value: number) => formatCurrency(value, currency);
   const [balance, setBalance] = useState(initial.balance);
-  const [method, setMethod] = useState("upi");
+  const [method, setMethod] = useState<PaymentMethodId>(() => {
+    const requested = searchParams.get("method");
+    return isPaymentMethod(requested) ? requested : "upi";
+  });
   const [amountInput, setAmountInput] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -518,6 +520,11 @@ export default function WalletDashboard({
       order_id: payload.data.orderId,
       prefill: { email: payload.data.email || initial.email },
       theme: { color: "#2563eb" },
+      method: {
+        upi: method === "upi",
+        card: method === "card" || method === "international_card",
+        netbanking: method === "netbanking",
+      },
       modal: { ondismiss: () => setLoading(false) },
       handler: async (result) => {
         const verification = await fetch("/api/razorpay/verify-payment", {
@@ -543,6 +550,14 @@ export default function WalletDashboard({
         window.setTimeout(() => setSuccess(false), 3500);
         router.refresh();
       },
+    });
+    checkout.on("payment.failed", (result) => {
+      setLoading(false);
+      setError(
+        method === "international_card"
+          ? "International payments are currently being activated. Please contact WhatsApp support."
+          : result.error?.description || "Payment could not be completed. Please try again.",
+      );
     });
     checkout.open();
   }
@@ -715,11 +730,11 @@ export default function WalletDashboard({
                     </p>
                   </div>
                   <span className="rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6380b7] shadow-sm">
-                    3 options
+                    4 options
                   </span>
                 </div>
 
-                <div className="mt-4 grid gap-3 md:grid-cols-2 xl:mt-5 xl:grid-cols-3">
+                <div className="mt-4 grid gap-3 md:grid-cols-2 xl:mt-5 xl:grid-cols-4">
                   {methods.map((item) => {
                     const active = method === item.id;
                     return (
@@ -749,10 +764,10 @@ export default function WalletDashboard({
 
                           <span className="min-w-0">
                             <b className="block text-sm font-black text-[#16346c]">
-                              {item.name}
+                              {item.label}
                             </b>
                             <small className="mt-1.5 block text-xs leading-5 text-[#6a82af]">
-                              {item.detail}
+                              {item.description}
                             </small>
                           </span>
                         </div>
@@ -872,7 +887,7 @@ export default function WalletDashboard({
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Payment method</span>
                         <span className="text-right font-black text-[#15356f]">
-                          {selectedMethod.name}
+                          {selectedMethod.label}
                         </span>
                       </div>
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
@@ -1075,11 +1090,8 @@ export default function WalletDashboard({
                     <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7c92bc]">
                       Payment Method
                     </p>
-                    <p className="mt-2 text-sm font-bold capitalize text-[#17366f]">
-                      {(item.payment_method || item.description || item.type).replaceAll(
-                        "_",
-                        " ",
-                      )}
+                    <p className="mt-2 text-sm font-bold text-[#17366f]">
+                      {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </p>
                   </div>
                   <div className="rounded-2xl bg-[#f7faff] px-3 py-3">
@@ -1127,11 +1139,8 @@ export default function WalletDashboard({
                     <td className="px-6 py-4 text-[#6c84b0]">
                       {new Date(item.created_at).toLocaleString("en-IN")}
                     </td>
-                    <td className="px-6 py-4 font-semibold capitalize text-[#17366f]">
-                      {(item.payment_method || item.description || item.type).replaceAll(
-                        "_",
-                        " ",
-                      )}
+                    <td className="px-6 py-4 font-semibold text-[#17366f]">
+                      {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </td>
                     <td className={`px-6 py-4 font-black ${item.type === "debit" ? "text-[#17366f]" : "text-emerald-600"}`}>
                       {item.type === "debit" ? "-" : "+"}

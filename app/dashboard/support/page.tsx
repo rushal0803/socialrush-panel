@@ -40,6 +40,7 @@ const supportCards = [
     title: "WhatsApp Support",
     description: "Chat instantly for quick order and payment guidance.",
     action: "Start support",
+    href: "https://wa.me/918860330771",
     icon: MessageSquare,
   },
   {
@@ -231,7 +232,7 @@ export default function SupportPage() {
 
             if ("href" in card && card.href) {
               return (
-                <Link key={card.title} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noreferrer" : undefined}>
+                <Link key={card.title} href={card.href} target={card.href.startsWith("http") ? "_blank" : undefined} rel={card.href.startsWith("http") ? "noopener noreferrer" : undefined}>
                   {cardContent}
                 </Link>
               );

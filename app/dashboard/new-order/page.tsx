@@ -55,7 +55,7 @@ export default function NewOrderPage() {
           <h2 className="mt-2 text-xl font-black text-[#14316a] sm:text-2xl">Choose your platform</h2>
           <p className="mt-2 text-sm leading-6 text-[#6079a7]">Select where you want to launch your next growth campaign.</p>
 
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4 xl:grid-cols-7">
+          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7">
             {platformOrder.map((platformId) => {
               const meta = platformMeta[platformId];
               const active = platform === platformId;

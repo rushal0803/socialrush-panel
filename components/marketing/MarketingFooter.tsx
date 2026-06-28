@@ -9,9 +9,7 @@ const groups = [
 
 export default function MarketingFooter({ tone = "default" }: { tone?: "default" | "light3d" }) {
   const isLight3d = tone === "light3d";
-  const whatsappUrl =
-    process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim() ||
-    "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service";
+  const whatsappUrl = "https://wa.me/918860330771";
 
   return (
     <footer className={isLight3d ? "relative overflow-hidden bg-[radial-gradient(circle_at_top_left,#fcecff_0%,#eef7ff_40%,#f6fbff_100%)] px-4 pb-9 pt-14 text-[#203b72] sm:px-6 lg:px-8" : "relative bg-brand-navy px-5 pb-8 pt-16 text-white sm:px-6 lg:px-8"}>

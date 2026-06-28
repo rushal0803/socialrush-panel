@@ -115,7 +115,7 @@ export default function PackagesPageContent() {
               </div>
               <span className="text-xs font-semibold text-[#6880ad]">7 platforms</span>
             </div>
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">
+            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
               {platforms.map((platform) => {
                 const active = selectedPlatform === platform.key;
                 return (
