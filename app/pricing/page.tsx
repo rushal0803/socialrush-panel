@@ -5,6 +5,7 @@ import MarketingIcon, {
 import PricingGrid from "@/components/marketing/pricing/PricingGrid";
 import PublicShell from "@/components/marketing/PublicShell";
 import PlatformIcon from "@/components/PlatformIcon";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -94,6 +95,7 @@ const featuredPlatforms = [
 export default function PricingPage() {
   return (
     <PublicShell tone="light3d">
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]} />
       <div className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_12%_18%,rgba(255,159,214,.38),transparent_28%),radial-gradient(circle_at_88%_16%,rgba(94,210,255,.35),transparent_30%),linear-gradient(145deg,#fff8fd_0%,#eef7ff_48%,#f5f2ff_100%)]">
         <div className="pointer-events-none absolute -left-20 top-24 h-64 w-64 rounded-full bg-fuchsia-300/25 blur-3xl" />
         <div className="pointer-events-none absolute -right-16 top-10 h-72 w-72 rounded-full bg-sky-300/30 blur-3xl" />

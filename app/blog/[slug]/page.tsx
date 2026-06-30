@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { articleSlugs, getArticleBySlug } from "@/components/marketing/blog/blogData";
 import SafeImage from "@/components/SafeImage";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 export function generateStaticParams() {
@@ -55,6 +56,13 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
   return (
     <BlogShell>
+      <BreadcrumbJsonLd
+        items={[
+          { name: "Home", path: "/" },
+          { name: "Blog", path: "/blog" },
+          { name: article.title, path: `/blog/${article.slug}` },
+        ]}
+      />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}

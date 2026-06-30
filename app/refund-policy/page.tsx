@@ -1,4 +1,5 @@
 import RefundPolicyView from "@/components/marketing/RefundPolicyPage";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -22,12 +23,15 @@ const sections = [
 
 export default function RefundPolicyRoute() {
   return (
-    <RefundPolicyView
-      title="Refund Policy"
-      subtitle="Review how refunds, wallet credits, cancellations, and payment issues are handled on SocialRUSH."
-      badge="Refund Policy"
-      breadcrumbLabel="Refund Policy"
-      sections={sections}
-    />
+    <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Refund Policy", path: "/refund-policy" }]} />
+      <RefundPolicyView
+        title="Refund Policy"
+        subtitle="Review how refunds, wallet credits, cancellations, and payment issues are handled on SocialRUSH."
+        badge="Refund Policy"
+        breadcrumbLabel="Refund Policy"
+        sections={sections}
+      />
+    </>
   );
 }

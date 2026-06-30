@@ -1,4 +1,5 @@
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -10,5 +11,10 @@ export const metadata = createPageMetadata({
 });
 
 export default function ServicesPage() {
-  return <ServicesPageContent />;
+  return (
+    <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
+      <ServicesPageContent />
+    </>
+  );
 }

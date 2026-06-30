@@ -1,4 +1,5 @@
 import PolicyPage from "@/components/marketing/PolicyPage";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -22,13 +23,16 @@ const sections = [
 
 export default function PrivacyPolicyPage() {
   return (
-    <PolicyPage
-      title="Privacy Policy"
-      subtitle="How SocialRUSH handles account, campaign, support, transaction, and technical information."
-      badge="SocialRUSH policy center"
-      breadcrumbLabel="Privacy Policy"
-      tone="light3d"
-      sections={sections}
-    />
+    <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Privacy Policy", path: "/privacy-policy" }]} />
+      <PolicyPage
+        title="Privacy Policy"
+        subtitle="How SocialRUSH handles account, campaign, support, transaction, and technical information."
+        badge="SocialRUSH policy center"
+        breadcrumbLabel="Privacy Policy"
+        tone="light3d"
+        sections={sections}
+      />
+    </>
   );
 }

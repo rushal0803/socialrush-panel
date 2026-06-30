@@ -2,6 +2,7 @@ import Link from "next/link";
 import MarketingIcon, { type MarketingIconName } from "@/components/marketing/MarketingIcon";
 import PortalCTA from "@/components/marketing/PortalCTA";
 import PublicShell from "@/components/marketing/PublicShell";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -40,6 +41,7 @@ const trustCards: Array<{ icon: MarketingIconName; title: string; description: s
 export default function AboutPage() {
   return (
     <PublicShell tone="light3d">
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
       <section className="relative overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8 lg:pb-24 lg:pt-20">
         <div className="pointer-events-none absolute -left-24 top-10 h-80 w-80 rounded-full bg-pink-200/50 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 top-16 h-96 w-96 rounded-full bg-cyan-200/50 blur-3xl" />

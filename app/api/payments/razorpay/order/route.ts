@@ -2,8 +2,8 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { razorpayConfig, razorpayRequest } from "@/lib/payments/razorpay";
 import {
-  isPaymentMethod,
   isPaymentMethodEnabled,
+  normalizePaymentMethod,
   paymentMethodUnavailableMessage,
 } from "@/lib/payments/methods";
 
@@ -15,9 +15,14 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const body = await request.json().catch(() => null) as { amount?: number; method?: string } | null;
   const amount = Number(body?.amount);
-  const method = body?.method;
+  const method = normalizePaymentMethod(body?.method);
   if (!Number.isFinite(amount) || amount <= 0 || amount > 500000) return NextResponse.json({ error: "Enter an amount greater than ₹0 and up to ₹5,00,000" }, { status: 422 });
-  if (!isPaymentMethod(method)) return NextResponse.json({ error: "Unsupported payment method" }, { status: 422 });
+  if (!method) {
+    return NextResponse.json(
+      { error: "Unsupported payment method" },
+      { status: 422 },
+    );
+  }
   if (!isPaymentMethodEnabled(method)) {
     return NextResponse.json(
       { error: paymentMethodUnavailableMessage(method) },

@@ -1,4 +1,5 @@
 import PolicyPage from "@/components/marketing/PolicyPage";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -24,13 +25,16 @@ const sections = [
 
 export default function TermsPage() {
   return (
-    <PolicyPage
-      title="Terms & Conditions"
-      subtitle="The operating terms for SocialRUSH accounts, wallets, campaigns, delivery, refills, billing, and support."
-      badge="SocialRUSH policy center"
-      breadcrumbLabel="Terms & Conditions"
-      tone="light3d"
-      sections={sections}
-    />
+    <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Terms & Conditions", path: "/terms-and-conditions" }]} />
+      <PolicyPage
+        title="Terms & Conditions"
+        subtitle="The operating terms for SocialRUSH accounts, wallets, campaigns, delivery, refills, billing, and support."
+        badge="SocialRUSH policy center"
+        breadcrumbLabel="Terms & Conditions"
+        tone="light3d"
+        sections={sections}
+      />
+    </>
   );
 }

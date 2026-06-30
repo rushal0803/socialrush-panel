@@ -6,12 +6,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import {
-  isPaymentMethod,
   isPaymentMethodEnabled,
   PAYMENT_METHODS,
   paymentMethodLabel,
   paymentMethodUnavailableMessage,
-  razorpayMethodFor,
+  normalizePaymentMethod,
   type PaymentMethodId,
 } from "@/lib/payments/methods";
 
@@ -58,19 +57,6 @@ type RazorpayOptions = {
   theme: { color: string };
   handler: (response: RazorpayResponse) => void | Promise<void>;
   modal?: { ondismiss?: () => void };
-  config?: {
-    display: {
-      blocks: Record<
-        string,
-        {
-          name: string;
-          instruments: Array<{ method: "upi" | "card" | "netbanking" }>;
-        }
-      >;
-      sequence: string[];
-      preferences: { show_default_blocks: boolean };
-    };
-  };
 };
 type RazorpayCheckout = {
   open: () => void;
@@ -461,8 +447,8 @@ export default function WalletDashboard({
   const money = (value: number) => formatCurrency(value, currency);
   const [balance, setBalance] = useState(initial.balance);
   const [method, setMethod] = useState<PaymentMethodId>(() => {
-    const requested = searchParams.get("method");
-    return isPaymentMethod(requested) && isPaymentMethodEnabled(requested)
+    const requested = normalizePaymentMethod(searchParams.get("method"));
+    return requested && isPaymentMethodEnabled(requested)
       ? requested
       : defaultPaymentMethod;
   });
@@ -542,8 +528,6 @@ export default function WalletDashboard({
       setLoading(false);
       return;
     }
-    const razorpayMethod = razorpayMethodFor(method);
-    const selectedMethodLabel = paymentMethodLabel(method);
     const checkout = new window.Razorpay({
       key: payload.data.keyId,
       amount: payload.data.amount,
@@ -553,19 +537,12 @@ export default function WalletDashboard({
       order_id: payload.data.orderId,
       prefill: { email: payload.data.email || initial.email },
       theme: { color: "#2563eb" },
-      config: {
-        display: {
-          blocks: {
-            selected_method: {
-              name: `Pay via ${selectedMethodLabel}`,
-              instruments: [{ method: razorpayMethod }],
-            },
-          },
-          sequence: ["block.selected_method"],
-          preferences: { show_default_blocks: false },
+      modal: {
+        ondismiss: () => {
+          setLoading(false);
+          setError("Payment was cancelled. Your wallet was not charged.");
         },
       },
-      modal: { ondismiss: () => setLoading(false) },
       handler: async (result) => {
         const verification = await fetch("/api/razorpay/verify-payment", {
           method: "POST",

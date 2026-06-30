@@ -30,8 +30,32 @@ export const ALLOWED_PAYMENT_METHODS: readonly PaymentMethodId[] = [
   "international_card",
 ];
 
+export function normalizePaymentMethod(
+  value: unknown,
+): PaymentMethodId | null {
+  if (typeof value !== "string") return null;
+
+  const normalized = value.trim().toLowerCase().replace(/\s+/g, " ");
+  const aliases: Record<string, PaymentMethodId> = {
+    upi: "upi",
+    card: "card",
+    "debit card / credit card": "card",
+    "debit card": "card",
+    "credit card": "card",
+    netbanking: "netbanking",
+    "net banking": "netbanking",
+    international_card: "international_card",
+    "international card": "international_card",
+  };
+
+  return aliases[normalized] ?? null;
+}
+
 export function isPaymentMethod(value: unknown): value is PaymentMethodId {
-  return typeof value === "string" && ALLOWED_PAYMENT_METHODS.includes(value as PaymentMethodId);
+  return (
+    typeof value === "string" &&
+    ALLOWED_PAYMENT_METHODS.includes(value as PaymentMethodId)
+  );
 }
 
 const PAYMENT_METHOD_ENABLED: Record<PaymentMethodId, boolean> = {
@@ -52,10 +76,6 @@ export function paymentMethodUnavailableMessage(method: PaymentMethodId) {
     return "International payments are currently being activated. Please contact WhatsApp support.";
   }
   return "This payment method is currently under activation. Please use UPI for now.";
-}
-
-export function razorpayMethodFor(method: PaymentMethodId): "upi" | "card" | "netbanking" {
-  return method === "international_card" ? "card" : method;
 }
 
 export function paymentMethodLabel(value: string | null | undefined) {

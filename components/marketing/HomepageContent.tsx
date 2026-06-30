@@ -1,8 +1,9 @@
 ﻿"use client";
 
 import Link from "next/link";
+import { homepageFaqItems as faqItems } from "@/lib/seo/homepage-faq";
 import { usePathname, useRouter } from "next/navigation";
-import { AnimatePresence, LazyMotion, domAnimation, m as motion } from "framer-motion";
+import { LazyMotion, domAnimation, m as motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -293,17 +294,6 @@ const testimonials = [
     stars: 5,
     grad: "from-cyan-500 to-blue-600",
   },
-] as const;
-
-const faqItems = [
-  { q: "What is SocialRUSH?", a: "SocialRUSH is a social growth panel where you select a service, submit your public link, and track delivery from your account dashboard." },
-  { q: "What platforms do you support?", a: "We support Facebook, Instagram, LinkedIn, TikTok, YouTube, and X/Twitter services." },
-  { q: "Are services safe?", a: "Services are designed for public profiles and content links with controlled delivery practices." },
-  { q: "How long does delivery take?", a: "Delivery windows vary by service and volume, and estimated timing is shown before checkout." },
-  { q: "Is there a minimum order quantity?", a: "Minimum quantity and pricing are shown per service before placing an order." },
-  { q: "Can I track my order?", a: "Yes, every order includes tracking status and history inside your dashboard." },
-  { q: "Do you offer support?", a: "Yes, support is available to help with onboarding, service selection, and campaign queries." },
-  { q: "Do you offer refunds?", a: "Refund eligibility depends on order state and policy terms listed on the refund policy page." },
 ] as const;
 
 const footerLinks = [
@@ -691,13 +681,18 @@ export default function HomepageContent() {
                         <span className="text-sm font-semibold text-slate-800">{item.q}</span>
                         <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition-all ${isOpen ? "bg-violet-500 text-white" : "bg-slate-100 text-slate-600"}`}>{isOpen ? "−" : "+"}</span>
                       </button>
-                      <AnimatePresence initial={false}>
-                        {isOpen && (
-                          <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.28, ease: "easeOut" }} className="overflow-hidden">
-                            <p className="border-t border-violet-100/60 px-4 py-3 text-sm leading-7 text-slate-600">{item.a}</p>
-                          </motion.div>
-                        )}
-                      </AnimatePresence>
+                      <div
+                        aria-hidden={!isOpen}
+                        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ${
+                          isOpen
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="border-t border-violet-100/60 px-4 py-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                        </div>
+                      </div>
                     </article>
                   );
                 })}

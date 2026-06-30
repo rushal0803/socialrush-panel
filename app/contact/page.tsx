@@ -1,4 +1,5 @@
 import ContactPageContent from "@/components/marketing/contact/ContactPageContent";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -10,5 +11,10 @@ export const metadata = createPageMetadata({
 });
 
 export default function ContactPage() {
-  return <ContactPageContent />;
+  return (
+    <>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Contact", path: "/contact" }]} />
+      <ContactPageContent />
+    </>
+  );
 }

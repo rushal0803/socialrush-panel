@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+Disallow: /dashboard
+Disallow: /dashboard/
+Disallow: /api/
+Disallow: /auth/
+Disallow: /packages/checkout
+Disallow: /login
+Disallow: /register
+
+Sitemap: https://www.getsocialrush.com/sitemap.xml
