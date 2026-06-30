@@ -49,7 +49,7 @@ const faqCategories: FaqCategory[] = [
           "SocialRUSH provides trackable social media growth services for Instagram, YouTube, Facebook, LinkedIn, TikTok, Telegram, and Twitter/X. Current availability, pricing, delivery estimates, and refill terms are shown before checkout.",
       },
       {
-        question: "Do I need to share my social media password?",
+        question: "Do you need my password?",
         answer:
           "No. SocialRUSH uses public-link ordering. You submit only the public profile, post, reel, video, page, channel, or group required for the selected service.",
       },
@@ -117,7 +117,7 @@ const faqCategories: FaqCategory[] = [
           "You can track order status directly in your dashboard, including processing stage, updates, and completion details for each campaign request.",
       },
       {
-        question: "What happens if my order is delayed?",
+        question: "What if my order is delayed?",
         answer:
           "If delivery exceeds the expected window, our support team reviews the campaign status and provides the next action, update timeline, or suitable resolution.",
       },
@@ -181,6 +181,39 @@ export default function FaqPage() {
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "FAQ", path: "/faq" }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
       <FaqPageContent categories={faqCategories} />
+      <section
+        aria-labelledby="complete-faq-answers-heading"
+        className="bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_45%,#ecfeff_100%)] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-20"
+      >
+        <div className="mx-auto max-w-6xl rounded-[1.75rem] border border-white/80 bg-white/75 p-6 shadow-[0_20px_55px_-28px_rgba(15,23,42,.32)] backdrop-blur-xl sm:p-8">
+          <h2
+            id="complete-faq-answers-heading"
+            className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl"
+          >
+            Complete SocialRUSH FAQ answers
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">
+            Read every answer about services, ordering, delivery, payments,
+            refill support, refunds, and customer assistance.
+          </p>
+
+          <div className="mt-7 grid gap-4 lg:grid-cols-2">
+            {allFaqs.map((item) => (
+              <article
+                key={`crawlable-${item.question}`}
+                className="rounded-2xl border border-white/90 bg-white/90 p-5 shadow-[0_14px_34px_-24px_rgba(15,23,42,.3)]"
+              >
+                <h3 className="text-sm font-extrabold leading-6 text-slate-900 sm:text-base">
+                  {item.question}
+                </h3>
+                <p className="mt-2 text-sm leading-7 text-slate-600">
+                  {item.answer}
+                </p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
     </PublicShell>
   );
 }

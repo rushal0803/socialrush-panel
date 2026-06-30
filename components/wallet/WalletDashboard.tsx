@@ -497,7 +497,8 @@ export default function WalletDashboard({
   async function startPayment(event: React.FormEvent) {
     event.preventDefault();
     setError("");
-    if (!isPaymentMethodEnabled(method)) {
+    const canonicalMethod = normalizePaymentMethod(method);
+    if (!canonicalMethod || !isPaymentMethodEnabled(canonicalMethod)) {
       setError(paymentMethodUnavailableMessage(method));
       return;
     }
@@ -511,7 +512,7 @@ export default function WalletDashboard({
     const response = await fetch("/api/razorpay/create-order", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount, method }),
+      body: JSON.stringify({ amount, method: canonicalMethod }),
     });
     const payload = (await response.json()) as {
       data?: {
@@ -576,7 +577,7 @@ export default function WalletDashboard({
     checkout.on("payment.failed", (result) => {
       setLoading(false);
       setError(
-        method === "international_card"
+        canonicalMethod === "international_card"
           ? "International payments are currently being activated. Please contact WhatsApp support."
           : result.error?.description || "Payment could not be completed. Please try again.",
       );

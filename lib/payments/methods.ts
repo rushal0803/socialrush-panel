@@ -33,22 +33,37 @@ export const ALLOWED_PAYMENT_METHODS: readonly PaymentMethodId[] = [
 export function normalizePaymentMethod(
   value: unknown,
 ): PaymentMethodId | null {
-  if (typeof value !== "string") return null;
+  const method = String(value || "").toLowerCase().trim();
 
-  const normalized = value.trim().toLowerCase().replace(/\s+/g, " ");
-  const aliases: Record<string, PaymentMethodId> = {
-    upi: "upi",
-    card: "card",
-    "debit card / credit card": "card",
-    "debit card": "card",
-    "credit card": "card",
-    netbanking: "netbanking",
-    "net banking": "netbanking",
-    international_card: "international_card",
-    "international card": "international_card",
-  };
+  if (method === "upi") return "upi";
 
-  return aliases[normalized] ?? null;
+  if (
+    method === "card" ||
+    method === "debit_card" ||
+    method === "credit_card" ||
+    method.includes("debit") ||
+    method.includes("credit")
+  ) {
+    return "card";
+  }
+
+  if (
+    method === "netbanking" ||
+    method === "net_banking" ||
+    method === "net banking" ||
+    method.includes("net")
+  ) {
+    return "netbanking";
+  }
+
+  if (
+    method === "international_card" ||
+    method.includes("international")
+  ) {
+    return "international_card";
+  }
+
+  return null;
 }
 
 export function isPaymentMethod(value: unknown): value is PaymentMethodId {

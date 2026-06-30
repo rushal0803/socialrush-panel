@@ -1,13 +1,10 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { razorpayConfig, razorpayRequest } from "@/lib/payments/razorpay";
-import {
-  isPaymentMethodEnabled,
-  normalizePaymentMethod,
-  paymentMethodUnavailableMessage,
-} from "@/lib/payments/methods";
+import { normalizePaymentMethod } from "@/lib/payments/methods";
 
 type RazorpayOrder = { id: string; amount: number; currency: string; status: string };
+const allowedMethods = ["upi", "card", "netbanking"] as const;
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -15,7 +12,11 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   const body = await request.json().catch(() => null) as { amount?: number; method?: string } | null;
   const amount = Number(body?.amount);
-  const method = normalizePaymentMethod(body?.method);
+  const rawMethod = body?.method;
+  const method = normalizePaymentMethod(rawMethod);
+  console.log("wallet payment method raw:", rawMethod);
+  console.log("wallet payment method normalized:", method);
+  console.log("allowed wallet methods:", allowedMethods);
   if (!Number.isFinite(amount) || amount <= 0 || amount > 500000) return NextResponse.json({ error: "Enter an amount greater than ₹0 and up to ₹5,00,000" }, { status: 422 });
   if (!method) {
     return NextResponse.json(
@@ -23,13 +24,19 @@ export async function POST(request: NextRequest) {
       { status: 422 },
     );
   }
-  if (!isPaymentMethodEnabled(method)) {
+  const isStandardMethod = allowedMethods.includes(
+    method as (typeof allowedMethods)[number],
+  );
+  if (!isStandardMethod && method !== "international_card") {
     return NextResponse.json(
-      { error: paymentMethodUnavailableMessage(method) },
-      { status: 409 },
+      { error: "Unsupported payment method" },
+      { status: 422 },
     );
   }
-  if (method === "international_card" && process.env.RAZORPAY_INTERNATIONAL_ENABLED !== "true") {
+  if (
+    method === "international_card" &&
+    process.env.RAZORPAY_INTERNATIONAL_ENABLED !== "true"
+  ) {
     return NextResponse.json(
       { error: "International payments are currently being activated. Please contact WhatsApp support." },
       { status: 409 },

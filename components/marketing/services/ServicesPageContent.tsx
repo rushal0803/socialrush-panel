@@ -253,6 +253,138 @@ export default function ServicesPageContent() {
           </div>
         </div>
 
+        <section
+          aria-labelledby="complete-service-directory-heading"
+          className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8"
+        >
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">
+                Complete service directory
+              </p>
+              <h2
+                id="complete-service-directory-heading"
+                className="mt-2 text-2xl font-black text-[#14316a] sm:text-3xl"
+              >
+                Browse every SocialRUSH growth service
+              </h2>
+              <p className="mt-3 text-sm leading-7 text-[#526d9f]">
+                Compare all currently available platform services, starting rates,
+                delivery estimates, and refill terms.
+              </p>
+            </div>
+
+            <div className="mt-7 space-y-9">
+              {platformOrder.map((platformId) => {
+                const meta = platformMeta[platformId];
+                const platformServices = activeSmmServices.filter(
+                  (service) => service.platform === platformId,
+                );
+
+                return (
+                  <section
+                    key={`directory-${platformId}`}
+                    aria-labelledby={`directory-${platformId}-heading`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <span
+                        className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}
+                      >
+                        <PlatformIcon
+                          platform={meta.icon}
+                          title={meta.label}
+                          className="h-5 w-5"
+                        />
+                      </span>
+                      <h3
+                        id={`directory-${platformId}-heading`}
+                        className="text-lg font-black text-[#14316a]"
+                      >
+                        {meta.label} services
+                      </h3>
+                    </div>
+
+                    <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                      {platformServices.map((service) => {
+                        const detailPath =
+                          seoServicePaths[service.code] ??
+                          `/services/${service.code}`;
+                        const packagesPath = `/packages?platform=${encodeURIComponent(
+                          packagePlatform(service.platform),
+                        )}`;
+                        const orderPath = `/dashboard/new-order?platform=${encodeURIComponent(
+                          service.platform,
+                        )}&service=${encodeURIComponent(service.code)}`;
+
+                        return (
+                          <article
+                            key={`directory-${service.code}`}
+                            className="flex min-w-0 flex-col rounded-2xl border border-white/85 bg-white/88 p-5 shadow-[0_16px_38px_-26px_rgba(15,23,42,.32)]"
+                          >
+                            <h4 className="text-base font-black text-[#14316a]">
+                              <Link
+                                href={detailPath}
+                                className="transition hover:text-blue-600"
+                              >
+                                {serviceNames[service.code] || service.name}
+                              </Link>
+                            </h4>
+                            <p className="mt-2 flex-1 text-sm leading-6 text-[#526d9f]">
+                              {service.description}
+                            </p>
+                            <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                              <div className="rounded-xl bg-[#f8fbff] p-3">
+                                <dt className="font-bold text-[#7890bb]">
+                                  Starting price
+                                </dt>
+                                <dd className="mt-1 font-black text-[#204083]">
+                                  {formatCurrency(service.pricePer1000, currency)} / 1K
+                                </dd>
+                              </div>
+                              <div className="rounded-xl bg-[#f8fbff] p-3">
+                                <dt className="font-bold text-[#7890bb]">Delivery</dt>
+                                <dd className="mt-1 font-black text-[#204083]">
+                                  {service.deliveryTime}
+                                </dd>
+                              </div>
+                            </dl>
+                            <p className="mt-3 text-xs leading-5 text-[#6079a7]">
+                              <strong className="text-[#294981]">
+                                Refill/support:
+                              </strong>{" "}
+                              {service.refillPolicy}
+                            </p>
+                            <div className="mt-4 grid gap-2 min-[420px]:grid-cols-3">
+                              <Link
+                                href={detailPath}
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-[#d4e1ff] bg-white px-3 py-2 text-center text-[11px] font-black text-[#35548d]"
+                              >
+                                Service Details
+                              </Link>
+                              <Link
+                                href={packagesPath}
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-[#d4e1ff] bg-white px-3 py-2 text-center text-[11px] font-black text-[#35548d]"
+                              >
+                                View Packages
+                              </Link>
+                              <Link
+                                href={orderPath}
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-3 py-2 text-center text-[11px] font-black text-white"
+                              >
+                                Start Order
+                              </Link>
+                            </div>
+                          </article>
+                        );
+                      })}
+                    </div>
+                  </section>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+
         <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-10">
             <div>
