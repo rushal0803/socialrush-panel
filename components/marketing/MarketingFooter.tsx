@@ -2,7 +2,7 @@ import Link from "next/link";
 import Logo from "@/components/Logo";
 
 const groups = [
-  { title: "Growth services", links: [["Instagram Growth", "/services#instagram-followers"], ["YouTube Growth", "/services#youtube-subscribers"], ["Facebook Growth", "/services#facebook-followers"], ["LinkedIn Growth", "/services#linkedin-followers"], ["TikTok Growth", "/services#tiktok-followers"], ["Twitter/X Growth", "/services#twitter-followers"]] },
+  { title: "Growth services", links: [["Instagram Followers", "/instagram-followers"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Likes", "/youtube-likes"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"], ["Telegram Members", "/telegram-members"], ["Twitter/X Followers", "/twitter-followers"]] },
   { title: "Platform", links: [["Services", "/services"], ["Pricing", "/pricing"], ["Login", "/login"], ["Register", "/register"], ["Dashboard", "/dashboard"], ["Support", "/dashboard/support"]] },
   { title: "Company & legal", links: [["About", "/about"], ["Case Studies", "/case-studies"], ["FAQ", "/faq"], ["Contact", "/contact"], ["Privacy Policy", "/privacy"], ["Refund Policy", "/refund-policy"], ["Terms", "/terms"]] },
 ];

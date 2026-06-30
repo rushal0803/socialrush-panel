@@ -5,6 +5,17 @@ export function razorpayConfig() {
   const keyId = process.env.RAZORPAY_KEY_ID || process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID;
   const keySecret = process.env.RAZORPAY_KEY_SECRET;
   if (!keyId || !keySecret) throw new Error("Razorpay is not configured");
+
+  const keyMode = keyId.startsWith("rzp_live_")
+    ? "live"
+    : keyId.startsWith("rzp_test_")
+      ? "test"
+      : null;
+  if (!keyMode) throw new Error("Razorpay key ID has an invalid format");
+  if (process.env.NODE_ENV === "production" && keyMode !== "live") {
+    throw new Error("Razorpay live keys are required in production");
+  }
+
   return { keyId, keySecret };
 }
 

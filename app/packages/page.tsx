@@ -1,12 +1,13 @@
-import type { Metadata } from "next";
 import PackagesPageContent from "@/components/marketing/packages/PackagesPageContent";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "SocialRUSH Packages | Premium Growth Plans",
+export const metadata = createPageMetadata({
+  title: "Social Media Growth Packages India",
   description:
-    "Explore premium SocialRUSH growth packages for Instagram, YouTube, Facebook, LinkedIn, TikTok, and X/Twitter with secure checkout and campaign tracking.",
-  alternates: { canonical: "/packages" },
-};
+    "Compare SocialRUSH packages for Instagram followers and likes, YouTube subscribers and views, LinkedIn followers, TikTok growth and Twitter followers in India.",
+  path: "/packages",
+  keywords: ["social media growth packages India", "Instagram follower packages India"],
+});
 
 export default function PackagesPage() {
   return <PackagesPageContent />;

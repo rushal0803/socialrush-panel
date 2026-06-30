@@ -1,58 +1,25 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { NavLinks } from "@/components/Sidebar";
 import { createClient } from "@/lib/supabase/client";
 import { Menu, X } from "lucide-react";
+import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 export default function DashboardMobileMenu() {
   const pathname = usePathname();
   const router = useRouter();
-  const menuRef = useRef<HTMLDivElement>(null);
   const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     setIsOpen(false);
   }, [pathname]);
 
-  useEffect(() => {
-    if (!isOpen) return;
-    const closeOutside = (event: MouseEvent) => {
-      if (!menuRef.current?.contains(event.target as Node)) setIsOpen(false);
-    };
-    document.addEventListener("mousedown", closeOutside);
-    return () => document.removeEventListener("mousedown", closeOutside);
-  }, [isOpen]);
-
-  useEffect(() => {
-    if (!isOpen) {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-      return;
-    }
-
-    document.body.style.overflow = "hidden";
-    document.documentElement.style.overflow = "hidden";
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setIsOpen(false);
-    };
-
-    document.addEventListener("keydown", handleEscape);
-
-    return () => {
-      document.body.style.overflow = "";
-      document.documentElement.style.overflow = "";
-      document.removeEventListener("keydown", handleEscape);
-    };
-  }, [isOpen]);
-
   async function handleLogout() {
     setIsOpen(false);
     await createClient().auth.signOut();
     router.replace("/login");
-    router.refresh();
   }
 
   return (
@@ -61,25 +28,21 @@ export default function DashboardMobileMenu() {
         type="button"
         aria-label="Toggle dashboard navigation"
         aria-expanded={isOpen}
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={(event) => {
+          event.stopPropagation();
+          setIsOpen((open) => !open);
+        }}
         className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/80 bg-white/85 text-[#4a6398] shadow-[0_10px_24px_rgba(79,108,168,.15)] transition hover:-translate-y-0.5 hover:bg-white"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
-      {isOpen && (
-        <div className="fixed inset-0 z-[70] lg:hidden">
-          <button
-            type="button"
-            aria-label="Close dashboard navigation"
-            onClick={() => setIsOpen(false)}
-            className="absolute inset-0 bg-[#dfeaff]/35 backdrop-blur-md"
-          />
-
-          <div className="absolute inset-x-0 top-[4.75rem] max-h-[calc(100dvh-5.5rem)] overflow-y-auto px-3 pb-4 sm:px-5">
-            <div
-              ref={menuRef}
-              className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.5rem] border border-white/85 bg-white/90 p-3.5 shadow-[0_24px_60px_-24px_rgba(76,106,170,.38)] backdrop-blur-xl sm:rounded-[1.75rem] sm:p-4"
-            >
+      <MobileMenuLayer
+        open={isOpen}
+        onClose={() => setIsOpen(false)}
+        topClassName="top-20"
+        showCloseButton={false}
+      >
+        <div className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.5rem] border border-white/85 bg-white/95 p-3.5 shadow-[0_24px_60px_-24px_rgba(76,106,170,.38)] backdrop-blur-xl sm:rounded-[1.75rem] sm:p-4">
               <div className="mb-3 flex items-center justify-between gap-3 border-b border-[#e3ebff] pb-3">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#5b74a5]">Dashboard Menu</p>
@@ -106,10 +69,8 @@ export default function DashboardMobileMenu() {
                   ↪ Log out
                 </button>
               </div>
-            </div>
-          </div>
         </div>
-      )}
+      </MobileMenuLayer>
     </div>
   );
 }

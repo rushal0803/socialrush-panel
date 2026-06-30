@@ -2,12 +2,13 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 import PortalCTA from "./PortalCTA";
 import CurrencyDropdown from "./CurrencyDropdown";
 import { createClient } from "@/lib/supabase/client";
+import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 const nav = [
   ["Home", "/"],
@@ -43,7 +44,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   }
 
   return (
-    <header className={isLight3d ? "sticky top-0 z-50 px-4 pt-3 sm:px-6" : "sticky top-0 z-50 border-b border-violet-300/20 bg-[#070c1d]/85 backdrop-blur-2xl"}>
+    <header className={isLight3d ? "sticky top-0 z-[9999] border-b border-white/50 bg-[#f4f9ff]/70 px-4 py-3 backdrop-blur-2xl sm:px-6" : "sticky top-0 z-[9999] border-b border-violet-300/20 bg-[#070c1d]/90 backdrop-blur-2xl"}>
       <div className={isLight3d ? "mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/80 bg-white/72 px-4 shadow-[0_22px_44px_-30px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:gap-4 sm:px-5 lg:px-6" : "mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8"}>
         <Logo light={!isLight3d} priority className="shrink-0 pr-1" />
 
@@ -58,13 +59,21 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         <div className="hidden items-center gap-2 lg:flex">
           <CurrencyDropdown compact tone={tone} />
           {isLoggedIn ? (
-            <button
-              type="button"
-              onClick={logout}
-              className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-2 text-sm font-bold text-[#1f3f77] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] transition hover:border-[#adc5ff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200"}
-            >
-              Logout
-            </button>
+            <>
+              <Link
+                href="/dashboard/account"
+                className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-2 text-sm font-bold text-[#35548d] transition hover:bg-[#e6eeff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-400/20"}
+              >
+                Profile
+              </Link>
+              <button
+                type="button"
+                onClick={logout}
+                className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-2 text-sm font-bold text-[#1f3f77] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] transition hover:border-[#adc5ff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200"}
+              >
+                Logout
+              </button>
+            </>
           ) : (
             <>
               <Link href="/login" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-2 text-sm font-bold text-[#1f3f77] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] transition hover:border-[#adc5ff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200"}>
@@ -80,19 +89,18 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </PortalCTA>
         </div>
 
-        <button type="button" aria-label="Toggle navigation" aria-expanded={open} onClick={() => setOpen((value) => !value)} className={isLight3d ? "grid h-11 w-11 place-items-center rounded-xl border border-[#d7e4ff] bg-white/85 text-xl text-[#21407a] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] lg:hidden" : "grid h-11 w-11 place-items-center rounded-xl border border-violet-300/35 text-xl text-slate-100 lg:hidden"}>
+        <button type="button" aria-label="Toggle navigation" aria-expanded={open} onClick={(event) => { event.stopPropagation(); setOpen((value) => !value); }} className={isLight3d ? "grid h-11 w-11 place-items-center rounded-xl border border-[#d7e4ff] bg-white/85 text-xl text-[#21407a] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] lg:hidden" : "grid h-11 w-11 place-items-center rounded-xl border border-violet-300/35 text-xl text-slate-100 lg:hidden"}>
           {open ? "×" : "☰"}
         </button>
       </div>
 
-      <AnimatePresence>
-        {open && (
+      <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[6.15rem]">
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className={isLight3d ? "mx-4 mt-2 max-h-[calc(100vh-5.5rem)] overflow-y-auto rounded-3xl border border-white/80 bg-white/92 px-4 py-5 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl sm:mx-6 lg:hidden" : "border-t border-violet-300/20 bg-[#070c1d] px-4 py-5 shadow-xl lg:hidden"}
+            className={isLight3d ? "mx-auto w-full max-w-7xl rounded-3xl border border-white/80 bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl lg:hidden" : "mx-auto w-full max-w-7xl rounded-2xl border border-violet-300/20 bg-[#070c1d] px-4 pb-5 pt-14 shadow-xl lg:hidden"}
           >
             <nav className="mx-auto grid max-w-7xl gap-1">
               {nav.map(([label, href]) => (
@@ -107,13 +115,22 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                 <CurrencyDropdown tone={tone} />
               </div>
               {isLoggedIn ? (
-                <button
-                  type="button"
-                  onClick={logout}
-                  className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}
-                >
-                  Logout
-                </button>
+                <>
+                  <Link
+                    href="/dashboard/account"
+                    onClick={() => setOpen(false)}
+                    className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-3 text-sm font-bold text-[#35548d]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-3 text-sm font-bold text-cyan-100"}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}
+                  >
+                    Logout
+                  </button>
+                </>
               ) : (
                 <>
                   <Link href="/login" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
@@ -129,8 +146,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
               </PortalCTA>
             </div>
           </motion.div>
-        )}
-      </AnimatePresence>
+      </MobileMenuLayer>
     </header>
   );
 }

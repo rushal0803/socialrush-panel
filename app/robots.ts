@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
+import { SEO_SITE_URL } from "@/lib/seo/metadata";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://socialrush.in";
+const siteUrl = SEO_SITE_URL;
 
 export default function robots(): MetadataRoute.Robots {
   return {
@@ -10,8 +11,10 @@ export default function robots(): MetadataRoute.Robots {
         allow: "/",
         disallow: [
           "/api/",
+          "/dashboard",
           "/dashboard/",
           "/admin/",
+          "/packages/checkout",
           "/login",
           "/register",
           "/forgot-password",

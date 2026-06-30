@@ -1,13 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { currencies, type Currency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
+import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 const navLinks = [
   ["Home", "/"],
@@ -127,8 +128,8 @@ function BlogHeader() {
   }
 
   return (
-    <header className="sticky top-3 z-50 px-4 sm:px-6 lg:px-8">
-      <div className="mx-auto mt-3 max-w-7xl rounded-3xl border border-white/85 bg-white/82 shadow-[0_16px_40px_rgba(88,114,173,.16)] backdrop-blur-xl">
+    <header className="sticky top-0 z-[9999] border-b border-white/50 bg-[#f4f9ff]/70 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl rounded-3xl border border-white/85 bg-white/88 shadow-[0_16px_40px_rgba(88,114,173,.16)] backdrop-blur-xl">
         <div className="flex min-h-[76px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-7">
           <Logo priority />
 
@@ -143,13 +144,18 @@ function BlogHeader() {
           <div className="hidden items-center gap-2 lg:flex">
             <BlogCurrencyDropdown compact />
             {isLoggedIn ? (
-              <button
-                type="button"
-                onClick={logout}
-                className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]"
-              >
-                Logout
-              </button>
+              <>
+                <Link href="/dashboard/account" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-[#f5f8ff] px-4 py-2 text-sm font-bold text-[#244385] transition hover:bg-[#e9f0ff]">
+                  Profile
+                </Link>
+                <button
+                  type="button"
+                  onClick={logout}
+                  className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
               <>
                 <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]">
@@ -169,21 +175,23 @@ function BlogHeader() {
             type="button"
             aria-label="Toggle navigation"
             aria-expanded={open}
-            onClick={() => setOpen((value) => !value)}
+            onClick={(event) => {
+              event.stopPropagation();
+              setOpen((value) => !value);
+            }}
             className="grid h-11 w-11 place-items-center rounded-xl border border-[#d5e2ff] bg-white text-xl text-[#1f3972] lg:hidden"
           >
             {open ? "×" : "☰"}
           </button>
         </div>
 
-        <AnimatePresence>
-          {open && (
+        <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[6.25rem]">
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.18 }}
-              className="max-h-[calc(100vh-5.25rem)] overflow-y-auto border-t border-[#e4ebff] px-4 pb-5 pt-3 lg:hidden"
+              className="mx-auto w-full max-w-7xl rounded-3xl border border-[#e4ebff] bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] lg:hidden"
             >
               <nav className="grid gap-1">
                 {navLinks.map(([label, href]) => (
@@ -198,13 +206,18 @@ function BlogHeader() {
                   <BlogCurrencyDropdown />
                 </div>
                 {isLoggedIn ? (
-                  <button
-                    type="button"
-                    onClick={logout}
-                    className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]"
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-[#f6f9ff] px-4 py-3 text-sm font-bold text-[#1f3b74]">
+                      Profile
+                    </Link>
+                    <button
+                      type="button"
+                      onClick={logout}
+                      className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]"
+                    >
+                      Logout
+                    </button>
+                  </>
                 ) : (
                   <>
                     <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]">
@@ -220,8 +233,7 @@ function BlogHeader() {
                 </Link>
               </div>
             </motion.div>
-          )}
-        </AnimatePresence>
+        </MobileMenuLayer>
       </div>
     </header>
   );

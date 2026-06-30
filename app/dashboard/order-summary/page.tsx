@@ -1,6 +1,19 @@
 "use client";
 
-import { ArrowLeft, CheckCircle2, Clock3, Hash, Link as LinkIcon, ShieldCheck, Wallet } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Clock3,
+  Hash,
+  Headphones,
+  Link as LinkIcon,
+  LoaderCircle,
+  LockKeyhole,
+  PackageCheck,
+  RefreshCw,
+  ShieldCheck,
+  Wallet,
+} from "lucide-react";
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -16,6 +29,7 @@ import {
   validateCampaignLink,
 } from "@/lib/order-service-experience";
 import PlatformIcon from "@/components/PlatformIcon";
+import { calculateServiceTotal } from "@/lib/service-pricing";
 
 const whatsappSupportUrl = "https://wa.me/918860330771";
 
@@ -53,6 +67,8 @@ export default function DashboardOrderSummaryPage() {
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
   const inFlight = useRef(false);
   const requestId = useRef("");
+  const autoResumeStarted = useRef(false);
+  const resumeRequested = searchParams.get("resume") === "1";
 
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
@@ -63,7 +79,7 @@ export default function DashboardOrderSummaryPage() {
     return "";
   }, [quantity, quantityInput, selectedService.maxQuantity, selectedService.minQuantity]);
 
-  const totalPrice = Math.round(((quantity / 1000) * selectedService.pricePer1000) * 100) / 100;
+  const totalPrice = calculateServiceTotal(selectedService.code, quantity);
   const totalLabel = formatCurrency(totalPrice, currency);
   const walletLabel = walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency);
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
@@ -162,7 +178,6 @@ export default function DashboardOrderSummaryPage() {
       link: targetLink.trim(),
       requestId: requestId.current,
       notes: null,
-      fallbackPrice: selectedService.pricePer1000,
       fallbackName: experience.name,
       fallbackPlatform: selectedService.platform,
       fallbackMin: selectedService.minQuantity,
@@ -198,42 +213,81 @@ export default function DashboardOrderSummaryPage() {
     }
   }
 
+  useEffect(() => {
+    if (!resumeRequested || autoResumeStarted.current || !canSubmit || submitting || success) return;
+    autoResumeStarted.current = true;
+    void placeOrder();
+    // The guarded resume should run once after the refreshed wallet balance is available.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [resumeRequested, canSubmit, submitting, success]);
+
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] px-4 pb-24 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-20">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_4%_0%,rgba(255,190,226,.44),transparent_29%),radial-gradient(circle_at_96%_4%,rgba(141,222,255,.42),transparent_31%),radial-gradient(circle_at_48%_100%,rgba(205,194,255,.34),transparent_30%),linear-gradient(180deg,#f9fbff_0%,#f2f7ff_48%,#f8f5ff_100%)] px-4 pb-20 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-24">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-cyan-200/40 blur-3xl" />
-        <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl" />
+        <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-fuchsia-200/30 blur-3xl" />
+        <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-cyan-200/35 blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(105,129,190,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(105,129,190,.055)_1px,transparent_1px)] bg-[size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
       </div>
 
-      <div className="relative mx-auto max-w-6xl">
-        <Link href={`/dashboard/new-order?service=${encodeURIComponent(selectedService.code)}`} className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#2f56a0] transition hover:text-[#1e3c78]">
+      <div className="relative mx-auto max-w-7xl">
+        <Link href={`/dashboard/new-order?service=${encodeURIComponent(selectedService.code)}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-1 text-sm font-bold text-[#46649c] transition hover:text-[#1e3c78]">
           <ArrowLeft className="h-4 w-4" /> Back to services
         </Link>
 
-        <div className="mt-3 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_350px] lg:items-start">
+        <section aria-label="Checkout progress" className="mt-3 rounded-[28px] border border-white/90 bg-white/60 p-3 shadow-[0_24px_55px_-38px_rgba(50,72,140,.5)] backdrop-blur-2xl sm:p-4">
+          <div className="grid gap-2 sm:grid-cols-3">
+            <CheckoutStep number="1" title="Service Selected" state="complete" />
+            <CheckoutStep number="2" title="Campaign Details" state={formIsValid ? "complete" : "active"} />
+            <CheckoutStep number="3" title="Wallet Payment" state={formIsValid ? "active" : "upcoming"} />
+          </div>
+        </section>
+
+        <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start xl:gap-8">
           <div className="min-w-0 space-y-6">
-            <section className="relative overflow-hidden rounded-3xl border border-white/80 bg-white/72 p-5 shadow-[0_28px_64px_-34px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:p-7">
-              <div className="absolute -right-12 -top-12 h-44 w-44 rounded-full bg-cyan-200/35 blur-2xl" />
+            <section className="relative overflow-hidden rounded-[30px] border border-white/90 bg-white/68 p-5 shadow-[0_30px_70px_-40px_rgba(49,66,128,.55)] backdrop-blur-2xl sm:p-7">
+              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-cyan-200/30 blur-2xl" />
+              <div className="absolute -bottom-16 left-8 h-40 w-40 rounded-full bg-fuchsia-200/20 blur-3xl" />
               <div className="relative">
-                <span className={`grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${platformMeta[selectedService.platform].gradient} text-xs font-black text-white shadow-lg`}>
-                  <PlatformIcon platform={platformMeta[selectedService.platform].label} className="h-6 w-6" />
-                </span>
-                <p className="mt-4 text-[10px] font-black uppercase tracking-[0.14em] text-[#5270aa]">Service details</p>
-                <h1 className="mt-2 text-2xl font-black text-[#14316a] sm:text-3xl">{experience.name}</h1>
-                <p className="mt-3 max-w-2xl text-sm leading-7 text-[#526d9f]">{selectedService.description}</p>
-                <div className="mt-5 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
+                <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
+                  <span className={`grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-gradient-to-br ${platformMeta[selectedService.platform].gradient} text-white shadow-[0_18px_34px_-16px_rgba(71,74,180,.75)] ring-4 ring-white/80`}>
+                    <PlatformIcon platform={platformMeta[selectedService.platform].label} className="h-8 w-8" />
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#6b7fb0]">Selected growth service</p>
+                    <h1 className="mt-2 break-words text-2xl font-black tracking-[-.025em] text-[#14316a] sm:text-3xl">{experience.name}</h1>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-[#526d9f]">{selectedService.description}</p>
+                  </div>
+                </div>
+
+                <dl className="mt-6 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
                   <InfoCard label="Platform" value={platformMeta[selectedService.platform].label} />
                   <InfoCard label="Delivery" value={selectedService.deliveryTime} />
-                  <div className="col-span-2 sm:col-span-1"><InfoCard label="Refill & support" value={selectedService.refillPolicy} /></div>
+                  <div className="col-span-2 sm:col-span-1">
+                    <InfoCard label="Refill & support" value={selectedService.refillPolicy} />
+                  </div>
+                </dl>
+
+                <div className="mt-5 grid grid-cols-2 gap-2 xl:grid-cols-4">
+                  <TrustBadge icon={ShieldCheck} label="Secure public-link ordering" />
+                  <TrustBadge icon={LockKeyhole} label="No password required" />
+                  <TrustBadge icon={Wallet} label="Charged after confirmation" />
+                  <TrustBadge icon={Headphones} label="WhatsApp support" />
                 </div>
               </div>
             </section>
 
-            <section className="rounded-3xl border border-white/85 bg-white/72 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
-              <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#5270aa]">Campaign details</p>
-              <h2 className="mt-2 text-xl font-black text-[#14316a]">Quantity and public link</h2>
+            <section className="rounded-[30px] border border-white/90 bg-white/72 p-5 shadow-[0_26px_60px_-38px_rgba(38,60,120,.52)] backdrop-blur-2xl sm:p-7">
+              <div className="flex items-center gap-3">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#f5eaff] to-[#e7f7ff] text-[#6d72d4] shadow-inner">
+                  <LinkIcon className="h-5 w-5" />
+                </span>
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#6b7fb0]">Campaign details</p>
+                  <h2 className="mt-1 text-xl font-black text-[#14316a]">Quantity and public link</h2>
+                </div>
+              </div>
 
-              <div className="mt-5 grid gap-5">
+              <div className="mt-6 grid gap-6">
                 <label className="block text-sm font-black text-[#294981]">
                   Quantity
                   <div className="relative mt-2">
@@ -248,11 +302,14 @@ export default function DashboardOrderSummaryPage() {
                         setError("");
                       }}
                       placeholder="Enter quantity"
-                      className={`min-h-14 w-full rounded-2xl border bg-white/95 pl-12 pr-4 text-xl font-black text-[#17366f] outline-none transition ${
+                      className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-xl font-black text-[#17366f] shadow-[0_12px_28px_-24px_rgba(35,60,115,.5)] outline-none transition ${
                         quantityInput && quantityError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#d4e1ff] focus:border-[#8faeff] focus:ring-4 focus:ring-[#dce7ff]"
                       }`}
                     />
                   </div>
+                  <span className="mt-2 block text-xs font-medium leading-5 text-[#6079a7]">
+                    Enter the amount you want for this campaign. Your total updates automatically.
+                  </span>
                   {quantityError ? <span className="mt-2 block text-xs font-bold text-rose-600">{quantityError}</span> : null}
                 </label>
 
@@ -267,88 +324,53 @@ export default function DashboardOrderSummaryPage() {
                         setError("");
                       }}
                       placeholder={linkRule.placeholder}
-                      className={`min-h-14 w-full rounded-2xl border bg-white/95 pl-12 pr-4 text-base text-[#17366f] outline-none transition ${
+                      className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-base text-[#17366f] shadow-[0_12px_28px_-24px_rgba(35,60,115,.5)] outline-none transition ${
                         currentLinkError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#d4e1ff] focus:border-[#8faeff] focus:ring-4 focus:ring-[#dce7ff]"
                       }`}
                     />
                   </div>
-                  <span className="mt-2 block text-xs font-medium leading-5 text-[#6079a7]">{linkRule.helper}</span>
-                  <span className="mt-1 block text-xs font-semibold leading-5 text-[#36578f]">Keep the account, post, video, page, or channel public during delivery.</span>
+                  <span className="mt-2 block text-xs font-medium leading-5 text-[#6079a7]">
+                    Enter a public profile, post, reel, video, channel, or page link.
+                  </span>
+                  <span className="mt-1 block text-xs font-semibold leading-5 text-[#36578f]">{linkRule.helper} Keep it public during delivery.</span>
                   {currentLinkError ? <span className="mt-2 block text-xs font-bold text-rose-600">{currentLinkError}</span> : null}
                 </label>
               </div>
             </section>
 
-            <section className="rounded-3xl border border-white/85 bg-white/82 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl lg:hidden">
-              <div className="flex items-center justify-between gap-3">
-                <div className="min-w-0">
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#6079aa]">Order summary</p>
-                  <h2 className="mt-1 truncate text-base font-black text-[#14316a]">{experience.name}</h2>
-                </div>
-                <Wallet className="h-5 w-5 shrink-0 text-[#5270aa]" />
-              </div>
-              <dl className="mt-4 grid gap-2 text-xs min-[400px]:grid-cols-2">
-                <SummaryRow label="Quantity" value={quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"} />
-                <SummaryRow label="Delivery" value={selectedService.deliveryTime} />
-                <div className="min-[400px]:col-span-2">
-                  <SummaryRow label="Refill support" value={selectedService.refillPolicy} />
-                </div>
-                <div className="min-[400px]:col-span-2">
-                  <SummaryRow label="Link" value={targetLink.trim() || "Not entered"} />
-                </div>
-                <SummaryRow label="Wallet balance" value={walletLabel} />
-                {requiresPayment ? <SummaryRow label="Amount needed" value={amountToPayLabel} /> : null}
-              </dl>
-              <div className="mt-3 flex items-end justify-between gap-3 rounded-2xl border border-[#dce7ff] bg-[#f8fbff] p-4">
-                <span className="text-xs font-semibold text-[#6079a7]">Total price</span>
-                <b className="text-2xl text-[#17366f]">{totalLabel}</b>
-              </div>
-            </section>
+            <div className="lg:hidden">
+              <CheckoutCard
+                selectedServiceName={experience.name}
+                platform={platformMeta[selectedService.platform].label}
+                rate={formatCurrency(selectedService.pricePer1000, currency)}
+                quantity={quantity}
+                quantityIsValid={!quantityError && quantity > 0}
+                targetLink={targetLink}
+                delivery={selectedService.deliveryTime}
+                support={selectedService.refillPolicy}
+                total={totalLabel}
+                wallet={walletLabel}
+                amountToPay={requiresPayment ? amountToPayLabel : formatCurrency(0, currency)}
+                shortfallMessage={shortfallMessage}
+                addFundsHref={addFundsHref}
+                hasEnoughWallet={hasEnoughWallet}
+                walletLoading={walletLoading}
+                canSubmit={canSubmit}
+                canAddFunds={canAddFunds}
+                submitting={submitting}
+                onSubmit={() => void placeOrder()}
+              />
+            </div>
 
-            <section className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl lg:hidden">
-              <div className="flex items-center justify-between gap-3 rounded-2xl border border-[#dce7ff] bg-[#f8fbff] p-4">
-                <span className="text-xs font-semibold text-[#6079a7]">Wallet balance</span>
-                <b className="text-base text-[#17366f]">{walletLabel}</b>
-              </div>
-              {requiresPayment ? (
-                <>
-                  <p className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-xs font-semibold leading-5 text-[#36578f]">
-                    {shortfallMessage}
-                  </p>
-                  {canAddFunds ? (
-                    <Link
-                      href={addFundsHref}
-                      className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)]"
-                    >
-                      Add Funds
-                    </Link>
-                  ) : (
-                    <button type="button" disabled className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-50">
-                      Add Funds
-                    </button>
-                  )}
-                </>
-              ) : (
-                <button type="button" disabled={!canSubmit || submitting} onClick={() => void placeOrder()} className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)] disabled:opacity-50">
-                  {submitting ? "Placing order..." : "Place Order"}
-                </button>
-              )}
-              <a
-                href={whatsappSupportUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-4 flex min-h-11 items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-2.5 text-xs font-black text-emerald-700"
-              >
-                <FaWhatsapp className="h-4 w-4" /> Need help? WhatsApp Support
-              </a>
-            </section>
-
-            <section className="rounded-3xl border border-white/85 bg-white/72 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
-              <div className="flex items-start gap-3">
-                <ShieldCheck className="mt-0.5 h-6 w-6 shrink-0 text-emerald-600" />
-                <div>
-                  <h2 className="text-lg font-black text-[#14316a]">Secure public-link ordering</h2>
-                  <p className="mt-2 text-sm leading-7 text-[#526d9f]">No password is required. Your wallet is charged only after the order is accepted, and progress remains available in your dashboard.</p>
+            <section className="rounded-[30px] border border-white/90 bg-white/68 p-5 shadow-[0_24px_55px_-38px_rgba(50,72,140,.5)] backdrop-blur-xl sm:p-6">
+              <h2 className="text-center text-sm font-black text-[#17366f]">Order with confidence</h2>
+              <div className="mt-5 grid grid-cols-2 gap-3 xl:grid-cols-5">
+                <ConfidenceItem icon={Clock3} title="Fast delivery" />
+                <ConfidenceItem icon={RefreshCw} title="Refill support available" />
+                <ConfidenceItem icon={ShieldCheck} title="Secure wallet checkout" />
+                <ConfidenceItem icon={PackageCheck} title="Order tracking" />
+                <div className="col-span-2 xl:col-span-1">
+                  <ConfidenceItem icon={Headphones} title="WhatsApp support" />
                 </div>
               </div>
             </section>
@@ -356,9 +378,9 @@ export default function DashboardOrderSummaryPage() {
             {walletError ? <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-800">{walletError}</p> : null}
             {error ? <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700">{error}</p> : null}
             {success ? (
-              <div className="flex items-start gap-3 rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-800">
+              <div className="fixed bottom-6 left-4 right-4 z-[75] flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800 shadow-[0_22px_50px_-22px_rgba(5,150,105,.5)] sm:left-auto sm:right-6 sm:w-[390px]">
                 <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0" />
-                <div><p className="font-black">Order placed successfully.</p><p className="mt-1 text-sm">Redirecting to your orders...</p></div>
+                <div><p className="font-black">{resumeRequested ? "Payment successful and order placed" : "Order placed successfully"}</p><p className="mt-1 text-sm">Redirecting to your orders...</p></div>
               </div>
             ) : null}
           </div>
@@ -366,8 +388,10 @@ export default function DashboardOrderSummaryPage() {
           <aside className="hidden lg:sticky lg:top-24 lg:block">
             <CheckoutCard
               selectedServiceName={experience.name}
+              platform={platformMeta[selectedService.platform].label}
               rate={formatCurrency(selectedService.pricePer1000, currency)}
               quantity={quantity}
+              quantityIsValid={!quantityError && quantity > 0}
               targetLink={targetLink}
               delivery={selectedService.deliveryTime}
               support={selectedService.refillPolicy}
@@ -386,24 +410,91 @@ export default function DashboardOrderSummaryPage() {
           </aside>
         </div>
       </div>
-
     </main>
   );
 }
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="h-full rounded-xl border border-[#e1eaff] bg-[#f8fbff] p-3">
-      <p className="text-[#7890bb]">{label}</p>
-      <p className="mt-1 font-black leading-5 text-[#24457f]">{value}</p>
+    <div className="h-full rounded-2xl border border-white bg-white/78 p-3.5 shadow-[0_12px_28px_-24px_rgba(35,60,115,.5)]">
+      <dt className="text-[#7890bb]">{label}</dt>
+      <dd className="mt-1.5 font-black leading-5 text-[#24457f]">{value}</dd>
+    </div>
+  );
+}
+
+function CheckoutStep({
+  number,
+  title,
+  state,
+}: {
+  number: string;
+  title: string;
+  state: "complete" | "active" | "upcoming";
+}) {
+  const stateClass = state === "complete"
+    ? "border-emerald-200 bg-emerald-50/90 text-emerald-700"
+    : state === "active"
+      ? "border-blue-200 bg-blue-50/90 text-blue-700 shadow-[0_10px_24px_-18px_rgba(37,99,235,.55)]"
+      : "border-[#e2eaff] bg-white/75 text-[#6a80ac]";
+
+  return (
+    <div className={`flex min-h-14 items-center gap-3 rounded-2xl border px-3.5 py-3 ${stateClass}`}>
+      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-black ${
+        state === "complete"
+          ? "bg-emerald-600 text-white"
+          : state === "active"
+            ? "bg-blue-600 text-white"
+            : "bg-[#e9effc] text-[#7388b1]"
+      }`}>
+        {state === "complete" ? <CheckCircle2 className="h-4 w-4" /> : number}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[9px] font-black uppercase tracking-[0.12em] opacity-65">Step {number}</p>
+        <p className="truncate text-xs font-black">{title}</p>
+      </div>
+    </div>
+  );
+}
+
+function TrustBadge({
+  icon: Icon,
+  label,
+}: {
+  icon: typeof ShieldCheck;
+  label: string;
+}) {
+  return (
+    <div className="flex min-h-12 items-center gap-2 rounded-2xl border border-[#e0e8fb] bg-white/72 px-3 py-2.5 text-[10px] font-black leading-4 text-[#486394] shadow-[0_12px_24px_-22px_rgba(35,60,115,.45)]">
+      <Icon className="h-4 w-4 shrink-0 text-[#6873d4]" />
+      {label}
+    </div>
+  );
+}
+
+function ConfidenceItem({
+  icon: Icon,
+  title,
+}: {
+  icon: typeof ShieldCheck;
+  title: string;
+}) {
+  return (
+    <div className="flex h-full min-w-0 items-center gap-2.5 rounded-2xl border border-[#e0e9ff] bg-white/80 p-3 text-xs font-black text-[#355186]">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-600">
+        <Icon className="h-4 w-4" />
+      </span>
+      <span className="leading-5">{title}</span>
     </div>
   );
 }
 
 function CheckoutCard({
   selectedServiceName,
+  platform,
   rate,
   quantity,
+  quantityIsValid,
   targetLink,
   delivery,
   support,
@@ -420,8 +511,10 @@ function CheckoutCard({
   onSubmit,
 }: {
   selectedServiceName: string;
+  platform: string;
   rate: string;
   quantity: number;
+  quantityIsValid: boolean;
   targetLink: string;
   delivery: string;
   support: string;
@@ -438,57 +531,112 @@ function CheckoutCard({
   onSubmit: () => void;
 }) {
   return (
-    <div className="rounded-3xl border border-white/85 bg-white/90 p-6 shadow-[0_30px_70px_-38px_rgba(15,23,42,.55)] backdrop-blur-2xl">
-      <div className="flex items-center justify-between gap-3">
-        <div><p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#6079aa]">Order total</p><h2 className="mt-2 text-xl font-black text-[#14316a]">{selectedServiceName}</h2></div>
-        <Wallet className="h-6 w-6 text-[#5270aa]" />
+    <div className="overflow-hidden rounded-[30px] border border-white/90 bg-white/88 shadow-[0_32px_75px_-40px_rgba(50,72,140,.6)] backdrop-blur-2xl">
+      <div className="border-b border-[#e1e9fb] bg-[linear-gradient(145deg,#f8fbff,#f4f0ff)] p-5 sm:p-6">
+        <div className="flex items-center gap-3">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white shadow-[0_14px_28px_-14px_rgba(117,109,255,.7)]">
+            <PlatformIcon platform={platform} className="h-6 w-6" />
+          </span>
+          <div className="min-w-0">
+            <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#5b75ab]">Premium invoice</p>
+            <h2 className="mt-0.5 text-lg font-black text-[#10234f]">Order summary</h2>
+          </div>
+        </div>
       </div>
-      <dl className="mt-5 space-y-3 text-sm">
-        <SummaryRow label="Service price" value={`${rate} for 1,000`} />
-        <SummaryRow label="Quantity" value={quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"} />
-        <SummaryRow label="Link" value={targetLink.trim() || "Not entered"} />
-        <SummaryRow label="Delivery" value={delivery} />
-        <SummaryRow label="Refill & support" value={support} />
-      </dl>
-      <div className="mt-4 rounded-2xl border border-[#dce7ff] bg-[#f8fbff] p-4">
-        <div className="flex justify-between gap-3 text-sm"><span className="text-[#6079a7]">Wallet balance</span><b className="text-[#17366f]">{wallet}</b></div>
-        <div className="mt-3 flex items-end justify-between gap-3 border-t border-[#e1eaff] pt-3"><span className="text-sm font-semibold text-[#6079a7]">Total price</span><b className="text-2xl text-[#17366f]">{total}</b></div>
-        {!hasEnoughWallet ? <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#e1eaff] pt-3 text-sm"><span className="text-[#6079a7]">Amount needed</span><b className="text-[#17366f]">{amountToPay}</b></div> : null}
+
+      <div className="p-5 sm:p-6">
+        <p className="break-words text-base font-black text-[#17366f]">{selectedServiceName}</p>
+        <dl className="mt-5 space-y-3.5 text-sm">
+          <SummaryRow label="Service" value={selectedServiceName} />
+          <SummaryRow label="Platform" value={platform} />
+          <SummaryRow label="Rate" value={`${rate} / 1K`} />
+          <SummaryRow label="Quantity" value={quantityIsValid ? quantity.toLocaleString("en-IN") : "Not entered"} />
+          <SummaryRow label="Public link" value={targetLink.trim() || "Not entered"} />
+          <SummaryRow label="Delivery" value={delivery} />
+          <SummaryRow label="Refill support" value={support} />
+        </dl>
+
+        <div className="mt-5 rounded-2xl border border-[#dce7ff] bg-[linear-gradient(145deg,#f8fbff,#f6f2ff)] p-4">
+          <div className="flex items-center justify-between gap-3 text-sm">
+            <span className="flex items-center gap-2 text-[#6079a7]"><Wallet className="h-4 w-4" />Wallet balance</span>
+            {walletLoading ? (
+              <span className="h-5 w-24 animate-pulse rounded-lg bg-[#dce7ff]" />
+            ) : (
+              <b className="text-[#17366f]">{wallet}</b>
+            )}
+          </div>
+          <div className="mt-4 border-t border-dashed border-[#cbd8f3] pt-4">
+            <div className="flex items-end justify-between gap-3">
+              <span className="text-sm font-bold text-[#6079a7]">Total payable</span>
+              {quantityIsValid ? (
+                <b className="text-2xl font-black text-[#14316a]">{total}</b>
+              ) : (
+                <span className="max-w-[62%] text-right text-xs font-bold leading-5 text-[#687fa9]">
+                  Enter quantity to calculate total
+                </span>
+              )}
+            </div>
+            {!walletLoading && quantityIsValid && !hasEnoughWallet ? (
+              <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#e1eaff] pt-3 text-sm">
+                <span className="text-[#6079a7]">Amount needed</span>
+                <b className="text-[#17366f]">{amountToPay}</b>
+              </div>
+            ) : null}
+          </div>
+        </div>
+
+        {walletLoading ? (
+          <button type="button" disabled className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-60">
+            <LoaderCircle className="h-4 w-4 animate-spin" /> Checking wallet...
+          </button>
+        ) : quantityIsValid && !hasEnoughWallet ? (
+          <>
+            <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50/90 p-4 shadow-sm">
+              <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-amber-700">
+                <Wallet className="h-4 w-4" /> Wallet balance required
+              </p>
+              <p className="mt-2 text-xs font-semibold leading-6 text-amber-800">{shortfallMessage}</p>
+            </div>
+            {canAddFunds ? (
+              <Link
+                href={addFundsHref}
+                className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.7)] transition hover:-translate-y-0.5 hover:brightness-105"
+              >
+                <Wallet className="h-4 w-4" /> Add {amountToPay} &amp; Place Order
+              </Link>
+            ) : (
+              <button type="button" disabled className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-50">
+                <Wallet className="h-4 w-4" /> Add Funds
+              </button>
+            )}
+          </>
+        ) : (
+          <button type="button" disabled={!canSubmit || submitting} onClick={onSubmit} className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.7)] transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+            {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
+            {submitting ? "Processing..." : "Place Order Securely"}
+          </button>
+        )}
+
+        <a
+          href={whatsappSupportUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50/85 px-4 py-2.5 text-xs font-black text-emerald-700 transition hover:bg-emerald-100"
+        >
+          <FaWhatsapp className="h-4 w-4" /> Need help? WhatsApp Support
+        </a>
+        <p className="mt-4 text-center text-[10px] font-semibold leading-5 text-[#7890ba]">{getCurrencyDisclaimer()}</p>
+        <p className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold text-[#6079a7]"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Wallet charged only after confirmation</p>
       </div>
-      {!walletLoading && quantity > 0 && !hasEnoughWallet ? (
-        <>
-          <p className="mt-4 rounded-xl border border-blue-100 bg-blue-50 p-3 text-xs font-semibold leading-5 text-[#36578f]">
-            {shortfallMessage}
-          </p>
-          {canAddFunds ? (
-            <Link
-              href={addFundsHref}
-              className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)]"
-            >
-              Add Funds
-            </Link>
-          ) : (
-            <button type="button" disabled className="mt-4 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-50">
-              Add Funds
-            </button>
-          )}
-        </>
-      ) : (
-        <button type="button" disabled={!canSubmit || submitting} onClick={onSubmit} className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)] disabled:opacity-50">
-          {submitting ? "Placing order..." : "Place Order"}
-        </button>
-      )}
-      <p className="mt-4 text-center text-[10px] font-semibold leading-5 text-[#7890ba]">{getCurrencyDisclaimer()}</p>
-      <p className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold text-[#6079a7]"><Clock3 className="h-3.5 w-3.5" /> Live order tracking included</p>
     </div>
   );
 }
 
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
-    <div className="flex items-start justify-between gap-4 rounded-xl border border-[#e1eaff] bg-[#f8fbff] px-3 py-2.5">
-      <dt className="text-[#6079a7]">{label}</dt>
-      <dd className="max-w-[62%] break-words text-right font-black text-[#294981]">{value}</dd>
+    <div className="flex items-start justify-between gap-4">
+      <dt className="shrink-0 text-[#6079a7]">{label}</dt>
+      <dd className="max-w-[62%] break-words text-right font-bold text-[#355186]">{value}</dd>
     </div>
   );
 }

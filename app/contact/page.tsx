@@ -1,11 +1,13 @@
-import type { Metadata } from "next";
 import ContactPageContent from "@/components/marketing/contact/ContactPageContent";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Contact SocialRUSH | Social Media Growth Support",
-  description: "Contact SocialRUSH for help choosing or managing an Instagram, YouTube, Facebook, LinkedIn, TikTok, or Twitter/X growth service.",
-  alternates: { canonical: "/contact" },
-};
+export const metadata = createPageMetadata({
+  title: "Social Media Growth Support India",
+  description:
+    "Contact SocialRUSH support in India for help choosing Instagram, YouTube, LinkedIn, Facebook, TikTok or Twitter growth services and managing orders.",
+  path: "/contact",
+  keywords: ["SocialRUSH contact India", "social media growth support India"],
+});
 
 export default function ContactPage() {
   return <ContactPageContent />;

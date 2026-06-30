@@ -57,14 +57,6 @@ export default function PackagesPageContent() {
   const [selectedService, setSelectedService] = useState<Service>("followers");
   const activeService = services.includes(selectedService) ? selectedService : services[0];
 
-  const packages = useMemo(
-    () =>
-      bigPackages.filter(
-        (pkg) => pkg.platform === selectedPlatform && pkg.service === activeService,
-      ),
-    [activeService, selectedPlatform],
-  );
-
   function selectPlatform(platform: Platform) {
     setSelectedPlatform(platform);
     const firstService = serviceOrder.find((service) =>
@@ -163,73 +155,96 @@ export default function PackagesPageContent() {
           </div>
         </section>
 
-        <section className="relative px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <div className="relative px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto w-full max-w-7xl">
-            <div className="mb-5">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f6caa]">Step 3</p>
-              <h2 className="mt-1 text-xl font-black text-[#10234f] sm:text-2xl">
-                {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService]} packages
-              </h2>
-              <p className="mt-2 text-sm text-[#5f77a6]">Choose one package to continue to the dedicated checkout page.</p>
-            </div>
+            {platforms.flatMap((platform) =>
+              serviceOrder
+                .filter((service) =>
+                  bigPackages.some(
+                    (pkg) => pkg.platform === platform.key && pkg.service === service,
+                  ),
+                )
+                .map((service) => {
+                  const categoryPackages = bigPackages.filter(
+                    (pkg) => pkg.platform === platform.key && pkg.service === service,
+                  );
+                  const active =
+                    selectedPlatform === platform.key && activeService === service;
+                  const headingId = `${platform.key.toLowerCase()}-${service}-packages`;
 
-            <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-              {packages.map((pkg, index) => (
-                <motion.article
-                  key={pkg.packageId}
-                  initial={{ opacity: 0, y: 14 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.35, delay: index * 0.04 }}
-                  whileHover={{ y: -5 }}
-                  className="flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/92 p-5 shadow-[0_16px_36px_rgba(81,108,169,.18)] sm:p-6"
-                >
-                  <div className="flex items-start justify-between gap-3">
-                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-[0_10px_22px_rgba(80,105,167,.28)] ${platformGradient[pkg.platform]}`}>
-                      <PlatformIcon platform={pkg.platform} className="h-5 w-5" />
-                    </span>
-                    {pkg.discountBadge ? (
-                      <span className="rounded-full border border-[#d6e2ff] bg-[#f6f9ff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#5670aa]">
-                        {pkg.discountBadge}
-                      </span>
-                    ) : null}
-                  </div>
+                  return (
+                    <section
+                      key={`${platform.key}-${service}`}
+                      aria-labelledby={headingId}
+                      hidden={!active}
+                    >
+                      <div className="mb-5">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f6caa]">Step 3</p>
+                        <h2 id={headingId} className="mt-1 text-xl font-black text-[#10234f] sm:text-2xl">
+                          {platform.label} {serviceLabels[service]} packages
+                        </h2>
+                        <p className="mt-2 text-sm text-[#5f77a6]">
+                          Choose one package to continue to the dedicated checkout page.
+                        </p>
+                      </div>
 
-                  <h3 className="mt-4 text-xl font-extrabold text-[#122a5c]">{pkg.title}</h3>
-                  <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#5b75ab]">
-                    {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
-                  </p>
-                  <p className="mt-4 text-sm leading-6 text-[#4f6795]">{pkg.description}</p>
+                      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                        {categoryPackages.map((pkg) => (
+                          <article
+                            key={pkg.packageId}
+                            className="flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/92 p-5 shadow-[0_16px_36px_rgba(81,108,169,.18)] transition hover:-translate-y-1 sm:p-6"
+                          >
+                            <div className="flex items-start justify-between gap-3">
+                              <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-[0_10px_22px_rgba(80,105,167,.28)] ${platformGradient[pkg.platform]}`}>
+                                <PlatformIcon platform={pkg.platform} className="h-5 w-5" />
+                              </span>
+                              {pkg.discountBadge ? (
+                                <span className="rounded-full border border-[#d6e2ff] bg-[#f6f9ff] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#5670aa]">
+                                  {pkg.discountBadge}
+                                </span>
+                              ) : null}
+                            </div>
 
-                  <dl className="mt-5 grid grid-cols-2 gap-3 text-xs">
-                    <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
-                      <dt className="text-[#6078ab]">Price</dt>
-                      <dd className="mt-1 break-words text-base font-extrabold text-[#355186]">{formatCurrency(pkg.basePriceINR, currency)}</dd>
-                    </div>
-                    <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
-                      <dt className="text-[#6078ab]">Quantity</dt>
-                      <dd className="mt-1 font-bold text-[#355186]">{pkg.quantityLabel}</dd>
-                    </div>
-                    <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
-                      <dt className="text-[#6078ab]">Delivery</dt>
-                      <dd className="mt-1 font-bold text-[#355186]">{pkg.deliveryTime}</dd>
-                    </div>
-                    <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
-                      <dt className="text-[#6078ab]">Best for</dt>
-                      <dd className="mt-1 font-bold leading-5 text-[#355186]">{pkg.bestFor}</dd>
-                    </div>
-                  </dl>
+                            <h3 className="mt-4 text-xl font-extrabold text-[#122a5c]">{pkg.title}</h3>
+                            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#5b75ab]">
+                              {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
+                            </p>
+                            <p className="mt-4 text-sm leading-6 text-[#4f6795]">{pkg.description}</p>
 
-                  <Link
-                    href={`/packages/checkout?packageId=${encodeURIComponent(pkg.packageId)}`}
-                    className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(117,109,255,.3)] transition hover:-translate-y-0.5"
-                  >
-                    Select Package
-                  </Link>
-                </motion.article>
-              ))}
-            </div>
+                            <dl className="mt-5 grid grid-cols-2 gap-3 text-xs">
+                              <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
+                                <dt className="text-[#6078ab]">Price</dt>
+                                <dd className="mt-1 break-words text-base font-extrabold text-[#355186]">{formatCurrency(pkg.basePriceINR, currency)}</dd>
+                              </div>
+                              <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
+                                <dt className="text-[#6078ab]">Quantity</dt>
+                                <dd className="mt-1 font-bold text-[#355186]">{pkg.quantityLabel}</dd>
+                              </div>
+                              <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
+                                <dt className="text-[#6078ab]">Delivery</dt>
+                                <dd className="mt-1 font-bold text-[#355186]">{pkg.deliveryTime}</dd>
+                              </div>
+                              <div className="rounded-xl border border-[#d9e5ff] bg-[#f7faff] p-3">
+                                <dt className="text-[#6078ab]">Best for</dt>
+                                <dd className="mt-1 font-bold leading-5 text-[#355186]">{pkg.bestFor}</dd>
+                              </div>
+                            </dl>
+
+                            <Link
+                              href={`/packages/checkout?packageId=${encodeURIComponent(pkg.packageId)}`}
+                              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(117,109,255,.3)] transition hover:-translate-y-0.5"
+                            >
+                              Select Package
+                            </Link>
+                          </article>
+                        ))}
+                      </div>
+                    </section>
+                  );
+                }),
+            )}
           </div>
-        </section>
+        </div>
       </div>
     </BlogShell>
   );

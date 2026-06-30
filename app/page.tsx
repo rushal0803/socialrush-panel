@@ -1,12 +1,12 @@
-import type { Metadata } from "next";
 import HomepageContent from "@/components/marketing/HomepageContent";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "SocialRUSH | Premium Social Media Growth Platform",
+export const metadata = createPageMetadata({
+  title: "Social Media Growth Services India",
   description:
-    "Launch high-volume growth campaigns across Instagram, YouTube, LinkedIn, Facebook, Telegram, TikTok, and X with secure checkout, wallet support, WhatsApp assistance, multi-currency pricing, and professional order tracking.",
-  alternates: { canonical: "/" },
-};
+    "SocialRUSH offers social media growth services in India for Instagram, YouTube, LinkedIn, Facebook, TikTok and X with transparent pricing and order tracking.",
+  path: "/",
+});
 
 export default function HomePage() {
   return <HomepageContent />;

@@ -13,6 +13,7 @@ export type BlogArticle = {
   image: string;
   intro: string;
   sections: BlogSection[];
+  relatedLinks?: Array<{ label: string; href: string }>;
 };
 
 export const blogArticles: BlogArticle[] = [
@@ -272,6 +273,294 @@ export const blogArticles: BlogArticle[] = [
           "Double down on creatives with proven traction.",
         ],
       },
+    ],
+  },
+  {
+    slug: "how-to-grow-instagram-followers-in-india",
+    category: "Instagram Growth",
+    title: "How to Grow Instagram Followers in India: A Practical Plan",
+    description:
+      "A practical Instagram growth plan for Indian creators and businesses using clearer positioning, useful content, and responsible social proof.",
+    readingTime: "7 min read",
+    image: "/images/blog/instagram-growth.png",
+    intro:
+      "Growing an Instagram audience in India is not one tactic. It is a sequence: make the profile easy to understand, publish content people can recognize and share, then support discovery without losing credibility.",
+    sections: [
+      {
+        heading: "Make the Profile Worth Following First",
+        body:
+          "A campaign can introduce new people to your profile, but the profile still has to earn attention. Visitors should understand your topic, location or market, and the value of following within a few seconds.",
+        tips: [
+          "State your niche or customer outcome in the first bio line.",
+          "Pin one introduction, one proof post, and one useful evergreen post.",
+          "Remove outdated highlights that make the profile feel abandoned.",
+        ],
+      },
+      {
+        heading: "Build Around Indian Audience Context",
+        body:
+          "Useful local context makes content more memorable. Language, timing, pricing references, cultural moments, and customer examples can help an Indian audience recognize that the account is genuinely relevant to them.",
+        tips: [
+          "Use English, Hindi, or regional-language cues that fit your actual audience.",
+          "Schedule around the hours your insights show followers are active.",
+          "Turn recurring customer questions into reels and carousels.",
+        ],
+      },
+      {
+        heading: "Use Social Proof as Support, Not a Substitute",
+        body:
+          "Visible follower growth can improve a first impression, but it works best beside strong content and regular interaction. Review delivery expectations, use a public-link ordering flow, and track what new visitors do after reaching the profile.",
+        tips: [
+          "Compare the confirmed rate and delivery estimate before ordering.",
+          "Never share an Instagram password for a follower campaign.",
+          "Measure profile visits, saves, replies, and enquiries—not only follower count.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Instagram Followers Service", href: "/instagram-followers" },
+      { label: "Instagram Likes Service", href: "/instagram-likes" },
+      { label: "View Packages", href: "/packages?platform=Instagram" },
+    ],
+  },
+  {
+    slug: "instagram-followers-price-in-india",
+    category: "Instagram Pricing",
+    title: "Instagram Followers Price in India: What Should You Compare?",
+    description:
+      "Understand Instagram follower pricing in India, what affects campaign value, and which delivery, refill, and support details to review.",
+    readingTime: "6 min read",
+    image: "/images/blog/instagram-growth.png",
+    intro:
+      "The cheapest number on a pricing table rarely explains the full service. A useful comparison includes the confirmed rate, delivery window, public-link requirement, refill terms, checkout security, and a way to track the order.",
+    sections: [
+      {
+        heading: "Start With a Comparable Rate",
+        body:
+          "Per-1,000 pricing makes different quantities easier to compare. SocialRUSH currently lists Instagram Followers at ₹599 per 1K, while the final campaign total is calculated from the quantity selected at checkout.",
+        tips: [
+          "Confirm whether the displayed amount is per 1K or the complete package price.",
+          "Check the exact total before wallet confirmation.",
+          "Avoid listings that hide delivery or destination requirements.",
+        ],
+      },
+      {
+        heading: "Price Is Only One Part of the Decision",
+        body:
+          "Delivery pacing, refill eligibility, support access, and order visibility affect the practical value of a campaign. A lower headline price can become frustrating when the service has no clear status or support path.",
+        tips: [
+          "Read the current refill policy before ordering.",
+          "Keep a record of the order ID and submitted profile link.",
+          "Use providers that explain delays without making unrealistic guarantees.",
+        ],
+      },
+      {
+        heading: "Budget for the Profile Experience",
+        body:
+          "Follower growth creates more value when new visitors find a complete profile and useful posts. Reserve time and budget for content, profile clarity, and community replies instead of treating the follower count as the entire strategy.",
+        tips: [
+          "Refresh your bio and pinned content before delivery begins.",
+          "Plan two weeks of useful posts around the campaign.",
+          "Track whether profile visits become follows, clicks, or enquiries.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Buy Instagram Followers India", href: "/instagram-followers" },
+      { label: "Transparent Pricing", href: "/pricing" },
+      { label: "View Instagram Packages", href: "/packages?platform=Instagram" },
+    ],
+  },
+  {
+    slug: "is-it-safe-to-buy-instagram-followers",
+    category: "Safe Ordering",
+    title: "Is It Safe to Buy Instagram Followers? A Responsible Checklist",
+    description:
+      "Review the safety questions to ask before ordering Instagram follower growth, including passwords, public links, pacing, tracking, and refill terms.",
+    readingTime: "7 min read",
+    image: "/images/blog/instagram-growth.png",
+    intro:
+      "Safety depends on the ordering process and the promises being made. No service can replace good content, but customers can reduce avoidable risk by protecting account access, reading delivery terms, and choosing a trackable campaign.",
+    sections: [
+      {
+        heading: "Never Share Account Credentials",
+        body:
+          "A follower campaign should use a public Instagram profile link. A provider does not need your password, recovery code, email login, or two-factor authentication code to process a public-link order.",
+        tips: [
+          "Leave immediately if a form asks for your Instagram password.",
+          "Check that you submitted the correct public profile URL.",
+          "Keep two-factor authentication enabled on your account.",
+        ],
+      },
+      {
+        heading: "Prefer Clear, Gradual Expectations",
+        body:
+          "Be cautious of permanent-forever claims or guaranteed viral outcomes. A responsible service explains its current delivery window, refill eligibility, order status, and the conditions customers must follow.",
+        tips: [
+          "Avoid changing the username while delivery is active.",
+          "Do not place overlapping orders for the same profile.",
+          "Keep screenshots of the service terms and order ID.",
+        ],
+      },
+      {
+        heading: "Pair Campaigns With Organic Account Health",
+        body:
+          "New profile attention needs useful content and real interaction. Continue posting, answer relevant comments, and watch account insights so the campaign supports a broader strategy rather than becoming an isolated number.",
+        tips: [
+          "Publish consistently before and after the campaign.",
+          "Review profile visits and engagement quality.",
+          "Use support promptly if delivery exceeds the stated estimate.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Instagram Followers Safety & Details", href: "/instagram-followers" },
+      { label: "Refund Policy", href: "/refund-policy" },
+      { label: "Contact SocialRUSH", href: "/contact" },
+    ],
+  },
+  {
+    slug: "how-to-increase-youtube-subscribers-in-india",
+    category: "YouTube Growth",
+    title: "How to Increase YouTube Subscribers in India",
+    description:
+      "A practical YouTube subscriber strategy for Indian creators using stronger channel positioning, searchable videos, series, and responsible growth support.",
+    readingTime: "8 min read",
+    image: "/images/blog/youtube-growth.png",
+    intro:
+      "Subscriber growth becomes easier when every part of the channel answers one question: why should a viewer return? Clear topics, useful video series, strong packaging, and a trustworthy channel presentation work together.",
+    sections: [
+      {
+        heading: "Choose a Channel Promise Viewers Remember",
+        body:
+          "Broad channels are difficult to understand. A clear promise—such as practical finance for first-job professionals or Hindi editing tutorials for creators—helps viewers know what subscribing will give them.",
+        tips: [
+          "Write one sentence describing who the channel helps.",
+          "Organize videos into topic-led playlists.",
+          "Align the banner, About section, and recent uploads.",
+        ],
+      },
+      {
+        heading: "Turn Search Questions Into Video Series",
+        body:
+          "Indian viewers often discover useful channels through specific problems. Research autocomplete, comments, and customer questions, then publish connected videos that let one view naturally lead to the next.",
+        tips: [
+          "Use the audience's own wording in titles where natural.",
+          "Create three-video clusters instead of isolated uploads.",
+          "Add a relevant next-video link in the description and end screen.",
+        ],
+      },
+      {
+        heading: "Strengthen Social Proof Without Hiding the Basics",
+        body:
+          "A subscriber campaign can support channel presentation, but retention still depends on content quality. Use a public channel link, review delivery and refill information, and track the order alongside click-through rate and returning viewers.",
+        tips: [
+          "Never provide a YouTube or Google password.",
+          "Keep the channel public and stable during delivery.",
+          "Measure returning viewers and watch time with subscriber growth.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "YouTube Subscribers Service", href: "/youtube-subscribers" },
+      { label: "YouTube Views Service", href: "/youtube-views" },
+      { label: "View YouTube Packages", href: "/packages?platform=YouTube" },
+    ],
+  },
+  {
+    slug: "best-way-to-grow-linkedin-followers-for-business",
+    category: "LinkedIn Business",
+    title: "Best Way to Grow LinkedIn Followers for Business",
+    description:
+      "Build LinkedIn followers for a business through clearer expertise, employee participation, useful posts, and transparent growth support.",
+    readingTime: "7 min read",
+    image: "/images/blog/linkedin-marketing.png",
+    intro:
+      "Businesses grow on LinkedIn when they publish knowledge people can use and make their expertise easy to recognize. Follower count matters most when it supports authority, distribution, and qualified conversations.",
+    sections: [
+      {
+        heading: "Give the Page a Distinct Point of View",
+        body:
+          "Company updates alone rarely earn sustained attention. Explain what the business has learned about its market, customers, operations, or category so following the page has an obvious professional benefit.",
+        tips: [
+          "Turn customer questions into short expert posts.",
+          "Share lessons and frameworks, not only announcements.",
+          "Keep the company description specific and outcome-focused.",
+        ],
+      },
+      {
+        heading: "Use Employees as Knowledge Contributors",
+        body:
+          "People often trust informed individuals before company pages. Invite subject-matter experts to contribute examples, comment thoughtfully, and share company content with their own perspective.",
+        tips: [
+          "Create a simple weekly topic prompt for employees.",
+          "Let experts add context instead of copying corporate captions.",
+          "Feature employee knowledge in page posts and newsletters.",
+        ],
+      },
+      {
+        heading: "Support Authority With Transparent Growth",
+        body:
+          "A LinkedIn follower campaign can strengthen visible page or profile presentation. Use only a public destination, review the confirmed ₹2,999 per 1K follower rate, and keep organic publishing active while delivery is tracked.",
+        tips: [
+          "Check whether the service applies to a profile or company page.",
+          "Review delivery and refill terms before confirmation.",
+          "Track relevant conversations and profile views alongside followers.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "LinkedIn Followers Service", href: "/linkedin-followers" },
+      { label: "SocialRUSH Pricing", href: "/pricing" },
+      { label: "View Packages", href: "/packages?platform=LinkedIn" },
+    ],
+  },
+  {
+    slug: "social-media-growth-strategy-for-indian-creators",
+    category: "Creator Strategy",
+    title: "Social Media Growth Strategy for Indian Creators",
+    description:
+      "A channel-by-channel social media growth framework for Indian creators balancing content, discovery, social proof, tracking, and sustainable routines.",
+    readingTime: "9 min read",
+    image: "/images/blog/campaign-strategy.png",
+    intro:
+      "Indian creators do not need to be everywhere at once. A better strategy gives each platform a job, connects content to a repeatable audience promise, and measures whether attention becomes trust.",
+    sections: [
+      {
+        heading: "Give Every Platform One Clear Role",
+        body:
+          "Instagram may handle daily discovery, YouTube may hold deeper evergreen content, LinkedIn may establish professional authority, and WhatsApp may support direct community contact. Clear roles reduce duplicated effort.",
+        tips: [
+          "Choose one primary platform and one supporting platform.",
+          "Adapt ideas to each format instead of reposting blindly.",
+          "Use one consistent positioning statement across profiles.",
+        ],
+      },
+      {
+        heading: "Build a Weekly Growth Loop",
+        body:
+          "A sustainable loop includes research, creation, distribution, community replies, and review. Small weekly improvements are more useful than a burst of activity followed by silence.",
+        tips: [
+          "Collect audience questions throughout the week.",
+          "Batch one core idea into several platform-specific assets.",
+          "Review saves, watch time, profile visits, and enquiries every week.",
+        ],
+      },
+      {
+        heading: "Use Paid or Assisted Growth Transparently",
+        body:
+          "Growth services should support a prepared profile, not conceal weak content. Compare current prices, submit only public links, understand the delivery estimate, and keep campaign records so every order remains accountable.",
+        tips: [
+          "Never share passwords or recovery credentials.",
+          "Avoid guaranteed-viral or permanent-forever claims.",
+          "Combine campaign metrics with organic audience-quality signals.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Explore Growth Services", href: "/services" },
+      { label: "Compare Packages", href: "/packages" },
+      { label: "Read Pricing Guide", href: "/pricing" },
     ],
   },
 ];

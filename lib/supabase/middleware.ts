@@ -1,6 +1,7 @@
 import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { getSupabaseConfig } from "./config";
+import { getSafeCustomerDestination } from "@/lib/auth/destination";
 
 const PUBLIC_PATHS = [
   "/",
@@ -46,16 +47,13 @@ function shouldProtect(pathname: string) {
 
 export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
+  const requestHeaders = new Headers(request.headers);
   if (pathname === "/admin/login") {
-    const requestHeaders = new Headers(request.headers);
     requestHeaders.set("x-socialrush-admin-login", "1");
-    return NextResponse.next({ request: { headers: requestHeaders } });
   }
 
   const isProtected = shouldProtect(pathname);
-  if (!isProtected) return NextResponse.next({ request });
-
-  let response = NextResponse.next({ request });
+  let response = NextResponse.next({ request: { headers: requestHeaders } });
   const { url, key } = getSupabaseConfig();
 
   const supabase = createServerClient(
@@ -66,7 +64,7 @@ export async function updateSession(request: NextRequest) {
         getAll: () => request.cookies.getAll(),
         setAll(cookiesToSet) {
           cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          response = NextResponse.next({ request });
+          response = NextResponse.next({ request: { headers: requestHeaders } });
           cookiesToSet.forEach(({ name, value, options }) => response.cookies.set(name, value, options));
         },
       },
@@ -74,11 +72,21 @@ export async function updateSession(request: NextRequest) {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
+  if (!isProtected) return response;
+
   if (!user) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = pathname.startsWith("/admin") ? "/admin/login" : "/login";
-    loginUrl.search = `next=${encodeURIComponent(request.nextUrl.pathname + request.nextUrl.search)}`;
-    return NextResponse.redirect(loginUrl);
+    loginUrl.search = "";
+    if (!pathname.startsWith("/admin")) {
+      loginUrl.searchParams.set(
+        "next",
+        getSafeCustomerDestination(`${pathname}${request.nextUrl.search}`),
+      );
+    }
+    const redirectResponse = NextResponse.redirect(loginUrl);
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    return redirectResponse;
   }
 
   const { data: roleProfile, error: roleError } = await supabase
@@ -92,14 +100,18 @@ export async function updateSession(request: NextRequest) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = "/admin/login";
       loginUrl.search = "";
-      return NextResponse.redirect(loginUrl);
+      const redirectResponse = NextResponse.redirect(loginUrl);
+      response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+      return redirectResponse;
     }
 
     if (roleProfile.role !== "admin") {
       const dashboardUrl = request.nextUrl.clone();
-      dashboardUrl.pathname = "/dashboard";
+      dashboardUrl.pathname = "/dashboard/new-order";
       dashboardUrl.search = "";
-      return NextResponse.redirect(dashboardUrl);
+      const redirectResponse = NextResponse.redirect(dashboardUrl);
+      response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+      return redirectResponse;
     }
   }
 
@@ -115,7 +127,9 @@ export async function updateSession(request: NextRequest) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.search = "error=account_blocked";
-    return NextResponse.redirect(loginUrl);
+    const redirectResponse = NextResponse.redirect(loginUrl);
+    response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    return redirectResponse;
   }
 
   return response;

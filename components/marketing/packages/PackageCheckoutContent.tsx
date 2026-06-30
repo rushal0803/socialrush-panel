@@ -1,5 +1,19 @@
 "use client";
 
+import {
+  ArrowLeft,
+  CheckCircle2,
+  Clock3,
+  Headphones,
+  Link2,
+  LoaderCircle,
+  LockKeyhole,
+  NotebookPen,
+  PackageCheck,
+  RefreshCw,
+  ShieldCheck,
+  WalletCards,
+} from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useMemo, useState } from "react";
@@ -114,10 +128,10 @@ export default function PackageCheckoutContent() {
     return (
       <BlogShell>
         <section className="grid min-h-[60vh] place-items-center px-4 py-16 text-center">
-          <div className="w-full max-w-lg rounded-3xl border border-white/85 bg-white/90 p-6 shadow-[0_18px_42px_rgba(86,114,175,.16)] sm:p-8">
+          <div className="w-full max-w-lg rounded-[2rem] border border-white/90 bg-white/85 p-6 shadow-[0_28px_65px_-36px_rgba(50,72,140,.55)] backdrop-blur-2xl sm:p-8">
             <h1 className="text-2xl font-black text-[#10234f]">Package not found</h1>
             <p className="mt-3 text-sm leading-7 text-[#4f6795]">Choose an available package before continuing to checkout.</p>
-            <Link href="/packages" className="mt-6 inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white sm:w-auto">
+            <Link href="/packages" className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white sm:w-auto">
               Back to Packages
             </Link>
           </div>
@@ -201,78 +215,117 @@ export default function PackageCheckoutContent() {
 
   return (
     <BlogShell>
-      <div className="relative overflow-x-clip pb-20">
+      <div className="relative overflow-x-clip pb-10 sm:pb-14">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-20 top-12 h-72 w-72 rounded-full bg-pink-200/35 blur-3xl" />
-          <div className="absolute right-[-5rem] top-32 h-80 w-80 rounded-full bg-cyan-200/40 blur-3xl" />
+          <div className="absolute -left-24 top-4 h-80 w-80 rounded-full bg-pink-200/45 blur-3xl" />
+          <div className="absolute right-[-6rem] top-24 h-96 w-96 rounded-full bg-cyan-200/45 blur-3xl" />
+          <div className="absolute bottom-20 left-1/3 h-72 w-72 rounded-full bg-violet-200/25 blur-3xl" />
         </div>
 
-        <section className="relative px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-          <div className="mx-auto w-full max-w-6xl">
-            <Link href="/packages" className="inline-flex min-h-11 items-center text-sm font-bold text-[#2f56a0] transition hover:text-[#1e3c78]">
-              ← Back to packages
+        <section className="relative px-4 py-6 sm:px-6 sm:py-9 lg:px-8">
+          <div className="mx-auto w-full max-w-7xl">
+            <Link href="/packages" className="inline-flex min-h-11 items-center gap-2 text-sm font-bold text-[#2f56a0] transition hover:-translate-x-0.5 hover:text-[#1e3c78]">
+              <ArrowLeft className="h-4 w-4" />
+              Back to packages
             </Link>
 
-            <div className="mt-3 grid min-w-0 gap-5 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-start">
-              <article className="min-w-0 rounded-[26px] border border-white/85 bg-white/90 p-5 shadow-[0_18px_42px_rgba(86,114,175,.16)] backdrop-blur-xl sm:p-8">
-                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#4f6caa]">Package checkout</p>
-                <h1 className="mt-2 text-2xl font-black text-[#10234f] sm:text-3xl">Complete your campaign details</h1>
-                <p className="mt-3 text-sm leading-7 text-[#4f6795]">
-                  Enter the public destination for this campaign, review the package total, and place the order using your wallet.
-                </p>
+            <div className="mt-3 rounded-[1.75rem] border border-white/90 bg-white/68 p-4 shadow-[0_24px_65px_-36px_rgba(50,72,140,.45)] backdrop-blur-2xl sm:p-5">
+              <div className="grid gap-3 sm:grid-cols-3">
+                <CheckoutStep number="1" title="Package Selected" state="complete" />
+                <CheckoutStep number="2" title="Campaign Details" state="active" />
+                <CheckoutStep number="3" title="Wallet Payment" state="upcoming" />
+              </div>
+            </div>
 
-                <div className="mt-6 rounded-2xl border border-[#dce7ff] bg-[#f7faff] p-4 sm:p-5">
+            <div className="mt-5 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
+              <article className="min-w-0 rounded-[2rem] border border-white/90 bg-white/80 p-5 shadow-[0_30px_70px_-38px_rgba(50,72,140,.5)] backdrop-blur-2xl sm:p-8">
+                <div className="max-w-2xl">
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#4f6caa]">Premium campaign checkout</p>
+                  <h1 className="mt-2 text-2xl font-black tracking-tight text-[#10234f] sm:text-4xl">Complete your campaign details</h1>
+                  <p className="mt-3 text-sm leading-7 text-[#4f6795]">
+                    Add the public campaign destination, review your selected package, and confirm the order through your secure wallet.
+                  </p>
+                </div>
+
+                <div className="mt-7 overflow-hidden rounded-[1.65rem] border border-[#d8e5ff] bg-[linear-gradient(145deg,rgba(255,255,255,.95),rgba(242,247,255,.88))] p-4 shadow-[0_20px_45px_-32px_rgba(55,78,145,.55)] sm:p-6">
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
-                    <div>
-                      <p className="inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.1em] text-[#5b75ab]"><PlatformIcon platform={platformLabel} className="h-4 w-4" />{platformLabel} · {serviceLabel[pkg.service]}</p>
-                      <h2 className="mt-2 text-xl font-black text-[#122a5c]">{pkg.title}</h2>
-                      <p className="mt-2 text-sm leading-6 text-[#4f6795]">{pkg.description}</p>
+                    <div className="flex min-w-0 gap-4">
+                      <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white shadow-[0_12px_28px_-10px_rgba(117,109,255,.65)]">
+                        <PlatformIcon platform={platformLabel} className="h-6 w-6" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-black uppercase tracking-[0.13em] text-[#5b75ab]">{platformLabel} · {serviceLabel[pkg.service]}</p>
+                        <h2 className="mt-1 break-words text-xl font-black text-[#122a5c] sm:text-2xl">{pkg.title}</h2>
+                        <p className="mt-2 text-sm leading-6 text-[#4f6795]">{pkg.description}</p>
+                      </div>
                     </div>
                     {pkg.discountBadge ? (
-                      <span className="w-fit shrink-0 rounded-full border border-[#d6e2ff] bg-white px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#5670aa]">
+                      <span className="w-fit shrink-0 rounded-full border border-amber-200 bg-amber-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.1em] text-amber-700 shadow-sm">
                         {pkg.discountBadge}
                       </span>
                     ) : null}
                   </div>
-                  <dl className="mt-4 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
-                    <div className="rounded-xl bg-white p-3">
-                      <dt className="text-[#6078ab]">Price</dt>
-                      <dd className="mt-1 break-words font-black text-[#355186]">{formatCurrency(pkg.basePriceINR, currency)}</dd>
-                    </div>
-                    <div className="rounded-xl bg-white p-3">
-                      <dt className="text-[#6078ab]">Quantity</dt>
-                      <dd className="mt-1 font-black text-[#355186]">{pkg.quantityLabel}</dd>
-                    </div>
-                    <div className="col-span-2 rounded-xl bg-white p-3 sm:col-span-1">
-                      <dt className="text-[#6078ab]">Delivery</dt>
-                      <dd className="mt-1 font-black text-[#355186]">{pkg.deliveryTime}</dd>
-                    </div>
+
+                  <dl className="mt-5 grid grid-cols-2 gap-3 text-xs sm:grid-cols-3">
+                    <PackageMetric icon={WalletCards} label="Price" value={formatCurrency(pkg.basePriceINR, currency)} />
+                    <PackageMetric icon={PackageCheck} label="Quantity" value={pkg.quantityLabel} />
+                    <PackageMetric icon={Clock3} label="Delivery" value={pkg.deliveryTime} wide />
                   </dl>
+
+                  <div className="mt-4 grid gap-2 text-[11px] font-bold text-[#4f6795] sm:grid-cols-3">
+                    <span className="flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2.5"><Clock3 className="h-4 w-4 text-blue-600" />Fast delivery</span>
+                    <span className="flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2.5"><RefreshCw className="h-4 w-4 text-violet-600" />Refill support</span>
+                    <span className="flex items-center gap-2 rounded-xl bg-white/70 px-3 py-2.5"><ShieldCheck className="h-4 w-4 text-emerald-600" />Secure wallet checkout</span>
+                  </div>
                 </div>
 
-                <div className="mt-6 grid gap-5">
-                  <label className="text-xs font-bold text-[#334f85]">
-                    Campaign Link / Username
-                    <input
-                      value={targetLink}
-                      onChange={(event) => setTargetLink(event.target.value)}
-                      className="mt-2 min-h-12 w-full rounded-xl border border-[#d2e1ff] bg-white px-4 text-base text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
-                      placeholder="Paste the public profile, post, or channel link"
-                    />
-                  </label>
-                  <label className="text-xs font-bold text-[#334f85]">
-                    Notes (Optional)
-                    <textarea
-                      value={notes}
-                      onChange={(event) => setNotes(event.target.value)}
-                      rows={4}
-                      className="mt-2 w-full resize-y rounded-xl border border-[#d2e1ff] bg-white px-4 py-3 text-base text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
-                      placeholder="Share any delivery instructions..."
-                    />
-                  </label>
+                <div className="mt-7 rounded-[1.65rem] border border-white/90 bg-white/72 p-4 shadow-[0_18px_45px_-34px_rgba(55,78,145,.5)] sm:p-6">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-blue-50 text-blue-600"><Link2 className="h-5 w-5" /></span>
+                    <div>
+                      <h2 className="text-lg font-black text-[#122a5c]">Campaign destination</h2>
+                      <p className="mt-0.5 text-xs text-[#6078ab]">Tell us where this campaign should be delivered.</p>
+                    </div>
+                  </div>
+
+                  <div className="mt-5 grid gap-5">
+                    <label className="text-xs font-black text-[#334f85]">
+                      Campaign Link / Username
+                      <span className="mt-2 flex rounded-2xl border border-[#d2e1ff] bg-white shadow-[0_12px_28px_-24px_rgba(40,64,128,.55)] transition focus-within:border-[#8aa7ff] focus-within:ring-4 focus-within:ring-blue-100/70">
+                        <span className="grid w-12 shrink-0 place-items-center text-[#7790c0]"><Link2 className="h-5 w-5" /></span>
+                        <input
+                          value={targetLink}
+                          onChange={(event) => setTargetLink(event.target.value)}
+                          aria-invalid={Boolean(error && !targetLink.trim())}
+                          aria-describedby="campaign-link-help"
+                          className="min-h-14 min-w-0 flex-1 rounded-r-2xl bg-transparent pr-4 text-base font-medium text-[#16346f] outline-none placeholder:text-[#9aabd0]"
+                          placeholder="Paste a public campaign link"
+                        />
+                      </span>
+                      <span id="campaign-link-help" className="mt-2 block text-[11px] font-medium leading-5 text-[#6c82ae]">
+                        Enter a public profile, post, reel, video, channel, or page link.
+                      </span>
+                    </label>
+
+                    <label className="text-xs font-black text-[#334f85]">
+                      <span className="flex items-center gap-2"><NotebookPen className="h-4 w-4 text-violet-600" />Notes (Optional)</span>
+                      <textarea
+                        value={notes}
+                        onChange={(event) => setNotes(event.target.value)}
+                        rows={4}
+                        className="mt-2 w-full resize-y rounded-2xl border border-[#d2e1ff] bg-white px-4 py-3.5 text-base font-medium text-[#16346f] shadow-[0_12px_28px_-24px_rgba(40,64,128,.55)] outline-none transition placeholder:text-[#9aabd0] focus:border-[#8aa7ff] focus:ring-4 focus:ring-blue-100/70"
+                        placeholder="Share any relevant delivery instructions..."
+                      />
+                    </label>
+                  </div>
                 </div>
 
-                {error ? <p role="alert" className="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-[#b03361]">{error}</p> : null}
+                {error ? (
+                  <div role="alert" className="mt-5 flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold leading-6 text-[#a52d5a] shadow-sm">
+                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-rose-100 text-xs">!</span>
+                    {error}
+                  </div>
+                ) : null}
 
                 <div className="mt-6 lg:hidden">
                   <CheckoutSummary
@@ -288,14 +341,16 @@ export default function PackageCheckoutContent() {
                 <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
                   <button
                     type="button"
-                    disabled={placingOrder || isAuthLoading}
+                    disabled={placingOrder || isAuthLoading || !targetLink.trim()}
                     onClick={placeOrder}
-                    className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(117,109,255,.3)] disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(117,109,255,.7)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_38px_-14px_rgba(117,109,255,.8)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none sm:w-auto"
                   >
-                    {placingOrder ? "Placing Order..." : isLoggedIn ? "Place Order" : "Login to Place Order"}
+                    {placingOrder ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
+                    {placingOrder ? "Placing Order..." : isLoggedIn ? "Place Order Securely" : "Login to Continue"}
                   </button>
                   {!hasEnoughBalance && isLoggedIn && !isAuthLoading ? (
-                    <Link href="/dashboard/wallet" className="inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-[#d5e3ff] bg-white px-5 py-3 text-sm font-bold text-[#1f3b75] sm:w-auto">
+                    <Link href="/dashboard/wallet" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border border-[#d5e3ff] bg-white px-6 py-3.5 text-sm font-black text-[#1f3b75] shadow-sm transition hover:-translate-y-0.5 hover:border-[#a9bff0] hover:bg-[#f8fbff] sm:w-auto">
+                      <WalletCards className="h-4 w-4" />
                       Add Funds
                     </Link>
                   ) : null}
@@ -316,10 +371,76 @@ export default function PackageCheckoutContent() {
                 </div>
               </aside>
             </div>
+
+            <section className="mt-6 rounded-[1.75rem] border border-white/90 bg-white/68 p-5 shadow-[0_22px_55px_-38px_rgba(50,72,140,.5)] backdrop-blur-xl sm:p-6">
+              <h2 className="text-center text-sm font-black text-[#17366f]">Checkout with confidence</h2>
+              <div className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
+                <TrustItem icon={ShieldCheck} title="Secure checkout" />
+                <TrustItem icon={RefreshCw} title="Refill support available" />
+                <TrustItem icon={PackageCheck} title="Order tracking" />
+                <TrustItem icon={Headphones} title="WhatsApp support" />
+              </div>
+            </section>
           </div>
         </section>
       </div>
     </BlogShell>
+  );
+}
+
+function CheckoutStep({
+  number,
+  title,
+  state,
+}: {
+  number: string;
+  title: string;
+  state: "complete" | "active" | "upcoming";
+}) {
+  const stateClass = state === "complete"
+    ? "border-emerald-200 bg-emerald-50/90 text-emerald-700"
+    : state === "active"
+      ? "border-blue-200 bg-blue-50/90 text-blue-700 shadow-[0_10px_24px_-18px_rgba(37,99,235,.55)]"
+      : "border-[#e2eaff] bg-white/75 text-[#6a80ac]";
+
+  return (
+    <div className={`flex min-h-14 items-center gap-3 rounded-2xl border px-3.5 py-3 ${stateClass}`}>
+      <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-full text-xs font-black ${state === "complete" ? "bg-emerald-600 text-white" : state === "active" ? "bg-blue-600 text-white" : "bg-[#e9effc] text-[#7388b1]"}`}>
+        {state === "complete" ? <CheckCircle2 className="h-4 w-4" /> : number}
+      </span>
+      <div className="min-w-0">
+        <p className="text-[9px] font-black uppercase tracking-[0.12em] opacity-65">Step {number}</p>
+        <p className="truncate text-xs font-black">{title}</p>
+      </div>
+    </div>
+  );
+}
+
+function PackageMetric({
+  icon: Icon,
+  label,
+  value,
+  wide = false,
+}: {
+  icon: typeof WalletCards;
+  label: string;
+  value: string;
+  wide?: boolean;
+}) {
+  return (
+    <div className={`rounded-2xl border border-white bg-white/90 p-3.5 shadow-[0_10px_24px_-20px_rgba(38,60,120,.5)] ${wide ? "col-span-2 sm:col-span-1" : ""}`}>
+      <dt className="flex items-center gap-1.5 text-[#6078ab]"><Icon className="h-3.5 w-3.5" />{label}</dt>
+      <dd className="mt-1.5 break-words text-base font-black text-[#355186]">{value}</dd>
+    </div>
+  );
+}
+
+function TrustItem({ icon: Icon, title }: { icon: typeof ShieldCheck; title: string }) {
+  return (
+    <div className="flex min-w-0 items-center gap-2.5 rounded-2xl border border-[#e0e9ff] bg-white/80 p-3 text-xs font-black text-[#355186]">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-600"><Icon className="h-4 w-4" /></span>
+      <span className="leading-5">{title}</span>
+    </div>
   );
 }
 
@@ -339,27 +460,70 @@ function CheckoutSummary({
   hasEnoughBalance: boolean;
 }) {
   const platformLabel = pkg.platform === "X" ? "X / Twitter" : pkg.platform;
+
   return (
-    <div className="rounded-[24px] border border-white/85 bg-white/92 p-5 shadow-[0_18px_42px_rgba(86,114,175,.16)] backdrop-blur-xl sm:p-6">
-      <p className="text-[10px] font-bold uppercase tracking-[0.13em] text-[#4f6caa]">Order summary</p>
-      <h2 className="mt-2 text-xl font-black text-[#10234f]">{pkg.title}</h2>
-      <div className="mt-5 space-y-3 text-sm">
-        <SummaryRow label="Platform" value={platformLabel} />
-        <SummaryRow label="Service" value={serviceLabel[pkg.service]} />
-        <SummaryRow label="Quantity" value={pkg.quantityLabel} />
-        <SummaryRow label="Delivery" value={pkg.deliveryTime} />
-        <div className="border-t border-[#dce7ff] pt-3">
-          <SummaryRow label="Total payable" value={formatCurrency(pkg.basePriceINR, currency)} strong />
+    <div className="overflow-hidden rounded-[1.75rem] border border-white/90 bg-white/88 shadow-[0_30px_70px_-38px_rgba(50,72,140,.55)] backdrop-blur-2xl">
+      <div className="border-b border-[#e1e9fb] bg-[linear-gradient(145deg,#f8fbff,#f4f0ff)] p-5 sm:p-6">
+        <div className="flex items-center gap-3">
+          <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white shadow-lg">
+            <PlatformIcon platform={platformLabel} className="h-5 w-5" />
+          </span>
+          <div>
+            <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#5b75ab]">Premium invoice</p>
+            <h2 className="mt-0.5 text-lg font-black text-[#10234f]">Order summary</h2>
+          </div>
         </div>
       </div>
-      <div className="mt-5 rounded-2xl border border-[#dce7ff] bg-[#f7faff] p-4">
-        <p className="text-[10px] font-semibold uppercase tracking-[0.12em] text-[#5c76ac]">Wallet balance</p>
-        <p className="mt-1 break-words text-lg font-black text-[#14316a]">
-          {isAuthLoading ? "Checking..." : isLoggedIn ? formatCurrency(walletBalance ?? 0, currency) : "Login required"}
+
+      <div className="p-5 sm:p-6">
+        <p className="break-words text-base font-black text-[#17366f]">{pkg.title}</p>
+        <div className="mt-5 space-y-3.5 text-sm">
+          <SummaryRow label="Package" value={pkg.title} />
+          <SummaryRow label="Platform" value={platformLabel} />
+          <SummaryRow label="Service" value={serviceLabel[pkg.service]} />
+          <SummaryRow label="Quantity" value={pkg.quantityLabel} />
+          <SummaryRow label="Delivery" value={pkg.deliveryTime} />
+          <div className="border-t border-dashed border-[#cad8f5] pt-4">
+            <SummaryRow label="Total payable" value={formatCurrency(pkg.basePriceINR, currency)} strong />
+          </div>
+        </div>
+
+        {isAuthLoading ? (
+          <div className="mt-6 rounded-2xl border border-[#dce7ff] bg-[#f7faff] p-4">
+            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-[#5c76ac]">
+              <LoaderCircle className="h-4 w-4 animate-spin" />
+              Checking wallet balance
+            </div>
+            <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-[#dce7ff]" />
+            <div className="mt-2 h-3 w-full animate-pulse rounded bg-[#e7eeff]" />
+          </div>
+        ) : !isLoggedIn ? (
+          <div className="mt-6 rounded-2xl border border-blue-200 bg-blue-50/85 p-4">
+            <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-blue-700"><LockKeyhole className="h-4 w-4" />Secure account required</p>
+            <p className="mt-2 text-sm font-black text-[#17366f]">Login to check your wallet</p>
+            <p className="mt-1 text-xs leading-5 text-[#6078ab]">Your campaign details will be kept when you continue to login.</p>
+          </div>
+        ) : hasEnoughBalance ? (
+          <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/90 p-4 shadow-sm">
+            <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-emerald-700"><CheckCircle2 className="h-4 w-4" />Wallet ready</p>
+            <p className="mt-2 break-words text-xl font-black text-emerald-800">{formatCurrency(walletBalance ?? 0, currency)}</p>
+            <p className="mt-1 text-xs font-semibold leading-5 text-emerald-700">Your balance is sufficient for this package.</p>
+          </div>
+        ) : (
+          <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/90 p-4 shadow-sm">
+            <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-amber-700"><WalletCards className="h-4 w-4" />Balance required</p>
+            <p className="mt-2 break-words text-xl font-black text-amber-900">{formatCurrency(walletBalance ?? 0, currency)}</p>
+            <p className="mt-1 text-xs font-semibold leading-5 text-amber-800">Your wallet balance is lower than the package total.</p>
+            <Link href="/dashboard/wallet" className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-amber-600 px-4 py-2.5 text-xs font-black text-white transition hover:bg-amber-700">
+              Add Funds
+            </Link>
+          </div>
+        )}
+
+        <p className="mt-5 flex items-center justify-center gap-2 text-[10px] font-bold text-[#7890b7]">
+          <ShieldCheck className="h-3.5 w-3.5 text-emerald-600" />
+          Wallet charged only after order confirmation
         </p>
-        {!hasEnoughBalance && isLoggedIn && !isAuthLoading ? (
-          <p className="mt-2 text-xs font-semibold leading-5 text-[#b03361]">Your wallet balance is lower than the package total.</p>
-        ) : null}
       </div>
     </div>
   );
@@ -368,8 +532,8 @@ function CheckoutSummary({
 function SummaryRow({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
   return (
     <div className="flex items-start justify-between gap-4">
-      <span className="text-[#6078ab]">{label}</span>
-      <span className={`max-w-[60%] break-words text-right ${strong ? "text-lg font-black text-[#14316a]" : "font-bold text-[#355186]"}`}>{value}</span>
+      <span className="shrink-0 text-[#6078ab]">{label}</span>
+      <span className={`max-w-[62%] break-words text-right ${strong ? "text-xl font-black text-[#14316a]" : "font-bold text-[#355186]"}`}>{value}</span>
     </div>
   );
 }

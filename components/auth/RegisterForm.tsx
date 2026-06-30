@@ -34,12 +34,13 @@ export default function RegisterForm() {
 
     try {
       const supabase = createClient();
+      const callbackUrl = new URL("/auth/callback", window.location.origin);
       const { error: signupError } = await supabase.auth.signUp({
         email,
         password,
         options: {
           data: { full_name: fullName },
-          emailRedirectTo: `${window.location.origin}/auth/callback?next=/dashboard`,
+          emailRedirectTo: callbackUrl.toString(),
         },
       });
 
@@ -49,8 +50,7 @@ export default function RegisterForm() {
         return;
       }
 
-      router.replace("/dashboard");
-      router.refresh();
+      router.replace("/dashboard/new-order");
     } catch {
       setError("Unable to create your account right now. Please try again.");
       setLoading(false);

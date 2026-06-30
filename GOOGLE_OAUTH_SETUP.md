@@ -13,7 +13,8 @@ Google Sign-In has been added to the login and signup pages. To enable it, follo
 5. Choose "Web application"
 6. Add authorized redirect URIs:
    - For local development: `http://localhost:3000/auth/callback`
-   - For production: `https://yourdomain.com/auth/callback` (replace with your actual domain)
+   - For production: `https://www.getsocialrush.com/auth/callback`
+   - Also allow: `https://getsocialrush.com/auth/callback`
 7. Copy your **Client ID** and **Client Secret**
 
 ## 2. Configure Google Provider in Supabase

@@ -9,7 +9,7 @@ export type LinkRule = {
   error: string;
 };
 
-export const customerOrderServices = activeSmmServices.filter((service) => service.code !== "x-likes");
+export const customerOrderServices = activeSmmServices;
 
 export const serviceExperience: Record<string, { name: string; outcome: string; required: string }> = {
   "instagram-followers": { name: "Instagram Followers", outcome: "Stronger profile discovery and a broader visible audience.", required: "Public Instagram profile link" },
@@ -21,6 +21,7 @@ export const serviceExperience: Record<string, { name: string; outcome: string; 
   "facebook-followers": { name: "Facebook Followers", outcome: "Expanded discovery for a page or public profile.", required: "Public Facebook page or profile link" },
   "facebook-likes": { name: "Facebook Likes", outcome: "More visible engagement around a selected Facebook post.", required: "Public Facebook post or video link" },
   "facebook-views": { name: "Facebook Views", outcome: "Broader discovery for selected Facebook video content.", required: "Public Facebook post or video link" },
+  "facebook-shares": { name: "Facebook Shares", outcome: "Broader distribution and visible sharing for a selected Facebook post.", required: "Public Facebook post link" },
   "linkedin-followers": { name: "LinkedIn Followers", outcome: "Professional audience discovery for a profile or company page.", required: "Public LinkedIn profile or company page" },
   "linkedin-likes": { name: "LinkedIn Likes", outcome: "Professional engagement discovery for a selected post.", required: "Public LinkedIn post link" },
   "telegram-members": { name: "Telegram Members", outcome: "Broader community discovery for a public channel or group.", required: "Public Telegram channel or group link" },
@@ -40,6 +41,7 @@ export const linkRules: Record<string, LinkRule> = {
   "facebook-followers": { label: "Facebook page/profile link", placeholder: "https://facebook.com/yourpage", helper: "Use the public page or profile URL you want to grow.", hosts: ["facebook.com", "fb.com"], error: "Enter a valid public Facebook page or profile link." },
   "facebook-likes": { label: "Facebook post/video link", placeholder: "https://facebook.com/yourpage/posts/...", helper: "Use the exact public Facebook post or video that should receive engagement.", hosts: ["facebook.com", "fb.watch"], error: "Enter a valid public Facebook post or video link." },
   "facebook-views": { label: "Facebook post/video link", placeholder: "https://facebook.com/watch/?v=...", helper: "Use the exact public Facebook video you want people to discover.", hosts: ["facebook.com", "fb.watch"], error: "Enter a valid public Facebook video link." },
+  "facebook-shares": { label: "Facebook post link", placeholder: "https://facebook.com/yourpage/posts/...", helper: "Use the exact public Facebook post that should receive shares.", hosts: ["facebook.com"], error: "Enter a valid public Facebook post link." },
   "linkedin-followers": { label: "LinkedIn profile/company page link", placeholder: "https://linkedin.com/in/your-profile", helper: "Use a public personal profile or company page URL.", hosts: ["linkedin.com"], pathHint: /\/(in|company)\//i, error: "Enter a valid LinkedIn profile or company page link." },
   "linkedin-likes": { label: "LinkedIn post link", placeholder: "https://linkedin.com/posts/...", helper: "Use the exact public LinkedIn post that should receive engagement.", hosts: ["linkedin.com"], pathHint: /\/(posts|feed\/update)\//i, error: "Enter a valid public LinkedIn post link." },
   "telegram-members": { label: "Telegram channel/group link", placeholder: "https://t.me/yourchannel", helper: "Use a public channel or group invite URL.", hosts: ["t.me", "telegram.me"], error: "Enter a valid public Telegram channel or group link." },

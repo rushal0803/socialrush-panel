@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { AnimatePresence, LazyMotion, domAnimation, m as motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useEffect, useState } from "react";
@@ -9,6 +9,7 @@ import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
 import PlatformIcon from "@/components/PlatformIcon";
 import SafeImage from "@/components/SafeImage";
+import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 /* ─────────────────── animation variants ─────────────────── */
 const fadeUp: Variants = {
@@ -307,6 +308,7 @@ const faqItems = [
 
 const footerLinks = [
   { heading: "Quick Links", links: [["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Blog", "/blog"], ["About Us", "/about"]] },
+  { heading: "Popular Growth", links: [["Instagram Followers", "/instagram-followers"], ["YouTube Subscribers", "/youtube-subscribers"], ["LinkedIn Followers", "/linkedin-followers"], ["Twitter/X Followers", "/twitter-followers"]] },
   { heading: "Support", links: [["FAQ", "/faq"], ["Contact Us", "/contact"], ["Support Center", "/dashboard/support"], ["How It Works", "/#how-it-works"]] },
   { heading: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms & Conditions", "/terms-and-conditions"], ["Refund Policy", "/refund-policy"]] },
 ] as const;
@@ -323,6 +325,7 @@ function SvgIcon({ path, size = 20, className = "" }: { path: string; size?: num
 /* ─────────────────── main component ─────────────────── */
 export default function HomepageContent() {
   const router = useRouter();
+  const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -335,6 +338,8 @@ export default function HomepageContent() {
     return () => listener.subscription.unsubscribe();
   }, []);
 
+  useEffect(() => setMenuOpen(false), [pathname]);
+
   async function logout() {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -345,7 +350,7 @@ export default function HomepageContent() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <main className="overflow-x-hidden bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
+      <main className="overflow-x-clip bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
       {/* ambient blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-cyan-200/40 blur-3xl" />
@@ -355,7 +360,7 @@ export default function HomepageContent() {
       </div>
 
       {/* HEADER */}
-      <header id="home" className="sticky top-0 z-50 px-4 pt-3 sm:px-6">
+      <header id="home" className="sticky top-0 z-[9999] border-b border-white/50 bg-white/35 px-4 py-3 backdrop-blur-xl sm:px-6">
         <div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/90 bg-white/80 px-4 py-3 shadow-[0_8px_40px_-8px_rgba(15,23,42,.15)] backdrop-blur-xl sm:px-5">
           <div className="flex items-center justify-between gap-4">
             <Logo priority />
@@ -366,13 +371,18 @@ export default function HomepageContent() {
             </nav>
             <div className="hidden items-center gap-2 lg:flex">
               {isLoggedIn ? (
-                <button
-                  type="button"
-                  onClick={logout}
-                  className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600"
-                >
-                  Logout
-                </button>
+                <>
+                  <Link href="/dashboard/account" className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm transition hover:bg-violet-100">
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600"
+                  >
+                    Logout
+                  </button>
+                </>
               ) : (
                 <>
                   <Link href="/login" className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">Login</Link>
@@ -381,7 +391,7 @@ export default function HomepageContent() {
               )}
               <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-pink-300/50 transition hover:brightness-105 hover:shadow-pink-300/70">Start Order</Link>
             </div>
-            <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={() => setMenuOpen((v) => !v)} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm lg:hidden">
+            <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={(event) => { event.stopPropagation(); setMenuOpen((v) => !v); }} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm lg:hidden">
               {menuOpen ? (
                 <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} fill="none"><path d="M18 6L6 18M6 6l12 12" /></svg>
               ) : (
@@ -389,10 +399,9 @@ export default function HomepageContent() {
               )}
             </button>
           </div>
-          <AnimatePresence initial={false}>
-            {menuOpen && (
-              <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: "auto", opacity: 1 }} exit={{ height: 0, opacity: 0 }} transition={{ duration: 0.25, ease: "easeOut" }} className="overflow-hidden">
-                <div className="mt-3 max-h-[calc(100dvh-6.5rem)] overflow-y-auto border-t border-slate-100 pt-3">
+          <MobileMenuLayer open={menuOpen} onClose={() => setMenuOpen(false)}>
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-white/90 bg-white/95 px-4 pb-4 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)]">
+                <div className="max-h-full overflow-y-auto border-t border-slate-100 pt-3">
                   <nav className="grid gap-0.5">
                     {navLinks.map((item) => (
                       <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-600">{item.label}</Link>
@@ -400,13 +409,18 @@ export default function HomepageContent() {
                   </nav>
                   <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
                     {isLoggedIn ? (
-                      <button
-                        type="button"
-                        onClick={logout}
-                        className="col-span-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700"
-                      >
-                        Logout
-                      </button>
+                      <>
+                        <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-violet-200 bg-violet-50 px-3 py-2.5 text-center text-sm font-semibold text-violet-700">
+                          Profile
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={logout}
+                          className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700"
+                        >
+                          Logout
+                        </button>
+                      </>
                     ) : (
                       <>
                         <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700">Login</Link>
@@ -417,8 +431,7 @@ export default function HomepageContent() {
                   </div>
                 </div>
               </motion.div>
-            )}
-          </AnimatePresence>
+          </MobileMenuLayer>
         </div>
       </header>
 
@@ -714,7 +727,7 @@ export default function HomepageContent() {
       {/* FOOTER */}
       <footer className="px-4 pb-24 pt-10 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-white/80 p-7 shadow-sm backdrop-blur sm:p-10">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
             <div>
               <Logo />
               <p className="mt-3 text-sm leading-7 text-slate-500">Premium social growth panel for creators, brands, and agencies. Trusted, fast, and transparent.</p>

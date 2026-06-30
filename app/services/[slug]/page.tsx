@@ -7,8 +7,9 @@ import PublicShell from "@/components/marketing/PublicShell";
 import { getCurrencyDisclaimer } from "@/lib/currency";
 import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
+import { SEO_SITE_URL } from "@/lib/seo/metadata";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://socialrush.in";
+const siteUrl = SEO_SITE_URL;
 
 function formatInr(value: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);

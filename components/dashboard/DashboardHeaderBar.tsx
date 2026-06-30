@@ -89,7 +89,7 @@ function CurrencySelector() {
 
 export default function DashboardHeaderBar({ name, role, initials }: { name: string; role: string; initials: string }) {
   return (
-    <header className="sticky top-0 z-[60] border-b border-white/70 bg-white/90 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-[9999] border-b border-white/70 bg-white/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(30,58,110,.45)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-14 max-w-[1800px] items-center gap-1.5 min-[430px]:gap-2 sm:gap-4">
         <Logo compactOnMobile priority />
 

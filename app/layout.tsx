@@ -2,33 +2,47 @@ import type { Metadata } from "next";
 import "./globals.css";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
+import { SEO_SITE_URL } from "@/lib/seo/metadata";
 
-const siteUrl = process.env.NEXT_PUBLIC_SITE_URL?.trim() || "https://socialrush.in";
+const siteUrl = SEO_SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "SocialRUSH | Social Media Growth Platform",
+    default: "Social Media Growth Services India | SocialRUSH",
     template: "%s | SocialRUSH",
   },
-  description: "Order and track premium social media growth services for Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X.",
+  description:
+    "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
   openGraph: {
     type: "website",
+    locale: "en_IN",
     siteName: "SocialRUSH",
-    title: "SocialRUSH | Social Media Growth Platform",
-    description: "Order and track premium social media growth services with secure checkout, campaign tracking, and customer support.",
+    title: "Social Media Growth Services India | SocialRUSH",
+    description:
+      "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
     url: "/",
+    images: [
+      {
+        url: "/images/hero-3d.png",
+        width: 1448,
+        height: 1086,
+        alt: "SocialRUSH social media growth services dashboard",
+      },
+    ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "SocialRUSH | Social Media Growth Platform",
-    description: "Order and track premium social media growth services with secure checkout, campaign tracking, and customer support.",
+    title: "Social Media Growth Services India | SocialRUSH",
+    description:
+      "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
+    images: ["/images/hero-3d.png"],
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en">
+    <html lang="en-IN">
       <body className="overflow-x-clip bg-white text-slate-950">
         <ClientProviders>
           <script
@@ -41,6 +55,13 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 url: siteUrl,
                 logo: new URL("/logo.svg", siteUrl).toString(),
                 sameAs: ["https://wa.me/918860330771"],
+                contactPoint: {
+                  "@type": "ContactPoint",
+                  telephone: "+91-88603-30771",
+                  contactType: "customer support",
+                  areaServed: "IN",
+                  availableLanguage: ["English", "Hindi"],
+                },
               }),
             }}
           />
@@ -52,11 +73,6 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 "@type": "WebSite",
                 name: "SocialRUSH",
                 url: siteUrl,
-                potentialAction: {
-                  "@type": "SearchAction",
-                  target: `${siteUrl}/services?query={search_term_string}`,
-                  "query-input": "required name=search_term_string",
-                },
               }),
             }}
           />

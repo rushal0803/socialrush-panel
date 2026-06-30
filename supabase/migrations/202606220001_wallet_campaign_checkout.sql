@@ -48,15 +48,22 @@ begin
     into v_name, v_platform, v_rate, v_min, v_max
   from (values
     ('ig-followers','Instagram Real Followers','instagram',599.0000,100,100000),
-    ('ig-likes','Instagram Real Likes','instagram',299.0000,100,50000),
-    ('ig-views','Instagram Video Views','instagram',49.0000,500,500000),
+    ('ig-likes','Instagram Likes','instagram',249.0000,100,1000000),
+    ('ig-views','Instagram Views','instagram',30.0000,100,1000000),
     ('yt-subscribers','YouTube Subscribers','youtube',3999.0000,100,50000),
-    ('yt-likes','YouTube Likes','youtube',899.0000,100,50000),
-    ('yt-views','YouTube Views','youtube',499.0000,500,500000),
-    ('fb-followers','Facebook Followers','facebook',499.0000,100,100000),
-    ('fb-likes','Facebook Post Likes','facebook',299.0000,100,50000),
-    ('fb-views','Facebook Video Views','facebook',199.0000,500,500000),
-    ('x-followers','Twitter/X Followers','twitter',999.0000,100,100000)
+    ('yt-likes','YouTube Likes','youtube',499.0000,100,1000000),
+    ('yt-views','YouTube Views','youtube',249.0000,100,1000000),
+    ('fb-followers','Facebook Followers','facebook',299.0000,100,1000000),
+    ('fb-likes','Facebook Likes','facebook',149.0000,100,1000000),
+    ('fb-views','Facebook Views','facebook',99.0000,100,1000000),
+    ('fb-shares','Facebook Shares','facebook',499.0000,100,1000000),
+    ('li-followers','LinkedIn Followers','linkedin',2999.0000,100,1000000),
+    ('li-likes','LinkedIn Likes','linkedin',2499.0000,100,1000000),
+    ('tg-members','Telegram Premium Members','telegram',799.0000,100,1000000),
+    ('tt-followers','TikTok Followers','tiktok',499.0000,100,1000000),
+    ('tt-likes','TikTok Likes','tiktok',150.0000,100,1000000),
+    ('tt-views','TikTok Views','tiktok',15.0000,100,1000000),
+    ('x-followers','Twitter/X Followers','twitter',799.0000,100,1000000)
   ) as x(code,name,platform,rate,min_qty,max_qty)
   where x.code = p_service_code;
   if not found then raise exception 'Unknown campaign service'; end if;

@@ -1,14 +1,15 @@
-import type { Metadata } from "next";
 import FaqPageContent from "@/components/marketing/FaqPageContent";
 import type { FaqCategory } from "@/components/marketing/FaqPageContent";
 import PublicShell from "@/components/marketing/PublicShell";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = {
-  title: "Frequently Asked Questions",
+export const metadata = createPageMetadata({
+  title: "Social Media Growth Services FAQ",
   description:
-    "Everything you need to know about SocialRUSH services, pricing, payments, delivery, and support.",
-  alternates: { canonical: "/faq" },
-};
+    "Find answers about SocialRUSH service pricing, delivery, refill support, wallet payments, order tracking and social media growth services in India.",
+  path: "/faq",
+  keywords: ["social media growth FAQ", "SocialRUSH service support"],
+});
 
 const faqCategories: FaqCategory[] = [
   {
@@ -30,6 +31,11 @@ const faqCategories: FaqCategory[] = [
         answer:
           "Yes. SocialRUSH is built for both small and large teams, with flexible service options, transparent pricing, and support guidance so smaller businesses can scale at their own pace.",
       },
+      {
+        question: "Is SocialRUSH safe?",
+        answer:
+          "SocialRUSH uses public-link ordering, secure wallet payments, visible order tracking, and clearly stated delivery and refill terms. You never need to share a social media password.",
+      },
     ],
   },
   {
@@ -39,17 +45,17 @@ const faqCategories: FaqCategory[] = [
       {
         question: "What services do you provide?",
         answer:
-          "We provide social media growth services, paid ad support, chatbot workflows, automation setup, and performance-focused campaign assistance for modern digital businesses.",
+          "SocialRUSH provides trackable social media growth services for Instagram, YouTube, Facebook, LinkedIn, TikTok, Telegram, and Twitter/X. Current availability, pricing, delivery estimates, and refill terms are shown before checkout.",
       },
       {
-        question: "Do you offer AI chatbots and WhatsApp automation?",
+        question: "Do I need to share my social media password?",
         answer:
-          "Yes. We offer AI chatbot implementation and WhatsApp automation solutions to help businesses capture leads, respond faster, and improve customer communication flows.",
+          "No. SocialRUSH uses public-link ordering. You submit only the public profile, post, reel, video, page, channel, or group required for the selected service.",
       },
       {
-        question: "Do you provide SEO, social media marketing, Meta Ads, and Google Ads?",
+        question: "Which link should I submit?",
         answer:
-          "Yes. SocialRUSH supports SEO-focused growth planning, social media marketing, Meta Ads management, and Google Ads strategy depending on your business objectives.",
+          "Use the exact destination requested on the order page: a profile or channel for follower, subscriber, or member services, and the specific post, reel, or video for engagement and view services. Keep it public during delivery.",
       },
     ],
   },
@@ -60,17 +66,17 @@ const faqCategories: FaqCategory[] = [
       {
         question: "Do you have fixed pricing?",
         answer:
-          "Many services have clear baseline pricing for easier decision-making, while advanced or large-scale requirements may vary based on campaign scope and platform needs.",
+          "Every active service displays a current rate. Entering a valid quantity calculates the exact campaign total before confirmation, so you can review the charge before your wallet is used.",
       },
       {
-        question: "Can I get a custom package?",
+        question: "Are there hidden campaign charges?",
         answer:
-          "Absolutely. We can create custom packages based on your goals, timeline, target platform, and budget to ensure the plan fits your exact growth strategy.",
+          "No hidden campaign charge is added after confirmation. Review the service rate, quantity, total, wallet balance, delivery estimate, and refill information before placing the order.",
       },
       {
-        question: "Do you offer monthly plans?",
+        question: "Where can I compare the latest prices?",
         answer:
-          "Yes. Monthly and ongoing plans are available for businesses that need continuous growth support, recurring optimization, and long-term campaign consistency.",
+          "Use the Pricing page for public starting rates and the Packages or New Order flow for the latest confirmed availability and exact total.",
       },
     ],
   },
@@ -79,7 +85,7 @@ const faqCategories: FaqCategory[] = [
     label: "Payments",
     items: [
       {
-        question: "Which payment methods do you accept?",
+        question: "How do payments work?",
         answer:
           "We support secure online payment options via integrated gateways including UPI, cards, net banking, and other supported digital payment modes.",
       },
@@ -100,12 +106,12 @@ const faqCategories: FaqCategory[] = [
     label: "Delivery",
     items: [
       {
-        question: "How long does service delivery take?",
+        question: "How does delivery work?",
         answer:
           "Delivery timelines depend on service type, order size, and platform dynamics. Estimated windows are visible during ordering and progress can be tracked from your account.",
       },
       {
-        question: "How can I track my order?",
+        question: "Can I track my order?",
         answer:
           "You can track order status directly in your dashboard, including processing stage, updates, and completion details for each campaign request.",
       },
@@ -113,6 +119,11 @@ const faqCategories: FaqCategory[] = [
         question: "What happens if my order is delayed?",
         answer:
           "If delivery exceeds the expected window, our support team reviews the campaign status and provides the next action, update timeline, or suitable resolution.",
+      },
+      {
+        question: "What is refill support?",
+        answer:
+          "Eligible services include refill coverage for the period shown before checkout. If a qualifying delivery drops during that period, contact support with the order ID for review.",
       },
     ],
   },
@@ -134,6 +145,16 @@ const faqCategories: FaqCategory[] = [
         question: "Can I request changes after placing an order?",
         answer:
           "Depending on order stage and service type, modifications may be possible. Contact support promptly with your order details to check available change options.",
+      },
+      {
+        question: "Do you provide refunds?",
+        answer:
+          "Refund eligibility depends on the service status and the published refund policy. Approved refunds are returned through the applicable wallet or payment process after review.",
+      },
+      {
+        question: "Can I contact support before ordering?",
+        answer:
+          "Yes. You can contact SocialRUSH through the contact page or WhatsApp before ordering if you need help choosing a service or confirming link requirements.",
       },
     ],
   },

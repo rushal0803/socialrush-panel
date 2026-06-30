@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
+import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
@@ -50,6 +51,7 @@ export async function POST(request: NextRequest) {
     "facebook-followers": "fb-followers",
     "facebook-likes": "fb-likes",
     "facebook-views": "fb-views",
+    "facebook-shares": "fb-shares",
     "linkedin-followers": "li-followers",
     "linkedin-likes": "li-likes",
     "telegram-members": "tg-members",
@@ -57,7 +59,6 @@ export async function POST(request: NextRequest) {
     "tiktok-likes": "tt-likes",
     "tiktok-views": "tt-views",
     "x-followers": "x-followers",
-    "x-likes": "x-likes",
   } as const;
 
   const normalizedCode = (serviceLookup as Record<string, string>)[body.serviceCode] ?? body.serviceCode;
@@ -89,7 +90,7 @@ export async function POST(request: NextRequest) {
   if (error) {
     if (
       (error.message || "").toLowerCase().includes("unknown campaign service") &&
-      body.fallbackPrice &&
+      (body.serviceCode in SERVICE_PRICES || body.fallbackPrice) &&
       body.fallbackName &&
       body.fallbackPlatform &&
       body.fallbackMin &&
@@ -104,7 +105,11 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const total = Math.round(((body.quantity / 1000) * body.fallbackPrice) * 100) / 100;
+      const canonicalRate =
+        body.serviceCode in SERVICE_PRICES
+          ? SERVICE_PRICES[body.serviceCode as ServiceCode]
+          : Number(body.fallbackPrice);
+      const total = Math.round(((body.quantity / 1000) * canonicalRate) * 100) / 100;
       const { data: profile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
       const currentBalance = Number(profile?.balance ?? 0);
       if (currentBalance + 0.0001 < total) {
@@ -120,7 +125,7 @@ export async function POST(request: NextRequest) {
           platform: body.fallbackPlatform,
           link: body.link,
           quantity: body.quantity,
-          unit_price: body.fallbackPrice,
+          unit_price: canonicalRate,
           charge: total,
           status: "pending",
           package_name: "Custom",

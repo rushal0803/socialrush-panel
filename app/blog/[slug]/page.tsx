@@ -4,6 +4,7 @@ import { notFound } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { articleSlugs, getArticleBySlug } from "@/components/marketing/blog/blogData";
 import SafeImage from "@/components/SafeImage";
+import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 export function generateStaticParams() {
   return articleSlugs.map((slug) => ({ slug }));
@@ -18,11 +19,12 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     };
   }
 
-  return {
-    title: `${article.title} | SocialRUSH Blog`,
+  return createPageMetadata({
+    title: article.title,
     description: article.description,
-    alternates: { canonical: `/blog/${article.slug}` },
-  };
+    path: `/blog/${article.slug}`,
+    keywords: [article.title, article.category, "social media growth India"],
+  });
 }
 
 export default function BlogDetailPage({ params }: { params: { slug: string } }) {
@@ -32,8 +34,31 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     notFound();
   }
 
+  const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    headline: article.title,
+    description: article.description,
+    mainEntityOfPage: articleUrl,
+    image: new URL(article.image, SEO_SITE_URL).toString(),
+    author: { "@type": "Organization", name: "SocialRUSH" },
+    publisher: {
+      "@type": "Organization",
+      name: "SocialRUSH",
+      logo: {
+        "@type": "ImageObject",
+        url: new URL("/logo.svg", SEO_SITE_URL).toString(),
+      },
+    },
+  };
+
   return (
     <BlogShell>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
       <article className="relative px-5 pb-24 pt-10 sm:px-6 lg:px-8 lg:pt-12">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-[-6%] top-0 h-64 w-64 rounded-full bg-pink-200/35 blur-3xl" />
@@ -86,6 +111,22 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               </section>
             ))}
           </div>
+
+          {article.relatedLinks?.length ? (
+            <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(86,114,175,.14)] backdrop-blur">
+              <h2 className="text-xl font-extrabold text-[#122a5c]">Related guides and services</h2>
+              <p className="mt-2 text-sm leading-7 text-[#4f6795]">
+                Continue with the service or pricing information most relevant to this strategy.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-3">
+                {article.relatedLinks.map((item) => (
+                  <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-xl border border-[#d7e3ff] bg-[#f4f8ff] px-4 py-2.5 text-sm font-bold text-[#284679] transition hover:-translate-y-0.5 hover:border-[#aec5f6]">
+                    {item.label}
+                  </Link>
+                ))}
+              </div>
+            </nav>
+          ) : null}
 
           <section className="mt-10 rounded-[30px] border border-white/85 bg-gradient-to-r from-[#182f67] via-[#223f7f] to-[#2f5d9d] px-6 py-8 text-white shadow-[0_24px_52px_rgba(39,65,123,.38)] sm:px-8">
             <h2 className="text-3xl font-black leading-tight">Ready to launch your next growth campaign?</h2>

@@ -1,7 +1,12 @@
-import type { Metadata } from "next";
 import RefundPolicyView from "@/components/marketing/RefundPolicyPage";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = { title: "Refund Policy", description: "SocialRUSH refund rules for wallet payments, duplicate charges, campaign orders, partial delivery, and payment errors." };
+export const metadata = createPageMetadata({
+  title: "Refund Policy",
+  description:
+    "Review the SocialRUSH Refund Policy for wallet payments, duplicate charges, cancelled campaigns, partial delivery, refill coverage and approved refunds.",
+  path: "/refund-policy",
+});
 
 const sections = [
   { title: "Policy overview", body: ["This policy applies to SocialRUSH wallet payments and social media growth campaign orders. Eligibility depends on payment status, campaign status, delivery already completed, refill terms, and the circumstances of the request."] },

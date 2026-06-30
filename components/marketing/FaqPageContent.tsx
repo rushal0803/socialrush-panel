@@ -49,7 +49,6 @@ const sectionFade: Variants = {
 
 export default function FaqPageContent({ categories }: { categories: FaqCategory[] }) {
   const [activeCategory, setActiveCategory] = useState(categories[0]?.key ?? "general");
-  const selectedCategory = categories.find((category) => category.key === activeCategory) ?? categories[0];
 
   return (
     <div className="relative overflow-hidden bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
@@ -113,17 +112,21 @@ export default function FaqPageContent({ categories }: { categories: FaqCategory
 
       <section className="relative px-5 pb-12 sm:px-6 lg:px-8 lg:pb-16">
         <motion.div variants={sectionFade} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mx-auto max-w-6xl">
-          <div className="mb-5 flex items-center gap-3 text-slate-700">
-            <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-sky-500 text-white shadow-[0_12px_24px_rgba(236,72,153,.3)]">
-              <Sparkles className="h-5 w-5" />
-            </span>
-            <div>
-              <h2 className="text-lg font-extrabold sm:text-xl">{selectedCategory.label} FAQs</h2>
-              <p className="text-xs text-slate-500 sm:text-sm">Clear answers to help you choose the right SocialRUSH service.</p>
-            </div>
-          </div>
+          {categories.map((category) => (
+            <div key={category.key} hidden={category.key !== activeCategory}>
+              <div className="mb-5 flex items-center gap-3 text-slate-700">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-sky-500 text-white shadow-[0_12px_24px_rgba(236,72,153,.3)]">
+                  <Sparkles className="h-5 w-5" />
+                </span>
+                <div>
+                  <h2 className="text-lg font-extrabold sm:text-xl">{category.label} FAQs</h2>
+                  <p className="text-xs text-slate-500 sm:text-sm">Clear answers to help you choose the right SocialRUSH service.</p>
+                </div>
+              </div>
 
-          <FaqAccordion3D items={selectedCategory.items} />
+              <FaqAccordion3D items={category.items} />
+            </div>
+          ))}
         </motion.div>
       </section>
 

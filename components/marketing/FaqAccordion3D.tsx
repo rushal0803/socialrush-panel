@@ -1,6 +1,6 @@
 "use client";
 
-import { AnimatePresence, motion } from "framer-motion";
+import { motion } from "framer-motion";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
 
@@ -44,22 +44,20 @@ export default function FaqAccordion3D({ items }: { items: FaqItem[] }) {
               </span>
             </button>
 
-            <AnimatePresence initial={false}>
-              {isOpen && (
-                <motion.div
-                  key="content"
-                  initial={{ height: 0, opacity: 0 }}
-                  animate={{ height: "auto", opacity: 1 }}
-                  exit={{ height: 0, opacity: 0 }}
-                  transition={{ duration: 0.28, ease: "easeOut" }}
-                  className="overflow-hidden"
-                >
+            <div
+              aria-hidden={!isOpen}
+              className={`grid transition-[grid-template-rows,opacity] duration-300 ${
+                isOpen
+                  ? "grid-rows-[1fr] opacity-100"
+                  : "grid-rows-[0fr] opacity-0"
+              }`}
+            >
+              <div className="overflow-hidden">
                   <p className="border-t border-sky-100/80 px-5 pb-5 pt-4 text-sm leading-7 text-slate-600 sm:px-6 sm:pb-6 sm:text-[15px]">
                     {item.answer}
                   </p>
-                </motion.div>
-              )}
-            </AnimatePresence>
+              </div>
+            </div>
           </motion.article>
         );
       })}

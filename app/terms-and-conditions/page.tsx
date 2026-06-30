@@ -1,7 +1,12 @@
-import type { Metadata } from "next";
 import PolicyPage from "@/components/marketing/PolicyPage";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = { title: "Terms & Conditions", description: "Terms governing SocialRUSH accounts, wallet funding, campaign orders, delivery, refills, billing, and support." };
+export const metadata = createPageMetadata({
+  title: "Terms & Conditions",
+  description:
+    "Read the SocialRUSH Terms and Conditions for accounts, wallet funding, social media growth orders, delivery, refill support, cancellations and platform use.",
+  path: "/terms-and-conditions",
+});
 
 const sections = [
   { title: "Acceptance of terms", body: ["By accessing SocialRUSH, creating an account, funding a wallet, or placing a campaign, you agree to these Terms & Conditions and the service details shown before checkout."] },

@@ -14,8 +14,15 @@ export const metadata: Metadata = {
 
 export default async function LoginPage() {
   const supabase = await createClient();
-  const { data: { session } } = await supabase.auth.getSession();
-  if (session) redirect("/dashboard/new-order");
+  const { data: { user } } = await supabase.auth.getUser();
+  if (user) {
+    const { data: profile } = await supabase
+      .from("profiles")
+      .select("role")
+      .eq("id", user.id)
+      .maybeSingle();
+    redirect(profile?.role === "admin" ? "/admin/dashboard" : "/dashboard/new-order");
+  }
 
   return (
     <AuthShell

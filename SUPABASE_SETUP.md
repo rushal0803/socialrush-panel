@@ -5,7 +5,8 @@
 3. Apply `supabase/migrations/202606190001_initial_schema.sql` with the Supabase CLI (`supabase db push`) or the SQL editor.
 4. In **Authentication > URL Configuration**, set the site URL and add these redirect URLs:
    - `http://localhost:3000/auth/callback`
-   - your production domain followed by `/auth/callback`
+   - `https://www.getsocialrush.com/auth/callback`
+   - `https://getsocialrush.com/auth/callback`
 5. Keep email confirmation enabled in **Authentication > Providers > Email** to require email verification.
 6. Install dependencies and start the app:
 

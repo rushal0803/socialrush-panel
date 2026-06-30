@@ -5,6 +5,10 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import {
+  ADMIN_DESTINATION,
+  getSafeCustomerDestination,
+} from "@/lib/auth/destination";
 
 export default function LoginForm() {
   const router = useRouter();
@@ -14,13 +18,6 @@ export default function LoginForm() {
   const [googleLoading, setGoogleLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [keepSignedIn, setKeepSignedIn] = useState(true);
-
-  function getSafeNext(defaultPath: string) {
-    const nextPath = searchParams.get("next");
-    if (!nextPath) return defaultPath;
-    const safe = nextPath.startsWith("/") && !nextPath.startsWith("//") && !nextPath.includes("://");
-    return safe ? nextPath : defaultPath;
-  }
 
   function mapAuthError(message: string) {
     const normalized = message.toLowerCase();
@@ -51,9 +48,9 @@ export default function LoginForm() {
 
     try {
       const supabase = createClient();
-      const { error: loginError } = await supabase.auth.signInWithPassword({ email, password });
-      if (loginError) {
-        setError(mapAuthError(loginError.message));
+      const { data: loginData, error: loginError } = await supabase.auth.signInWithPassword({ email, password });
+      if (loginError || !loginData.user) {
+        setError(mapAuthError(loginError?.message || "Unable to sign in. Please try again."));
         setLoading(false);
         return;
       }
@@ -62,9 +59,17 @@ export default function LoginForm() {
         // Supabase browser sessions persist by default. We still expose this checkbox for expected UX.
       }
 
-      const nextPath = getSafeNext("/dashboard/new-order");
-      router.replace(nextPath);
-      router.refresh();
+      const { data: profile } = await supabase
+        .from("profiles")
+        .select("role")
+        .eq("id", loginData.user.id)
+        .maybeSingle();
+      const customerDestination = getSafeCustomerDestination(
+        searchParams.get("next") ?? searchParams.get("callbackUrl"),
+      );
+      router.replace(
+        profile?.role === "admin" ? ADMIN_DESTINATION : customerDestination,
+      );
     } catch {
       setError("Unable to sign in right now. Please try again.");
       setLoading(false);
@@ -77,14 +82,16 @@ export default function LoginForm() {
 
     try {
       const supabase = createClient();
-
-      const nextPath = getSafeNext("/dashboard/new-order");
-      const redirectUrl = `${window.location.origin}/auth/callback?next=${encodeURIComponent(nextPath)}`;
+      const redirectUrl = new URL("/auth/callback", window.location.origin);
+      const customerDestination = getSafeCustomerDestination(
+        searchParams.get("next") ?? searchParams.get("callbackUrl"),
+      );
+      redirectUrl.searchParams.set("next", customerDestination);
 
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
         options: {
-          redirectTo: redirectUrl,
+          redirectTo: redirectUrl.toString(),
         },
       });
 

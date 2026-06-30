@@ -25,8 +25,16 @@ export function getSiteUrl(options: { headers?: HeaderReader; requestUrl?: strin
   const configured = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
   if (configured) return configured;
 
-  const requestOrigin = normalizeSiteUrl(options.headers?.get("origin"));
-  if (requestOrigin) return requestOrigin;
+  if (options.requestUrl) {
+    try {
+      return new URL(options.requestUrl).origin;
+    } catch {
+      // Continue to header-derived and environment fallbacks.
+    }
+  }
+
+  const headerOrigin = normalizeSiteUrl(options.headers?.get("origin"));
+  if (headerOrigin) return headerOrigin;
 
   const forwardedHost = firstHeaderValue(options.headers?.get("x-forwarded-host") ?? null);
   const host = forwardedHost || firstHeaderValue(options.headers?.get("host") ?? null);
@@ -37,21 +45,8 @@ export function getSiteUrl(options: { headers?: HeaderReader; requestUrl?: strin
     if (forwardedOrigin) return forwardedOrigin;
   }
 
-  if (options.requestUrl) {
-    try {
-      return new URL(options.requestUrl).origin;
-    } catch {
-      // Continue to deployment and development fallbacks.
-    }
-  }
-
-  const vercelOrigin = normalizeSiteUrl(
-    process.env.VERCEL_PROJECT_PRODUCTION_URL || process.env.VERCEL_URL,
-  );
-  if (vercelOrigin) return vercelOrigin;
-
   return process.env.NODE_ENV === "production"
-    ? "https://socialrush-panel.vercel.app"
+    ? "https://www.getsocialrush.com"
     : "http://localhost:3000";
 }
 

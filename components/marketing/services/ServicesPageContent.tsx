@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   CheckCircle2,
@@ -12,7 +11,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import OrderNowButton from "@/components/marketing/OrderNowButton";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -44,6 +43,7 @@ const serviceNames: Record<string, string> = {
   "facebook-followers": "Facebook Followers",
   "facebook-likes": "Facebook Likes",
   "facebook-views": "Facebook Views",
+  "facebook-shares": "Facebook Shares",
   "linkedin-followers": "LinkedIn Followers",
   "linkedin-likes": "LinkedIn Likes",
   "telegram-members": "Telegram Members",
@@ -51,7 +51,19 @@ const serviceNames: Record<string, string> = {
   "tiktok-likes": "TikTok Likes",
   "tiktok-views": "TikTok Views",
   "x-followers": "Twitter/X Followers",
-  "x-likes": "Twitter/X Likes",
+};
+
+const seoServicePaths: Record<string, string> = {
+  "instagram-followers": "/instagram-followers",
+  "instagram-likes": "/instagram-likes",
+  "instagram-views": "/instagram-views",
+  "youtube-subscribers": "/youtube-subscribers",
+  "youtube-likes": "/youtube-likes",
+  "youtube-views": "/youtube-views",
+  "facebook-followers": "/facebook-followers",
+  "linkedin-followers": "/linkedin-followers",
+  "telegram-members": "/telegram-members",
+  "x-followers": "/twitter-followers",
 };
 
 const trustBadges = [
@@ -76,13 +88,6 @@ function packagePlatform(platform: SmmPlatformId) {
 export default function ServicesPageContent() {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>("instagram");
-
-  const services = useMemo(
-    () => activeSmmServices.filter((service) => service.platform === selectedPlatform),
-    [selectedPlatform],
-  );
-
-  const selectedMeta = platformMeta[selectedPlatform];
 
   return (
     <BlogShell>
@@ -154,26 +159,35 @@ export default function ServicesPageContent() {
           </div>
         </section>
 
-        <section className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8">
+        <div className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8">
           <div className="mx-auto max-w-7xl">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">{selectedMeta.label}</p>
-                <h2 className="mt-2 text-2xl font-black text-[#14316a]">{selectedMeta.label} services</h2>
-              </div>
-              <p className="text-xs font-semibold text-[#6079a7]">{services.length} services available</p>
-            </div>
+            {platformOrder.map((platformId) => {
+              const meta = platformMeta[platformId];
+              const platformServices = activeSmmServices.filter(
+                (service) => service.platform === platformId,
+              );
+              const active = selectedPlatform === platformId;
 
-            <motion.div
-              key={selectedPlatform}
-              initial={{ opacity: 0, y: 10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.25 }}
-              className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3"
-            >
-              {services.map((service) => {
+              return (
+                <section
+                  key={platformId}
+                  id={`${platformId}-services`}
+                  aria-labelledby={`${platformId}-services-heading`}
+                  hidden={!active}
+                >
+                  <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+                    <div>
+                      <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">{meta.label}</p>
+                      <h2 id={`${platformId}-services-heading`} className="mt-2 text-2xl font-black text-[#14316a]">{meta.label} services</h2>
+                    </div>
+                    <p className="text-xs font-semibold text-[#6079a7]">{platformServices.length} services available</p>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    {platformServices.map((service) => {
                 const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
                 const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}`;
+                const serviceDetailPath = seoServicePaths[service.code] ?? `/services/${service.code}`;
                 const refillAvailable = !service.refillPolicy.toLowerCase().includes("no refill");
 
                 return (
@@ -182,15 +196,19 @@ export default function ServicesPageContent() {
                     className="group flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-5 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#cbdcff] hover:shadow-[0_24px_52px_-26px_rgba(65,89,150,.4)] sm:p-6"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${selectedMeta.gradient} text-white shadow-lg`}>
-                        <PlatformIcon platform={selectedMeta.icon} title={selectedMeta.label} className="h-6 w-6" />
+                      <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}>
+                        <PlatformIcon platform={meta.icon} title={meta.label} className="h-6 w-6" />
                       </span>
                       <span className="rounded-full border border-[#dce7ff] bg-[#f8fbff] px-3 py-1 text-[10px] font-black uppercase text-[#5270aa]">
                         {service.qualityType}
                       </span>
                     </div>
 
-                    <h3 className="mt-4 text-lg font-black text-[#14316a]">{serviceNames[service.code] || service.name}</h3>
+                    <h3 className="mt-4 text-lg font-black text-[#14316a]">
+                      <Link href={serviceDetailPath} className="transition hover:text-blue-600">
+                        {serviceNames[service.code] || service.name}
+                      </Link>
+                    </h3>
                     <p className="mt-2 flex-1 text-sm leading-6 text-[#526d9f]">{service.description}</p>
 
                     <div className="mt-5 rounded-2xl border border-[#e1eaff] bg-[#f8fbff] p-4">
@@ -227,10 +245,13 @@ export default function ServicesPageContent() {
                     </div>
                   </article>
                 );
-              })}
-            </motion.div>
+                    })}
+                  </div>
+                </section>
+              );
+            })}
           </div>
-        </section>
+        </div>
 
         <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-10">

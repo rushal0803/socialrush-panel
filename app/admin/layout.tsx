@@ -18,7 +18,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) redirect("/admin/login");
   const profile = await ensureUserProfile(supabase, user).catch(() => null);
-  if (!profile || profile.role !== "admin") redirect("/dashboard");
+  if (!profile || profile.role !== "admin") redirect("/dashboard/new-order");
 
   return (
     <div className="dashboard-shell relative flex min-h-screen">

@@ -28,7 +28,9 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
       </main>
     );
   }
-  if (!context.user || !context.profile) redirect("/login?next=/dashboard");
+  if (!context.user || !context.profile) {
+    redirect("/login?next=/dashboard/new-order");
+  }
 
   return (
     <div className="dashboard-shell relative flex min-h-screen">

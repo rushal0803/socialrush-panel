@@ -11,6 +11,7 @@ import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { calculateServiceTotal } from "@/lib/service-pricing";
 export const dynamic = "force-dynamic";
 const quantityOptions = [1000, 5000, 10000];
 
@@ -63,8 +64,7 @@ export default function OrderSummaryPage() {
     );
   }
 
-  const startingPrice = service.pricePer1000;
-  const totalPrice = Math.round((startingPrice / 1000) * quantity * 100) / 100;
+  const totalPrice = calculateServiceTotal(service.code, quantity);
   const formattedTotal = formatCurrency(totalPrice, currency);
 
   const handleCheckout = async () => {

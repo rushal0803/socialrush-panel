@@ -1,7 +1,12 @@
-import type { Metadata } from "next";
 import PolicyPage from "@/components/marketing/PolicyPage";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = { title: "Privacy Policy", description: "How SocialRUSH handles account, campaign, support, transaction, and technical information." };
+export const metadata = createPageMetadata({
+  title: "Privacy Policy",
+  description:
+    "Read the SocialRUSH Privacy Policy covering account information, campaign links, wallet transactions, payments, support records and data security in India.",
+  path: "/privacy-policy",
+});
 
 const sections = [
   { title: "Scope", body: ["This Privacy Policy explains how SocialRUSH collects, uses, stores, and shares personal information when you visit our website, create an account, fund a wallet, place a campaign, or contact support."] },

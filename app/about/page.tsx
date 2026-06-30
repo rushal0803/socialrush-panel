@@ -1,15 +1,229 @@
-import type { Metadata } from "next";
+import Link from "next/link";
 import MarketingIcon, { type MarketingIconName } from "@/components/marketing/MarketingIcon";
-import PageHero from "@/components/marketing/PageHero";
 import PortalCTA from "@/components/marketing/PortalCTA";
 import PublicShell from "@/components/marketing/PublicShell";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata: Metadata = { title: "About SocialRUSH", description: "SocialRUSH simplifies social media growth ordering with transparent pricing, secure wallet funding, campaign tracking, and customer support." };
+export const metadata = createPageMetadata({
+  title: "About Our Social Media Growth Platform",
+  description:
+    "Learn how SocialRUSH helps creators, businesses and agencies in India order and track social media growth services through one secure campaign dashboard.",
+  path: "/about",
+  keywords: ["SocialRUSH India", "social media growth platform India"],
+});
+
+const differences: Array<{ icon: MarketingIconName; title: string; description: string }> = [
+  { icon: "search", title: "Clear service discovery", description: "Compare supported platforms, campaign types, quantities and current pricing before you order." },
+  { icon: "wallet", title: "Connected wallet experience", description: "Fund your account securely and keep campaign spending and wallet activity organized." },
+  { icon: "trend", title: "Visible campaign progress", description: "Track order status and keep every campaign record available from one dashboard." },
+  { icon: "refresh", title: "Refill clarity", description: "Eligible refill coverage and service requirements are shown before checkout." },
+  { icon: "message", title: "Support with context", description: "Account support keeps the campaign and customer conversation connected." },
+  { icon: "shield", title: "Public-link ordering", description: "Place campaigns with public destinations—SocialRUSH never needs your social password." },
+];
+
+const audiences: Array<{ icon: MarketingIconName; title: string; description: string }> = [
+  { icon: "sparkles", title: "Creators", description: "Organize profile and content campaigns around your publishing calendar." },
+  { icon: "heart", title: "Influencers", description: "Support visible social proof while keeping campaign details easy to review." },
+  { icon: "dashboard", title: "Brands", description: "Manage multiple platform goals from one professional workspace." },
+  { icon: "users", title: "Agencies", description: "Keep client destinations, orders and support records clearly separated." },
+  { icon: "trend", title: "Resellers", description: "Use a repeatable workflow for selecting, ordering and tracking client campaigns." },
+];
+
+const trustCards: Array<{ icon: MarketingIconName; title: string; description: string; tone: string }> = [
+  { icon: "shield", title: "Secure checkout", description: "Review campaign details before any wallet charge is confirmed.", tone: "from-emerald-400 to-cyan-500" },
+  { icon: "wallet", title: "Wallet system", description: "Keep verified funding and campaign charges visible in your account.", tone: "from-blue-500 to-indigo-500" },
+  { icon: "dashboard", title: "Order tracking", description: "Monitor active and completed campaigns from your dashboard.", tone: "from-violet-500 to-fuchsia-500" },
+  { icon: "refresh", title: "Refill support", description: "Eligible service coverage is presented with the campaign details.", tone: "from-amber-400 to-orange-500" },
+  { icon: "message", title: "WhatsApp support", description: "Get practical help when you need guidance choosing a service.", tone: "from-emerald-500 to-green-600" },
+];
 
 export default function AboutPage() {
-  return <PublicShell tone="light3d"><PageHero eyebrow="About SocialRUSH" title="A more organized way to manage social growth." description="SocialRUSH replaces scattered messages and unclear quotes with a professional workspace for service discovery, secure funding, campaign checkout, tracking, and support." />
-    <section className="px-5 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-2"><div><p className="text-xs font-bold uppercase tracking-[.18em] text-blue-600">Why SocialRUSH exists</p><h2 className="mt-4 text-3xl font-bold tracking-tight text-[#07152f]">Customers deserve clarity before they place a campaign.</h2><p className="mt-5 text-sm leading-7 text-slate-600">A growth order should not depend on a long chain of direct messages. Customers should know the platform, service, public destination, quantity, rate, delivery guidance, and available refill terms before checkout.</p><p className="mt-4 text-sm leading-7 text-slate-600">SocialRUSH puts those decisions into one secure account so creators, businesses, and agencies can work with a repeatable process.</p></div><div className="rounded-[32px] bg-[#07152f] p-7 text-white shadow-2xl shadow-blue-900/20 sm:p-9"><div className="flex items-center gap-3"><span className="grid h-12 w-12 place-items-center rounded-xl bg-blue-500/15 text-blue-300"><MarketingIcon name="dashboard" className="h-6 w-6" /></span><div><p className="text-[9px] uppercase tracking-wider text-blue-300">The SocialRUSH difference</p><h2 className="mt-1 text-xl font-bold">A dashboard-first experience</h2></div></div><div className="mt-7 grid gap-3 sm:grid-cols-2">{[["search", "Curated catalog"], ["card", "Clear checkout"], ["trend", "Order tracking"], ["message", "Account support"], ["refresh", "Refill visibility"], ["shield", "Public-link safety"]].map(([icon, text]) => <div key={text} className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[.06] p-4 text-xs font-semibold"><MarketingIcon name={icon as MarketingIconName} className="h-4 w-4 text-blue-300" />{text}</div>)}</div></div></div></section>
-    <section className="bg-[#f6f9ff] px-5 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="text-center"><p className="text-xs font-bold uppercase tracking-[.18em] text-blue-600">Who it is for</p><h2 className="mt-4 text-3xl font-bold text-[#07152f]">One workflow for individual and professional buyers.</h2></div><div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">{[["users", "Creators and influencers", "Organize profile and content campaigns without sharing account passwords."], ["sparkles", "Artists and public figures", "Coordinate visibility campaigns around releases and public content."], ["dashboard", "Brands and startups", "Keep campaign links, amounts, and statuses visible to the team."], ["trend", "Agencies and managers", "Run separate client campaigns with searchable order and support records."]].map(([icon, title, text]) => <article key={title} className="rounded-3xl border border-white bg-white p-6 shadow-sm transition hover:-translate-y-1 hover:shadow-xl"><span className="grid h-11 w-11 place-items-center rounded-xl bg-blue-50 text-blue-600"><MarketingIcon name={icon as MarketingIconName} className="h-5 w-5" /></span><h3 className="mt-5 text-base font-bold text-[#07152f]">{title}</h3><p className="mt-2 text-xs leading-6 text-slate-500">{text}</p></article>)}</div></div></section>
-    <section className="px-5 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="grid gap-5 lg:grid-cols-2"><article className="rounded-3xl border border-rose-100 bg-rose-50/60 p-7"><p className="text-[10px] font-bold uppercase tracking-wider text-rose-600">Scattered DM ordering</p><ul className="mt-6 space-y-4">{["Rates buried in messages", "Payment and order records separated", "Status updates require follow-ups", "Support context can get lost"].map((item) => <li key={item} className="flex gap-3 text-sm text-slate-600"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white text-rose-500">×</span>{item}</li>)}</ul></article><article className="rounded-3xl border border-blue-100 bg-blue-50 p-7"><p className="text-[10px] font-bold uppercase tracking-wider text-blue-600">SocialRUSH workspace</p><ul className="mt-6 space-y-4">{["Pricing and quantity reviewed at checkout", "Wallet transactions and orders stay organized", "Campaign statuses remain visible", "Support tickets stay connected to the account"].map((item) => <li key={item} className="flex gap-3 text-sm font-semibold text-slate-700"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-white text-emerald-600"><MarketingIcon name="check" className="h-3.5 w-3.5" /></span>{item}</li>)}</ul></article></div><div className="mt-12 text-center"><PortalCTA className="inline-flex min-h-12 items-center gap-2 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white">Experience the platform <MarketingIcon name="arrow" className="h-4 w-4" /></PortalCTA></div></div></section>
-  </PublicShell>;
+  return (
+    <PublicShell tone="light3d">
+      <section className="relative overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8 lg:pb-24 lg:pt-20">
+        <div className="pointer-events-none absolute -left-24 top-10 h-80 w-80 rounded-full bg-pink-200/50 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 top-16 h-96 w-96 rounded-full bg-cyan-200/50 blur-3xl" />
+        <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-violet-200/35 blur-3xl" />
+
+        <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-14">
+          <div>
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/75 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa] shadow-sm backdrop-blur-xl">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-pink-500 via-violet-500 to-cyan-400 text-white">
+                <MarketingIcon name="sparkles" className="h-4 w-4" />
+              </span>
+              About SocialRUSH
+            </span>
+            <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#10234f] sm:text-5xl lg:text-6xl">
+              Social growth should feel{" "}
+              <span className="bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 bg-clip-text text-transparent">
+                clear, secure and manageable.
+              </span>
+            </h1>
+            <p className="mt-6 max-w-2xl text-base leading-8 text-[#526d9f] sm:text-lg">
+              SocialRUSH gives creators, influencers, brands, agencies and resellers one professional place to discover services, fund campaigns, place orders and track progress.
+            </p>
+            <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
+              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white bg-white/85 px-6 py-3 text-sm font-black text-[#294981] shadow-[0_14px_30px_-20px_rgba(45,68,130,.5)] transition hover:-translate-y-0.5 hover:border-blue-200">
+                View Packages
+              </Link>
+              <PortalCTA className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_18px_34px_-16px_rgba(117,109,255,.75)] transition hover:-translate-y-0.5">
+                Start Order <MarketingIcon name="arrow" className="h-4 w-4" />
+              </PortalCTA>
+            </div>
+            <div className="mt-8 flex flex-wrap gap-2">
+              {["Public link only", "Transparent checkout", "Dashboard tracking", "Customer support"].map((item) => (
+                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-[#dce7ff] bg-white/70 px-3 py-2 text-[11px] font-bold text-[#4f6795] shadow-sm">
+                  <MarketingIcon name="check" className="h-3.5 w-3.5 text-emerald-600" />
+                  {item}
+                </span>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
+            <div className="absolute -left-5 top-14 z-10 hidden rounded-2xl border border-white/90 bg-white/80 p-3 shadow-[0_20px_45px_-24px_rgba(44,70,140,.55)] backdrop-blur-xl sm:block">
+              <p className="text-[9px] font-black uppercase tracking-[0.12em] text-[#7890bb]">Campaign status</p>
+              <p className="mt-1 flex items-center gap-2 text-xs font-black text-emerald-700"><span className="h-2 w-2 rounded-full bg-emerald-500" />Tracking active</p>
+            </div>
+            <div className="absolute -right-3 bottom-12 z-10 hidden rounded-2xl border border-white/90 bg-white/80 p-3 shadow-[0_20px_45px_-24px_rgba(44,70,140,.55)] backdrop-blur-xl sm:block">
+              <p className="text-[9px] font-black uppercase tracking-[0.12em] text-[#7890bb]">Account safety</p>
+              <p className="mt-1 flex items-center gap-2 text-xs font-black text-[#294981]"><MarketingIcon name="lock" className="h-4 w-4 text-blue-600" />No password required</p>
+            </div>
+
+            <div className="rotate-[1deg] rounded-[2rem] border border-white/90 bg-white/72 p-4 shadow-[0_35px_80px_-38px_rgba(38,60,125,.6)] backdrop-blur-2xl sm:p-6">
+              <div className="rounded-[1.6rem] bg-[linear-gradient(145deg,#122b61,#344fa1_55%,#1e8fbd)] p-5 text-white shadow-inner sm:p-7">
+                <div className="flex items-center justify-between gap-3">
+                  <div className="flex items-center gap-3">
+                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 text-cyan-200"><MarketingIcon name="dashboard" className="h-6 w-6" /></span>
+                    <div>
+                      <p className="text-[9px] font-black uppercase tracking-[0.13em] text-cyan-200">SocialRUSH workspace</p>
+                      <h2 className="mt-1 text-lg font-black">Campaign command centre</h2>
+                    </div>
+                  </div>
+                  <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[9px] font-black text-emerald-200">Operational</span>
+                </div>
+
+                <div className="mt-6 grid grid-cols-3 gap-2.5">
+                  {[["wallet", "Wallet"], ["trend", "Orders"], ["message", "Support"]].map(([icon, label]) => (
+                    <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.07] p-3">
+                      <MarketingIcon name={icon as MarketingIconName} className="h-5 w-5 text-cyan-200" />
+                      <p className="mt-3 text-xs font-black">{label}</p>
+                      <div className="mt-2 h-1.5 rounded-full bg-white/10"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-pink-400 to-cyan-300" /></div>
+                    </div>
+                  ))}
+                </div>
+
+                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.07] p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div><p className="text-[9px] uppercase tracking-[0.12em] text-blue-200">Campaign workflow</p><p className="mt-1 text-sm font-black">Everything connected</p></div>
+                    <MarketingIcon name="sparkles" className="h-5 w-5 text-pink-300" />
+                  </div>
+                  <div className="mt-4 grid gap-2">
+                    {["Choose a service", "Confirm campaign details", "Track progress"].map((item, index) => (
+                      <div key={item} className="flex items-center gap-3 rounded-xl bg-black/10 px-3 py-2.5 text-xs font-bold text-blue-50">
+                        <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10 text-[9px] text-cyan-200">0{index + 1}</span>
+                        {item}
+                        <MarketingIcon name="check" className="ml-auto h-3.5 w-3.5 text-emerald-300" />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white/55 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
+          <article className="rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_25px_60px_-38px_rgba(44,70,140,.55)] backdrop-blur-xl sm:p-8">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-pink-500 to-violet-500 text-white shadow-lg"><MarketingIcon name="rocket" className="h-6 w-6" /></span>
+            <p className="mt-6 text-[10px] font-black uppercase tracking-[0.16em] text-[#5270aa]">Our mission</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#10234f]">Make campaign management simpler and more transparent.</h2>
+            <p className="mt-5 text-sm leading-7 text-[#6078a8]">Our mission is to give every customer a reliable workflow for reviewing services, understanding costs and managing campaign activity without scattered messages or unclear records.</p>
+          </article>
+          <article className="rounded-[2rem] border border-white/90 bg-[linear-gradient(145deg,#102754,#203f83_55%,#176d9e)] p-6 text-white shadow-[0_30px_70px_-38px_rgba(27,53,112,.75)] sm:p-8">
+            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-cyan-200"><MarketingIcon name="sparkles" className="h-6 w-6" /></span>
+            <p className="mt-6 text-[10px] font-black uppercase tracking-[0.16em] text-cyan-200">Why SocialRUSH exists</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight">Customers deserve clarity before they confirm a campaign.</h2>
+            <p className="mt-5 text-sm leading-7 text-blue-100/75">Rates, quantities, delivery guidance, public destinations, wallet charges and refill terms should be visible before checkout—not buried across conversations and disconnected receipts.</p>
+          </article>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-blue-600">The SocialRUSH difference</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#10234f] sm:text-4xl">A professional workspace, not a confusing order form.</h2>
+            <p className="mt-4 text-sm leading-7 text-[#6078a8]">The platform connects discovery, checkout, tracking and support into one consistent customer experience.</p>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+            {differences.map((item) => (
+              <article key={item.title} className="group rounded-[1.65rem] border border-white/90 bg-white/75 p-5 shadow-[0_20px_48px_-34px_rgba(44,70,140,.55)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_28px_58px_-34px_rgba(44,70,140,.65)] sm:p-6">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-blue-50 to-violet-100 text-blue-600 transition group-hover:scale-105"><MarketingIcon name={item.icon} className="h-5 w-5" /></span>
+                <h3 className="mt-5 text-base font-black text-[#17366f]">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#6078a8]">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white/55 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="max-w-3xl">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-blue-600">Who we help</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#10234f] sm:text-4xl">Built for individual creators and growing teams.</h2>
+          </div>
+          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {audiences.map((item, index) => (
+              <article key={item.title} className="relative overflow-hidden rounded-[1.6rem] border border-white/90 bg-white/80 p-5 shadow-[0_20px_46px_-34px_rgba(44,70,140,.5)]">
+                <span className="absolute right-4 top-3 text-4xl font-black text-blue-50">0{index + 1}</span>
+                <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-pink-100 to-blue-100 text-violet-600"><MarketingIcon name={item.icon} className="h-5 w-5" /></span>
+                <h3 className="relative mt-5 text-base font-black text-[#17366f]">{item.title}</h3>
+                <p className="relative mt-2 text-xs leading-6 text-[#6078a8]">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <div className="mx-auto max-w-3xl text-center">
+            <p className="text-xs font-black uppercase tracking-[0.16em] text-blue-600">Trust built into the workflow</p>
+            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#10234f] sm:text-4xl">The essentials stay visible at every step.</h2>
+          </div>
+          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {trustCards.map((item) => (
+              <article key={item.title} className="rounded-[1.6rem] border border-white/90 bg-white/78 p-5 text-center shadow-[0_22px_50px_-34px_rgba(44,70,140,.55)] backdrop-blur-xl">
+                <span className={`mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${item.tone} text-white shadow-lg`}><MarketingIcon name={item.icon} className="h-6 w-6" /></span>
+                <h3 className="mt-5 text-sm font-black text-[#17366f]">{item.title}</h3>
+                <p className="mt-2 text-xs leading-6 text-[#6078a8]">{item.description}</p>
+              </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
+        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#102754] via-[#3553a4] to-[#1c95bd] p-7 text-center text-white shadow-[0_35px_80px_-38px_rgba(30,57,120,.8)] sm:p-10 lg:p-12">
+          <div className="pointer-events-none absolute -left-12 -top-16 h-52 w-52 rounded-full bg-pink-400/20 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-20 -right-10 h-56 w-56 rounded-full bg-cyan-300/20 blur-3xl" />
+          <div className="relative">
+            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-cyan-200">Start with confidence</p>
+            <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl">Choose a campaign that fits your next growth goal.</h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-blue-50/75">Compare packages, review the current details and continue through the same secure SocialRUSH workflow.</p>
+            <div className="mt-7 flex flex-col justify-center gap-3 min-[420px]:flex-row">
+              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-black text-[#17366f] transition hover:-translate-y-0.5">View Packages</Link>
+              <PortalCTA className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3 text-sm font-black text-white backdrop-blur transition hover:bg-white/15">
+                Start Order <MarketingIcon name="arrow" className="h-4 w-4" />
+              </PortalCTA>
+            </div>
+          </div>
+        </div>
+      </section>
+    </PublicShell>
+  );
 }

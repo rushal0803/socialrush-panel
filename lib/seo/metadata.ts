@@ -1,0 +1,62 @@
+import type { Metadata } from "next";
+
+export const SEO_SITE_URL = "https://www.getsocialrush.com";
+
+export const SOCIAL_GROWTH_KEYWORDS = [
+  "Social media growth services India",
+  "Buy Instagram followers India",
+  "Buy YouTube subscribers India",
+  "LinkedIn followers India",
+  "Twitter followers India",
+  "Instagram likes India",
+  "YouTube views India",
+];
+
+type PageMetadataOptions = {
+  title: string;
+  description: string;
+  path: string;
+  keywords?: string[];
+};
+
+export function createPageMetadata({
+  title,
+  description,
+  path,
+  keywords = [],
+}: PageMetadataOptions): Metadata {
+  const canonicalUrl = new URL(path, `${SEO_SITE_URL}/`).toString();
+  const socialTitle = title.includes("SocialRUSH") ? title : `${title} | SocialRUSH`;
+  const imageUrl = `${SEO_SITE_URL}/images/hero-3d.png`;
+
+  return {
+    title,
+    description,
+    keywords: [...new Set([...keywords, ...SOCIAL_GROWTH_KEYWORDS])],
+    alternates: {
+      canonical: canonicalUrl,
+    },
+    openGraph: {
+      type: "website",
+      locale: "en_IN",
+      siteName: "SocialRUSH",
+      title: socialTitle,
+      description,
+      url: canonicalUrl,
+      images: [
+        {
+          url: imageUrl,
+          width: 1448,
+          height: 1086,
+          alt: "SocialRUSH social media growth services dashboard",
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: socialTitle,
+      description,
+      images: [imageUrl],
+    },
+  };
+}

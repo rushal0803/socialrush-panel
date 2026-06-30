@@ -8,7 +8,7 @@ export default async function AdminLoginPage() {
   if (user) {
     const { data: profile, error } = await supabase.from("profiles").select("role").eq("id", user.id).maybeSingle();
     if (profile?.role === "admin") redirect("/admin/dashboard");
-    if (!error && profile) redirect("/dashboard");
+    if (!error && profile) redirect("/dashboard/new-order");
     return <AdminLoginForm initialError="Unable to verify administrator access. Please sign in again." />;
   }
   return <AdminLoginForm />;

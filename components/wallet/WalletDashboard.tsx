@@ -7,8 +7,11 @@ import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import {
   isPaymentMethod,
+  isPaymentMethodEnabled,
   PAYMENT_METHODS,
   paymentMethodLabel,
+  paymentMethodUnavailableMessage,
+  razorpayMethodFor,
   type PaymentMethodId,
 } from "@/lib/payments/methods";
 
@@ -55,7 +58,19 @@ type RazorpayOptions = {
   theme: { color: string };
   handler: (response: RazorpayResponse) => void | Promise<void>;
   modal?: { ondismiss?: () => void };
-  method?: { upi?: boolean; card?: boolean; netbanking?: boolean };
+  config?: {
+    display: {
+      blocks: Record<
+        string,
+        {
+          name: string;
+          instruments: Array<{ method: "upi" | "card" | "netbanking" }>;
+        }
+      >;
+      sequence: string[];
+      preferences: { show_default_blocks: boolean };
+    };
+  };
 };
 type RazorpayCheckout = {
   open: () => void;
@@ -68,6 +83,8 @@ declare global {
 }
 
 const methods = PAYMENT_METHODS;
+const defaultPaymentMethod =
+  methods.find((item) => isPaymentMethodEnabled(item.id))?.id ?? "upi";
 
 const quickAmounts = [100, 500, 1000, 2000, 5000, 10000];
 
@@ -98,10 +115,12 @@ const trustCards = [
   },
 ] as const;
 
-function cleanNumberInput(value: string) {
-  const digitsOnly = value.replace(/\D/g, "");
-  if (!digitsOnly) return "";
-  return digitsOnly.replace(/^0+(?=\d)/, "");
+function cleanAmountInput(value: string) {
+  const sanitized = value.replace(/[^\d.]/g, "");
+  const [wholePart = "", ...fractionParts] = sanitized.split(".");
+  const whole = wholePart.replace(/^0+(?=\d)/, "") || (fractionParts.length ? "0" : "");
+  if (!fractionParts.length) return whole;
+  return `${whole}.${fractionParts.join("").slice(0, 2)}`;
 }
 
 function Counter({
@@ -432,14 +451,22 @@ export default function WalletDashboard({
 }) {
   const router = useRouter();
   const searchParams = useSearchParams();
+  const requestedReturnTo = searchParams.get("returnTo");
+  const returnTo =
+    requestedReturnTo?.startsWith("/") && !requestedReturnTo.startsWith("//")
+      ? requestedReturnTo
+      : null;
+  const minimumAmount = returnTo ? 0.01 : 100;
   const { currency } = usePreferredCurrency("INR");
   const money = (value: number) => formatCurrency(value, currency);
   const [balance, setBalance] = useState(initial.balance);
   const [method, setMethod] = useState<PaymentMethodId>(() => {
     const requested = searchParams.get("method");
-    return isPaymentMethod(requested) ? requested : "upi";
+    return isPaymentMethod(requested) && isPaymentMethodEnabled(requested)
+      ? requested
+      : defaultPaymentMethod;
   });
-  const [amountInput, setAmountInput] = useState("");
+  const [amountInput, setAmountInput] = useState(() => cleanAmountInput(searchParams.get("amount") || ""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState(false);
@@ -484,6 +511,10 @@ export default function WalletDashboard({
   async function startPayment(event: React.FormEvent) {
     event.preventDefault();
     setError("");
+    if (!isPaymentMethodEnabled(method)) {
+      setError(paymentMethodUnavailableMessage(method));
+      return;
+    }
     setLoading(true);
     const loaded = await loadRazorpay();
     if (!loaded || !window.Razorpay) {
@@ -511,6 +542,8 @@ export default function WalletDashboard({
       setLoading(false);
       return;
     }
+    const razorpayMethod = razorpayMethodFor(method);
+    const selectedMethodLabel = paymentMethodLabel(method);
     const checkout = new window.Razorpay({
       key: payload.data.keyId,
       amount: payload.data.amount,
@@ -520,10 +553,17 @@ export default function WalletDashboard({
       order_id: payload.data.orderId,
       prefill: { email: payload.data.email || initial.email },
       theme: { color: "#2563eb" },
-      method: {
-        upi: method === "upi",
-        card: method === "card" || method === "international_card",
-        netbanking: method === "netbanking",
+      config: {
+        display: {
+          blocks: {
+            selected_method: {
+              name: `Pay via ${selectedMethodLabel}`,
+              instruments: [{ method: razorpayMethod }],
+            },
+          },
+          sequence: ["block.selected_method"],
+          preferences: { show_default_blocks: false },
+        },
       },
       modal: { ondismiss: () => setLoading(false) },
       handler: async (result) => {
@@ -548,6 +588,11 @@ export default function WalletDashboard({
         );
         setSuccess(true);
         window.setTimeout(() => setSuccess(false), 3500);
+        if (returnTo) {
+          const separator = returnTo.includes("?") ? "&" : "?";
+          router.replace(`${returnTo}${separator}resume=1`);
+          return;
+        }
         router.refresh();
       },
     });
@@ -600,7 +645,7 @@ export default function WalletDashboard({
   const selectedMethod = methods.find((item) => item.id === method) ?? methods[0];
   const selectedStatus = loading
     ? "Processing"
-    : amount >= 100
+    : amount >= minimumAmount
       ? "Ready"
       : "Minimum amount required";
 
@@ -730,24 +775,33 @@ export default function WalletDashboard({
                     </p>
                   </div>
                   <span className="rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6380b7] shadow-sm">
-                    4 options
+                    {methods.filter((item) => isPaymentMethodEnabled(item.id)).length} active
                   </span>
                 </div>
 
                 <div className="mt-4 grid gap-3 md:grid-cols-2 xl:mt-5 xl:grid-cols-4">
                   {methods.map((item) => {
                     const active = method === item.id;
+                    const enabled = isPaymentMethodEnabled(item.id);
                     return (
                       <motion.button
-                        whileHover={{ y: -4 }}
-                        whileTap={{ scale: 0.985 }}
+                        whileHover={enabled ? { y: -4 } : undefined}
+                        whileTap={enabled ? { scale: 0.985 } : undefined}
                         type="button"
                         key={item.id}
-                        onClick={() => setMethod(item.id)}
+                        disabled={!enabled}
+                        aria-disabled={!enabled}
+                        onClick={() => {
+                          if (!enabled) return;
+                          setMethod(item.id);
+                          setError("");
+                        }}
                         className={`group relative min-h-20 overflow-hidden rounded-[1.25rem] border p-3.5 text-left shadow-[0_18px_40px_-28px_rgba(30,58,138,.35)] transition sm:rounded-[1.5rem] sm:p-4 ${
                           active
                             ? "border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(255,102,178,.75),rgba(79,209,255,.75),rgba(139,92,246,.72))_border-box]"
-                            : "border-white/80 bg-white/78 hover:border-[#cfe0ff]"
+                            : enabled
+                              ? "border-white/80 bg-white/78 hover:border-[#cfe0ff]"
+                              : "cursor-not-allowed border-slate-200/80 bg-slate-100/70 opacity-70"
                         }`}
                       >
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,209,255,.14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(255,102,178,.14),transparent_32%)] opacity-0 transition group-hover:opacity-100" />
@@ -769,6 +823,15 @@ export default function WalletDashboard({
                             <small className="mt-1.5 block text-xs leading-5 text-[#6a82af]">
                               {item.description}
                             </small>
+                            {!enabled ? (
+                              <small className="mt-2 block text-[10px] font-bold leading-4 text-amber-700">
+                                {paymentMethodUnavailableMessage(item.id)}
+                              </small>
+                            ) : item.id === "international_card" ? (
+                              <small className="mt-2 block text-[10px] font-bold leading-4 text-[#6a82af]">
+                                Requires international payments enabled in Razorpay.
+                              </small>
+                            ) : null}
                           </span>
                         </div>
                       </motion.button>
@@ -793,7 +856,7 @@ export default function WalletDashboard({
                     </p>
                   </div>
                   <p className="text-xs font-semibold text-[#6882b5]">
-                    Minimum 100 · Maximum 500000
+                    Minimum {returnTo ? "required order amount" : "100"} · Maximum 500000
                   </p>
                 </div>
 
@@ -807,10 +870,9 @@ export default function WalletDashboard({
                     </span>
                     <input
                       type="text"
-                      inputMode="numeric"
-                      pattern="[0-9]*"
+                      inputMode="decimal"
                       value={amountInput}
-                      onChange={(event) => setAmountInput(cleanNumberInput(event.target.value))}
+                      onChange={(event) => setAmountInput(cleanAmountInput(event.target.value))}
                       placeholder="1000"
                       className="h-14 w-full rounded-[1.2rem] border border-[#d6e4ff] bg-white pl-20 pr-4 text-xl font-black tracking-[-0.03em] text-[#16346c] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_5px_rgba(143,174,255,.18),0_18px_42px_-28px_rgba(79,108,168,.4)] sm:h-16 sm:rounded-[1.5rem] sm:pr-5 sm:text-2xl"
                     />
@@ -912,14 +974,14 @@ export default function WalletDashboard({
                       </div>
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Status</span>
-                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${loading ? "bg-blue-100 text-blue-700" : amount >= 100 ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${loading ? "bg-blue-100 text-blue-700" : amount >= minimumAmount ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
                           {selectedStatus}
                         </span>
                       </div>
                     </div>
 
                     <button
-                      disabled={loading || amount < 100}
+                      disabled={loading || amount < minimumAmount || !isPaymentMethodEnabled(method)}
                       className="mt-5 min-h-14 w-full rounded-[1.2rem] bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-4 text-sm font-black text-white shadow-[0_24px_50px_-22px_rgba(117,109,255,.58)] transition hover:-translate-y-1 hover:shadow-[0_28px_58px_-20px_rgba(117,109,255,.68)] disabled:opacity-50 sm:rounded-[1.35rem] sm:px-5"
                     >
                       {loading
