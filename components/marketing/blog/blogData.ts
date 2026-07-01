@@ -321,8 +321,8 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "Instagram Followers Service", href: "/instagram-followers" },
-      { label: "Instagram Likes Service", href: "/instagram-likes" },
+      { label: "Instagram Followers Service", href: "/buy-instagram-followers-india" },
+      { label: "Instagram Likes Service", href: "/buy-instagram-likes-india" },
       { label: "View Packages", href: "/packages?platform=Instagram" },
     ],
   },
@@ -369,7 +369,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "Buy Instagram Followers India", href: "/instagram-followers" },
+      { label: "Buy Instagram Followers India", href: "/buy-instagram-followers-india" },
       { label: "Transparent Pricing", href: "/pricing" },
       { label: "View Instagram Packages", href: "/packages?platform=Instagram" },
     ],
@@ -417,7 +417,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "Instagram Followers Safety & Details", href: "/instagram-followers" },
+      { label: "Instagram Followers Safety & Details", href: "/buy-instagram-followers-india" },
       { label: "Refund Policy", href: "/refund-policy" },
       { label: "Contact SocialRUSH", href: "/contact" },
     ],
@@ -465,8 +465,8 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "YouTube Subscribers Service", href: "/youtube-subscribers" },
-      { label: "YouTube Views Service", href: "/youtube-views" },
+      { label: "YouTube Subscribers Service", href: "/buy-youtube-subscribers-india" },
+      { label: "YouTube Views Service", href: "/buy-youtube-views-india" },
       { label: "View YouTube Packages", href: "/packages?platform=YouTube" },
     ],
   },
@@ -513,7 +513,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "LinkedIn Followers Service", href: "/linkedin-followers" },
+      { label: "LinkedIn Followers Service", href: "/buy-linkedin-followers-india" },
       { label: "SocialRUSH Pricing", href: "/pricing" },
       { label: "View Packages", href: "/packages?platform=LinkedIn" },
     ],
@@ -808,28 +808,9 @@ function buildFaqs(article: BlogArticle, profile: EditorialProfile) {
   ];
 }
 
-const legacyHrefMap: Record<string, string> = {
-  "/instagram-followers": "/buy-instagram-followers-india",
-  "/instagram-likes": "/buy-instagram-likes-india",
-  "/instagram-views": "/buy-instagram-views-india",
-  "/youtube-subscribers": "/buy-youtube-subscribers-india",
-  "/youtube-likes": "/buy-youtube-likes-india",
-  "/youtube-views": "/buy-youtube-views-india",
-  "/linkedin-followers": "/buy-linkedin-followers-india",
-  "/linkedin-likes": "/buy-linkedin-likes-india",
-  "/twitter-followers": "/buy-twitter-followers-india",
-  "/facebook-followers": "/buy-facebook-followers-india",
-  "/facebook-likes": "/buy-facebook-likes-india",
-  "/telegram-members": "/buy-telegram-members-india",
-  "/tiktok-followers": "/buy-tiktok-followers-india",
-};
-
 export const blogArticles: BlogArticle[] = baseBlogArticles.map((article) => {
   const profile = editorialProfiles[article.slug];
-  const relatedLinks = (article.relatedLinks ?? []).map((link) => ({
-    ...link,
-    href: legacyHrefMap[link.href] ?? link.href,
-  }));
+  const relatedLinks = article.relatedLinks ?? [];
 
   if (!profile) {
     return {

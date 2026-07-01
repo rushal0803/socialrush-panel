@@ -2,6 +2,43 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
+import { detectPublicCount } from "@/lib/orders/count-detector";
+
+async function saveInitialCount(
+  supabase: Awaited<ReturnType<typeof createClient>>,
+  input: {
+    orderId: string;
+    link: string;
+    platform?: string | null;
+    serviceName?: string | null;
+    serviceCode?: string | null;
+    customerNote?: string | null;
+  },
+) {
+  const detection = await detectPublicCount({
+    url: input.link,
+    platform: input.platform,
+    serviceName: input.serviceName,
+    serviceCode: input.serviceCode,
+  }).catch(() => ({
+    success: false,
+    count: null,
+    platform: input.platform || "unknown",
+    type: "unknown",
+    message: "Starting count could not be detected. Please enter it manually.",
+  }));
+
+  await supabase.rpc("set_initial_order_count", {
+    p_order_id: input.orderId,
+    p_starting_count: detection.count,
+    p_status: detection.success ? "detected" : "failed",
+    p_source: detection.success ? "auto" : "auto",
+    p_message: detection.success
+      ? detection.message
+      : `Starting count could not be detected. Please enter manually. ${detection.message}`,
+    p_customer_note: input.customerNote || null,
+  });
+}
 
 export async function GET(request: NextRequest) {
   const supabase = await createClient();
@@ -164,6 +201,15 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: balanceError.message }, { status: 400 });
       }
 
+      await saveInitialCount(supabase, {
+        orderId: inserted.id,
+        link: body.link,
+        platform: body.fallbackPlatform,
+        serviceName: body.fallbackName,
+        serviceCode: body.serviceCode,
+        customerNote: body.notes,
+      });
+
       revalidatePath("/dashboard");
       revalidatePath("/dashboard/orders");
       revalidatePath("/dashboard/order-history");
@@ -182,6 +228,18 @@ export async function POST(request: NextRequest) {
     }
 
     return NextResponse.json({ error: error.message }, { status: 400 });
+  }
+
+  const checkout = data as { id?: string; duplicate?: boolean } | null;
+  if (checkout?.id && !checkout.duplicate) {
+    await saveInitialCount(supabase, {
+      orderId: checkout.id,
+      link: body.link,
+      platform: body.fallbackPlatform,
+      serviceName: body.fallbackName,
+      serviceCode: body.serviceCode,
+      customerNote: body.notes,
+    });
   }
 
   revalidatePath("/dashboard");

@@ -17,11 +17,14 @@ type Campaign = {
   status: string;
   createdAt: string;
   packageName: string | null;
-  startCount: number;
-  remains: number;
+  startCount: number | null;
+  currentCount: number | null;
+  deliveredCount: number | null;
+  remains: number | null;
+  progress: number | null;
 };
 
-const statuses = ["all", "pending", "processing", "in_progress", "completed", "partial", "cancelled", "refunded", "failed"];
+const statuses = ["all", "pending", "processing", "in_progress", "completed", "partial", "cancelled", "refunded", "failed", "refill_requested", "refilling"];
 const statusStyle: Record<string, string> = {
   pending: "bg-amber-50 text-amber-700",
   processing: "bg-blue-50 text-blue-700",
@@ -31,6 +34,8 @@ const statusStyle: Record<string, string> = {
   cancelled: "bg-slate-100 text-slate-600",
   refunded: "bg-indigo-50 text-indigo-700",
   failed: "bg-rose-50 text-rose-700",
+  refill_requested: "bg-orange-50 text-orange-700",
+  refilling: "bg-sky-50 text-sky-700",
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -60,16 +65,15 @@ export default function CampaignHistoryPage() {
 
   useEffect(() => {
     const supabase = createClient();
-    void supabase
-      .from("orders")
-      .select("id, service_name, platform, link, quantity, charge, status, created_at, package_name, start_count, remains, services(name, categories(name))")
-      .order("created_at", { ascending: false })
-      .then(({ data }) => {
+    const loadOrders = async () => {
+      const { data } = await supabase
+        .from("orders")
+        .select("id, service_name, platform, link, quantity, charge, status, created_at, package_name, starting_count, current_count, delivered_count, remaining_count, progress_percent, services(name, categories(name))")
+        .order("created_at", { ascending: false });
         setCampaigns(
           (data ?? []).map((row) => {
             const service = row.services as unknown as { name?: string; categories?: { name?: string } | null } | null;
             const quantity = Number(row.quantity ?? 0);
-            const remains = Number(row.remains ?? quantity);
             return {
               id: row.id,
               service: row.service_name || service?.name || "Growth service",
@@ -80,13 +84,19 @@ export default function CampaignHistoryPage() {
               status: row.status,
               createdAt: row.created_at,
               packageName: row.package_name,
-              startCount: Number(row.start_count ?? 0),
-              remains,
+              startCount: row.starting_count === null ? null : Number(row.starting_count),
+              currentCount: row.current_count === null ? null : Number(row.current_count),
+              deliveredCount: row.delivered_count === null ? null : Number(row.delivered_count),
+              remains: row.remaining_count === null ? null : Number(row.remaining_count),
+              progress: row.progress_percent === null ? null : Number(row.progress_percent),
             };
           }),
         );
         setLoading(false);
-      });
+    };
+    void loadOrders();
+    const channel = supabase.channel("customer-order-tracking").on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => void loadOrders()).subscribe();
+    return () => { void supabase.removeChannel(channel); };
   }, []);
 
   const platforms = useMemo(() => Array.from(new Set(campaigns.map((item) => item.platform))).sort(), [campaigns]);
@@ -155,7 +165,9 @@ export default function CampaignHistoryPage() {
                     "Amount",
                     "Status",
                     "Start Count",
+                    "Current",
                     "Remains",
+                    "Progress",
                     "Action",
                   ].map((head) => (
                     <th key={head} className="px-5 py-3">{head}</th>
@@ -165,7 +177,7 @@ export default function CampaignHistoryPage() {
               <tbody className="divide-y divide-slate-100">
                 {loading && (
                   <tr>
-                    <td colSpan={10} className="p-14 text-center text-slate-400">Loading orders...</td>
+                    <td colSpan={12} className="p-14 text-center text-slate-400">Loading orders...</td>
                   </tr>
                 )}
 
@@ -182,19 +194,31 @@ export default function CampaignHistoryPage() {
                       <td className="px-5 py-4 font-semibold">{item.quantity.toLocaleString("en-IN")}</td>
                       <td className="px-5 py-4 font-bold">{money(item.amount)}</td>
                       <td className="px-5 py-4"><StatusBadge status={item.status} /></td>
-                      <td className="px-5 py-4 text-slate-600">{item.startCount.toLocaleString("en-IN")}</td>
-                      <td className="px-5 py-4 text-slate-600">{item.remains.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4 text-slate-600">{item.startCount === null ? "Pending detection" : item.startCount.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4 text-slate-600">{item.currentCount === null ? "—" : item.currentCount.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4 text-slate-600">{item.remains === null ? "—" : item.remains.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4"><div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400" style={{ width: `${item.progress ?? 0}%` }} /></div><p className="mt-1 text-[9px] text-slate-500">{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</p></td>
                       <td className="px-5 py-4">
-                        <Link href="/dashboard/support" className="rounded-lg bg-blue-50 px-3 py-1.5 text-[10px] font-bold text-blue-700">
-                          Raise Ticket
-                        </Link>
+                        <div className="flex gap-2">
+                          <Link href="/dashboard/support" className="rounded-lg bg-blue-50 px-3 py-1.5 text-[10px] font-bold text-blue-700">
+                            Raise Ticket
+                          </Link>
+                          <a
+                            href={`https://wa.me/918860330771?text=${encodeURIComponent(`Hi SocialRUSH, I need help with order ${readableOrderId(item.id)}.`)}`}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="rounded-lg bg-emerald-50 px-3 py-1.5 text-[10px] font-bold text-emerald-700"
+                          >
+                            WhatsApp
+                          </a>
+                        </div>
                       </td>
                     </tr>
                   ))}
 
                 {!loading && !filtered.length && (
                   <tr>
-                    <td colSpan={10} className="p-14 text-center text-slate-400">No orders match this filter.</td>
+                    <td colSpan={12} className="p-14 text-center text-slate-400">No orders match this filter.</td>
                   </tr>
                 )}
               </tbody>
