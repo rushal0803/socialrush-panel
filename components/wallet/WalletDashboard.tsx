@@ -448,7 +448,7 @@ export default function WalletDashboard({
   const [balance, setBalance] = useState(initial.balance);
   const [method, setMethod] = useState<PaymentMethodId>(() => {
     const requested = normalizePaymentMethod(searchParams.get("method"));
-    return requested && isPaymentMethodEnabled(requested)
+    return requested && requested !== "wallet" && isPaymentMethodEnabled(requested)
       ? requested
       : defaultPaymentMethod;
   });

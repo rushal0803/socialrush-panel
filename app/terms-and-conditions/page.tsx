@@ -20,7 +20,7 @@ const sections = [
   { title: "Platform availability", body: ["Social networks and fulfilment systems are operated by third parties. SocialRUSH may pause, replace, or discontinue a service when delivery conditions or platform rules change."] },
   { title: "Support and communication", body: ["Customers can use protected support tickets for order, payment, refill, or account issues. Communications must remain accurate and professional so requests can be investigated effectively."] },
   { title: "Liability", body: ["To the extent permitted by law, SocialRUSH is not liable for indirect or consequential loss, third-party platform actions, account changes, external outages, or issues caused by incorrect customer instructions. Aggregate liability is limited to the amount paid for the affected service."] },
-  { title: "Changes and contact", body: ["We may update these terms prospectively as the platform changes. Questions or formal notices may be sent to support@socialrush.in."] },
+  { title: "Changes and contact", body: ["We may update these terms prospectively as the platform changes. Questions or formal notices may be sent to support@getsocialrush.com."] },
 ];
 
 export default function TermsPage() {

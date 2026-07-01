@@ -21,7 +21,7 @@ begin
     raise exception 'Amount must be greater than 0 and at most 500000';
   end if;
 
-  if p_method not in ('upi', 'card', 'netbanking', 'international_card') then
+  if p_method not in ('upi', 'card', 'netbanking', 'wallet', 'international_card') then
     raise exception 'Unsupported payment method';
   end if;
 

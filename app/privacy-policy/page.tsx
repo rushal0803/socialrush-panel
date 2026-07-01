@@ -17,8 +17,8 @@ const sections = [
   { title: "Campaign data", body: ["Campaign links and order details are used for delivery, tracking, troubleshooting, refill review, and support. Customers must have lawful authority to submit the public destinations they provide."] },
   { title: "Data sharing", body: ["We do not sell personal information. Information may be shared with authorized personnel, infrastructure and fulfilment providers, advisers, payment providers, or authorities where necessary for service delivery, security, legal compliance, or protection of rights."] },
   { title: "Retention and security", body: ["We retain information for service delivery, accounting, dispute management, fraud prevention, and legal requirements. We use reasonable administrative and technical safeguards, but no online system can be guaranteed completely secure."] },
-  { title: "Your choices", body: ["You may request access, correction, or deletion of eligible personal information by emailing support@socialrush.in. Certain transaction, security, or legal records may need to be retained."] },
-  { title: "Updates and contact", body: ["We may update this policy as our platform or legal obligations change. Privacy questions may be sent to support@socialrush.in."] },
+  { title: "Your choices", body: ["You may request access, correction, or deletion of eligible personal information by emailing support@getsocialrush.com. Certain transaction, security, or legal records may need to be retained."] },
+  { title: "Updates and contact", body: ["We may update this policy as our platform or legal obligations change. Privacy questions may be sent to support@getsocialrush.com."] },
 ];
 
 export default function PrivacyPolicyPage() {

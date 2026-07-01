@@ -57,7 +57,7 @@ values (
   'general',
   jsonb_build_object(
     'whatsapp_number', '8860330771',
-    'support_email', 'support@socialrush.in',
+    'support_email', 'support@getsocialrush.com',
     'currency_rates', jsonb_build_object('INR', 1, 'USD', 0.012, 'EUR', 0.011, 'GBP', 0.0093, 'AED', 0.044, 'CAD', 0.016, 'AUD', 0.018),
     'payment_instructions', '',
     'notice_text', ''

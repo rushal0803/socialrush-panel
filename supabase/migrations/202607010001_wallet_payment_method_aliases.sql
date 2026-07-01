@@ -39,6 +39,9 @@ begin
       or v_raw_method = 'net banking'
       or position('net' in v_raw_method) > 0
       then 'netbanking'
+    when v_raw_method = 'wallet'
+      or position('wallet' in v_raw_method) > 0
+      then 'wallet'
     when v_raw_method = 'international_card'
       or position('international' in v_raw_method) > 0
       then 'international_card'

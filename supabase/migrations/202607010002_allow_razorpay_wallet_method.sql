@@ -1,5 +1,5 @@
--- Canonicalize wallet payment methods so current and legacy clients cannot
--- accidentally store UI labels or reject enabled Razorpay methods.
+-- Accept every supported Razorpay funding method while preserving verified
+-- settlement through credit_verified_payment.
 
 create or replace function public.create_wallet_payment(
   p_amount numeric,
@@ -13,6 +13,7 @@ set search_path = public
 as $$
 declare
   v_id uuid;
+  v_raw_method text;
   v_method text;
 begin
   if auth.uid() is null then
@@ -23,18 +24,27 @@ begin
     raise exception 'Amount must be greater than 0 and at most 500000';
   end if;
 
-  v_method := lower(trim(regexp_replace(coalesce(p_method, ''), '\s+', ' ', 'g')));
-  v_method := case v_method
-    when 'upi' then 'upi'
-    when 'card' then 'card'
-    when 'debit card / credit card' then 'card'
-    when 'debit card' then 'card'
-    when 'credit card' then 'card'
-    when 'netbanking' then 'netbanking'
-    when 'net banking' then 'netbanking'
-    when 'wallet' then 'wallet'
-    when 'international_card' then 'international_card'
-    when 'international card' then 'international_card'
+  v_raw_method := lower(trim(coalesce(p_method, '')));
+
+  v_method := case
+    when v_raw_method = 'upi' then 'upi'
+    when v_raw_method = 'card'
+      or v_raw_method = 'debit_card'
+      or v_raw_method = 'credit_card'
+      or position('debit' in v_raw_method) > 0
+      or position('credit' in v_raw_method) > 0
+      then 'card'
+    when v_raw_method = 'netbanking'
+      or v_raw_method = 'net_banking'
+      or v_raw_method = 'net banking'
+      or position('net' in v_raw_method) > 0
+      then 'netbanking'
+    when v_raw_method = 'wallet'
+      or position('wallet' in v_raw_method) > 0
+      then 'wallet'
+    when v_raw_method = 'international_card'
+      or position('international' in v_raw_method) > 0
+      then 'international_card'
     else null
   end;
 

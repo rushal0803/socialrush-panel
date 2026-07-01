@@ -4,15 +4,25 @@ import { razorpayConfig, razorpayRequest } from "@/lib/payments/razorpay";
 import { normalizePaymentMethod } from "@/lib/payments/methods";
 
 type RazorpayOrder = { id: string; amount: number; currency: string; status: string };
-const allowedMethods = ["upi", "card", "netbanking"] as const;
+const allowedMethods = ["upi", "card", "netbanking", "wallet"] as const;
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const body = await request.json().catch(() => null) as { amount?: number; method?: string } | null;
-  const amount = Number(body?.amount);
-  const rawMethod = body?.method;
+ const body = await request.json().catch(() => null) as {
+  amount?: number;
+  method?: string;
+  paymentMethod?: string;
+  payment_method?: string;
+} | null;
+
+const amount = Number(body?.amount);
+
+const rawMethod =
+  body?.method ??
+  body?.paymentMethod ??
+  body?.payment_method;
   const method = normalizePaymentMethod(rawMethod);
   console.log("wallet payment method raw:", rawMethod);
   console.log("wallet payment method normalized:", method);
@@ -21,7 +31,7 @@ export async function POST(request: NextRequest) {
   if (!method) {
     return NextResponse.json(
       { error: "Unsupported payment method" },
-      { status: 422 },
+      { status: 400 },
     );
   }
   const isStandardMethod = allowedMethods.includes(
@@ -30,7 +40,7 @@ export async function POST(request: NextRequest) {
   if (!isStandardMethod && method !== "international_card") {
     return NextResponse.json(
       { error: "Unsupported payment method" },
-      { status: 422 },
+      { status: 400 },
     );
   }
   if (

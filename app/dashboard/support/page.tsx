@@ -47,7 +47,7 @@ const supportCards = [
     title: "Email Support",
     description: "Share details and evidence with our support team.",
     action: "Send email",
-    href: "mailto:support@socialrush.in",
+    href: "mailto:support@getsocialrush.com",
     icon: Mail,
   },
   {

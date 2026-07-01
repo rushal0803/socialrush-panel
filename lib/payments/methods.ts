@@ -22,17 +22,19 @@ export const PAYMENT_METHODS = [
 ] as const;
 
 export type PaymentMethodId = (typeof PAYMENT_METHODS)[number]["id"];
+export type SupportedPaymentMethodId = PaymentMethodId | "wallet";
 
-export const ALLOWED_PAYMENT_METHODS: readonly PaymentMethodId[] = [
+export const ALLOWED_PAYMENT_METHODS: readonly SupportedPaymentMethodId[] = [
   "upi",
   "card",
   "netbanking",
+  "wallet",
   "international_card",
 ];
 
 export function normalizePaymentMethod(
   value: unknown,
-): PaymentMethodId | null {
+): SupportedPaymentMethodId | null {
   const method = String(value || "").toLowerCase().trim();
 
   if (method === "upi") return "upi";
@@ -63,13 +65,17 @@ export function normalizePaymentMethod(
     return "international_card";
   }
 
+  if (method === "wallet" || method.includes("wallet")) return "wallet";
+
   return null;
 }
 
-export function isPaymentMethod(value: unknown): value is PaymentMethodId {
+export function isPaymentMethod(
+  value: unknown,
+): value is SupportedPaymentMethodId {
   return (
     typeof value === "string" &&
-    ALLOWED_PAYMENT_METHODS.includes(value as PaymentMethodId)
+    ALLOWED_PAYMENT_METHODS.includes(value as SupportedPaymentMethodId)
   );
 }
 
@@ -82,11 +88,14 @@ const PAYMENT_METHOD_ENABLED: Record<PaymentMethodId, boolean> = {
     process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_INTERNATIONAL_CARD === "true",
 };
 
-export function isPaymentMethodEnabled(method: PaymentMethodId) {
+export function isPaymentMethodEnabled(method: SupportedPaymentMethodId) {
+  if (method === "wallet") return true;
   return PAYMENT_METHOD_ENABLED[method];
 }
 
-export function paymentMethodUnavailableMessage(method: PaymentMethodId) {
+export function paymentMethodUnavailableMessage(
+  method: SupportedPaymentMethodId,
+) {
   if (method === "international_card") {
     return "International payments are currently being activated. Please contact WhatsApp support.";
   }

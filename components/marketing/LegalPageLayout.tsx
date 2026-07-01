@@ -119,7 +119,7 @@ export default function LegalPageLayout({
                 <p className="mt-3 text-lg font-black text-[#17366f]">Trusted, readable policy experience</p>
                 <div className="mt-4 space-y-3 text-xs text-[#5b76aa]">
                   <p className="rounded-xl border border-[#dce7ff] bg-white/80 px-3 py-2">Effective from June 2026</p>
-                  <p className="rounded-xl border border-[#dce7ff] bg-white/80 px-3 py-2">Support: support@socialrush.in</p>
+              <p className="rounded-xl border border-[#dce7ff] bg-white/80 px-3 py-2">Support: support@getsocialrush.com</p>
                   <p className="rounded-xl border border-[#dce7ff] bg-white/80 px-3 py-2">Designed for clarity and compliance</p>
                 </div>
               </motion.div>
@@ -178,7 +178,7 @@ export default function LegalPageLayout({
               <p className="mt-5 border-t border-[#e4ecff] pt-4 text-[10px] leading-5 text-[#7890bc]">
                 Effective: 20 June 2026
                 <br />
-                Contact: support@socialrush.in
+                    Contact: support@getsocialrush.com
               </p>
             </div>
           </aside>

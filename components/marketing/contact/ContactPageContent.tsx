@@ -21,7 +21,7 @@ const contactOptions = [
     description: "Send your query and our team will reply as soon as possible.",
     icon: "message" as const,
     cta: "Email Us",
-    href: "mailto:support@socialrush.in?subject=SocialRUSH%20Support%20Request",
+    href: "mailto:support@getsocialrush.com?subject=SocialRUSH%20Support%20Request",
   },
   {
     title: "Order Help",
@@ -35,7 +35,7 @@ const contactOptions = [
     description: "For creators, brands, agencies, and partnership queries.",
     icon: "users" as const,
     cta: "Talk to Team",
-    href: "mailto:support@socialrush.in?subject=Business%20Enquiry",
+    href: "mailto:support@getsocialrush.com?subject=Business%20Enquiry",
   },
 ];
 
@@ -269,7 +269,7 @@ export default function ContactPageContent() {
         <section id="inquiry" className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="mx-auto grid w-full max-w-7xl gap-7 lg:grid-cols-[1fr_.82fr]">
             <motion.form
-              action="mailto:support@socialrush.in"
+              action="mailto:support@getsocialrush.com"
               method="post"
               encType="text/plain"
               variants={fadeUp}
