@@ -87,6 +87,12 @@ export default function PackagesPageContent() {
                 Select a platform, choose a service, and compare only the packages that match your campaign.
               </p>
               <p className="mt-3 text-xs font-semibold text-[#5a72a3]">{getCurrencyDisclaimer()}</p>
+              <Link
+                href="/buy-instagram-followers-india"
+                className="mt-4 inline-flex text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 transition hover:text-violet-700"
+              >
+                Learn about buying Instagram followers in India
+              </Link>
               <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
                 {trustBadges.map((chip) => (
                   <span key={chip} className="rounded-full border border-white/85 bg-white/90 px-3 py-1.5 text-[11px] font-semibold text-[#2f4a86] shadow-[0_8px_20px_rgba(87,114,173,.12)]">

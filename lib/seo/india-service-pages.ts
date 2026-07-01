@@ -1,0 +1,556 @@
+import type { Metadata } from "next";
+import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
+import { SEO_SITE_URL } from "@/lib/seo/metadata";
+
+export const indiaServiceSlugs = [
+  "buy-instagram-followers-india",
+  "buy-instagram-likes-india",
+  "buy-instagram-views-india",
+  "buy-youtube-subscribers-india",
+  "buy-youtube-likes-india",
+  "buy-youtube-views-india",
+  "buy-linkedin-followers-india",
+  "buy-linkedin-likes-india",
+  "buy-twitter-followers-india",
+  "buy-facebook-followers-india",
+  "buy-facebook-likes-india",
+  "buy-telegram-members-india",
+  "buy-tiktok-followers-india",
+] as const;
+
+export type IndiaServiceSlug = (typeof indiaServiceSlugs)[number];
+
+type IndiaServicePage = {
+  slug: IndiaServiceSlug;
+  serviceCode: ServiceCode;
+  platform: string;
+  platformKey: string;
+  serviceName: string;
+  unitName: string;
+  destination: string;
+  delivery: string;
+  refill: string;
+  packageService: string;
+  intro: string;
+  overview: string;
+  value: string;
+  safety: string;
+  deliveryCopy: string;
+  metaDescription: string;
+  ogDescription: string;
+  audiences: string[];
+  related: IndiaServiceSlug[];
+};
+
+const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
+  "buy-instagram-followers-india": {
+    slug: "buy-instagram-followers-india",
+    serviceCode: "instagram-followers",
+    platform: "Instagram",
+    platformKey: "instagram",
+    serviceName: "Instagram Followers",
+    unitName: "followers",
+    destination: "public Instagram profile link",
+    delivery: "1–7 days",
+    refill: "Available on eligible packages",
+    packageService: "followers",
+    intro:
+      "Build stronger visible profile credibility with an organized Instagram follower campaign for Indian creators, brands, and businesses.",
+    overview:
+      "Choose a suitable quantity, submit your public profile URL, review the exact INR total, and follow delivery from your SocialRUSH dashboard.",
+    value:
+      "A more established follower count can support the first impression visitors receive when evaluating your public profile and content.",
+    safety:
+      "SocialRUSH never asks for your Instagram password. Keep the submitted profile public and avoid changing its username while delivery is active.",
+    deliveryCopy:
+      "Follower delivery starts after confirmation and follows the estimate shown with the selected package. Eligible refill terms are displayed before ordering.",
+    metaDescription:
+      "Buy Instagram followers in India with transparent pricing, no-password ordering, delivery tracking and refill support from SocialRUSH.",
+    ogDescription:
+      "Compare Instagram follower packages in India with clear INR pricing, public-link ordering, refill information and dashboard tracking.",
+    audiences: ["Creators", "Influencers", "Local brands", "Agencies"],
+    related: [
+      "buy-instagram-likes-india",
+      "buy-instagram-views-india",
+      "buy-youtube-subscribers-india",
+    ],
+  },
+  "buy-instagram-likes-india": {
+    slug: "buy-instagram-likes-india",
+    serviceCode: "instagram-likes",
+    platform: "Instagram",
+    platformKey: "instagram",
+    serviceName: "Instagram Likes",
+    unitName: "likes",
+    destination: "public Instagram post or reel link",
+    delivery: "0–24 hours",
+    refill: "Available on eligible services",
+    packageService: "likes",
+    intro:
+      "Support visible engagement on selected Instagram posts and reels with a clearly priced campaign built for Indian creators and brands.",
+    overview:
+      "Select the content you want to support, provide its public URL, confirm the campaign quantity, and monitor progress without sharing login credentials.",
+    value:
+      "Visible likes can strengthen content presentation when new visitors compare posts, reels, launches, portfolios, or brand updates.",
+    safety:
+      "Only the public post or reel URL is required. SocialRUSH does not need your password, account access, or private profile information.",
+    deliveryCopy:
+      "Like delivery begins after confirmation and depends on campaign size and content availability. Keep the selected post public throughout delivery.",
+    metaDescription:
+      "Buy Instagram likes in India with SocialRUSH. Get transparent INR pricing, fast delivery, no-password ordering and campaign tracking.",
+    ogDescription:
+      "Improve visible Instagram post and reel engagement with clear pricing, public-link ordering and reliable SocialRUSH support in India.",
+    audiences: ["Reel creators", "Influencers", "Product brands", "Social teams"],
+    related: [
+      "buy-instagram-followers-india",
+      "buy-instagram-views-india",
+      "buy-youtube-likes-india",
+    ],
+  },
+  "buy-instagram-views-india": {
+    slug: "buy-instagram-views-india",
+    serviceCode: "instagram-views",
+    platform: "Instagram",
+    platformKey: "instagram",
+    serviceName: "Instagram Views",
+    unitName: "views",
+    destination: "public Instagram reel or video link",
+    delivery: "0–12 hours",
+    refill: "Service terms shown before checkout",
+    packageService: "views",
+    intro:
+      "Increase the visible reach of eligible Instagram reels and video posts through an affordable, trackable campaign in India.",
+    overview:
+      "Paste the exact public reel or video URL, choose the campaign size, review the total, and keep every order update organized in one dashboard.",
+    value:
+      "A stronger visible view count can help videos present more confidently when audiences discover your profile, campaign, or creative portfolio.",
+    safety:
+      "No password or account access is required. Submit only a public reel or video URL and keep the content available while delivery is underway.",
+    deliveryCopy:
+      "View campaigns generally begin quickly after confirmation. Actual completion depends on quantity, content availability, and platform conditions.",
+    metaDescription:
+      "Buy Instagram views in India with affordable pricing, fast campaign delivery, no-password ordering and SocialRUSH order tracking.",
+    ogDescription:
+      "Support Instagram reel and video visibility with transparent view packages, public-link ordering and fast SocialRUSH delivery in India.",
+    audiences: ["Reel creators", "Artists", "Small businesses", "Campaign teams"],
+    related: [
+      "buy-instagram-followers-india",
+      "buy-instagram-likes-india",
+      "buy-youtube-views-india",
+    ],
+  },
+  "buy-youtube-subscribers-india": {
+    slug: "buy-youtube-subscribers-india",
+    serviceCode: "youtube-subscribers",
+    platform: "YouTube",
+    platformKey: "youtube",
+    serviceName: "YouTube Subscribers",
+    unitName: "subscribers",
+    destination: "public YouTube channel link",
+    delivery: "3–15 days",
+    refill: "Available on eligible packages",
+    packageService: "subscribers",
+    intro:
+      "Strengthen visible channel authority with a gradual YouTube subscriber campaign designed for Indian creators, educators, and brands.",
+    overview:
+      "Choose a package, submit your public channel URL, review the INR campaign total, and track subscriber delivery from your SocialRUSH account.",
+    value:
+      "A more established subscriber count can improve channel presentation when viewers evaluate your library, niche authority, and publishing consistency.",
+    safety:
+      "SocialRUSH requires only your public channel link. Never provide a YouTube or Google password to place a subscriber campaign.",
+    deliveryCopy:
+      "Subscriber campaigns use gradual delivery based on package size. Keep the channel public and avoid changing its handle during processing.",
+    metaDescription:
+      "Buy YouTube subscribers in India with gradual delivery, no-password ordering, transparent pricing, refill support and dashboard tracking.",
+    ogDescription:
+      "Build visible YouTube channel credibility with transparent subscriber packages and tracked delivery from SocialRUSH India.",
+    audiences: ["YouTube creators", "Educators", "Podcasters", "Brand channels"],
+    related: [
+      "buy-youtube-likes-india",
+      "buy-youtube-views-india",
+      "buy-instagram-followers-india",
+    ],
+  },
+  "buy-youtube-likes-india": {
+    slug: "buy-youtube-likes-india",
+    serviceCode: "youtube-likes",
+    platform: "YouTube",
+    platformKey: "youtube",
+    serviceName: "YouTube Likes",
+    unitName: "likes",
+    destination: "public YouTube video link",
+    delivery: "0–48 hours",
+    refill: "Available where listed",
+    packageService: "likes",
+    intro:
+      "Support visible engagement on selected YouTube videos with a straightforward like campaign and clear pricing for Indian customers.",
+    overview:
+      "Submit the exact public video URL, choose a suitable quantity, confirm the displayed total, and monitor delivery from your account.",
+    value:
+      "Visible engagement can support video presentation alongside strong titles, thumbnails, watch time, and useful audience-focused content.",
+    safety:
+      "Only a public video URL is needed. Your channel password, Google credentials, and private account access are never required.",
+    deliveryCopy:
+      "Delivery begins after confirmation and varies with quantity and video availability. Keep the selected video public during processing.",
+    metaDescription:
+      "Buy YouTube likes in India with transparent pricing, public-link ordering, fast delivery and SocialRUSH campaign tracking.",
+    ogDescription:
+      "Support visible YouTube video engagement with clear like packages, no-password ordering and tracked delivery in India.",
+    audiences: ["Video creators", "Music channels", "Educators", "Businesses"],
+    related: [
+      "buy-youtube-subscribers-india",
+      "buy-youtube-views-india",
+      "buy-instagram-likes-india",
+    ],
+  },
+  "buy-youtube-views-india": {
+    slug: "buy-youtube-views-india",
+    serviceCode: "youtube-views",
+    platform: "YouTube",
+    platformKey: "youtube",
+    serviceName: "YouTube Views",
+    unitName: "views",
+    destination: "public YouTube video link",
+    delivery: "1–7 days",
+    refill: "Service coverage shown before order",
+    packageService: "views",
+    intro:
+      "Support the visible reach of public YouTube videos with a carefully managed view campaign for Indian channels and businesses.",
+    overview:
+      "Choose a campaign quantity, paste the correct video URL, review pricing and delivery, and follow status updates from your dashboard.",
+    value:
+      "A stronger visible view count can complement discoverable titles, thumbnails, descriptions, playlists, and consistent publishing.",
+    safety:
+      "No channel password is required. Submit only the public video link and keep it available without changing visibility during delivery.",
+    deliveryCopy:
+      "YouTube view timing depends on campaign size and service conditions. The current estimate is displayed before you confirm the order.",
+    metaDescription:
+      "Buy YouTube views in India with clear INR pricing, tracked delivery, public-link ordering and professional SocialRUSH support.",
+    ogDescription:
+      "Increase visible YouTube video reach with transparent view campaigns and dashboard-based delivery tracking from SocialRUSH.",
+    audiences: ["New channels", "Music artists", "Educators", "Product teams"],
+    related: [
+      "buy-youtube-subscribers-india",
+      "buy-youtube-likes-india",
+      "buy-instagram-views-india",
+    ],
+  },
+  "buy-linkedin-followers-india": {
+    slug: "buy-linkedin-followers-india",
+    serviceCode: "linkedin-followers",
+    platform: "LinkedIn",
+    platformKey: "linkedin",
+    serviceName: "LinkedIn Followers",
+    unitName: "followers",
+    destination: "public LinkedIn profile or company page link",
+    delivery: "3–14 days",
+    refill: "Available on eligible services",
+    packageService: "followers",
+    intro:
+      "Build a stronger visible professional audience for a LinkedIn profile or company page with a structured India-focused campaign.",
+    overview:
+      "Provide the correct public destination, choose a campaign size, review the exact INR total, and track every status update from SocialRUSH.",
+    value:
+      "A more established follower count can support professional presentation for founders, consultants, recruiters, and company pages.",
+    safety:
+      "No LinkedIn password or private account access is required. Use only the public profile or company page URL requested at checkout.",
+    deliveryCopy:
+      "LinkedIn follower delivery is gradual and depends on quantity and destination availability. Keep the submitted page public and stable.",
+    metaDescription:
+      "Buy LinkedIn followers in India with transparent pricing, gradual delivery, no-password ordering and professional campaign tracking.",
+    ogDescription:
+      "Strengthen LinkedIn profile or company-page visibility with clear follower packages and tracked SocialRUSH delivery in India.",
+    audiences: ["Founders", "Consultants", "Company pages", "B2B agencies"],
+    related: [
+      "buy-linkedin-likes-india",
+      "buy-twitter-followers-india",
+      "buy-instagram-followers-india",
+    ],
+  },
+  "buy-linkedin-likes-india": {
+    slug: "buy-linkedin-likes-india",
+    serviceCode: "linkedin-likes",
+    platform: "LinkedIn",
+    platformKey: "linkedin",
+    serviceName: "LinkedIn Likes",
+    unitName: "likes",
+    destination: "public LinkedIn post link",
+    delivery: "1–5 days",
+    refill: "Service terms shown before checkout",
+    packageService: "likes",
+    intro:
+      "Support visible engagement on selected LinkedIn posts with a professional campaign for Indian founders, experts, and business pages.",
+    overview:
+      "Submit the exact public post URL, select the campaign quantity, review the total, and monitor progress without sharing account access.",
+    value:
+      "Visible post engagement can strengthen the presentation of useful insights, company updates, launches, and thought-leadership content.",
+    safety:
+      "Your LinkedIn password is never needed. The service works from the public post URL supplied during checkout.",
+    deliveryCopy:
+      "Delivery timing varies by quantity and post availability. Keep the post public and avoid deleting or restricting it during processing.",
+    metaDescription:
+      "Buy LinkedIn likes in India with transparent INR pricing, public-post ordering, professional delivery and SocialRUSH tracking.",
+    ogDescription:
+      "Support LinkedIn post engagement with clear pricing, no-password ordering and tracked delivery for Indian professionals.",
+    audiences: ["Founders", "Thought leaders", "Recruiters", "B2B brands"],
+    related: [
+      "buy-linkedin-followers-india",
+      "buy-twitter-followers-india",
+      "buy-instagram-likes-india",
+    ],
+  },
+  "buy-twitter-followers-india": {
+    slug: "buy-twitter-followers-india",
+    serviceCode: "x-followers",
+    platform: "Twitter/X",
+    platformKey: "twitter",
+    serviceName: "Twitter/X Followers",
+    unitName: "followers",
+    destination: "public Twitter/X profile link",
+    delivery: "2–10 days",
+    refill: "Available where listed",
+    packageService: "followers",
+    intro:
+      "Strengthen visible audience credibility on Twitter/X with a transparent follower campaign for Indian creators, founders, and brands.",
+    overview:
+      "Choose a quantity, submit your public profile URL, review the campaign details, and track delivery through your SocialRUSH dashboard.",
+    value:
+      "A more established visible audience can support profile presentation when people discover your commentary, launches, and public conversations.",
+    safety:
+      "No Twitter/X password is required. Keep the submitted profile public and avoid changing its handle while delivery is active.",
+    deliveryCopy:
+      "Follower delivery is managed gradually and depends on package size. Current timing and refill coverage are shown before confirmation.",
+    metaDescription:
+      "Buy Twitter followers in India with transparent pricing, no-password ordering, gradual delivery and SocialRUSH campaign tracking.",
+    ogDescription:
+      "Build visible Twitter/X profile credibility with clear follower packages and tracked delivery from SocialRUSH India.",
+    audiences: ["Founders", "Creators", "Public brands", "Community builders"],
+    related: [
+      "buy-linkedin-followers-india",
+      "buy-instagram-followers-india",
+      "buy-facebook-followers-india",
+    ],
+  },
+  "buy-facebook-followers-india": {
+    slug: "buy-facebook-followers-india",
+    serviceCode: "facebook-followers",
+    platform: "Facebook",
+    platformKey: "facebook",
+    serviceName: "Facebook Followers",
+    unitName: "followers",
+    destination: "public Facebook page or profile link",
+    delivery: "1–7 days",
+    refill: "Available on eligible packages",
+    packageService: "followers",
+    intro:
+      "Build a stronger visible Facebook audience for a public page or profile with a clear, trackable follower campaign in India.",
+    overview:
+      "Select the campaign size, submit the correct public destination, review pricing, and keep delivery records organized in one account.",
+    value:
+      "Visible follower growth can support page credibility for local businesses, communities, creators, and established brands.",
+    safety:
+      "SocialRUSH never needs your Facebook password. Submit only the public page or profile link requested for the selected service.",
+    deliveryCopy:
+      "Delivery begins after confirmation and varies by quantity and page availability. Keep the destination public throughout processing.",
+    metaDescription:
+      "Buy Facebook followers in India with transparent pricing, no-password ordering, delivery tracking and refill support where eligible.",
+    ogDescription:
+      "Support Facebook page credibility with clear follower packages, public-link ordering and tracked delivery from SocialRUSH.",
+    audiences: ["Local businesses", "Community pages", "Creators", "Agencies"],
+    related: [
+      "buy-facebook-likes-india",
+      "buy-instagram-followers-india",
+      "buy-twitter-followers-india",
+    ],
+  },
+  "buy-facebook-likes-india": {
+    slug: "buy-facebook-likes-india",
+    serviceCode: "facebook-likes",
+    platform: "Facebook",
+    platformKey: "facebook",
+    serviceName: "Facebook Likes",
+    unitName: "likes",
+    destination: "public Facebook post link",
+    delivery: "0–48 hours",
+    refill: "Service terms shown before order",
+    packageService: "likes",
+    intro:
+      "Support visible engagement on public Facebook posts with an accessible campaign for Indian pages, creators, and businesses.",
+    overview:
+      "Provide the exact post URL, choose the required quantity, review the INR total, and monitor progress from your dashboard.",
+    value:
+      "Visible likes can strengthen the presentation of page updates, product posts, announcements, events, and community content.",
+    safety:
+      "No Facebook login or password is required. The campaign uses only the public post URL submitted during checkout.",
+    deliveryCopy:
+      "Like delivery generally starts after confirmation. Timing depends on order size, post visibility, and current service conditions.",
+    metaDescription:
+      "Buy Facebook likes in India with affordable pricing, public-post ordering, fast delivery and SocialRUSH order tracking.",
+    ogDescription:
+      "Support Facebook post engagement with transparent like packages and no-password SocialRUSH ordering in India.",
+    audiences: ["Business pages", "Event teams", "Creators", "Communities"],
+    related: [
+      "buy-facebook-followers-india",
+      "buy-instagram-likes-india",
+      "buy-linkedin-likes-india",
+    ],
+  },
+  "buy-telegram-members-india": {
+    slug: "buy-telegram-members-india",
+    serviceCode: "telegram-members",
+    platform: "Telegram",
+    platformKey: "telegram",
+    serviceName: "Telegram Members",
+    unitName: "members",
+    destination: "public Telegram channel or group link",
+    delivery: "1–7 days",
+    refill: "Available on eligible packages",
+    packageService: "members",
+    intro:
+      "Build a stronger visible Telegram community with a structured member campaign for Indian channels, groups, educators, and brands.",
+    overview:
+      "Select a package, submit the correct public invite or channel link, confirm the total, and track delivery through SocialRUSH.",
+    value:
+      "A more established member count can support first impressions when people evaluate a public channel or community before joining.",
+    safety:
+      "No Telegram account password or admin login is requested. Use a valid public channel or group link and keep it accessible.",
+    deliveryCopy:
+      "Member delivery depends on package size and invite availability. Eligible refill details are displayed before you place the order.",
+    metaDescription:
+      "Buy Telegram members in India with transparent pricing, public-link ordering, gradual delivery and refill support from SocialRUSH.",
+    ogDescription:
+      "Grow visible Telegram channel or group membership with clear packages and tracked SocialRUSH delivery in India.",
+    audiences: ["Channel owners", "Educators", "Communities", "Digital brands"],
+    related: [
+      "buy-instagram-followers-india",
+      "buy-youtube-subscribers-india",
+      "buy-twitter-followers-india",
+    ],
+  },
+  "buy-tiktok-followers-india": {
+    slug: "buy-tiktok-followers-india",
+    serviceCode: "tiktok-followers",
+    platform: "TikTok",
+    platformKey: "tiktok",
+    serviceName: "TikTok Followers",
+    unitName: "followers",
+    destination: "public TikTok profile link",
+    delivery: "1–7 days",
+    refill: "Available where listed",
+    packageService: "followers",
+    intro:
+      "Support visible TikTok profile credibility with a follower campaign designed for creators, artists, brands, and Indian businesses.",
+    overview:
+      "Choose a suitable campaign quantity, paste your public TikTok profile URL, review the total, and follow delivery from your dashboard.",
+    value:
+      "A stronger visible audience can improve profile presentation alongside consistent short-form publishing and recognizable creative direction.",
+    safety:
+      "Your TikTok password is never required. Keep the submitted profile public and avoid changing its username during campaign delivery.",
+    deliveryCopy:
+      "Follower delivery begins after confirmation and varies by quantity and profile availability. Review current refill terms before ordering.",
+    metaDescription:
+      "Buy TikTok followers in India with transparent INR pricing, public-link ordering, tracked delivery and refill support where eligible.",
+    ogDescription:
+      "Build visible TikTok profile credibility with clear follower packages and no-password SocialRUSH ordering in India.",
+    audiences: ["Short-form creators", "Artists", "Product brands", "Agencies"],
+    related: [
+      "buy-instagram-followers-india",
+      "buy-youtube-subscribers-india",
+      "buy-twitter-followers-india",
+    ],
+  },
+};
+
+export function getIndiaServicePage(slug: IndiaServiceSlug) {
+  return { ...pages[slug], price: SERVICE_PRICES[pages[slug].serviceCode] };
+}
+
+export function getIndiaServiceMetadata(slug: IndiaServiceSlug): Metadata {
+  const page = getIndiaServicePage(slug);
+  const url = `${SEO_SITE_URL}/${page.slug}`;
+  const title = `Buy ${page.serviceName} India | SocialRUSH`;
+  return {
+    title: { absolute: title },
+    description: page.metaDescription,
+    keywords: [
+      `Buy ${page.serviceName} India`,
+      `Buy ${page.serviceName}`,
+      `${page.serviceName} India`,
+      `${page.platform} growth service India`,
+      `No password ${page.serviceName}`,
+      "Social media growth service India",
+    ],
+    alternates: { canonical: url },
+    openGraph: {
+      type: "website",
+      locale: "en_IN",
+      siteName: "SocialRUSH",
+      title,
+      description: page.ogDescription,
+      url,
+      images: [
+        {
+          url: `${SEO_SITE_URL}/images/hero-3d.png`,
+          width: 1448,
+          height: 1086,
+          alt: `${page.serviceName} service in India`,
+        },
+      ],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title,
+      description: page.ogDescription,
+      images: [`${SEO_SITE_URL}/images/hero-3d.png`],
+    },
+  };
+}
+
+export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
+  const page = getIndiaServicePage(slug);
+  const related = getIndiaServicePage(page.related[0]);
+  return [
+    {
+      question: `Can I buy ${page.serviceName} in India?`,
+      answer: `Yes. SocialRUSH offers ${page.serviceName.toLowerCase()} campaigns priced in INR for Indian creators, businesses, agencies, and brands.`,
+    },
+    {
+      question: `Do I need to share my ${page.platform} password?`,
+      answer: `No. You only submit the ${page.destination}. SocialRUSH never needs your ${page.platform} password or private account access.`,
+    },
+    {
+      question: `What is the price for ${page.serviceName}?`,
+      answer: `The current rate is ₹${page.price.toLocaleString("en-IN")} per 1,000 ${page.unitName}. Your exact total depends on the selected quantity and is shown before confirmation.`,
+    },
+    {
+      question: "How long does delivery take?",
+      answer: `The current estimate is ${page.delivery}. Actual timing can vary with campaign size, destination availability, and platform conditions.`,
+    },
+    {
+      question: "Is refill support available?",
+      answer: `${page.refill}. Review the selected service details before ordering to confirm eligibility and coverage.`,
+    },
+    {
+      question: `Can businesses use ${page.serviceName}?`,
+      answer: `Yes. Businesses can use this campaign to support visible ${page.platform} presentation while continuing their normal content and customer-acquisition work.`,
+    },
+    {
+      question: `Can creators use this ${page.platform} service?`,
+      answer: `Yes. Creators can choose a campaign size aligned with their publishing plan, profile goals, and available budget.`,
+    },
+    {
+      question: "What should I do if delivery is delayed?",
+      answer:
+        "Check that the submitted destination is still public, then contact SocialRUSH support with your order ID if processing exceeds the displayed estimate.",
+    },
+    {
+      question: `Can I also order ${related.serviceName}?`,
+      answer: `Yes. SocialRUSH also offers ${related.serviceName.toLowerCase()} and other supported social media growth services with separate pricing and delivery terms.`,
+    },
+    {
+      question: "How do I contact SocialRUSH support?",
+      answer:
+        "Use the contact page, your account support area, or the SocialRUSH WhatsApp help link before or after ordering.",
+    },
+  ];
+}

@@ -398,8 +398,12 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
           <div className="mt-8 grid gap-4 md:grid-cols-3">
             {page.related.map((relatedSlug) => {
               const related = getSeoServicePage(relatedSlug);
+              const relatedHref =
+                related.slug === "instagram-followers"
+                  ? "/buy-instagram-followers-india"
+                  : `/${related.slug}`;
               return (
-                <Link key={related.slug} href={`/${related.slug}`} className="group rounded-3xl border border-white/90 bg-white/80 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff] sm:p-6">
+                <Link key={related.slug} href={relatedHref} className="group rounded-3xl border border-white/90 bg-white/80 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff] sm:p-6">
                   <span className={`grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br ${related.platform.gradient} text-white`}>
                     <PlatformIcon platform={related.platform.icon} className="h-5 w-5" />
                   </span>

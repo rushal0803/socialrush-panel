@@ -1,8 +1,5 @@
-import SeoServiceLandingPage from "@/components/marketing/services/SeoServiceLandingPage";
-import { getSeoServiceMetadata } from "@/lib/seo/service-landing-pages";
-
-export const metadata = getSeoServiceMetadata("telegram-members");
+import { permanentRedirect } from "next/navigation";
 
 export default function TelegramMembersPage() {
-  return <SeoServiceLandingPage slug="telegram-members" />;
+  permanentRedirect("/buy-telegram-members-india");
 }

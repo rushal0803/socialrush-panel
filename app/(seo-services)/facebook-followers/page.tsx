@@ -1,8 +1,5 @@
-import SeoServiceLandingPage from "@/components/marketing/services/SeoServiceLandingPage";
-import { getSeoServiceMetadata } from "@/lib/seo/service-landing-pages";
-
-export const metadata = getSeoServiceMetadata("facebook-followers");
+import { permanentRedirect } from "next/navigation";
 
 export default function FacebookFollowersPage() {
-  return <SeoServiceLandingPage slug="facebook-followers" />;
+  permanentRedirect("/buy-facebook-followers-india");
 }

@@ -221,6 +221,7 @@ const steps = [
 const featuredServices = [
   {
     name: "Instagram Growth",
+    href: "/buy-instagram-followers-india",
     text: "Improve profile momentum with follower, view, and engagement campaigns.",
     icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2a7.2 7.2 0 01-6-3.22c.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08a7.2 7.2 0 01-6 3.22z",
     grad: "from-pink-500 to-fuchsia-600",
@@ -229,6 +230,7 @@ const featuredServices = [
   },
   {
     name: "YouTube Promotion",
+    href: "/buy-youtube-subscribers-india",
     text: "Support channel traction with trusted delivery across key growth actions.",
     icon: "M10 9.333L15.333 12 10 14.667V9.333zM21.543 6.498C21 4.228 19.772 3 17.5 2.957 15.227 2.914 13 2.914 12 2.914s-3.227 0-5.5.043C4.228 3 3 4.228 2.457 6.498 2 8.772 2 12 2 12s0 3.228.457 5.502C3 19.772 4.228 21 6.5 21.043 8.773 21.086 11 21.086 12 21.086s3.227 0 5.5-.043C19.772 21 21 19.772 21.543 17.502 22 15.228 22 12 22 12s0-3.228-.457-5.502z",
     grad: "from-rose-500 to-red-600",
@@ -237,6 +239,7 @@ const featuredServices = [
   },
   {
     name: "LinkedIn Visibility",
+    href: "/buy-linkedin-followers-india",
     text: "Build professional social proof and profile visibility for business goals.",
     icon: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z M4 6a2 2 0 100-4 2 2 0 000 4z",
     grad: "from-cyan-500 to-blue-600",
@@ -245,6 +248,7 @@ const featuredServices = [
   },
   {
     name: "Facebook Engagement",
+    href: "/buy-facebook-followers-india",
     text: "Increase page interaction and post visibility with cleaner delivery flow.",
     icon: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
     grad: "from-sky-500 to-blue-600",
@@ -253,6 +257,7 @@ const featuredServices = [
   },
   {
     name: "TikTok Reach",
+    href: "/services",
     text: "Scale short-form reach and profile traction with consistent campaign setup.",
     icon: "M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3",
     grad: "from-violet-500 to-fuchsia-600",
@@ -261,6 +266,7 @@ const featuredServices = [
   },
   {
     name: "X / Twitter Growth",
+    href: "/buy-twitter-followers-india",
     text: "Expand audience exposure using focused campaign structures.",
     icon: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
     grad: "from-indigo-500 to-slate-700",
@@ -298,7 +304,7 @@ const testimonials = [
 
 const footerLinks = [
   { heading: "Quick Links", links: [["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Blog", "/blog"], ["About Us", "/about"]] },
-  { heading: "Popular Growth", links: [["Instagram Followers", "/instagram-followers"], ["YouTube Subscribers", "/youtube-subscribers"], ["LinkedIn Followers", "/linkedin-followers"], ["Twitter/X Followers", "/twitter-followers"]] },
+  { heading: "Popular Growth", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["YouTube Subscribers", "/buy-youtube-subscribers-india"], ["LinkedIn Followers", "/buy-linkedin-followers-india"], ["Twitter/X Followers", "/buy-twitter-followers-india"]] },
   { heading: "Support", links: [["FAQ", "/faq"], ["Contact Us", "/contact"], ["Support Center", "/dashboard/support"], ["How It Works", "/#how-it-works"]] },
   { heading: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms & Conditions", "/terms-and-conditions"], ["Refund Policy", "/refund-policy"]] },
 ] as const;
@@ -585,7 +591,7 @@ export default function HomepageContent() {
                 <h3 className="mt-4 text-lg font-bold text-slate-900">{svc.name}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{svc.text}</p>
                 <div className="mt-4 flex gap-2">
-                  <Link href="/services" className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm transition hover:text-sky-600">View Services</Link>
+                  <Link href={svc.href} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm transition hover:text-sky-600">View Services</Link>
                   <Link href={startOrderHref} className={`inline-flex items-center gap-1 rounded-lg bg-gradient-to-r px-3 py-1.5 text-xs font-bold text-white shadow-sm ${svc.grad}`}>Start Order</Link>
                 </div>
               </motion.article>

@@ -1,8 +1,5 @@
-import SeoServiceLandingPage from "@/components/marketing/services/SeoServiceLandingPage";
-import { getSeoServiceMetadata } from "@/lib/seo/service-landing-pages";
-
-export const metadata = getSeoServiceMetadata("instagram-views");
+import { permanentRedirect } from "next/navigation";
 
 export default function InstagramViewsPage() {
-  return <SeoServiceLandingPage slug="instagram-views" />;
+  permanentRedirect("/buy-instagram-views-india");
 }

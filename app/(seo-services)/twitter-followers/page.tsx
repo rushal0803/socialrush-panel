@@ -1,8 +1,5 @@
-import SeoServiceLandingPage from "@/components/marketing/services/SeoServiceLandingPage";
-import { getSeoServiceMetadata } from "@/lib/seo/service-landing-pages";
-
-export const metadata = getSeoServiceMetadata("twitter-followers");
+import { permanentRedirect } from "next/navigation";
 
 export default function TwitterFollowersPage() {
-  return <SeoServiceLandingPage slug="twitter-followers" />;
+  permanentRedirect("/buy-twitter-followers-india");
 }
