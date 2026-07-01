@@ -23,15 +23,54 @@ import {
   type IndiaServiceSlug,
 } from "@/lib/seo/india-service-pages";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import { blogArticles } from "@/components/marketing/blog/blogData";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
-  { title: "Clear Delivery", icon: Clock3 },
-  { title: "Refill Information", icon: RefreshCw },
+  { title: "Real-time Order Tracking", icon: Clock3 },
+  { title: "Refill Support If Eligible", icon: RefreshCw },
   { title: "Secure Checkout", icon: ShieldCheck },
-  { title: "Indian Support", icon: Headphones },
+  { title: "WhatsApp Support", icon: Headphones },
   { title: "Transparent Pricing", icon: BadgeIndianRupee },
 ];
+
+const relatedBlogMap: Record<string, string[]> = {
+  instagram: [
+    "how-to-grow-instagram-followers-in-india",
+    "instagram-followers-price-in-india",
+    "is-it-safe-to-buy-instagram-followers",
+  ],
+  youtube: [
+    "how-to-increase-youtube-subscribers-in-india",
+    "youtube-views-price-in-india",
+    "youtube-views-get-more-reach",
+  ],
+  linkedin: [
+    "linkedin-followers-for-business-growth",
+    "best-way-to-grow-linkedin-followers-for-business",
+    "linkedin-growth-tips-personal-brands",
+  ],
+  facebook: [
+    "best-social-media-growth-services-for-indian-creators",
+    "social-media-growth-strategy-indian-creators",
+    "choose-the-right-social-media-service",
+  ],
+  telegram: [
+    "best-social-media-growth-services-for-indian-creators",
+    "social-media-growth-strategy-indian-creators",
+    "social-media-campaign-mistakes-to-avoid",
+  ],
+  tiktok: [
+    "best-social-media-growth-services-for-indian-creators",
+    "social-media-growth-strategy-indian-creators",
+    "choose-the-right-social-media-service",
+  ],
+  twitter: [
+    "best-social-media-growth-services-for-indian-creators",
+    "social-media-growth-strategy-indian-creators",
+    "linkedin-growth-tips-personal-brands",
+  ],
+};
 
 const comparisonRows = [
   ["Transparent pricing", "Shown before confirmation", "May be unclear"],
@@ -65,6 +104,10 @@ export default function IndiaServiceLandingPage({
   const page = getIndiaServicePage(slug);
   const faqs = getIndiaServiceFaqs(slug);
   const pageUrl = `${SEO_SITE_URL}/${page.slug}`;
+  const blogKey = page.platformKey === "x" ? "twitter" : page.platformKey;
+  const relatedBlogs = (relatedBlogMap[blogKey] ?? relatedBlogMap.instagram)
+    .map((articleSlug) => blogArticles.find((article) => article.slug === articleSlug))
+    .filter((article): article is (typeof blogArticles)[number] => Boolean(article));
   const packagesHref = `/packages?platform=${encodeURIComponent(
     page.platformKey,
   )}&service=${encodeURIComponent(page.packageService)}`;
@@ -104,12 +147,20 @@ export default function IndiaServiceLandingPage({
   ] as const;
   const steps = [
     [
-      "Choose a package",
-      `Compare available ${page.serviceName} quantities, prices, delivery estimates, and support terms.`,
+      "Create your account",
+      "Sign up or log in to access your SocialRUSH dashboard and order history.",
     ],
     [
-      `Enter your ${page.platform} link`,
-      `Submit the correct ${page.destination}. Your password is never required.`,
+      "Choose your platform",
+      `Select ${page.platform} from the available social media platforms.`,
+    ],
+    [
+      "Choose your service",
+      `Choose ${page.serviceName} and review the current price, delivery estimate, and refill information.`,
+    ],
+    [
+      "Submit your public link",
+      `Enter the correct ${page.destination}. Your password is never required.`,
     ],
     [
       "Add funds or pay securely",
@@ -118,10 +169,6 @@ export default function IndiaServiceLandingPage({
     [
       "Track your order",
       "Follow delivery status and retain an organized order record in your dashboard.",
-    ],
-    [
-      "Get delivery and support",
-      "Delivery begins after confirmation, with support available if the order needs review.",
     ],
   ] as const;
   const faqSchema = {
@@ -354,9 +401,9 @@ export default function IndiaServiceLandingPage({
             How it works
           </p>
           <h2 className="mt-3 text-3xl font-black tracking-tight text-[#14316a]">
-            Order in five clear steps
+            How to place an order in six clear steps
           </h2>
-          <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {steps.map(([title, text], index) => (
               <article
                 key={title}
@@ -372,6 +419,9 @@ export default function IndiaServiceLandingPage({
               </article>
             ))}
           </div>
+          <p className="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4 text-center text-sm font-bold text-emerald-800">
+            No password required. Only your public profile, post, video, channel, or page link is needed.
+          </p>
         </div>
       </section>
 
@@ -438,6 +488,30 @@ export default function IndiaServiceLandingPage({
       </section>
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <h2 className="text-3xl font-black tracking-tight text-[#14316a]">
+            Related {page.platform} growth guides
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6079a7]">
+            Learn how to evaluate pricing, prepare your public destination, and combine a campaign with responsible organic growth.
+          </p>
+          <div className="mt-7 grid gap-4 md:grid-cols-3">
+            {relatedBlogs.map((article) => (
+              <Link
+                key={article.slug}
+                href={`/blog/${article.slug}`}
+                className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff]"
+              >
+                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-violet-600">{article.category}</span>
+                <h3 className="mt-3 text-base font-black leading-6 text-[#17366f]">{article.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#6079a7]">{article.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <h2 className="text-3xl font-black tracking-tight text-[#14316a]">
             Explore related growth services

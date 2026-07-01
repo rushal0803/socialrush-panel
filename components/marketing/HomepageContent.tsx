@@ -11,6 +11,7 @@ import Logo from "@/components/Logo";
 import PlatformIcon from "@/components/PlatformIcon";
 import SafeImage from "@/components/SafeImage";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
+import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 
 /* ─────────────────── animation variants ─────────────────── */
 const fadeUp: Variants = {
@@ -50,9 +51,8 @@ const platforms = [
 
 const stats = [
   {
-    value: "20M+",
-    label: "Orders Completed",
-    sub: "Campaigns delivered across creator and brand accounts.",
+    label: "No Password Required",
+    sub: "Place an order using only the relevant public profile or content link.",
     icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
     iconBg: "from-pink-500 to-rose-500",
     glow: "shadow-pink-200",
@@ -60,9 +60,8 @@ const stats = [
     bg: "from-pink-50/80 to-rose-50/50",
   },
   {
-    value: "4,500+",
-    label: "Active Services",
-    sub: "Curated options for followers, engagement, and visibility.",
+    label: "Secure Checkout",
+    sub: "Review your order and complete payment through the protected checkout flow.",
     icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
     iconBg: "from-cyan-500 to-blue-500",
     glow: "shadow-cyan-200",
@@ -70,9 +69,8 @@ const stats = [
     bg: "from-cyan-50/80 to-blue-50/50",
   },
   {
-    value: "15K+",
-    label: "Active Users",
-    sub: "Agencies, creators, and businesses growing with SocialRUSH.",
+    label: "Real-time Order Tracking",
+    sub: "Follow order status and available progress updates from your dashboard.",
     icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
     iconBg: "from-violet-500 to-purple-600",
     glow: "shadow-violet-200",
@@ -80,29 +78,46 @@ const stats = [
     bg: "from-violet-50/80 to-purple-50/50",
   },
   {
-    value: "24/7",
-    label: "Support",
-    sub: "Friendly support with guided onboarding and campaign care.",
+    label: "WhatsApp Support",
+    sub: "Ask for help choosing a service or resolving an order question.",
     icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z",
     iconBg: "from-amber-400 to-orange-500",
     glow: "shadow-orange-200",
     border: "border-orange-100",
     bg: "from-orange-50/80 to-amber-50/50",
   },
+  {
+    label: "Refill Support If Eligible",
+    sub: "Eligible services clearly show their applicable refill coverage.",
+    icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+    iconBg: "from-emerald-500 to-teal-500",
+    glow: "shadow-emerald-200",
+    border: "border-emerald-100",
+    bg: "from-emerald-50/80 to-teal-50/50",
+  },
+  {
+    label: "Transparent Pricing",
+    sub: "See the applicable package or quantity price before confirming an order.",
+    icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
+    iconBg: "from-sky-500 to-indigo-500",
+    glow: "shadow-sky-200",
+    border: "border-sky-100",
+    bg: "from-sky-50/80 to-indigo-50/50",
+  },
 ] as const;
 
 const trustBadges = [
-  { label: "20M+ Orders", icon: "✓", color: "from-pink-500 to-rose-500" },
-  { label: "15K+ Users", icon: "★", color: "from-violet-500 to-purple-600" },
-  { label: "24/7 Support", icon: "◎", color: "from-cyan-500 to-blue-600" },
+  { label: "No Password Required", icon: "✓", color: "from-pink-500 to-rose-500" },
+  { label: "Transparent Pricing", icon: "★", color: "from-violet-500 to-purple-600" },
+  { label: "WhatsApp Support", icon: "◎", color: "from-cyan-500 to-blue-600" },
   { label: "Secure Checkout", icon: "⬡", color: "from-emerald-500 to-teal-600" },
 ] as const;
 
 const floatingStats = [
-  { text: "Followers Growth", sub: "+180%", pos: "top-6 -left-3", delay: 0 },
-  { text: "Engagement Boost", sub: "+240%", pos: "top-2 right-0", delay: 0.4 },
-  { text: "Real-time Tracking", sub: "Live", pos: "bottom-16 -left-2", delay: 0.8 },
-  { text: "Secure Orders", sub: "100%", pos: "bottom-6 right-0", delay: 1.2 },
+  { text: "Public Link Only", sub: "No password", pos: "top-6 -left-3", delay: 0 },
+  { text: "Pricing", sub: "Shown before order", pos: "top-2 right-0", delay: 0.4 },
+  { text: "Order Tracking", sub: "Dashboard updates", pos: "bottom-16 -left-2", delay: 0.8 },
+  { text: "Support", sub: "WhatsApp help", pos: "bottom-6 right-0", delay: 1.2 },
 ] as const;
 
 const whySocialRush = [
@@ -187,37 +202,6 @@ const benefits = [
   },
 ] as const;
 
-const steps = [
-  {
-    num: "01",
-    title: "Create Account",
-    text: "Sign up free and set up your dashboard in under 2 minutes.",
-    icon: "M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z",
-    grad: "from-pink-500 to-rose-500",
-  },
-  {
-    num: "02",
-    title: "Choose Service",
-    text: "Browse 4,500+ services across all major platforms.",
-    icon: "M4 6h16M4 10h16M4 14h16M4 18h16",
-    grad: "from-violet-500 to-purple-600",
-  },
-  {
-    num: "03",
-    title: "Add Funds & Checkout",
-    text: "Secure wallet top-up with multi-currency and Razorpay support.",
-    icon: "M3 10h18M7 15h1m4 0h1m-7 4h12a3 3 0 003-3V8a3 3 0 00-3-3H6a3 3 0 00-3 3v8a3 3 0 003 3z",
-    grad: "from-cyan-500 to-blue-500",
-  },
-  {
-    num: "04",
-    title: "Track & Grow",
-    text: "Monitor live order progress from your personal dashboard.",
-    icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-    grad: "from-emerald-500 to-teal-500",
-  },
-] as const;
-
 const featuredServices = [
   {
     name: "Instagram Growth",
@@ -257,12 +241,21 @@ const featuredServices = [
   },
   {
     name: "TikTok Reach",
-    href: "/services",
+    href: "/buy-tiktok-followers-india",
     text: "Scale short-form reach and profile traction with consistent campaign setup.",
     icon: "M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3",
     grad: "from-violet-500 to-fuchsia-600",
     bg: "from-violet-50 to-fuchsia-50",
     border: "border-violet-100",
+  },
+  {
+    name: "Telegram Community",
+    href: "/buy-telegram-members-india",
+    text: "Compare transparent member campaigns for public channels and groups.",
+    icon: "M21 3L3.8 10.4c-1.2.5-1.2 1.2-.2 1.5l4.4 1.4 1.7 5.1c.2.7.4.8.9.3l2.5-2.4 4.6 3.4c.8.5 1.4.2 1.6-.8L22 4.1c.2-1-.3-1.4-1-1.1z",
+    grad: "from-sky-400 to-blue-600",
+    bg: "from-sky-50 to-blue-50",
+    border: "border-sky-100",
   },
   {
     name: "X / Twitter Growth",
@@ -304,7 +297,7 @@ const testimonials = [
 
 const footerLinks = [
   { heading: "Quick Links", links: [["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Blog", "/blog"], ["About Us", "/about"]] },
-  { heading: "Popular Growth", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["YouTube Subscribers", "/buy-youtube-subscribers-india"], ["LinkedIn Followers", "/buy-linkedin-followers-india"], ["Twitter/X Followers", "/buy-twitter-followers-india"]] },
+  { heading: "Popular Growth", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/buy-instagram-likes-india"], ["Instagram Views", "/buy-instagram-views-india"], ["YouTube Subscribers", "/buy-youtube-subscribers-india"], ["YouTube Likes", "/buy-youtube-likes-india"], ["YouTube Views", "/buy-youtube-views-india"], ["LinkedIn Followers", "/buy-linkedin-followers-india"], ["Facebook Followers", "/buy-facebook-followers-india"], ["Telegram Members", "/buy-telegram-members-india"]] },
   { heading: "Support", links: [["FAQ", "/faq"], ["Contact Us", "/contact"], ["Support Center", "/dashboard/support"], ["How It Works", "/#how-it-works"]] },
   { heading: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms & Conditions", "/terms-and-conditions"], ["Refund Policy", "/refund-policy"]] },
 ] as const;
@@ -490,14 +483,13 @@ export default function HomepageContent() {
 
       {/* STATS */}
       <motion.section id="about" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
           {stats.map((s) => (
             <motion.article key={s.label} variants={cardAnim} whileHover={{ y: -8, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_20px_50px_-20px_rgba(15,23,42,.18)] ${s.border} ${s.bg}`}>
               <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${s.iconBg}`}>
                 <SvgIcon path={s.icon} size={20} />
               </div>
-              <p className="mt-4 text-3xl font-extrabold text-slate-900">{s.value}</p>
-              <p className="mt-1 text-sm font-bold text-slate-700">{s.label}</p>
+              <p className="mt-4 text-lg font-extrabold text-slate-900">{s.label}</p>
               <p className="mt-1.5 text-xs leading-5 text-slate-500">{s.sub}</p>
             </motion.article>
           ))}
@@ -548,28 +540,7 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* HOW IT WORKS */}
-      <motion.section id="how-it-works" variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 text-center">
-            <span className="inline-flex rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-violet-600">How It Works</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Get Started in <span className="bg-gradient-to-r from-violet-500 to-pink-500 bg-clip-text text-transparent">4 Simple Steps</span></h2>
-          </div>
-          <div className="mx-auto mb-10 max-w-3xl overflow-hidden rounded-3xl border border-white/80 bg-gradient-to-br from-violet-50 via-fuchsia-50 to-pink-50 p-4 shadow-[0_30px_60px_-20px_rgba(139,92,246,.25)]">
-            <SafeImage src="/images/process-3d.png" fallbackSrc="/images/process-3d.webp" alt="How it works process visual" width={1000} height={750} sizes="(max-width: 768px) 100vw, 768px" className="h-auto w-full rounded-2xl object-cover" />
-          </div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-5 md:grid-cols-4">
-            {steps.map((step, idx) => (
-              <motion.article key={step.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className="relative rounded-2xl border border-white/90 bg-white/80 p-5 text-center shadow-[0_12px_35px_-14px_rgba(15,23,42,.18)] backdrop-blur">
-                <div className={`mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${step.grad}`}><SvgIcon path={step.icon} size={22} /></div>
-                <span className={`mt-3 inline-block rounded-lg bg-gradient-to-r px-2 py-0.5 text-[10px] font-extrabold text-white ${step.grad}`}>STEP {step.num}</span>
-                <h3 className="mt-2 text-base font-bold text-slate-900">{step.title}</h3>
-                <p className="mt-1.5 text-xs leading-5 text-slate-600">{step.text}</p>
-                {idx < 3 && <span className="absolute right-[-18px] top-[26px] hidden h-[2px] w-9 border-t-2 border-dashed border-violet-300 md:block" />}
-              </motion.article>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
+      <HowToOrderSection id="how-it-works" />
 
       {/* FEATURED SERVICES */}
       <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
@@ -628,7 +599,7 @@ export default function HomepageContent() {
             ))}
           </motion.div>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-8 flex flex-wrap justify-center gap-4">
-            {[{ val: "4.9/5", label: "Rating", icon: "&#9733;" }, { val: "15K+", label: "Happy Users", icon: "&#9829;" }, { val: "SSL", label: "Secure Checkout", icon: "&#8982;" }, { val: "24/7", label: "Support Available", icon: "&#9737;" }].map((p) => (
+            {[{ val: "Public Link", label: "No password required", icon: "&#10003;" }, { val: "Dashboard", label: "Order tracking", icon: "&#9678;" }, { val: "SSL", label: "Secure checkout", icon: "&#8982;" }, { val: "WhatsApp", label: "Customer help", icon: "&#9743;" }].map((p) => (
               <motion.div key={p.label} variants={cardAnim} whileHover={{ y: -4 }} className="flex items-center gap-2.5 rounded-2xl border border-white/90 bg-white/85 px-5 py-3 shadow-sm backdrop-blur">
                 <span className="text-lg text-pink-500" dangerouslySetInnerHTML={{ __html: p.icon }} />
                 <div><p className="text-sm font-extrabold text-slate-900">{p.val}</p><p className="text-[10px] text-slate-500">{p.label}</p></div>

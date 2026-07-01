@@ -1,60 +1,276 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight, CheckCircle2, Clock3, Info, ShieldCheck, Sparkles } from "lucide-react";
+import {
+  ArrowRight,
+  Check,
+  CheckCircle2,
+  Clock3,
+  Hash,
+  Info,
+  Link as LinkIcon,
+  LoaderCircle,
+  LockKeyhole,
+  RefreshCw,
+  ShieldCheck,
+  Sparkles,
+  Wallet,
+} from "lucide-react";
 import Link from "next/link";
-import { useMemo, useState } from "react";
-import { useSearchParams } from "next/navigation";
+import { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
-import { customerOrderServices, growthMethod, serviceExperience } from "@/lib/order-service-experience";
+import { createClient } from "@/lib/supabase/client";
+import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
+import {
+  customerOrderServices,
+  growthMethod,
+  linkRules,
+  serviceExperience,
+  validateCampaignLink,
+} from "@/lib/order-service-experience";
+import { calculateServiceTotal } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 
 type PlatformId = SmmPlatformId;
+type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
 
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 
+function cleanQuantity(value: string) {
+  return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+}
+
+function progressState(step: number, current: number) {
+  if (step < current) return "complete";
+  if (step === current) return "active";
+  return "upcoming";
+}
+
+function ProgressItem({ number, title, state }: { number: number; title: string; state: "complete" | "active" | "upcoming" }) {
+  return (
+    <div
+      aria-current={state === "active" ? "step" : undefined}
+      className={`flex min-w-0 items-center gap-2 rounded-xl border px-3 py-2.5 transition ${
+        state === "active"
+          ? "border-violet-300 bg-white text-[#254783] shadow-sm"
+          : state === "complete"
+            ? "border-emerald-200 bg-emerald-50/80 text-emerald-800"
+            : "border-white/80 bg-white/45 text-[#8192b4]"
+      }`}
+    >
+      <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black ${state === "active" ? "bg-gradient-to-br from-pink-500 to-sky-500 text-white" : state === "complete" ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-500"}`}>
+        {state === "complete" ? <Check className="h-4 w-4" /> : number}
+      </span>
+      <span className="truncate text-[10px] font-black uppercase tracking-[0.08em] sm:text-xs">{title}</span>
+    </div>
+  );
+}
+
 export default function NewOrderPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const { currency } = usePreferredCurrency("INR");
-  const requestedService = customerOrderServices.find((service) => service.code === searchParams.get("service"));
-  const [platform, setPlatform] = useState<PlatformId | null>(requestedService?.platform ?? null);
+  const resumeRequested = searchParams.get("resume") === "1";
+  const resumedService = resumeRequested
+    ? customerOrderServices.find((service) => service.code === searchParams.get("service")) ?? null
+    : null;
+
+  const [platform, setPlatform] = useState<PlatformId | null>(resumedService?.platform ?? null);
+  const [selectedService, setSelectedService] = useState<SmmService | null>(resumedService);
+  const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
+  const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
+  const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [walletLoading, setWalletLoading] = useState(true);
+  const [walletError, setWalletError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState<ApiOrderData | null>(null);
+  const inFlight = useRef(false);
+  const requestId = useRef("");
+  const platformRef = useRef<HTMLElement>(null);
+  const serviceRef = useRef<HTMLElement>(null);
+  const detailsRef = useRef<HTMLElement>(null);
+  const summaryRef = useRef<HTMLElement>(null);
 
   const services = useMemo(
     () => (platform ? customerOrderServices.filter((service) => service.platform === platform) : []),
     [platform],
   );
+  const quantity = Number(quantityInput || 0);
+  const quantityError = useMemo(() => {
+    if (!selectedService || !quantityInput) return "";
+    if (!Number.isInteger(quantity) || quantity <= 0) return "Enter a valid whole-number quantity.";
+    if (quantity < selectedService.minQuantity) return `The minimum available quantity is ${selectedService.minQuantity.toLocaleString("en-IN")}.`;
+    if (quantity > selectedService.maxQuantity) return "This quantity is currently unavailable for the selected service.";
+    return "";
+  }, [quantity, quantityInput, selectedService]);
+  const linkRule = selectedService ? linkRules[selectedService.code] : null;
+  const linkError = selectedService && linkRule && targetLink.trim() ? validateCampaignLink(targetLink, linkRule) : "";
+  const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError);
+  const totalPrice = selectedService ? calculateServiceTotal(selectedService.code, quantity) : 0;
+  const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
+  const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
+  const currentStep = !platform ? 1 : !selectedService ? 2 : !formIsValid ? 3 : 4;
+
+  const scrollTo = (ref: React.RefObject<HTMLElement>) => {
+    window.setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+  };
+
+  const resetOrderDetails = () => {
+    setTargetLink("");
+    setQuantityInput("");
+    setError("");
+    setSuccess(null);
+    requestId.current = "";
+  };
+
+  const choosePlatform = (nextPlatform: PlatformId) => {
+    setPlatform(nextPlatform);
+    setSelectedService(null);
+    resetOrderDetails();
+    scrollTo(serviceRef);
+  };
+
+  const chooseService = (service: SmmService) => {
+    setSelectedService(service);
+    resetOrderDetails();
+    scrollTo(detailsRef);
+  };
+
+  const loadWalletBalance = useCallback(async () => {
+    setWalletLoading(true);
+    setWalletError("");
+    try {
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) {
+        router.replace(`/login?next=${encodeURIComponent("/dashboard/new-order")}`);
+        return;
+      }
+      const { data: profile, error: profileError } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
+      if (profileError) {
+        setWalletBalance(0);
+        setWalletError("Wallet balance could not be loaded. Please refresh before ordering.");
+        return;
+      }
+      setWalletBalance(Number(profile?.balance ?? 0));
+    } catch {
+      setWalletBalance(0);
+      setWalletError("Wallet balance is unavailable right now.");
+    } finally {
+      setWalletLoading(false);
+    }
+  }, [router]);
+
+  useEffect(() => {
+    void loadWalletBalance();
+    const updateBalance = (event: Event) => {
+      const value = Number((event as CustomEvent<number>).detail);
+      if (Number.isFinite(value)) setWalletBalance(value);
+    };
+    window.addEventListener("wallet-balance-updated", updateBalance);
+    return () => window.removeEventListener("wallet-balance-updated", updateBalance);
+  }, [loadWalletBalance]);
+
+  async function placeOrder() {
+    if (!selectedService || !linkRule || inFlight.current || submitting) return;
+    setError("");
+    if (!quantityInput || quantityError) {
+      setError(quantityError || "Enter a quantity to continue.");
+      scrollTo(detailsRef);
+      return;
+    }
+    const validationError = validateCampaignLink(targetLink, linkRule);
+    if (validationError) {
+      setError(validationError);
+      scrollTo(detailsRef);
+      return;
+    }
+    if (walletLoading || walletBalance === null) {
+      setError("Your wallet balance is still being checked.");
+      return;
+    }
+    if (!hasEnoughWallet) {
+      setError("Your wallet balance is lower than this order total.");
+      return;
+    }
+
+    inFlight.current = true;
+    setSubmitting(true);
+    if (!requestId.current) requestId.current = crypto.randomUUID();
+    const experience = serviceExperience[selectedService.code];
+
+    try {
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceCode: selectedService.code,
+          serviceId: 0,
+          quantity,
+          link: targetLink.trim(),
+          requestId: requestId.current,
+          notes: null,
+          fallbackName: experience.name,
+          fallbackPlatform: selectedService.platform,
+          fallbackMin: selectedService.minQuantity,
+          fallbackMax: selectedService.maxQuantity,
+        }),
+      });
+      const result = (await response.json()) as { data?: ApiOrderData; error?: string };
+      if (!response.ok || !result.data) throw new Error(result.error || "Unable to place your order right now.");
+
+      const updatedBalance = Number(result.data.balance);
+      setWalletBalance(updatedBalance);
+      setSuccess(result.data);
+      requestId.current = "";
+      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
+      window.setTimeout(() => router.push("/dashboard/orders"), 900);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to place your order right now.");
+      inFlight.current = false;
+      setSubmitting(false);
+    }
+  }
+
+  const returnParams = new URLSearchParams();
+  if (selectedService) returnParams.set("service", selectedService.code);
+  if (quantityInput) returnParams.set("quantity", quantityInput);
+  if (targetLink.trim()) returnParams.set("link", targetLink.trim());
+  returnParams.set("resume", "1");
+  const returnTo = `/dashboard/new-order?${returnParams.toString()}`;
+  const addFundsHref = `/dashboard/wallet?amount=${encodeURIComponent(String(amountRequired))}&returnTo=${encodeURIComponent(returnTo)}`;
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] px-4 pb-20 pt-5 sm:px-6 sm:pt-7 lg:px-8">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_0%_0%,#dbe8ff_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#e5f8ff_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#f8fbff_0%,#eef4ff_100%)] px-4 pb-32 pt-5 sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-cyan-200/40 blur-3xl" />
         <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl" />
-        <div className="absolute bottom-6 left-1/3 h-64 w-64 rounded-full bg-orange-100/45 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-[1450px]">
         <section className="relative overflow-hidden rounded-[1.6rem] border border-white/75 bg-white/65 p-5 shadow-[0_30px_80px_-38px_rgba(15,23,42,.5)] backdrop-blur-2xl sm:p-8">
-          <div className="absolute -right-14 -top-16 h-56 w-56 rounded-full bg-gradient-to-br from-pink-200/55 via-violet-200/40 to-cyan-200/55 blur-2xl" />
-          <div className="relative">
-            <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700">
-              <Sparkles className="h-3.5 w-3.5" /> Growth Service Selector
-            </span>
-            <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.04em] text-[#0f2b61] sm:text-5xl">
-              Start a Growth Campaign
-            </h1>
-            <p className="mt-3 max-w-3xl text-sm leading-7 text-[#536d9d] sm:text-base">
-              Choose a platform, review the available growth services, and continue to a focused order summary.
-            </p>
+          <span className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-white/85 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-blue-700">
+            <Sparkles className="h-3.5 w-3.5" /> Guided order flow
+          </span>
+          <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.04em] text-[#0f2b61] sm:text-5xl">Start a Growth Campaign</h1>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#536d9d] sm:text-base">Choose your platform and service, add campaign details, then review everything before confirming.</p>
+        </section>
+
+        <section aria-label="Order progress" className="sticky top-16 z-20 mt-4 rounded-2xl border border-white/90 bg-white/80 p-2 shadow-[0_16px_36px_-24px_rgba(15,23,42,.45)] backdrop-blur-xl sm:top-20 sm:p-3">
+          <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+            <ProgressItem number={1} title="Platform" state={progressState(1, currentStep)} />
+            <ProgressItem number={2} title="Service" state={progressState(2, currentStep)} />
+            <ProgressItem number={3} title="Details" state={progressState(3, currentStep)} />
+            <ProgressItem number={4} title="Summary" state={progressState(4, currentStep)} />
           </div>
         </section>
 
-        <section className="mt-6 rounded-3xl border border-white/85 bg-white/68 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
+        <section ref={platformRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/85 bg-white/68 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">Step 1</p>
           <h2 className="mt-2 text-xl font-black text-[#14316a] sm:text-2xl">Choose your platform</h2>
-          <p className="mt-2 text-sm leading-6 text-[#6079a7]">Select where you want to launch your next growth campaign.</p>
-
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7">
             {platformOrder.map((platformId) => {
               const meta = platformMeta[platformId];
@@ -65,105 +281,109 @@ export default function NewOrderPage() {
                   type="button"
                   whileHover={{ y: -4 }}
                   whileTap={{ scale: 0.98 }}
-                  onClick={() => setPlatform(platformId)}
-                  className={`min-w-0 rounded-2xl border p-3 text-left shadow-[0_18px_38px_-28px_rgba(15,23,42,.5)] transition sm:p-4 ${
-                    active ? "border-transparent bg-white ring-2 ring-[#8ea9ff]" : "border-white/85 bg-white/72 hover:border-[#cbdcff]"
-                  }`}
+                  onClick={() => choosePlatform(platformId)}
+                  aria-pressed={active}
+                  className={`relative min-w-0 rounded-2xl border p-3 text-left shadow-[0_18px_38px_-28px_rgba(15,23,42,.5)] transition sm:p-4 ${active ? "border-transparent bg-white ring-2 ring-[#8ea9ff]" : "border-white/85 bg-white/72 hover:border-[#cbdcff]"}`}
                 >
+                  {active ? <CheckCircle2 className="absolute right-2 top-2 h-5 w-5 text-emerald-600" /> : null}
                   <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}><PlatformIcon platform={meta.label} className="h-5 w-5" /></span>
-                  <span className="mt-3 block truncate text-xs font-black text-[#1c3a71]">{meta.label}</span>
+                  <span className="mt-3 block break-words text-xs font-black text-[#1c3a71]">{meta.label}</span>
                 </motion.button>
               );
             })}
           </div>
         </section>
 
-        {platform ? (
-          <motion.section
-            key={platform}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.35 }}
-            className="mt-6 rounded-3xl border border-white/85 bg-white/68 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6"
-          >
-            <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">Step 2</p>
-            <h2 className="mt-2 text-xl font-black text-[#14316a] sm:text-2xl">
-              Choose a {platformMeta[platform].label} service
-            </h2>
-            <p className="mt-2 text-sm leading-6 text-[#6079a7]">Select a service to continue to quantity, link, wallet, and checkout details.</p>
-
-            <div className="mt-5 grid gap-4 lg:grid-cols-2 2xl:grid-cols-3">
-              {services.map((service, index) => {
-                const copy = serviceExperience[service.code];
-                const startingPrice = Math.round(((service.minQuantity / 1000) * service.pricePer1000) * 100) / 100;
+        <section ref={serviceRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/85 bg-white/68 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
+          <div className="flex flex-wrap items-start justify-between gap-3">
+            <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">Step 2</p><h2 className="mt-2 text-xl font-black text-[#14316a] sm:text-2xl">Choose your service</h2></div>
+            {platform ? <button type="button" onClick={() => scrollTo(platformRef)} className="rounded-xl border border-[#d9e5ff] bg-white px-3 py-2 text-xs font-bold text-[#426097]">Change platform</button> : null}
+          </div>
+          {!platform ? (
+            <div className="mt-5 rounded-2xl border border-dashed border-[#cddcff] bg-white/55 p-8 text-center text-sm font-semibold text-[#6079a7]">Choose a platform to see available services.</div>
+          ) : services.length === 0 ? (
+            <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-800">No services available for this platform right now. Please contact support.</div>
+          ) : (
+            <div className="mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+              {services.map((service) => {
+                const active = selectedService?.code === service.code;
+                const experience = serviceExperience[service.code];
                 return (
-                  <motion.article
-                    key={service.code}
-                    initial={{ opacity: 0, y: 12 }}
-                    animate={{ opacity: 1, y: 0 }}
-                    transition={{ delay: index * 0.05 }}
-                    whileHover={{ y: -5 }}
-                    className="flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/82 p-5 shadow-[0_22px_48px_-32px_rgba(15,23,42,.5)]"
-                  >
+                  <motion.article key={service.code} whileHover={{ y: -4 }} className={`flex min-w-0 flex-col rounded-3xl border p-5 shadow-[0_22px_48px_-32px_rgba(15,23,42,.5)] transition ${active ? "border-violet-300 bg-white ring-2 ring-violet-200" : "border-white/85 bg-white/82"}`}>
                     <div className="flex items-start justify-between gap-3">
-                      <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${platformMeta[service.platform].gradient} text-xs font-black text-white shadow-lg`}>
-                        <PlatformIcon platform={platformMeta[service.platform].label} className="h-6 w-6" />
-                      </span>
-                      <span className="rounded-full border border-[#dce7ff] bg-[#f8fbff] px-3 py-1 text-[10px] font-black uppercase text-[#5270aa]">
-                        {service.qualityType}
-                      </span>
+                      <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${platformMeta[service.platform].gradient} text-white shadow-lg`}><PlatformIcon platform={platformMeta[service.platform].label} className="h-5 w-5" /></span>
+                      {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
                     </div>
-
-                    <h3 className="mt-4 text-lg font-black text-[#14316a]">{copy.name}</h3>
+                    <h3 className="mt-4 text-lg font-black text-[#14316a]">{experience.name}</h3>
                     <p className="mt-2 text-sm leading-6 text-[#526d9f]">{service.description}</p>
-
-                    <div className="mt-4 grid grid-cols-2 gap-2.5 text-xs">
-                      <div className="rounded-xl border border-[#e1eaff] bg-[#f8fbff] p-3">
-                        <p className="text-[#7890bb]">Starting price</p>
-                        <p className="mt-1 font-black text-[#24457f]">{formatCurrency(startingPrice, currency)}</p>
-                      </div>
-                      <div className="rounded-xl border border-[#e1eaff] bg-[#f8fbff] p-3">
-                        <p className="text-[#7890bb]">Delivery</p>
-                        <p className="mt-1 font-black text-[#24457f]">{service.deliveryTime}</p>
-                      </div>
-                      <div className="col-span-2 rounded-xl border border-[#e1eaff] bg-[#f8fbff] p-3">
-                        <p className="text-[#7890bb]">Refill & support</p>
-                        <p className="mt-1 font-black text-[#24457f]">{service.refillPolicy}</p>
-                      </div>
-                    </div>
-
-                    <details className="group mt-4 rounded-2xl border border-[#dce7ff] bg-white">
-                      <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 px-4 py-2 text-xs font-bold text-[#426097]">
-                        <span className="inline-flex items-center gap-2"><Info className="h-4 w-4" /> How it works</span>
-                        <span className="text-lg transition group-open:rotate-45">+</span>
-                      </summary>
-                      <div className="border-t border-[#e6eeff] px-4 py-3">
-                        <p className="text-xs leading-6 text-[#6079a7]">{growthMethod(service)}</p>
-                        <p className="mt-2 flex items-start gap-2 text-xs leading-5 text-[#426097]">
-                          <CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" /> {copy.outcome}
-                        </p>
-                      </div>
-                    </details>
-
-                    <div className="mt-auto pt-5">
-                      <Link
-                        href={`/dashboard/order-summary?service=${encodeURIComponent(service.code)}`}
-                        className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)] transition hover:-translate-y-0.5"
-                      >
-                        Start Order <ArrowRight className="h-4 w-4" />
-                      </Link>
-                    </div>
+                    <div className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl bg-[#f8fbff] p-3"><span className="text-[#7890bb]">Rate</span><strong className="mt-1 block text-[#24457f]">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl bg-[#f8fbff] p-3"><span className="text-[#7890bb]">Delivery</span><strong className="mt-1 block text-[#24457f]">{service.deliveryTime}</strong></div></div>
+                    <details className="mt-4 rounded-xl border border-[#dce7ff] bg-white"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-[#426097]"><Info className="mr-2 inline h-4 w-4" />How it works</summary><p className="border-t border-[#e6eeff] px-3 py-3 text-xs leading-6 text-[#6079a7]">{growthMethod(service)}</p></details>
+                    <button type="button" onClick={() => chooseService(service)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.65)]">
+                      {active ? "Service Selected" : "Choose Service"} <ArrowRight className="h-4 w-4" />
+                    </button>
                   </motion.article>
                 );
               })}
             </div>
+          )}
+        </section>
 
-            <div className="mt-5 flex flex-wrap gap-3 text-xs font-semibold text-[#526d9f]">
-              <span className="inline-flex items-center gap-2 rounded-xl border border-white/85 bg-white/78 px-3 py-2"><ShieldCheck className="h-4 w-4 text-emerald-600" /> Public link only</span>
-              <span className="inline-flex items-center gap-2 rounded-xl border border-white/85 bg-white/78 px-3 py-2"><Clock3 className="h-4 w-4 text-blue-600" /> Track from dashboard</span>
-            </div>
-          </motion.section>
+        {selectedService && linkRule ? (
+          <>
+            <section ref={detailsRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/85 bg-white/72 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">Step 3</p><h2 className="mt-2 text-xl font-black text-[#14316a] sm:text-2xl">Enter campaign details</h2></div>
+                <button type="button" onClick={() => scrollTo(serviceRef)} className="rounded-xl border border-[#d9e5ff] bg-white px-3 py-2 text-xs font-bold text-[#426097]">Change service</button>
+              </div>
+              <div className="mt-5 grid gap-5 lg:grid-cols-2">
+                <label className="block text-xs font-black text-[#365485]"><span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4" />{linkRule.label}</span><input value={targetLink} onChange={(event) => { setTargetLink(event.target.value); setError(""); }} placeholder={linkRule.placeholder} className="mt-2 min-h-13 w-full rounded-xl border border-[#d7e3fb] bg-white px-4 py-3.5 text-sm text-[#173469] outline-none transition focus:border-violet-400 focus:ring-4 focus:ring-violet-200/40" /><span className={`mt-2 block text-[11px] leading-5 ${linkError ? "text-rose-600" : "text-[#7187b1]"}`}>{linkError || linkRule.helper}</span></label>
+                <label className="block text-xs font-black text-[#365485]"><span className="inline-flex items-center gap-2"><Hash className="h-4 w-4" />Quantity</span><input value={quantityInput} onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className="mt-2 min-h-13 w-full rounded-xl border border-[#d7e3fb] bg-white px-4 py-3.5 text-sm text-[#173469] outline-none transition focus:border-violet-400 focus:ring-4 focus:ring-violet-200/40" /><span className={`mt-2 block text-[11px] ${quantityError ? "text-rose-600" : "text-[#7187b1]"}`}>{quantityError || "Enter the quantity you want for this campaign."}</span></label>
+              </div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                <div className="rounded-2xl border border-violet-100 bg-gradient-to-r from-violet-50 to-sky-50 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-[#6b7fb0]">Price preview</p><p className="mt-2 text-2xl font-black text-[#173469]">{quantity > 0 && !quantityError ? formatCurrency(totalPrice, currency) : "Enter quantity"}</p></div>
+                <div className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-700" /><p className="text-sm font-bold text-emerald-800">No password required. Only public link needed.</p></div>
+              </div>
+              {formIsValid ? <button type="button" onClick={() => scrollTo(summaryRef)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#0a1b3d] px-5 py-3 text-sm font-black text-white sm:w-auto">Review order summary <ArrowRight className="h-4 w-4" /></button> : null}
+            </section>
+
+            <section ref={summaryRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/90 bg-white/78 p-5 shadow-[0_30px_65px_-36px_rgba(15,23,42,.55)] backdrop-blur-xl sm:p-7">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#5270aa]">Step 4</p><h2 className="mt-2 text-xl font-black text-[#14316a] sm:text-2xl">Review order summary</h2></div>
+                <button type="button" onClick={() => scrollTo(detailsRef)} className="rounded-xl border border-[#d9e5ff] bg-white px-3 py-2 text-xs font-bold text-[#426097]">Change details</button>
+              </div>
+              <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
+                <dl className="grid gap-3 sm:grid-cols-2">
+                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim() || "Not entered"],["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"],["Delivery", selectedService.deliveryTime],["Refill support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-[#e0e9fb] bg-[#f8fbff] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#7890bb]">{label}</dt><dd className="mt-2 break-all text-sm font-bold text-[#24457f]">{value}</dd></div>)}
+                </dl>
+                <aside className="rounded-3xl bg-[#102750] p-5 text-white shadow-xl">
+                  <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-blue-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>
+                  <p className="mt-2 text-2xl font-black">{walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency)}</p>
+                  <div className="my-5 border-t border-white/15" />
+                  <div className="flex items-end justify-between gap-3"><span className="text-xs text-blue-100">Order total</span><strong className="text-2xl">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</strong></div>
+                  {formIsValid && walletBalance !== null && !hasEnoughWallet ? <div className="mt-4 rounded-xl bg-amber-400/15 p-3 text-xs leading-6 text-amber-100">Amount required: <strong>{formatCurrency(amountRequired, currency)}</strong></div> : null}
+                  {walletError ? <p className="mt-4 text-xs leading-5 text-amber-200">{walletError}</p> : null}
+                  {error ? <p className="mt-4 rounded-xl bg-rose-500/15 p-3 text-xs font-semibold text-rose-100">{error}</p> : null}
+                  {success ? <p className="mt-4 rounded-xl bg-emerald-500/15 p-3 text-xs font-semibold text-emerald-100">Order placed successfully. Opening Order History…</p> : null}
+                  {hasEnoughWallet ? (
+                    <button type="button" onClick={() => void placeOrder()} disabled={!formIsValid || walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
+                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Placing order…</> : <><ShieldCheck className="h-4 w-4" /> Place Order</>}
+                    </button>
+                  ) : formIsValid && !walletLoading ? (
+                    <Link href={addFundsHref} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 px-5 py-3 text-sm font-black text-white shadow-lg"><Wallet className="h-4 w-4" /> Add Funds</Link>
+                  ) : (
+                    <button type="button" disabled className="mt-5 min-h-12 w-full rounded-xl bg-white/15 px-5 py-3 text-sm font-black text-white/60">Complete details to continue</button>
+                  )}
+                  <p className="mt-3 flex items-center justify-center gap-2 text-[10px] text-blue-100"><RefreshCw className="h-3.5 w-3.5" /> Wallet charged only after confirmation</p>
+                </aside>
+              </div>
+            </section>
+          </>
         ) : null}
+
+        <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold text-[#526d9f]">
+          <span className="inline-flex items-center gap-2 rounded-xl border border-white/85 bg-white/78 px-3 py-2"><ShieldCheck className="h-4 w-4 text-emerald-600" /> Secure wallet checkout</span>
+          <span className="inline-flex items-center gap-2 rounded-xl border border-white/85 bg-white/78 px-3 py-2"><Clock3 className="h-4 w-4 text-blue-600" /> Track from dashboard</span>
+        </div>
       </div>
     </main>
   );

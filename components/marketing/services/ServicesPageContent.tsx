@@ -15,6 +15,7 @@ import { useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import OrderNowButton from "@/components/marketing/OrderNowButton";
 import PlatformIcon from "@/components/PlatformIcon";
+import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import {
@@ -387,6 +388,8 @@ export default function ServicesPageContent() {
             </div>
           </div>
         </section>
+
+        <HowToOrderSection />
 
         <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-10">

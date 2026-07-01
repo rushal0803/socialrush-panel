@@ -25,6 +25,7 @@ import {
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import { blogArticles } from "@/components/marketing/blog/blogData";
 
 const pagePath = "/buy-instagram-followers-india";
 const pageUrl = `${SEO_SITE_URL}${pagePath}`;
@@ -77,12 +78,20 @@ export const metadata: Metadata = {
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
-  { title: "Fast Delivery", icon: Clock3 },
-  { title: "Refill Support", icon: RefreshCw },
+  { title: "Real-time Order Tracking", icon: Clock3 },
+  { title: "Refill Support If Eligible", icon: RefreshCw },
   { title: "Secure Checkout", icon: ShieldCheck },
-  { title: "Indian Support", icon: Headphones },
+  { title: "WhatsApp Support", icon: Headphones },
   { title: "Transparent Pricing", icon: BadgeIndianRupee },
 ];
+
+const relatedBlogs = [
+  "how-to-grow-instagram-followers-in-india",
+  "instagram-followers-price-in-india",
+  "is-it-safe-to-buy-instagram-followers",
+]
+  .map((slug) => blogArticles.find((article) => article.slug === slug))
+  .filter((article): article is (typeof blogArticles)[number] => Boolean(article));
 
 const reasons: Array<{ title: string; text: string; icon: LucideIcon }> = [
   {
@@ -130,12 +139,20 @@ const audiences: Array<{ title: string; icon: LucideIcon }> = [
 
 const steps = [
   [
-    "Choose a package",
-    "Compare quantities, prices, delivery estimates, and refill terms.",
+    "Create your account",
+    "Sign up or log in to access your SocialRUSH dashboard and order history.",
   ],
   [
-    "Enter your Instagram link",
-    "Submit the correct public profile URL. Your password is never required.",
+    "Choose your platform",
+    "Select Instagram from the available social media platforms.",
+  ],
+  [
+    "Choose your service",
+    "Choose Instagram Followers and review current pricing, delivery, and refill information.",
+  ],
+  [
+    "Submit your public link",
+    "Enter the correct public Instagram profile URL. Your password is never required.",
   ],
   [
     "Add funds or pay securely",
@@ -144,10 +161,6 @@ const steps = [
   [
     "Track your order",
     "Follow campaign status and retain an organized dashboard record.",
-  ],
-  [
-    "Get delivery and support",
-    "Delivery begins after confirmation, with help available when needed.",
   ],
 ] as const;
 
@@ -419,8 +432,8 @@ export default function BuyInstagramFollowersIndiaPage() {
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <p className="eyebrow">How it works</p>
-          <h2 className="section-title">Order in five clear steps</h2>
-          <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-5">
+          <h2 className="section-title">How to place an order in six clear steps</h2>
+          <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {steps.map(([title, text], index) => (
               <article key={title} className="glass-card p-5">
                 <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-violet-500 to-cyan-500 text-sm font-black text-white">
@@ -431,6 +444,9 @@ export default function BuyInstagramFollowersIndiaPage() {
               </article>
             ))}
           </div>
+          <p className="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4 text-center text-sm font-bold text-emerald-800">
+            No password required. Only your public profile, post, video, channel, or page link is needed.
+          </p>
         </div>
       </section>
 
@@ -503,6 +519,24 @@ export default function BuyInstagramFollowersIndiaPage() {
       </section>
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <h2 className="section-title">Related Instagram growth guides</h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6079a7]">
+            Compare pricing, account-safety considerations, and practical organic steps before choosing an Instagram campaign.
+          </p>
+          <div className="mt-7 grid gap-4 md:grid-cols-3">
+            {relatedBlogs.map((article) => (
+              <Link key={article.slug} href={`/blog/${article.slug}`} className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff]">
+                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-violet-600">{article.category}</span>
+                <h3 className="mt-3 text-base font-black leading-6 text-[#17366f]">{article.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#6079a7]">{article.description}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <h2 className="section-title">Explore related SocialRUSH resources</h2>
           <div className="mt-7 flex flex-wrap gap-3">

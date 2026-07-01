@@ -8,6 +8,7 @@ import { bigPackages, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import PlatformIcon from "@/components/PlatformIcon";
+import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 
 type Platform = BigPackage["platform"];
 type Service = BigPackage["service"];
@@ -42,6 +43,17 @@ const serviceLabels: Record<Service, string> = {
 
 const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
 const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
+const buyerGuides = [
+  ["Instagram Followers", "/buy-instagram-followers-india"],
+  ["Instagram Likes", "/buy-instagram-likes-india"],
+  ["Instagram Views", "/buy-instagram-views-india"],
+  ["YouTube Subscribers", "/buy-youtube-subscribers-india"],
+  ["YouTube Likes", "/buy-youtube-likes-india"],
+  ["YouTube Views", "/buy-youtube-views-india"],
+  ["LinkedIn Followers", "/buy-linkedin-followers-india"],
+  ["Facebook Followers", "/buy-facebook-followers-india"],
+  ["Telegram Members", "/buy-telegram-members-india"],
+] as const;
 
 export default function PackagesPageContent() {
   const { currency } = usePreferredCurrency("INR");
@@ -87,6 +99,9 @@ export default function PackagesPageContent() {
                 Select a platform, choose a service, and compare only the packages that match your campaign.
               </p>
               <p className="mt-3 text-xs font-semibold text-[#5a72a3]">{getCurrencyDisclaimer()}</p>
+              <p className="mt-2 max-w-3xl text-xs leading-6 text-[#5a72a3]">
+                Final price may vary based on selected package, quantity, service quality, and availability. Please check the live package price before placing your order.
+              </p>
               <Link
                 href="/buy-instagram-followers-india"
                 className="mt-4 inline-flex text-sm font-bold text-blue-700 underline decoration-blue-300 underline-offset-4 transition hover:text-violet-700"
@@ -251,6 +266,44 @@ export default function PackagesPageContent() {
             )}
           </div>
         </div>
+
+        <HowToOrderSection />
+
+        <section className="relative px-4 py-8 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[28px] border border-white/85 bg-white/78 p-6 shadow-[0_20px_48px_rgba(86,114,175,.13)] backdrop-blur-xl sm:p-8">
+            <h2 className="text-2xl font-black text-[#10234f]">Read service pricing and safety guides</h2>
+            <p className="mt-2 text-sm leading-7 text-[#526b9b]">Review current service details before choosing a package.</p>
+            <div className="mt-5 flex flex-wrap gap-2.5">
+              {buyerGuides.map(([label, href]) => (
+                <Link key={href} href={href} className="rounded-xl border border-[#d4e1ff] bg-white px-4 py-2.5 text-sm font-bold text-[#35548d] transition hover:border-violet-300 hover:text-violet-700">
+                  {label}
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section className="relative px-4 py-8 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-5xl rounded-[28px] border border-white/85 bg-white/82 p-6 text-center shadow-[0_24px_58px_rgba(86,114,175,.16)] backdrop-blur-xl sm:p-9">
+            <h2 className="text-2xl font-black text-[#10234f] sm:text-3xl">Confused About Which Package to Choose?</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#526b9b]">
+              Send us your platform, service, quantity, and link. Our team will help you choose the right SocialRUSH package.
+            </p>
+            <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+              <a
+                href="https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20the%20right%20package"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-200 bg-white px-6 py-3 text-sm font-bold text-emerald-700 shadow-sm transition hover:bg-emerald-50"
+              >
+                Chat on WhatsApp
+              </a>
+              <Link href="/contact" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(117,109,255,.3)] transition hover:-translate-y-0.5">
+                Contact Support
+              </Link>
+            </div>
+          </div>
+        </section>
       </div>
     </BlogShell>
   );
