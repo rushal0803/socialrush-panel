@@ -14,9 +14,12 @@ export type BlogArticle = {
   intro: string;
   sections: BlogSection[];
   relatedLinks?: Array<{ label: string; href: string }>;
+  faqs?: Array<{ question: string; answer: string }>;
+  publishedAt?: string;
+  updatedAt?: string;
 };
 
-export const blogArticles: BlogArticle[] = [
+const baseBlogArticles: BlogArticle[] = [
   {
     slug: "how-to-grow-fast-on-instagram",
     category: "Instagram Growth",
@@ -104,7 +107,7 @@ export const blogArticles: BlogArticle[] = [
     ],
   },
   {
-    slug: "linkedin-growth-tips-for-personal-brands",
+    slug: "linkedin-growth-tips-personal-brands",
     category: "LinkedIn Marketing",
     title: "LinkedIn Growth Tips for Personal Brands",
     description:
@@ -516,7 +519,7 @@ export const blogArticles: BlogArticle[] = [
     ],
   },
   {
-    slug: "social-media-growth-strategy-for-indian-creators",
+    slug: "social-media-growth-strategy-indian-creators",
     category: "Creator Strategy",
     title: "Social Media Growth Strategy for Indian Creators",
     description:
@@ -564,6 +567,294 @@ export const blogArticles: BlogArticle[] = [
     ],
   },
 ];
+
+type EditorialProfile = {
+  platform: string;
+  audience: string;
+  goal: string;
+  discovery: string;
+  conversion: string;
+  metrics: string;
+  cadence: string;
+  risk: string;
+  serviceLabel: string;
+  serviceHref: string;
+};
+
+const editorialProfiles: Record<string, EditorialProfile> = {
+  "how-to-grow-fast-on-instagram": {
+    platform: "Instagram",
+    audience: "creators, local brands, and growing businesses",
+    goal: "turn profile visits into relevant followers and repeat engagement",
+    discovery: "Reels discovery, searchable captions, collaborations, saves, shares, and thoughtful community replies",
+    conversion: "a clear bio promise, useful pinned posts, consistent visual identity, and one simple next step",
+    metrics: "non-follower reach, profile visits, follows per profile visit, saves, shares, and meaningful replies",
+    cadence: "three useful feed posts, regular Stories, and two focused community sessions each week",
+    risk: "chasing sudden spikes without checking whether new visitors understand the account",
+    serviceLabel: "Instagram Followers India",
+    serviceHref: "/buy-instagram-followers-india",
+  },
+  "youtube-views-get-more-reach": {
+    platform: "YouTube",
+    audience: "educators, creators, businesses, and channel teams",
+    goal: "earn more qualified impressions, clicks, watch time, and returning viewers",
+    discovery: "search intent, suggested-video relationships, compelling packaging, audience retention, and topic consistency",
+    conversion: "a strong opening promise, a useful viewing experience, clear playlists, and a relevant subscription prompt",
+    metrics: "impressions, click-through rate, average view duration, retention curves, returning viewers, and end-screen clicks",
+    cadence: "one well-packaged long-form upload supported by Shorts, community posts, and a weekly analytics review",
+    risk: "optimising for raw view totals while ignoring retention and viewer satisfaction",
+    serviceLabel: "YouTube Views India",
+    serviceHref: "/buy-youtube-views-india",
+  },
+  "linkedin-growth-tips-personal-brands": {
+    platform: "LinkedIn",
+    audience: "founders, consultants, executives, job seekers, and subject-matter experts",
+    goal: "build professional credibility and create more relevant conversations",
+    discovery: "expert commentary, useful documents, searchable profile positioning, network participation, and consistent point of view",
+    conversion: "a specific headline, evidence-led About section, featured proof, and a clear reason to connect or enquire",
+    metrics: "profile views, relevant connection requests, post saves, qualified comments, direct conversations, and enquiries",
+    cadence: "two insight posts, one proof-led post, and focused daily participation in relevant professional conversations",
+    risk: "publishing generic motivational content that does not demonstrate useful expertise",
+    serviceLabel: "LinkedIn Followers India",
+    serviceHref: "/buy-linkedin-followers-india",
+  },
+  "consistent-engagement-builds-trust": {
+    platform: "social media",
+    audience: "creators, service businesses, and brand community teams",
+    goal: "turn repeated useful interactions into recognition, confidence, and stronger audience relationships",
+    discovery: "reliable publishing, thoughtful replies, community listening, useful follow-ups, and recognisable content themes",
+    conversion: "consistent expectations, prompt support, visible expertise, credible proof, and respectful conversation",
+    metrics: "returning viewers, meaningful comments, saves, direct replies, repeat profile visits, and qualified enquiries",
+    cadence: "a manageable publishing schedule combined with short daily community and response blocks",
+    risk: "mistaking frequent posting for genuine engagement while audience questions go unanswered",
+    serviceLabel: "Explore Social Media Services",
+    serviceHref: "/services",
+  },
+  "choose-the-right-social-media-service": {
+    platform: "social media",
+    audience: "customers comparing profile, content, and community growth options",
+    goal: "match the correct service and destination link to a clear campaign objective",
+    discovery: "service descriptions, platform requirements, current prices, delivery estimates, refill terms, and order tracking",
+    conversion: "a public destination, suitable quantity, accurate campaign details, sufficient wallet balance, and final review",
+    metrics: "campaign status, delivery progress, total cost, destination quality, refill eligibility, and support resolution",
+    cadence: "reviewing goals before ordering and checking progress at reasonable intervals through the dashboard",
+    risk: "selecting a service by price alone without checking the required link or intended outcome",
+    serviceLabel: "Compare SocialRUSH Services",
+    serviceHref: "/services",
+  },
+  "social-media-campaign-mistakes-to-avoid": {
+    platform: "social media",
+    audience: "creators, brands, and agencies planning assisted growth campaigns",
+    goal: "avoid preventable ordering errors and create a safer, more measurable campaign",
+    discovery: "clear objectives, verified public links, realistic timing, accurate service selection, and documented expectations",
+    conversion: "a prepared destination, transparent order summary, secure wallet checkout, and accessible support records",
+    metrics: "order status, delivery consistency, relevant reach, destination engagement, support response, and campaign cost",
+    cadence: "checking setup before confirmation, monitoring without constant changes, and reviewing results after delivery",
+    risk: "submitting the wrong link, changing visibility during delivery, or expecting a campaign to fix weak content",
+    serviceLabel: "View Campaign Services",
+    serviceHref: "/services",
+  },
+  "how-to-grow-instagram-followers-in-india": {
+    platform: "Instagram",
+    audience: "Indian creators, shops, service businesses, and regional brands",
+    goal: "attract a relevant Indian audience while preserving trust and content quality",
+    discovery: "regional relevance, bilingual hooks, local collaborations, shareable Reels, searchable topics, and community participation",
+    conversion: "clear positioning, local proof, useful highlights, recognisable creative patterns, and a public profile",
+    metrics: "India-based reach, profile visits, follows, saves, shares, Story replies, and relevant direct enquiries",
+    cadence: "a realistic weekly mix of Reels, carousels, Stories, and conversations timed around audience activity",
+    risk: "using broad trends that generate impressions but attract people with no interest in the account",
+    serviceLabel: "Buy Instagram Followers India",
+    serviceHref: "/buy-instagram-followers-india",
+  },
+  "instagram-followers-price-in-india": {
+    platform: "Instagram",
+    audience: "Indian buyers comparing managed profile-growth options",
+    goal: "compare price with delivery quality, support, transparency, and campaign fit",
+    discovery: "clear package details, current pricing, public-link ordering, delivery estimates, and documented refill terms",
+    conversion: "a prepared public profile, realistic expectations, a suitable quantity, and a transparent checkout summary",
+    metrics: "total campaign cost, delivery progress, profile presentation, relevant reach, support response, and refill eligibility",
+    cadence: "reviewing current package terms before purchase and checking progress from the order dashboard",
+    risk: "choosing the lowest headline price without reviewing delivery, support, or account readiness",
+    serviceLabel: "Instagram Followers Packages",
+    serviceHref: "/buy-instagram-followers-india",
+  },
+  "is-it-safe-to-buy-instagram-followers": {
+    platform: "Instagram",
+    audience: "creators and brands evaluating profile-growth services cautiously",
+    goal: "make an informed decision using public-link ordering, gradual delivery, and clear support terms",
+    discovery: "provider transparency, secure checkout, realistic claims, account preparation, and visible order tracking",
+    conversion: "strong organic content, accurate profile information, public access during delivery, and measured expectations",
+    metrics: "delivery consistency, account access safety, audience response, support resolution, and profile-quality indicators",
+    cadence: "checking campaign progress periodically while continuing normal publishing and community activity",
+    risk: "sharing passwords, buying from anonymous sellers, or trusting guaranteed-viral and permanent-forever claims",
+    serviceLabel: "Instagram Followers India",
+    serviceHref: "/buy-instagram-followers-india",
+  },
+  "how-to-increase-youtube-subscribers-in-india": {
+    platform: "YouTube",
+    audience: "Indian creators, educators, entertainment channels, and business publishers",
+    goal: "convert relevant Indian viewers into returning subscribers",
+    discovery: "India-relevant search topics, strong thumbnails, local context, series-based publishing, Shorts, and collaborations",
+    conversion: "a clear channel promise, satisfying videos, connected playlists, and a timely reason to subscribe",
+    metrics: "subscribers gained per video, returning viewers, watch time, geography, click-through rate, and playlist continuation",
+    cadence: "one dependable core upload supported by Shorts, community posts, and audience feedback each week",
+    risk: "asking for subscriptions before demonstrating a clear and repeatable reason to return",
+    serviceLabel: "YouTube Subscribers India",
+    serviceHref: "/buy-youtube-subscribers-india",
+  },
+  "best-way-to-grow-linkedin-followers-for-business": {
+    platform: "LinkedIn",
+    audience: "B2B companies, founders, employer brands, and professional service teams",
+    goal: "build a relevant company audience that supports authority and demand",
+    discovery: "employee advocacy, expert posts, customer proof, useful documents, event insights, and thoughtful industry participation",
+    conversion: "a complete company page, consistent expertise, credible proof, active employees, and a useful follow proposition",
+    metrics: "follower relevance, page views, employee reach, saves, qualified comments, website visits, and enquiries",
+    cadence: "two authority posts, one customer or team story, and regular employee participation every week",
+    risk: "treating the company page as a noticeboard instead of a useful industry resource",
+    serviceLabel: "LinkedIn Followers India",
+    serviceHref: "/buy-linkedin-followers-india",
+  },
+  "social-media-growth-strategy-indian-creators": {
+    platform: "social media",
+    audience: "Indian creators building across Instagram, YouTube, LinkedIn, Facebook, TikTok, and X",
+    goal: "create a sustainable system that turns content into recognition, trust, and opportunities",
+    discovery: "platform-specific formats, audience research, searchable ideas, collaborations, repurposing, and community participation",
+    conversion: "a consistent creator promise, connected profiles, useful content series, proof, and clear calls to action",
+    metrics: "qualified reach, retention, profile visits, returning viewers, saves, conversations, enquiries, and revenue signals",
+    cadence: "one core weekly idea adapted carefully for each active platform, followed by review and iteration",
+    risk: "spreading effort across too many platforms without a clear audience or measurable objective",
+    serviceLabel: "Explore SocialRUSH Services",
+    serviceHref: "/services",
+  },
+};
+
+function buildLongFormSections(profile: EditorialProfile): BlogSection[] {
+  return [
+    {
+      heading: `Build a ${profile.platform} Baseline Before You Scale`,
+      body: `A useful growth plan starts with evidence, not assumptions. Record where the account stands today and decide what a meaningful improvement would look like for ${profile.audience}. Review recent content, profile clarity, audience questions, and the path a new visitor takes after discovering you. The immediate goal is to ${profile.goal}. A simple baseline prevents you from confusing a temporary reach spike with durable progress and gives every organic or assisted campaign a fair way to be evaluated.`,
+      tips: [
+        `Record the current ${profile.metrics}.`,
+        "Save screenshots or exports so later comparisons use the same date range.",
+        "Choose one primary outcome and two supporting signals for the next 30 days.",
+        "Write down what a qualified audience member looks like before expanding reach.",
+      ],
+    },
+    {
+      heading: "Create a Discovery System Instead of Chasing Hacks",
+      body: `Discovery becomes more dependable when several small signals reinforce one another. For this strategy, focus on ${profile.discovery}. Each activity should help the right person understand why the account or content deserves attention. Avoid changing every variable at once. Test one topic, hook, format, or distribution habit for long enough to learn from it, then keep what improves qualified reach. This creates a repeatable acquisition system rather than a collection of disconnected tactics that cannot be measured or maintained.`,
+      tips: [
+        "Turn recurring audience questions into a practical content backlog.",
+        "Repeat winning topics with a new example, format, or level of depth.",
+        "Use platform analytics to separate qualified discovery from empty impressions.",
+        "Document each test and decide in advance what success would mean.",
+      ],
+    },
+    {
+      heading: "Turn Attention Into Trust and Action",
+      body: `Reach has limited value when visitors cannot understand what to do next. Improve conversion with ${profile.conversion}. Keep the journey consistent: the promise that earns a click should match the profile, content, and next action people see. Trust also grows through specificity—clear examples, useful explanations, honest limitations, and visible support are stronger than exaggerated claims. Review the experience on a small mobile screen because that is where many Indian customers and viewers first encounter a creator or brand.`,
+      tips: [
+        "Make the account promise understandable within a few seconds.",
+        "Use proof that is relevant to the audience rather than decorative vanity metrics.",
+        "Choose one call to action per content asset or campaign landing point.",
+        "Check all public links and profile details before starting a growth campaign.",
+      ],
+    },
+    {
+      heading: "Use a Practical 30-Day Operating Rhythm",
+      body: `Consistency works when it is designed around available time. A practical starting rhythm is ${profile.cadence}. Reserve a short weekly block for research, one for production, and one for measurement. Build reusable checklists for publishing, community replies, and campaign review so quality does not depend on memory. If capacity is limited, reduce the number of formats before reducing usefulness. A smaller schedule that continues for 30 days will reveal more than an ambitious plan abandoned after one busy week.`,
+      tips: [
+        "Plan content around audience needs, launches, and seasonal moments.",
+        "Batch repetitive work while keeping replies and conversations personal.",
+        "Leave room to respond to timely questions or relevant trends.",
+        "Review performance at the same time each week to create a reliable habit.",
+      ],
+    },
+    {
+      heading: "Measure Quality, Safety, and Commercial Value",
+      body: `Review progress using ${profile.metrics}. Compare these signals with business outcomes such as enquiries, repeat viewers, website visits, or community conversations. The main risk is ${profile.risk}. If you use a growth service, confirm the current price, delivery estimate, refill eligibility, and required public link before paying. Never share a password or recovery code. SocialRUSH provides order tracking and support, but campaign results still work best when the destination offers useful content and a credible reason for people to stay.`,
+      tips: [
+        "Compare equal time periods and note any promotion or publishing changes.",
+        "Treat follower or view totals as context, not the only definition of success.",
+        "Pause and investigate unusual changes instead of immediately scaling them.",
+        "Use the dashboard and support records to keep paid activity accountable.",
+      ],
+    },
+  ];
+}
+
+function buildFaqs(article: BlogArticle, profile: EditorialProfile) {
+  return [
+    {
+      question: `How quickly can this ${profile.platform} strategy show progress?`,
+      answer: `Early indicators can appear within a few weeks, but durable growth depends on account readiness, content quality, consistency, audience fit, and the metric being measured. Use the article's 30-day rhythm to establish a meaningful baseline.`,
+    },
+    {
+      question: "Should I focus on organic content or growth services?",
+      answer: "Treat them as complementary. Organic content creates the reason to follow, watch, or engage; a suitable growth campaign can support discovery and presentation. Review current service terms and never use a campaign as a substitute for useful content.",
+    },
+    {
+      question: "Do I need to share my password with SocialRUSH?",
+      answer: "No. SocialRUSH orders use the relevant public profile, post, video, page, or channel link. Never share passwords, recovery codes, or private account credentials with any growth provider.",
+    },
+    {
+      question: `Which measurements matter most for “${article.title}”?`,
+      answer: `Start with ${profile.metrics}. Select one primary measure connected to your goal and use supporting quality indicators to understand why performance changes.`,
+    },
+    {
+      question: "Where can I compare current prices and delivery details?",
+      answer: "Use the SocialRUSH packages and services pages for current pricing, quantity, delivery, and refill information. Confirm all details in the order summary before placing an order.",
+    },
+  ];
+}
+
+const legacyHrefMap: Record<string, string> = {
+  "/instagram-followers": "/buy-instagram-followers-india",
+  "/instagram-likes": "/buy-instagram-likes-india",
+  "/instagram-views": "/buy-instagram-views-india",
+  "/youtube-subscribers": "/buy-youtube-subscribers-india",
+  "/youtube-likes": "/buy-youtube-likes-india",
+  "/youtube-views": "/buy-youtube-views-india",
+  "/linkedin-followers": "/buy-linkedin-followers-india",
+  "/linkedin-likes": "/buy-linkedin-likes-india",
+  "/twitter-followers": "/buy-twitter-followers-india",
+  "/facebook-followers": "/buy-facebook-followers-india",
+  "/facebook-likes": "/buy-facebook-likes-india",
+  "/telegram-members": "/buy-telegram-members-india",
+  "/tiktok-followers": "/buy-tiktok-followers-india",
+};
+
+export const blogArticles: BlogArticle[] = baseBlogArticles.map((article) => {
+  const profile = editorialProfiles[article.slug];
+  const relatedLinks = (article.relatedLinks ?? []).map((link) => ({
+    ...link,
+    href: legacyHrefMap[link.href] ?? link.href,
+  }));
+
+  if (!profile) {
+    return {
+      ...article,
+      relatedLinks,
+      publishedAt: "2026-05-20",
+      updatedAt: "2026-07-01",
+    };
+  }
+
+  return {
+    ...article,
+    readingTime: "9 min read",
+    sections: [...article.sections, ...buildLongFormSections(profile)],
+    relatedLinks: [
+      { label: profile.serviceLabel, href: profile.serviceHref },
+      { label: "Compare Packages", href: "/packages" },
+      { label: "Explore All Services", href: "/services" },
+      { label: "Contact SocialRUSH", href: "/contact" },
+    ],
+    faqs: buildFaqs(article, profile),
+    publishedAt: "2026-05-20",
+    updatedAt: "2026-07-01",
+  };
+});
 
 export const articleSlugs = blogArticles.map((article) => article.slug);
 

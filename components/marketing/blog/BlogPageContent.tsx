@@ -7,14 +7,10 @@ import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { blogArticles } from "@/components/marketing/blog/blogData";
 
-const categories = [
-  "Instagram Growth",
-  "YouTube Growth",
-  "LinkedIn Marketing",
-  "Social Media Tips",
-  "Brand Visibility",
-  "Campaign Strategy",
-];
+const categories = ["All", ...Array.from(new Set(blogArticles.map((article) => article.category)))];
+const featuredArticle = blogArticles[0];
+const whatsappUrl =
+  "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
 
 const fadeUp = {
   hidden: { opacity: 0, y: 22 },
@@ -24,10 +20,24 @@ const fadeUp = {
 export default function BlogPageContent() {
   const [heroImageError, setHeroImageError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
+  const [activeCategory, setActiveCategory] = useState("All");
+  const [searchQuery, setSearchQuery] = useState("");
 
   const cardsWithFallback = useMemo(
-    () => blogArticles.map((card) => ({ ...card, hasImage: Boolean(card.image) && !imageErrors[card.slug] })),
-    [imageErrors],
+    () => {
+      const query = searchQuery.trim().toLowerCase();
+      return blogArticles
+        .filter((article) => activeCategory === "All" || article.category === activeCategory)
+        .filter(
+          (article) =>
+            !query ||
+            article.title.toLowerCase().includes(query) ||
+            article.description.toLowerCase().includes(query) ||
+            article.category.toLowerCase().includes(query),
+        )
+        .map((card) => ({ ...card, hasImage: Boolean(card.image) && !imageErrors[card.slug] }));
+    },
+    [activeCategory, imageErrors, searchQuery],
   );
 
   return (
@@ -128,23 +138,28 @@ export default function BlogPageContent() {
         >
           <div className="mx-auto w-full max-w-7xl rounded-[30px] border border-white/75 bg-white/80 p-7 shadow-[0_25px_55px_rgba(80,111,173,.18)] backdrop-blur sm:p-10">
             <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#4a67a7]">Featured Article</p>
-            <h2 className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-[#0f1f46]">
-              How to Grow Your Social Media Presence Faster in 2026
-            </h2>
+            <Link href={`/blog/${featuredArticle.slug}`} className="block w-fit">
+              <h2 className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-[#0f1f46] transition hover:text-[#765ddd]">
+                {featuredArticle.title}
+              </h2>
+            </Link>
             <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[#4c6391]">
-              Learn practical steps to improve visibility, engagement, and trust using a clean social growth
-              strategy.
+              {featuredArticle.description}
             </p>
             <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#3f5688]">
-              <span className="rounded-full border border-[#d4e0fb] bg-[#f5f9ff] px-3 py-1.5">Social Growth</span>
-              <span className="rounded-full border border-[#d4e0fb] bg-[#f5f9ff] px-3 py-1.5">5 min read</span>
+              <span className="rounded-full border border-[#d4e0fb] bg-[#f5f9ff] px-3 py-1.5">
+                {featuredArticle.category}
+              </span>
+              <span className="rounded-full border border-[#d4e0fb] bg-[#f5f9ff] px-3 py-1.5">
+                {featuredArticle.readingTime}
+              </span>
             </div>
-            <button
-              type="button"
+            <Link
+              href={`/blog/${featuredArticle.slug}`}
               className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(117,109,255,.35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(117,109,255,.42)]"
             >
               Read Article
-            </button>
+            </Link>
           </div>
         </motion.section>
 
@@ -157,15 +172,37 @@ export default function BlogPageContent() {
           className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10"
         >
           <div className="mx-auto w-full max-w-7xl">
-            <h3 className="text-sm font-bold uppercase tracking-[0.13em] text-[#4a67a7]">Categories</h3>
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+              <div>
+                <h2 className="text-sm font-bold uppercase tracking-[0.13em] text-[#4a67a7]">Categories</h2>
+                <p className="mt-2 text-sm text-[#526a98]">Filter practical guides by the topic you need.</p>
+              </div>
+              <label className="block w-full max-w-md">
+                <span className="sr-only">Search blog articles</span>
+                <input
+                  type="search"
+                  value={searchQuery}
+                  onChange={(event) => setSearchQuery(event.target.value)}
+                  placeholder="Search articles"
+                  className="min-h-12 w-full rounded-2xl border border-white/90 bg-white/90 px-4 text-sm text-[#1f3875] shadow-[0_10px_22px_rgba(88,114,173,.14)] outline-none transition placeholder:text-[#8297bd] focus:border-[#9fb7f3] focus:ring-2 focus:ring-[#9f8cff]/20"
+                />
+              </label>
+            </div>
             <div className="mt-4 flex flex-wrap gap-3">
               {categories.map((category) => (
-                <span
+                <button
+                  type="button"
                   key={category}
-                  className="rounded-full border border-white/90 bg-white/85 px-4 py-2 text-sm font-semibold text-[#1f3875] shadow-[0_10px_22px_rgba(88,114,173,.14)] backdrop-blur"
+                  onClick={() => setActiveCategory(category)}
+                  aria-pressed={activeCategory === category}
+                  className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-[0_10px_22px_rgba(88,114,173,.14)] backdrop-blur transition ${
+                    activeCategory === category
+                      ? "border-[#8d87ff] bg-gradient-to-r from-[#856cf5] to-[#42b9ef] text-white"
+                      : "border-white/90 bg-white/85 text-[#1f3875] hover:border-[#b5c9f3]"
+                  }`}
                 >
                   {category}
-                </span>
+                </button>
               ))}
             </div>
           </div>
@@ -194,7 +231,11 @@ export default function BlogPageContent() {
                   whileHover={{ y: -8 }}
                   className="rounded-3xl border border-white/85 bg-white/90 p-4 shadow-[0_16px_36px_rgba(81,108,169,.18)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_46px_rgba(80,109,170,.24)]"
                 >
-                  <div className="relative h-44 overflow-hidden rounded-2xl bg-gradient-to-br from-[#f6f2ff] via-[#edf6ff] to-[#e8fbff]">
+                  <Link
+                    href={`/blog/${post.slug}`}
+                    aria-label={`Read ${post.title}`}
+                    className="relative block h-44 overflow-hidden rounded-2xl bg-gradient-to-br from-[#f6f2ff] via-[#edf6ff] to-[#e8fbff]"
+                  >
                     {post.hasImage ? (
                       <SafeImage
                         src={post.image as string}
@@ -215,9 +256,13 @@ export default function BlogPageContent() {
                         <span>Article illustration</span>
                       </div>
                     )}
-                  </div>
+                  </Link>
                   <p className="mt-4 text-xs font-bold uppercase tracking-[0.11em] text-[#4d6bad]">{post.category}</p>
-                  <h3 className="mt-2 text-xl font-extrabold leading-7 text-[#10234f]">{post.title}</h3>
+                  <h3 className="mt-2 text-xl font-extrabold leading-7 text-[#10234f]">
+                    <Link href={`/blog/${post.slug}`} className="transition hover:text-[#765ddd]">
+                      {post.title}
+                    </Link>
+                  </h3>
                   <p className="mt-2 text-sm leading-6 text-[#4f6694]">{post.description}</p>
                   <div className="mt-5 flex items-center justify-between gap-3">
                     <span className="rounded-full border border-[#d8e3fb] bg-[#f7faff] px-3 py-1.5 text-xs font-semibold text-[#405887]">
@@ -233,6 +278,12 @@ export default function BlogPageContent() {
                 </motion.article>
               ))}
             </motion.div>
+            {cardsWithFallback.length === 0 ? (
+              <div className="rounded-3xl border border-white/85 bg-white/85 p-8 text-center shadow-[0_14px_34px_rgba(86,114,175,.14)]">
+                <h3 className="text-xl font-extrabold text-[#10234f]">No matching articles</h3>
+                <p className="mt-2 text-sm text-[#4f6795]">Try another category or a broader search.</p>
+              </div>
+            ) : null}
           </div>
         </section>
 
@@ -245,32 +296,26 @@ export default function BlogPageContent() {
           className="relative px-5 py-10 sm:px-6 lg:px-8 lg:py-14"
         >
           <div className="mx-auto w-full max-w-5xl rounded-[30px] border border-white/85 bg-white/85 p-7 text-center shadow-[0_24px_52px_rgba(85,113,173,.18)] backdrop-blur sm:p-10">
-            <h2 className="text-3xl font-extrabold text-[#10234f]">Want smarter growth tips?</h2>
+            <h2 className="text-3xl font-extrabold text-[#10234f]">Need help growing your social media?</h2>
             <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#4f6795]">
-              Get simple social media growth ideas and service updates from SocialRUSH.
+              Compare SocialRUSH packages, start a campaign, or talk with our team on WhatsApp before ordering.
             </p>
-            <form
-              action="mailto:hello@socialrush.com"
-              method="post"
-              className="mx-auto mt-7 flex w-full max-w-2xl flex-col gap-3 sm:flex-row"
-            >
-              <label htmlFor="newsletter-email" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="newsletter-email"
-                name="email"
-                type="email"
-                placeholder="Enter your email"
-                className="min-h-12 w-full rounded-2xl border border-[#d0e0ff] bg-white/95 px-4 text-sm text-[#1c346d] outline-none transition placeholder:text-[#8ca1cc] focus:border-[#8ca6ff]"
-              />
-              <button
-                type="submit"
-                className="min-h-12 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 text-sm font-bold text-white shadow-[0_12px_25px_rgba(117,109,255,.35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(117,109,255,.42)]"
+            <div className="mx-auto mt-7 flex w-full max-w-3xl flex-col justify-center gap-3 sm:flex-row">
+              <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-[#25D366] px-6 text-sm font-bold text-white shadow-[0_12px_25px_rgba(37,211,102,.25)] transition hover:-translate-y-0.5"
               >
-                Subscribe
-              </button>
-            </form>
+                Chat on WhatsApp
+              </a>
+              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#d0e0ff] bg-white px-6 text-sm font-bold text-[#1c346d] transition hover:-translate-y-0.5">
+                View Packages
+              </Link>
+              <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 text-sm font-bold text-white shadow-[0_12px_25px_rgba(117,109,255,.35)] transition hover:-translate-y-0.5">
+                Start Order
+              </Link>
+            </div>
           </div>
         </motion.section>
 
