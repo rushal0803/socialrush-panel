@@ -31,13 +31,13 @@ export default function FaqAccordion3D({ items }: { items: FaqItem[] }) {
               onClick={() => setOpenIndex((current) => (current === index ? -1 : index))}
               className="flex w-full items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5"
             >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-sky-500 text-xs font-black text-white shadow-[0_10px_24px_rgba(236,72,153,.35)]">
+              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] via-[#FF9F00] to-[#FFC400] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 122, 0, .35)]">
                 {String(index + 1).padStart(2, "0")}
               </span>
               <h3 className="flex-1 text-sm font-bold leading-6 text-slate-900 sm:text-base">{item.question}</h3>
               <span
                 className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/80 bg-white text-slate-500 shadow-sm transition duration-300 ${
-                  isOpen ? "rotate-180 text-sky-600" : "rotate-0"
+                  isOpen ? "rotate-180 text-orange-600" : "rotate-0"
                 }`}
               >
                 <ChevronDown className="h-4 w-4" />
@@ -53,7 +53,7 @@ export default function FaqAccordion3D({ items }: { items: FaqItem[] }) {
               }`}
             >
               <div className="overflow-hidden">
-                  <p className="border-t border-sky-100/80 px-5 pb-5 pt-4 text-sm leading-7 text-slate-600 sm:px-6 sm:pb-6 sm:text-[15px]">
+                  <p className="border-t border-orange-100/80 px-5 pb-5 pt-4 text-sm leading-7 text-slate-600 sm:px-6 sm:pb-6 sm:text-[15px]">
                     {item.answer}
                   </p>
               </div>

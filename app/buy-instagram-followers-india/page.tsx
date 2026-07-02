@@ -294,25 +294,25 @@ export default function BuyInstagramFollowersIndiaPage() {
       ))}
 
       <section className="relative overflow-hidden px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24">
-        <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-pink-200/45 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-cyan-200/45 blur-3xl" />
+        <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-orange-200/45 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.14fr_.86fr]">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/80 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#5270aa] shadow-sm">
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-pink-500 via-fuchsia-500 to-violet-600 text-white">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/80 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#111827] shadow-sm">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-orange-500 via-orange-500 to-amber-600 text-white">
                 <PlatformIcon platform="Instagram" className="h-4 w-4" />
               </span>
               Instagram growth service India
             </span>
-            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#14316a] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#0B0B0F] sm:text-5xl lg:text-6xl">
               Buy Instagram Followers India
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-[#526d9f] sm:text-lg">
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[#111827] sm:text-lg">
               SocialRUSH helps creators, influencers, businesses, agencies, and
               brands strengthen visible Instagram social proof through a clear,
               trackable follower campaign.
             </p>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6079a7]">
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827]">
               Choose a package, submit your public profile link, review transparent
               pricing, and follow delivery from your dashboard. No Instagram
               password is required, and eligible services include refill support.
@@ -335,25 +335,25 @@ export default function BuyInstagramFollowersIndiaPage() {
             </div>
           </div>
 
-          <aside className="rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_30px_70px_-35px_rgba(35,60,120,.5)] backdrop-blur-2xl sm:p-8">
+          <aside className="rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_30px_70px_-35px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-8">
             <div className="flex items-center justify-between gap-4">
-              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-pink-500 via-fuchsia-500 to-violet-600 text-white shadow-lg">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 via-orange-500 to-amber-600 text-white shadow-lg">
                 <PlatformIcon platform="Instagram" className="h-7 w-7" />
               </span>
               <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700">
                 Available in India
               </span>
             </div>
-            <p className="mt-7 text-[10px] font-black uppercase tracking-[0.15em] text-[#7890bb]">
+            <p className="mt-7 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
               Instagram Followers
             </p>
-            <p className="mt-2 text-4xl font-black text-[#17366f]">
-              ₹599 <span className="text-sm text-[#6079a7]">per 1K</span>
+            <p className="mt-2 text-4xl font-black text-[#0B0B0F]">
+              ₹599 <span className="text-sm text-[#111827]">per 1K</span>
             </p>
-            <p className="mt-3 text-xs leading-6 text-[#6079a7]">
+            <p className="mt-3 text-xs leading-6 text-[#111827]">
               Final price may depend on selected quantity and package availability.
             </p>
-            <div className="mt-6 grid gap-3 border-t border-[#dce7ff] pt-5 text-xs text-[#526d9f]">
+            <div className="mt-6 grid gap-3 border-t border-[#FFF8F1] pt-5 text-xs text-[#111827]">
               {[
                 "Public Instagram profile link only",
                 "Fast, carefully managed delivery",
@@ -377,8 +377,8 @@ export default function BuyInstagramFollowersIndiaPage() {
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
           {trustCards.map(({ title, icon: Icon }) => (
             <article key={title} className="soft-card p-4 text-center">
-              <Icon className="mx-auto h-5 w-5 text-[#6873d4]" />
-              <h3 className="mt-3 text-xs font-black leading-5 text-[#17366f]">
+              <Icon className="mx-auto h-5 w-5 text-[#FF9F00]" />
+              <h3 className="mt-3 text-xs font-black leading-5 text-[#0B0B0F]">
                 {title}
               </h3>
             </article>
@@ -392,7 +392,7 @@ export default function BuyInstagramFollowersIndiaPage() {
           <h2 className="section-title max-w-3xl">
             A professional Instagram growth service for Indian customers
           </h2>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6079a7] sm:text-base">
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base">
             SocialRUSH focuses on clear information and reliable campaign
             management—not unrealistic promises. Your profile stays under your
             control, and only a public link is needed.
@@ -400,11 +400,11 @@ export default function BuyInstagramFollowersIndiaPage() {
           <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {reasons.map(({ title, text, icon: Icon }) => (
               <article key={title} className="glass-card p-6">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#f6eaff] to-[#e7f7ff] text-[#6873d4]">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#FFF8F1] to-[#FFF8F1] text-[#FF9F00]">
                   <Icon className="h-5 w-5" />
                 </span>
-                <h3 className="mt-5 text-base font-black text-[#17366f]">{title}</h3>
-                <p className="mt-2 text-sm leading-7 text-[#6079a7]">{text}</p>
+                <h3 className="mt-5 text-base font-black text-[#0B0B0F]">{title}</h3>
+                <p className="mt-2 text-sm leading-7 text-[#111827]">{text}</p>
               </article>
             ))}
           </div>
@@ -419,8 +419,8 @@ export default function BuyInstagramFollowersIndiaPage() {
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-8">
             {audiences.map(({ title, icon: Icon }) => (
               <article key={title} className="soft-card p-4 text-center">
-                <Icon className="mx-auto h-5 w-5 text-pink-600" />
-                <h3 className="mt-3 text-xs font-black leading-5 text-[#17366f]">
+                <Icon className="mx-auto h-5 w-5 text-orange-600" />
+                <h3 className="mt-3 text-xs font-black leading-5 text-[#0B0B0F]">
                   {title}
                 </h3>
               </article>
@@ -436,11 +436,11 @@ export default function BuyInstagramFollowersIndiaPage() {
           <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {steps.map(([title, text], index) => (
               <article key={title} className="glass-card p-5">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-violet-500 to-cyan-500 text-sm font-black text-white">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-orange-500 via-amber-500 to-amber-500 text-sm font-black text-white">
                   {index + 1}
                 </span>
-                <h3 className="mt-5 text-base font-black text-[#17366f]">{title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#6079a7]">{text}</p>
+                <h3 className="mt-5 text-base font-black text-[#0B0B0F]">{title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#111827]">{text}</p>
               </article>
             ))}
           </div>
@@ -454,7 +454,7 @@ export default function BuyInstagramFollowersIndiaPage() {
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
           <article className="content-card border-emerald-100">
             <ShieldCheck className="h-8 w-8 text-emerald-600" />
-            <h2 className="mt-5 text-2xl font-black text-[#14316a]">
+            <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">
               Is it safe to buy Instagram followers from SocialRUSH?
             </h2>
             <p className="body-copy">
@@ -468,9 +468,9 @@ export default function BuyInstagramFollowersIndiaPage() {
               publishing useful content for the audience you want to retain.
             </p>
           </article>
-          <article className="content-card border-blue-100">
-            <RefreshCw className="h-8 w-8 text-blue-600" />
-            <h2 className="mt-5 text-2xl font-black text-[#14316a]">
+          <article className="content-card border-orange-100">
+            <RefreshCw className="h-8 w-8 text-orange-600" />
+            <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">
               Delivery and refill support
             </h2>
             <p className="body-copy">
@@ -489,13 +489,13 @@ export default function BuyInstagramFollowersIndiaPage() {
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <h2 className="section-title">SocialRUSH vs random providers</h2>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6079a7]">
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827]">
             Compare the information and ordering experience available before
             choosing an Instagram growth provider.
           </p>
-          <div className="mt-8 overflow-x-auto rounded-3xl border border-[#dce7ff] bg-white shadow-[0_24px_56px_-38px_rgba(35,60,120,.5)]">
+          <div className="mt-8 overflow-x-auto rounded-3xl border border-[#FFF8F1] bg-white shadow-[0_24px_56px_-38px_rgba(255, 159, 0, .5)]">
             <table className="w-full min-w-[680px] text-left text-sm">
-              <thead className="bg-[#f5f8ff] text-[#294981]">
+              <thead className="bg-[#FFF8F1] text-[#0B0B0F]">
                 <tr>
                   {["Comparison", "SocialRUSH", "Random providers"].map((head) => (
                     <th key={head} className="px-5 py-4 font-black">
@@ -504,10 +504,10 @@ export default function BuyInstagramFollowersIndiaPage() {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e5edff] text-[#6079a7]">
+              <tbody className="divide-y divide-[#FFF8F1] text-[#111827]">
                 {comparisonRows.map(([label, socialRush, other]) => (
                   <tr key={label}>
-                    <th className="px-5 py-4 font-bold text-[#294981]">{label}</th>
+                    <th className="px-5 py-4 font-bold text-[#0B0B0F]">{label}</th>
                     <td className="px-5 py-4">{socialRush}</td>
                     <td className="px-5 py-4">{other}</td>
                   </tr>
@@ -521,15 +521,15 @@ export default function BuyInstagramFollowersIndiaPage() {
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <h2 className="section-title">Related Instagram growth guides</h2>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6079a7]">
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#111827]">
             Compare pricing, account-safety considerations, and practical organic steps before choosing an Instagram campaign.
           </p>
           <div className="mt-7 grid gap-4 md:grid-cols-3">
             {relatedBlogs.map((article) => (
-              <Link key={article.slug} href={`/blog/${article.slug}`} className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff]">
-                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-violet-600">{article.category}</span>
-                <h3 className="mt-3 text-base font-black leading-6 text-[#17366f]">{article.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#6079a7]">{article.description}</p>
+              <Link key={article.slug} href={`/blog/${article.slug}`} className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(255, 159, 0, .45)] transition hover:-translate-y-1 hover:border-[#FFF3E0]">
+                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-amber-600">{article.category}</span>
+                <h3 className="mt-3 text-base font-black leading-6 text-[#0B0B0F]">{article.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#111827]">{article.description}</p>
               </Link>
             ))}
           </div>
@@ -563,10 +563,10 @@ export default function BuyInstagramFollowersIndiaPage() {
           <div className="mt-9 grid gap-4">
             {faqs.map((faq) => (
               <article key={faq.question} className="glass-card p-5 sm:p-6">
-                <h3 className="text-base font-black text-[#17366f]">
+                <h3 className="text-base font-black text-[#0B0B0F]">
                   {faq.question}
                 </h3>
-                <p className="mt-3 text-sm leading-7 text-[#6079a7]">
+                <p className="mt-3 text-sm leading-7 text-[#111827]">
                   {faq.answer}
                 </p>
               </article>
@@ -576,12 +576,12 @@ export default function BuyInstagramFollowersIndiaPage() {
       </section>
 
       <section className="px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/90 bg-[linear-gradient(135deg,#fff1f8_0%,#eef7ff_48%,#f4efff_100%)] p-7 text-center shadow-[0_30px_70px_-38px_rgba(35,60,120,.5)] sm:p-12">
-          <BarChart3 className="mx-auto h-9 w-9 text-violet-600" />
-          <h2 className="mt-5 text-3xl font-black tracking-tight text-[#14316a]">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/90 bg-[linear-gradient(135deg,#FFF8F1_0%,#FFF8F1_48%,#FFF8F1_100%)] p-7 text-center shadow-[0_30px_70px_-38px_rgba(255, 159, 0, .5)] sm:p-12">
+          <BarChart3 className="mx-auto h-9 w-9 text-amber-600" />
+          <h2 className="mt-5 text-3xl font-black tracking-tight text-[#0B0B0F]">
             Ready to grow your Instagram presence?
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#6079a7]">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#111827]">
             Compare current packages, review delivery and refill terms, and start
             with the campaign size that fits your goals.
           </p>
@@ -608,21 +608,21 @@ export default function BuyInstagramFollowersIndiaPage() {
         .primary-gradient-button {
           display: inline-flex; min-height: 3rem; align-items: center; justify-content: center;
           gap: .5rem; border-radius: .75rem; padding: .75rem 1.5rem;
-          background: linear-gradient(90deg,#ff67b2,#8b8dff,#46c3ff);
+          background: linear-gradient(90deg,#FF7A00,#FFC400,#FF9F00);
           color: white; font-size: .875rem; font-weight: 900;
-          box-shadow: 0 14px 30px -14px rgba(117,109,255,.65);
+          box-shadow: 0 14px 30px -14px rgba(255, 196, 0, .65);
         }
         .secondary-button, .resource-link {
           display: inline-flex; min-height: 3rem; align-items: center; justify-content: center;
-          border: 1px solid #d4e1ff; border-radius: .75rem; background: rgba(255,255,255,.9);
-          padding: .75rem 1.5rem; color: #35548d; font-size: .875rem; font-weight: 900;
+          border: 1px solid #FFF3E0; border-radius: .75rem; background: rgba(255,255,255,.9);
+          padding: .75rem 1.5rem; color: #FF9F00; font-size: .875rem; font-weight: 900;
         }
-        .soft-card { border: 1px solid #dce7ff; border-radius: 1rem; background: white; box-shadow: 0 16px 34px -28px rgba(28,54,108,.45); }
-        .glass-card { border: 1px solid rgba(255,255,255,.9); border-radius: 1.5rem; background: rgba(255,255,255,.8); box-shadow: 0 22px 52px -36px rgba(35,60,120,.5); backdrop-filter: blur(20px); }
-        .content-card { border-width: 1px; border-radius: 2rem; background: white; padding: 2rem; box-shadow: 0 24px 56px -38px rgba(35,60,120,.5); }
-        .eyebrow { font-size: .75rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: #2563eb; }
-        .section-title { margin-top: .75rem; font-size: 1.875rem; line-height: 1.15; font-weight: 900; letter-spacing: -.025em; color: #14316a; }
-        .body-copy { margin-top: 1rem; font-size: .875rem; line-height: 1.75rem; color: #6079a7; }
+        .soft-card { border: 1px solid #FFF8F1; border-radius: 1rem; background: white; box-shadow: 0 16px 34px -28px rgba(255, 159, 0, .45); }
+        .glass-card { border: 1px solid rgba(255,255,255,.9); border-radius: 1.5rem; background: rgba(255,255,255,.8); box-shadow: 0 22px 52px -36px rgba(255, 159, 0, .5); backdrop-filter: blur(20px); }
+        .content-card { border-width: 1px; border-radius: 2rem; background: white; padding: 2rem; box-shadow: 0 24px 56px -38px rgba(255, 159, 0, .5); }
+        .eyebrow { font-size: .75rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: #FF9F00; }
+        .section-title { margin-top: .75rem; font-size: 1.875rem; line-height: 1.15; font-weight: 900; letter-spacing: -.025em; color: #0B0B0F; }
+        .body-copy { margin-top: 1rem; font-size: .875rem; line-height: 1.75rem; color: #111827; }
         @media (min-width: 640px) { .section-title { font-size: 2.25rem; } }
       `}</style>
     </PublicShell>

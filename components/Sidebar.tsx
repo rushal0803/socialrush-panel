@@ -91,13 +91,13 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
             href={item.href}
             onClick={onNavigate}
             className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${
-              active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
+              active ? "text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"
             }`}
           >
             {active && (
               <motion.span
                 layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"}
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] shadow-[0_12px_26px_rgba(117,109,255,.35)]"
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]"
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
             )}
@@ -155,20 +155,20 @@ export default function Sidebar({
         <Logo />
       </div>
 
-      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(85,113,175,.12)]">
-        <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#4f6daa]">Dashboard</p>
-        <p className="mt-1 text-xs font-semibold text-[#1e3d77]">Growth control center</p>
+      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(255, 159, 0, .12)]">
+        <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">Dashboard</p>
+        <p className="mt-1 text-xs font-semibold text-[#0B0B0F]">Growth control center</p>
       </div>
 
-      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#6f85b0]">Main menu</p>
+      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Main menu</p>
       <NavLinks />
 
-      <div className="mt-auto rounded-2xl border border-white/85 bg-white/86 p-4 text-[#1f3a72] shadow-[0_14px_30px_rgba(81,108,168,.14)]">
+      <div className="mt-auto rounded-2xl border border-white/85 bg-white/86 p-4 text-[#0B0B0F] shadow-[0_14px_30px_rgba(255, 159, 0, .14)]">
         <div className="flex items-center justify-between">
-          <p className="text-xs font-semibold text-[#6b82af]">Available balance</p>
+          <p className="text-xs font-semibold text-[#111827]">Available balance</p>
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
         </div>
-        <p className="mt-2 text-2xl font-black text-[#16346c]">{formatCurrency(balance, currency)}</p>
+        <p className="mt-2 text-2xl font-black text-[#0B0B0F]">{formatCurrency(balance, currency)}</p>
 
         <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex w-full justify-center py-2.5 text-xs">
           Add Funds
@@ -176,7 +176,7 @@ export default function Sidebar({
       </div>
 
       <form action={logout} className="mt-4">
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#5e77a6] hover:bg-white/70 hover:text-[#1f3b75]">
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
           <span>↪</span> Log out
         </button>
       </form>

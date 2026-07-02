@@ -79,7 +79,7 @@ const trustCards = [
     title: "Secure Checkout",
     detail: "Protected payment routing with verified processing flows.",
     icon: "shield",
-    tone: "from-cyan-500/20 via-blue-500/10 to-white/70",
+    tone: "from-amber-500/20 via-orange-500/10 to-white/70",
   },
   {
     title: "Instant Credit Update",
@@ -91,7 +91,7 @@ const trustCards = [
     title: "Payment Support",
     detail: "Assistance is available whenever a payment step needs attention.",
     icon: "support",
-    tone: "from-pink-500/20 via-violet-500/10 to-white/70",
+    tone: "from-orange-500/20 via-amber-500/10 to-white/70",
   },
   {
     title: "Transaction History",
@@ -199,7 +199,7 @@ function PaymentMethodIcon({
   methodId: string;
   active: boolean;
 }) {
-  const iconClassName = active ? "text-white" : "text-[#4f6daa]";
+  const iconClassName = active ? "text-white" : "text-[#FF9F00]";
 
   if (methodId === "upi") {
     return (
@@ -399,7 +399,7 @@ function MiniChart({
           <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
             {title}
           </p>
-          <p className="mt-2 text-xl font-bold text-[#07152f]">{value}</p>
+          <p className="mt-2 text-xl font-bold text-[#0B0B0F]">{value}</p>
         </div>
         <span className={`h-2 w-2 rounded-full ${color}`} />
       </div>
@@ -537,7 +537,7 @@ export default function WalletDashboard({
       description: `Add ${money(amount)} to campaign wallet`,
       order_id: payload.data.orderId,
       prefill: { email: payload.data.email || initial.email },
-      theme: { color: "#2563eb" },
+      theme: { color: "#FF9F00" },
       modal: {
         ondismiss: () => {
           setLoading(false);
@@ -592,7 +592,7 @@ export default function WalletDashboard({
       money: true,
       note: "Available campaign budget",
       icon: "balance",
-      tone: "from-blue-600 to-blue-700",
+      tone: "from-orange-600 to-orange-700",
     },
     {
       label: "Total Deposits",
@@ -608,7 +608,7 @@ export default function WalletDashboard({
       money: true,
       note: "Campaign investment",
       icon: "spent",
-      tone: "from-cyan-500 to-blue-600",
+      tone: "from-amber-500 to-orange-600",
     },
     {
       label: "Pending Payments",
@@ -628,12 +628,12 @@ export default function WalletDashboard({
       : "Minimum amount required";
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-hidden bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_28%,#fff1f8_55%,#f5f3ff_82%,#ecfeff_100%)] px-4 pb-32 pt-6 sm:px-6 sm:pt-8 lg:px-8 lg:pt-8">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-hidden bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_28%,#FFF8F1_55%,#FFF8F1_82%,#FFF8F1_100%)] px-4 pb-32 pt-6 sm:px-6 sm:pt-8 lg:px-8 lg:pt-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-cyan-200/40 blur-3xl" />
-        <div className="absolute right-[-5rem] top-16 h-96 w-96 rounded-full bg-pink-200/40 blur-3xl" />
-        <div className="absolute bottom-24 left-1/3 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-sky-200/30 blur-3xl" />
+        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
+        <div className="absolute right-[-5rem] top-16 h-96 w-96 rounded-full bg-orange-200/40 blur-3xl" />
+        <div className="absolute bottom-24 left-1/3 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+        <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-orange-200/30 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-[1650px] min-w-0">
@@ -643,12 +643,12 @@ export default function WalletDashboard({
           transition={{ duration: 0.45, ease: "easeOut" }}
           className="relative overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/58 p-5 shadow-[0_30px_90px_-40px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-7 xl:p-8"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,.6),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(56,189,248,.12),transparent_28%)]" />
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,.6),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255, 159, 0, .12),transparent_28%)]" />
           <motion.div
             aria-hidden
             animate={{ y: [0, -10, 0], x: [0, 8, 0] }}
             transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-6 top-8 hidden h-24 w-24 rounded-[1.75rem] border border-white/60 bg-white/40 text-[#5a75ab] shadow-[0_24px_40px_-24px_rgba(79,108,168,.45)] backdrop-blur-xl sm:block"
+            className="absolute -right-6 top-8 hidden h-24 w-24 rounded-[1.75rem] border border-white/60 bg-white/40 text-[#111827] shadow-[0_24px_40px_-24px_rgba(255, 159, 0, .45)] backdrop-blur-xl sm:block"
           >
             <div className="grid h-full w-full place-items-center">
               <WalletGlyph />
@@ -659,17 +659,17 @@ export default function WalletDashboard({
             <div className="min-w-0">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
                 <div>
-                  <span className="inline-flex rounded-full border border-blue-200/80 bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-blue-700 shadow-[0_10px_24px_rgba(89,114,172,.08)]">
+                  <span className="inline-flex rounded-full border border-orange-200/80 bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-orange-700 shadow-[0_10px_24px_rgba(255, 159, 0, .08)]">
                     Financial command center
                   </span>
-                  <h1 className="mt-4 text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.02] tracking-[-0.04em] text-[#07152f]">
+                  <h1 className="mt-4 text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.02] tracking-[-0.04em] text-[#0B0B0F]">
                     SocialRUSH Wallet
                   </h1>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[#59709b] sm:text-[15px]">
+                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[#111827] sm:text-[15px]">
                     Manage campaign funds, payments, spending, and transaction
                     activity securely.
                   </p>
-                  <p className="mt-2 max-w-2xl text-xs font-semibold text-[#59709b]">
+                  <p className="mt-2 max-w-2xl text-xs font-semibold text-[#111827]">
                     {getCurrencyDisclaimer()}
                   </p>
                 </div>
@@ -721,13 +721,13 @@ export default function WalletDashboard({
 
         <section className="mt-6 overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/62 shadow-[0_30px_80px_-40px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:rounded-[2rem]">
           <div className="border-b border-white/60 px-5 py-5 sm:px-6 xl:px-7">
-            <p className="text-[10px] font-black uppercase tracking-[.18em] text-blue-600">
+            <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-600">
               Add funds
             </p>
-            <h2 className="mt-2 text-xl font-black text-[#07152f] sm:text-2xl">
+            <h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">
               Fund your campaign wallet
             </h2>
-            <p className="mt-1 text-sm text-[#647aa6]">
+            <p className="mt-1 text-sm text-[#111827]">
               Choose a secure payment method and amount.
             </p>
           </div>
@@ -741,18 +741,18 @@ export default function WalletDashboard({
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="rounded-[1.35rem] border border-white/75 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(240,247,255,.82))] p-4 shadow-[0_26px_60px_-36px_rgba(15,23,42,.42)] sm:rounded-[1.75rem] sm:p-5"
+                className="rounded-[1.35rem] border border-white/75 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(255, 159, 0, .82))] p-4 shadow-[0_26px_60px_-36px_rgba(15,23,42,.42)] sm:rounded-[1.75rem] sm:p-5"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#6380b7]">
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FF9F00]">
                       Payment methods
                     </p>
-                    <p className="mt-2 text-base font-black text-[#15356f]">
+                    <p className="mt-2 text-base font-black text-[#0B0B0F]">
                       Select a secure route
                     </p>
                   </div>
-                  <span className="rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#6380b7] shadow-sm">
+                  <span className="rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF9F00] shadow-sm">
                     {methods.filter((item) => isPaymentMethodEnabled(item.id)).length} active
                   </span>
                 </div>
@@ -774,31 +774,31 @@ export default function WalletDashboard({
                           setMethod(item.id);
                           setError("");
                         }}
-                        className={`group relative min-h-20 overflow-hidden rounded-[1.25rem] border p-3.5 text-left shadow-[0_18px_40px_-28px_rgba(30,58,138,.35)] transition sm:rounded-[1.5rem] sm:p-4 ${
+                        className={`group relative min-h-20 overflow-hidden rounded-[1.25rem] border p-3.5 text-left shadow-[0_18px_40px_-28px_rgba(255, 159, 0, .35)] transition sm:rounded-[1.5rem] sm:p-4 ${
                           active
-                            ? "border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(255,102,178,.75),rgba(79,209,255,.75),rgba(139,92,246,.72))_border-box]"
+                            ? "border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(255, 122, 0, .75),rgba(255, 159, 0, .75),rgba(255, 196, 0, .72))_border-box]"
                             : enabled
-                              ? "border-white/80 bg-white/78 hover:border-[#cfe0ff]"
+                              ? "border-white/80 bg-white/78 hover:border-[#FFF3E0]"
                               : "cursor-not-allowed border-slate-200/80 bg-slate-100/70 opacity-70"
                         }`}
                       >
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(79,209,255,.14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(255,102,178,.14),transparent_32%)] opacity-0 transition group-hover:opacity-100" />
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255, 159, 0, .14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(255, 122, 0, .14),transparent_32%)] opacity-0 transition group-hover:opacity-100" />
                         <div className="relative flex items-start gap-3">
                           <span
-                            className={`grid h-11 w-11 shrink-0 place-items-center rounded-[1.1rem] border shadow-[0_14px_30px_-20px_rgba(30,58,138,.35)] sm:h-12 sm:w-12 sm:rounded-[1.2rem] ${
+                            className={`grid h-11 w-11 shrink-0 place-items-center rounded-[1.1rem] border shadow-[0_14px_30px_-20px_rgba(255, 159, 0, .35)] sm:h-12 sm:w-12 sm:rounded-[1.2rem] ${
                               active
-                                ? "border-transparent bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff]"
-                                : "border-white/80 bg-[#eef4ff]"
+                                ? "border-transparent bg-gradient-to-br from-[#FF7A00] to-[#FFB000]"
+                                : "border-white/80 bg-[#FFF8F1]"
                             }`}
                           >
                             <PaymentMethodIcon methodId={item.id} active={active} />
                           </span>
 
                           <span className="min-w-0">
-                            <b className="block text-sm font-black text-[#16346c]">
+                            <b className="block text-sm font-black text-[#0B0B0F]">
                               {item.label}
                             </b>
-                            <small className="mt-1.5 block text-xs leading-5 text-[#6a82af]">
+                            <small className="mt-1.5 block text-xs leading-5 text-[#111827]">
                               {item.description}
                             </small>
                             {!enabled ? (
@@ -806,7 +806,7 @@ export default function WalletDashboard({
                                 {paymentMethodUnavailableMessage(item.id)}
                               </small>
                             ) : item.id === "international_card" ? (
-                              <small className="mt-2 block text-[10px] font-bold leading-4 text-[#6a82af]">
+                              <small className="mt-2 block text-[10px] font-bold leading-4 text-[#111827]">
                                 Requires international payments enabled in Razorpay.
                               </small>
                             ) : null}
@@ -822,28 +822,28 @@ export default function WalletDashboard({
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="rounded-[1.35rem] border border-white/75 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(240,247,255,.82))] p-4 shadow-[0_26px_60px_-36px_rgba(15,23,42,.42)] sm:rounded-[1.75rem] sm:p-5"
+                className="rounded-[1.35rem] border border-white/75 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(255, 159, 0, .82))] p-4 shadow-[0_26px_60px_-36px_rgba(15,23,42,.42)] sm:rounded-[1.75rem] sm:p-5"
               >
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#6380b7]">
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FF9F00]">
                       Amount
                     </p>
-                    <p className="mt-2 text-base font-black text-[#15356f]">
+                    <p className="mt-2 text-base font-black text-[#0B0B0F]">
                       Custom amount
                     </p>
                   </div>
-                  <p className="text-xs font-semibold text-[#6882b5]">
+                  <p className="text-xs font-semibold text-[#111827]">
                     Minimum {returnTo ? "required order amount" : "100"} · Maximum 500000
                   </p>
                 </div>
 
-                <div className="mt-4 rounded-[1.3rem] border border-white/80 bg-white/82 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,.7),0_18px_42px_-30px_rgba(76,106,170,.4)] sm:mt-5 sm:rounded-[1.7rem] sm:p-4">
-                  <label className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#7b92bc]">
+                <div className="mt-4 rounded-[1.3rem] border border-white/80 bg-white/82 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,.7),0_18px_42px_-30px_rgba(255, 159, 0, .4)] sm:mt-5 sm:rounded-[1.7rem] sm:p-4">
+                  <label className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#111827]">
                     Custom amount
                   </label>
                   <div className="relative mt-3">
-                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 rounded-xl border border-white/80 bg-[#eef4ff] px-3 py-2 text-sm font-black text-[#4f6daa] shadow-sm">
+                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 rounded-xl border border-white/80 bg-[#FFF8F1] px-3 py-2 text-sm font-black text-[#FF9F00] shadow-sm">
                       ₹
                     </span>
                     <input
@@ -852,10 +852,10 @@ export default function WalletDashboard({
                       value={amountInput}
                       onChange={(event) => setAmountInput(cleanAmountInput(event.target.value))}
                       placeholder="1000"
-                      className="h-14 w-full rounded-[1.2rem] border border-[#d6e4ff] bg-white pl-20 pr-4 text-xl font-black tracking-[-0.03em] text-[#16346c] outline-none transition focus:border-[#8faeff] focus:shadow-[0_0_0_5px_rgba(143,174,255,.18),0_18px_42px_-28px_rgba(79,108,168,.4)] sm:h-16 sm:rounded-[1.5rem] sm:pr-5 sm:text-2xl"
+                      className="h-14 w-full rounded-[1.2rem] border border-[#FFF3E0] bg-white pl-20 pr-4 text-xl font-black tracking-[-0.03em] text-[#0B0B0F] outline-none transition focus:border-[#FF9F00] focus:shadow-[0_0_0_5px_rgba(255, 159, 0, .18),0_18px_42px_-28px_rgba(255, 159, 0, .4)] sm:h-16 sm:rounded-[1.5rem] sm:pr-5 sm:text-2xl"
                     />
                   </div>
-                    <p className="mt-2 text-xs font-semibold text-[#6882b5]">
+                    <p className="mt-2 text-xs font-semibold text-[#111827]">
                       Amount is charged in INR. {currency !== "INR" ? `Approx in ${currency}: ${money(amount)}.` : ""}
                     </p>
 
@@ -869,10 +869,10 @@ export default function WalletDashboard({
                           type="button"
                           key={value}
                           onClick={() => setAmountInput(String(value))}
-                          className={`min-h-11 rounded-xl border px-2 py-3 text-center text-xs font-black shadow-[0_16px_32px_-24px_rgba(30,58,138,.35)] transition sm:rounded-2xl sm:px-3 ${
+                          className={`min-h-11 rounded-xl border px-2 py-3 text-center text-xs font-black shadow-[0_16px_32px_-24px_rgba(255, 159, 0, .35)] transition sm:rounded-2xl sm:px-3 ${
                             active
-                              ? "border-transparent bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white"
-                              : "border-white/85 bg-white text-[#5470a3] hover:border-[#c8d9ff] hover:text-[#1e3d77]"
+                              ? "border-transparent bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white"
+                              : "border-white/85 bg-white text-[#111827] hover:border-[#FFF3E0] hover:text-[#0B0B0F]"
                           }`}
                         >
                           {money(value)}
@@ -901,58 +901,58 @@ export default function WalletDashboard({
               className="order-last min-w-0 xl:order-none"
             >
               <div className="space-y-4 xl:sticky xl:top-24">
-                <div className="overflow-hidden rounded-[1.9rem] border border-transparent bg-[linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88))_padding-box,linear-gradient(135deg,rgba(255,102,178,.62),rgba(79,209,255,.62),rgba(139,92,246,.62))_border-box] p-[1px] shadow-[0_34px_80px_-42px_rgba(15,23,42,.55)]">
-                  <div className="rounded-[1.45rem] bg-[linear-gradient(160deg,rgba(255,255,255,.94),rgba(241,247,255,.86))] p-4 backdrop-blur-2xl sm:rounded-[1.85rem] sm:p-6">
+                <div className="overflow-hidden rounded-[1.9rem] border border-transparent bg-[linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88))_padding-box,linear-gradient(135deg,rgba(255, 122, 0, .62),rgba(255, 159, 0, .62),rgba(255, 196, 0, .62))_border-box] p-[1px] shadow-[0_34px_80px_-42px_rgba(15,23,42,.55)]">
+                  <div className="rounded-[1.45rem] bg-[linear-gradient(160deg,rgba(255,255,255,.94),rgba(255, 159, 0, .86))] p-4 backdrop-blur-2xl sm:rounded-[1.85rem] sm:p-6">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#6380b7]">
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FF9F00]">
                           Payment summary
                         </p>
-                        <h3 className="mt-2 text-xl font-black text-[#15356f]">
+                        <h3 className="mt-2 text-xl font-black text-[#0B0B0F]">
                           Final review
                         </h3>
                       </div>
-                      <div className="grid h-12 w-12 place-items-center rounded-[1.25rem] bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white shadow-[0_18px_40px_-22px_rgba(117,109,255,.55)]">
+                      <div className="grid h-12 w-12 place-items-center rounded-[1.25rem] bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_18px_40px_-22px_rgba(255, 196, 0, .55)]">
                         <WalletGlyph />
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-2.5 text-xs text-[#46639a] sm:mt-5 sm:space-y-3 sm:text-sm">
+                    <div className="mt-4 space-y-2.5 text-xs text-[#FF9F00] sm:mt-5 sm:space-y-3 sm:text-sm">
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Selected amount</span>
-                        <span className="text-right font-black text-[#15356f]">
+                        <span className="text-right font-black text-[#0B0B0F]">
                           {money(amount)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Payment method</span>
-                        <span className="text-right font-black text-[#15356f]">
+                        <span className="text-right font-black text-[#0B0B0F]">
                           {selectedMethod.label}
                         </span>
                       </div>
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Wallet balance</span>
-                        <span className="text-right font-black text-[#15356f]">
+                        <span className="text-right font-black text-[#0B0B0F]">
                           {money(balance)}
                         </span>
                       </div>
                       {currency !== "INR" ? (
                         <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                           <span className="font-semibold">Wallet base (INR)</span>
-                          <span className="text-right font-black text-[#15356f]">
+                          <span className="text-right font-black text-[#0B0B0F]">
                             {formatCurrency(balance, "INR")}
                           </span>
                         </div>
                       ) : null}
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Final payable amount</span>
-                        <span className="text-right font-black text-[#15356f]">
+                        <span className="text-right font-black text-[#0B0B0F]">
                           {money(amount)}
                         </span>
                       </div>
                       <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
                         <span className="font-semibold">Status</span>
-                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${loading ? "bg-blue-100 text-blue-700" : amount >= minimumAmount ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${loading ? "bg-orange-100 text-orange-700" : amount >= minimumAmount ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
                           {selectedStatus}
                         </span>
                       </div>
@@ -960,7 +960,7 @@ export default function WalletDashboard({
 
                     <button
                       disabled={loading || amount < minimumAmount || !isPaymentMethodEnabled(method)}
-                      className="mt-5 min-h-14 w-full rounded-[1.2rem] bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-4 text-sm font-black text-white shadow-[0_24px_50px_-22px_rgba(117,109,255,.58)] transition hover:-translate-y-1 hover:shadow-[0_28px_58px_-20px_rgba(117,109,255,.68)] disabled:opacity-50 sm:rounded-[1.35rem] sm:px-5"
+                      className="mt-5 min-h-14 w-full rounded-[1.2rem] bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-4 text-sm font-black text-white shadow-[0_24px_50px_-22px_rgba(255, 196, 0, .58)] transition hover:-translate-y-1 hover:shadow-[0_28px_58px_-20px_rgba(255, 196, 0, .68)] disabled:opacity-50 sm:rounded-[1.35rem] sm:px-5"
                     >
                       {loading
                         ? "Opening secure checkout..."
@@ -969,10 +969,10 @@ export default function WalletDashboard({
                   </div>
                 </div>
 
-                <div className="hidden rounded-[1.7rem] border border-white/80 bg-[#07152f]/94 p-5 text-white shadow-[0_30px_70px_-36px_rgba(7,21,47,.7)] backdrop-blur-xl xl:block">
+                <div className="hidden rounded-[1.7rem] border border-white/80 bg-[#0B0B0F]/94 p-5 text-white shadow-[0_30px_70px_-36px_rgba(7,21,47,.7)] backdrop-blur-xl xl:block">
                   <div className="flex items-center justify-between gap-3">
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-blue-300">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-orange-300">
                         Recent activity
                       </p>
                       <h3 className="mt-2 text-lg font-black">
@@ -995,7 +995,7 @@ export default function WalletDashboard({
                       >
                         <div className="relative">
                           <span
-                            className={`relative z-10 grid h-10 w-10 place-items-center rounded-2xl text-sm font-black ${item.tone === "emerald" ? "bg-emerald-400/15 text-emerald-300" : "bg-blue-400/15 text-blue-300"}`}
+                            className={`relative z-10 grid h-10 w-10 place-items-center rounded-2xl text-sm font-black ${item.tone === "emerald" ? "bg-emerald-400/15 text-emerald-300" : "bg-orange-400/15 text-orange-300"}`}
                           >
                             {item.tone === "emerald" ? "+" : "↗"}
                           </span>
@@ -1036,13 +1036,13 @@ export default function WalletDashboard({
               whileHover={{ y: -4 }}
               className={`rounded-[1.7rem] border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.7))] p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.35)] ${item.tone}`}
             >
-              <span className="grid h-12 w-12 place-items-center rounded-[1.2rem] border border-white/75 bg-white/75 text-[#5470a3] shadow-[0_16px_34px_-22px_rgba(76,106,170,.35)]">
+              <span className="grid h-12 w-12 place-items-center rounded-[1.2rem] border border-white/75 bg-white/75 text-[#111827] shadow-[0_16px_34px_-22px_rgba(255, 159, 0, .35)]">
                 <FeatureIcon name={item.icon} />
               </span>
-              <h3 className="mt-4 text-base font-black text-[#15356f]">
+              <h3 className="mt-4 text-base font-black text-[#0B0B0F]">
                 {item.title}
               </h3>
-              <p className="mt-2 text-sm leading-6 text-[#6480b2]">
+              <p className="mt-2 text-sm leading-6 text-[#111827]">
                 {item.detail}
               </p>
             </motion.article>
@@ -1051,10 +1051,10 @@ export default function WalletDashboard({
 
         <section className="mt-6">
           <div className="mb-4">
-            <p className="text-[10px] font-bold uppercase tracking-[.18em] text-blue-600">
+            <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-600">
               Wallet analytics
             </p>
-            <h2 className="mt-1 text-xl font-black text-[#07152f]">
+            <h2 className="mt-1 text-xl font-black text-[#0B0B0F]">
               Financial performance
             </h2>
           </div>
@@ -1073,13 +1073,13 @@ export default function WalletDashboard({
                 series.reduce((sum, item) => sum + item.spending, 0),
               )}
               data={series.map((item) => item.spending)}
-              color="bg-blue-500"
+              color="bg-orange-500"
             />
             <MiniChart
               title="Order activity"
               value={`${series.reduce((sum, item) => sum + item.orders, 0)} campaigns`}
               data={series.map((item) => item.orders)}
-              color="bg-violet-500"
+              color="bg-amber-500"
             />
           </div>
           <div className="mt-2 flex justify-around px-4 text-[8px] font-semibold uppercase text-slate-400">
@@ -1092,14 +1092,14 @@ export default function WalletDashboard({
         <section className="mt-6 overflow-hidden rounded-[2rem] border border-white/80 bg-white/72 shadow-[0_28px_70px_-40px_rgba(15,23,42,.4)] backdrop-blur-2xl">
           <div className="flex flex-col gap-3 border-b border-white/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-blue-600">
+              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-600">
                 Transaction history
               </p>
-              <h2 className="mt-2 text-xl font-black text-[#07152f]">
+              <h2 className="mt-2 text-xl font-black text-[#0B0B0F]">
                 All wallet movements
               </h2>
             </div>
-            <span className="inline-flex w-fit rounded-2xl border border-white/80 bg-white/80 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#5d79ab] shadow-sm">
+            <span className="inline-flex w-fit rounded-2xl border border-white/80 bg-white/80 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#111827] shadow-sm">
               {initial.transactions.length} records
             </span>
           </div>
@@ -1112,10 +1112,10 @@ export default function WalletDashboard({
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-xs font-black text-[#1c3c76]">
+                    <p className="text-xs font-black text-[#0B0B0F]">
                       #{item.id.slice(0, 8).toUpperCase()}
                     </p>
-                    <p className="mt-1 text-[11px] text-[#6c84b0]">
+                    <p className="mt-1 text-[11px] text-[#111827]">
                       {new Date(item.created_at).toLocaleString("en-IN")}
                     </p>
                   </div>
@@ -1126,19 +1126,19 @@ export default function WalletDashboard({
                 </div>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl bg-[#f7faff] px-3 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7c92bc]">
+                  <div className="rounded-2xl bg-[#FFF8F1] px-3 py-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">
                       Payment Method
                     </p>
-                    <p className="mt-2 text-sm font-bold text-[#17366f]">
+                    <p className="mt-2 text-sm font-bold text-[#0B0B0F]">
                       {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </p>
                   </div>
-                  <div className="rounded-2xl bg-[#f7faff] px-3 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#7c92bc]">
+                  <div className="rounded-2xl bg-[#FFF8F1] px-3 py-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">
                       Amount
                     </p>
-                    <p className={`mt-2 text-sm font-black ${item.type === "debit" ? "text-[#17366f]" : "text-emerald-600"}`}>
+                    <p className={`mt-2 text-sm font-black ${item.type === "debit" ? "text-[#0B0B0F]" : "text-emerald-600"}`}>
                       {item.type === "debit" ? "-" : "+"}
                       {money(item.amount)}
                     </p>
@@ -1147,7 +1147,7 @@ export default function WalletDashboard({
               </motion.article>
             ))}
             {initial.transactions.length === 0 && (
-              <div className="rounded-[1.5rem] border border-white/80 bg-white/80 p-10 text-center text-sm text-[#6c84b0] shadow-[0_20px_46px_-30px_rgba(15,23,42,.32)]">
+              <div className="rounded-[1.5rem] border border-white/80 bg-white/80 p-10 text-center text-sm text-[#111827] shadow-[0_20px_46px_-30px_rgba(15,23,42,.32)]">
                 No transactions yet.
               </div>
             )}
@@ -1155,7 +1155,7 @@ export default function WalletDashboard({
 
           <div className="hidden overflow-x-auto lg:block">
             <table className="w-full min-w-[760px] text-left text-xs">
-              <thead className="bg-white/70 text-[10px] uppercase tracking-[0.18em] text-[#7b92bc]">
+              <thead className="bg-white/70 text-[10px] uppercase tracking-[0.18em] text-[#111827]">
                 <tr>
                   {[
                     "Transaction ID",
@@ -1173,16 +1173,16 @@ export default function WalletDashboard({
               <tbody className="divide-y divide-white/70">
                 {initial.transactions.map((item) => (
                   <tr key={item.id} className="bg-white/20 transition hover:bg-white/45">
-                    <td className="px-6 py-4 font-black text-[#1c3c76]">
+                    <td className="px-6 py-4 font-black text-[#0B0B0F]">
                       #{item.id.slice(0, 8).toUpperCase()}
                     </td>
-                    <td className="px-6 py-4 text-[#6c84b0]">
+                    <td className="px-6 py-4 text-[#111827]">
                       {new Date(item.created_at).toLocaleString("en-IN")}
                     </td>
-                    <td className="px-6 py-4 font-semibold text-[#17366f]">
+                    <td className="px-6 py-4 font-semibold text-[#0B0B0F]">
                       {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </td>
-                    <td className={`px-6 py-4 font-black ${item.type === "debit" ? "text-[#17366f]" : "text-emerald-600"}`}>
+                    <td className={`px-6 py-4 font-black ${item.type === "debit" ? "text-[#0B0B0F]" : "text-emerald-600"}`}>
                       {item.type === "debit" ? "-" : "+"}
                       {money(item.amount)}
                     </td>
@@ -1196,7 +1196,7 @@ export default function WalletDashboard({
                 ))}
                 {initial.transactions.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="p-14 text-center text-[#6c84b0]">
+                    <td colSpan={5} className="p-14 text-center text-[#111827]">
                       No transactions yet.
                     </td>
                   </tr>
@@ -1218,7 +1218,7 @@ export default function WalletDashboard({
               initial={{ scale: 0.75, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-[linear-gradient(160deg,rgba(255,255,255,.96),rgba(239,247,255,.9))] p-8 text-center shadow-[0_36px_90px_-40px_rgba(15,23,42,.7)]"
+              className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-[linear-gradient(160deg,rgba(255,255,255,.96),rgba(255, 159, 0, .9))] p-8 text-center shadow-[0_36px_90px_-40px_rgba(15,23,42,.7)]"
             >
               <motion.span
                 initial={{ scale: 0 }}
@@ -1228,11 +1228,11 @@ export default function WalletDashboard({
               >
                 ✓
               </motion.span>
-              <h2 className="mt-5 text-2xl font-black text-[#15356f]">Wallet funded!</h2>
-              <p className="mt-2 text-sm text-[#6c84b0]">
+              <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">Wallet funded!</h2>
+              <p className="mt-2 text-sm text-[#111827]">
                 {money(amount)} was added successfully.
               </p>
-              <p className="mt-5 rounded-2xl bg-white/80 p-3 text-sm font-black text-blue-600 shadow-[0_16px_36px_-26px_rgba(79,108,168,.35)]">
+              <p className="mt-5 rounded-2xl bg-white/80 p-3 text-sm font-black text-orange-600 shadow-[0_16px_36px_-26px_rgba(255, 159, 0, .35)]">
                 New balance: {money(balance)}
               </p>
             </motion.div>

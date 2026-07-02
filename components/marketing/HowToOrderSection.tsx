@@ -14,19 +14,19 @@ const defaultSteps = [
     title: "Create Your Account",
     text: "Sign up or log in to your SocialRUSH account.",
     icon: UserPlus,
-    gradient: "from-pink-500 to-rose-500",
+    gradient: "from-orange-500 to-rose-500",
   },
   {
     title: "Choose Your Service",
     text: "Select Instagram, YouTube, LinkedIn, Facebook, Twitter/X, Telegram, or another service.",
     icon: BadgeCheck,
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-amber-500 to-amber-600",
   },
   {
     title: "Submit Your Public Link",
     text: "Paste your profile, post, video, channel, or page link. No password is required.",
     icon: Link2,
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-amber-500 to-orange-500",
   },
   {
     title: "Add Funds or Pay Securely",
@@ -38,7 +38,7 @@ const defaultSteps = [
     title: "Place Your Order",
     text: "Review your order summary and confirm your order.",
     icon: ClipboardCheck,
-    gradient: "from-fuchsia-500 to-pink-500",
+    gradient: "from-[#FF7A00] to-[#FFB000]",
   },
   {
     title: "Track Your Order",
@@ -54,19 +54,19 @@ const homepageSteps = [
     title: "Choose Your Platform",
     text: "Select Instagram, YouTube, LinkedIn, Facebook, Twitter/X, Telegram, or another platform.",
     icon: BadgeCheck,
-    gradient: "from-violet-500 to-purple-600",
+    gradient: "from-amber-500 to-amber-600",
   },
   {
     title: "Choose Your Service",
     text: "Compare the available options and choose the service that fits your goal.",
     icon: ClipboardCheck,
-    gradient: "from-fuchsia-500 to-pink-500",
+    gradient: "from-[#FF7A00] to-[#FFB000]",
   },
   {
     title: "Submit Your Public Link",
     text: "Paste your profile, post, video, channel, or page link. No password is required.",
     icon: Link2,
-    gradient: "from-cyan-500 to-blue-500",
+    gradient: "from-amber-500 to-orange-500",
   },
   {
     title: "Add Funds or Pay Securely",
@@ -92,7 +92,7 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
     <section id={id} className="relative px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
-          <span className="inline-flex rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-violet-600">
+          <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">
             Simple ordering
           </span>
           <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">
@@ -111,7 +111,7 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
                   <Icon className="h-5 w-5" aria-hidden="true" />
                 </span>
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-violet-500">Step {index + 1}</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-500">Step {index + 1}</p>
                   <h3 className="mt-1 text-base font-extrabold text-slate-900">{title}</h3>
                   <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
                 </div>
@@ -128,10 +128,10 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
         </div>
 
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
-          <Link href="/dashboard/new-order" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 via-violet-500 to-sky-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-300/30 transition hover:-translate-y-0.5">
+          <Link href="/dashboard/new-order" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-amber-300/30 transition hover:-translate-y-0.5">
             Start Order
           </Link>
-          <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">
+          <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">
             View Packages
           </Link>
           <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-200 bg-white px-6 py-3 text-sm font-bold text-emerald-700 shadow-sm transition hover:border-emerald-300 hover:bg-emerald-50">

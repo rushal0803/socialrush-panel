@@ -71,7 +71,7 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className={`inline-flex items-center gap-2 rounded-xl border border-[#cfe0ff] bg-white px-3 py-2 text-xs font-bold text-[#1c336b] shadow-[0_8px_20px_rgba(90,116,175,.14)] transition hover:border-[#aec8ff] ${compact ? "min-h-10" : "min-h-11"}`}
+        className={`inline-flex items-center gap-2 rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-xs font-bold text-[#0B0B0F] shadow-[0_8px_20px_rgba(255, 159, 0, .14)] transition hover:border-[#FF9F00] ${compact ? "min-h-10" : "min-h-11"}`}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
@@ -80,7 +80,7 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-50 min-w-[180px] overflow-hidden rounded-xl border border-[#d7e4ff] bg-white shadow-2xl">
+        <div className="absolute right-0 top-[calc(100%+8px)] z-50 min-w-[180px] overflow-hidden rounded-xl border border-[#FFF3E0] bg-white shadow-2xl">
           <ul role="listbox" className="py-1">
             {currencies.map((item) => (
               <li key={item.code}>
@@ -90,10 +90,10 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
                     setCurrency(item.code as Currency);
                     setOpen(false);
                   }}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs transition hover:bg-[#f2f7ff] ${currency === item.code ? "text-[#204087]" : "text-[#415883]"}`}
+                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs transition hover:bg-[#FFF8F1] ${currency === item.code ? "text-[#0B0B0F]" : "text-[#111827]"}`}
                 >
                   <span>{item.code}</span>
-                  <span className="text-[11px] text-[#7f95c2]">{item.symbol}</span>
+                  <span className="text-[11px] text-[#FF9F00]">{item.symbol}</span>
                 </button>
               </li>
             ))}
@@ -128,14 +128,14 @@ function BlogHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-[9999] border-b border-white/50 bg-[#f4f9ff]/70 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl rounded-3xl border border-white/85 bg-white/88 shadow-[0_16px_40px_rgba(88,114,173,.16)] backdrop-blur-xl">
+    <header className="sticky top-0 z-[9999] border-b border-white/50 bg-[#FFF8F1]/70 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl rounded-3xl border border-white/85 bg-white/88 shadow-[0_16px_40px_rgba(255, 159, 0, .16)] backdrop-blur-xl">
         <div className="flex min-h-[76px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-7">
           <Logo priority />
 
           <nav className="hidden items-center gap-1.5 xl:flex">
             {navLinks.map(([label, href]) => (
-              <Link key={href} href={href} className="rounded-xl px-3 py-2 text-sm font-semibold text-[#2a4477] transition hover:bg-[#f2f7ff] hover:text-[#17336b]">
+              <Link key={href} href={href} className="rounded-xl px-3 py-2 text-sm font-semibold text-[#0B0B0F] transition hover:bg-[#FFF8F1] hover:text-[#0B0B0F]">
                 {label}
               </Link>
             ))}
@@ -145,28 +145,28 @@ function BlogHeader() {
             <BlogCurrencyDropdown compact />
             {isLoggedIn ? (
               <>
-                <Link href="/dashboard/account" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-[#f5f8ff] px-4 py-2 text-sm font-bold text-[#244385] transition hover:bg-[#e9f0ff]">
+                <Link href="/dashboard/account" className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:bg-[#FFF8F1]">
                   Profile
                 </Link>
                 <button
                   type="button"
                   onClick={logout}
-                  className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]"
+                  className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:border-[#FF9F00]"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-white px-4 py-2 text-sm font-bold text-[#1b3670] transition hover:border-[#b4cafb]">
+                <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:border-[#FF9F00]">
                   Login
                 </Link>
-                <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-[#d4e1fb] bg-[#f5f8ff] px-4 py-2 text-sm font-bold text-[#244385] transition hover:bg-[#e9f0ff]">
+                <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:bg-[#FFF8F1]">
                   Sign Up
                 </Link>
               </>
             )}
-            <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-2 text-sm font-bold text-white shadow-[0_12px_26px_rgba(122,113,241,.35)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(122,113,241,.42)]">
+            <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-[0_12px_26px_rgba(255, 196, 0, .35)] transition hover:-translate-y-0.5 hover:shadow-[0_14px_30px_rgba(255, 196, 0, .42)]">
               Start Order
             </Link>
           </div>
@@ -179,7 +179,7 @@ function BlogHeader() {
               event.stopPropagation();
               setOpen((value) => !value);
             }}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-[#d5e2ff] bg-white text-xl text-[#1f3972] lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-[#FFF3E0] bg-white text-xl text-[#0B0B0F] lg:hidden"
           >
             {open ? "×" : "☰"}
           </button>
@@ -191,44 +191,44 @@ function BlogHeader() {
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.18 }}
-              className="mx-auto w-full max-w-7xl rounded-3xl border border-[#e4ebff] bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] lg:hidden"
+              className="mx-auto w-full max-w-7xl rounded-3xl border border-[#FFF8F1] bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] lg:hidden"
             >
               <nav className="grid gap-1">
                 {navLinks.map(([label, href]) => (
-                  <Link key={href} href={href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-sm font-semibold text-[#294478] transition hover:bg-[#f2f7ff]">
+                  <Link key={href} href={href} onClick={() => setOpen(false)} className="rounded-xl px-3 py-3 text-sm font-semibold text-[#0B0B0F] transition hover:bg-[#FFF8F1]">
                     {label}
                   </Link>
                 ))}
               </nav>
 
-              <div className="mt-4 grid gap-2 border-t border-[#e7eeff] pt-4">
+              <div className="mt-4 grid gap-2 border-t border-[#FFF8F1] pt-4">
                 <div className="w-fit">
                   <BlogCurrencyDropdown />
                 </div>
                 {isLoggedIn ? (
                   <>
-                    <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-[#f6f9ff] px-4 py-3 text-sm font-bold text-[#1f3b74]">
+                    <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#0B0B0F]">
                       Profile
                     </Link>
                     <button
                       type="button"
                       onClick={logout}
-                      className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]"
+                      className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-3 text-sm font-bold text-[#0B0B0F]"
                     >
                       Logout
                     </button>
                   </>
                 ) : (
                   <>
-                    <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-white px-4 py-3 text-sm font-bold text-[#1f3b74]">
+                    <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-3 text-sm font-bold text-[#0B0B0F]">
                       Login
                     </Link>
-                    <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d2e0ff] bg-[#f6f9ff] px-4 py-3 text-sm font-bold text-[#1f3b74]">
+                    <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#0B0B0F]">
                       Sign Up
                     </Link>
                   </>
                 )}
-                <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-3 text-sm font-bold text-white">
+                <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-3 text-sm font-bold text-white">
                   Start Order
                 </Link>
               </div>
@@ -241,24 +241,24 @@ function BlogHeader() {
 
 function BlogFooter() {
   return (
-    <footer className="relative mt-14 overflow-hidden bg-[radial-gradient(circle_at_top,_#f6ecff_0%,_#eef6ff_45%,_#f7fbff_100%)] px-5 pb-9 pt-14 text-[#203b72] sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute -left-20 top-10 h-56 w-56 rounded-full bg-pink-200/45 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-8 h-56 w-56 rounded-full bg-cyan-200/45 blur-3xl" />
-      <div className="relative mx-auto max-w-7xl rounded-[30px] border border-white/85 bg-white/82 p-7 shadow-[0_20px_45px_rgba(86,112,171,.16)] backdrop-blur sm:p-10">
-        <div className="grid gap-9 border-b border-[#e9efff] pb-9 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
+    <footer className="brand-footer relative mt-14 overflow-hidden px-5 pb-9 pt-14 text-white sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute -left-20 top-10 h-56 w-56 rounded-full bg-orange-200/45 blur-3xl" />
+      <div className="pointer-events-none absolute -right-20 bottom-8 h-56 w-56 rounded-full bg-amber-200/45 blur-3xl" />
+      <div className="brand-footer-surface relative mx-auto max-w-7xl rounded-[30px] border p-7 backdrop-blur sm:p-10">
+        <div className="grid gap-9 border-b border-[#FFF8F1] pb-9 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
           <div>
-            <Logo />
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[#5a6f98]">
+            <Logo light />
+            <p className="mt-4 max-w-sm text-sm leading-7 text-[#111827]">
               Premium social media growth support for creators, brands, and agencies focused on smarter campaign execution and measurable visibility.
             </p>
           </div>
 
           {footerColumns.map((column) => (
             <div key={column.title}>
-              <h3 className="text-sm font-extrabold text-[#1f3a74]">{column.title}</h3>
-              <div className="mt-4 space-y-2 text-sm text-[#5a6f98]">
+              <h3 className="text-sm font-extrabold text-[#0B0B0F]">{column.title}</h3>
+              <div className="mt-4 space-y-2 text-sm text-[#111827]">
                 {column.links.map(([label, href]) => (
-                  <Link key={href} href={href} className="block transition hover:text-[#214288]">
+                  <Link key={href} href={href} className="block transition hover:text-[#0B0B0F]">
                     {label}
                   </Link>
                 ))}
@@ -267,7 +267,7 @@ function BlogFooter() {
           ))}
         </div>
 
-        <div className="flex flex-col gap-2 pt-6 text-xs text-[#7a8fb8] sm:flex-row sm:items-center sm:justify-between">
+        <div className="flex flex-col gap-2 pt-6 text-xs text-[#111827] sm:flex-row sm:items-center sm:justify-between">
           <p>© 2026 SocialRUSH. All rights reserved.</p>
           <p>Secure checkout, campaign tracking, and creator-first support.</p>
         </div>
@@ -278,7 +278,7 @@ function BlogFooter() {
 
 export default function BlogShell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[radial-gradient(circle_at_top_left,_#f8eaff_0%,_#ecf6ff_42%,_#f8fcff_100%)] text-[#122347]">
+    <main className="min-h-screen overflow-x-clip bg-[radial-gradient(circle_at_top_left,_#FFF8F1_0%,_#FFF8F1_42%,_#FFF8F1_100%)] text-[#0B0B0F]">
       <BlogHeader />
       {children}
       <BlogFooter />

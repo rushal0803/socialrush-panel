@@ -45,7 +45,7 @@ export default async function AdminSupportPage({
             href={status === "all" ? "/admin/support" : `/admin/support?status=${status}`}
             className={`rounded-xl px-3 py-2 text-xs font-semibold capitalize ${
               searchParams?.status === status || (!searchParams?.status && status === "all")
-                ? "bg-blue-600 text-white"
+                ? "bg-orange-600 text-white"
                 : "border bg-white text-slate-500"
             }`}
           >
@@ -67,10 +67,10 @@ export default async function AdminSupportPage({
                 <Link
                   key={ticket.id}
                   href={`/admin/support?ticket=${ticket.id}`}
-                  className={`block p-4 sm:p-5 ${selectedId === ticket.id ? "bg-blue-50" : "hover:bg-slate-50"}`}
+                  className={`block p-4 sm:p-5 ${selectedId === ticket.id ? "bg-orange-50" : "hover:bg-slate-50"}`}
                 >
                   <div className="flex items-center justify-between gap-3">
-                    <span className="text-[10px] font-bold text-blue-600">#{ticket.id.slice(0, 8).toUpperCase()}</span>
+                    <span className="text-[10px] font-bold text-orange-600">#{ticket.id.slice(0, 8).toUpperCase()}</span>
                     <AdminStatus value={ticket.status} />
                   </div>
                   <p className="mt-3 truncate text-xs font-semibold">{ticket.subject}</p>
@@ -90,7 +90,7 @@ export default async function AdminSupportPage({
               <header className="flex flex-col gap-4 border-b border-slate-100 p-4 sm:p-5 lg:flex-row lg:items-center lg:justify-between">
                 <div className="min-w-0">
                   <div className="flex flex-wrap items-center gap-2">
-                    <span className="text-[10px] font-bold text-blue-600">#{selected.id.slice(0, 8).toUpperCase()}</span>
+                    <span className="text-[10px] font-bold text-orange-600">#{selected.id.slice(0, 8).toUpperCase()}</span>
                     <AdminStatus value={selected.status} />
                   </div>
                   <h2 className="mt-2 break-words text-sm font-bold">{selected.subject}</h2>
@@ -106,7 +106,7 @@ export default async function AdminSupportPage({
                       <option key={status} value={status}>{status[0].toUpperCase() + status.slice(1)}</option>
                     ))}
                   </select>
-                  <button className="min-h-11 rounded-xl bg-[#0a1b3d] px-4 text-xs font-bold text-white">Update</button>
+                  <button className="min-h-11 rounded-xl bg-[#0B0B0F] px-4 text-xs font-bold text-white">Update</button>
                 </form>
               </header>
 
@@ -117,11 +117,11 @@ export default async function AdminSupportPage({
                   return (
                     <div key={message.id} className={`flex w-full gap-3 ${admin ? "justify-end" : "justify-start"}`}>
                       <div className={`flex max-w-[92%] gap-3 sm:max-w-[78%] ${admin ? "flex-row-reverse" : ""}`}>
-                        <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[9px] font-bold text-white ${admin ? "bg-blue-600" : "bg-[#0a1b3d]"}`}>
+                        <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl text-[9px] font-bold text-white ${admin ? "bg-orange-600" : "bg-[#0B0B0F]"}`}>
                           {admin ? "ADM" : "USR"}
                         </span>
                         <div className="min-w-0">
-                          <div className={`break-words rounded-2xl p-4 text-xs leading-6 shadow-sm ${admin ? "rounded-tr-sm bg-blue-600 text-white" : "rounded-tl-sm bg-white text-slate-600"}`}>
+                          <div className={`break-words rounded-2xl p-4 text-xs leading-6 shadow-sm ${admin ? "rounded-tr-sm bg-orange-600 text-white" : "rounded-tl-sm bg-white text-slate-600"}`}>
                             {message.message}
                           </div>
                           <p className={`mt-2 text-[9px] text-slate-400 ${admin ? "text-right" : ""}`}>
@@ -144,7 +144,7 @@ export default async function AdminSupportPage({
                     name="message"
                     required
                     rows={3}
-                    className="min-h-24 min-w-0 flex-1 resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+                    className="min-h-24 min-w-0 flex-1 resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
                     placeholder={selected.status === "closed" ? "Replying will reopen this ticket as Answered." : "Write your reply to the customer..."}
                   />
                   <button className={`${primaryButton} min-h-11 w-full shrink-0 sm:w-auto`}>Send Reply</button>

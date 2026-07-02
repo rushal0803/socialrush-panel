@@ -50,12 +50,12 @@ export default function OrderSummaryPage() {
       <main className="min-h-screen bg-slate-950 text-white">
         <MarketingHeader />
         <div className="mx-auto flex min-h-[calc(100vh-5rem)] max-w-4xl flex-col items-center justify-center px-5 py-24 text-center">
-          <p className="text-sm uppercase tracking-[0.32em] text-cyan-300">Order summary</p>
+          <p className="text-sm uppercase tracking-[0.32em] text-amber-300">Order summary</p>
           <h1 className="mt-4 text-3xl font-bold">Service not found</h1>
           <p className="mt-3 max-w-xl text-sm text-slate-300">
             Select a valid service from the catalog to continue.
           </p>
-          <Link href="/services" className="mt-8 inline-flex rounded-xl bg-cyan-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-cyan-400">
+          <Link href="/services" className="mt-8 inline-flex rounded-xl bg-amber-500 px-6 py-3 text-sm font-semibold text-slate-950 transition hover:bg-amber-400">
             Browse Services
           </Link>
         </div>
@@ -85,14 +85,14 @@ export default function OrderSummaryPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#030613] text-white">
+    <main className="min-h-screen bg-[#0B0B0F] text-white">
       <MarketingHeader />
       <section className="px-5 py-10 pb-36 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="rounded-[28px] border border-slate-800 bg-slate-950/90 p-5 shadow-2xl shadow-cyan-500/10 sm:rounded-[32px] sm:p-10">
+          <div className="rounded-[28px] border border-slate-800 bg-slate-950/90 p-5 shadow-2xl shadow-amber-500/10 sm:rounded-[32px] sm:p-10">
             <div className="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] lg:items-start">
               <div>
-                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-cyan-300">Order summary</p>
+                <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300">Order summary</p>
                 <h1 className="mt-4 text-2xl font-bold tracking-tight text-white sm:text-4xl">
                   Review your campaign before checkout
                 </h1>
@@ -137,7 +137,7 @@ export default function OrderSummaryPage() {
                       setError("");
                     }}
                     placeholder="https://instagram.com/yourprofile"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                    className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
                   />
                   <p className="text-sm text-slate-400">
                     Use the exact public destination required by the service: profile for followers, content link for likes and views.
@@ -152,7 +152,7 @@ export default function OrderSummaryPage() {
                         min={100}
                         step={100}
                         onChange={(event) => setQuantity(Math.max(100, Number(event.target.value) || 100))}
-                        className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-cyan-400 focus:ring-2 focus:ring-cyan-400/20"
+                        className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
                       />
                     </label>
                     {quantityOptions.map((option) => (
@@ -160,7 +160,7 @@ export default function OrderSummaryPage() {
                         key={option}
                         type="button"
                         onClick={() => setQuantity(option)}
-                        className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${quantity === option ? "border-cyan-400 bg-cyan-500/15 text-white" : "border-slate-800 bg-slate-900 text-slate-300 hover:border-cyan-400"}`}
+                        className={`rounded-2xl border px-4 py-3 text-sm font-semibold transition ${quantity === option ? "border-amber-400 bg-amber-500/15 text-white" : "border-slate-800 bg-slate-900 text-slate-300 hover:border-amber-400"}`}
                       >
                         {option >= 1000 ? `${option / 1000}K` : option}
                       </button>
@@ -194,7 +194,7 @@ export default function OrderSummaryPage() {
                   type="button"
                   disabled={isSubmitting}
                   onClick={handleCheckout}
-                  className="mt-6 w-full rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:shadow-xl disabled:opacity-60"
+                  className="mt-6 w-full rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-5 py-3 text-sm font-semibold text-slate-950 transition hover:shadow-xl disabled:opacity-60"
                 >
                   {isAuthenticated === false ? "Sign in to continue" : isSubmitting ? "Continuing…" : "Continue to checkout"}
                 </button>
@@ -207,10 +207,10 @@ export default function OrderSummaryPage() {
           </div>
         </div>
       </section>
-      <section className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#030613]/95 px-4 pb-[calc(0.9rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl lg:hidden">
+      <section className="fixed inset-x-0 bottom-0 z-50 border-t border-white/10 bg-[#0B0B0F]/95 px-4 pb-[calc(0.9rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-xl lg:hidden">
         <div className="mx-auto flex max-w-6xl items-center gap-3">
           <div className="min-w-0 flex-1">
-            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-cyan-300">Quick checkout</p>
+            <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-amber-300">Quick checkout</p>
             <p className="truncate text-sm font-bold text-white">{service.name}</p>
             <p className="text-xs text-slate-400">{formattedTotal}</p>
           </div>
@@ -218,7 +218,7 @@ export default function OrderSummaryPage() {
             type="button"
             disabled={isSubmitting}
             onClick={handleCheckout}
-            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r from-cyan-500 to-blue-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:shadow-xl disabled:opacity-60"
+            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-2xl bg-gradient-to-r from-amber-500 to-orange-500 px-4 py-3 text-sm font-semibold text-slate-950 transition hover:shadow-xl disabled:opacity-60"
           >
             {isAuthenticated === false ? "Sign in" : isSubmitting ? "Continuing…" : "Continue"}
           </button>

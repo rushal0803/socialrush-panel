@@ -45,9 +45,9 @@ export default function PackageSummaryContent() {
     return (
       <main className="flex flex-col items-center justify-center min-h-screen px-5 py-20 text-center">
         <MarketingHeader />
-        <h1 className="text-2xl font-bold text-[#0b1635]">Big package not found</h1>
+        <h1 className="text-2xl font-bold text-[#0B0B0F]">Big package not found</h1>
         <p className="mt-2 text-slate-600">Only high-volume packages are available on this flow.</p>
-        <Link href="/packages" className="mt-6 rounded-xl bg-blue-600 px-6 py-3 text-sm font-bold text-white">
+        <Link href="/packages" className="mt-6 rounded-xl bg-orange-600 px-6 py-3 text-sm font-bold text-white">
           Back to Packages
         </Link>
         <MarketingFooter />
@@ -92,7 +92,7 @@ export default function PackageSummaryContent() {
   };
 
   return (
-    <main className="overflow-hidden bg-[linear-gradient(180deg,#f8fbff_0%,#ffffff_50%,#ffffff_100%)] text-slate-900">
+    <main className="overflow-hidden bg-[linear-gradient(180deg,#FFF8F1_0%,#ffffff_50%,#ffffff_100%)] text-slate-900">
       <MarketingHeader />
 
       <section className="relative px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
@@ -102,7 +102,7 @@ export default function PackageSummaryContent() {
             <div>
               <Link
                 href="/packages"
-                className="inline-flex items-center gap-2 text-sm font-bold text-blue-600 hover:text-blue-700"
+                className="inline-flex items-center gap-2 text-sm font-bold text-orange-600 hover:text-orange-700"
               >
                 <MarketingIcon name="arrow" className="h-4 w-4 rotate-180" />
                 Back to Packages
@@ -113,7 +113,7 @@ export default function PackageSummaryContent() {
                 <div>
                   <div className="flex items-center gap-3">
                     <div className="inline-flex items-center gap-3 text-2xl font-bold text-white sm:text-4xl"><PlatformIcon platform={pkg.platform} className="h-8 w-8 sm:h-10 sm:w-10" />{pkg.platform}</div>
-                    <span className="rounded-full bg-cyan-500/10 px-3 py-1 text-xs font-bold uppercase text-cyan-200">
+                    <span className="rounded-full bg-amber-500/10 px-3 py-1 text-xs font-bold uppercase text-amber-200">
                       {pkg.service}
                     </span>
                   </div>
@@ -124,21 +124,21 @@ export default function PackageSummaryContent() {
                 </div>
 
                 {/* Description */}
-                <div className="rounded-2xl border border-white/10 bg-[#0A1628] p-5">
+                <div className="rounded-2xl border border-white/10 bg-[#0B0B0F] p-5">
                   <p className="text-sm leading-7 text-slate-300">{pkg.description}</p>
                 </div>
 
                 {/* Key Info */}
                 <div className="grid gap-4 sm:grid-cols-3">
-                  <div className="rounded-xl border border-white/10 bg-[#0A1628] p-4">
+                  <div className="rounded-xl border border-white/10 bg-[#0B0B0F] p-4">
                     <p className="text-xs font-bold uppercase text-slate-400">Quantity</p>
                     <p className="mt-2 text-2xl font-extrabold text-white">{pkg.quantityLabel}</p>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-[#0A1628] p-4">
+                  <div className="rounded-xl border border-white/10 bg-[#0B0B0F] p-4">
                     <p className="text-xs font-bold uppercase text-slate-400">Delivery</p>
-                    <p className="mt-2 text-sm font-bold text-cyan-200">{pkg.deliveryTime}</p>
+                    <p className="mt-2 text-sm font-bold text-amber-200">{pkg.deliveryTime}</p>
                   </div>
-                  <div className="rounded-xl border border-white/10 bg-[#0A1628] p-4">
+                  <div className="rounded-xl border border-white/10 bg-[#0B0B0F] p-4">
                     <p className="text-xs font-bold uppercase text-slate-400">Best for</p>
                     <p className="mt-2 text-xs font-bold text-slate-200">{pkg.bestFor}</p>
                   </div>
@@ -157,8 +157,8 @@ export default function PackageSummaryContent() {
                     placeholder="e.g., https://instagram.com/yourprofile"
                     className={`mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-100 transition focus:outline-none ${
                       profileError
-                        ? "border-rose-300 bg-[#1E1E2A] text-slate-100 focus:border-rose-500 focus:ring-rose-200"
-                        : "border-white/10 bg-[#0A1628] text-slate-100 focus:border-cyan-500 focus:ring-cyan-500/10"
+                        ? "border-rose-300 bg-[#0B0B0F] text-slate-100 focus:border-rose-500 focus:ring-rose-200"
+                        : "border-white/10 bg-[#0B0B0F] text-slate-100 focus:border-amber-500 focus:ring-amber-500/10"
                     }`}
                   />
                   <p className="mt-2 text-xs text-slate-400">{getProfileLinkHelper()}</p>
@@ -166,8 +166,8 @@ export default function PackageSummaryContent() {
                 </div>
 
                 {/* Important Notes */}
-                <div className="rounded-xl border border-cyan-400/20 bg-[#0B1628] p-4">
-                  <p className="text-xs font-bold uppercase text-cyan-300">Important</p>
+                <div className="rounded-xl border border-amber-400/20 bg-[#0B0B0F] p-4">
+                  <p className="text-xs font-bold uppercase text-amber-300">Important</p>
                   <p className="mt-2 text-sm text-slate-300">
                     Prices are displayed in {currencies.find((c) => c.code === currency)?.name} for convenience. {getCurrencyDisclaimer()}
                   </p>
@@ -177,7 +177,7 @@ export default function PackageSummaryContent() {
 
             {/* Order Summary Sidebar */}
             <div className="lg:sticky lg:top-24">
-              <div className="rounded-3xl border border-white/10 bg-[#0A1628] p-6 shadow-2xl shadow-slate-950/40">
+              <div className="rounded-3xl border border-white/10 bg-[#0B0B0F] p-6 shadow-2xl shadow-slate-950/40">
                 <h3 className="text-lg font-bold text-white">Order Summary</h3>
 
                 <div className="mt-6 space-y-4 border-t border-white/10 pt-6">
@@ -187,7 +187,7 @@ export default function PackageSummaryContent() {
                       <p className="text-sm font-bold text-slate-200">{pkg.platform} – {pkg.service}</p>
                       <p className="mt-1 text-xs text-slate-400">{pkg.quantityLabel} units</p>
                     </div>
-                    <p className="text-right text-lg font-extrabold text-cyan-300">{formattedPrice}</p>
+                    <p className="text-right text-lg font-extrabold text-amber-300">{formattedPrice}</p>
                   </div>
 
                   {currency !== "INR" && (
@@ -202,7 +202,7 @@ export default function PackageSummaryContent() {
                 <div className="mt-6 border-t border-white/10 pt-6">
                   <div className="flex justify-between">
                     <p className="text-sm font-bold text-slate-200">Total Amount</p>
-                    <p className="text-2xl font-extrabold text-cyan-300">{formattedPrice}</p>
+                    <p className="text-2xl font-extrabold text-amber-300">{formattedPrice}</p>
                   </div>
                 </div>
 
@@ -219,7 +219,7 @@ export default function PackageSummaryContent() {
                   <button
                     onClick={handleProceedToCheckout}
                     disabled={isLoading || !profileLink.trim()}
-                    className="w-full rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/30 transition disabled:opacity-50 hover:shadow-xl"
+                    className="w-full rounded-xl bg-gradient-to-r from-orange-600 to-amber-600 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-orange-600/30 transition disabled:opacity-50 hover:shadow-xl"
                   >
                     {isLoading ? "Processing..." : "Proceed to Checkout"}
                   </button>
@@ -227,7 +227,7 @@ export default function PackageSummaryContent() {
                   {lowWalletBalance && (
                     <Link
                       href="/dashboard/wallet"
-                      className="inline-flex w-full items-center justify-center rounded-xl border border-cyan-400/30 bg-cyan-500/10 px-6 py-3 text-sm font-bold text-cyan-200 transition hover:bg-cyan-500/15"
+                      className="inline-flex w-full items-center justify-center rounded-xl border border-amber-400/30 bg-amber-500/10 px-6 py-3 text-sm font-bold text-amber-200 transition hover:bg-amber-500/15"
                     >
                       Add Funds to Wallet
                     </Link>

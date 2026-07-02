@@ -144,7 +144,7 @@ export default function LoginForm() {
         <div>
           <div className="flex items-center justify-between">
             <label htmlFor="password" className="text-sm font-semibold text-slate-700">Password</label>
-            <Link href="/forgot-password" className="text-xs font-semibold text-pink-600 transition hover:text-pink-500">Forgot password?</Link>
+            <Link href="/forgot-password" className="text-xs font-semibold text-orange-600 transition hover:text-orange-500">Forgot password?</Link>
           </div>
           <div className="relative mt-2">
             <input
@@ -171,14 +171,14 @@ export default function LoginForm() {
             type="checkbox"
             checked={keepSignedIn}
             onChange={(event) => setKeepSignedIn(event.target.checked)}
-            className="h-4 w-4 rounded border-slate-300 accent-pink-500"
+            className="h-4 w-4 rounded border-slate-300 accent-orange-500"
           />
           Keep me signed in
         </label>
         <button
           type="submit"
           disabled={loading || googleLoading}
-          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105 hover:shadow-pink-400/60 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105 hover:shadow-orange-400/60 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Signing in..." : "Login"}
         </button>

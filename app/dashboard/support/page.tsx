@@ -23,7 +23,7 @@ type MessageType = {
 const categories = ["Order issue", "Payment issue", "Refill request", "Account issue", "Service question"];
 
 const statusStyle: Record<string, string> = {
-  open: "bg-blue-100/80 text-blue-700 ring-blue-600/20",
+  open: "bg-orange-100/80 text-orange-700 ring-orange-600/20",
   answered: "bg-emerald-100/80 text-emerald-700 ring-emerald-600/20",
   waiting: "bg-amber-100/80 text-amber-700 ring-amber-600/20",
   closed: "bg-slate-100/80 text-slate-700 ring-slate-600/20",
@@ -168,9 +168,9 @@ export default function SupportPage() {
   return (
     <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip px-4 pb-28 pt-5 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-16 top-10 h-72 w-72 rounded-full bg-pink-200/35 blur-3xl" />
-        <div className="absolute right-[-5rem] top-16 h-80 w-80 rounded-full bg-cyan-200/35 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-64 w-64 rounded-full bg-violet-200/30 blur-3xl" />
+        <div className="absolute -left-16 top-10 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
+        <div className="absolute right-[-5rem] top-16 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-64 w-64 rounded-full bg-amber-200/30 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-[1550px]">
@@ -182,11 +182,11 @@ export default function SupportPage() {
         >
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_300px] lg:items-center">
             <div>
-              <p className="inline-flex rounded-full border border-white/85 bg-white/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#4f6aa0]">
+              <p className="inline-flex rounded-full border border-white/85 bg-white/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
                 Customer care
               </p>
-              <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-[#112a5c] sm:text-4xl">Support Center</h1>
-              <p className="mt-2 text-sm leading-7 text-[#5d75a7]">Get professional help with campaigns, payments, refills, and your account.</p>
+              <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-[#0B0B0F] sm:text-4xl">Support Center</h1>
+              <p className="mt-2 text-sm leading-7 text-[#111827]">Get professional help with campaigns, payments, refills, and your account.</p>
               <button
                 type="button"
                 onClick={() => setCreating(true)}
@@ -197,10 +197,10 @@ export default function SupportPage() {
               </button>
             </div>
             <motion.article whileHover={{ y: -4 }} className="rounded-[1.6rem] border border-white/80 bg-white/80 p-5 shadow-[0_20px_42px_-28px_rgba(15,23,42,.4)]">
-              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#6e85b1]">Support profile</p>
-              <p className="mt-3 text-sm font-semibold text-[#40609a]">Average response time: 30-90 minutes</p>
-              <p className="mt-1 text-xs text-[#5f79ab]">Support hours: 24/7 for active orders</p>
-              <p className="mt-1 text-xs text-[#5f79ab]">Include order or payment ID for faster resolution</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Support profile</p>
+              <p className="mt-3 text-sm font-semibold text-[#FF9F00]">Average response time: 30-90 minutes</p>
+              <p className="mt-1 text-xs text-[#111827]">Support hours: 24/7 for active orders</p>
+              <p className="mt-1 text-xs text-[#111827]">Include order or payment ID for faster resolution</p>
             </motion.article>
           </div>
         </motion.section>
@@ -221,12 +221,12 @@ export default function SupportPage() {
                 whileHover={{ y: -4 }}
                 className="rounded-3xl border border-white/85 bg-white/85 p-5 text-left shadow-[0_20px_44px_-30px_rgba(15,23,42,.35)] backdrop-blur-xl"
               >
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white shadow-[0_14px_28px_-18px_rgba(117,109,255,.65)]">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_14px_28px_-18px_rgba(255, 196, 0, .65)]">
                   <Icon className="h-5 w-5" />
                 </span>
-                <h2 className="mt-4 text-sm font-black text-[#17366f]">{card.title}</h2>
-                <p className="mt-2 text-xs leading-6 text-[#5f79ab]">{card.description}</p>
-                <p className="mt-4 text-[10px] font-black uppercase tracking-[0.14em] text-[#3f64a5]">{card.action}</p>
+                <h2 className="mt-4 text-sm font-black text-[#0B0B0F]">{card.title}</h2>
+                <p className="mt-2 text-xs leading-6 text-[#111827]">{card.description}</p>
+                <p className="mt-4 text-[10px] font-black uppercase tracking-[0.14em] text-[#FF9F00]">{card.action}</p>
               </motion.article>
             );
 
@@ -248,20 +248,20 @@ export default function SupportPage() {
 
         <section className="mt-6 grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
           <aside className="overflow-hidden rounded-3xl border border-white/85 bg-white/90 shadow-[0_22px_52px_-34px_rgba(15,23,42,.4)] backdrop-blur-xl">
-            <div className="border-b border-[#e6eeff] p-5">
+            <div className="border-b border-[#FFF8F1] p-5">
               <div className="flex items-center justify-between">
                 <div>
-                  <h2 className="text-sm font-black text-[#17366f]">Ticket history</h2>
-                  <p className="mt-1 text-[11px] text-[#6f86b2]">{tickets.length} conversations</p>
+                  <h2 className="text-sm font-black text-[#0B0B0F]">Ticket history</h2>
+                  <p className="mt-1 text-[11px] text-[#111827]">{tickets.length} conversations</p>
                 </div>
                 <span className="h-2.5 w-2.5 rounded-full bg-emerald-400" />
               </div>
             </div>
-            <div className="max-h-[650px] divide-y divide-[#edf3ff] overflow-y-auto">
+            <div className="max-h-[650px] divide-y divide-[#FFF8F1] overflow-y-auto">
               {loading ? (
                 <div className="space-y-3 p-4">
                   {[1, 2, 3].map((item) => (
-                    <div key={item} className="h-24 animate-pulse rounded-xl bg-[#eef4ff]" />
+                    <div key={item} className="h-24 animate-pulse rounded-xl bg-[#FFF8F1]" />
                   ))}
                 </div>
               ) : (
@@ -273,17 +273,17 @@ export default function SupportPage() {
                       type="button"
                       onClick={() => setActiveId(ticket.id)}
                       className={`w-full p-5 text-left transition ${
-                        activeId === ticket.id ? "bg-[#edf4ff]" : "hover:bg-[#f7faff]"
+                        activeId === ticket.id ? "bg-[#FFF8F1]" : "hover:bg-[#FFF8F1]"
                       }`}
                     >
                       <div className="flex items-center justify-between gap-2">
-                        <span className="text-[10px] font-black text-[#3f64a5]">#{ticket.id.slice(0, 8).toUpperCase()}</span>
+                        <span className="text-[10px] font-black text-[#FF9F00]">#{ticket.id.slice(0, 8).toUpperCase()}</span>
                         <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${statusStyle[ticket.status] || statusStyle.open}`}>
                           {ticket.status}
                         </span>
                       </div>
-                      <p className="mt-3 truncate text-xs font-bold text-[#17366f]">{parsed.title}</p>
-                      <div className="mt-2 flex items-center justify-between text-[10px] text-[#6f86b2]">
+                      <p className="mt-3 truncate text-xs font-bold text-[#0B0B0F]">{parsed.title}</p>
+                      <div className="mt-2 flex items-center justify-between text-[10px] text-[#111827]">
                         <span>{parsed.category}</span>
                         <span>{new Date(ticket.created_at).toLocaleDateString("en-IN")}</span>
                       </div>
@@ -294,8 +294,8 @@ export default function SupportPage() {
 
               {!loading && tickets.length === 0 ? (
                 <div className="p-10 text-center">
-                  <p className="text-sm font-black text-[#17366f]">No tickets yet</p>
-                  <p className="mt-2 text-xs text-[#6f86b2]">Create a ticket whenever you need help.</p>
+                  <p className="text-sm font-black text-[#0B0B0F]">No tickets yet</p>
+                  <p className="mt-2 text-xs text-[#111827]">Create a ticket whenever you need help.</p>
                 </div>
               ) : null}
             </div>
@@ -304,28 +304,28 @@ export default function SupportPage() {
           <section className="flex min-h-[620px] flex-col overflow-hidden rounded-3xl border border-white/85 bg-white/90 shadow-[0_22px_52px_-34px_rgba(15,23,42,.4)] backdrop-blur-xl">
             {activeTicket ? (
               <>
-                <header className="flex flex-wrap items-start justify-between gap-3 border-b border-[#e6eeff] p-5">
+                <header className="flex flex-wrap items-start justify-between gap-3 border-b border-[#FFF8F1] p-5">
                   <div>
                     <div className="flex items-center gap-2">
-                      <span className="text-[10px] font-black text-[#3f64a5]">#{activeTicket.id.slice(0, 8).toUpperCase()}</span>
+                      <span className="text-[10px] font-black text-[#FF9F00]">#{activeTicket.id.slice(0, 8).toUpperCase()}</span>
                       <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${statusStyle[activeTicket.status] || statusStyle.open}`}>
                         {activeTicket.status}
                       </span>
                     </div>
-                    <h2 className="mt-2 text-sm font-black text-[#17366f]">{parseSubject(activeTicket.subject).title}</h2>
-                    <p className="mt-1 text-[11px] text-[#6f86b2]">{parseSubject(activeTicket.subject).category}</p>
+                    <h2 className="mt-2 text-sm font-black text-[#0B0B0F]">{parseSubject(activeTicket.subject).title}</h2>
+                    <p className="mt-1 text-[11px] text-[#111827]">{parseSubject(activeTicket.subject).category}</p>
                   </div>
 
                   <button
                     type="button"
                     onClick={closeTicket}
-                    className="rounded-xl border border-[#dce7ff] bg-white px-4 py-2 text-[11px] font-bold text-[#5974a7] transition hover:-translate-y-0.5"
+                    className="rounded-xl border border-[#FFF8F1] bg-white px-4 py-2 text-[11px] font-bold text-[#111827] transition hover:-translate-y-0.5"
                   >
                     Close ticket
                   </button>
                 </header>
 
-                <div className="flex-1 space-y-4 overflow-y-auto bg-[#f8fbff]/80 p-5 sm:p-7">
+                <div className="flex-1 space-y-4 overflow-y-auto bg-[#FFF8F1]/80 p-5 sm:p-7">
                   {messages.map((message) => {
                     const mine = message.sender_id === userId;
                     return (
@@ -338,12 +338,12 @@ export default function SupportPage() {
                         <div
                           className={`max-w-[85%] rounded-2xl p-4 text-xs leading-6 shadow-sm ${
                             mine
-                              ? "rounded-br-sm bg-gradient-to-r from-[#4d6cf4] to-[#5f9dff] text-white"
-                              : "rounded-bl-sm border border-[#e3ecff] bg-white text-[#4a6597]"
+                              ? "rounded-br-sm bg-gradient-to-r from-[#FF9F00] to-[#FF9F00] text-white"
+                              : "rounded-bl-sm border border-[#FFF8F1] bg-white text-[#111827]"
                           }`}
                         >
                           <p>{message.message}</p>
-                          <p className={`mt-2 text-[10px] ${mine ? "text-blue-100" : "text-[#89a0c8]"}`}>
+                          <p className={`mt-2 text-[10px] ${mine ? "text-orange-100" : "text-[#FF9F00]"}`}>
                             {new Date(message.created_at).toLocaleString("en-IN")}
                           </p>
                         </div>
@@ -351,11 +351,11 @@ export default function SupportPage() {
                     );
                   })}
 
-                  {messages.length === 0 ? <p className="py-14 text-center text-xs text-[#7a90ba]">No messages yet.</p> : null}
+                  {messages.length === 0 ? <p className="py-14 text-center text-xs text-[#111827]">No messages yet.</p> : null}
                 </div>
 
                 {activeTicket.status !== "closed" ? (
-                  <form action={sendReply} className="border-t border-[#e6eeff] p-4 sm:p-5">
+                  <form action={sendReply} className="border-t border-[#FFF8F1] p-4 sm:p-5">
                     <textarea
                       name="message"
                       required
@@ -368,14 +368,14 @@ export default function SupportPage() {
                     </button>
                   </form>
                 ) : (
-                  <p className="border-t border-[#e6eeff] p-5 text-xs font-semibold text-[#6f86b2]">This ticket has been closed.</p>
+                  <p className="border-t border-[#FFF8F1] p-5 text-xs font-semibold text-[#111827]">This ticket has been closed.</p>
                 )}
               </>
             ) : (
               <div className="grid flex-1 place-items-center p-8 text-center">
                 <div>
-                  <p className="text-sm font-black text-[#17366f]">Select a ticket</p>
-                  <p className="mt-2 text-xs text-[#6f86b2]">Choose a conversation or create a new support request.</p>
+                  <p className="text-sm font-black text-[#0B0B0F]">Select a ticket</p>
+                  <p className="mt-2 text-xs text-[#111827]">Choose a conversation or create a new support request.</p>
                 </div>
               </div>
             )}
@@ -398,20 +398,20 @@ export default function SupportPage() {
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#3f64a5]">New support request</p>
-                  <h2 className="mt-2 text-xl font-black text-[#17366f]">Create a ticket</h2>
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#FF9F00]">New support request</p>
+                  <h2 className="mt-2 text-xl font-black text-[#0B0B0F]">Create a ticket</h2>
                 </div>
                 <button
                   type="button"
                   onClick={() => setCreating(false)}
-                  className="grid h-8 w-8 place-items-center rounded-lg bg-[#edf4ff] text-lg text-[#4f6aa0]"
+                  className="grid h-8 w-8 place-items-center rounded-lg bg-[#FFF8F1] text-lg text-[#111827]"
                 >
                   ×
                 </button>
               </div>
 
               <form action={createTicket} className="mt-6 space-y-4">
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#5f79ab]">
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#111827]">
                   Category
                   <select name="category" required className="dashboard-input mt-2">
                     {categories.map((item) => (
@@ -420,7 +420,7 @@ export default function SupportPage() {
                   </select>
                 </label>
 
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#5f79ab]">
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#111827]">
                   Subject
                   <input
                     name="subject"
@@ -431,7 +431,7 @@ export default function SupportPage() {
                   />
                 </label>
 
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#5f79ab]">
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#111827]">
                   Message
                   <textarea
                     name="message"
@@ -442,12 +442,12 @@ export default function SupportPage() {
                   />
                 </label>
 
-                <div className="rounded-xl border border-dashed border-[#cfdfff] bg-[#f7faff] p-4 text-center text-[11px] font-semibold text-[#5f79ab]">
+                <div className="rounded-xl border border-dashed border-[#FFF3E0] bg-[#FFF8F1] p-4 text-center text-[11px] font-semibold text-[#111827]">
                   Attach screenshot or payment proof
-                  <span className="mt-1 block text-[10px] text-[#87a0c8]">Attachment upload coming soon</span>
+                  <span className="mt-1 block text-[10px] text-[#FF9F00]">Attachment upload coming soon</span>
                 </div>
 
-                <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-2.5 text-sm font-bold text-white shadow-[0_16px_34px_-18px_rgba(117,109,255,.62)] transition hover:-translate-y-0.5">
+                <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-[0_16px_34px_-18px_rgba(255, 196, 0, .62)] transition hover:-translate-y-0.5">
                   Submit ticket
                 </button>
               </form>

@@ -183,7 +183,7 @@ export default function FaqPage() {
       <FaqPageContent categories={faqCategories} />
       <section
         aria-labelledby="complete-faq-answers-heading"
-        className="bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_45%,#ecfeff_100%)] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-20"
+        className="bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_45%,#FFF8F1_100%)] px-5 pb-16 sm:px-6 lg:px-8 lg:pb-20"
       >
         <div className="mx-auto max-w-6xl rounded-[1.75rem] border border-white/80 bg-white/75 p-6 shadow-[0_20px_55px_-28px_rgba(15,23,42,.32)] backdrop-blur-xl sm:p-8">
           <h2

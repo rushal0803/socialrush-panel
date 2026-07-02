@@ -4,8 +4,8 @@ export function PageHeader({ title, description, action, variant = "light" }: { 
   return (
     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
       <div>
-        <h1 className={`text-2xl font-black tracking-tight ${variant === "dark" ? "text-[#eaf1ff]" : "text-[#112a5c]"}`}>{title}</h1>
-        <p className={`mt-1.5 text-sm ${variant === "dark" ? "text-[#b8c9ec]" : "text-[#5b74a5]"}`}>{description}</p>
+        <h1 className={`text-2xl font-black tracking-tight ${variant === "dark" ? "text-[#FFF8F1]" : "text-[#0B0B0F]"}`}>{title}</h1>
+        <p className={`mt-1.5 text-sm ${variant === "dark" ? "text-[#FF9F00]" : "text-[#111827]"}`}>{description}</p>
       </div>
       {action}
     </div>
@@ -16,11 +16,11 @@ export type Status = "Pending" | "Processing" | "Completed" | "Partial" | "Cance
 
 const badgeStyles: Record<Status, string> = {
   Pending: "bg-amber-50 text-amber-700 ring-amber-600/10",
-  Processing: "bg-blue-50 text-blue-700 ring-blue-600/10",
+  Processing: "bg-orange-50 text-orange-700 ring-orange-600/10",
   Completed: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
-  Partial: "bg-violet-50 text-violet-700 ring-violet-600/10",
+  Partial: "bg-amber-50 text-amber-700 ring-amber-600/10",
   Cancelled: "bg-rose-50 text-rose-700 ring-rose-600/10",
-  Open: "bg-blue-50 text-blue-700 ring-blue-600/10",
+  Open: "bg-orange-50 text-orange-700 ring-orange-600/10",
   Answered: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
   Closed: "bg-slate-100 text-slate-600 ring-slate-600/10",
 };
@@ -44,10 +44,10 @@ export function EmptyAction({ href, children }: { href: string; children: React.
 
 export function SectionTitle({ title, description, action, variant = "light" }: { title: string; description?: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
   return (
-    <div className={`flex items-center justify-between border-b ${variant === "dark" ? "border-[#3b4f7f]" : "border-[#e6eeff]"} px-5 py-4 sm:px-6`}>
+    <div className={`flex items-center justify-between border-b ${variant === "dark" ? "border-[#0B0B0F]" : "border-[#FFF8F1]"} px-5 py-4 sm:px-6`}>
       <div>
-        <h2 className={`text-sm font-bold ${variant === "dark" ? "text-[#f2f6ff]" : "text-[#18356e]"}`}>{title}</h2>
-        {description && <p className={`mt-1 text-xs ${variant === "dark" ? "text-[#b6c7e9]" : "text-[#6e85b1]"}`}>{description}</p>}
+        <h2 className={`text-sm font-bold ${variant === "dark" ? "text-[#FFF8F1]" : "text-[#0B0B0F]"}`}>{title}</h2>
+        {description && <p className={`mt-1 text-xs ${variant === "dark" ? "text-[#FF9F00]" : "text-[#111827]"}`}>{description}</p>}
       </div>
       {action}
     </div>

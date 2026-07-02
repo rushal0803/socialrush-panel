@@ -18,12 +18,12 @@ export type SmmService = {
 };
 
 export const platformMeta: Record<SmmPlatformId, { label: string; short: string; icon: string; gradient: string }> = {
-  instagram: { label: "Instagram", short: "IG", icon: "instagram", gradient: "from-pink-500 via-fuchsia-500 to-sky-500" },
+  instagram: { label: "Instagram", short: "IG", icon: "instagram", gradient: "from-[#FF7A00] via-[#FF9F00] to-[#FFC400]" },
   youtube: { label: "YouTube", short: "YT", icon: "youtube", gradient: "from-rose-500 to-red-600" },
-  facebook: { label: "Facebook", short: "FB", icon: "facebook", gradient: "from-blue-500 to-indigo-600" },
-  linkedin: { label: "LinkedIn", short: "IN", icon: "linkedin", gradient: "from-cyan-500 to-blue-600" },
-  telegram: { label: "Telegram", short: "TG", icon: "telegram", gradient: "from-sky-500 to-cyan-600" },
-  tiktok: { label: "TikTok", short: "TT", icon: "tiktok", gradient: "from-violet-500 to-fuchsia-600" },
+  facebook: { label: "Facebook", short: "FB", icon: "facebook", gradient: "from-orange-500 to-amber-600" },
+  linkedin: { label: "LinkedIn", short: "IN", icon: "linkedin", gradient: "from-amber-500 to-orange-600" },
+  telegram: { label: "Telegram", short: "TG", icon: "telegram", gradient: "from-orange-500 to-amber-600" },
+  tiktok: { label: "TikTok", short: "TT", icon: "tiktok", gradient: "from-amber-500 to-orange-600" },
   x: { label: "Twitter / X", short: "X", icon: "twitter", gradient: "from-slate-600 to-slate-900" },
 };
 

@@ -110,9 +110,9 @@ export default function ContactPageContent() {
     <BlogShell>
       <div className="relative overflow-x-clip pb-24">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-12 top-14 h-72 w-72 rounded-full bg-pink-200/35 blur-3xl" />
-          <div className="absolute right-[-9%] top-40 h-80 w-80 rounded-full bg-cyan-200/35 blur-3xl" />
-          <div className="absolute left-[34%] top-[35%] h-64 w-64 rounded-full bg-violet-200/35 blur-3xl" />
+          <div className="absolute -left-12 top-14 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
+          <div className="absolute right-[-9%] top-40 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+          <div className="absolute left-[34%] top-[35%] h-64 w-64 rounded-full bg-amber-200/35 blur-3xl" />
         </div>
 
         <section className="relative px-5 pb-10 pt-8 sm:px-6 lg:px-8 lg:pb-14 lg:pt-12">
@@ -124,13 +124,13 @@ export default function ContactPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65 }}
             >
-              <p className="inline-flex rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-[#3a5798] shadow-[0_8px_24px_rgba(82,111,174,.12)] backdrop-blur">
+              <p className="inline-flex rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00] shadow-[0_8px_24px_rgba(255, 159, 0, .12)] backdrop-blur">
                 Contact SocialRUSH
               </p>
-              <h1 className="mt-5 text-4xl font-black leading-tight text-[#112551] sm:text-5xl">
+              <h1 className="mt-5 text-4xl font-black leading-tight text-[#0B0B0F] sm:text-5xl">
                 Let&apos;s Build Your Growth Campaign Together
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-[#4a6290] sm:text-lg">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-[#111827] sm:text-lg">
                 Have questions about services, pricing, orders, or support? Our team is here to help you choose
                 the right growth solution.
               </p>
@@ -140,19 +140,19 @@ export default function ContactPageContent() {
                   href={whatsappUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(117,109,255,.35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(117,109,255,.45)]"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255, 196, 0, .45)]"
                 >
                   WhatsApp Support
                 </a>
                 <Link
                   href="/services"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#d6e3ff] bg-white/90 px-6 py-3 text-sm font-bold text-[#1f3b75] shadow-[0_10px_24px_rgba(81,111,171,.12)] transition duration-300 hover:-translate-y-0.5"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition duration-300 hover:-translate-y-0.5"
                 >
                   View Services
                 </Link>
                 <Link
                   href="/login?next=/dashboard/new-order"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#d6e3ff] bg-white/90 px-6 py-3 text-sm font-bold text-[#1f3b75] shadow-[0_10px_24px_rgba(81,111,171,.12)] transition duration-300 hover:-translate-y-0.5"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition duration-300 hover:-translate-y-0.5"
                 >
                   Start Order
                 </Link>
@@ -162,7 +162,7 @@ export default function ContactPageContent() {
                 {["Fast response", "Secure support", "Order help", "Custom campaign guidance"].map((chip) => (
                   <span
                     key={chip}
-                    className="rounded-full border border-white/85 bg-white/85 px-3 py-1.5 text-xs font-semibold text-[#2f4a86] shadow-[0_8px_20px_rgba(87,114,173,.12)]"
+                    className="rounded-full border border-white/85 bg-white/85 px-3 py-1.5 text-xs font-semibold text-[#0B0B0F] shadow-[0_8px_20px_rgba(255, 159, 0, .12)]"
                   >
                     {chip}
                   </span>
@@ -177,11 +177,11 @@ export default function ContactPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65, delay: 0.12 }}
             >
-              <div className="relative mx-auto w-full max-w-xl rounded-[30px] border border-white/75 bg-white/78 p-4 shadow-[0_28px_58px_rgba(83,111,173,.2)] backdrop-blur">
+              <div className="relative mx-auto w-full max-w-xl rounded-[30px] border border-white/75 bg-white/78 p-4 shadow-[0_28px_58px_rgba(255, 159, 0, .2)] backdrop-blur">
                 <motion.div
                   animate={{ y: [0, -9, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-br from-white to-[#edf5ff] p-3"
+                  className="relative overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-br from-white to-[#FFF8F1] p-3"
                 >
                   {!heroImageError ? (
                     <SafeImage
@@ -196,8 +196,8 @@ export default function ContactPageContent() {
                       onError={() => setHeroImageError(true)}
                     />
                   ) : (
-                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_25%_15%,_#ffd5ea_0%,_#e7efff_48%,_#dcf7ff_100%)]">
-                      <div className="rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-sm font-extrabold text-[#2a4884] shadow-[0_10px_24px_rgba(85,112,171,.2)]">
+                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_25%_15%,_#FFF3E0_0%,_#FFF8F1_48%,_#FFF8F1_100%)]">
+                      <div className="rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-sm font-extrabold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .2)]">
                         Contact Support
                       </div>
                     </div>
@@ -229,33 +229,33 @@ export default function ContactPageContent() {
                   variants={fadeUp}
                   transition={{ duration: 0.55 }}
                   whileHover={{ y: -8 }}
-                  className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_16px_34px_rgba(81,108,169,.17)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_44px_rgba(80,109,170,.24)]"
+                  className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_16px_34px_rgba(255, 159, 0, .17)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_44px_rgba(255, 159, 0, .24)]"
                 >
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#ffe0ef] via-[#e7ecff] to-[#dff8ff] text-[#2c4b8b] shadow-[0_8px_22px_rgba(92,117,174,.2)]">
+                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] text-[#0B0B0F] shadow-[0_8px_22px_rgba(255, 159, 0, .2)]">
                     <MarketingIcon name={item.icon} className="h-5 w-5" />
                   </span>
-                  <h3 className="mt-4 text-lg font-extrabold text-[#122a5c]">{item.title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#4f6795]">{item.description}</p>
+                  <h3 className="mt-4 text-lg font-extrabold text-[#0B0B0F]">{item.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#111827]">{item.description}</p>
                   {item.href === "whatsapp" ? (
                     <a
                       href={whatsappUrl}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-2 text-xs font-bold text-white shadow-[0_10px_22px_rgba(117,109,255,.35)] transition duration-300 hover:-translate-y-0.5"
+                      className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-xs font-bold text-white shadow-[0_10px_22px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5"
                     >
                       {item.cta}
                     </a>
                   ) : item.href.startsWith("/") ? (
                     <Link
                       href={item.href}
-                      className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl border border-[#d5e3ff] bg-white px-4 py-2 text-xs font-bold text-[#1f3a73] transition duration-300 hover:-translate-y-0.5"
+                      className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-xs font-bold text-[#0B0B0F] transition duration-300 hover:-translate-y-0.5"
                     >
                       {item.cta}
                     </Link>
                   ) : (
                     <a
                       href={item.href}
-                      className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl border border-[#d5e3ff] bg-white px-4 py-2 text-xs font-bold text-[#1f3a73] transition duration-300 hover:-translate-y-0.5"
+                      className="mt-5 inline-flex min-h-10 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-xs font-bold text-[#0B0B0F] transition duration-300 hover:-translate-y-0.5"
                     >
                       {item.cta}
                     </a>
@@ -277,47 +277,47 @@ export default function ContactPageContent() {
               whileInView="visible"
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6 }}
-              className="rounded-[30px] border border-white/85 bg-white/90 p-6 shadow-[0_18px_42px_rgba(86,114,175,.16)] backdrop-blur sm:p-8"
+              className="rounded-[30px] border border-white/85 bg-white/90 p-6 shadow-[0_18px_42px_rgba(255, 159, 0, .16)] backdrop-blur sm:p-8"
             >
-              <h2 className="text-2xl font-extrabold text-[#122a5c]">Tell us what you need</h2>
-              <p className="mt-2 text-sm leading-7 text-[#516996]">
+              <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Tell us what you need</h2>
+              <p className="mt-2 text-sm leading-7 text-[#111827]">
                 Submitting this form opens your default email app with your details so you can review before sending.
               </p>
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                <label className="text-xs font-bold text-[#334f85]">
+                <label className="text-xs font-bold text-[#0B0B0F]">
                   Full Name
                   <input
                     required
                     name="name"
-                    className="mt-2 min-h-11 w-full rounded-xl border border-[#d2e1ff] bg-white px-4 text-sm text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
+                    className="mt-2 min-h-11 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 text-sm text-[#0B0B0F] outline-none transition focus:border-[#FF9F00]"
                     placeholder="Your name"
                   />
                 </label>
-                <label className="text-xs font-bold text-[#334f85]">
+                <label className="text-xs font-bold text-[#0B0B0F]">
                   Email Address
                   <input
                     required
                     type="email"
                     name="email"
-                    className="mt-2 min-h-11 w-full rounded-xl border border-[#d2e1ff] bg-white px-4 text-sm text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
+                    className="mt-2 min-h-11 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 text-sm text-[#0B0B0F] outline-none transition focus:border-[#FF9F00]"
                     placeholder="you@example.com"
                   />
                 </label>
-                <label className="text-xs font-bold text-[#334f85]">
+                <label className="text-xs font-bold text-[#0B0B0F]">
                   WhatsApp Number
                   <input
                     name="whatsapp"
-                    className="mt-2 min-h-11 w-full rounded-xl border border-[#d2e1ff] bg-white px-4 text-sm text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
+                    className="mt-2 min-h-11 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 text-sm text-[#0B0B0F] outline-none transition focus:border-[#FF9F00]"
                     placeholder="+91XXXXXXXXXX"
                   />
                 </label>
-                <label className="text-xs font-bold text-[#334f85]">
+                <label className="text-xs font-bold text-[#0B0B0F]">
                   Service Interested In
                   <select
                     required
                     name="service"
-                    className="mt-2 min-h-11 w-full rounded-xl border border-[#d2e1ff] bg-white px-4 text-sm text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
+                    className="mt-2 min-h-11 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 text-sm text-[#0B0B0F] outline-none transition focus:border-[#FF9F00]"
                   >
                     <option value="">Select a service</option>
                     {agencyServices.map((service) => (
@@ -329,20 +329,20 @@ export default function ContactPageContent() {
                 </label>
               </div>
 
-              <label className="mt-4 block text-xs font-bold text-[#334f85]">
+              <label className="mt-4 block text-xs font-bold text-[#0B0B0F]">
                 Message
                 <textarea
                   required
                   name="message"
                   rows={6}
-                  className="mt-2 w-full resize-y rounded-xl border border-[#d2e1ff] bg-white px-4 py-3 text-sm text-[#16346f] outline-none transition focus:border-[#8aa7ff]"
+                  className="mt-2 w-full resize-y rounded-xl border border-[#FFF3E0] bg-white px-4 py-3 text-sm text-[#0B0B0F] outline-none transition focus:border-[#FF9F00]"
                   placeholder="Tell us about your platform, goal, and timeline."
                 />
               </label>
 
               <button
                 type="submit"
-                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(117,109,255,.35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_35px_rgba(117,109,255,.42)]"
+                className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_35px_rgba(255, 196, 0, .42)]"
               >
                 Send Message
               </button>
@@ -359,15 +359,15 @@ export default function ContactPageContent() {
               {supportInfo.map((item) => (
                 <article
                   key={item.title}
-                  className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_14px_32px_rgba(86,114,175,.14)] backdrop-blur"
+                  className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_14px_32px_rgba(255, 159, 0, .14)] backdrop-blur"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#ffe4f1] via-[#ebefff] to-[#e1f7ff] text-[#2f4f90]">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] text-[#0B0B0F]">
                       <MarketingIcon name={item.icon} className="h-4.5 w-4.5" />
                     </span>
-                    <h3 className="text-base font-extrabold text-[#163161]">{item.title}</h3>
+                    <h3 className="text-base font-extrabold text-[#0B0B0F]">{item.title}</h3>
                   </div>
-                  <p className="mt-3 text-sm leading-7 text-[#4e6795]">{item.text}</p>
+                  <p className="mt-3 text-sm leading-7 text-[#111827]">{item.text}</p>
                 </article>
               ))}
             </motion.div>
@@ -375,7 +375,7 @@ export default function ContactPageContent() {
         </section>
 
         <section className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
-          <div className="mx-auto w-full max-w-7xl rounded-[32px] border border-white/85 bg-white/86 p-6 shadow-[0_20px_46px_rgba(86,114,175,.16)] backdrop-blur sm:p-8">
+          <div className="mx-auto w-full max-w-7xl rounded-[32px] border border-white/85 bg-white/86 p-6 shadow-[0_20px_46px_rgba(255, 159, 0, .16)] backdrop-blur sm:p-8">
             <motion.div
               variants={fadeUp}
               initial="hidden"
@@ -383,8 +383,8 @@ export default function ContactPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.6 }}
             >
-              <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#4f6caa]">Contact FAQ</p>
-              <h2 className="mt-3 text-3xl font-black text-[#10234f]">Questions before you start?</h2>
+              <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00]">Contact FAQ</p>
+              <h2 className="mt-3 text-3xl font-black text-[#0B0B0F]">Questions before you start?</h2>
             </motion.div>
 
             <div className="mt-6 space-y-3">
@@ -398,15 +398,15 @@ export default function ContactPageContent() {
                     whileInView="visible"
                     viewport={{ once: true, amount: 0.2 }}
                     transition={{ duration: 0.5, delay: index * 0.05 }}
-                    className="rounded-2xl border border-white/90 bg-white/92 shadow-[0_10px_24px_rgba(86,114,175,.12)]"
+                    className="rounded-2xl border border-white/90 bg-white/92 shadow-[0_10px_24px_rgba(255, 159, 0, .12)]"
                   >
                     <button
                       type="button"
                       onClick={() => setOpenFaq(isOpen ? null : faq.question)}
                       className="flex w-full items-center justify-between gap-4 px-5 py-4 text-left"
                     >
-                      <span className="text-sm font-bold text-[#1b356c] sm:text-base">{faq.question}</span>
-                      <span className="grid h-7 w-7 place-items-center rounded-lg border border-[#d8e4ff] bg-[#f6f9ff] text-[#29508f]">
+                      <span className="text-sm font-bold text-[#0B0B0F] sm:text-base">{faq.question}</span>
+                      <span className="grid h-7 w-7 place-items-center rounded-lg border border-[#FFF3E0] bg-[#FFF8F1] text-[#0B0B0F]">
                         {isOpen ? "-" : "+"}
                       </span>
                     </button>
@@ -419,7 +419,7 @@ export default function ContactPageContent() {
                           transition={{ duration: 0.22 }}
                           className="overflow-hidden"
                         >
-                          <p className="border-t border-[#edf2ff] px-5 py-4 text-sm leading-7 text-[#4f6795]">{faq.answer}</p>
+                          <p className="border-t border-[#FFF8F1] px-5 py-4 text-sm leading-7 text-[#111827]">{faq.answer}</p>
                         </motion.div>
                       )}
                     </AnimatePresence>
@@ -437,16 +437,16 @@ export default function ContactPageContent() {
             whileInView="visible"
             viewport={{ once: true, amount: 0.2 }}
             transition={{ duration: 0.6 }}
-            className="mx-auto w-full max-w-6xl rounded-[34px] border border-white/85 bg-gradient-to-r from-[#182f67] via-[#223f7f] to-[#2f5d9d] px-7 py-9 text-white shadow-[0_30px_58px_rgba(39,65,123,.38)] sm:px-10 sm:py-11"
+            className="mx-auto w-full max-w-6xl rounded-[34px] border border-white/85 bg-gradient-to-r from-[#0B0B0F] via-[#0B0B0F] to-[#FF9F00] px-7 py-9 text-white shadow-[0_30px_58px_rgba(255, 159, 0, .38)] sm:px-10 sm:py-11"
           >
             <h2 className="text-3xl font-black leading-tight sm:text-4xl">Ready to start your growth journey?</h2>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-blue-100 sm:text-base">
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-orange-100 sm:text-base">
               Choose a service, place your order securely, and track everything from your SocialRUSH dashboard.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
                 href="/login?next=/dashboard/new-order"
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#1c356e] shadow-[0_12px_26px_rgba(17,29,61,.35)] transition duration-300 hover:-translate-y-0.5"
+                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_12px_26px_rgba(17,29,61,.35)] transition duration-300 hover:-translate-y-0.5"
               >
                 Start Order
               </Link>

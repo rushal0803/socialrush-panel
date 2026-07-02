@@ -122,18 +122,18 @@ export default function RegisterForm() {
           </div>
         </div>
         <label className="flex items-start gap-2 text-sm leading-5 text-slate-500">
-          <input type="checkbox" required className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-pink-500" />
+          <input type="checkbox" required className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-orange-500" />
           <span>
             I agree to the{" "}
-            <Link href="/terms-and-conditions" className="font-semibold text-pink-600 transition hover:text-pink-500">Terms</Link>
+            <Link href="/terms-and-conditions" className="font-semibold text-orange-600 transition hover:text-orange-500">Terms</Link>
             {" "}and{" "}
-            <Link href="/privacy-policy" className="font-semibold text-pink-600 transition hover:text-pink-500">Privacy Policy</Link>.
+            <Link href="/privacy-policy" className="font-semibold text-orange-600 transition hover:text-orange-500">Privacy Policy</Link>.
           </span>
         </label>
         <button
           type="submit"
           disabled={loading}
-          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105 hover:shadow-pink-400/60 disabled:cursor-not-allowed disabled:opacity-60"
+          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105 hover:shadow-orange-400/60 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {loading ? "Creating account..." : "Create Account"}
         </button>

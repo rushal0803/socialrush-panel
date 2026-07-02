@@ -41,12 +41,12 @@ const navLinks = [
 ] as const;
 
 const platforms = [
-  { name: "Facebook", grad: "from-sky-500 to-blue-600" },
-  { name: "Instagram", grad: "from-pink-500 to-fuchsia-600" },
-  { name: "LinkedIn", grad: "from-cyan-500 to-blue-500" },
-  { name: "TikTok", grad: "from-violet-500 to-fuchsia-500" },
+  { name: "Facebook", grad: "from-orange-500 to-orange-600" },
+  { name: "Instagram", grad: "from-orange-500 to-orange-600" },
+  { name: "LinkedIn", grad: "from-amber-500 to-orange-500" },
+  { name: "TikTok", grad: "from-amber-500 to-orange-500" },
   { name: "YouTube", grad: "from-rose-500 to-red-600" },
-  { name: "X / Twitter", grad: "from-indigo-500 to-slate-600" },
+  { name: "X / Twitter", grad: "from-amber-500 to-slate-600" },
 ] as const;
 
 const stats = [
@@ -54,28 +54,28 @@ const stats = [
     label: "No Password Required",
     sub: "Place an order using only the relevant public profile or content link.",
     icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
-    iconBg: "from-pink-500 to-rose-500",
-    glow: "shadow-pink-200",
-    border: "border-pink-100",
-    bg: "from-pink-50/80 to-rose-50/50",
+    iconBg: "from-orange-500 to-rose-500",
+    glow: "shadow-orange-200",
+    border: "border-orange-100",
+    bg: "from-orange-50/80 to-rose-50/50",
   },
   {
     label: "Secure Checkout",
     sub: "Review your order and complete payment through the protected checkout flow.",
     icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-    iconBg: "from-cyan-500 to-blue-500",
-    glow: "shadow-cyan-200",
-    border: "border-cyan-100",
-    bg: "from-cyan-50/80 to-blue-50/50",
+    iconBg: "from-amber-500 to-orange-500",
+    glow: "shadow-amber-200",
+    border: "border-amber-100",
+    bg: "from-amber-50/80 to-orange-50/50",
   },
   {
     label: "Real-time Order Tracking",
     sub: "Follow order status and available progress updates from your dashboard.",
     icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
-    iconBg: "from-violet-500 to-purple-600",
-    glow: "shadow-violet-200",
-    border: "border-violet-100",
-    bg: "from-violet-50/80 to-purple-50/50",
+    iconBg: "from-amber-500 to-amber-600",
+    glow: "shadow-amber-200",
+    border: "border-amber-100",
+    bg: "from-amber-50/80 to-amber-50/50",
   },
   {
     label: "WhatsApp Support",
@@ -99,17 +99,17 @@ const stats = [
     label: "Transparent Pricing",
     sub: "See the applicable package or quantity price before confirming an order.",
     icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
-    iconBg: "from-sky-500 to-indigo-500",
-    glow: "shadow-sky-200",
-    border: "border-sky-100",
-    bg: "from-sky-50/80 to-indigo-50/50",
+    iconBg: "from-orange-500 to-amber-500",
+    glow: "shadow-orange-200",
+    border: "border-orange-100",
+    bg: "from-orange-50/80 to-amber-50/50",
   },
 ] as const;
 
 const trustBadges = [
-  { label: "No Password Required", icon: "✓", color: "from-pink-500 to-rose-500" },
-  { label: "Transparent Pricing", icon: "★", color: "from-violet-500 to-purple-600" },
-  { label: "WhatsApp Support", icon: "◎", color: "from-cyan-500 to-blue-600" },
+  { label: "No Password Required", icon: "✓", color: "from-orange-500 to-rose-500" },
+  { label: "Transparent Pricing", icon: "★", color: "from-amber-500 to-amber-600" },
+  { label: "WhatsApp Support", icon: "◎", color: "from-amber-500 to-orange-600" },
   { label: "Secure Checkout", icon: "⬡", color: "from-emerald-500 to-teal-600" },
 ] as const;
 
@@ -125,17 +125,17 @@ const whySocialRush = [
     title: "Transparent Pricing",
     text: "Clear pricing visibility before checkout without hidden surprises.",
     icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
-    grad: "from-pink-500 to-rose-500",
-    bg: "from-pink-50 to-rose-50",
-    border: "border-pink-100",
+    grad: "from-orange-500 to-rose-500",
+    bg: "from-orange-50 to-rose-50",
+    border: "border-orange-100",
   },
   {
     title: "Secure Checkout",
     text: "Trusted payment flow and protected account ordering process.",
     icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
-    grad: "from-cyan-500 to-blue-500",
-    bg: "from-cyan-50 to-blue-50",
-    border: "border-cyan-100",
+    grad: "from-amber-500 to-orange-500",
+    bg: "from-amber-50 to-orange-50",
+    border: "border-amber-100",
   },
   {
     title: "Fast Delivery",
@@ -149,9 +149,9 @@ const whySocialRush = [
     title: "Real-time Tracking",
     text: "Live status updates from order creation to completion.",
     icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
-    grad: "from-violet-500 to-purple-600",
-    bg: "from-violet-50 to-purple-50",
-    border: "border-violet-100",
+    grad: "from-amber-500 to-amber-600",
+    bg: "from-amber-50 to-amber-50",
+    border: "border-amber-100",
   },
   {
     title: "Dedicated Support",
@@ -165,9 +165,9 @@ const whySocialRush = [
     title: "Refill Support",
     text: "Coverage options on eligible services for added confidence.",
     icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
-    grad: "from-sky-500 to-indigo-500",
-    bg: "from-sky-50 to-indigo-50",
-    border: "border-indigo-100",
+    grad: "from-orange-500 to-amber-500",
+    bg: "from-orange-50 to-amber-50",
+    border: "border-amber-100",
   },
 ] as const;
 
@@ -177,9 +177,9 @@ const featuredServices = [
     platform: "instagram",
     href: "/buy-instagram-followers-india",
     text: "Explore profile and content campaign options for Instagram.",
-    grad: "from-pink-500 to-fuchsia-600",
-    bg: "from-pink-50 to-fuchsia-50",
-    border: "border-pink-100",
+    grad: "from-orange-500 to-orange-600",
+    bg: "from-orange-50 to-orange-50",
+    border: "border-orange-100",
   },
   {
     name: "YouTube Channel Support",
@@ -195,36 +195,36 @@ const featuredServices = [
     platform: "linkedin",
     href: "/buy-linkedin-followers-india",
     text: "Review professional profile and company page support options.",
-    grad: "from-cyan-500 to-blue-600",
-    bg: "from-cyan-50 to-blue-50",
-    border: "border-cyan-100",
+    grad: "from-amber-500 to-orange-600",
+    bg: "from-amber-50 to-orange-50",
+    border: "border-amber-100",
   },
   {
     name: "Facebook Page Support",
     platform: "facebook",
     href: "/buy-facebook-followers-india",
     text: "Find page and content campaign services with transparent pricing.",
-    grad: "from-sky-500 to-blue-600",
-    bg: "from-sky-50 to-blue-50",
-    border: "border-sky-100",
+    grad: "from-orange-500 to-orange-600",
+    bg: "from-orange-50 to-orange-50",
+    border: "border-orange-100",
   },
   {
     name: "Telegram Channel Support",
     platform: "telegram",
     href: "/buy-telegram-members-india",
     text: "Compare public channel and community support services.",
-    grad: "from-sky-400 to-blue-600",
-    bg: "from-sky-50 to-blue-50",
-    border: "border-sky-100",
+    grad: "from-orange-400 to-orange-600",
+    bg: "from-orange-50 to-orange-50",
+    border: "border-orange-100",
   },
   {
     name: "Twitter/X Profile Support",
     platform: "twitter",
     href: "/buy-twitter-followers-india",
     text: "Explore profile campaign options with visible pricing and tracking.",
-    grad: "from-indigo-500 to-slate-700",
-    bg: "from-indigo-50 to-slate-50",
-    border: "border-indigo-100",
+    grad: "from-amber-500 to-slate-700",
+    bg: "from-amber-50 to-slate-50",
+    border: "border-amber-100",
   },
 ] as const;
 
@@ -232,22 +232,22 @@ const customerSafetyPoints = [
   {
     title: "No Password Required",
     text: "We never ask for passwords.",
-    grad: "from-pink-500 to-rose-500",
+    grad: "from-orange-500 to-rose-500",
   },
   {
     title: "Public Links Only",
     text: "Orders use public profile, post, video, or channel links.",
-    grad: "from-sky-500 to-blue-600",
+    grad: "from-orange-500 to-orange-600",
   },
   {
     title: "Dashboard Tracking",
     text: "Orders can be tracked from your dashboard.",
-    grad: "from-violet-500 to-purple-600",
+    grad: "from-amber-500 to-amber-600",
   },
   {
     title: "WhatsApp Assistance",
     text: "Support is available on WhatsApp.",
-    grad: "from-cyan-500 to-blue-600",
+    grad: "from-amber-500 to-orange-600",
   },
   {
     title: "Eligible Refill Support",
@@ -316,13 +316,13 @@ export default function HomepageContent() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <main className="homepage-performance overflow-x-clip bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
+      <main className="homepage-performance overflow-x-clip bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_30%,#FFF8F1_55%,#FFF8F1_80%,#FFF8F1_100%)] text-slate-800">
       {/* ambient blobs */}
       <div className="pointer-events-none fixed inset-0 hidden overflow-hidden sm:block">
-        <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-cyan-200/40 blur-3xl" />
-        <div className="absolute right-0 top-20 h-[28rem] w-[28rem] rounded-full bg-pink-200/40 blur-3xl" />
-        <div className="absolute bottom-32 left-1/3 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl" />
-        <div className="absolute -bottom-12 right-1/4 h-64 w-64 rounded-full bg-sky-200/35 blur-3xl" />
+        <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-amber-200/40 blur-3xl" />
+        <div className="absolute right-0 top-20 h-[28rem] w-[28rem] rounded-full bg-orange-200/40 blur-3xl" />
+        <div className="absolute bottom-32 left-1/3 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+        <div className="absolute -bottom-12 right-1/4 h-64 w-64 rounded-full bg-orange-200/35 blur-3xl" />
       </div>
 
       {/* HEADER */}
@@ -332,30 +332,30 @@ export default function HomepageContent() {
             <Logo priority />
             <nav className="hidden items-center gap-1 text-sm font-semibold text-slate-600 lg:flex">
               {navLinks.map((item) => (
-                <Link key={item.label} href={item.href} className="rounded-lg px-3 py-2 transition-colors hover:bg-slate-50 hover:text-sky-600">{item.label}</Link>
+                <Link key={item.label} href={item.href} className="rounded-lg px-3 py-2 transition-colors hover:bg-slate-50 hover:text-orange-600">{item.label}</Link>
               ))}
             </nav>
             <div className="hidden items-center gap-2 lg:flex">
               {isLoggedIn ? (
                 <>
-                  <Link href="/dashboard/account" className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm transition hover:bg-violet-100">
+                  <Link href="/dashboard/account" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700 shadow-sm transition hover:bg-amber-100">
                     Profile
                   </Link>
                   <button
                     type="button"
                     onClick={logout}
-                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600"
+                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600"
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">Login</Link>
-                  <Link href="/register" className="rounded-xl border border-violet-200 bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-700 shadow-sm transition hover:bg-violet-100">Sign Up</Link>
+                  <Link href="/login" className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">Login</Link>
+                  <Link href="/register" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700 shadow-sm transition hover:bg-amber-100">Sign Up</Link>
                 </>
               )}
-              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-pink-300/50 transition hover:brightness-105 hover:shadow-pink-300/70">Start Order</Link>
+              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/70">Start Order</Link>
             </div>
             <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={(event) => { event.stopPropagation(); setMenuOpen((v) => !v); }} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm lg:hidden">
               {menuOpen ? (
@@ -370,13 +370,13 @@ export default function HomepageContent() {
                 <div className="max-h-full overflow-y-auto border-t border-slate-100 pt-3">
                   <nav className="grid gap-0.5">
                     {navLinks.map((item) => (
-                      <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-sky-600">{item.label}</Link>
+                      <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-orange-600">{item.label}</Link>
                     ))}
                   </nav>
                   <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
                     {isLoggedIn ? (
                       <>
-                        <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-violet-200 bg-violet-50 px-3 py-2.5 text-center text-sm font-semibold text-violet-700">
+                        <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-center text-sm font-semibold text-amber-700">
                           Profile
                         </Link>
                         <button
@@ -390,10 +390,10 @@ export default function HomepageContent() {
                     ) : (
                       <>
                         <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700">Login</Link>
-                        <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-violet-200 bg-violet-50 px-3 py-2.5 text-center text-sm font-semibold text-violet-700">Sign Up</Link>
+                        <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-center text-sm font-semibold text-amber-700">Sign Up</Link>
                       </>
                     )}
-                    <Link href={startOrderHref} onClick={() => setMenuOpen(false)} className="col-span-2 rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-3 py-2.5 text-center text-sm font-bold text-white shadow-lg shadow-pink-300/40">Start Order</Link>
+                    <Link href={startOrderHref} onClick={() => setMenuOpen(false)} className="col-span-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2.5 text-center text-sm font-bold text-white shadow-lg shadow-orange-300/40">Start Order</Link>
                   </div>
                 </div>
               </motion.div>
@@ -405,18 +405,18 @@ export default function HomepageContent() {
       <motion.section variants={fadeUp} initial={false} animate="show" className="relative px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pt-12">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div className="relative z-10">
-            <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-sky-200 bg-white/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-sky-600 shadow-sm backdrop-blur">
-              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-sky-500" />
+            <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-600 shadow-sm backdrop-blur">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
               Smart Growth · Real Results
             </motion.span>
             <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-[-0.03em] text-slate-900 sm:text-5xl lg:text-[54px]">
               Amplify Your Brand with{" "}
-              <span className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-sky-500 bg-clip-text text-transparent">Smart Social Growth</span>
+              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">Smart Social Growth</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">SocialRUSH helps creators, brands, and agencies grow faster with trusted social media services, secure checkout, real-time tracking, and premium support.</p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-7 py-3 text-sm font-bold text-white shadow-xl shadow-pink-300/50 transition hover:brightness-105 hover:shadow-pink-400/60">Start Order</Link>
-              <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-white bg-white/80 px-7 py-3 text-sm font-bold text-slate-700 shadow-sm backdrop-blur transition hover:border-sky-200 hover:text-sky-600">View Packages</Link>
+              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-400/60">Start Order</Link>
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-white bg-white/80 px-7 py-3 text-sm font-bold text-slate-700 shadow-sm backdrop-blur transition hover:border-orange-200 hover:text-orange-600">View Packages</Link>
             </div>
             <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-3">
               {trustBadges.map((badge) => (
@@ -430,15 +430,15 @@ export default function HomepageContent() {
           <div className="relative">
             {floatingStats.map((stat) => (
               <motion.div key={stat.text} initial={limitMotion ? false : { opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: limitMotion ? 0 : stat.delay + 0.5, duration: limitMotion ? 0 : 0.4 }} className={`absolute z-10 ${stat.pos} flex items-center gap-2 rounded-xl border border-white/90 bg-white/90 px-3 py-2 shadow-[0_8px_24px_-6px_rgba(15,23,42,.2)] backdrop-blur`}>
-                <span className="h-2 w-2 rounded-full bg-gradient-to-r from-pink-500 to-sky-500" />
+                <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFB000]" />
                 <div>
                   <p className="text-[10px] font-semibold text-slate-600">{stat.text}</p>
                   <p className="text-xs font-extrabold text-slate-900">{stat.sub}</p>
                 </div>
               </motion.div>
             ))}
-            <motion.div animate={limitMotion ? undefined : { y: [0, -12, 0] }} transition={limitMotion ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }} className="relative overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-white/80 to-white/60 p-5 shadow-[0_40px_80px_-20px_rgba(99,102,241,.30)] backdrop-blur">
-              <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-fuchsia-50 via-sky-50 to-pink-50">
+            <motion.div animate={limitMotion ? undefined : { y: [0, -12, 0] }} transition={limitMotion ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }} className="relative overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-white/80 to-white/60 p-5 shadow-[0_40px_80px_-20px_rgba(255, 196, 0, .30)] backdrop-blur">
+              <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-orange-50 via-orange-50 to-orange-50">
                 <SafeImage src="/images/hero-3d.png" fallbackSrc="/images/hero-3d.webp" alt="SocialRUSH premium social growth" width={680} height={510} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full rounded-3xl object-cover" priority />
               </div>
             </motion.div>
@@ -477,8 +477,8 @@ export default function HomepageContent() {
       <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
-            <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-pink-600">Why SocialRUSH</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Why Brands Choose <span className="bg-gradient-to-r from-pink-500 to-sky-500 bg-clip-text text-transparent">SocialRUSH</span></h2>
+            <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Why SocialRUSH</span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Why Brands Choose <span className="bg-gradient-to-r from-[#FF7A00] to-[#FFB000] bg-clip-text text-transparent">SocialRUSH</span></h2>
           </div>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {whySocialRush.map((item) => (
@@ -500,12 +500,12 @@ export default function HomepageContent() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-pink-600">Platform Services</span>
+              <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Platform Services</span>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Popular Social Media Services</h2>
             </div>
             <div className="flex flex-wrap gap-2">
-              <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">View All Services</Link>
-              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105">Start Order</Link>
+              <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View All Services</Link>
+              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105">Start Order</Link>
             </div>
           </div>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -515,7 +515,7 @@ export default function HomepageContent() {
                 <h3 className="mt-4 text-lg font-bold text-slate-900">{svc.name}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{svc.text}</p>
                 <div className="mt-4 flex gap-2">
-                  <Link href={svc.href} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm transition hover:text-sky-600">View Services</Link>
+                  <Link href={svc.href} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View Services</Link>
                   <Link href={startOrderHref} className={`inline-flex items-center gap-1 rounded-lg bg-gradient-to-r px-3 py-1.5 text-xs font-bold text-white shadow-sm ${svc.grad}`}>Start Order</Link>
                 </div>
               </motion.article>
@@ -549,22 +549,22 @@ export default function HomepageContent() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
-              <span className="inline-flex rounded-full border border-sky-200 bg-sky-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-sky-600">Blog</span>
+              <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Blog</span>
               <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Tips, Trends &amp; Insights</h2>
             </div>
-            <Link href="/blog" className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:text-sky-600">View All Blogs</Link>
+            <Link href="/blog" className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View All Blogs</Link>
           </div>
           <div className="grid gap-4 lg:grid-cols-[1.3fr_.7fr]">
-            <motion.article whileHover={{ y: -6 }} className="overflow-hidden rounded-3xl border border-white/90 bg-gradient-to-br from-pink-50 via-white to-sky-50 p-6 shadow-[0_20px_50px_-18px_rgba(15,23,42,.2)]">
-              <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-pink-600">Featured</span>
+            <motion.article whileHover={{ y: -6 }} className="overflow-hidden rounded-3xl border border-white/90 bg-gradient-to-br from-orange-50 via-white to-orange-50 p-6 shadow-[0_20px_50px_-18px_rgba(15,23,42,.2)]">
+              <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">Featured</span>
               <h3 className="mt-3 text-2xl font-extrabold leading-snug text-slate-900">How to Grow Fast on Instagram</h3>
               <p className="mt-3 text-sm leading-7 text-slate-600">Build consistent engagement loops, improve profile conversion, and scale with clear campaign planning that delivers real results.</p>
-              <Link href="/blog" className="mt-5 inline-flex rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-pink-300/40 transition hover:brightness-105">Read Article</Link>
+              <Link href="/blog" className="mt-5 inline-flex rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105">Read Article</Link>
             </motion.article>
             <div className="grid gap-4">
               {[{ title: "Boost YouTube Views the Right Way", tag: "YouTube" }, { title: "Facebook Engagement Hacks", tag: "Facebook" }, { title: "Creator Workflow: Plan Better Campaigns", tag: "Strategy" }].map((post) => (
                 <motion.article key={post.title} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-white/90 bg-white/85 p-4 shadow-sm backdrop-blur transition">
-                  <span className="inline-flex rounded-full border border-sky-100 bg-sky-50 px-2.5 py-0.5 text-[10px] font-bold text-sky-600">{post.tag}</span>
+                  <span className="inline-flex rounded-full border border-orange-100 bg-orange-50 px-2.5 py-0.5 text-[10px] font-bold text-orange-600">{post.tag}</span>
                   <h3 className="mt-2 text-sm font-bold text-slate-900">{post.title}</h3>
                   <p className="mt-1 text-xs text-slate-500">Practical tactics and strategy notes for cleaner and safer growth.</p>
                 </motion.article>
@@ -578,7 +578,7 @@ export default function HomepageContent() {
       <motion.section id="faq" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
-            <span className="inline-flex rounded-full border border-violet-200 bg-violet-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-violet-600">FAQ</span>
+            <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">FAQ</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Frequently Asked Questions</h2>
           </div>
           <div className="grid gap-4 lg:grid-cols-2">
@@ -588,10 +588,10 @@ export default function HomepageContent() {
                   const idx = faqItems.findIndex((e) => e.q === item.q);
                   const isOpen = activeFaq === idx;
                   return (
-                    <article key={item.q} className={`overflow-hidden rounded-2xl border transition-all ${isOpen ? "border-violet-200 bg-white/90 shadow-[0_8px_30px_-8px_rgba(139,92,246,.22)]" : "border-white/80 bg-white/70 shadow-sm"} backdrop-blur`}>
+                    <article key={item.q} className={`overflow-hidden rounded-2xl border transition-all ${isOpen ? "border-amber-200 bg-white/90 shadow-[0_8px_30px_-8px_rgba(255, 196, 0, .22)]" : "border-white/80 bg-white/70 shadow-sm"} backdrop-blur`}>
                       <button type="button" onClick={() => setActiveFaq((prev) => (prev === idx ? null : idx))} className="flex w-full items-center justify-between gap-2 px-4 py-3.5 text-left">
                         <span className="text-sm font-semibold text-slate-800">{item.q}</span>
-                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition-all ${isOpen ? "bg-violet-500 text-white" : "bg-slate-100 text-slate-600"}`}>{isOpen ? "−" : "+"}</span>
+                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition-all ${isOpen ? "bg-amber-500 text-white" : "bg-slate-100 text-slate-600"}`}>{isOpen ? "−" : "+"}</span>
                       </button>
                       <div
                         aria-hidden={!isOpen}
@@ -602,7 +602,7 @@ export default function HomepageContent() {
                         }`}
                       >
                         <div className="overflow-hidden">
-                          <p className="border-t border-violet-100/60 px-4 py-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                          <p className="border-t border-amber-100/60 px-4 py-3 text-sm leading-7 text-slate-600">{item.a}</p>
                         </div>
                       </div>
                     </article>
@@ -616,30 +616,30 @@ export default function HomepageContent() {
 
       {/* FINAL CTA */}
       <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-[linear-gradient(135deg,#fdf2ff_0%,#eff6ff_35%,#fce7f3_65%,#f0fdf4_100%)] p-8 shadow-[0_30px_60px_-20px_rgba(139,92,246,.25)] sm:p-12">
-          <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-fuchsia-300/30 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-sky-300/25 blur-3xl" />
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-[linear-gradient(135deg,#FFF8F1_0%,#FFF8F1_35%,#FFF8F1_65%,#f0fdf4_100%)] p-8 shadow-[0_30px_60px_-20px_rgba(255, 196, 0, .25)] sm:p-12">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-orange-300/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-orange-300/25 blur-3xl" />
           <div className="relative text-center">
-            <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-pink-600">Get Started Today</span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to grow your <span className="bg-gradient-to-r from-pink-500 via-fuchsia-500 to-sky-500 bg-clip-text text-transparent">social presence?</span></h2>
+            <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Get Started Today</span>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to grow your <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">social presence?</span></h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-600">Start with a guided order flow and keep full visibility over campaign delivery from one premium dashboard.</p>
             <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-pink-500 via-fuchsia-500 to-sky-500 px-8 py-3 text-sm font-bold text-white shadow-xl shadow-pink-300/50 transition hover:brightness-105 hover:shadow-fuchsia-300/60">Start Order</Link>
-              <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">View Packages</Link>
+              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] px-8 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/60">Start Order</Link>
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View Packages</Link>
             </div>
           </div>
         </div>
       </motion.section>
 
       {/* FOOTER */}
-      <footer className="px-4 pb-24 pt-10 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-white/80 p-7 shadow-sm backdrop-blur sm:p-10">
+      <footer className="brand-footer px-4 pb-24 pt-10 sm:px-6 lg:px-8">
+        <div className="brand-footer-surface mx-auto max-w-7xl overflow-hidden rounded-3xl border p-7 backdrop-blur sm:p-10">
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
             <div>
-              <Logo />
+              <Logo light />
               <p className="mt-3 text-sm leading-7 text-slate-500">Premium social growth panel for creators, brands, and agencies. Trusted, fast, and transparent.</p>
               <div className="mt-5 flex flex-wrap gap-2">
-                <Link href="/packages" className="rounded-xl bg-gradient-to-r from-pink-500 to-sky-500 px-3.5 py-2 text-xs font-bold text-white shadow-sm">View Packages</Link>
+                <Link href="/packages" className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3.5 py-2 text-xs font-bold text-white shadow-sm">View Packages</Link>
                 <Link href="/register" className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm">Create Account</Link>
               </div>
             </div>
@@ -648,7 +648,7 @@ export default function HomepageContent() {
                 <p className="text-sm font-bold text-slate-900">{group.heading}</p>
                 <div className="mt-3 grid gap-2">
                   {group.links.map(([label, href]) => (
-                    <Link key={label} href={href} className="text-sm text-slate-500 transition hover:text-sky-600">{label}</Link>
+                    <Link key={label} href={href} className="text-sm text-slate-500 transition hover:text-orange-600">{label}</Link>
                   ))}
                 </div>
               </div>

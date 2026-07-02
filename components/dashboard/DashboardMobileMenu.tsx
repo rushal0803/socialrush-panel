@@ -32,7 +32,7 @@ export default function DashboardMobileMenu() {
           event.stopPropagation();
           setIsOpen((open) => !open);
         }}
-        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/80 bg-white/85 text-[#4a6398] shadow-[0_10px_24px_rgba(79,108,168,.15)] transition hover:-translate-y-0.5 hover:bg-white"
+        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/80 bg-white/85 text-[#111827] shadow-[0_10px_24px_rgba(255, 159, 0, .15)] transition hover:-translate-y-0.5 hover:bg-white"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
@@ -42,17 +42,17 @@ export default function DashboardMobileMenu() {
         topClassName="top-20"
         showCloseButton={false}
       >
-        <div className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.5rem] border border-white/85 bg-white/95 p-3.5 shadow-[0_24px_60px_-24px_rgba(76,106,170,.38)] backdrop-blur-xl sm:rounded-[1.75rem] sm:p-4">
-              <div className="mb-3 flex items-center justify-between gap-3 border-b border-[#e3ebff] pb-3">
+        <div className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.5rem] border border-white/85 bg-white/95 p-3.5 shadow-[0_24px_60px_-24px_rgba(255, 159, 0, .38)] backdrop-blur-xl sm:rounded-[1.75rem] sm:p-4">
+              <div className="mb-3 flex items-center justify-between gap-3 border-b border-[#FFF8F1] pb-3">
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#5b74a5]">Dashboard Menu</p>
-                  <p className="mt-1 text-sm font-bold text-[#17366f]">Quick navigation</p>
+                  <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Dashboard Menu</p>
+                  <p className="mt-1 text-sm font-bold text-[#0B0B0F]">Quick navigation</p>
                 </div>
                 <button
                   type="button"
                   aria-label="Close menu"
                   onClick={() => setIsOpen(false)}
-                  className="grid h-10 w-10 place-items-center rounded-xl border border-white/80 bg-white/80 text-lg font-semibold text-[#4a6398] shadow-[0_8px_18px_rgba(90,117,173,.12)]"
+                  className="grid h-10 w-10 place-items-center rounded-xl border border-white/80 bg-white/80 text-lg font-semibold text-[#111827] shadow-[0_8px_18px_rgba(255, 159, 0, .12)]"
                 >
                   ×
                 </button>
@@ -60,11 +60,11 @@ export default function DashboardMobileMenu() {
 
               <NavLinks mobile onNavigate={() => setIsOpen(false)} />
 
-              <div className="mt-3 border-t border-[#e3ebff] pt-3">
+              <div className="mt-3 border-t border-[#FFF8F1] pt-3">
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="w-full rounded-2xl border border-[#deebff] bg-[#f8fbff] px-4 py-3 text-left text-sm font-semibold text-[#5f78a7] shadow-[0_10px_24px_-18px_rgba(30,58,138,.35)] transition hover:bg-[#f2f7ff] hover:text-[#1f3b75]"
+                  className="w-full rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] px-4 py-3 text-left text-sm font-semibold text-[#111827] shadow-[0_10px_24px_-18px_rgba(255, 159, 0, .35)] transition hover:bg-[#FFF8F1] hover:text-[#0B0B0F]"
                 >
                   ↪ Log out
                 </button>
