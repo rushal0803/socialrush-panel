@@ -44,10 +44,10 @@ const stats = [
     label: "No Password Required",
     sub: "Place an order using only the relevant public profile or content link.",
     icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
-    iconBg: "from-orange-500 to-rose-500",
+    iconBg: "from-orange-500 to-red-500",
     glow: "shadow-orange-200",
     border: "border-orange-100",
-    bg: "from-orange-50/80 to-rose-50/50",
+    bg: "from-orange-50/80 to-red-50/50",
   },
   {
     label: "Secure Checkout",
@@ -108,8 +108,8 @@ const whySocialRush = [
     title: "Public-Link Ordering",
     text: "Start with the relevant public profile, post, video, channel, or page link.",
     icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
-    grad: "from-orange-500 to-rose-500",
-    bg: "from-orange-50 to-rose-50",
+    grad: "from-orange-500 to-red-500",
+    bg: "from-orange-50 to-red-50",
     border: "border-orange-100",
   },
   {
@@ -169,9 +169,9 @@ const featuredServices = [
     platform: "youtube",
     href: "/buy-youtube-subscribers-india",
     text: "Compare channel and video support services with clear delivery details.",
-    grad: "from-rose-500 to-red-600",
-    bg: "from-rose-50 to-red-50",
-    border: "border-rose-100",
+    grad: "from-red-500 to-red-600",
+    bg: "from-red-50 to-red-50",
+    border: "border-red-100",
   },
   {
     name: "LinkedIn Profile Support",
@@ -338,21 +338,21 @@ export default function HomepageContent() {
                   <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
                     {isLoggedIn ? (
                       <>
-                        <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-center text-sm font-semibold text-amber-700">
+                        <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-3 py-2.5 text-center text-sm font-semibold text-orange-200">
                           Profile
                         </Link>
                         <button
                           type="button"
                           onClick={logout}
-                          className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700"
+                          className="rounded-xl border border-white/15 bg-white/[.06] px-3 py-2.5 text-center text-sm font-semibold text-white"
                         >
                           Logout
                         </button>
                       </>
                     ) : (
                       <>
-                        <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-center text-sm font-semibold text-slate-700">Login</Link>
-                        <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-center text-sm font-semibold text-amber-700">Sign Up</Link>
+                        <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-white/15 bg-white/[.06] px-3 py-2.5 text-center text-sm font-semibold text-white">Login</Link>
+                        <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-3 py-2.5 text-center text-sm font-semibold text-orange-200">Sign Up</Link>
                       </>
                     )}
                     <Link href={startOrderHref} onClick={() => setMenuOpen(false)} className="col-span-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2.5 text-center text-sm font-bold text-white shadow-lg shadow-orange-300/40">Start Order</Link>
@@ -364,27 +364,30 @@ export default function HomepageContent() {
       </header>
 
       {/* HERO */}
-      <motion.section variants={fadeUp} initial={false} animate="show" className="relative px-4 pb-14 pt-10 sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
+      <motion.section variants={fadeUp} initial={false} animate="show" className="relative overflow-hidden bg-[#050505] px-4 pb-14 pt-10 text-white sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
+        <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-[#FF7A00]/15 blur-3xl" />
+        <div className="pointer-events-none absolute -right-32 bottom-0 h-[30rem] w-[30rem] rounded-full bg-[#FF9F00]/12 blur-3xl" />
+        <div className="hero-grid pointer-events-none absolute inset-0 opacity-50" />
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div className="relative z-10">
-            <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-600 shadow-sm backdrop-blur">
+            <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-300 shadow-sm backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
               AI-Powered Growth Solutions
             </motion.span>
-            <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#111827] sm:text-5xl lg:text-[58px]">
+            <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-[58px]">
               AI-Powered Social Growth{" "}
               <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Drives Results</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-8 text-[#4B5563]">SocialRUSH helps creators, brands, professionals and businesses manage social media growth campaigns with secure checkout, public-link ordering, dashboard tracking and WhatsApp support.</p>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">SocialRUSH helps creators, brands, professionals and businesses manage social media growth campaigns with secure checkout, public-link ordering, dashboard tracking and WhatsApp support.</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
               <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">Get Started Now</Link>
-              <Link href="#how-it-works" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-7 py-3 text-sm font-bold text-[#111827] shadow-sm transition hover:border-[#FF7A00] hover:bg-[#FFF3E0]">How It Works</Link>
+              <Link href="#how-it-works" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">How It Works</Link>
             </div>
             <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-3">
               {trustBadges.map((badge) => (
-                <motion.div key={badge.label} variants={cardAnim} whileHover={{ y: -4, scale: 1.04 }} className="flex items-center gap-2 rounded-2xl border border-white/80 bg-white/85 px-4 py-2.5 shadow-[0_8px_30px_-8px_rgba(15,23,42,.18)] backdrop-blur">
+                <motion.div key={badge.label} variants={cardAnim} whileHover={{ y: -4, scale: 1.04 }} className="flex items-center gap-2 rounded-2xl border border-orange-400/20 bg-white/[.06] px-4 py-2.5 shadow-[0_8px_30px_-8px_rgba(0,0,0,.7)] backdrop-blur">
                   <span className={`grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br text-xs font-bold text-white shadow-md ${badge.color}`}>{badge.icon}</span>
-                  <span className="text-xs font-bold text-slate-700">{badge.label}</span>
+                  <span className="text-xs font-bold text-slate-200">{badge.label}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -396,20 +399,10 @@ export default function HomepageContent() {
                 <PlatformIcon platform={platform} className="h-6 w-6" />
               </span>
             ))}
-            <div className="relative overflow-hidden rounded-[30px] border border-orange-100 bg-white p-3 shadow-[0_36px_80px_-28px_rgba(255,122,0,.38)] sm:p-4">
-              <div className="overflow-hidden rounded-2xl bg-[#FFF8F1]">
-                <SafeImage src="/images/brand/socialrush-dashboard-hero.jpg" alt="SocialRUSH dashboard analytics preview" width={1200} height={900} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full object-cover" priority />
+            <div className="relative overflow-hidden rounded-[30px] border border-orange-400/25 bg-[#111111] p-2 shadow-[0_36px_90px_-24px_rgba(255,122,0,.42)] sm:p-3">
+              <div className="overflow-hidden rounded-2xl bg-[#050505]">
+                <SafeImage src="/images/home/home-hero-dashboard.png" alt="SocialRUSH campaign dashboard with order tracking and support" width={1448} height={1086} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full object-cover" priority />
               </div>
-            </div>
-            <div className="relative z-20 -mt-14 ml-auto mr-3 w-[190px] rounded-[26px] border-[5px] border-[#0B0B0F] bg-white p-3 shadow-2xl sm:-mt-24 sm:mr-7 sm:w-[220px]">
-              <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[#0B0B0F]" />
-              <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FF7A00]">Order Summary</p>
-              <div className="mt-3 space-y-2">
-                {["Public link", "Secure checkout", "Dashboard tracking"].map((item) => (
-                  <div key={item} className="flex items-center gap-2 rounded-lg bg-[#FFF8F1] px-2.5 py-2 text-[9px] font-bold text-[#111827]"><span className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />{item}</div>
-                ))}
-              </div>
-              <div className="mt-3 rounded-lg bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-[9px] font-black text-white">Ready to review</div>
             </div>
           </div>
         </div>
@@ -451,6 +444,32 @@ export default function HomepageContent() {
 
       {/* HOW IT WORKS */}
       <HowToOrderSection id="how-it-works" homepage />
+
+      {/* CHECKOUT & TRACKING VISUALS */}
+      <section className="content-auto px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
+          <article className="overflow-hidden rounded-3xl border border-orange-400/20 bg-[#0B0B0F] p-3 shadow-[0_28px_70px_-30px_rgba(255,122,0,.45)] sm:p-4">
+            <SafeImage
+              src="/images/home/secure-checkout-section.png"
+              alt="SocialRUSH secure checkout and public-link ordering process"
+              width={1448}
+              height={1086}
+              sizes="(max-width: 1023px) 100vw, 50vw"
+              className="h-auto w-full rounded-2xl object-cover"
+            />
+          </article>
+          <article className="overflow-hidden rounded-3xl border border-orange-400/20 bg-[#0B0B0F] p-3 shadow-[0_28px_70px_-30px_rgba(255,122,0,.45)] sm:p-4">
+            <SafeImage
+              src="/images/home/order-tracking-section.png"
+              alt="SocialRUSH real-time campaign order tracking dashboard"
+              width={1672}
+              height={941}
+              sizes="(max-width: 1023px) 100vw, 50vw"
+              className="h-full w-full rounded-2xl object-cover"
+            />
+          </article>
+        </div>
+      </section>
 
       {/* POPULAR SERVICES */}
       <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">

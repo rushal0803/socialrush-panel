@@ -43,7 +43,7 @@ const features: { icon: IconName; title: string; text: string; tone: string }[] 
   { icon: "wallet", title: "Secure Wallet System", text: "Add funds securely and manage all transactions from your account dashboard.", tone: "bg-emerald-500/15 text-emerald-300" },
   { icon: "quality", title: "Premium Quality Delivery", text: "Professionally managed campaigns focused on consistency and reliability.", tone: "bg-amber-500/15 text-amber-300" },
   { icon: "support", title: "Dedicated Expert Support", text: "Fast response support team available whenever assistance is required.", tone: "bg-amber-500/15 text-amber-300" },
-  { icon: "enterprise", title: "Enterprise Ready Platform", text: "Designed for creators, brands, agencies, and businesses scaling online presence.", tone: "bg-rose-500/15 text-rose-300" },
+  { icon: "enterprise", title: "Enterprise Ready Platform", text: "Designed for creators, brands, agencies, and businesses scaling online presence.", tone: "bg-red-500/15 text-red-300" },
 ];
 
 export default function WhySocialRush() {

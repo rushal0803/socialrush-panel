@@ -40,7 +40,7 @@ const statusTone: Record<string, string> = {
   pending: "bg-amber-50 text-amber-700 border-amber-200",
   processing: "bg-orange-50 text-orange-700 border-orange-200",
   completed: "bg-emerald-50 text-emerald-700 border-emerald-200",
-  failed: "bg-rose-50 text-rose-700 border-rose-200",
+  failed: "bg-red-50 text-red-700 border-red-200",
   refunded: "bg-amber-50 text-amber-700 border-amber-200",
 };
 

@@ -25,7 +25,7 @@ const platforms: Array<{ key: Platform; label: string }> = [
 
 const platformGradient: Record<Platform, string> = {
   Instagram: "from-[#FF7A00] to-[#FFB000]",
-  YouTube: "from-[#ff8aa9] via-[#f96d83] to-[#ff5f68]",
+  YouTube: "from-[#FF9F00] via-[#FF7A00] to-[#FF7A00]",
   Facebook: "from-[#FF9F00] via-[#FF9F00] to-[#FF9F00]",
   LinkedIn: "from-[#FF9F00] via-[#FF9F00] to-[#FF9F00]",
   Telegram: "from-[#FF9F00] via-[#FF9F00] to-[#FF9F00]",

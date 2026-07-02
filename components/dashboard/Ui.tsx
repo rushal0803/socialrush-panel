@@ -19,7 +19,7 @@ const badgeStyles: Record<Status, string> = {
   Processing: "bg-orange-50 text-orange-700 ring-orange-600/10",
   Completed: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
   Partial: "bg-amber-50 text-amber-700 ring-amber-600/10",
-  Cancelled: "bg-rose-50 text-rose-700 ring-rose-600/10",
+  Cancelled: "bg-red-50 text-red-700 ring-red-600/10",
   Open: "bg-orange-50 text-orange-700 ring-orange-600/10",
   Answered: "bg-emerald-50 text-emerald-700 ring-emerald-600/10",
   Closed: "bg-slate-100 text-slate-600 ring-slate-600/10",

@@ -14,7 +14,7 @@ const defaultSteps = [
     title: "Create Your Account",
     text: "Sign up or log in to your SocialRUSH account.",
     icon: UserPlus,
-    gradient: "from-orange-500 to-rose-500",
+    gradient: "from-orange-500 to-red-500",
   },
   {
     title: "Choose Your Service",

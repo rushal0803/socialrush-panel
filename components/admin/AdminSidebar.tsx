@@ -62,10 +62,10 @@ export default function AdminSidebar() {
   return (
     <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
-        <Logo />
+        <Logo light />
       </div>
 
-      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(255, 159, 0, .12)]">
+      <div className="mx-2 mt-6 rounded-xl border border-orange-400/20 bg-white/[.04] px-3 py-2.5 shadow-[0_10px_20px_rgba(0,0,0,.3)]">
         <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Administration</p>
         <p className="mt-1 text-xs font-semibold text-[#0B0B0F]">Control center</p>
       </div>

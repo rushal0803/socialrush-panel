@@ -16,8 +16,8 @@ const platforms = [
   {
     name: "YouTube",
     iconClass: "text-red-600",
-    iconBackground: "from-red-100 via-rose-50 to-white",
-    accent: "from-red-500 to-rose-500",
+    iconBackground: "from-red-100 via-red-50 to-white",
+    accent: "from-red-500 to-red-500",
   },
   {
     name: "Facebook",

@@ -303,14 +303,14 @@ export default function DashboardOrderSummaryPage() {
                       }}
                       placeholder="Enter quantity"
                       className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-xl font-black text-[#0B0B0F] shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .5)] outline-none transition ${
-                        quantityInput && quantityError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#FFF3E0] focus:border-[#FF9F00] focus:ring-4 focus:ring-[#FFF8F1]"
+                        quantityInput && quantityError ? "border-red-300 focus:ring-4 focus:ring-red-100" : "border-[#FFF3E0] focus:border-[#FF9F00] focus:ring-4 focus:ring-[#FFF8F1]"
                       }`}
                     />
                   </div>
                   <span className="mt-2 block text-xs font-medium leading-5 text-[#111827]">
                     Enter the amount you want for this campaign. Your total updates automatically.
                   </span>
-                  {quantityError ? <span className="mt-2 block text-xs font-bold text-rose-600">{quantityError}</span> : null}
+                  {quantityError ? <span className="mt-2 block text-xs font-bold text-red-600">{quantityError}</span> : null}
                 </label>
 
                 <label className="block text-sm font-black text-[#0B0B0F]">
@@ -325,7 +325,7 @@ export default function DashboardOrderSummaryPage() {
                       }}
                       placeholder={linkRule.placeholder}
                       className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-base text-[#0B0B0F] shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .5)] outline-none transition ${
-                        currentLinkError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#FFF3E0] focus:border-[#FF9F00] focus:ring-4 focus:ring-[#FFF8F1]"
+                        currentLinkError ? "border-red-300 focus:ring-4 focus:ring-red-100" : "border-[#FFF3E0] focus:border-[#FF9F00] focus:ring-4 focus:ring-[#FFF8F1]"
                       }`}
                     />
                   </div>
@@ -333,7 +333,7 @@ export default function DashboardOrderSummaryPage() {
                     Enter a public profile, post, reel, video, channel, or page link.
                   </span>
                   <span className="mt-1 block text-xs font-semibold leading-5 text-[#FF9F00]">{linkRule.helper} Keep it public during delivery.</span>
-                  {currentLinkError ? <span className="mt-2 block text-xs font-bold text-rose-600">{currentLinkError}</span> : null}
+                  {currentLinkError ? <span className="mt-2 block text-xs font-bold text-red-600">{currentLinkError}</span> : null}
                 </label>
               </div>
             </section>
@@ -376,7 +376,7 @@ export default function DashboardOrderSummaryPage() {
             </section>
 
             {walletError ? <p className="rounded-2xl border border-amber-200 bg-amber-50 p-4 text-sm font-semibold text-amber-800">{walletError}</p> : null}
-            {error ? <p role="alert" className="rounded-2xl border border-rose-200 bg-rose-50 p-4 text-sm font-semibold text-rose-700">{error}</p> : null}
+            {error ? <p role="alert" className="rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">{error}</p> : null}
             {success ? (
               <div className="fixed bottom-6 left-4 right-4 z-[75] flex items-start gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800 shadow-[0_22px_50px_-22px_rgba(5,150,105,.5)] sm:left-auto sm:right-6 sm:w-[390px]">
                 <CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0" />

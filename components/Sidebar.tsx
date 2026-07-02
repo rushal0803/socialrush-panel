@@ -152,10 +152,10 @@ export default function Sidebar({
   return (
     <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
-        <Logo />
+        <Logo light />
       </div>
 
-      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(255, 159, 0, .12)]">
+      <div className="mx-2 mt-6 rounded-xl border border-orange-400/20 bg-white/[.04] px-3 py-2.5 shadow-[0_10px_20px_rgba(0,0,0,.3)]">
         <p className="text-[9px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">Dashboard</p>
         <p className="mt-1 text-xs font-semibold text-[#0B0B0F]">Growth control center</p>
       </div>
@@ -163,7 +163,7 @@ export default function Sidebar({
       <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Main menu</p>
       <NavLinks />
 
-      <div className="mt-auto rounded-2xl border border-white/85 bg-white/86 p-4 text-[#0B0B0F] shadow-[0_14px_30px_rgba(255, 159, 0, .14)]">
+      <div className="mt-auto rounded-2xl border border-orange-400/20 bg-white/[.04] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.3)]">
         <div className="flex items-center justify-between">
           <p className="text-xs font-semibold text-[#111827]">Available balance</p>
           <span className="h-2 w-2 rounded-full bg-emerald-400" />

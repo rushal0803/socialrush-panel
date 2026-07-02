@@ -157,12 +157,12 @@ export default function PackageSummaryContent() {
                     placeholder="e.g., https://instagram.com/yourprofile"
                     className={`mt-2 w-full rounded-xl border px-4 py-3 text-sm text-slate-100 transition focus:outline-none ${
                       profileError
-                        ? "border-rose-300 bg-[#0B0B0F] text-slate-100 focus:border-rose-500 focus:ring-rose-200"
+                        ? "border-red-300 bg-[#0B0B0F] text-slate-100 focus:border-red-500 focus:ring-red-200"
                         : "border-white/10 bg-[#0B0B0F] text-slate-100 focus:border-amber-500 focus:ring-amber-500/10"
                     }`}
                   />
                   <p className="mt-2 text-xs text-slate-400">{getProfileLinkHelper()}</p>
-                  {profileError && <p className="mt-2 text-sm font-bold text-rose-300">{profileError}</p>}
+                  {profileError && <p className="mt-2 text-sm font-bold text-red-300">{profileError}</p>}
                 </div>
 
                 {/* Important Notes */}

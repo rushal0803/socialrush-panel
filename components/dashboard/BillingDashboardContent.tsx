@@ -34,7 +34,7 @@ function badgeStyle(status: string) {
   const normalized = status.toLowerCase();
   if (normalized === "paid" || normalized === "completed") return "bg-emerald-100/80 text-emerald-700 ring-emerald-600/20";
   if (normalized === "pending" || normalized === "processing") return "bg-amber-100/80 text-amber-700 ring-amber-600/20";
-  if (normalized === "failed" || normalized === "cancelled") return "bg-rose-100/80 text-rose-700 ring-rose-600/20";
+  if (normalized === "failed" || normalized === "cancelled") return "bg-red-100/80 text-red-700 ring-red-600/20";
   return "bg-orange-100/80 text-orange-700 ring-orange-600/20";
 }
 

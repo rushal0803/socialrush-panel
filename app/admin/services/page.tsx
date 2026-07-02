@@ -211,7 +211,7 @@ export default async function ServicesPage() {
 
                       <form action={deleteService}>
                         <input type="hidden" name="id" value={service.id} />
-                        <ConfirmSubmitButton message={`Delete ${service.name}? Existing orders may prevent deletion.`} className="rounded-xl bg-rose-50 px-4 py-3 text-xs font-bold text-rose-600">Delete</ConfirmSubmitButton>
+                        <ConfirmSubmitButton message={`Delete ${service.name}? Existing orders may prevent deletion.`} className="rounded-xl bg-red-50 px-4 py-3 text-xs font-bold text-red-600">Delete</ConfirmSubmitButton>
                       </form>
                     </div>
                   </td>

@@ -333,7 +333,7 @@ function statusBadgeClass(status: string) {
   if (status === "pending") {
     return "bg-amber-100/80 text-amber-700 ring-amber-500/20";
   }
-  return "bg-rose-100/80 text-rose-700 ring-rose-500/20";
+  return "bg-red-100/80 text-red-700 ring-red-500/20";
 }
 
 function monthlySeries(
@@ -887,7 +887,7 @@ export default function WalletDashboard({
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold text-rose-700 shadow-[0_16px_36px_-28px_rgba(244,63,94,.35)]"
+                  className="rounded-2xl border border-red-200 bg-red-50/90 p-4 text-sm font-semibold text-red-700 shadow-[0_16px_36px_-28px_rgba(239,68,68,.35)]"
                 >
                   {error}
                 </motion.p>

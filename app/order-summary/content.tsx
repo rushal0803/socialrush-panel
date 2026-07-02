@@ -188,7 +188,7 @@ export default function OrderSummaryPage() {
                   </div>
                 </div>
 
-                {error ? <p className="mt-4 rounded-2xl border border-rose-500/20 bg-rose-500/10 p-4 text-sm text-rose-100">{error}</p> : null}
+                {error ? <p className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100">{error}</p> : null}
 
                 <button
                   type="button"
