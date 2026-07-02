@@ -69,7 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 "@type": "Organization",
                 name: "SocialRUSH",
                 url: siteUrl,
-                logo: new URL("/logo.svg", siteUrl).toString(),
+                logo: new URL("/brand/socialrush-logo.png", siteUrl).toString(),
                 sameAs: ["https://wa.me/918860330771"],
                 contactPoint: {
                   "@type": "ContactPoint",
