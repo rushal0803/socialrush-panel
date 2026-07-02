@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { homepageFaqItems as faqItems } from "@/lib/seo/homepage-faq";
 import { usePathname, useRouter } from "next/navigation";
-import { LazyMotion, domAnimation, m as motion, useReducedMotion } from "framer-motion";
+import { LazyMotion, domAnimation, m as motion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -32,21 +32,11 @@ const cardAnim: Variants = {
 /* ─────────────────── data ─────────────────── */
 const navLinks = [
   { label: "Home", href: "#home" },
-  { label: "About Us", href: "#about" },
-  { label: "How It Works", href: "#how-it-works" },
   { label: "Services", href: "/services" },
+  { label: "Packages", href: "/packages" },
+  { label: "About Us", href: "/about" },
   { label: "Blog", href: "/blog" },
-  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "/contact" },
-] as const;
-
-const platforms = [
-  { name: "Facebook", grad: "from-orange-500 to-orange-600" },
-  { name: "Instagram", grad: "from-orange-500 to-orange-600" },
-  { name: "LinkedIn", grad: "from-amber-500 to-orange-500" },
-  { name: "TikTok", grad: "from-amber-500 to-orange-500" },
-  { name: "YouTube", grad: "from-rose-500 to-red-600" },
-  { name: "X / Twitter", grad: "from-amber-500 to-slate-600" },
 ] as const;
 
 const stats = [
@@ -107,23 +97,16 @@ const stats = [
 ] as const;
 
 const trustBadges = [
-  { label: "No Password Required", icon: "✓", color: "from-orange-500 to-rose-500" },
-  { label: "Transparent Pricing", icon: "★", color: "from-amber-500 to-amber-600" },
-  { label: "WhatsApp Support", icon: "◎", color: "from-amber-500 to-orange-600" },
-  { label: "Secure Checkout", icon: "⬡", color: "from-emerald-500 to-teal-600" },
-] as const;
-
-const floatingStats = [
-  { text: "Public Link Only", sub: "No password", pos: "top-6 -left-3", delay: 0 },
-  { text: "Pricing", sub: "Shown before order", pos: "top-2 right-0", delay: 0.4 },
-  { text: "Order Tracking", sub: "Dashboard updates", pos: "bottom-16 -left-2", delay: 0.8 },
-  { text: "Support", sub: "WhatsApp help", pos: "bottom-6 right-0", delay: 1.2 },
+  { label: "Advanced Analytics", icon: "↗", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Secure Checkout", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "24/7 Support", icon: "◎", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Instant Start", icon: "→", color: "from-[#FF7A00] to-[#FFB000]" },
 ] as const;
 
 const whySocialRush = [
   {
-    title: "Transparent Pricing",
-    text: "Clear pricing visibility before checkout without hidden surprises.",
+    title: "Public-Link Ordering",
+    text: "Start with the relevant public profile, post, video, channel, or page link.",
     icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
     grad: "from-orange-500 to-rose-500",
     bg: "from-orange-50 to-rose-50",
@@ -138,32 +121,32 @@ const whySocialRush = [
     border: "border-amber-100",
   },
   {
-    title: "Fast Delivery",
-    text: "Optimized operational flow for timely campaign execution.",
+    title: "Transparent Pricing",
+    text: "Review the applicable price and total before confirming an order.",
     icon: "M13 10V3L4 14h7v7l9-11h-7z",
     grad: "from-amber-400 to-orange-500",
     bg: "from-amber-50 to-orange-50",
     border: "border-orange-100",
   },
   {
-    title: "Real-time Tracking",
-    text: "Live status updates from order creation to completion.",
+    title: "Dashboard Tracking",
+    text: "Follow order status and available progress updates from your account.",
     icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
     grad: "from-amber-500 to-amber-600",
     bg: "from-amber-50 to-amber-50",
     border: "border-amber-100",
   },
   {
-    title: "Dedicated Support",
-    text: "Human support for onboarding, planning, and campaign queries.",
+    title: "WhatsApp Assistance",
+    text: "Ask for help with service selection, ordering, and support questions.",
     icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z",
     grad: "from-emerald-500 to-teal-500",
     bg: "from-emerald-50 to-teal-50",
     border: "border-emerald-100",
   },
   {
-    title: "Refill Support",
-    text: "Coverage options on eligible services for added confidence.",
+    title: "Refill Support If Eligible",
+    text: "Eligible services clearly show the applicable refill coverage.",
     icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
     grad: "from-orange-500 to-amber-500",
     bg: "from-orange-50 to-amber-50",
@@ -209,11 +192,11 @@ const featuredServices = [
     border: "border-orange-100",
   },
   {
-    name: "Telegram Channel Support",
-    platform: "telegram",
-    href: "/buy-telegram-members-india",
-    text: "Compare public channel and community support services.",
-    grad: "from-orange-400 to-orange-600",
+    name: "TikTok Campaign Support",
+    platform: "tiktok",
+    href: "/buy-tiktok-followers-india",
+    text: "Explore structured campaign support for public TikTok profiles and content.",
+    grad: "from-[#FF7A00] to-[#FFB000]",
     bg: "from-orange-50 to-orange-50",
     border: "border-orange-100",
   },
@@ -228,36 +211,27 @@ const featuredServices = [
   },
 ] as const;
 
-const customerSafetyPoints = [
+const homepagePosts = [
   {
-    title: "No Password Required",
-    text: "We never ask for passwords.",
-    grad: "from-orange-500 to-rose-500",
+    title: "How to Grow Fast on Instagram",
+    href: "/blog/how-to-grow-fast-on-instagram",
+    image: "/images/brand/social-content-strategy.jpg",
+    alt: "SocialRUSH content strategy workspace",
+    category: "Social Strategy",
   },
   {
-    title: "Public Links Only",
-    text: "Orders use public profile, post, video, or channel links.",
-    grad: "from-orange-500 to-orange-600",
+    title: "YouTube Views: What Helps a Video Get More Reach",
+    href: "/blog/youtube-views-get-more-reach",
+    image: "/images/brand/video-channel-strategy.jpg",
+    alt: "SocialRUSH video content strategy workspace",
+    category: "Video Strategy",
   },
   {
-    title: "Dashboard Tracking",
-    text: "Orders can be tracked from your dashboard.",
-    grad: "from-amber-500 to-amber-600",
-  },
-  {
-    title: "WhatsApp Assistance",
-    text: "Support is available on WhatsApp.",
-    grad: "from-amber-500 to-orange-600",
-  },
-  {
-    title: "Eligible Refill Support",
-    text: "Refill support is available only for eligible services.",
-    grad: "from-emerald-500 to-teal-500",
-  },
-  {
-    title: "Upfront Pricing",
-    text: "Pricing is shown before placing an order.",
-    grad: "from-amber-400 to-orange-500",
+    title: "LinkedIn Growth Tips for Personal Brands",
+    href: "/blog/linkedin-growth-tips-personal-brands",
+    image: "/images/brand/professional-profile-strategy.jpg",
+    alt: "SocialRUSH profile strategy mockup",
+    category: "Professional Growth",
   },
 ] as const;
 
@@ -284,10 +258,7 @@ export default function HomepageContent() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isMobile, setIsMobile] = useState(false);
-  const prefersReducedMotion = useReducedMotion();
-  const limitMotion = isMobile || Boolean(prefersReducedMotion);
-  const startOrderHref = "/login?next=/dashboard/new-order";
+  const startOrderHref = "/dashboard/new-order";
 
   useEffect(() => {
     const supabase = createClient();
@@ -297,14 +268,6 @@ export default function HomepageContent() {
   }, []);
 
   useEffect(() => setMenuOpen(false), [pathname]);
-
-  useEffect(() => {
-    const media = window.matchMedia("(max-width: 767px)");
-    const update = () => setIsMobile(media.matches);
-    update();
-    media.addEventListener("change", update);
-    return () => media.removeEventListener("change", update);
-  }, []);
 
   async function logout() {
     const supabase = createClient();
@@ -326,38 +289,37 @@ export default function HomepageContent() {
       </div>
 
       {/* HEADER */}
-      <header id="home" className="sticky top-0 z-[9999] border-b border-white/50 bg-white/35 px-4 py-3 backdrop-blur-xl sm:px-6">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/90 bg-white/80 px-4 py-3 shadow-[0_8px_40px_-8px_rgba(15,23,42,.15)] backdrop-blur-xl sm:px-5">
+      <header id="home" className="sticky top-0 z-[9999] border-b border-orange-400/15 bg-[#0B0B0F]/95 px-4 py-3 backdrop-blur-xl sm:px-6">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0F] px-4 py-3 shadow-[0_16px_40px_-20px_rgba(0,0,0,.8)] sm:px-5">
           <div className="flex items-center justify-between gap-4">
-            <Logo priority />
-            <nav className="hidden items-center gap-1 text-sm font-semibold text-slate-600 lg:flex">
+            <Logo light priority />
+            <nav className="hidden items-center gap-1 text-sm font-semibold text-slate-300 lg:flex">
               {navLinks.map((item) => (
-                <Link key={item.label} href={item.href} className="rounded-lg px-3 py-2 transition-colors hover:bg-slate-50 hover:text-orange-600">{item.label}</Link>
+                <Link key={item.label} href={item.href} className="relative rounded-lg px-3 py-2 transition-colors after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#FF7A00] after:transition-transform hover:bg-white/5 hover:text-white hover:after:scale-x-100">{item.label}</Link>
               ))}
             </nav>
             <div className="hidden items-center gap-2 lg:flex">
               {isLoggedIn ? (
                 <>
-                  <Link href="/dashboard/account" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700 shadow-sm transition hover:bg-amber-100">
+                  <Link href="/dashboard/account" className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-4 py-2 text-sm font-semibold text-orange-200 transition hover:bg-orange-400/20">
                     Profile
                   </Link>
                   <button
                     type="button"
                     onClick={logout}
-                    className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600"
+                    className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-orange-400/50 hover:text-orange-300"
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" className="rounded-xl border border-slate-200 bg-white px-4 py-2 text-sm font-semibold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">Login</Link>
-                  <Link href="/register" className="rounded-xl border border-amber-200 bg-amber-50 px-4 py-2 text-sm font-semibold text-amber-700 shadow-sm transition hover:bg-amber-100">Sign Up</Link>
+                  <Link href="/login" className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-orange-400/50 hover:text-orange-300">Login</Link>
                 </>
               )}
-              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/70">Start Order</Link>
+              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition hover:brightness-110">Get Started</Link>
             </div>
-            <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={(event) => { event.stopPropagation(); setMenuOpen((v) => !v); }} className="grid h-10 w-10 place-items-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm lg:hidden">
+            <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={(event) => { event.stopPropagation(); setMenuOpen((v) => !v); }} className="grid h-10 w-10 place-items-center rounded-xl border border-orange-400/30 bg-white/5 text-white lg:hidden">
               {menuOpen ? (
                 <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} fill="none"><path d="M18 6L6 18M6 6l12 12" /></svg>
               ) : (
@@ -366,14 +328,14 @@ export default function HomepageContent() {
             </button>
           </div>
           <MobileMenuLayer open={menuOpen} onClose={() => setMenuOpen(false)}>
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-white/90 bg-white/95 px-4 pb-4 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)]">
-                <div className="max-h-full overflow-y-auto border-t border-slate-100 pt-3">
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-orange-400/20 bg-[#0B0B0F]/98 px-4 pb-4 pt-14 shadow-2xl">
+                <div className="max-h-full overflow-y-auto border-t border-white/10 pt-3">
                   <nav className="grid gap-0.5">
                     {navLinks.map((item) => (
-                      <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-50 hover:text-orange-600">{item.label}</Link>
+                      <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/5 hover:text-orange-300">{item.label}</Link>
                     ))}
                   </nav>
-                  <div className="mt-3 grid grid-cols-2 gap-2 border-t border-slate-100 pt-3">
+                  <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
                     {isLoggedIn ? (
                       <>
                         <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-amber-200 bg-amber-50 px-3 py-2.5 text-center text-sm font-semibold text-amber-700">
@@ -402,21 +364,21 @@ export default function HomepageContent() {
       </header>
 
       {/* HERO */}
-      <motion.section variants={fadeUp} initial={false} animate="show" className="relative px-4 pb-12 pt-8 sm:px-6 lg:px-8 lg:pt-12">
+      <motion.section variants={fadeUp} initial={false} animate="show" className="relative px-4 pb-14 pt-10 sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
         <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div className="relative z-10">
             <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/80 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-600 shadow-sm backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
-              Smart Growth · Real Results
+              AI-Powered Growth Solutions
             </motion.span>
-            <h1 className="mt-5 text-4xl font-extrabold leading-tight tracking-[-0.03em] text-slate-900 sm:text-5xl lg:text-[54px]">
-              Amplify Your Brand with{" "}
-              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">Smart Social Growth</span>
+            <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#111827] sm:text-5xl lg:text-[58px]">
+              AI-Powered Social Growth{" "}
+              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Drives Results</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-8 text-slate-600">SocialRUSH helps creators, brands, and agencies grow faster with trusted social media services, secure checkout, real-time tracking, and premium support.</p>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-400/60">Start Order</Link>
-              <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-white bg-white/80 px-7 py-3 text-sm font-bold text-slate-700 shadow-sm backdrop-blur transition hover:border-orange-200 hover:text-orange-600">View Packages</Link>
+            <p className="mt-5 max-w-xl text-base leading-8 text-[#4B5563]">SocialRUSH helps creators, brands, professionals and businesses manage social media growth campaigns with secure checkout, public-link ordering, dashboard tracking and WhatsApp support.</p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">Get Started Now</Link>
+              <Link href="#how-it-works" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-200 bg-white px-7 py-3 text-sm font-bold text-[#111827] shadow-sm transition hover:border-[#FF7A00] hover:bg-[#FFF3E0]">How It Works</Link>
             </div>
             <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-3">
               {trustBadges.map((badge) => (
@@ -427,41 +389,36 @@ export default function HomepageContent() {
               ))}
             </motion.div>
           </div>
-          <div className="relative">
-            {floatingStats.map((stat) => (
-              <motion.div key={stat.text} initial={limitMotion ? false : { opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: limitMotion ? 0 : stat.delay + 0.5, duration: limitMotion ? 0 : 0.4 }} className={`absolute z-10 ${stat.pos} flex items-center gap-2 rounded-xl border border-white/90 bg-white/90 px-3 py-2 shadow-[0_8px_24px_-6px_rgba(15,23,42,.2)] backdrop-blur`}>
-                <span className="h-2 w-2 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFB000]" />
-                <div>
-                  <p className="text-[10px] font-semibold text-slate-600">{stat.text}</p>
-                  <p className="text-xs font-extrabold text-slate-900">{stat.sub}</p>
-                </div>
-              </motion.div>
+          <div className="relative mx-auto w-full max-w-2xl">
+            <div className="pointer-events-none absolute -inset-8 rounded-full bg-orange-300/25 blur-3xl" />
+            {["instagram", "youtube", "linkedin", "twitter"].map((platform, index) => (
+              <span key={platform} className={`absolute z-20 hidden h-12 w-12 place-items-center rounded-2xl border border-white/80 bg-white text-[#FF7A00] shadow-xl lg:grid ${index === 0 ? "-left-3 top-12" : index === 1 ? "right-6 -top-4" : index === 2 ? "-left-5 bottom-20" : "right-1 bottom-10"}`}>
+                <PlatformIcon platform={platform} className="h-6 w-6" />
+              </span>
             ))}
-            <motion.div animate={limitMotion ? undefined : { y: [0, -12, 0] }} transition={limitMotion ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }} className="relative overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-white/80 to-white/60 p-5 shadow-[0_40px_80px_-20px_rgba(255, 196, 0, .30)] backdrop-blur">
-              <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-orange-50 via-orange-50 to-orange-50">
-                <SafeImage src="/images/hero-3d.png" fallbackSrc="/images/hero-3d.webp" alt="SocialRUSH premium social growth" width={680} height={510} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full rounded-3xl object-cover" priority />
+            <div className="relative overflow-hidden rounded-[30px] border border-orange-100 bg-white p-3 shadow-[0_36px_80px_-28px_rgba(255,122,0,.38)] sm:p-4">
+              <div className="overflow-hidden rounded-2xl bg-[#FFF8F1]">
+                <SafeImage src="/images/brand/socialrush-dashboard-hero.jpg" alt="SocialRUSH dashboard analytics preview" width={1200} height={900} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full object-cover" priority />
               </div>
-            </motion.div>
+            </div>
+            <div className="relative z-20 -mt-14 ml-auto mr-3 w-[190px] rounded-[26px] border-[5px] border-[#0B0B0F] bg-white p-3 shadow-2xl sm:-mt-24 sm:mr-7 sm:w-[220px]">
+              <div className="mx-auto mb-3 h-1.5 w-12 rounded-full bg-[#0B0B0F]" />
+              <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FF7A00]">Order Summary</p>
+              <div className="mt-3 space-y-2">
+                {["Public link", "Secure checkout", "Dashboard tracking"].map((item) => (
+                  <div key={item} className="flex items-center gap-2 rounded-lg bg-[#FFF8F1] px-2.5 py-2 text-[9px] font-bold text-[#111827]"><span className="h-1.5 w-1.5 rounded-full bg-[#FF7A00]" />{item}</div>
+                ))}
+              </div>
+              <div className="mt-3 rounded-lg bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-[9px] font-black text-white">Ready to review</div>
+            </div>
           </div>
         </div>
       </motion.section>
 
-      {/* PLATFORM PILLS */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.3 }} className="px-4 py-5 sm:px-6 lg:px-8">
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto flex max-w-7xl flex-wrap gap-3">
-          {platforms.map((p) => (
-            <motion.div key={p.name} variants={cardAnim} whileHover={{ y: -5, scale: 1.05 }} className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/85 px-4 py-2.5 shadow-[0_6px_20px_-6px_rgba(15,23,42,.15)] backdrop-blur transition">
-              <span className={`grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br text-white shadow-md ${p.grad}`}><PlatformIcon platform={p.name} className="h-4 w-4" /></span>
-              <span className="text-sm font-semibold text-slate-700">{p.name}</span>
-            </motion.div>
-          ))}
-        </motion.div>
-      </motion.section>
-
       {/* STATS */}
       <motion.section id="about" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {stats.map((s) => (
+        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
+          {stats.slice(0, 4).map((s) => (
             <motion.article key={s.label} variants={cardAnim} whileHover={{ y: -8, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_20px_50px_-20px_rgba(15,23,42,.18)] ${s.border} ${s.bg}`}>
               <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${s.iconBg}`}>
                 <SvgIcon path={s.icon} size={20} />
@@ -478,7 +435,7 @@ export default function HomepageContent() {
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
             <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Why SocialRUSH</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Why Brands Choose <span className="bg-gradient-to-r from-[#FF7A00] to-[#FFB000] bg-clip-text text-transparent">SocialRUSH</span></h2>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Why Customers Choose <span className="bg-gradient-to-r from-[#FF7A00] to-[#FFB000] bg-clip-text text-transparent">SocialRUSH</span></h2>
           </div>
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {whySocialRush.map((item) => (
@@ -501,7 +458,7 @@ export default function HomepageContent() {
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Platform Services</span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Popular Social Media Services</h2>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Complete Solutions for Your Social Growth Needs</h2>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View All Services</Link>
@@ -524,26 +481,6 @@ export default function HomepageContent() {
         </div>
       </motion.section>
 
-      {/* CUSTOMER SAFETY */}
-      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 text-center">
-            <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">Clear Expectations</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Customer Safety &amp; Support</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600">Understand what we require, what you can track, and where to get help before placing an order.</p>
-          </div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {customerSafetyPoints.map((item) => (
-              <motion.article key={item.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className="overflow-hidden rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_14px_40px_-14px_rgba(15,23,42,.18)] backdrop-blur">
-                <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br text-lg font-extrabold text-white shadow-md ${item.grad}`} aria-hidden="true">✓</span>
-                <h3 className="mt-4 text-base font-bold text-slate-900">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
-              </motion.article>
-            ))}
-          </motion.div>
-        </div>
-      </motion.section>
-
       {/* BLOG */}
       <motion.section id="blog" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -554,22 +491,21 @@ export default function HomepageContent() {
             </div>
             <Link href="/blog" className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View All Blogs</Link>
           </div>
-          <div className="grid gap-4 lg:grid-cols-[1.3fr_.7fr]">
-            <motion.article whileHover={{ y: -6 }} className="overflow-hidden rounded-3xl border border-white/90 bg-gradient-to-br from-orange-50 via-white to-orange-50 p-6 shadow-[0_20px_50px_-18px_rgba(15,23,42,.2)]">
-              <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">Featured</span>
-              <h3 className="mt-3 text-2xl font-extrabold leading-snug text-slate-900">How to Grow Fast on Instagram</h3>
-              <p className="mt-3 text-sm leading-7 text-slate-600">Build consistent engagement loops, improve profile conversion, and scale with clear campaign planning that delivers real results.</p>
-              <Link href="/blog" className="mt-5 inline-flex rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105">Read Article</Link>
-            </motion.article>
-            <div className="grid gap-4">
-              {[{ title: "Boost YouTube Views the Right Way", tag: "YouTube" }, { title: "Facebook Engagement Hacks", tag: "Facebook" }, { title: "Creator Workflow: Plan Better Campaigns", tag: "Strategy" }].map((post) => (
-                <motion.article key={post.title} whileHover={{ y: -4 }} className="overflow-hidden rounded-2xl border border-white/90 bg-white/85 p-4 shadow-sm backdrop-blur transition">
-                  <span className="inline-flex rounded-full border border-orange-100 bg-orange-50 px-2.5 py-0.5 text-[10px] font-bold text-orange-600">{post.tag}</span>
-                  <h3 className="mt-2 text-sm font-bold text-slate-900">{post.title}</h3>
-                  <p className="mt-1 text-xs text-slate-500">Practical tactics and strategy notes for cleaner and safer growth.</p>
-                </motion.article>
-              ))}
-            </div>
+          <div className="grid gap-5 md:grid-cols-3">
+            {homepagePosts.map((post) => (
+              <motion.article key={post.href} whileHover={{ y: -6 }} className="group overflow-hidden rounded-3xl border border-white/90 bg-white/90 shadow-[0_20px_50px_-22px_rgba(15,23,42,.3)]">
+                <Link href={post.href} className="block overflow-hidden">
+                  <SafeImage src={post.image} alt={post.alt} width={1200} height={675} className="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
+                </Link>
+                <div className="p-5">
+                  <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">{post.category}</span>
+                  <h3 className="mt-3 text-lg font-extrabold leading-snug text-slate-900">
+                    <Link href={post.href} className="transition hover:text-[#FF7A00]">{post.title}</Link>
+                  </h3>
+                  <Link href={post.href} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#FF7A00] transition group-hover:gap-3">Read Article <span aria-hidden="true">→</span></Link>
+                </div>
+              </motion.article>
+            ))}
           </div>
         </div>
       </motion.section>
@@ -621,11 +557,12 @@ export default function HomepageContent() {
           <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-orange-300/25 blur-3xl" />
           <div className="relative text-center">
             <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Get Started Today</span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to grow your <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">social presence?</span></h2>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to start your next <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">social growth campaign?</span></h2>
             <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-600">Start with a guided order flow and keep full visibility over campaign delivery from one premium dashboard.</p>
             <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] px-8 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/60">Start Order</Link>
               <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View Packages</Link>
+              <a href="https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-[#FF7A00]/30 bg-[#0B0B0F] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF9F00] hover:bg-black">Chat on WhatsApp</a>
             </div>
           </div>
         </div>
