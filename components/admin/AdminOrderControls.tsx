@@ -66,7 +66,7 @@ export default function AdminOrderControls({ order }: Props) {
     <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm sm:p-7">
       <h2 className="text-lg font-black text-[#0B0B0F]">Admin controls</h2>
       <p className="mt-1 text-xs text-slate-500">Manual values are never fabricated and override unavailable automatic detection.</p>
-      {error ? <p className="mt-4 rounded-xl bg-rose-50 p-3 text-xs font-semibold text-rose-700">{error}</p> : null}
+      {error ? <p className="mt-4 rounded-xl bg-red-50 p-3 text-xs font-semibold text-red-700">{error}</p> : null}
       {message ? <p className="mt-4 rounded-xl bg-emerald-50 p-3 text-xs font-semibold text-emerald-700">{message}</p> : null}
 
       <div className="mt-5 grid gap-2 sm:grid-cols-3">

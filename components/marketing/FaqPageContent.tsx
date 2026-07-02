@@ -38,7 +38,7 @@ const trustPoints = [
     title: "Business Growth Focused",
     text: "Automation and campaign options tailored for creators, startups, and growing brands.",
     icon: Rocket,
-    color: "from-orange-500 to-rose-600",
+    color: "from-orange-500 to-red-600",
   },
 ] as const;
 

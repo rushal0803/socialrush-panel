@@ -96,7 +96,7 @@ export default function AccountDashboardContent({
         </motion.section>
 
         {saved && <p className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">Account details saved.</p>}
-        {error && <p className="mt-5 rounded-xl border border-rose-200 bg-rose-50 p-3 text-sm text-rose-700">{error}</p>}
+        {error && <p className="mt-5 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
 
         <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {[

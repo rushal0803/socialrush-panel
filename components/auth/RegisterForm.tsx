@@ -60,7 +60,7 @@ export default function RegisterForm() {
   return (
     <>
       {attempted && error && (
-        <div role="alert" aria-live="polite" className="mt-6 rounded-xl border border-rose-200 bg-rose-50 p-3 text-xs leading-5 text-rose-700">
+        <div role="alert" aria-live="polite" className="mt-6 rounded-xl border border-red-200 bg-red-50 p-3 text-xs leading-5 text-red-700">
           {error}
         </div>
       )}

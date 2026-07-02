@@ -5,10 +5,10 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
   const initials = name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase() || "AD";
 
   return (
-    <header className="sticky top-0 z-30 border-b border-white/70 bg-white/90 px-4 py-3 backdrop-blur-xl sm:px-8 sm:py-3.5">
+    <header className="sticky top-0 z-30 border-b border-orange-400/20 bg-[#0B0B0F]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-8 sm:py-3.5">
       <div className="mx-auto flex h-14 max-w-[1800px] items-center justify-between gap-2 sm:gap-4">
         <div className="lg:hidden">
-          <Logo priority />
+          <Logo light priority />
         </div>
         <div className="hidden lg:block">
           <p className="text-[10px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Admin workspace</p>
@@ -27,10 +27,10 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
             {initials}
           </span>
           <details className="relative lg:hidden">
-            <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-white/80 bg-white/80 text-[#111827]">
+            <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-orange-400/25 bg-white/[.06] text-white">
               ☰
             </summary>
-            <div className="absolute right-0 top-12 max-h-[calc(100dvh-5.5rem)] w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/85 bg-white/95 p-3 shadow-[0_20px_40px_rgba(255, 159, 0, .22)] backdrop-blur-xl">
+            <div className="absolute right-0 top-12 max-h-[calc(100dvh-5.5rem)] w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-orange-400/25 bg-[#111111]/98 p-3 shadow-[0_20px_40px_rgba(0,0,0,.55)] backdrop-blur-xl">
               <AdminNav mobile />
             </div>
           </details>

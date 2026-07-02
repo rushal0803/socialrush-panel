@@ -49,7 +49,7 @@ function CurrencySelector() {
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5 hover:bg-white sm:px-3.5"
+        className="inline-flex h-10 items-center gap-2 rounded-xl border border-orange-400/25 bg-white/[.06] px-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 sm:px-3.5"
       >
         <span className="sm:hidden">{active.symbol} {active.code}</span>
         <span className="hidden sm:inline-flex items-center gap-2">
@@ -60,7 +60,7 @@ function CurrencySelector() {
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-full z-[80] mt-2 w-56 overflow-hidden rounded-2xl border border-white/85 bg-white/95 p-2 shadow-[0_24px_60px_-26px_rgba(15,23,42,.35)] backdrop-blur-xl">
+        <div className="absolute right-0 top-full z-[80] mt-2 w-56 overflow-hidden rounded-2xl border border-orange-400/25 bg-[#111111]/95 p-2 shadow-[0_24px_60px_-26px_rgba(0,0,0,.8)] backdrop-blur-xl">
           <p className="px-3 pb-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Select currency</p>
           <div className="grid gap-1">
             {options.map((option) => {
@@ -73,7 +73,7 @@ function CurrencySelector() {
                     setCurrency(option.code);
                     setOpen(false);
                   }}
-                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? "bg-[#FFF8F1] text-[#0B0B0F]" : "text-[#111827] hover:bg-[#FFF8F1]"}`}
+                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white" : "text-slate-300 hover:bg-orange-400/10 hover:text-white"}`}
                 >
                   <span>{option.code}</span>
                   <span className="text-right font-black text-[#0B0B0F]">{option.symbol}</span>
@@ -89,9 +89,9 @@ function CurrencySelector() {
 
 export default function DashboardHeaderBar({ name, role, initials }: { name: string; role: string; initials: string }) {
   return (
-    <header className="sticky top-0 z-[9999] border-b border-white/70 bg-white/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(255, 159, 0, .45)] backdrop-blur-xl sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-[9999] border-b border-orange-400/20 bg-[#0B0B0F]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-14 max-w-[1800px] items-center gap-1.5 min-[430px]:gap-2 sm:gap-4">
-        <Logo compactOnMobile priority />
+        <Logo light compactOnMobile priority />
 
         <div className="ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3">
           <CurrencySelector />
@@ -107,7 +107,7 @@ export default function DashboardHeaderBar({ name, role, initials }: { name: str
           <Link
             href="/dashboard/account"
             aria-label="Open profile"
-            className="hidden h-10 items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-2.5 text-left shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5 hover:bg-white min-[430px]:inline-flex sm:px-3"
+            className="hidden h-10 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-2.5 text-left shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 min-[430px]:inline-flex sm:px-3"
           >
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]">
               {initials}

@@ -321,8 +321,8 @@ export default function PackageCheckoutContent() {
                 </div>
 
                 {error ? (
-                  <div role="alert" className="mt-5 flex items-start gap-3 rounded-2xl border border-rose-200 bg-rose-50/90 p-4 text-sm font-semibold leading-6 text-[#FF7A00] shadow-sm">
-                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-rose-100 text-xs">!</span>
+                  <div role="alert" className="mt-5 flex items-start gap-3 rounded-2xl border border-red-200 bg-red-50/90 p-4 text-sm font-semibold leading-6 text-[#FF7A00] shadow-sm">
+                    <span className="mt-0.5 grid h-5 w-5 shrink-0 place-items-center rounded-full bg-red-100 text-xs">!</span>
                     {error}
                   </div>
                 ) : null}

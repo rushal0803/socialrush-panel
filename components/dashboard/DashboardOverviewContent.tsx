@@ -66,7 +66,7 @@ const statusTone: Record<string, string> = {
   partial: "bg-amber-50 text-amber-700 border-amber-200",
   cancelled: "bg-slate-100 text-slate-700 border-slate-200",
   refunded: "bg-amber-50 text-amber-700 border-amber-200",
-  failed: "bg-rose-50 text-rose-700 border-rose-200",
+  failed: "bg-red-50 text-red-700 border-red-200",
 };
 
 function titleCase(value: string) {

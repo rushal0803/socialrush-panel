@@ -33,7 +33,7 @@ const statusStyle: Record<string, string> = {
   partial: "bg-amber-50 text-amber-700",
   cancelled: "bg-slate-100 text-slate-600",
   refunded: "bg-amber-50 text-amber-700",
-  failed: "bg-rose-50 text-rose-700",
+  failed: "bg-red-50 text-red-700",
   refill_requested: "bg-orange-50 text-orange-700",
   refilling: "bg-orange-50 text-orange-700",
 };
