@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { homepageFaqItems as faqItems } from "@/lib/seo/homepage-faq";
 import { usePathname, useRouter } from "next/navigation";
-import { LazyMotion, domAnimation, m as motion } from "framer-motion";
+import { LazyMotion, domAnimation, m as motion, useReducedMotion } from "framer-motion";
 import type { Variants } from "framer-motion";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -173,7 +173,7 @@ const whySocialRush = [
 
 const featuredServices = [
   {
-    name: "Instagram Campaigns",
+    name: "Instagram Campaign Support",
     platform: "instagram",
     href: "/buy-instagram-followers-india",
     text: "Explore profile and content campaign options for Instagram.",
@@ -230,9 +230,14 @@ const featuredServices = [
 
 const customerSafetyPoints = [
   {
-    title: "Public Links Only",
+    title: "No Password Required",
     text: "We never ask for passwords.",
     grad: "from-pink-500 to-rose-500",
+  },
+  {
+    title: "Public Links Only",
+    text: "Orders use public profile, post, video, or channel links.",
+    grad: "from-sky-500 to-blue-600",
   },
   {
     title: "Dashboard Tracking",
@@ -279,6 +284,9 @@ export default function HomepageContent() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeFaq, setActiveFaq] = useState<number | null>(0);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  const prefersReducedMotion = useReducedMotion();
+  const limitMotion = isMobile || Boolean(prefersReducedMotion);
   const startOrderHref = "/login?next=/dashboard/new-order";
 
   useEffect(() => {
@@ -290,6 +298,14 @@ export default function HomepageContent() {
 
   useEffect(() => setMenuOpen(false), [pathname]);
 
+  useEffect(() => {
+    const media = window.matchMedia("(max-width: 767px)");
+    const update = () => setIsMobile(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
+
   async function logout() {
     const supabase = createClient();
     await supabase.auth.signOut();
@@ -300,9 +316,9 @@ export default function HomepageContent() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <main className="overflow-x-clip bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
+      <main className="homepage-performance overflow-x-clip bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)] text-slate-800">
       {/* ambient blobs */}
-      <div className="pointer-events-none fixed inset-0 overflow-hidden">
+      <div className="pointer-events-none fixed inset-0 hidden overflow-hidden sm:block">
         <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-cyan-200/40 blur-3xl" />
         <div className="absolute right-0 top-20 h-[28rem] w-[28rem] rounded-full bg-pink-200/40 blur-3xl" />
         <div className="absolute bottom-32 left-1/3 h-80 w-80 rounded-full bg-violet-200/35 blur-3xl" />
@@ -413,7 +429,7 @@ export default function HomepageContent() {
           </div>
           <div className="relative">
             {floatingStats.map((stat) => (
-              <motion.div key={stat.text} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: stat.delay + 0.5, duration: 0.4 }} className={`absolute z-10 ${stat.pos} flex items-center gap-2 rounded-xl border border-white/90 bg-white/90 px-3 py-2 shadow-[0_8px_24px_-6px_rgba(15,23,42,.2)] backdrop-blur`}>
+              <motion.div key={stat.text} initial={limitMotion ? false : { opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: limitMotion ? 0 : stat.delay + 0.5, duration: limitMotion ? 0 : 0.4 }} className={`absolute z-10 ${stat.pos} flex items-center gap-2 rounded-xl border border-white/90 bg-white/90 px-3 py-2 shadow-[0_8px_24px_-6px_rgba(15,23,42,.2)] backdrop-blur`}>
                 <span className="h-2 w-2 rounded-full bg-gradient-to-r from-pink-500 to-sky-500" />
                 <div>
                   <p className="text-[10px] font-semibold text-slate-600">{stat.text}</p>
@@ -421,7 +437,7 @@ export default function HomepageContent() {
                 </div>
               </motion.div>
             ))}
-            <motion.div animate={{ y: [0, -12, 0] }} transition={{ duration: 5.5, repeat: Infinity, ease: "easeInOut" }} className="relative overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-white/80 to-white/60 p-5 shadow-[0_40px_80px_-20px_rgba(99,102,241,.30)] backdrop-blur">
+            <motion.div animate={limitMotion ? undefined : { y: [0, -12, 0] }} transition={limitMotion ? undefined : { duration: 5.5, repeat: Infinity, ease: "easeInOut" }} className="relative overflow-hidden rounded-[32px] border border-white/80 bg-gradient-to-br from-white/80 to-white/60 p-5 shadow-[0_40px_80px_-20px_rgba(99,102,241,.30)] backdrop-blur">
               <div className="overflow-hidden rounded-3xl bg-gradient-to-br from-fuchsia-50 via-sky-50 to-pink-50">
                 <SafeImage src="/images/hero-3d.png" fallbackSrc="/images/hero-3d.webp" alt="SocialRUSH premium social growth" width={680} height={510} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full rounded-3xl object-cover" priority />
               </div>
@@ -485,7 +501,7 @@ export default function HomepageContent() {
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-pink-600">Platform Services</span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Popular Social Media Growth Services</h2>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Popular Social Media Services</h2>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">View All Services</Link>
@@ -516,7 +532,7 @@ export default function HomepageContent() {
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Customer Safety &amp; Support</h2>
             <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600">Understand what we require, what you can track, and where to get help before placing an order.</p>
           </div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {customerSafetyPoints.map((item) => (
               <motion.article key={item.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className="overflow-hidden rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_14px_40px_-14px_rgba(15,23,42,.18)] backdrop-blur">
                 <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br text-lg font-extrabold text-white shadow-md ${item.grad}`} aria-hidden="true">✓</span>

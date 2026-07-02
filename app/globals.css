@@ -235,6 +235,10 @@ h6 {
     --tw-backdrop-blur: blur(10px);
   }
 
+  .homepage-performance [class*="backdrop-blur"] {
+    --tw-backdrop-blur: blur(6px);
+  }
+
   html {
     scroll-padding-top: 6rem;
   }
