@@ -9,7 +9,7 @@ export default function PublicShell({
   tone?: "default" | "light3d";
 }) {
   return (
-    <main className={tone === "light3d" ? "min-h-screen bg-[#f4f9ff] text-[#17366f]" : "min-h-screen bg-brand-navy text-slate-100"}>
+    <main className={tone === "light3d" ? "min-h-screen bg-[#FFF8F1] text-[#0B0B0F]" : "min-h-screen bg-brand-navy text-slate-100"}>
       <MarketingHeader tone={tone} />
       {children}
       <MarketingFooter tone={tone} />

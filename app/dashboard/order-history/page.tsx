@@ -27,15 +27,15 @@ type Campaign = {
 const statuses = ["all", "pending", "processing", "in_progress", "completed", "partial", "cancelled", "refunded", "failed", "refill_requested", "refilling"];
 const statusStyle: Record<string, string> = {
   pending: "bg-amber-50 text-amber-700",
-  processing: "bg-blue-50 text-blue-700",
-  in_progress: "bg-cyan-50 text-cyan-700",
+  processing: "bg-orange-50 text-orange-700",
+  in_progress: "bg-amber-50 text-amber-700",
   completed: "bg-emerald-50 text-emerald-700",
-  partial: "bg-violet-50 text-violet-700",
+  partial: "bg-amber-50 text-amber-700",
   cancelled: "bg-slate-100 text-slate-600",
-  refunded: "bg-indigo-50 text-indigo-700",
+  refunded: "bg-amber-50 text-amber-700",
   failed: "bg-rose-50 text-rose-700",
   refill_requested: "bg-orange-50 text-orange-700",
-  refilling: "bg-sky-50 text-sky-700",
+  refilling: "bg-orange-50 text-orange-700",
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -113,15 +113,15 @@ export default function CampaignHistoryPage() {
   );
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-[linear-gradient(180deg,#f8faff,#f3f6fb)] p-4 sm:p-6 lg:p-8">
+    <main className="min-h-[calc(100vh-5rem)] bg-[linear-gradient(180deg,#FFF8F1,#FFF8F1)] p-4 sm:p-6 lg:p-8">
       <div className="mx-auto max-w-[1700px]">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[.18em] text-blue-600">Campaign operations</span>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#07152f]">Order History</h1>
+            <span className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-600">Campaign operations</span>
+            <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#0B0B0F]">Order History</h1>
             <p className="mt-2 text-sm text-slate-500">Track all campaign records with delivery-level operational columns.</p>
           </div>
-          <Link href="/dashboard/new-order" className="rounded-xl bg-blue-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-blue-600/20">
+          <Link href="/dashboard/new-order" className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-orange-600/20">
             + New Order
           </Link>
         </div>
@@ -131,7 +131,7 @@ export default function CampaignHistoryPage() {
             <input
               value={search}
               onChange={(event) => setSearch(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10"
+              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
               placeholder="Search order ID, service, link"
             />
             <select value={status} onChange={(event) => setStatus(event.target.value)} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs capitalize outline-none">
@@ -184,7 +184,7 @@ export default function CampaignHistoryPage() {
                 {!loading &&
                   filtered.map((item) => (
                     <tr key={item.id} className="hover:bg-slate-50">
-                      <td className="px-5 py-4 font-bold text-blue-600">{readableOrderId(item.id)}</td>
+                      <td className="px-5 py-4 font-bold text-orange-600">{readableOrderId(item.id)}</td>
                       <td className="px-5 py-4 text-slate-500">{new Date(item.createdAt).toLocaleString("en-IN")}</td>
                       <td className="max-w-[220px] px-5 py-4">
                         <p className="truncate font-semibold">{item.service}</p>
@@ -197,10 +197,10 @@ export default function CampaignHistoryPage() {
                       <td className="px-5 py-4 text-slate-600">{item.startCount === null ? "Pending detection" : item.startCount.toLocaleString("en-IN")}</td>
                       <td className="px-5 py-4 text-slate-600">{item.currentCount === null ? "—" : item.currentCount.toLocaleString("en-IN")}</td>
                       <td className="px-5 py-4 text-slate-600">{item.remains === null ? "—" : item.remains.toLocaleString("en-IN")}</td>
-                      <td className="px-5 py-4"><div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400" style={{ width: `${item.progress ?? 0}%` }} /></div><p className="mt-1 text-[9px] text-slate-500">{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</p></td>
+                      <td className="px-5 py-4"><div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400" style={{ width: `${item.progress ?? 0}%` }} /></div><p className="mt-1 text-[9px] text-slate-500">{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</p></td>
                       <td className="px-5 py-4">
                         <div className="flex gap-2">
-                          <Link href="/dashboard/support" className="rounded-lg bg-blue-50 px-3 py-1.5 text-[10px] font-bold text-blue-700">
+                          <Link href="/dashboard/support" className="rounded-lg bg-orange-50 px-3 py-1.5 text-[10px] font-bold text-orange-700">
                             Raise Ticket
                           </Link>
                           <a

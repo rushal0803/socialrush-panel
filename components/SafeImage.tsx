@@ -38,7 +38,7 @@ export default function SafeImage({
       <span
         role="img"
         aria-label={alt}
-        className={`${fill ? "absolute inset-0" : "flex w-full"} items-center justify-center bg-gradient-to-br from-pink-50 via-indigo-50 to-cyan-50 text-[#5570a5] ${className}`}
+        className={`${fill ? "absolute inset-0" : "flex w-full"} items-center justify-center bg-gradient-to-br from-orange-50 via-amber-50 to-amber-50 text-[#111827] ${className}`}
         style={{
           ...style,
           ...(!fill && typeof width === "number" && typeof height === "number"

@@ -11,8 +11,8 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
           <Logo priority />
         </div>
         <div className="hidden lg:block">
-          <p className="text-[10px] font-black uppercase tracking-[.16em] text-[#4f6daa]">Admin workspace</p>
-          <p className="mt-1 text-sm font-bold text-[#132e66]">SocialRUSH operations</p>
+          <p className="text-[10px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Admin workspace</p>
+          <p className="mt-1 text-sm font-bold text-[#0B0B0F]">SocialRUSH operations</p>
         </div>
 
         <div className="flex items-center gap-3">
@@ -20,17 +20,17 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
             ● System online
           </span>
           <div className="hidden text-right sm:block">
-            <p className="text-xs font-bold text-[#18356f]">{name || "Administrator"}</p>
-            <p className="mt-0.5 text-[10px] text-[#6880ae]">{email}</p>
+            <p className="text-xs font-bold text-[#0B0B0F]">{name || "Administrator"}</p>
+            <p className="mt-0.5 text-[10px] text-[#111827]">{email}</p>
           </div>
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-xs font-black text-white shadow-[0_10px_24px_rgba(117,109,255,.35)]">
+          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .35)]">
             {initials}
           </span>
           <details className="relative lg:hidden">
-            <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-white/80 bg-white/80 text-[#4a6398]">
+            <summary className="grid h-10 w-10 cursor-pointer list-none place-items-center rounded-xl border border-white/80 bg-white/80 text-[#111827]">
               ☰
             </summary>
-            <div className="absolute right-0 top-12 max-h-[calc(100dvh-5.5rem)] w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/85 bg-white/95 p-3 shadow-[0_20px_40px_rgba(76,106,170,.22)] backdrop-blur-xl">
+            <div className="absolute right-0 top-12 max-h-[calc(100dvh-5.5rem)] w-[min(16rem,calc(100vw-2rem))] overflow-y-auto rounded-2xl border border-white/85 bg-white/95 p-3 shadow-[0_20px_40px_rgba(255, 159, 0, .22)] backdrop-blur-xl">
               <AdminNav mobile />
             </div>
           </details>

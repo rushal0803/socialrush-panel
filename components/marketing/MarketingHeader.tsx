@@ -44,13 +44,13 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   }
 
   return (
-    <header className={isLight3d ? "sticky top-0 z-[9999] border-b border-white/50 bg-[#f4f9ff]/70 px-4 py-3 backdrop-blur-2xl sm:px-6" : "sticky top-0 z-[9999] border-b border-violet-300/20 bg-[#070c1d]/90 backdrop-blur-2xl"}>
+    <header className={isLight3d ? "sticky top-0 z-[9999] border-b border-white/50 bg-[#FFF8F1]/70 px-4 py-3 backdrop-blur-2xl sm:px-6" : "sticky top-0 z-[9999] border-b border-amber-300/20 bg-[#0B0B0F]/90 backdrop-blur-2xl"}>
       <div className={isLight3d ? "mx-auto flex h-[74px] max-w-7xl items-center justify-between gap-3 rounded-3xl border border-white/80 bg-white/72 px-4 shadow-[0_22px_44px_-30px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:gap-4 sm:px-5 lg:px-6" : "mx-auto flex h-[76px] max-w-7xl items-center justify-between gap-3 px-4 sm:gap-4 sm:px-6 lg:px-8"}>
         <Logo light={!isLight3d} priority className="shrink-0 pr-1" />
 
-        <nav className={isLight3d ? "hidden items-center gap-3 text-sm font-semibold text-[#3f5f97] xl:flex" : "hidden items-center gap-3 text-sm font-semibold text-slate-200 xl:flex"}>
+        <nav className={isLight3d ? "hidden items-center gap-3 text-sm font-semibold text-[#FF9F00] xl:flex" : "hidden items-center gap-3 text-sm font-semibold text-slate-200 xl:flex"}>
           {nav.map(([label, href]) => (
-            <Link key={href} href={href} className={isLight3d ? "rounded-lg px-2 py-1.5 transition hover:bg-[#edf4ff] hover:text-[#193a73]" : "rounded-lg px-2 py-1.5 transition hover:bg-white/10 hover:text-cyan-200"}>
+            <Link key={href} href={href} className={isLight3d ? "rounded-lg px-2 py-1.5 transition hover:bg-[#FFF8F1] hover:text-[#0B0B0F]" : "rounded-lg px-2 py-1.5 transition hover:bg-white/10 hover:text-amber-200"}>
               {label}
             </Link>
           ))}
@@ -62,34 +62,34 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
             <>
               <Link
                 href="/dashboard/account"
-                className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-2 text-sm font-bold text-[#35548d] transition hover:bg-[#e6eeff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-400/20"}
+                className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#FF9F00] transition hover:bg-[#FFF8F1]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-amber-400/10 px-4 py-2 text-sm font-bold text-amber-100 transition hover:bg-amber-400/20"}
               >
                 Profile
               </Link>
               <button
                 type="button"
                 onClick={logout}
-                className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-2 text-sm font-bold text-[#1f3f77] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] transition hover:border-[#adc5ff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200"}
+                className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-2 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_20px_-14px_rgba(255, 159, 0, .45)] transition hover:border-[#FF9F00]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-amber-300/50 hover:text-amber-200"}
               >
                 Logout
               </button>
             </>
           ) : (
             <>
-              <Link href="/login" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-2 text-sm font-bold text-[#1f3f77] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] transition hover:border-[#adc5ff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-cyan-300/50 hover:text-cyan-200"}>
+              <Link href="/login" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-2 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_20px_-14px_rgba(255, 159, 0, .45)] transition hover:border-[#FF9F00]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-amber-300/50 hover:text-amber-200"}>
                 Login
               </Link>
-              <Link href="/register" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-2 text-sm font-bold text-[#35548d] transition hover:bg-[#e6eeff]" : "inline-flex min-h-10 items-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-2 text-sm font-bold text-cyan-100 transition hover:bg-cyan-400/20"}>
+              <Link href="/register" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#FF9F00] transition hover:bg-[#FFF8F1]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-amber-400/10 px-4 py-2 text-sm font-bold text-amber-100 transition hover:bg-amber-400/20"}>
                 Sign Up
               </Link>
             </>
           )}
-          <PortalCTA className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-2 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(117,109,255,.65)] transition hover:-translate-y-0.5" : "inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-blue-600 to-cyan-400 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-blue-600/25 transition hover:shadow-cyan-400/30"}>
+          <PortalCTA className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5" : "inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-orange-600 to-amber-400 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-600/25 transition hover:shadow-amber-400/30"}>
             Start Order
           </PortalCTA>
         </div>
 
-        <button type="button" aria-label="Toggle navigation" aria-expanded={open} onClick={(event) => { event.stopPropagation(); setOpen((value) => !value); }} className={isLight3d ? "grid h-11 w-11 place-items-center rounded-xl border border-[#d7e4ff] bg-white/85 text-xl text-[#21407a] shadow-[0_10px_20px_-14px_rgba(27,55,103,.45)] lg:hidden" : "grid h-11 w-11 place-items-center rounded-xl border border-violet-300/35 text-xl text-slate-100 lg:hidden"}>
+        <button type="button" aria-label="Toggle navigation" aria-expanded={open} onClick={(event) => { event.stopPropagation(); setOpen((value) => !value); }} className={isLight3d ? "grid h-11 w-11 place-items-center rounded-xl border border-[#FFF3E0] bg-white/85 text-xl text-[#0B0B0F] shadow-[0_10px_20px_-14px_rgba(255, 159, 0, .45)] lg:hidden" : "grid h-11 w-11 place-items-center rounded-xl border border-amber-300/35 text-xl text-slate-100 lg:hidden"}>
           {open ? "×" : "☰"}
         </button>
       </div>
@@ -100,17 +100,17 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className={isLight3d ? "mx-auto w-full max-w-7xl rounded-3xl border border-white/80 bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl lg:hidden" : "mx-auto w-full max-w-7xl rounded-2xl border border-violet-300/20 bg-[#070c1d] px-4 pb-5 pt-14 shadow-xl lg:hidden"}
+            className={isLight3d ? "mx-auto w-full max-w-7xl rounded-3xl border border-white/80 bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl lg:hidden" : "mx-auto w-full max-w-7xl rounded-2xl border border-amber-300/20 bg-[#0B0B0F] px-4 pb-5 pt-14 shadow-xl lg:hidden"}
           >
             <nav className="mx-auto grid max-w-7xl gap-1">
               {nav.map(([label, href]) => (
-                <Link key={href} href={href} onClick={() => setOpen(false)} className={isLight3d ? "rounded-xl px-3 py-3 text-sm font-semibold text-[#41619a] transition hover:bg-[#edf4ff] hover:text-[#193a73]" : "rounded-xl px-3 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-cyan-200"}>
+                <Link key={href} href={href} onClick={() => setOpen(false)} className={isLight3d ? "rounded-xl px-3 py-3 text-sm font-semibold text-[#FF9F00] transition hover:bg-[#FFF8F1] hover:text-[#0B0B0F]" : "rounded-xl px-3 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-amber-200"}>
                   {label}
                 </Link>
               ))}
             </nav>
 
-            <div className={isLight3d ? "mx-auto mt-4 grid max-w-7xl gap-2 border-t border-[#e2ecff] pt-4" : "mx-auto mt-4 grid max-w-7xl gap-2 border-t border-violet-300/20 pt-4"}>
+            <div className={isLight3d ? "mx-auto mt-4 grid max-w-7xl gap-2 border-t border-[#FFF8F1] pt-4" : "mx-auto mt-4 grid max-w-7xl gap-2 border-t border-amber-300/20 pt-4"}>
               <div className="w-fit">
                 <CurrencyDropdown tone={tone} />
               </div>
@@ -119,29 +119,29 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                   <Link
                     href="/dashboard/account"
                     onClick={() => setOpen(false)}
-                    className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-3 text-sm font-bold text-[#35548d]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-cyan-300/35 bg-cyan-400/10 px-4 py-3 text-sm font-bold text-cyan-100"}
+                    className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#FF9F00]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-amber-300/35 bg-amber-400/10 px-4 py-3 text-sm font-bold text-amber-100"}
                   >
                     Profile
                   </Link>
                   <button
                     type="button"
                     onClick={logout}
-                    className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}
+                    className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-3 text-sm font-bold text-[#0B0B0F]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-amber-300/35 px-4 py-3 text-sm font-bold text-slate-100"}
                   >
                     Logout
                   </button>
                 </>
               ) : (
                 <>
-                  <Link href="/login" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white/88 px-4 py-3 text-sm font-bold text-[#1f3f77]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-violet-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
+                  <Link href="/login" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-3 text-sm font-bold text-[#0B0B0F]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-amber-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
                     Login
                   </Link>
-                  <Link href="/register" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-4 py-3 text-sm font-bold text-[#35548d]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-fuchsia-300/35 bg-fuchsia-400/10 px-4 py-3 text-sm font-bold text-fuchsia-100"}>
+                  <Link href="/register" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#FF9F00]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-300/35 bg-orange-400/10 px-4 py-3 text-sm font-bold text-orange-100"}>
                     Sign Up
                   </Link>
                 </>
               )}
-              <PortalCTA className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-4 py-3 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(117,109,255,.65)]" : "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-violet-500 to-cyan-500 px-4 py-3 text-sm font-bold text-white"}>
+              <PortalCTA className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-3 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)]" : "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-3 text-sm font-bold text-white"}>
                 Start Order
               </PortalCTA>
             </div>

@@ -115,17 +115,17 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
       ) : null}
       <article className="relative px-5 pb-24 pt-10 sm:px-6 lg:px-8 lg:pt-12">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute left-[-6%] top-0 h-64 w-64 rounded-full bg-pink-200/35 blur-3xl" />
-          <div className="absolute bottom-10 right-[-8%] h-72 w-72 rounded-full bg-cyan-200/35 blur-3xl" />
+          <div className="absolute left-[-6%] top-0 h-64 w-64 rounded-full bg-orange-200/35 blur-3xl" />
+          <div className="absolute bottom-10 right-[-8%] h-72 w-72 rounded-full bg-amber-200/35 blur-3xl" />
         </div>
 
         <div className="relative mx-auto w-full max-w-5xl">
-          <Link href="/blog#articles" className="inline-flex rounded-xl border border-[#d7e3ff] bg-white/85 px-4 py-2 text-sm font-semibold text-[#284679] shadow-[0_8px_22px_rgba(86,114,175,.12)] transition hover:-translate-y-0.5">
+          <Link href="/blog#articles" className="inline-flex rounded-xl border border-[#FFF3E0] bg-white/85 px-4 py-2 text-sm font-semibold text-[#0B0B0F] shadow-[0_8px_22px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5">
             Back to Blog
           </Link>
 
-          <div className="mt-6 overflow-hidden rounded-[30px] border border-white/85 bg-white/86 p-4 shadow-[0_20px_48px_rgba(86,114,175,.17)] backdrop-blur sm:p-6">
-            <div className="relative h-[220px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#f6f0ff] via-[#ebf4ff] to-[#e3f9ff] sm:h-[310px]">
+          <div className="mt-6 overflow-hidden rounded-[30px] border border-white/85 bg-white/86 p-4 shadow-[0_20px_48px_rgba(255, 159, 0, .17)] backdrop-blur sm:p-6">
+            <div className="relative h-[220px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] sm:h-[310px]">
               <SafeImage
                 src={article.image}
                 fallbackSrc={article.image.replace(/\.png$/i, ".webp")}
@@ -137,26 +137,26 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               />
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#3f5c90]">
-              <span className="rounded-full border border-[#d7e3ff] bg-[#f4f8ff] px-3 py-1.5">{article.category}</span>
-              <span className="rounded-full border border-[#d7e3ff] bg-[#f4f8ff] px-3 py-1.5">{article.readingTime}</span>
+            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#FF9F00]">
+              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.category}</span>
+              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.readingTime}</span>
             </div>
 
-            <h1 className="mt-4 text-3xl font-black leading-tight text-[#10234f] sm:text-4xl">{article.title}</h1>
-            <p className="mt-4 text-base leading-8 text-[#4f6795]">{article.intro}</p>
+            <h1 className="mt-4 text-3xl font-black leading-tight text-[#0B0B0F] sm:text-4xl">{article.title}</h1>
+            <p className="mt-4 text-base leading-8 text-[#111827]">{article.intro}</p>
           </div>
 
           <nav
             aria-label="Table of contents"
-            className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(86,114,175,.14)] backdrop-blur"
+            className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
           >
-            <h2 className="text-xl font-extrabold text-[#122a5c]">Table of contents</h2>
+            <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
               {article.sections.map((section, index) => (
                 <li key={section.heading}>
                   <a
                     href={`#${toSectionId(section.heading)}`}
-                    className="inline-flex text-sm font-semibold leading-6 text-[#3f5a8f] transition hover:text-[#765ddd]"
+                    className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]"
                   >
                     {index + 1}. {section.heading}
                   </a>
@@ -164,7 +164,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               ))}
               {article.faqs?.length ? (
                 <li>
-                  <a href="#frequently-asked-questions" className="inline-flex text-sm font-semibold leading-6 text-[#3f5a8f] transition hover:text-[#765ddd]">
+                  <a href="#frequently-asked-questions" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
                     {article.sections.length + 1}. Frequently asked questions
                   </a>
                 </li>
@@ -177,15 +177,15 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               <section
                 key={section.heading}
                 id={toSectionId(section.heading)}
-                className="rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(86,114,175,.14)] backdrop-blur"
+                className="rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
               >
-                <h2 className="text-2xl font-extrabold text-[#122a5c]">{section.heading}</h2>
-                <p className="mt-3 text-[15px] leading-7 text-[#4f6795]">{section.body}</p>
-                <h3 className="mt-5 text-base font-extrabold text-[#234176]">Practical actions</h3>
+                <h2 className="text-2xl font-extrabold text-[#0B0B0F]">{section.heading}</h2>
+                <p className="mt-3 text-[15px] leading-7 text-[#111827]">{section.body}</p>
+                <h3 className="mt-5 text-base font-extrabold text-[#0B0B0F]">Practical actions</h3>
                 <ul className="mt-4 space-y-2">
                   {section.tips.map((tip) => (
-                    <li key={tip} className="flex items-start gap-2 text-sm leading-6 text-[#3f5a8f]">
-                      <span className="mt-1 h-2 w-2 rounded-full bg-gradient-to-r from-[#ff67b2] to-[#4dc4ff]" />
+                    <li key={tip} className="flex items-start gap-2 text-sm leading-6 text-[#FF9F00]">
+                      <span className="mt-1 h-2 w-2 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FF9F00]" />
                       <span>{tip}</span>
                     </li>
                   ))}
@@ -197,16 +197,16 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           {article.faqs?.length ? (
             <section
               id="frequently-asked-questions"
-              className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(86,114,175,.14)] backdrop-blur"
+              className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
             >
-              <h2 className="text-2xl font-extrabold text-[#122a5c]">Frequently asked questions</h2>
+              <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Frequently asked questions</h2>
               <div className="mt-5 space-y-4">
                 {article.faqs.map((faq) => (
-                  <details key={faq.question} className="group rounded-2xl border border-[#d9e5fb] bg-[#f8fbff] p-5">
-                    <summary className="cursor-pointer list-none text-base font-bold text-[#1e3b75]">
+                  <details key={faq.question} className="group rounded-2xl border border-[#FFF3E0] bg-[#FFF8F1] p-5">
+                    <summary className="cursor-pointer list-none text-base font-bold text-[#0B0B0F]">
                       {faq.question}
                     </summary>
-                    <p className="mt-3 text-sm leading-7 text-[#4f6795]">{faq.answer}</p>
+                    <p className="mt-3 text-sm leading-7 text-[#111827]">{faq.answer}</p>
                   </details>
                 ))}
               </div>
@@ -214,14 +214,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           ) : null}
 
           {article.relatedLinks?.length ? (
-            <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(86,114,175,.14)] backdrop-blur">
-              <h2 className="text-xl font-extrabold text-[#122a5c]">Related services and next steps</h2>
-              <p className="mt-2 text-sm leading-7 text-[#4f6795]">
+            <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
+              <h2 className="text-xl font-extrabold text-[#0B0B0F]">Related services and next steps</h2>
+              <p className="mt-2 text-sm leading-7 text-[#111827]">
                 Continue with the service or pricing information most relevant to this strategy.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 {article.relatedLinks.map((item) => (
-                  <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-xl border border-[#d7e3ff] bg-[#f4f8ff] px-4 py-2.5 text-sm font-bold text-[#284679] transition hover:-translate-y-0.5 hover:border-[#aec5f6]">
+                  <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2.5 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5 hover:border-[#FF9F00]">
                     {item.label}
                   </Link>
                 ))}
@@ -229,32 +229,32 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </nav>
           ) : null}
 
-          <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(86,114,175,.14)] backdrop-blur">
-            <h2 className="text-2xl font-extrabold text-[#122a5c]">Related blog articles</h2>
+          <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
+            <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Related blog articles</h2>
             <div className="mt-5 grid gap-4 md:grid-cols-3">
               {relatedArticles.map((related) => (
                 <Link
                   key={related.slug}
                   href={`/blog/${related.slug}`}
-                  className="rounded-2xl border border-[#d9e5fb] bg-[#f8fbff] p-5 transition hover:-translate-y-1 hover:border-[#b8c8f5] hover:shadow-[0_12px_26px_rgba(86,114,175,.12)]"
+                  className="rounded-2xl border border-[#FFF3E0] bg-[#FFF8F1] p-5 transition hover:-translate-y-1 hover:border-[#FF9F00] hover:shadow-[0_12px_26px_rgba(255, 159, 0, .12)]"
                 >
-                  <span className="text-xs font-bold uppercase tracking-[0.08em] text-[#5b70aa]">{related.category}</span>
-                  <h3 className="mt-2 text-base font-extrabold leading-6 text-[#173469]">{related.title}</h3>
-                  <span className="mt-3 inline-flex text-sm font-bold text-[#765ddd]">Read article →</span>
+                  <span className="text-xs font-bold uppercase tracking-[0.08em] text-[#111827]">{related.category}</span>
+                  <h3 className="mt-2 text-base font-extrabold leading-6 text-[#0B0B0F]">{related.title}</h3>
+                  <span className="mt-3 inline-flex text-sm font-bold text-[#FF7A00]">Read article →</span>
                 </Link>
               ))}
             </div>
           </section>
 
-          <section className="mt-10 rounded-[30px] border border-white/85 bg-gradient-to-r from-[#182f67] via-[#223f7f] to-[#2f5d9d] px-6 py-8 text-white shadow-[0_24px_52px_rgba(39,65,123,.38)] sm:px-8">
+          <section className="mt-10 rounded-[30px] border border-white/85 bg-gradient-to-r from-[#0B0B0F] via-[#0B0B0F] to-[#FF9F00] px-6 py-8 text-white shadow-[0_24px_52px_rgba(255, 159, 0, .38)] sm:px-8">
             <h2 className="text-3xl font-black leading-tight">Ready to launch your next growth campaign?</h2>
-            <p className="mt-4 max-w-2xl text-sm leading-7 text-blue-100">
+            <p className="mt-4 max-w-2xl text-sm leading-7 text-orange-100">
               Turn these strategies into action with campaign support, transparent progress tracking, and expert guidance.
             </p>
             <div className="mt-6 flex flex-wrap gap-3">
               <Link
                 href="/login?next=/dashboard/new-order"
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#1d3771] transition hover:-translate-y-0.5"
+                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5"
               >
                 Start Order
               </Link>

@@ -171,70 +171,70 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
       <main className="px-5 pb-20 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">
           <section className="rounded-[32px] border border-white/80 bg-white/78 p-6 shadow-[0_24px_54px_-34px_rgba(15,23,42,.42)] backdrop-blur-xl sm:p-10">
-            <p className="inline-flex rounded-full border border-[#dce8ff] bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#4f6ca8]">
+            <p className="inline-flex rounded-full border border-[#FFF8F1] bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">
               {routeTitle(params.slug)}
             </p>
-            <h1 className="mt-4 text-3xl font-black tracking-tight text-[#102858] sm:text-5xl">{seo.headline}</h1>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#4d6796] sm:text-base">{seo.intro}</p>
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-5xl">{seo.headline}</h1>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base">{seo.intro}</p>
             <div className="mt-6 flex flex-wrap gap-2">
-              <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">
+              <span className="rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]">
                 {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]"><PlatformIcon platform={seo.platform} className="h-4 w-4" />{seo.platform}</span>
-              <span className="rounded-full border border-[#dce8ff] bg-white px-3 py-1.5 text-xs font-bold text-[#35548d]">{seo.delivery}</span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]"><PlatformIcon platform={seo.platform} className="h-4 w-4" />{seo.platform}</span>
+              <span className="rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]">{seo.delivery}</span>
             </div>
-            {hasBasePrice ? <p className="mt-3 text-xs font-semibold text-[#5b76aa]">{getCurrencyDisclaimer()}</p> : null}
+            {hasBasePrice ? <p className="mt-3 text-xs font-semibold text-[#111827]">{getCurrencyDisclaimer()}</p> : null}
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/packages" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-bold text-white">View Packages</Link>
-              <Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-white px-5 py-3 text-sm font-bold text-[#1f3f77]">Pricing</Link>
-              <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#d7e4ff] bg-[#eef4ff] px-5 py-3 text-sm font-bold text-[#35548d]">Contact Support</Link>
+              <Link href="/packages" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white">View Packages</Link>
+              <Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-5 py-3 text-sm font-bold text-[#0B0B0F]">Pricing</Link>
+              <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-5 py-3 text-sm font-bold text-[#FF9F00]">Contact Support</Link>
             </div>
           </section>
 
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {seo.benefits.map((item) => (
               <article key={item} className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-[0_16px_34px_-26px_rgba(15,23,42,.35)]">
-                <p className="text-sm font-bold text-[#17366f]">{item}</p>
+                <p className="text-sm font-bold text-[#0B0B0F]">{item}</p>
               </article>
             ))}
           </section>
 
           <section className="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
             <article className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
-              <h2 className="text-2xl font-black text-[#102858]">Why this page matters</h2>
-              <p className="mt-4 text-sm leading-7 text-[#4d6796]">This landing page is built to rank for buyer intent terms, explain the service quickly, and link people into the right conversion path without extra friction.</p>
-              <div className="mt-6 space-y-3 text-sm leading-7 text-[#4d6796]">
+              <h2 className="text-2xl font-black text-[#0B0B0F]">Why this page matters</h2>
+              <p className="mt-4 text-sm leading-7 text-[#111827]">This landing page is built to rank for buyer intent terms, explain the service quickly, and link people into the right conversion path without extra friction.</p>
+              <div className="mt-6 space-y-3 text-sm leading-7 text-[#111827]">
                 <p>Ideal for: {seo.audience.join(", ")}</p>
                 <p>Internal links: Home, Services, Packages, Pricing, Blog, FAQ, and Contact.</p>
               </div>
             </article>
             <aside className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#5b76aa]">Service snapshot</p>
-              <div className="mt-4 space-y-3 text-sm text-[#4d6796]">
-                <p><span className="font-bold text-[#17366f]">Price:</span> {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}</p>
-                <p><span className="font-bold text-[#17366f]">Delivery:</span> {seo.delivery}</p>
-                <p className="flex items-center gap-2"><PlatformIcon platform={seo.platform} className="h-4 w-4 text-[#5270aa]" /><span><span className="font-bold text-[#17366f]">Platform:</span> {seo.platform}</span></p>
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#111827]">Service snapshot</p>
+              <div className="mt-4 space-y-3 text-sm text-[#111827]">
+                <p><span className="font-bold text-[#0B0B0F]">Price:</span> {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}</p>
+                <p><span className="font-bold text-[#0B0B0F]">Delivery:</span> {seo.delivery}</p>
+                <p className="flex items-center gap-2"><PlatformIcon platform={seo.platform} className="h-4 w-4 text-[#111827]" /><span><span className="font-bold text-[#0B0B0F]">Platform:</span> {seo.platform}</span></p>
               </div>
             </aside>
           </section>
 
           <section className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
-            <h2 className="text-2xl font-black text-[#102858]">Frequently Asked Questions</h2>
+            <h2 className="text-2xl font-black text-[#0B0B0F]">Frequently Asked Questions</h2>
             <div className="mt-5 grid gap-3">
               {seo.faqs.map((faq) => (
-                <details key={faq.question} className="group rounded-2xl border border-[#e4ecff] bg-[#f7faff] p-4">
-                  <summary className="cursor-pointer list-none text-sm font-bold text-[#17366f]">{faq.question}</summary>
-                  <p className="mt-3 text-sm leading-7 text-[#4d6796]">{faq.answer}</p>
+                <details key={faq.question} className="group rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4">
+                  <summary className="cursor-pointer list-none text-sm font-bold text-[#0B0B0F]">{faq.question}</summary>
+                  <p className="mt-3 text-sm leading-7 text-[#111827]">{faq.answer}</p>
                 </details>
               ))}
             </div>
           </section>
 
-          <section className="rounded-[28px] border border-[#dce8ff] bg-[#f7fbff] p-6 sm:p-8">
-            <h2 className="text-2xl font-black text-[#102858]">Explore more</h2>
-            <div className="mt-4 flex flex-wrap gap-3 text-sm font-bold text-[#1f3f77]">
+          <section className="rounded-[28px] border border-[#FFF8F1] bg-[#FFF8F1] p-6 sm:p-8">
+            <h2 className="text-2xl font-black text-[#0B0B0F]">Explore more</h2>
+            <div className="mt-4 flex flex-wrap gap-3 text-sm font-bold text-[#0B0B0F]">
               {[["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Pricing", "/pricing"], ["Blog", "/blog"], ["FAQ", "/faq"], ["Contact", "/contact"]].map(([label, href]) => (
-                <Link key={href} href={href} className="rounded-xl border border-[#d7e4ff] bg-white px-4 py-2 transition hover:bg-[#eef4ff]">
+                <Link key={href} href={href} className="rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 transition hover:bg-[#FFF8F1]">
                   {label}
                 </Link>
               ))}

@@ -12,12 +12,12 @@ export default function VerifyEmailPage({
   searchParams?: { email?: string };
 }) {
   return (
-    <main className="grid min-h-screen place-items-center bg-[#07111F] px-6 text-slate-100">
-      <section className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0B1628] p-8 text-center shadow-xl shadow-slate-950/30">
+    <main className="grid min-h-screen place-items-center bg-[#0B0B0F] px-6 text-slate-100">
+      <section className="w-full max-w-md rounded-3xl border border-white/10 bg-[#0B0B0F] p-8 text-center shadow-xl shadow-slate-950/30">
         <div className="flex justify-center">
           <Logo light priority />
         </div>
-        <span className="mx-auto mt-8 grid h-16 w-16 place-items-center rounded-2xl bg-blue-600 text-2xl text-white">✉</span>
+        <span className="mx-auto mt-8 grid h-16 w-16 place-items-center rounded-2xl bg-orange-600 text-2xl text-white">✉</span>
         <h1 className="mt-6 text-2xl font-bold text-white">Verify your email</h1>
         <p className="mt-3 text-sm leading-6 text-slate-300">
           We sent a verification link to{" "}

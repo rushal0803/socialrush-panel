@@ -222,19 +222,19 @@ export default function DashboardOrderSummaryPage() {
   }, [resumeRequested, canSubmit, submitting, success]);
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_4%_0%,rgba(255,190,226,.44),transparent_29%),radial-gradient(circle_at_96%_4%,rgba(141,222,255,.42),transparent_31%),radial-gradient(circle_at_48%_100%,rgba(205,194,255,.34),transparent_30%),linear-gradient(180deg,#f9fbff_0%,#f2f7ff_48%,#f8f5ff_100%)] px-4 pb-20 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-24">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_4%_0%,rgba(255, 122, 0, .44),transparent_29%),radial-gradient(circle_at_96%_4%,rgba(255, 159, 0, .42),transparent_31%),radial-gradient(circle_at_48%_100%,rgba(255, 196, 0, .34),transparent_30%),linear-gradient(180deg,#FFF8F1_0%,#FFF8F1_48%,#FFF8F1_100%)] px-4 pb-20 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-24">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-fuchsia-200/30 blur-3xl" />
-        <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-cyan-200/35 blur-3xl" />
-        <div className="absolute inset-0 bg-[linear-gradient(rgba(105,129,190,.055)_1px,transparent_1px),linear-gradient(90deg,rgba(105,129,190,.055)_1px,transparent_1px)] bg-[size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
+        <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-orange-200/30 blur-3xl" />
+        <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+        <div className="absolute inset-0 bg-[linear-gradient(rgba(255, 159, 0, .055)_1px,transparent_1px),linear-gradient(90deg,rgba(255, 159, 0, .055)_1px,transparent_1px)] bg-[size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_70%)]" />
       </div>
 
       <div className="relative mx-auto max-w-7xl">
-        <Link href={`/dashboard/new-order?service=${encodeURIComponent(selectedService.code)}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-1 text-sm font-bold text-[#46649c] transition hover:text-[#1e3c78]">
+        <Link href={`/dashboard/new-order?service=${encodeURIComponent(selectedService.code)}`} className="inline-flex min-h-11 items-center gap-2 rounded-xl px-1 text-sm font-bold text-[#FF9F00] transition hover:text-[#0B0B0F]">
           <ArrowLeft className="h-4 w-4" /> Back to services
         </Link>
 
-        <section aria-label="Checkout progress" className="mt-3 rounded-[28px] border border-white/90 bg-white/60 p-3 shadow-[0_24px_55px_-38px_rgba(50,72,140,.5)] backdrop-blur-2xl sm:p-4">
+        <section aria-label="Checkout progress" className="mt-3 rounded-[28px] border border-white/90 bg-white/60 p-3 shadow-[0_24px_55px_-38px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-4">
           <div className="grid gap-2 sm:grid-cols-3">
             <CheckoutStep number="1" title="Service Selected" state="complete" />
             <CheckoutStep number="2" title="Campaign Details" state={formIsValid ? "complete" : "active"} />
@@ -244,18 +244,18 @@ export default function DashboardOrderSummaryPage() {
 
         <div className="mt-6 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start xl:gap-8">
           <div className="min-w-0 space-y-6">
-            <section className="relative overflow-hidden rounded-[30px] border border-white/90 bg-white/68 p-5 shadow-[0_30px_70px_-40px_rgba(49,66,128,.55)] backdrop-blur-2xl sm:p-7">
-              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-cyan-200/30 blur-2xl" />
-              <div className="absolute -bottom-16 left-8 h-40 w-40 rounded-full bg-fuchsia-200/20 blur-3xl" />
+            <section className="relative overflow-hidden rounded-[30px] border border-white/90 bg-white/68 p-5 shadow-[0_30px_70px_-40px_rgba(255, 159, 0, .55)] backdrop-blur-2xl sm:p-7">
+              <div className="absolute -right-12 -top-12 h-48 w-48 rounded-full bg-amber-200/30 blur-2xl" />
+              <div className="absolute -bottom-16 left-8 h-40 w-40 rounded-full bg-orange-200/20 blur-3xl" />
               <div className="relative">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                  <span className={`grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-gradient-to-br ${platformMeta[selectedService.platform].gradient} text-white shadow-[0_18px_34px_-16px_rgba(71,74,180,.75)] ring-4 ring-white/80`}>
+                  <span className={`grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-gradient-to-br ${platformMeta[selectedService.platform].gradient} text-white shadow-[0_18px_34px_-16px_rgba(255, 196, 0, .75)] ring-4 ring-white/80`}>
                     <PlatformIcon platform={platformMeta[selectedService.platform].label} className="h-8 w-8" />
                   </span>
                   <div className="min-w-0">
-                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#6b7fb0]">Selected growth service</p>
-                    <h1 className="mt-2 break-words text-2xl font-black tracking-[-.025em] text-[#14316a] sm:text-3xl">{experience.name}</h1>
-                    <p className="mt-3 max-w-2xl text-sm leading-7 text-[#526d9f]">{selectedService.description}</p>
+                    <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Selected growth service</p>
+                    <h1 className="mt-2 break-words text-2xl font-black tracking-[-.025em] text-[#0B0B0F] sm:text-3xl">{experience.name}</h1>
+                    <p className="mt-3 max-w-2xl text-sm leading-7 text-[#111827]">{selectedService.description}</p>
                   </div>
                 </div>
 
@@ -276,22 +276,22 @@ export default function DashboardOrderSummaryPage() {
               </div>
             </section>
 
-            <section className="rounded-[30px] border border-white/90 bg-white/72 p-5 shadow-[0_26px_60px_-38px_rgba(38,60,120,.52)] backdrop-blur-2xl sm:p-7">
+            <section className="rounded-[30px] border border-white/90 bg-white/72 p-5 shadow-[0_26px_60px_-38px_rgba(255, 159, 0, .52)] backdrop-blur-2xl sm:p-7">
               <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#f5eaff] to-[#e7f7ff] text-[#6d72d4] shadow-inner">
+                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#FFF8F1] to-[#FFF8F1] text-[#FFC400] shadow-inner">
                   <LinkIcon className="h-5 w-5" />
                 </span>
                 <div>
-                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#6b7fb0]">Campaign details</p>
-                  <h2 className="mt-1 text-xl font-black text-[#14316a]">Quantity and public link</h2>
+                  <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">Campaign details</p>
+                  <h2 className="mt-1 text-xl font-black text-[#0B0B0F]">Quantity and public link</h2>
                 </div>
               </div>
 
               <div className="mt-6 grid gap-6">
-                <label className="block text-sm font-black text-[#294981]">
+                <label className="block text-sm font-black text-[#0B0B0F]">
                   Quantity
                   <div className="relative mt-2">
-                    <Hash className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#7690bd]" />
+                    <Hash className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#111827]" />
                     <input
                       type="text"
                       inputMode="numeric"
@@ -302,21 +302,21 @@ export default function DashboardOrderSummaryPage() {
                         setError("");
                       }}
                       placeholder="Enter quantity"
-                      className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-xl font-black text-[#17366f] shadow-[0_12px_28px_-24px_rgba(35,60,115,.5)] outline-none transition ${
-                        quantityInput && quantityError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#d4e1ff] focus:border-[#8faeff] focus:ring-4 focus:ring-[#dce7ff]"
+                      className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-xl font-black text-[#0B0B0F] shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .5)] outline-none transition ${
+                        quantityInput && quantityError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#FFF3E0] focus:border-[#FF9F00] focus:ring-4 focus:ring-[#FFF8F1]"
                       }`}
                     />
                   </div>
-                  <span className="mt-2 block text-xs font-medium leading-5 text-[#6079a7]">
+                  <span className="mt-2 block text-xs font-medium leading-5 text-[#111827]">
                     Enter the amount you want for this campaign. Your total updates automatically.
                   </span>
                   {quantityError ? <span className="mt-2 block text-xs font-bold text-rose-600">{quantityError}</span> : null}
                 </label>
 
-                <label className="block text-sm font-black text-[#294981]">
+                <label className="block text-sm font-black text-[#0B0B0F]">
                   {linkRule.label}
                   <div className="relative mt-2">
-                    <LinkIcon className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#7690bd]" />
+                    <LinkIcon className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#111827]" />
                     <input
                       value={targetLink}
                       onChange={(event) => {
@@ -324,15 +324,15 @@ export default function DashboardOrderSummaryPage() {
                         setError("");
                       }}
                       placeholder={linkRule.placeholder}
-                      className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-base text-[#17366f] shadow-[0_12px_28px_-24px_rgba(35,60,115,.5)] outline-none transition ${
-                        currentLinkError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#d4e1ff] focus:border-[#8faeff] focus:ring-4 focus:ring-[#dce7ff]"
+                      className={`min-h-14 w-full rounded-2xl border bg-white/90 pl-12 pr-4 text-base text-[#0B0B0F] shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .5)] outline-none transition ${
+                        currentLinkError ? "border-rose-300 focus:ring-4 focus:ring-rose-100" : "border-[#FFF3E0] focus:border-[#FF9F00] focus:ring-4 focus:ring-[#FFF8F1]"
                       }`}
                     />
                   </div>
-                  <span className="mt-2 block text-xs font-medium leading-5 text-[#6079a7]">
+                  <span className="mt-2 block text-xs font-medium leading-5 text-[#111827]">
                     Enter a public profile, post, reel, video, channel, or page link.
                   </span>
-                  <span className="mt-1 block text-xs font-semibold leading-5 text-[#36578f]">{linkRule.helper} Keep it public during delivery.</span>
+                  <span className="mt-1 block text-xs font-semibold leading-5 text-[#FF9F00]">{linkRule.helper} Keep it public during delivery.</span>
                   {currentLinkError ? <span className="mt-2 block text-xs font-bold text-rose-600">{currentLinkError}</span> : null}
                 </label>
               </div>
@@ -362,8 +362,8 @@ export default function DashboardOrderSummaryPage() {
               />
             </div>
 
-            <section className="rounded-[30px] border border-white/90 bg-white/68 p-5 shadow-[0_24px_55px_-38px_rgba(50,72,140,.5)] backdrop-blur-xl sm:p-6">
-              <h2 className="text-center text-sm font-black text-[#17366f]">Order with confidence</h2>
+            <section className="rounded-[30px] border border-white/90 bg-white/68 p-5 shadow-[0_24px_55px_-38px_rgba(255, 159, 0, .5)] backdrop-blur-xl sm:p-6">
+              <h2 className="text-center text-sm font-black text-[#0B0B0F]">Order with confidence</h2>
               <div className="mt-5 grid grid-cols-2 gap-3 xl:grid-cols-5">
                 <ConfidenceItem icon={Clock3} title="Fast delivery" />
                 <ConfidenceItem icon={RefreshCw} title="Refill support available" />
@@ -416,9 +416,9 @@ export default function DashboardOrderSummaryPage() {
 
 function InfoCard({ label, value }: { label: string; value: string }) {
   return (
-    <div className="h-full rounded-2xl border border-white bg-white/78 p-3.5 shadow-[0_12px_28px_-24px_rgba(35,60,115,.5)]">
-      <dt className="text-[#7890bb]">{label}</dt>
-      <dd className="mt-1.5 font-black leading-5 text-[#24457f]">{value}</dd>
+    <div className="h-full rounded-2xl border border-white bg-white/78 p-3.5 shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .5)]">
+      <dt className="text-[#111827]">{label}</dt>
+      <dd className="mt-1.5 font-black leading-5 text-[#0B0B0F]">{value}</dd>
     </div>
   );
 }
@@ -435,8 +435,8 @@ function CheckoutStep({
   const stateClass = state === "complete"
     ? "border-emerald-200 bg-emerald-50/90 text-emerald-700"
     : state === "active"
-      ? "border-blue-200 bg-blue-50/90 text-blue-700 shadow-[0_10px_24px_-18px_rgba(37,99,235,.55)]"
-      : "border-[#e2eaff] bg-white/75 text-[#6a80ac]";
+      ? "border-orange-200 bg-orange-50/90 text-orange-700 shadow-[0_10px_24px_-18px_rgba(255, 159, 0, .55)]"
+      : "border-[#FFF8F1] bg-white/75 text-[#111827]";
 
   return (
     <div className={`flex min-h-14 items-center gap-3 rounded-2xl border px-3.5 py-3 ${stateClass}`}>
@@ -444,8 +444,8 @@ function CheckoutStep({
         state === "complete"
           ? "bg-emerald-600 text-white"
           : state === "active"
-            ? "bg-blue-600 text-white"
-            : "bg-[#e9effc] text-[#7388b1]"
+            ? "bg-orange-600 text-white"
+            : "bg-[#FFF8F1] text-[#111827]"
       }`}>
         {state === "complete" ? <CheckCircle2 className="h-4 w-4" /> : number}
       </span>
@@ -465,8 +465,8 @@ function TrustBadge({
   label: string;
 }) {
   return (
-    <div className="flex min-h-12 items-center gap-2 rounded-2xl border border-[#e0e8fb] bg-white/72 px-3 py-2.5 text-[10px] font-black leading-4 text-[#486394] shadow-[0_12px_24px_-22px_rgba(35,60,115,.45)]">
-      <Icon className="h-4 w-4 shrink-0 text-[#6873d4]" />
+    <div className="flex min-h-12 items-center gap-2 rounded-2xl border border-[#FFF8F1] bg-white/72 px-3 py-2.5 text-[10px] font-black leading-4 text-[#111827] shadow-[0_12px_24px_-22px_rgba(255, 159, 0, .45)]">
+      <Icon className="h-4 w-4 shrink-0 text-[#FF9F00]" />
       {label}
     </div>
   );
@@ -480,8 +480,8 @@ function ConfidenceItem({
   title: string;
 }) {
   return (
-    <div className="flex h-full min-w-0 items-center gap-2.5 rounded-2xl border border-[#e0e9ff] bg-white/80 p-3 text-xs font-black text-[#355186]">
-      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-blue-50 text-blue-600">
+    <div className="flex h-full min-w-0 items-center gap-2.5 rounded-2xl border border-[#FFF8F1] bg-white/80 p-3 text-xs font-black text-[#0B0B0F]">
+      <span className="grid h-8 w-8 shrink-0 place-items-center rounded-xl bg-orange-50 text-orange-600">
         <Icon className="h-4 w-4" />
       </span>
       <span className="leading-5">{title}</span>
@@ -531,21 +531,21 @@ function CheckoutCard({
   onSubmit: () => void;
 }) {
   return (
-    <div className="overflow-hidden rounded-[30px] border border-white/90 bg-white/88 shadow-[0_32px_75px_-40px_rgba(50,72,140,.6)] backdrop-blur-2xl">
-      <div className="border-b border-[#e1e9fb] bg-[linear-gradient(145deg,#f8fbff,#f4f0ff)] p-5 sm:p-6">
+    <div className="overflow-hidden rounded-[30px] border border-white/90 bg-white/88 shadow-[0_32px_75px_-40px_rgba(255, 159, 0, .6)] backdrop-blur-2xl">
+      <div className="border-b border-[#FFF8F1] bg-[linear-gradient(145deg,#FFF8F1,#FFF8F1)] p-5 sm:p-6">
         <div className="flex items-center gap-3">
-          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-white shadow-[0_14px_28px_-14px_rgba(117,109,255,.7)]">
+          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_14px_28px_-14px_rgba(255, 196, 0, .7)]">
             <PlatformIcon platform={platform} className="h-6 w-6" />
           </span>
           <div className="min-w-0">
-            <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#5b75ab]">Premium invoice</p>
-            <h2 className="mt-0.5 text-lg font-black text-[#10234f]">Order summary</h2>
+            <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#111827]">Premium invoice</p>
+            <h2 className="mt-0.5 text-lg font-black text-[#0B0B0F]">Order summary</h2>
           </div>
         </div>
       </div>
 
       <div className="p-5 sm:p-6">
-        <p className="break-words text-base font-black text-[#17366f]">{selectedServiceName}</p>
+        <p className="break-words text-base font-black text-[#0B0B0F]">{selectedServiceName}</p>
         <dl className="mt-5 space-y-3.5 text-sm">
           <SummaryRow label="Service" value={selectedServiceName} />
           <SummaryRow label="Platform" value={platform} />
@@ -556,37 +556,37 @@ function CheckoutCard({
           <SummaryRow label="Refill support" value={support} />
         </dl>
 
-        <div className="mt-5 rounded-2xl border border-[#dce7ff] bg-[linear-gradient(145deg,#f8fbff,#f6f2ff)] p-4">
+        <div className="mt-5 rounded-2xl border border-[#FFF8F1] bg-[linear-gradient(145deg,#FFF8F1,#FFF8F1)] p-4">
           <div className="flex items-center justify-between gap-3 text-sm">
-            <span className="flex items-center gap-2 text-[#6079a7]"><Wallet className="h-4 w-4" />Wallet balance</span>
+            <span className="flex items-center gap-2 text-[#111827]"><Wallet className="h-4 w-4" />Wallet balance</span>
             {walletLoading ? (
-              <span className="h-5 w-24 animate-pulse rounded-lg bg-[#dce7ff]" />
+              <span className="h-5 w-24 animate-pulse rounded-lg bg-[#FFF8F1]" />
             ) : (
-              <b className="text-[#17366f]">{wallet}</b>
+              <b className="text-[#0B0B0F]">{wallet}</b>
             )}
           </div>
-          <div className="mt-4 border-t border-dashed border-[#cbd8f3] pt-4">
+          <div className="mt-4 border-t border-dashed border-[#FFF3E0] pt-4">
             <div className="flex items-end justify-between gap-3">
-              <span className="text-sm font-bold text-[#6079a7]">Total payable</span>
+              <span className="text-sm font-bold text-[#111827]">Total payable</span>
               {quantityIsValid ? (
-                <b className="text-2xl font-black text-[#14316a]">{total}</b>
+                <b className="text-2xl font-black text-[#0B0B0F]">{total}</b>
               ) : (
-                <span className="max-w-[62%] text-right text-xs font-bold leading-5 text-[#687fa9]">
+                <span className="max-w-[62%] text-right text-xs font-bold leading-5 text-[#111827]">
                   Enter quantity to calculate total
                 </span>
               )}
             </div>
             {!walletLoading && quantityIsValid && !hasEnoughWallet ? (
-              <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#e1eaff] pt-3 text-sm">
-                <span className="text-[#6079a7]">Amount needed</span>
-                <b className="text-[#17366f]">{amountToPay}</b>
+              <div className="mt-3 flex items-center justify-between gap-3 border-t border-[#FFF8F1] pt-3 text-sm">
+                <span className="text-[#111827]">Amount needed</span>
+                <b className="text-[#0B0B0F]">{amountToPay}</b>
               </div>
             ) : null}
           </div>
         </div>
 
         {walletLoading ? (
-          <button type="button" disabled className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-60">
+          <button type="button" disabled className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white opacity-60">
             <LoaderCircle className="h-4 w-4 animate-spin" /> Checking wallet...
           </button>
         ) : quantityIsValid && !hasEnoughWallet ? (
@@ -600,18 +600,18 @@ function CheckoutCard({
             {canAddFunds ? (
               <Link
                 href={addFundsHref}
-                className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.7)] transition hover:-translate-y-0.5 hover:brightness-105"
+                className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255, 196, 0, .7)] transition hover:-translate-y-0.5 hover:brightness-105"
               >
                 <Wallet className="h-4 w-4" /> Add {amountToPay} &amp; Place Order
               </Link>
             ) : (
-              <button type="button" disabled className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white opacity-50">
+              <button type="button" disabled className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white opacity-50">
                 <Wallet className="h-4 w-4" /> Add Funds
               </button>
             )}
           </>
         ) : (
-          <button type="button" disabled={!canSubmit || submitting} onClick={onSubmit} className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(117,109,255,.7)] transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
+          <button type="button" disabled={!canSubmit || submitting} onClick={onSubmit} className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255, 196, 0, .7)] transition hover:-translate-y-0.5 hover:brightness-105 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none">
             {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
             {submitting ? "Processing..." : "Place Order Securely"}
           </button>
@@ -625,8 +625,8 @@ function CheckoutCard({
         >
           <FaWhatsapp className="h-4 w-4" /> Need help? WhatsApp Support
         </a>
-        <p className="mt-4 text-center text-[10px] font-semibold leading-5 text-[#7890ba]">{getCurrencyDisclaimer()}</p>
-        <p className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold text-[#6079a7]"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Wallet charged only after confirmation</p>
+        <p className="mt-4 text-center text-[10px] font-semibold leading-5 text-[#111827]">{getCurrencyDisclaimer()}</p>
+        <p className="mt-2 flex items-center justify-center gap-1.5 text-[10px] font-semibold text-[#111827]"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Wallet charged only after confirmation</p>
       </div>
     </div>
   );
@@ -635,8 +635,8 @@ function CheckoutCard({
 function SummaryRow({ label, value }: { label: string; value: string }) {
   return (
     <div className="flex items-start justify-between gap-4">
-      <dt className="shrink-0 text-[#6079a7]">{label}</dt>
-      <dd className="max-w-[62%] break-words text-right font-bold text-[#355186]">{value}</dd>
+      <dt className="shrink-0 text-[#111827]">{label}</dt>
+      <dd className="max-w-[62%] break-words text-right font-bold text-[#0B0B0F]">{value}</dd>
     </div>
   );
 }

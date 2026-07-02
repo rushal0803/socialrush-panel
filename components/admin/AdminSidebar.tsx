@@ -37,13 +37,13 @@ export function AdminNav({ mobile = false }: { mobile?: boolean }) {
               if (mobile) event.currentTarget.closest("details")?.removeAttribute("open");
             }}
             className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
-              active ? "text-white" : "text-[#4b669b] hover:bg-white/70 hover:text-[#1f3d77]"
+              active ? "text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"
             }`}
           >
             {active && (
               <motion.span
                 layoutId={mobile ? "mobile-admin-active" : "admin-active"}
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] shadow-[0_12px_26px_rgba(117,109,255,.35)]"
+                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]"
                 transition={{ type: "spring", stiffness: 380, damping: 30 }}
               />
             )}
@@ -65,20 +65,20 @@ export default function AdminSidebar() {
         <Logo />
       </div>
 
-      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(85,113,175,.12)]">
-        <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#4f6daa]">Administration</p>
-        <p className="mt-1 text-xs font-semibold text-[#1f3d77]">Control center</p>
+      <div className="mx-2 mt-6 rounded-xl border border-white/85 bg-white/82 px-3 py-2.5 shadow-[0_10px_20px_rgba(255, 159, 0, .12)]">
+        <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Administration</p>
+        <p className="mt-1 text-xs font-semibold text-[#0B0B0F]">Control center</p>
       </div>
 
-      <p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#6f85b0]">Management</p>
+      <p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#111827]">Management</p>
       <AdminNav />
 
       <div className="mt-auto">
-        <Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#5e77a6] hover:bg-white/70 hover:text-[#1f3b75]">
+        <Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
           ← Customer dashboard
         </Link>
         <form action={logout}>
-          <button className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#5e77a6] hover:bg-white/70 hover:text-[#1f3b75]">
+          <button className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
             ↪ Sign out
           </button>
         </form>

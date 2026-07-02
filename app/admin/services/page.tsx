@@ -172,7 +172,7 @@ export default async function ServicesPage() {
             <tbody className="divide-y divide-slate-100">
               {(services ?? []).map((service) => (
                 <tr key={service.id} className="hover:bg-slate-50">
-                  <td className="px-5 py-4 font-bold text-blue-600">#{service.id}</td>
+                  <td className="px-5 py-4 font-bold text-orange-600">#{service.id}</td>
 
                   <td className="max-w-[300px] px-5 py-4">
                     <p className="font-semibold">{service.name}</p>

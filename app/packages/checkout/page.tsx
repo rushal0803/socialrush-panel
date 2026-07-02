@@ -8,7 +8,7 @@ export const metadata: Metadata = {
 
 export default function PackageCheckoutPage() {
   return (
-    <Suspense fallback={<div className="min-h-screen bg-[linear-gradient(165deg,#f0f9ff_0%,#fdf4ff_30%,#fff1f8_55%,#f5f3ff_80%,#ecfeff_100%)]" />}>
+    <Suspense fallback={<div className="min-h-screen bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_30%,#FFF8F1_55%,#FFF8F1_80%,#FFF8F1_100%)]" />}>
       <PackageCheckoutContent />
     </Suspense>
   );

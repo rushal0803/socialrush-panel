@@ -49,19 +49,19 @@ function CurrencySelector() {
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-3 text-sm font-bold text-[#17366f] shadow-[0_10px_24px_rgba(79,108,168,.12)] transition hover:-translate-y-0.5 hover:bg-white sm:px-3.5"
+        className="inline-flex h-10 items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5 hover:bg-white sm:px-3.5"
       >
         <span className="sm:hidden">{active.symbol} {active.code}</span>
         <span className="hidden sm:inline-flex items-center gap-2">
-          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#6a80ad]">Currency:</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">Currency:</span>
           <span>{active.code} {active.symbol}</span>
         </span>
-        <ChevronDown className="h-4 w-4 text-[#6e84b2]" />
+        <ChevronDown className="h-4 w-4 text-[#111827]" />
       </button>
 
       {open ? (
         <div className="absolute right-0 top-full z-[80] mt-2 w-56 overflow-hidden rounded-2xl border border-white/85 bg-white/95 p-2 shadow-[0_24px_60px_-26px_rgba(15,23,42,.35)] backdrop-blur-xl">
-          <p className="px-3 pb-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#5f79a9]">Select currency</p>
+          <p className="px-3 pb-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Select currency</p>
           <div className="grid gap-1">
             {options.map((option) => {
               const selected = option.code === currency;
@@ -73,10 +73,10 @@ function CurrencySelector() {
                     setCurrency(option.code);
                     setOpen(false);
                   }}
-                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? "bg-[#eef4ff] text-[#18356f]" : "text-[#4a6598] hover:bg-[#f6f9ff]"}`}
+                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? "bg-[#FFF8F1] text-[#0B0B0F]" : "text-[#111827] hover:bg-[#FFF8F1]"}`}
                 >
                   <span>{option.code}</span>
-                  <span className="text-right font-black text-[#17366f]">{option.symbol}</span>
+                  <span className="text-right font-black text-[#0B0B0F]">{option.symbol}</span>
                 </button>
               );
             })}
@@ -89,7 +89,7 @@ function CurrencySelector() {
 
 export default function DashboardHeaderBar({ name, role, initials }: { name: string; role: string; initials: string }) {
   return (
-    <header className="sticky top-0 z-[9999] border-b border-white/70 bg-white/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(30,58,110,.45)] backdrop-blur-xl sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-[9999] border-b border-white/70 bg-white/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(255, 159, 0, .45)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-14 max-w-[1800px] items-center gap-1.5 min-[430px]:gap-2 sm:gap-4">
         <Logo compactOnMobile priority />
 
@@ -98,7 +98,7 @@ export default function DashboardHeaderBar({ name, role, initials }: { name: str
 
           <Link
             href="/dashboard/add-funds"
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(117,109,255,.6)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
+            className="inline-flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255, 196, 0, .6)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
           >
             <Wallet className="h-4 w-4" />
             <span className="hidden sm:inline">Add Funds</span>
@@ -107,14 +107,14 @@ export default function DashboardHeaderBar({ name, role, initials }: { name: str
           <Link
             href="/dashboard/account"
             aria-label="Open profile"
-            className="hidden h-10 items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-2.5 text-left shadow-[0_10px_24px_rgba(79,108,168,.12)] transition hover:-translate-y-0.5 hover:bg-white min-[430px]:inline-flex sm:px-3"
+            className="hidden h-10 items-center gap-2 rounded-xl border border-white/80 bg-white/85 px-2.5 text-left shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5 hover:bg-white min-[430px]:inline-flex sm:px-3"
           >
-            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#ff66b2] via-[#8f8dff] to-[#47c4ff] text-xs font-black text-white shadow-[0_10px_24px_rgba(117,109,255,.3)]">
+            <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]">
               {initials}
             </span>
             <span className="hidden min-w-0 flex-col text-left sm:flex">
-              <span className="truncate text-sm font-bold text-[#18356f]">{name}</span>
-              <span className="truncate text-[11px] capitalize text-[#6880ae]">{role}</span>
+              <span className="truncate text-sm font-bold text-[#0B0B0F]">{name}</span>
+              <span className="truncate text-[11px] capitalize text-[#111827]">{role}</span>
             </span>
           </Link>
 

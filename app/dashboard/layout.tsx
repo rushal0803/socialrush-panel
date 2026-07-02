@@ -19,9 +19,9 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
       <main className="dashboard-shell grid min-h-screen place-items-center px-6">
         <section className="dashboard-glass w-full max-w-lg p-8 text-center">
           <p className="text-xs font-bold uppercase tracking-[0.14em] text-[#f59f0b]">Dashboard setup required</p>
-          <h1 className="mt-3 text-2xl font-black text-[#122a5c]">Your account is signed in</h1>
-          <p className="mt-4 text-sm leading-7 text-[#4d6796]">{message}</p>
-          <p className="mt-4 text-xs leading-6 text-[#6d84b3]">
+          <h1 className="mt-3 text-2xl font-black text-[#0B0B0F]">Your account is signed in</h1>
+          <p className="mt-4 text-sm leading-7 text-[#111827]">{message}</p>
+          <p className="mt-4 text-xs leading-6 text-[#111827]">
             Ask the project administrator to apply the latest Supabase migrations, then refresh this page.
           </p>
         </section>

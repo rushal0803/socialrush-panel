@@ -232,35 +232,35 @@ export default function IndiaServiceLandingPage({
       ))}
 
       <section className="relative overflow-hidden px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24">
-        <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-pink-200/45 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-cyan-200/45 blur-3xl" />
+        <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-orange-200/45 blur-3xl" />
+        <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.14fr_.86fr]">
           <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/80 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#5270aa] shadow-sm">
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-pink-500 via-violet-500 to-cyan-500 text-white">
+            <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/80 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#111827] shadow-sm">
+              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-orange-500 via-amber-500 to-amber-500 text-white">
                 <PlatformIcon platform={page.platform} className="h-4 w-4" />
               </span>
               {page.platform} growth service India
             </span>
-            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#14316a] sm:text-5xl lg:text-6xl">
+            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#0B0B0F] sm:text-5xl lg:text-6xl">
               Buy {page.serviceName} India
             </h1>
-            <p className="mt-6 max-w-3xl text-base leading-8 text-[#526d9f] sm:text-lg">
+            <p className="mt-6 max-w-3xl text-base leading-8 text-[#111827] sm:text-lg">
               {page.intro}
             </p>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6079a7]">
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827]">
               {page.overview}
             </p>
             <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
               <Link
                 href={packagesHref}
-                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white shadow-[0_14px_30px_-14px_rgba(117,109,255,.65)] transition hover:-translate-y-0.5"
+                className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5"
               >
                 View Packages <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={orderHref}
-                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#d4e1ff] bg-white/90 px-6 py-3 text-sm font-black text-[#35548d]"
+                className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-black text-[#FF9F00]"
               >
                 Order Now
               </Link>
@@ -275,48 +275,48 @@ export default function IndiaServiceLandingPage({
             </div>
           </div>
 
-          <aside className="rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_30px_70px_-35px_rgba(35,60,120,.5)] backdrop-blur-2xl sm:p-8">
+          <aside className="rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_30px_70px_-35px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-8">
             <div className="flex items-center justify-between gap-4">
-              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-pink-500 via-violet-500 to-cyan-500 text-white shadow-lg">
+              <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 via-amber-500 to-amber-500 text-white shadow-lg">
                 <PlatformIcon platform={page.platform} className="h-7 w-7" />
               </span>
               <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700">
                 Available in India
               </span>
             </div>
-            <p className="mt-7 text-[10px] font-black uppercase tracking-[0.15em] text-[#7890bb]">
+            <p className="mt-7 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
               {page.serviceName}
             </p>
-            <p className="mt-2 text-4xl font-black text-[#17366f]">
+            <p className="mt-2 text-4xl font-black text-[#0B0B0F]">
               ₹{page.price.toLocaleString("en-IN")}{" "}
-              <span className="text-sm text-[#6079a7]">per 1K</span>
+              <span className="text-sm text-[#111827]">per 1K</span>
             </p>
-            <p className="mt-3 text-xs leading-6 text-[#6079a7]">
+            <p className="mt-3 text-xs leading-6 text-[#111827]">
               Final price may depend on selected quantity and package availability.
             </p>
-            <dl className="mt-6 grid gap-3 border-t border-[#dce7ff] pt-5 text-xs">
+            <dl className="mt-6 grid gap-3 border-t border-[#FFF8F1] pt-5 text-xs">
               <div className="flex justify-between gap-4">
-                <dt className="text-[#7890bb]">Required</dt>
-                <dd className="max-w-[65%] text-right font-black text-[#294981]">
+                <dt className="text-[#111827]">Required</dt>
+                <dd className="max-w-[65%] text-right font-black text-[#0B0B0F]">
                   {page.destination}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-[#7890bb]">Delivery</dt>
-                <dd className="text-right font-black text-[#294981]">
+                <dt className="text-[#111827]">Delivery</dt>
+                <dd className="text-right font-black text-[#0B0B0F]">
                   {page.delivery}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
-                <dt className="text-[#7890bb]">Refill/support</dt>
-                <dd className="max-w-[65%] text-right font-black text-[#294981]">
+                <dt className="text-[#111827]">Refill/support</dt>
+                <dd className="max-w-[65%] text-right font-black text-[#0B0B0F]">
                   {page.refill}
                 </dd>
               </div>
             </dl>
             <Link
               href={orderHref}
-              className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-5 py-3 text-sm font-black text-white"
+              className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white"
             >
               Buy {page.serviceName} Now
             </Link>
@@ -329,10 +329,10 @@ export default function IndiaServiceLandingPage({
           {trustCards.map(({ title, icon: Icon }) => (
             <article
               key={title}
-              className="rounded-2xl border border-[#dce7ff] bg-white p-4 text-center shadow-[0_16px_34px_-28px_rgba(28,54,108,.45)]"
+              className="rounded-2xl border border-[#FFF8F1] bg-white p-4 text-center shadow-[0_16px_34px_-28px_rgba(255, 159, 0, .45)]"
             >
-              <Icon className="mx-auto h-5 w-5 text-[#6873d4]" />
-              <h3 className="mt-3 text-xs font-black leading-5 text-[#17366f]">
+              <Icon className="mx-auto h-5 w-5 text-[#FF9F00]" />
+              <h3 className="mt-3 text-xs font-black leading-5 text-[#0B0B0F]">
                 {title}
               </h3>
             </article>
@@ -342,13 +342,13 @@ export default function IndiaServiceLandingPage({
 
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-blue-600">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">
             Why SocialRUSH
           </p>
-          <h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-[#14316a] sm:text-4xl">
+          <h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-4xl">
             A professional {page.platform} growth service for Indian customers
           </h2>
-          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#6079a7] sm:text-base">
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base">
             {page.value} SocialRUSH provides clear campaign details without
             unrealistic promises or requests for private account access.
           </p>
@@ -358,15 +358,15 @@ export default function IndiaServiceLandingPage({
               return (
                 <article
                   key={title}
-                  className="rounded-3xl border border-white/90 bg-white/80 p-6 shadow-[0_22px_52px_-36px_rgba(35,60,120,.5)] backdrop-blur-xl"
+                  className="rounded-3xl border border-white/90 bg-white/80 p-6 shadow-[0_22px_52px_-36px_rgba(255, 159, 0, .5)] backdrop-blur-xl"
                 >
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#f6eaff] to-[#e7f7ff] text-[#6873d4]">
+                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#FFF8F1] to-[#FFF8F1] text-[#FF9F00]">
                     <Icon className="h-5 w-5" />
                   </span>
-                  <h3 className="mt-5 text-base font-black text-[#17366f]">
+                  <h3 className="mt-5 text-base font-black text-[#0B0B0F]">
                     {title}
                   </h3>
-                  <p className="mt-2 text-sm leading-7 text-[#6079a7]">{text}</p>
+                  <p className="mt-2 text-sm leading-7 text-[#111827]">{text}</p>
                 </article>
               );
             })}
@@ -376,17 +376,17 @@ export default function IndiaServiceLandingPage({
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-black tracking-tight text-[#14316a]">
+          <h2 className="text-3xl font-black tracking-tight text-[#0B0B0F]">
             Who is this {page.serviceName} service for?
           </h2>
           <div className="mt-8 grid grid-cols-2 gap-3 sm:grid-cols-4">
             {page.audiences.map((audience) => (
               <article
                 key={audience}
-                className="rounded-2xl border border-[#dce7ff] bg-white p-5 text-center shadow-sm"
+                className="rounded-2xl border border-[#FFF8F1] bg-white p-5 text-center shadow-sm"
               >
-                <Users className="mx-auto h-5 w-5 text-pink-600" />
-                <h3 className="mt-3 text-sm font-black text-[#17366f]">
+                <Users className="mx-auto h-5 w-5 text-orange-600" />
+                <h3 className="mt-3 text-sm font-black text-[#0B0B0F]">
                   {audience}
                 </h3>
               </article>
@@ -397,25 +397,25 @@ export default function IndiaServiceLandingPage({
 
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-black uppercase tracking-[0.16em] text-blue-600">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">
             How it works
           </p>
-          <h2 className="mt-3 text-3xl font-black tracking-tight text-[#14316a]">
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F]">
             How to place an order in six clear steps
           </h2>
           <div className="mt-9 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {steps.map(([title, text], index) => (
               <article
                 key={title}
-                className="rounded-3xl border border-white/90 bg-white/80 p-5 shadow-[0_20px_48px_-34px_rgba(35,60,120,.5)]"
+                className="rounded-3xl border border-white/90 bg-white/80 p-5 shadow-[0_20px_48px_-34px_rgba(255, 159, 0, .5)]"
               >
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-pink-500 via-violet-500 to-cyan-500 text-sm font-black text-white">
+                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-orange-500 via-amber-500 to-amber-500 text-sm font-black text-white">
                   {index + 1}
                 </span>
-                <h3 className="mt-5 text-base font-black text-[#17366f]">
+                <h3 className="mt-5 text-base font-black text-[#0B0B0F]">
                   {title}
                 </h3>
-                <p className="mt-2 text-sm leading-6 text-[#6079a7]">{text}</p>
+                <p className="mt-2 text-sm leading-6 text-[#111827]">{text}</p>
               </article>
             ))}
           </div>
@@ -427,29 +427,29 @@ export default function IndiaServiceLandingPage({
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
-          <article className="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-[0_24px_56px_-38px_rgba(35,60,120,.5)] sm:p-8">
+          <article className="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-[0_24px_56px_-38px_rgba(255, 159, 0, .5)] sm:p-8">
             <ShieldCheck className="h-8 w-8 text-emerald-600" />
-            <h2 className="mt-5 text-2xl font-black text-[#14316a]">
+            <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">
               Is it safe to buy {page.serviceName} from SocialRUSH?
             </h2>
-            <p className="mt-4 text-sm leading-7 text-[#6079a7]">
+            <p className="mt-4 text-sm leading-7 text-[#111827]">
               {page.safety}
             </p>
-            <p className="mt-3 text-sm leading-7 text-[#6079a7]">
+            <p className="mt-3 text-sm leading-7 text-[#111827]">
               No campaign can guarantee virality, revenue, rankings, or permanent
               platform outcomes. Combine visible growth with useful content and
               responsible account management.
             </p>
           </article>
-          <article className="rounded-[2rem] border border-blue-100 bg-white p-6 shadow-[0_24px_56px_-38px_rgba(35,60,120,.5)] sm:p-8">
-            <RefreshCw className="h-8 w-8 text-blue-600" />
-            <h2 className="mt-5 text-2xl font-black text-[#14316a]">
+          <article className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-[0_24px_56px_-38px_rgba(255, 159, 0, .5)] sm:p-8">
+            <RefreshCw className="h-8 w-8 text-orange-600" />
+            <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">
               Delivery and refill support
             </h2>
-            <p className="mt-4 text-sm leading-7 text-[#6079a7]">
+            <p className="mt-4 text-sm leading-7 text-[#111827]">
               {page.deliveryCopy}
             </p>
-            <p className="mt-3 text-sm leading-7 text-[#6079a7]">
+            <p className="mt-3 text-sm leading-7 text-[#111827]">
               Current refill or support coverage is shown before checkout. Contact
               support with your order ID if an eligible campaign needs review.
             </p>
@@ -459,12 +459,12 @@ export default function IndiaServiceLandingPage({
 
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-black tracking-tight text-[#14316a]">
+          <h2 className="text-3xl font-black tracking-tight text-[#0B0B0F]">
             SocialRUSH vs random providers
           </h2>
-          <div className="mt-8 overflow-x-auto rounded-3xl border border-[#dce7ff] bg-white shadow-[0_24px_56px_-38px_rgba(35,60,120,.5)]">
+          <div className="mt-8 overflow-x-auto rounded-3xl border border-[#FFF8F1] bg-white shadow-[0_24px_56px_-38px_rgba(255, 159, 0, .5)]">
             <table className="w-full min-w-[680px] text-left text-sm">
-              <thead className="bg-[#f5f8ff] text-[#294981]">
+              <thead className="bg-[#FFF8F1] text-[#0B0B0F]">
                 <tr>
                   {["Comparison", "SocialRUSH", "Random providers"].map((head) => (
                     <th key={head} className="px-5 py-4 font-black">
@@ -473,10 +473,10 @@ export default function IndiaServiceLandingPage({
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-[#e5edff] text-[#6079a7]">
+              <tbody className="divide-y divide-[#FFF8F1] text-[#111827]">
                 {comparisonRows.map(([label, socialRush, other]) => (
                   <tr key={label}>
-                    <th className="px-5 py-4 font-bold text-[#294981]">{label}</th>
+                    <th className="px-5 py-4 font-bold text-[#0B0B0F]">{label}</th>
                     <td className="px-5 py-4">{socialRush}</td>
                     <td className="px-5 py-4">{other}</td>
                   </tr>
@@ -489,10 +489,10 @@ export default function IndiaServiceLandingPage({
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-black tracking-tight text-[#14316a]">
+          <h2 className="text-3xl font-black tracking-tight text-[#0B0B0F]">
             Related {page.platform} growth guides
           </h2>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#6079a7]">
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#111827]">
             Learn how to evaluate pricing, prepare your public destination, and combine a campaign with responsible organic growth.
           </p>
           <div className="mt-7 grid gap-4 md:grid-cols-3">
@@ -500,11 +500,11 @@ export default function IndiaServiceLandingPage({
               <Link
                 key={article.slug}
                 href={`/blog/${article.slug}`}
-                className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff]"
+                className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(255, 159, 0, .45)] transition hover:-translate-y-1 hover:border-[#FFF3E0]"
               >
-                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-violet-600">{article.category}</span>
-                <h3 className="mt-3 text-base font-black leading-6 text-[#17366f]">{article.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#6079a7]">{article.description}</p>
+                <span className="text-[10px] font-black uppercase tracking-[0.12em] text-amber-600">{article.category}</span>
+                <h3 className="mt-3 text-base font-black leading-6 text-[#0B0B0F]">{article.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-[#111827]">{article.description}</p>
               </Link>
             ))}
           </div>
@@ -513,7 +513,7 @@ export default function IndiaServiceLandingPage({
 
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <h2 className="text-3xl font-black tracking-tight text-[#14316a]">
+          <h2 className="text-3xl font-black tracking-tight text-[#0B0B0F]">
             Explore related growth services
           </h2>
           <div className="mt-7 grid gap-4 md:grid-cols-3">
@@ -523,16 +523,16 @@ export default function IndiaServiceLandingPage({
                 <Link
                   key={related.slug}
                   href={`/${related.slug}`}
-                  className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(28,54,108,.45)] transition hover:-translate-y-1 hover:border-[#cbdcff]"
+                  className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(255, 159, 0, .45)] transition hover:-translate-y-1 hover:border-[#FFF3E0]"
                 >
                   <PlatformIcon
                     platform={related.platform}
-                    className="h-6 w-6 text-pink-600"
+                    className="h-6 w-6 text-orange-600"
                   />
-                  <h3 className="mt-4 text-base font-black text-[#17366f]">
+                  <h3 className="mt-4 text-base font-black text-[#0B0B0F]">
                     {related.serviceName}
                   </h3>
-                  <p className="mt-2 text-sm leading-6 text-[#6079a7]">
+                  <p className="mt-2 text-sm leading-6 text-[#111827]">
                     View pricing, delivery information, safety guidance, and
                     frequently asked questions.
                   </p>
@@ -550,7 +550,7 @@ export default function IndiaServiceLandingPage({
               <Link
                 key={href}
                 href={href}
-                className="rounded-xl border border-[#d4e1ff] bg-white px-4 py-3 text-sm font-bold text-[#35548d]"
+                className="rounded-xl border border-[#FFF3E0] bg-white px-4 py-3 text-sm font-bold text-[#FF9F00]"
               >
                 {label}
               </Link>
@@ -561,19 +561,19 @@ export default function IndiaServiceLandingPage({
 
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-5xl">
-          <h2 className="text-center text-3xl font-black tracking-tight text-[#14316a]">
+          <h2 className="text-center text-3xl font-black tracking-tight text-[#0B0B0F]">
             {page.serviceName} FAQs
           </h2>
           <div className="mt-9 grid gap-4">
             {faqs.map((faq) => (
               <article
                 key={faq.question}
-                className="rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-32px_rgba(35,60,120,.5)] sm:p-6"
+                className="rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-32px_rgba(255, 159, 0, .5)] sm:p-6"
               >
-                <h3 className="text-base font-black text-[#17366f]">
+                <h3 className="text-base font-black text-[#0B0B0F]">
                   {faq.question}
                 </h3>
-                <p className="mt-3 text-sm leading-7 text-[#6079a7]">
+                <p className="mt-3 text-sm leading-7 text-[#111827]">
                   {faq.answer}
                 </p>
               </article>
@@ -583,25 +583,25 @@ export default function IndiaServiceLandingPage({
       </section>
 
       <section className="px-4 pb-20 sm:px-6 lg:px-8 lg:pb-28">
-        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/90 bg-[linear-gradient(135deg,#fff1f8_0%,#eef7ff_48%,#f4efff_100%)] p-7 text-center shadow-[0_30px_70px_-38px_rgba(35,60,120,.5)] sm:p-12">
-          <BarChart3 className="mx-auto h-9 w-9 text-violet-600" />
-          <h2 className="mt-5 text-3xl font-black tracking-tight text-[#14316a]">
+        <div className="mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-white/90 bg-[linear-gradient(135deg,#FFF8F1_0%,#FFF8F1_48%,#FFF8F1_100%)] p-7 text-center shadow-[0_30px_70px_-38px_rgba(255, 159, 0, .5)] sm:p-12">
+          <BarChart3 className="mx-auto h-9 w-9 text-amber-600" />
+          <h2 className="mt-5 text-3xl font-black tracking-tight text-[#0B0B0F]">
             Ready to grow your {page.platform} presence?
           </h2>
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#6079a7]">
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#111827]">
             Compare current packages, review delivery and support terms, and start
             with the campaign size that fits your goals.
           </p>
           <div className="mt-7 flex flex-col justify-center gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
             <Link
               href={packagesHref}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff67b2] via-[#8b8dff] to-[#46c3ff] px-6 py-3 text-sm font-black text-white"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white"
             >
               View {page.platform} Packages
             </Link>
             <Link
               href={orderHref}
-              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#d4e1ff] bg-white px-6 py-3 text-sm font-black text-[#35548d]"
+              className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-6 py-3 text-sm font-black text-[#FF9F00]"
             >
               Start Order
             </Link>

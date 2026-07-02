@@ -61,15 +61,15 @@ export default async function AdminOrdersPage({ searchParams = {} }: { searchPar
       ) : null}
 
       <form className="mt-6 grid gap-3 rounded-3xl border border-white bg-white/85 p-4 shadow-sm sm:grid-cols-2 xl:grid-cols-7">
-        <input name="q" defaultValue={searchParams.q} className="rounded-xl border border-slate-200 px-3 py-3 text-xs outline-none focus:border-blue-500 xl:col-span-2" placeholder="Order ID, email, link or provider ID" />
-        <input name="customer" defaultValue={searchParams.customer} className="rounded-xl border border-slate-200 px-3 py-3 text-xs outline-none focus:border-blue-500" placeholder="Customer email/name" />
+        <input name="q" defaultValue={searchParams.q} className="rounded-xl border border-slate-200 px-3 py-3 text-xs outline-none focus:border-orange-500 xl:col-span-2" placeholder="Order ID, email, link or provider ID" />
+        <input name="customer" defaultValue={searchParams.customer} className="rounded-xl border border-slate-200 px-3 py-3 text-xs outline-none focus:border-orange-500" placeholder="Customer email/name" />
         <select name="status" defaultValue={filter} className="rounded-xl border border-slate-200 bg-white px-3 py-3 text-xs capitalize">
           {statuses.map((item) => <option key={item} value={item}>{item === "all" ? "All statuses" : item.replaceAll("_", " ")}</option>)}
         </select>
         <input name="platform" defaultValue={platform} className="rounded-xl border border-slate-200 px-3 py-3 text-xs" placeholder="Platform" />
         <input name="service" defaultValue={serviceFilter} className="rounded-xl border border-slate-200 px-3 py-3 text-xs" placeholder="Service" />
         <div className="flex gap-2">
-          <button className="flex-1 rounded-xl bg-blue-600 px-4 py-3 text-xs font-bold text-white">Filter</button>
+          <button className="flex-1 rounded-xl bg-orange-600 px-4 py-3 text-xs font-bold text-white">Filter</button>
           <Link href="/admin/orders" className="grid place-items-center rounded-xl bg-slate-100 px-4 text-xs font-bold text-slate-600">Reset</Link>
         </div>
         <label className="text-[10px] font-bold uppercase text-slate-400">From<input name="from" type="date" defaultValue={searchParams.from} className="mt-1 w-full rounded-xl border border-slate-200 px-3 py-2.5 text-xs text-slate-600" /></label>
@@ -93,24 +93,24 @@ export default async function AdminOrdersPage({ searchParams = {} }: { searchPar
                 const progress = order.progress_percent === null ? null : Number(order.progress_percent);
                 return (
                   <tr key={order.id} className="align-top hover:bg-slate-50">
-                    <td className="px-4 py-4"><p className="font-bold text-blue-600">#{order.id.slice(0, 8).toUpperCase()}</p><p className="mt-1 text-[9px] text-slate-400">{order.id}</p></td>
+                    <td className="px-4 py-4"><p className="font-bold text-orange-600">#{order.id.slice(0, 8).toUpperCase()}</p><p className="mt-1 text-[9px] text-slate-400">{order.id}</p></td>
                     <td className="px-4 py-4"><p className="font-semibold">{profile?.full_name || "Customer"}</p><p className="mt-1 text-[9px] text-slate-400">{profile?.email || "—"}</p></td>
                     <td className="max-w-[220px] px-4 py-4"><p className="font-bold capitalize">{order.platform || "Other"}</p><p className="mt-1 truncate text-slate-500">{order.service_name || service?.name || "Service"}</p></td>
-                    <td className="max-w-[240px] px-4 py-4"><a href={order.link} target="_blank" rel="noopener noreferrer" className="block truncate text-blue-600 hover:underline">{order.link}</a></td>
+                    <td className="max-w-[240px] px-4 py-4"><a href={order.link} target="_blank" rel="noopener noreferrer" className="block truncate text-orange-600 hover:underline">{order.link}</a></td>
                     <td className="px-4 py-4 font-semibold">{count(order.quantity)}</td>
                     <td className="px-4 py-4 font-bold">{money(order.charge)}</td>
                     <td className="px-4 py-4">{count(order.starting_count)}{order.count_detection_status === "failed" ? <p className="mt-1 max-w-36 text-[9px] font-semibold text-amber-600">Manual count needed</p> : null}</td>
                     <td className="px-4 py-4">{count(order.current_count)}</td>
                     <td className="px-4 py-4">{count(order.remaining_count)}</td>
                     <td className="px-4 py-4">
-                      <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-cyan-400" style={{ width: `${progress ?? 0}%` }} /></div>
+                      <div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400" style={{ width: `${progress ?? 0}%` }} /></div>
                       <p className="mt-1 text-[9px] text-slate-500">{progress === null ? "Not available" : `${progress.toFixed(1)}%`}</p>
                     </td>
                     <td className="px-4 py-4"><AdminStatus value={order.status} /></td>
                     <td className="px-4 py-4"><AdminStatus value={order.payment_status || "paid"} /></td>
                     <td className="px-4 py-4 text-[10px] text-slate-500">{new Date(order.created_at).toLocaleString("en-IN")}</td>
                     <td className="px-4 py-4 text-[10px] text-slate-500">{new Date(order.updated_at || order.created_at).toLocaleString("en-IN")}</td>
-                    <td className="px-4 py-4"><Link href={`/admin/orders/${order.id}`} className="inline-flex rounded-xl bg-[#0a1b3d] px-4 py-2.5 text-[10px] font-bold text-white">View & manage</Link></td>
+                    <td className="px-4 py-4"><Link href={`/admin/orders/${order.id}`} className="inline-flex rounded-xl bg-[#0B0B0F] px-4 py-2.5 text-[10px] font-bold text-white">View & manage</Link></td>
                   </tr>
                 );
               })}
