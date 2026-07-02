@@ -24,8 +24,8 @@ html {
 
 body {
   margin: 0;
-  color: #0B0B0F;
-  background: #fff8f1;
+  color: #fff;
+  background: #050505;
   min-height: 100vh;
   font-family: Inter, "Segoe UI", Arial, sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
@@ -239,6 +239,123 @@ h6 {
     linear-gradient(90deg, rgba(255, 122, 0, 0.07) 1px, transparent 1px);
   background-size: 42px 42px;
   mask-image: linear-gradient(to bottom, black, transparent 85%);
+}
+
+.public-dark {
+  color: #fff;
+  background:
+    radial-gradient(60rem 34rem at -10% 8%, rgba(255, 122, 0, 0.13), transparent 62%),
+    radial-gradient(52rem 32rem at 110% 28%, rgba(255, 159, 0, 0.1), transparent 64%),
+    #050505 !important;
+}
+
+.public-dark section {
+  color: #fff;
+}
+
+.public-dark section:nth-of-type(even) {
+  background-image: linear-gradient(135deg, rgba(255, 122, 0, 0.035), rgba(255, 159, 0, 0.075), rgba(5, 5, 5, 0));
+}
+
+.public-dark header {
+  border-color: rgba(255, 122, 0, 0.2) !important;
+  background-color: rgba(11, 11, 15, 0.96) !important;
+}
+
+.public-dark article {
+  border-color: rgba(255, 122, 0, 0.28) !important;
+  background-color: #111111 !important;
+  background-image: none !important;
+  box-shadow: 0 20px 44px rgba(0, 0, 0, 0.34), 0 0 28px rgba(255, 122, 0, 0.045);
+}
+
+.public-dark [class*="bg-white"],
+.public-dark [class*="bg-[#FFF8F1]"],
+.public-dark [class*="bg-[#FFF3E0]"],
+.public-dark [class*="bg-[linear-gradient"][class*="#FFF"],
+.public-dark [class*="bg-[radial-gradient"][class*="#FFF"] {
+  border-color: rgba(255, 122, 0, 0.24) !important;
+  background-color: #111111 !important;
+  background-image: none !important;
+}
+
+.public-dark [class*="from-white"],
+.public-dark [class*="via-white"],
+.public-dark [class*="to-white"] {
+  --tw-gradient-from: #111111 var(--tw-gradient-from-position) !important;
+  --tw-gradient-to: rgb(17 17 17 / 0) var(--tw-gradient-to-position) !important;
+  --tw-gradient-stops: var(--tw-gradient-from), #151515 var(--tw-gradient-via-position), var(--tw-gradient-to) !important;
+}
+
+.public-dark [class*="bg-orange-50"],
+.public-dark [class*="bg-amber-50"] {
+  background-color: rgba(255, 122, 0, 0.11) !important;
+}
+
+.public-dark [class*="border-white"],
+.public-dark [class*="border-slate-"],
+.public-dark [class*="border-orange-1"],
+.public-dark [class*="border-orange-2"],
+.public-dark [class*="border-amber-1"],
+.public-dark [class*="border-amber-2"] {
+  border-color: rgba(255, 122, 0, 0.28) !important;
+}
+
+.public-dark h1,
+.public-dark h2,
+.public-dark h3,
+.public-dark h4,
+.public-dark h5,
+.public-dark h6,
+.public-dark [class*="text-slate-900"],
+.public-dark [class*="text-slate-800"],
+.public-dark [class*="text-[#0B0B0F]"] {
+  color: #fff !important;
+}
+
+.public-dark [class*="text-slate-700"],
+.public-dark [class*="text-slate-600"],
+.public-dark [class*="text-[#111827]"],
+.public-dark [class*="text-[#4B5563]"] {
+  color: #d1d5db !important;
+}
+
+.public-dark [class*="text-slate-500"],
+.public-dark [class*="text-slate-400"] {
+  color: #9ca3af !important;
+}
+
+.public-dark input,
+.public-dark select,
+.public-dark textarea {
+  border-color: rgba(255, 122, 0, 0.3) !important;
+  background-color: #111111 !important;
+  color: #fff !important;
+}
+
+.public-dark input::placeholder,
+.public-dark textarea::placeholder {
+  color: #6b7280 !important;
+}
+
+.public-dark input:focus,
+.public-dark select:focus,
+.public-dark textarea:focus {
+  border-color: #ff7a00 !important;
+  box-shadow: 0 0 0 4px rgba(255, 122, 0, 0.15) !important;
+}
+
+.public-dark a[class*="bg-white"],
+.public-dark button[class*="bg-white"] {
+  border-color: rgba(255, 122, 0, 0.42) !important;
+  background-color: #151515 !important;
+  color: #fff !important;
+}
+
+.public-dark a[class*="bg-white"]:hover,
+.public-dark button[class*="bg-white"]:hover {
+  background-color: rgba(255, 122, 0, 0.14) !important;
+  color: #ff9f00 !important;
 }
 
 .brand-footer {
