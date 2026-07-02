@@ -171,127 +171,88 @@ const whySocialRush = [
   },
 ] as const;
 
-const benefits = [
-  {
-    title: "Global Reach",
-    text: "Expand your brand visibility across major social channels worldwide.",
-    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
-    grad: "from-cyan-500 to-blue-500",
-    bg: "from-cyan-50 to-blue-50",
-  },
-  {
-    title: "Fast Delivery",
-    text: "Optimized fulfillment flow for stable and timely campaign performance.",
-    icon: "M13 10V3L4 14h7v7l9-11h-7z",
-    grad: "from-pink-500 to-rose-500",
-    bg: "from-pink-50 to-rose-50",
-  },
-  {
-    title: "Premium Quality",
-    text: "Consistent quality checks and clear service expectations at checkout.",
-    icon: "M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z",
-    grad: "from-violet-500 to-purple-600",
-    bg: "from-violet-50 to-purple-50",
-  },
-  {
-    title: "Dedicated Support",
-    text: "Human-first support for onboarding, service selection, and updates.",
-    icon: "M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z",
-    grad: "from-amber-400 to-orange-500",
-    bg: "from-amber-50 to-orange-50",
-  },
-] as const;
-
 const featuredServices = [
   {
-    name: "Instagram Growth",
+    name: "Instagram Campaigns",
+    platform: "instagram",
     href: "/buy-instagram-followers-india",
-    text: "Improve profile momentum with follower, view, and engagement campaigns.",
-    icon: "M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 3c1.66 0 3 1.34 3 3s-1.34 3-3 3-3-1.34-3-3 1.34-3 3-3zm0 14.2a7.2 7.2 0 01-6-3.22c.03-1.99 4-3.08 6-3.08 1.99 0 5.97 1.09 6 3.08a7.2 7.2 0 01-6 3.22z",
+    text: "Explore profile and content campaign options for Instagram.",
     grad: "from-pink-500 to-fuchsia-600",
     bg: "from-pink-50 to-fuchsia-50",
     border: "border-pink-100",
   },
   {
-    name: "YouTube Promotion",
+    name: "YouTube Channel Support",
+    platform: "youtube",
     href: "/buy-youtube-subscribers-india",
-    text: "Support channel traction with trusted delivery across key growth actions.",
-    icon: "M10 9.333L15.333 12 10 14.667V9.333zM21.543 6.498C21 4.228 19.772 3 17.5 2.957 15.227 2.914 13 2.914 12 2.914s-3.227 0-5.5.043C4.228 3 3 4.228 2.457 6.498 2 8.772 2 12 2 12s0 3.228.457 5.502C3 19.772 4.228 21 6.5 21.043 8.773 21.086 11 21.086 12 21.086s3.227 0 5.5-.043C19.772 21 21 19.772 21.543 17.502 22 15.228 22 12 22 12s0-3.228-.457-5.502z",
+    text: "Compare channel and video support services with clear delivery details.",
     grad: "from-rose-500 to-red-600",
     bg: "from-rose-50 to-red-50",
     border: "border-rose-100",
   },
   {
-    name: "LinkedIn Visibility",
+    name: "LinkedIn Profile Support",
+    platform: "linkedin",
     href: "/buy-linkedin-followers-india",
-    text: "Build professional social proof and profile visibility for business goals.",
-    icon: "M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z M4 6a2 2 0 100-4 2 2 0 000 4z",
+    text: "Review professional profile and company page support options.",
     grad: "from-cyan-500 to-blue-600",
     bg: "from-cyan-50 to-blue-50",
     border: "border-cyan-100",
   },
   {
-    name: "Facebook Engagement",
+    name: "Facebook Page Support",
+    platform: "facebook",
     href: "/buy-facebook-followers-india",
-    text: "Increase page interaction and post visibility with cleaner delivery flow.",
-    icon: "M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z",
+    text: "Find page and content campaign services with transparent pricing.",
     grad: "from-sky-500 to-blue-600",
     bg: "from-sky-50 to-blue-50",
     border: "border-sky-100",
   },
   {
-    name: "TikTok Reach",
-    href: "/buy-tiktok-followers-india",
-    text: "Scale short-form reach and profile traction with consistent campaign setup.",
-    icon: "M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3",
-    grad: "from-violet-500 to-fuchsia-600",
-    bg: "from-violet-50 to-fuchsia-50",
-    border: "border-violet-100",
-  },
-  {
-    name: "Telegram Community",
+    name: "Telegram Channel Support",
+    platform: "telegram",
     href: "/buy-telegram-members-india",
-    text: "Compare transparent member campaigns for public channels and groups.",
-    icon: "M21 3L3.8 10.4c-1.2.5-1.2 1.2-.2 1.5l4.4 1.4 1.7 5.1c.2.7.4.8.9.3l2.5-2.4 4.6 3.4c.8.5 1.4.2 1.6-.8L22 4.1c.2-1-.3-1.4-1-1.1z",
+    text: "Compare public channel and community support services.",
     grad: "from-sky-400 to-blue-600",
     bg: "from-sky-50 to-blue-50",
     border: "border-sky-100",
   },
   {
-    name: "X / Twitter Growth",
+    name: "Twitter/X Profile Support",
+    platform: "twitter",
     href: "/buy-twitter-followers-india",
-    text: "Expand audience exposure using focused campaign structures.",
-    icon: "M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z",
+    text: "Explore profile campaign options with visible pricing and tracking.",
     grad: "from-indigo-500 to-slate-700",
     bg: "from-indigo-50 to-slate-50",
     border: "border-indigo-100",
   },
 ] as const;
 
-const testimonials = [
+const customerSafetyPoints = [
   {
-    name: "Aarav Mehta",
-    role: "Content Creator",
-    avatar: "AM",
-    text: "The delivery speed and dashboard clarity helped me scale campaigns without stress. Tracking is genuinely real-time.",
-    stars: 5,
+    title: "Public Links Only",
+    text: "We never ask for passwords.",
     grad: "from-pink-500 to-rose-500",
   },
   {
-    name: "Naina Rao",
-    role: "Brand Manager",
-    avatar: "NR",
-    text: "SocialRUSH made growth planning easy and gave our team confidence in every launch. Premium support made all the difference.",
-    stars: 5,
+    title: "Dashboard Tracking",
+    text: "Orders can be tracked from your dashboard.",
     grad: "from-violet-500 to-purple-600",
   },
   {
-    name: "Ritika Jain",
-    role: "Agency Lead",
-    avatar: "RJ",
-    text: "Clean process, responsive support, and premium campaign tracking from day one. Best panel I have worked with.",
-    stars: 5,
+    title: "WhatsApp Assistance",
+    text: "Support is available on WhatsApp.",
     grad: "from-cyan-500 to-blue-600",
+  },
+  {
+    title: "Eligible Refill Support",
+    text: "Refill support is available only for eligible services.",
+    grad: "from-emerald-500 to-teal-500",
+  },
+  {
+    title: "Upfront Pricing",
+    text: "Pricing is shown before placing an order.",
+    grad: "from-amber-400 to-orange-500",
   },
 ] as const;
 
@@ -515,40 +476,16 @@ export default function HomepageContent() {
         </div>
       </motion.section>
 
-      {/* SERVICES / BENEFITS */}
-      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl">
-          <div className="mb-8 text-center">
-            <span className="inline-flex rounded-full border border-cyan-200 bg-cyan-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-cyan-600">Services</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Discover Services for <span className="bg-gradient-to-r from-cyan-500 to-violet-500 bg-clip-text text-transparent">Social Media Success</span></h2>
-          </div>
-          <div className="grid gap-6 lg:grid-cols-2 lg:items-center">
-            <motion.div animate={{ y: [0, -8, 0] }} transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }} className="overflow-hidden rounded-3xl border border-white/80 bg-gradient-to-br from-cyan-50 via-blue-50 to-fuchsia-50 p-5 shadow-[0_30px_60px_-20px_rgba(99,102,241,.25)]">
-              <SafeImage src="/images/services-3d.png" fallbackSrc="/images/services-3d.webp" alt="SocialRUSH services visual" width={640} height={480} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full rounded-2xl object-cover" />
-            </motion.div>
-            <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2">
-              {benefits.map((b) => (
-                <motion.article key={b.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.03 }} className={`overflow-hidden rounded-2xl border border-white/80 bg-gradient-to-br p-5 shadow-[0_12px_35px_-14px_rgba(15,23,42,.18)] ${b.bg}`}>
-                  <div className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-md ${b.grad}`}><SvgIcon path={b.icon} size={18} /></div>
-                  <h3 className="mt-3 text-lg font-bold text-slate-900">{b.title}</h3>
-                  <p className="mt-1.5 text-sm leading-6 text-slate-600">{b.text}</p>
-                </motion.article>
-              ))}
-            </motion.div>
-          </div>
-        </div>
-      </motion.section>
-
       {/* HOW IT WORKS */}
-      <HowToOrderSection id="how-it-works" />
+      <HowToOrderSection id="how-it-works" homepage />
 
-      {/* FEATURED SERVICES */}
+      {/* POPULAR SERVICES */}
       <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="inline-flex rounded-full border border-pink-200 bg-pink-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-pink-600">Platform Services</span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Featured Services</h2>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Popular Social Media Growth Services</h2>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-sky-300 hover:text-sky-600">View All Services</Link>
@@ -558,7 +495,7 @@ export default function HomepageContent() {
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featuredServices.map((svc) => (
               <motion.article key={svc.name} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] ${svc.border} ${svc.bg}`}>
-                <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${svc.grad}`}><SvgIcon path={svc.icon} size={22} /></div>
+                <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${svc.grad}`}><PlatformIcon platform={svc.platform} className="h-6 w-6" /></div>
                 <h3 className="mt-4 text-lg font-bold text-slate-900">{svc.name}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{svc.text}</p>
                 <div className="mt-4 flex gap-2">
@@ -571,39 +508,21 @@ export default function HomepageContent() {
         </div>
       </motion.section>
 
-      {/* TESTIMONIALS */}
+      {/* CUSTOMER SAFETY */}
       <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 text-center">
-            <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">Testimonials</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Satisfied Clients Share Their <span className="bg-gradient-to-r from-amber-500 to-pink-500 bg-clip-text text-transparent">Success Stories</span></h2>
+            <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">Clear Expectations</span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Customer Safety &amp; Support</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-slate-600">Understand what we require, what you can track, and where to get help before placing an order.</p>
           </div>
-          <div className="mb-8 overflow-hidden rounded-3xl border border-white/80 bg-gradient-to-br from-amber-50 via-pink-50 to-violet-50 p-4 shadow-[0_30px_60px_-20px_rgba(245,158,11,.22)]">
-            <SafeImage src="/images/testimonal-visual.png" fallbackSrc="/images/testimonal-visual.webp" alt="SocialRUSH trusted growth platform" width={1200} height={900} sizes="(max-width: 1280px) 100vw, 1200px" className="h-auto w-full rounded-2xl object-cover" />
-          </div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 md:grid-cols-3">
-            {testimonials.map((t) => (
-              <motion.article key={t.name} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className="overflow-hidden rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_14px_40px_-14px_rgba(15,23,42,.18)] backdrop-blur">
-                <div className="flex items-center gap-3">
-                  <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-sm font-extrabold text-white shadow-md ${t.grad}`}>{t.avatar}</span>
-                  <div>
-                    <p className="text-sm font-bold text-slate-900">{t.name}</p>
-                    <p className="text-xs text-slate-500">{t.role}</p>
-                  </div>
-                </div>
-                <div className="mt-3 flex gap-0.5">
-                  {Array.from({ length: t.stars }).map((_, i) => (<span key={i} className="text-amber-400">&#9733;</span>))}
-                </div>
-                <p className="mt-3 text-sm leading-7 text-slate-600">&#8220;{t.text}&#8221;</p>
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
+            {customerSafetyPoints.map((item) => (
+              <motion.article key={item.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className="overflow-hidden rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_14px_40px_-14px_rgba(15,23,42,.18)] backdrop-blur">
+                <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br text-lg font-extrabold text-white shadow-md ${item.grad}`} aria-hidden="true">✓</span>
+                <h3 className="mt-4 text-base font-bold text-slate-900">{item.title}</h3>
+                <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
               </motion.article>
-            ))}
-          </motion.div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mt-8 flex flex-wrap justify-center gap-4">
-            {[{ val: "Public Link", label: "No password required", icon: "&#10003;" }, { val: "Dashboard", label: "Order tracking", icon: "&#9678;" }, { val: "SSL", label: "Secure checkout", icon: "&#8982;" }, { val: "WhatsApp", label: "Customer help", icon: "&#9743;" }].map((p) => (
-              <motion.div key={p.label} variants={cardAnim} whileHover={{ y: -4 }} className="flex items-center gap-2.5 rounded-2xl border border-white/90 bg-white/85 px-5 py-3 shadow-sm backdrop-blur">
-                <span className="text-lg text-pink-500" dangerouslySetInnerHTML={{ __html: p.icon }} />
-                <div><p className="text-sm font-extrabold text-slate-900">{p.val}</p><p className="text-[10px] text-slate-500">{p.label}</p></div>
-              </motion.div>
             ))}
           </motion.div>
         </div>

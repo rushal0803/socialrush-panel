@@ -9,7 +9,7 @@ import {
   WalletCards,
 } from "lucide-react";
 
-const steps = [
+const defaultSteps = [
   {
     title: "Create Your Account",
     text: "Sign up or log in to your SocialRUSH account.",
@@ -48,10 +48,46 @@ const steps = [
   },
 ] as const;
 
+const homepageSteps = [
+  defaultSteps[0],
+  {
+    title: "Choose Your Platform",
+    text: "Select Instagram, YouTube, LinkedIn, Facebook, Twitter/X, Telegram, or another platform.",
+    icon: BadgeCheck,
+    gradient: "from-violet-500 to-purple-600",
+  },
+  {
+    title: "Choose Your Service",
+    text: "Compare the available options and choose the service that fits your goal.",
+    icon: ClipboardCheck,
+    gradient: "from-fuchsia-500 to-pink-500",
+  },
+  {
+    title: "Submit Your Public Link",
+    text: "Paste your profile, post, video, channel, or page link. No password is required.",
+    icon: Link2,
+    gradient: "from-cyan-500 to-blue-500",
+  },
+  {
+    title: "Add Funds or Pay Securely",
+    text: "Add funds to your wallet or complete payment using available payment options.",
+    icon: WalletCards,
+    gradient: "from-amber-400 to-orange-500",
+  },
+  {
+    title: "Track Your Order",
+    text: "Track order status and progress from your dashboard.",
+    icon: Activity,
+    gradient: "from-emerald-500 to-teal-500",
+  },
+] as const;
+
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service";
 
-export default function HowToOrderSection({ id }: { id?: string }) {
+export default function HowToOrderSection({ id, homepage = false }: { id?: string; homepage?: boolean }) {
+  const steps = homepage ? homepageSteps : defaultSteps;
+
   return (
     <section id={id} className="relative px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
       <div className="mx-auto max-w-7xl">
