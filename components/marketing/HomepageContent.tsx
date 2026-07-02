@@ -39,68 +39,11 @@ const navLinks = [
   { label: "Contact", href: "/contact" },
 ] as const;
 
-const stats = [
-  {
-    label: "No Password Required",
-    sub: "Place an order using only the relevant public profile or content link.",
-    icon: "M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z",
-    iconBg: "from-orange-500 to-red-500",
-    glow: "shadow-orange-200",
-    border: "border-orange-100",
-    bg: "from-orange-50/80 to-red-50/50",
-  },
-  {
-    label: "Secure Checkout",
-    sub: "Review your order and complete payment through the protected checkout flow.",
-    icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
-    iconBg: "from-amber-500 to-orange-500",
-    glow: "shadow-amber-200",
-    border: "border-amber-100",
-    bg: "from-amber-50/80 to-orange-50/50",
-  },
-  {
-    label: "Real-time Order Tracking",
-    sub: "Follow order status and available progress updates from your dashboard.",
-    icon: "M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z",
-    iconBg: "from-amber-500 to-amber-600",
-    glow: "shadow-amber-200",
-    border: "border-amber-100",
-    bg: "from-amber-50/80 to-amber-50/50",
-  },
-  {
-    label: "WhatsApp Support",
-    sub: "Ask for help choosing a service or resolving an order question.",
-    icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z",
-    iconBg: "from-amber-400 to-orange-500",
-    glow: "shadow-orange-200",
-    border: "border-orange-100",
-    bg: "from-orange-50/80 to-amber-50/50",
-  },
-  {
-    label: "Refill Support If Eligible",
-    sub: "Eligible services clearly show their applicable refill coverage.",
-    icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
-    iconBg: "from-emerald-500 to-teal-500",
-    glow: "shadow-emerald-200",
-    border: "border-emerald-100",
-    bg: "from-emerald-50/80 to-teal-50/50",
-  },
-  {
-    label: "Transparent Pricing",
-    sub: "See the applicable package or quantity price before confirming an order.",
-    icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
-    iconBg: "from-orange-500 to-amber-500",
-    glow: "shadow-orange-200",
-    border: "border-orange-100",
-    bg: "from-orange-50/80 to-amber-50/50",
-  },
-] as const;
-
 const trustBadges = [
-  { label: "Advanced Analytics", icon: "↗", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "No Password Required", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
   { label: "Secure Checkout", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
-  { label: "24/7 Support", icon: "◎", color: "from-[#FF7A00] to-[#FFB000]" },
-  { label: "Instant Start", icon: "→", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Real-time Order Tracking", icon: "↗", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "WhatsApp Support", icon: "◎", color: "from-[#FF7A00] to-[#FFB000]" },
 ] as const;
 
 const whySocialRush = [
@@ -215,23 +158,20 @@ const homepagePosts = [
   {
     title: "How to Grow Fast on Instagram",
     href: "/blog/how-to-grow-fast-on-instagram",
-    image: "/images/brand/social-content-strategy.jpg",
-    alt: "SocialRUSH content strategy workspace",
     category: "Social Strategy",
+    excerpt: "Practical ways to improve profile clarity, publishing consistency and campaign planning.",
   },
   {
     title: "YouTube Views: What Helps a Video Get More Reach",
     href: "/blog/youtube-views-get-more-reach",
-    image: "/images/brand/video-channel-strategy.jpg",
-    alt: "SocialRUSH video content strategy workspace",
     category: "Video Strategy",
+    excerpt: "Learn how stronger packaging, retention and distribution can support broader video reach.",
   },
   {
     title: "LinkedIn Growth Tips for Personal Brands",
     href: "/blog/linkedin-growth-tips-personal-brands",
-    image: "/images/brand/professional-profile-strategy.jpg",
-    alt: "SocialRUSH profile strategy mockup",
     category: "Professional Growth",
+    excerpt: "Build a clearer professional presence with focused content, positioning and profile updates.",
   },
 ] as const;
 
@@ -279,7 +219,7 @@ export default function HomepageContent() {
 
   return (
     <LazyMotion features={domAnimation}>
-      <main className="homepage-performance overflow-x-clip bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_30%,#FFF8F1_55%,#FFF8F1_80%,#FFF8F1_100%)] text-slate-800">
+      <main className="public-dark homepage-performance overflow-x-clip bg-[#050505] text-white">
       {/* ambient blobs */}
       <div className="pointer-events-none fixed inset-0 hidden overflow-hidden sm:block">
         <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-amber-200/40 blur-3xl" />
@@ -372,16 +312,16 @@ export default function HomepageContent() {
           <div className="relative z-10">
             <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-300 shadow-sm backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
-              AI-Powered Growth Solutions
+              SMART GROWTH • REAL RESULTS
             </motion.span>
             <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-[58px]">
-              AI-Powered Social Growth{" "}
-              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Drives Results</span>
+              Smart Social Growth{" "}
+              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Feels Real</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">SocialRUSH helps creators, brands, professionals and businesses manage social media growth campaigns with secure checkout, public-link ordering, dashboard tracking and WhatsApp support.</p>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, secure checkout, dashboard tracking and WhatsApp support.</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">Get Started Now</Link>
-              <Link href="#how-it-works" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">How It Works</Link>
+              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">Start Your Order</Link>
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">View Packages</Link>
             </div>
             <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-3">
               {trustBadges.map((badge) => (
@@ -408,21 +348,6 @@ export default function HomepageContent() {
         </div>
       </motion.section>
 
-      {/* STATS */}
-      <motion.section id="about" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
-        <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="mx-auto grid max-w-7xl gap-4 sm:grid-cols-2 lg:grid-cols-4">
-          {stats.slice(0, 4).map((s) => (
-            <motion.article key={s.label} variants={cardAnim} whileHover={{ y: -8, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_20px_50px_-20px_rgba(15,23,42,.18)] ${s.border} ${s.bg}`}>
-              <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${s.iconBg}`}>
-                <SvgIcon path={s.icon} size={20} />
-              </div>
-              <p className="mt-4 text-lg font-extrabold text-slate-900">{s.label}</p>
-              <p className="mt-1.5 text-xs leading-5 text-slate-500">{s.sub}</p>
-            </motion.article>
-          ))}
-        </motion.div>
-      </motion.section>
-
       {/* WHY SOCIALRUSH */}
       <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
@@ -445,39 +370,14 @@ export default function HomepageContent() {
       {/* HOW IT WORKS */}
       <HowToOrderSection id="how-it-works" homepage />
 
-      {/* CHECKOUT & TRACKING VISUALS */}
-      <section className="content-auto px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
-          <article className="overflow-hidden rounded-3xl border border-orange-400/20 bg-[#0B0B0F] p-3 shadow-[0_28px_70px_-30px_rgba(255,122,0,.45)] sm:p-4">
-            <SafeImage
-              src="/images/home/secure-checkout-section.png"
-              alt="SocialRUSH secure checkout and public-link ordering process"
-              width={1448}
-              height={1086}
-              sizes="(max-width: 1023px) 100vw, 50vw"
-              className="h-auto w-full rounded-2xl object-cover"
-            />
-          </article>
-          <article className="overflow-hidden rounded-3xl border border-orange-400/20 bg-[#0B0B0F] p-3 shadow-[0_28px_70px_-30px_rgba(255,122,0,.45)] sm:p-4">
-            <SafeImage
-              src="/images/home/order-tracking-section.png"
-              alt="SocialRUSH real-time campaign order tracking dashboard"
-              width={1672}
-              height={941}
-              sizes="(max-width: 1023px) 100vw, 50vw"
-              className="h-full w-full rounded-2xl object-cover"
-            />
-          </article>
-        </div>
-      </section>
-
       {/* POPULAR SERVICES */}
       <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Platform Services</span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Complete Solutions for Your Social Growth Needs</h2>
+              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Choose a Platform. Pick a Service. Track Everything.</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">Explore social media growth services across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X with transparent pricing and dashboard tracking.</p>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View All Services</Link>
@@ -512,17 +412,15 @@ export default function HomepageContent() {
           </div>
           <div className="grid gap-5 md:grid-cols-3">
             {homepagePosts.map((post) => (
-              <motion.article key={post.href} whileHover={{ y: -6 }} className="group overflow-hidden rounded-3xl border border-white/90 bg-white/90 shadow-[0_20px_50px_-22px_rgba(15,23,42,.3)]">
-                <Link href={post.href} className="block overflow-hidden">
-                  <SafeImage src={post.image} alt={post.alt} width={1200} height={675} className="aspect-[16/9] w-full object-cover transition duration-500 group-hover:scale-[1.03]" />
-                </Link>
-                <div className="p-5">
+              <motion.article key={post.href} whileHover={{ y: -6 }} className="group flex min-h-64 flex-col overflow-hidden rounded-3xl border border-orange-100 bg-white/90 p-6 shadow-[0_20px_50px_-22px_rgba(15,23,42,.3)]">
+                <div>
                   <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">{post.category}</span>
                   <h3 className="mt-3 text-lg font-extrabold leading-snug text-slate-900">
                     <Link href={post.href} className="transition hover:text-[#FF7A00]">{post.title}</Link>
                   </h3>
-                  <Link href={post.href} className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-[#FF7A00] transition group-hover:gap-3">Read Article <span aria-hidden="true">→</span></Link>
+                  <p className="mt-3 text-sm leading-7 text-slate-600">{post.excerpt}</p>
                 </div>
+                <Link href={post.href} className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-bold text-[#FF7A00] transition group-hover:gap-3">Read Article <span aria-hidden="true">→</span></Link>
               </motion.article>
             ))}
           </div>
@@ -576,8 +474,8 @@ export default function HomepageContent() {
           <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-orange-300/25 blur-3xl" />
           <div className="relative text-center">
             <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Get Started Today</span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to start your next <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">social growth campaign?</span></h2>
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-600">Start with a guided order flow and keep full visibility over campaign delivery from one premium dashboard.</p>
+            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to Start Your Next <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">Growth Campaign?</span></h2>
+            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600">Choose your platform, select a service, submit your public link and track your order from your SocialRUSH dashboard.</p>
             <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
               <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] px-8 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/60">Start Order</Link>
               <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View Packages</Link>
@@ -593,7 +491,7 @@ export default function HomepageContent() {
           <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
             <div>
               <Logo light />
-              <p className="mt-3 text-sm leading-7 text-slate-500">Premium social growth panel for creators, brands, and agencies. Trusted, fast, and transparent.</p>
+              <p className="mt-3 text-sm leading-7 text-slate-500">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, transparent pricing, secure checkout, dashboard tracking and WhatsApp support.</p>
               <div className="mt-5 flex flex-wrap gap-2">
                 <Link href="/packages" className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3.5 py-2 text-xs font-bold text-white shadow-sm">View Packages</Link>
                 <Link href="/register" className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm">Create Account</Link>

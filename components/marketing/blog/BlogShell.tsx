@@ -278,7 +278,7 @@ function BlogFooter() {
 
 export default function BlogShell({ children }: { children: React.ReactNode }) {
   return (
-    <main className="min-h-screen overflow-x-clip bg-[radial-gradient(circle_at_top_left,_#FFF8F1_0%,_#FFF8F1_42%,_#FFF8F1_100%)] text-[#0B0B0F]">
+    <main className="public-dark min-h-screen overflow-x-clip bg-[#050505] text-white">
       <BlogHeader />
       {children}
       <BlogFooter />
