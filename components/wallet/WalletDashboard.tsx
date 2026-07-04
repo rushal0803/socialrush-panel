@@ -72,32 +72,23 @@ const methods = PAYMENT_METHODS;
 const defaultPaymentMethod =
   methods.find((item) => isPaymentMethodEnabled(item.id))?.id ?? "upi";
 
-const quickAmounts = [100, 500, 1000, 2000, 5000, 10000];
+const quickAmounts = [100, 500, 1000, 2000];
 
 const trustCards = [
   {
-    title: "Secure Checkout",
+    title: "Protected payment routing",
     detail: "Protected payment routing with verified processing flows.",
     icon: "shield",
-    tone: "from-amber-500/20 via-orange-500/10 to-white/70",
   },
   {
-    title: "Instant Credit Update",
+    title: "Fast wallet update",
     detail: "Wallet balance refreshes quickly after successful verification.",
     icon: "spark",
-    tone: "from-emerald-500/20 via-teal-500/10 to-white/70",
   },
   {
-    title: "Payment Support",
+    title: "Support available",
     detail: "Assistance is available whenever a payment step needs attention.",
     icon: "support",
-    tone: "from-orange-500/20 via-amber-500/10 to-white/70",
-  },
-  {
-    title: "Transaction History",
-    detail: "Every wallet movement remains visible for clear reconciliation.",
-    icon: "history",
-    tone: "from-amber-400/20 via-orange-400/10 to-white/70",
   },
 ] as const;
 
@@ -328,12 +319,12 @@ function FeatureIcon({ name }: { name: string }) {
 
 function statusBadgeClass(status: string) {
   if (status === "completed") {
-    return "bg-emerald-100/80 text-emerald-700 ring-emerald-500/20";
+    return "bg-emerald-500/10 text-emerald-300 ring-emerald-400/25";
   }
   if (status === "pending") {
-    return "bg-amber-100/80 text-amber-700 ring-amber-500/20";
+    return "bg-amber-500/10 text-amber-300 ring-amber-400/25";
   }
-  return "bg-red-100/80 text-red-700 ring-red-500/20";
+  return "bg-red-500/10 text-red-300 ring-red-400/25";
 }
 
 function monthlySeries(
@@ -392,14 +383,14 @@ function MiniChart({
   return (
     <motion.article
       whileHover={{ y: -4 }}
-      className="rounded-2xl border border-slate-200/80 bg-white/80 p-5 shadow-sm backdrop-blur"
+      className="rounded-2xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_18px_45px_-30px_rgba(255,122,0,.55)]"
     >
       <div className="flex items-start justify-between">
         <div>
-          <p className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
+          <p className="text-[10px] font-bold uppercase tracking-wider text-[#9CA3AF]">
             {title}
           </p>
-          <p className="mt-2 text-xl font-bold text-[#0B0B0F]">{value}</p>
+          <p className="mt-2 text-xl font-bold text-white">{value}</p>
         </div>
         <span className={`h-2 w-2 rounded-full ${color}`} />
       </div>
@@ -587,20 +578,11 @@ export default function WalletDashboard({
 
   const stats = [
     {
-      label: "Current Balance",
-      value: balance,
-      money: true,
-      note: "Available campaign budget",
-      icon: "balance",
-      tone: "from-orange-600 to-orange-700",
-    },
-    {
       label: "Total Deposits",
       value: initial.totalDeposits,
       money: true,
       note: "Lifetime wallet funding",
       icon: "deposit",
-      tone: "from-emerald-500 to-teal-600",
     },
     {
       label: "Total Spent",
@@ -608,7 +590,13 @@ export default function WalletDashboard({
       money: true,
       note: "Campaign investment",
       icon: "spent",
-      tone: "from-amber-500 to-orange-600",
+    },
+    {
+      label: "Total Orders",
+      value: initial.totalOrders,
+      money: false,
+      note: "Campaigns placed",
+      icon: "orders",
     },
     {
       label: "Pending Payments",
@@ -616,7 +604,6 @@ export default function WalletDashboard({
       money: false,
       note: "Awaiting confirmation",
       icon: "pending",
-      tone: "from-amber-400 to-orange-500",
     },
   ];
 
@@ -628,63 +615,65 @@ export default function WalletDashboard({
       : "Minimum amount required";
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-hidden bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_28%,#FFF8F1_55%,#FFF8F1_82%,#FFF8F1_100%)] px-4 pb-32 pt-6 sm:px-6 sm:pt-8 lg:px-8 lg:pt-8">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-hidden bg-[#050505] px-4 pb-40 pt-5 text-white sm:px-6 sm:pt-7 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
-        <div className="absolute right-[-5rem] top-16 h-96 w-96 rounded-full bg-orange-200/40 blur-3xl" />
-        <div className="absolute bottom-24 left-1/3 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 h-64 w-64 rounded-full bg-orange-200/30 blur-3xl" />
+        <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-orange-600/15 blur-3xl" />
+        <div className="absolute right-[-5rem] top-16 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl" />
+        <div className="absolute inset-0 opacity-[0.08] [background-image:linear-gradient(rgba(255,122,0,.22)_1px,transparent_1px),linear-gradient(90deg,rgba(255,122,0,.22)_1px,transparent_1px)] [background-size:48px_48px]" />
       </div>
 
-      <div className="relative mx-auto max-w-[1650px] min-w-0">
+      <div className="relative mx-auto max-w-[1500px] min-w-0">
         <motion.section
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.45, ease: "easeOut" }}
-          className="relative overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/58 p-5 shadow-[0_30px_90px_-40px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:rounded-[2rem] sm:p-7 xl:p-8"
+          className="relative overflow-hidden rounded-[1.5rem] border border-orange-400/25 bg-[#111111]/95 p-5 shadow-[0_28px_80px_-42px_rgba(255,122,0,.7)] sm:rounded-[2rem] sm:p-7"
         >
-          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,255,255,.6),transparent_34%),radial-gradient(circle_at_bottom_right,rgba(255, 159, 0, .12),transparent_28%)]" />
-          <motion.div
-            aria-hidden
-            animate={{ y: [0, -10, 0], x: [0, 8, 0] }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut" }}
-            className="absolute -right-6 top-8 hidden h-24 w-24 rounded-[1.75rem] border border-white/60 bg-white/40 text-[#111827] shadow-[0_24px_40px_-24px_rgba(255, 159, 0, .45)] backdrop-blur-xl sm:block"
-          >
-            <div className="grid h-full w-full place-items-center">
-              <WalletGlyph />
-            </div>
-          </motion.div>
-
-          <div className="relative">
+          <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_35%)]" />
+          <div className="relative grid gap-5 lg:grid-cols-[minmax(0,1fr)_360px] lg:items-center">
             <div className="min-w-0">
-              <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+              <span className="inline-flex rounded-full border border-orange-400/30 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-orange-300">
+                Secure wallet
+              </span>
+              <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
+                Add Funds
+              </h1>
+              <p className="mt-3 max-w-2xl text-sm leading-7 text-[#D1D5DB]">
+                Select a payment method, enter an amount, and review the total
+                before opening secure checkout.
+              </p>
+              <p className="mt-2 max-w-2xl text-xs font-semibold text-[#9CA3AF]">
+                {getCurrencyDisclaimer()}
+              </p>
+            </div>
+
+            <div className="rounded-[1.35rem] border border-orange-400/35 bg-[linear-gradient(135deg,#181818,#0B0B0F)] p-5 shadow-[0_22px_55px_-30px_rgba(255,122,0,.75)]">
+              <div className="flex items-center justify-between gap-3">
                 <div>
-                  <span className="inline-flex rounded-full border border-orange-200/80 bg-white/80 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[.18em] text-orange-700 shadow-[0_10px_24px_rgba(255, 159, 0, .08)]">
-                    Financial command center
-                  </span>
-                  <h1 className="mt-4 text-[clamp(2rem,6vw,3.75rem)] font-black leading-[1.02] tracking-[-0.04em] text-[#0B0B0F]">
-                    SocialRUSH Wallet
-                  </h1>
-                  <p className="mt-3 max-w-2xl text-sm leading-7 text-[#111827] sm:text-[15px]">
-                    Manage campaign funds, payments, spending, and transaction
-                    activity securely.
+                  <p className="text-[10px] font-bold uppercase tracking-[0.16em] text-orange-300">
+                    Wallet Balance
                   </p>
-                  <p className="mt-2 max-w-2xl text-xs font-semibold text-[#111827]">
-                    {getCurrencyDisclaimer()}
+                  <p className="mt-2 break-words text-3xl font-black text-white">
+                    {money(balance)}
                   </p>
                 </div>
-
-                <div className="inline-flex items-center gap-2 rounded-2xl border border-emerald-200/70 bg-white/75 px-3.5 py-2.5 text-[10px] font-bold uppercase tracking-[0.16em] text-emerald-700 shadow-[0_16px_36px_-24px_rgba(16,185,129,.45)] backdrop-blur-xl">
-                  <span className="h-2.5 w-2.5 animate-pulse rounded-full bg-emerald-500" />
-                  Payments operational
-                </div>
+                <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF7A00] to-[#FF9F00] text-white shadow-lg shadow-orange-500/20">
+                  <WalletGlyph />
+                </span>
               </div>
-
+              <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
+                <p className="text-xs leading-5 text-[#9CA3AF]">
+                  Use your wallet balance to place orders instantly.
+                </p>
+                <span className="shrink-0 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
+                  {currency}
+                </span>
+              </div>
             </div>
           </div>
         </motion.section>
 
-        <section className="mt-5 grid grid-cols-2 gap-3 sm:mt-6 sm:gap-4 xl:grid-cols-4">
+        <section className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4 xl:grid-cols-4">
           {stats.map((stat, index) => (
             <motion.article
               key={stat.label}
@@ -692,12 +681,12 @@ export default function WalletDashboard({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.06 }}
               whileHover={{ y: -5 }}
-              className={`relative min-w-0 overflow-hidden rounded-[1.35rem] border border-white/65 bg-gradient-to-br p-4 text-white shadow-[0_24px_60px_-30px_rgba(15,23,42,.48)] sm:rounded-[1.75rem] sm:p-5 ${stat.tone}`}
+              className="relative min-w-0 overflow-hidden rounded-[1.25rem] border border-orange-400/20 bg-[#111111] p-4 text-white shadow-[0_20px_50px_-34px_rgba(255,122,0,.55)] sm:rounded-[1.5rem] sm:p-5"
             >
               <div className="absolute -right-8 -top-8 h-24 w-24 rounded-full bg-white/15 blur-xl" />
               <div className="relative flex items-start justify-between">
                 <div>
-                  <p className="text-[10px] font-semibold uppercase tracking-wider text-white/70">
+                  <p className="text-[10px] font-semibold uppercase tracking-wider text-[#9CA3AF]">
                     {stat.label}
                   </p>
                   <p className="mt-2 break-words text-[clamp(1rem,4.5vw,1.5rem)] font-bold">
@@ -708,28 +697,32 @@ export default function WalletDashboard({
                     />
                   </p>
                 </div>
-                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-white/15 sm:h-10 sm:w-10">
+                <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-orange-500/15 text-orange-300 sm:h-10 sm:w-10">
                   <StatIcon name={stat.icon} />
                 </span>
               </div>
-              <p className="relative mt-3 text-[9px] leading-4 text-white/70 sm:mt-4 sm:text-[10px]">
+              <p className="relative mt-3 text-[9px] leading-4 text-[#9CA3AF] sm:mt-4 sm:text-[10px]">
                 {stat.note}
               </p>
             </motion.article>
           ))}
         </section>
 
-        <section className="mt-6 overflow-hidden rounded-[1.5rem] border border-white/80 bg-white/62 shadow-[0_30px_80px_-40px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:rounded-[2rem]">
-          <div className="border-b border-white/60 px-5 py-5 sm:px-6 xl:px-7">
-            <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-600">
+        <section className="mt-5 overflow-hidden rounded-[1.5rem] border border-orange-400/25 bg-[#0F0F0F] shadow-[0_30px_80px_-45px_rgba(255,122,0,.65)] sm:rounded-[2rem]">
+          <div className="border-b border-white/10 px-5 py-5 sm:px-6 xl:px-7">
+            <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-400">
               Add funds
             </p>
-            <h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">
-              Fund your campaign wallet
+            <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
+              Three simple steps
             </h2>
-            <p className="mt-1 text-sm text-[#111827]">
-              Choose a secure payment method and amount.
-            </p>
+            <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#D1D5DB]">
+              {["1. Payment method", "2. Enter amount", "3. Review & pay"].map((step) => (
+                <span key={step} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5">
+                  {step}
+                </span>
+              ))}
+            </div>
           </div>
 
           <form
@@ -741,23 +734,23 @@ export default function WalletDashboard({
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="rounded-[1.35rem] border border-white/75 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(255, 159, 0, .82))] p-4 shadow-[0_26px_60px_-36px_rgba(15,23,42,.42)] sm:rounded-[1.75rem] sm:p-5"
+                className="rounded-[1.35rem] border border-orange-400/20 bg-[#151515] p-4 shadow-[0_22px_55px_-38px_rgba(255,122,0,.6)] sm:rounded-[1.75rem] sm:p-5"
               >
                 <div className="flex items-center justify-between gap-3">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FF9F00]">
-                      Payment methods
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-orange-400">
+                      Step 1
                     </p>
-                    <p className="mt-2 text-base font-black text-[#0B0B0F]">
-                      Select a secure route
+                    <p className="mt-2 text-base font-black text-white">
+                      Select Payment Method
                     </p>
                   </div>
-                  <span className="rounded-full border border-white/80 bg-white/70 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-[#FF9F00] shadow-sm">
+                  <span className="rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.16em] text-orange-300">
                     {methods.filter((item) => isPaymentMethodEnabled(item.id)).length} active
                   </span>
                 </div>
 
-                <div className="mt-4 grid gap-3 md:grid-cols-2 xl:mt-5 xl:grid-cols-4">
+                <div className="mt-4 grid grid-cols-2 gap-3 xl:mt-5 xl:grid-cols-4">
                   {methods.map((item) => {
                     const active = method === item.id;
                     const enabled = isPaymentMethodEnabled(item.id);
@@ -774,39 +767,39 @@ export default function WalletDashboard({
                           setMethod(item.id);
                           setError("");
                         }}
-                        className={`group relative min-h-20 overflow-hidden rounded-[1.25rem] border p-3.5 text-left shadow-[0_18px_40px_-28px_rgba(255, 159, 0, .35)] transition sm:rounded-[1.5rem] sm:p-4 ${
+                        className={`group relative min-h-36 overflow-hidden rounded-[1.15rem] border p-3 text-left transition sm:min-h-28 sm:rounded-[1.35rem] sm:p-4 ${
                           active
-                            ? "border-transparent bg-[linear-gradient(white,white)_padding-box,linear-gradient(135deg,rgba(255, 122, 0, .75),rgba(255, 159, 0, .75),rgba(255, 196, 0, .72))_border-box]"
+                            ? "border-orange-400/80 bg-orange-500/15 shadow-[0_0_0_3px_rgba(255,122,0,.1),0_18px_42px_-30px_rgba(255,122,0,.8)]"
                             : enabled
-                              ? "border-white/80 bg-white/78 hover:border-[#FFF3E0]"
-                              : "cursor-not-allowed border-slate-200/80 bg-slate-100/70 opacity-70"
+                              ? "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"
+                              : "cursor-not-allowed border-white/5 bg-[#0B0B0F] opacity-45"
                         }`}
                       >
                         <div className="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255, 159, 0, .14),transparent_30%),radial-gradient(circle_at_bottom_left,rgba(255, 122, 0, .14),transparent_32%)] opacity-0 transition group-hover:opacity-100" />
-                        <div className="relative flex items-start gap-3">
+                        <div className="relative flex flex-col items-start gap-3 sm:flex-row">
                           <span
                             className={`grid h-11 w-11 shrink-0 place-items-center rounded-[1.1rem] border shadow-[0_14px_30px_-20px_rgba(255, 159, 0, .35)] sm:h-12 sm:w-12 sm:rounded-[1.2rem] ${
                               active
                                 ? "border-transparent bg-gradient-to-br from-[#FF7A00] to-[#FFB000]"
-                                : "border-white/80 bg-[#FFF8F1]"
+                                : "border-orange-400/20 bg-orange-500/10"
                             }`}
                           >
                             <PaymentMethodIcon methodId={item.id} active={active} />
                           </span>
 
                           <span className="min-w-0">
-                            <b className="block text-sm font-black text-[#0B0B0F]">
+                            <b className="block text-sm font-black text-white">
                               {item.label}
                             </b>
-                            <small className="mt-1.5 block text-xs leading-5 text-[#111827]">
+                            <small className="mt-1.5 line-clamp-2 text-[10px] leading-4 text-[#9CA3AF] sm:block sm:text-xs sm:leading-5">
                               {item.description}
                             </small>
                             {!enabled ? (
-                              <small className="mt-2 block text-[10px] font-bold leading-4 text-amber-700">
-                                {paymentMethodUnavailableMessage(item.id)}
+                              <small className="mt-2 line-clamp-1 text-[9px] font-bold leading-4 text-amber-300 sm:text-[10px]">
+                                Currently under activation.
                               </small>
                             ) : item.id === "international_card" ? (
-                              <small className="mt-2 block text-[10px] font-bold leading-4 text-[#111827]">
+                              <small className="mt-2 block text-[10px] font-bold leading-4 text-[#D1D5DB]">
                                 Requires international payments enabled in Razorpay.
                               </small>
                             ) : null}
@@ -822,28 +815,28 @@ export default function WalletDashboard({
                 initial={{ opacity: 0, y: 16 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true, amount: 0.2 }}
-                className="rounded-[1.35rem] border border-white/75 bg-[linear-gradient(145deg,rgba(255,255,255,.92),rgba(255, 159, 0, .82))] p-4 shadow-[0_26px_60px_-36px_rgba(15,23,42,.42)] sm:rounded-[1.75rem] sm:p-5"
+                className="rounded-[1.35rem] border border-orange-400/20 bg-[#151515] p-4 shadow-[0_22px_55px_-38px_rgba(255,122,0,.6)] sm:rounded-[1.75rem] sm:p-5"
               >
                 <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
                   <div>
-                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FF9F00]">
-                      Amount
+                    <p className="text-[10px] font-black uppercase tracking-[0.18em] text-orange-400">
+                      Step 2
                     </p>
-                    <p className="mt-2 text-base font-black text-[#0B0B0F]">
-                      Custom amount
+                    <p className="mt-2 text-base font-black text-white">
+                      Enter Amount
                     </p>
                   </div>
-                  <p className="text-xs font-semibold text-[#111827]">
+                  <p className="text-xs font-semibold text-[#9CA3AF]">
                     Minimum {returnTo ? "required order amount" : "100"} · Maximum 500000
                   </p>
                 </div>
 
-                <div className="mt-4 rounded-[1.3rem] border border-white/80 bg-white/82 p-3.5 shadow-[inset_0_1px_0_rgba(255,255,255,.7),0_18px_42px_-30px_rgba(255, 159, 0, .4)] sm:mt-5 sm:rounded-[1.7rem] sm:p-4">
-                  <label className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#111827]">
-                    Custom amount
+                <div className="mt-4 rounded-[1.3rem] border border-white/10 bg-[#0B0B0F] p-3.5 sm:mt-5 sm:rounded-[1.7rem] sm:p-4">
+                  <label className="block text-[10px] font-black uppercase tracking-[0.18em] text-[#D1D5DB]">
+                    Amount in INR
                   </label>
                   <div className="relative mt-3">
-                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 rounded-xl border border-white/80 bg-[#FFF8F1] px-3 py-2 text-sm font-black text-[#FF9F00] shadow-sm">
+                    <span className="pointer-events-none absolute left-4 top-1/2 -translate-y-1/2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-sm font-black text-orange-300">
                       ₹
                     </span>
                     <input
@@ -852,14 +845,14 @@ export default function WalletDashboard({
                       value={amountInput}
                       onChange={(event) => setAmountInput(cleanAmountInput(event.target.value))}
                       placeholder="1000"
-                      className="h-14 w-full rounded-[1.2rem] border border-[#FFF3E0] bg-white pl-20 pr-4 text-xl font-black tracking-[-0.03em] text-[#0B0B0F] outline-none transition focus:border-[#FF9F00] focus:shadow-[0_0_0_5px_rgba(255, 159, 0, .18),0_18px_42px_-28px_rgba(255, 159, 0, .4)] sm:h-16 sm:rounded-[1.5rem] sm:pr-5 sm:text-2xl"
+                      className="h-14 w-full rounded-[1.2rem] border border-white/10 bg-[#151515] pl-20 pr-4 text-xl font-black tracking-[-0.03em] text-white outline-none transition placeholder:text-[#6B7280] focus:border-[#FF7A00] focus:shadow-[0_0_0_4px_rgba(255,122,0,.15)] sm:h-16 sm:rounded-[1.5rem] sm:pr-5 sm:text-2xl"
                     />
                   </div>
-                    <p className="mt-2 text-xs font-semibold text-[#111827]">
+                    <p className="mt-2 text-xs font-semibold text-[#9CA3AF]">
                       Amount is charged in INR. {currency !== "INR" ? `Approx in ${currency}: ${money(amount)}.` : ""}
                     </p>
 
-                  <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-3 sm:gap-3 xl:grid-cols-6">
+                  <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
                     {quickAmounts.map((value) => {
                       const active = amount === value;
                       return (
@@ -872,7 +865,7 @@ export default function WalletDashboard({
                           className={`min-h-11 rounded-xl border px-2 py-3 text-center text-xs font-black shadow-[0_16px_32px_-24px_rgba(255, 159, 0, .35)] transition sm:rounded-2xl sm:px-3 ${
                             active
                               ? "border-transparent bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white"
-                              : "border-white/85 bg-white text-[#111827] hover:border-[#FFF3E0] hover:text-[#0B0B0F]"
+                              : "border-white/10 bg-[#151515] text-[#D1D5DB] hover:border-orange-400/45 hover:text-white"
                           }`}
                         >
                           {money(value)}
@@ -883,11 +876,17 @@ export default function WalletDashboard({
                 </div>
               </motion.section>
 
+              {amount > 0 && amount < minimumAmount && (
+                <p className="rounded-2xl border border-amber-400/25 bg-amber-500/10 p-4 text-sm font-semibold text-amber-200">
+                  Minimum amount required: {money(minimumAmount)}.
+                </p>
+              )}
+
               {error && (
                 <motion.p
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
-                  className="rounded-2xl border border-red-200 bg-red-50/90 p-4 text-sm font-semibold text-red-700 shadow-[0_16px_36px_-28px_rgba(239,68,68,.35)]"
+                  className="rounded-2xl border border-red-400/25 bg-red-500/10 p-4 text-sm font-semibold text-red-200"
                 >
                   {error}
                 </motion.p>
@@ -901,15 +900,15 @@ export default function WalletDashboard({
               className="order-last min-w-0 xl:order-none"
             >
               <div className="space-y-4 xl:sticky xl:top-24">
-                <div className="overflow-hidden rounded-[1.9rem] border border-transparent bg-[linear-gradient(rgba(255,255,255,.88),rgba(255,255,255,.88))_padding-box,linear-gradient(135deg,rgba(255, 122, 0, .62),rgba(255, 159, 0, .62),rgba(255, 196, 0, .62))_border-box] p-[1px] shadow-[0_34px_80px_-42px_rgba(15,23,42,.55)]">
-                  <div className="rounded-[1.45rem] bg-[linear-gradient(160deg,rgba(255,255,255,.94),rgba(255, 159, 0, .86))] p-4 backdrop-blur-2xl sm:rounded-[1.85rem] sm:p-6">
+                <div className="overflow-hidden rounded-[1.6rem] border border-orange-400/35 bg-[#111111] shadow-[0_30px_70px_-40px_rgba(255,122,0,.8)]">
+                  <div className="p-4 sm:p-6">
                     <div className="flex items-center justify-between gap-3">
                       <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#FF9F00]">
-                          Payment summary
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-orange-400">
+                          Step 3
                         </p>
-                        <h3 className="mt-2 text-xl font-black text-[#0B0B0F]">
-                          Final review
+                        <h3 className="mt-2 text-xl font-black text-white">
+                          Payment Summary
                         </h3>
                       </div>
                       <div className="grid h-12 w-12 place-items-center rounded-[1.25rem] bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_18px_40px_-22px_rgba(255, 196, 0, .55)]">
@@ -917,42 +916,40 @@ export default function WalletDashboard({
                       </div>
                     </div>
 
-                    <div className="mt-4 space-y-2.5 text-xs text-[#FF9F00] sm:mt-5 sm:space-y-3 sm:text-sm">
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
-                        <span className="font-semibold">Selected amount</span>
-                        <span className="text-right font-black text-[#0B0B0F]">
-                          {money(amount)}
-                        </span>
-                      </div>
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
+                    <div className="mt-4 space-y-2.5 text-xs text-[#9CA3AF] sm:mt-5 sm:text-sm">
+                      <div className="flex items-center justify-between gap-3 border-b border-white/10 py-2.5">
                         <span className="font-semibold">Payment method</span>
-                        <span className="text-right font-black text-[#0B0B0F]">
+                        <span className="max-w-[58%] text-right font-bold text-white">
                           {selectedMethod.label}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
-                        <span className="font-semibold">Wallet balance</span>
-                        <span className="text-right font-black text-[#0B0B0F]">
-                          {money(balance)}
+                      <div className="flex items-center justify-between gap-3 border-b border-white/10 py-2.5">
+                        <span className="font-semibold">Entered amount</span>
+                        <span className="text-right font-bold text-white">
+                          {amountInput ? money(amount) : "—"}
                         </span>
                       </div>
-                      {currency !== "INR" ? (
-                        <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
-                          <span className="font-semibold">Wallet base (INR)</span>
-                          <span className="text-right font-black text-[#0B0B0F]">
-                            {formatCurrency(balance, "INR")}
-                          </span>
-                        </div>
-                      ) : null}
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
-                        <span className="font-semibold">Final payable amount</span>
-                        <span className="text-right font-black text-[#0B0B0F]">
-                          {money(amount)}
+                      <div className="flex items-center justify-between gap-3 border-b border-white/10 py-2.5">
+                        <span className="font-semibold">Fees / charges</span>
+                        <span className="text-right font-bold text-white">
+                          {money(0)}
                         </span>
                       </div>
-                      <div className="flex items-center justify-between gap-2 rounded-xl border border-white/75 bg-white/75 px-3 py-3 sm:gap-4 sm:rounded-2xl sm:px-4">
+                      <div className="flex items-center justify-between gap-3 border-b border-white/10 py-2.5">
+                        <span className="font-semibold">Wallet credit</span>
+                        <span className="text-right font-bold text-emerald-300">
+                          {amountInput ? money(amount) : "—"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-3">
+                        <span className="font-bold text-orange-200">Final payable</span>
+                        <span className="text-right text-lg font-black text-white">
+                          {amountInput ? money(amount) : "—"}
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between gap-3 pt-1">
                         <span className="font-semibold">Status</span>
-                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.14em] ${loading ? "bg-orange-100 text-orange-700" : amount >= minimumAmount ? "bg-emerald-100 text-emerald-700" : "bg-amber-100 text-amber-700"}`}>
+                        <span className={`inline-flex items-center rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] ${loading ? "bg-orange-500/15 text-orange-300" : amount >= minimumAmount ? "bg-emerald-500/15 text-emerald-300" : "bg-amber-500/15 text-amber-300"}`}>
                           {selectedStatus}
                         </span>
                       </div>
@@ -960,16 +957,29 @@ export default function WalletDashboard({
 
                     <button
                       disabled={loading || amount < minimumAmount || !isPaymentMethodEnabled(method)}
-                      className="mt-5 min-h-14 w-full rounded-[1.2rem] bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-4 text-sm font-black text-white shadow-[0_24px_50px_-22px_rgba(255, 196, 0, .58)] transition hover:-translate-y-1 hover:shadow-[0_28px_58px_-20px_rgba(255, 196, 0, .68)] disabled:opacity-50 sm:rounded-[1.35rem] sm:px-5"
+                      type="submit"
+                      className="mt-5 min-h-14 w-full rounded-[1.2rem] bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-4 py-4 text-sm font-black text-white shadow-[0_22px_48px_-20px_rgba(255,122,0,.7)] transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:bg-none disabled:bg-[#2A2A2A] disabled:text-[#9CA3AF] disabled:shadow-none sm:rounded-[1.35rem] sm:px-5"
                     >
                       {loading
                         ? "Opening secure checkout..."
-                        : `Continue securely · ${money(amount)}`}
+                        : !amountInput
+                          ? "Enter amount to continue"
+                          : amount < minimumAmount
+                            ? `Minimum ${money(minimumAmount)} required`
+                            : `Continue securely • ${money(amount)}`}
                     </button>
+                    <a
+                      href="https://wa.me/918860330771"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="mt-3 inline-flex w-full items-center justify-center text-xs font-bold text-orange-300 transition hover:text-orange-200"
+                    >
+                      Need payment help? WhatsApp Support
+                    </a>
                   </div>
                 </div>
 
-                <div className="hidden rounded-[1.7rem] border border-white/80 bg-[#0B0B0F]/94 p-5 text-white shadow-[0_30px_70px_-36px_rgba(7,21,47,.7)] backdrop-blur-xl xl:block">
+                <div className="hidden rounded-[1.7rem] border border-orange-400/20 bg-[#111111] p-5 text-white xl:block">
                   <div className="flex items-center justify-between gap-3">
                     <div>
                       <p className="text-[10px] font-black uppercase tracking-[0.18em] text-orange-300">
@@ -1025,7 +1035,7 @@ export default function WalletDashboard({
           </form>
         </section>
 
-        <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+        <section className="mt-5 grid gap-3 sm:grid-cols-3 sm:gap-4">
           {trustCards.map((item, index) => (
             <motion.article
               key={item.title}
@@ -1034,15 +1044,15 @@ export default function WalletDashboard({
               viewport={{ once: true, amount: 0.2 }}
               transition={{ delay: index * 0.06 }}
               whileHover={{ y: -4 }}
-              className={`rounded-[1.7rem] border border-white/80 bg-[linear-gradient(145deg,rgba(255,255,255,.88),rgba(255,255,255,.7))] p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.35)] ${item.tone}`}
+              className="rounded-[1.4rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_20px_50px_-36px_rgba(255,122,0,.6)]"
             >
-              <span className="grid h-12 w-12 place-items-center rounded-[1.2rem] border border-white/75 bg-white/75 text-[#111827] shadow-[0_16px_34px_-22px_rgba(255, 159, 0, .35)]">
+              <span className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/25 bg-orange-500/10 text-orange-300">
                 <FeatureIcon name={item.icon} />
               </span>
-              <h3 className="mt-4 text-base font-black text-[#0B0B0F]">
+              <h3 className="mt-4 text-base font-black text-white">
                 {item.title}
               </h3>
-              <p className="mt-2 text-sm leading-6 text-[#111827]">
+              <p className="mt-2 text-sm leading-6 text-[#9CA3AF]">
                 {item.detail}
               </p>
             </motion.article>
@@ -1051,10 +1061,10 @@ export default function WalletDashboard({
 
         <section className="mt-6">
           <div className="mb-4">
-            <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-600">
+            <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-400">
               Wallet analytics
             </p>
-            <h2 className="mt-1 text-xl font-black text-[#0B0B0F]">
+            <h2 className="mt-1 text-xl font-black text-white">
               Financial performance
             </h2>
           </div>
@@ -1082,24 +1092,24 @@ export default function WalletDashboard({
               color="bg-amber-500"
             />
           </div>
-          <div className="mt-2 flex justify-around px-4 text-[8px] font-semibold uppercase text-slate-400">
+          <div className="mt-2 flex justify-around px-4 text-[8px] font-semibold uppercase text-[#6B7280]">
             {series.map((item) => (
               <span key={item.key}>{item.label}</span>
             ))}
           </div>
         </section>
 
-        <section className="mt-6 overflow-hidden rounded-[2rem] border border-white/80 bg-white/72 shadow-[0_28px_70px_-40px_rgba(15,23,42,.4)] backdrop-blur-2xl">
-          <div className="flex flex-col gap-3 border-b border-white/70 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
+        <section className="mt-6 overflow-hidden rounded-[2rem] border border-orange-400/20 bg-[#0F0F0F] shadow-[0_28px_70px_-44px_rgba(255,122,0,.6)]">
+          <div className="flex flex-col gap-3 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
-              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-600">
+              <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-400">
                 Transaction history
               </p>
-              <h2 className="mt-2 text-xl font-black text-[#0B0B0F]">
+              <h2 className="mt-2 text-xl font-black text-white">
                 All wallet movements
               </h2>
             </div>
-            <span className="inline-flex w-fit rounded-2xl border border-white/80 bg-white/80 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-[#111827] shadow-sm">
+            <span className="inline-flex w-fit rounded-2xl border border-orange-400/20 bg-orange-500/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-orange-300">
               {initial.transactions.length} records
             </span>
           </div>
@@ -1108,14 +1118,14 @@ export default function WalletDashboard({
               <motion.article
                 key={item.id}
                 whileHover={{ y: -3 }}
-                className="rounded-[1.5rem] border border-white/80 bg-white/80 p-4 shadow-[0_20px_46px_-30px_rgba(15,23,42,.32)]"
+                className="rounded-[1.4rem] border border-white/10 bg-[#151515] p-4"
               >
                 <div className="flex items-start justify-between gap-3">
                   <div>
-                    <p className="text-xs font-black text-[#0B0B0F]">
+                    <p className="text-xs font-black text-white">
                       #{item.id.slice(0, 8).toUpperCase()}
                     </p>
-                    <p className="mt-1 text-[11px] text-[#111827]">
+                    <p className="mt-1 text-[11px] text-[#9CA3AF]">
                       {new Date(item.created_at).toLocaleString("en-IN")}
                     </p>
                   </div>
@@ -1126,19 +1136,19 @@ export default function WalletDashboard({
                 </div>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl bg-[#FFF8F1] px-3 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">
+                  <div className="rounded-2xl bg-[#0B0B0F] px-3 py-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#9CA3AF]">
                       Payment Method
                     </p>
-                    <p className="mt-2 text-sm font-bold text-[#0B0B0F]">
+                    <p className="mt-2 text-sm font-bold text-white">
                       {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </p>
                   </div>
-                  <div className="rounded-2xl bg-[#FFF8F1] px-3 py-3">
-                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">
+                  <div className="rounded-2xl bg-[#0B0B0F] px-3 py-3">
+                    <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#9CA3AF]">
                       Amount
                     </p>
-                    <p className={`mt-2 text-sm font-black ${item.type === "debit" ? "text-[#0B0B0F]" : "text-emerald-600"}`}>
+                    <p className={`mt-2 text-sm font-black ${item.type === "debit" ? "text-white" : "text-emerald-300"}`}>
                       {item.type === "debit" ? "-" : "+"}
                       {money(item.amount)}
                     </p>
@@ -1147,15 +1157,15 @@ export default function WalletDashboard({
               </motion.article>
             ))}
             {initial.transactions.length === 0 && (
-              <div className="rounded-[1.5rem] border border-white/80 bg-white/80 p-10 text-center text-sm text-[#111827] shadow-[0_20px_46px_-30px_rgba(15,23,42,.32)]">
-                No transactions yet.
+              <div className="rounded-[1.5rem] border border-white/10 bg-[#151515] p-10 text-center text-sm text-[#9CA3AF]">
+                No wallet transactions yet.
               </div>
             )}
           </div>
 
           <div className="hidden overflow-x-auto lg:block">
             <table className="w-full min-w-[760px] text-left text-xs">
-              <thead className="bg-white/70 text-[10px] uppercase tracking-[0.18em] text-[#111827]">
+              <thead className="bg-[#151515] text-[10px] uppercase tracking-[0.18em] text-[#9CA3AF]">
                 <tr>
                   {[
                     "Transaction ID",
@@ -1170,19 +1180,19 @@ export default function WalletDashboard({
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-white/70">
+              <tbody className="divide-y divide-white/10">
                 {initial.transactions.map((item) => (
-                  <tr key={item.id} className="bg-white/20 transition hover:bg-white/45">
-                    <td className="px-6 py-4 font-black text-[#0B0B0F]">
+                  <tr key={item.id} className="bg-[#0F0F0F] transition hover:bg-[#181818]">
+                    <td className="px-6 py-4 font-black text-white">
                       #{item.id.slice(0, 8).toUpperCase()}
                     </td>
-                    <td className="px-6 py-4 text-[#111827]">
+                    <td className="px-6 py-4 text-[#9CA3AF]">
                       {new Date(item.created_at).toLocaleString("en-IN")}
                     </td>
-                    <td className="px-6 py-4 font-semibold text-[#0B0B0F]">
+                    <td className="px-6 py-4 font-semibold text-white">
                       {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </td>
-                    <td className={`px-6 py-4 font-black ${item.type === "debit" ? "text-[#0B0B0F]" : "text-emerald-600"}`}>
+                    <td className={`px-6 py-4 font-black ${item.type === "debit" ? "text-white" : "text-emerald-300"}`}>
                       {item.type === "debit" ? "-" : "+"}
                       {money(item.amount)}
                     </td>
@@ -1196,8 +1206,8 @@ export default function WalletDashboard({
                 ))}
                 {initial.transactions.length === 0 && (
                   <tr>
-                    <td colSpan={5} className="p-14 text-center text-[#111827]">
-                      No transactions yet.
+                    <td colSpan={5} className="p-14 text-center text-[#9CA3AF]">
+                      No wallet transactions yet.
                     </td>
                   </tr>
                 )}
@@ -1218,7 +1228,7 @@ export default function WalletDashboard({
               initial={{ scale: 0.75, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.8, opacity: 0 }}
-              className="w-full max-w-sm rounded-[2rem] border border-white/80 bg-[linear-gradient(160deg,rgba(255,255,255,.96),rgba(255, 159, 0, .9))] p-8 text-center shadow-[0_36px_90px_-40px_rgba(15,23,42,.7)]"
+              className="w-full max-w-sm rounded-[2rem] border border-orange-400/30 bg-[#111111] p-8 text-center shadow-[0_36px_90px_-40px_rgba(255,122,0,.8)]"
             >
               <motion.span
                 initial={{ scale: 0 }}
@@ -1228,11 +1238,11 @@ export default function WalletDashboard({
               >
                 ✓
               </motion.span>
-              <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">Wallet funded!</h2>
-              <p className="mt-2 text-sm text-[#111827]">
+              <h2 className="mt-5 text-2xl font-black text-white">Wallet funded!</h2>
+              <p className="mt-2 text-sm text-[#D1D5DB]">
                 {money(amount)} was added successfully.
               </p>
-              <p className="mt-5 rounded-2xl bg-white/80 p-3 text-sm font-black text-orange-600 shadow-[0_16px_36px_-26px_rgba(255, 159, 0, .35)]">
+              <p className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/10 p-3 text-sm font-black text-orange-300">
                 New balance: {money(balance)}
               </p>
             </motion.div>
