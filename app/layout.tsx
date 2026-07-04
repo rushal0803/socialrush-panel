@@ -19,9 +19,9 @@ export const metadata: Metadata = {
       { url: "/favicon.ico", sizes: "any" },
       { url: "/favicon-48x48.png", type: "image/png", sizes: "48x48" },
       { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
-      { url: "/icon.png", type: "image/png", sizes: "512x512" },
+      { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
-    shortcut: "/favicon.ico",
+    shortcut: "/favicon-48x48.png",
     apple: [
       {
         url: "/apple-touch-icon.png",
@@ -69,8 +69,11 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 "@type": "Organization",
                 name: "SocialRUSH",
                 url: siteUrl,
-                logo: new URL("/brand/socialrush-logo.png", siteUrl).toString(),
-                sameAs: ["https://wa.me/918860330771"],
+                logo: new URL("/images/brand/socialrush-logo-transparent.png", siteUrl).toString(),
+                sameAs: [
+                  "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+                  "https://www.facebook.com/share/18VDDFqWzY/",
+                ],
                 contactPoint: {
                   "@type": "ContactPoint",
                   telephone: "+91-88603-30771",

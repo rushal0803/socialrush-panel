@@ -29,6 +29,7 @@ import {
   validateCampaignLink,
 } from "@/lib/order-service-experience";
 import PlatformIcon from "@/components/PlatformIcon";
+import IconBadge from "@/components/IconBadge";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 
 const whatsappSupportUrl = "https://wa.me/918860330771";
@@ -249,9 +250,9 @@ export default function DashboardOrderSummaryPage() {
               <div className="absolute -bottom-16 left-8 h-40 w-40 rounded-full bg-orange-200/20 blur-3xl" />
               <div className="relative">
                 <div className="flex flex-col gap-4 sm:flex-row sm:items-start">
-                  <span className={`grid h-16 w-16 shrink-0 place-items-center rounded-[22px] bg-gradient-to-br ${platformMeta[selectedService.platform].gradient} text-white shadow-[0_18px_34px_-16px_rgba(255, 196, 0, .75)] ring-4 ring-white/80`}>
+                  <IconBadge label={platformMeta[selectedService.platform].label} size="lg">
                     <PlatformIcon platform={platformMeta[selectedService.platform].label} className="h-8 w-8" />
-                  </span>
+                  </IconBadge>
                   <div className="min-w-0">
                     <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Selected growth service</p>
                     <h1 className="mt-2 break-words text-2xl font-black tracking-[-.025em] text-[#0B0B0F] sm:text-3xl">{experience.name}</h1>
@@ -534,9 +535,9 @@ function CheckoutCard({
     <div className="overflow-hidden rounded-[30px] border border-white/90 bg-white/88 shadow-[0_32px_75px_-40px_rgba(255, 159, 0, .6)] backdrop-blur-2xl">
       <div className="border-b border-[#FFF8F1] bg-[linear-gradient(145deg,#FFF8F1,#FFF8F1)] p-5 sm:p-6">
         <div className="flex items-center gap-3">
-          <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_14px_28px_-14px_rgba(255, 196, 0, .7)]">
+          <IconBadge label={platform}>
             <PlatformIcon platform={platform} className="h-6 w-6" />
-          </span>
+          </IconBadge>
           <div className="min-w-0">
             <p className="text-[9px] font-black uppercase tracking-[0.14em] text-[#111827]">Premium invoice</p>
             <h2 className="mt-0.5 text-lg font-black text-[#0B0B0F]">Order summary</h2>

@@ -1,13 +1,21 @@
+import type { Metadata } from "next";
 import HomepageContent from "@/components/marketing/HomepageContent";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { homepageFaqItems } from "@/lib/seo/homepage-faq";
 
-export const metadata = createPageMetadata({
-  title: "Social Media Growth Services India",
+const homepageMetadata = createPageMetadata({
+  title: "SocialRUSH | Social Media Growth Services for Creators & Brands",
   description:
-    "SocialRUSH offers social media growth services in India for Instagram, YouTube, LinkedIn, Facebook, TikTok and X with transparent pricing and order tracking.",
+    "SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, secure checkout, transparent pricing, dashboard tracking and WhatsApp support.",
   path: "/",
 });
+
+export const metadata: Metadata = {
+  ...homepageMetadata,
+  title: {
+    absolute: "SocialRUSH | Social Media Growth Services for Creators & Brands",
+  },
+};
 
 export default function HomePage() {
   const faqSchema = {

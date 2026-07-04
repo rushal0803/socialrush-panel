@@ -11,7 +11,7 @@ export function BrandMark({
   return (
     <span className={`relative h-8 w-8 shrink-0 overflow-hidden sm:h-9 sm:w-9 md:h-11 md:w-11 ${className}`}>
       <Image
-        src="/brand/socialrush-icon.png"
+        src="/images/brand/socialrush-icon-black.png"
         alt="SocialRUSH logo"
         width={48}
         height={48}
@@ -24,7 +24,6 @@ export function BrandMark({
 
 export default function Logo({
   light = false,
-  compactOnMobile = false,
   priority = false,
   className = "",
 }: {
@@ -37,15 +36,16 @@ export default function Logo({
     <Link
       href="/"
       aria-label="SocialRUSH home"
-      className={`inline-flex min-w-0 shrink-0 items-center ${light ? "rounded-lg bg-white/95 px-1 py-0.5" : ""} ${className}`}
+      data-on-dark={light || undefined}
+      className={`inline-flex min-w-0 shrink-0 items-center bg-transparent ${className}`}
     >
       <Image
-        src="/brand/socialrush-logo.png"
+        src="/images/brand/socialrush-logo-transparent.png"
         alt="SocialRUSH logo"
         width={320}
         height={160}
         priority={priority}
-        className={`${compactOnMobile ? "h-8 min-[360px]:h-9" : "h-9"} w-auto max-w-[108px] object-contain sm:h-10 sm:max-w-[126px] md:h-12 md:max-w-[148px]`}
+        className="h-9 w-auto max-w-[176px] object-contain sm:h-10 md:h-12"
       />
     </Link>
   );

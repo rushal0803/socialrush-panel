@@ -51,22 +51,12 @@ export default function PlatformIcon({
 }: PlatformIconProps) {
   const normalized = normalizePlatform(platform);
   const Icon = platformIcons[normalized];
-  if (normalized === "x") {
-    return (
-      <span
-        className="inline-grid shrink-0 place-items-center rounded-md bg-white p-0.5"
-        role="img"
-        aria-label={title ?? platform}
-      >
-        <FaXTwitter className={`${className} text-slate-950`} aria-hidden="true" />
-      </span>
-    );
-  }
   return (
     <Icon
-      className={`shrink-0 ${className}`}
+      className={`shrink-0 text-current ${className}`}
       role="img"
       aria-label={title ?? platform}
+      focusable="false"
     />
   );
 }

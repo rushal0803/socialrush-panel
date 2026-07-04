@@ -4,36 +4,38 @@ import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { useState } from "react";
+import { Briefcase, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
 import BlogShell from "@/components/marketing/blog/BlogShell";
+import IconBadge from "@/components/IconBadge";
 import { agencyServices } from "@/lib/marketing/content";
 
 const contactOptions = [
   {
     title: "WhatsApp Support",
     description: "Quick help for orders, pricing, and service selection.",
-    icon: "message" as const,
+    icon: MessageCircle,
     cta: "Open WhatsApp",
     href: "whatsapp",
   },
   {
     title: "Email Support",
     description: "Send your query and our team will reply as soon as possible.",
-    icon: "message" as const,
+    icon: Mail,
     cta: "Email Us",
     href: "mailto:support@getsocialrush.com?subject=SocialRUSH%20Support%20Request",
   },
   {
     title: "Order Help",
     description: "Need help with an active order, payment, or tracking?",
-    icon: "shield" as const,
+    icon: ShieldCheck,
     cta: "Get Order Help",
     href: "/login?next=/dashboard/support",
   },
   {
     title: "Business Enquiry",
     description: "For creators, brands, agencies, and partnership queries.",
-    icon: "users" as const,
+    icon: Briefcase,
     cta: "Talk to Team",
     href: "mailto:support@getsocialrush.com?subject=Business%20Enquiry",
   },
@@ -223,7 +225,9 @@ export default function ContactPageContent() {
               }}
               className="grid gap-5 sm:grid-cols-2 xl:grid-cols-4"
             >
-              {contactOptions.map((item) => (
+              {contactOptions.map((item) => {
+                const Icon = item.icon;
+                return (
                 <motion.article
                   key={item.title}
                   variants={fadeUp}
@@ -231,9 +235,9 @@ export default function ContactPageContent() {
                   whileHover={{ y: -8 }}
                   className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_16px_34px_rgba(255, 159, 0, .17)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_44px_rgba(255, 159, 0, .24)]"
                 >
-                  <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] text-[#0B0B0F] shadow-[0_8px_22px_rgba(255, 159, 0, .2)]">
-                    <MarketingIcon name={item.icon} className="h-5 w-5" />
-                  </span>
+                  <IconBadge label={item.title}>
+                    <Icon aria-hidden="true" />
+                  </IconBadge>
                   <h3 className="mt-4 text-lg font-extrabold text-[#0B0B0F]">{item.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-[#111827]">{item.description}</p>
                   {item.href === "whatsapp" ? (
@@ -261,7 +265,8 @@ export default function ContactPageContent() {
                     </a>
                   )}
                 </motion.article>
-              ))}
+                );
+              })}
             </motion.div>
           </div>
         </section>

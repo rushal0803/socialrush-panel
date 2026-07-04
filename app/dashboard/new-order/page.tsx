@@ -32,6 +32,7 @@ import {
 } from "@/lib/order-service-experience";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
+import IconBadge from "@/components/IconBadge";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -286,7 +287,7 @@ export default function NewOrderPage() {
                   className={`relative min-w-0 rounded-2xl border p-3 text-left shadow-[0_18px_38px_-28px_rgba(15,23,42,.5)] transition sm:p-4 ${active ? "border-transparent bg-white ring-2 ring-[#FF9F00]" : "border-white/85 bg-white/72 hover:border-[#FFF3E0]"}`}
                 >
                   {active ? <CheckCircle2 className="absolute right-2 top-2 h-5 w-5 text-emerald-600" /> : null}
-                  <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}><PlatformIcon platform={meta.label} className="h-5 w-5" /></span>
+                      <IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge>
                   <span className="mt-3 block break-words text-xs font-black text-[#0B0B0F]">{meta.label}</span>
                 </motion.button>
               );
@@ -311,7 +312,7 @@ export default function NewOrderPage() {
                 return (
                   <motion.article key={service.code} whileHover={{ y: -4 }} className={`flex min-w-0 flex-col rounded-3xl border p-5 shadow-[0_22px_48px_-32px_rgba(15,23,42,.5)] transition ${active ? "border-amber-300 bg-white ring-2 ring-amber-200" : "border-white/85 bg-white/82"}`}>
                     <div className="flex items-start justify-between gap-3">
-                      <span className={`grid h-11 w-11 place-items-center rounded-xl bg-gradient-to-br ${platformMeta[service.platform].gradient} text-white shadow-lg`}><PlatformIcon platform={platformMeta[service.platform].label} className="h-5 w-5" /></span>
+                      <IconBadge label={platformMeta[service.platform].label}><PlatformIcon platform={platformMeta[service.platform].label} className="h-6 w-6" /></IconBadge>
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
                     </div>
                     <h3 className="mt-4 text-lg font-black text-[#0B0B0F]">{experience.name}</h3>

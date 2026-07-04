@@ -1,5 +1,6 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
+import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 
 const groups = [
   { title: "Growth services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/buy-instagram-likes-india"], ["Instagram Views", "/buy-instagram-views-india"], ["YouTube Subscribers", "/buy-youtube-subscribers-india"], ["YouTube Likes", "/buy-youtube-likes-india"], ["YouTube Views", "/buy-youtube-views-india"], ["Facebook Followers", "/buy-facebook-followers-india"], ["LinkedIn Followers", "/buy-linkedin-followers-india"], ["Telegram Members", "/buy-telegram-members-india"], ["Twitter/X Followers", "/buy-twitter-followers-india"]] },
@@ -20,9 +21,11 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
           <div className={isLight3d ? "rounded-2xl border border-[#FFF8F1] bg-white/80 p-4 sm:p-5" : ""}>
             <Logo light />
             <p className={isLight3d ? "mt-5 max-w-sm text-xs leading-6 text-[#111827]" : "mt-5 max-w-sm text-xs leading-6 text-slate-400"}>
-              Premium social media growth services for creators, influencers,
-              brands, agencies, and businesses across India and global markets.
+              SocialRUSH helps creators, brands and businesses manage social media
+              growth campaigns with public-link ordering, transparent pricing,
+              secure checkout, dashboard tracking and WhatsApp support.
             </p>
+            <FooterSocialLinks />
             <div className="mt-6 flex flex-wrap gap-2">
               <Link
                 href="/packages"

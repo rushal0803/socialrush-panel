@@ -8,6 +8,7 @@ import { bigPackages, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import PlatformIcon from "@/components/PlatformIcon";
+import IconBadge from "@/components/IconBadge";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 
 type Platform = BigPackage["platform"];
@@ -22,16 +23,6 @@ const platforms: Array<{ key: Platform; label: string }> = [
   { key: "TikTok", label: "TikTok" },
   { key: "X", label: "X / Twitter" },
 ];
-
-const platformGradient: Record<Platform, string> = {
-  Instagram: "from-[#FF7A00] to-[#FFB000]",
-  YouTube: "from-[#FF9F00] via-[#FF7A00] to-[#FF7A00]",
-  Facebook: "from-[#FF9F00] via-[#FF9F00] to-[#FF9F00]",
-  LinkedIn: "from-[#FF9F00] via-[#FF9F00] to-[#FF9F00]",
-  Telegram: "from-[#FF9F00] via-[#FF9F00] to-[#FF9F00]",
-  TikTok: "from-[#FF7A00] to-[#FFB000]",
-  X: "from-[#FF9F00] via-[#111827] to-[#111827]",
-};
 
 const serviceLabels: Record<Service, string> = {
   followers: "Followers",
@@ -142,9 +133,9 @@ export default function PackagesPageContent() {
                         : "border-white/85 bg-white/80 hover:border-[#FFF3E0]"
                     }`}
                   >
-                    <span className={`grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br text-white shadow-[0_10px_22px_rgba(255, 159, 0, .28)] ${platformGradient[platform.key]}`}>
-                      <PlatformIcon platform={platform.label} className="h-5 w-5" />
-                    </span>
+                    <IconBadge label={platform.label}>
+                      <PlatformIcon platform={platform.label} className="h-6 w-6" />
+                    </IconBadge>
                     <span className="mt-3 block truncate text-xs font-bold text-[#0B0B0F]">{platform.label}</span>
                   </button>
                 );
@@ -216,9 +207,9 @@ export default function PackagesPageContent() {
                             className="flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/92 p-5 shadow-[0_16px_36px_rgba(255, 159, 0, .18)] transition hover:-translate-y-1 sm:p-6"
                           >
                             <div className="flex items-start justify-between gap-3">
-                              <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-[0_10px_22px_rgba(255, 159, 0, .28)] ${platformGradient[pkg.platform]}`}>
-                                <PlatformIcon platform={pkg.platform} className="h-5 w-5" />
-                              </span>
+                              <IconBadge label={pkg.platform}>
+                                <PlatformIcon platform={pkg.platform} className="h-6 w-6" />
+                              </IconBadge>
                               {pkg.discountBadge ? (
                                 <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#111827]">
                                   {pkg.discountBadge}
