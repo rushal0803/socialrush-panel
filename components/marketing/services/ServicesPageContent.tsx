@@ -15,6 +15,7 @@ import { useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import OrderNowButton from "@/components/marketing/OrderNowButton";
 import PlatformIcon from "@/components/PlatformIcon";
+import IconBadge from "@/components/IconBadge";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -152,9 +153,9 @@ export default function ServicesPageContent() {
                         : "border-white/85 bg-white/72 hover:border-[#FFF3E0]"
                     }`}
                   >
-                    <span className={`grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg sm:h-11 sm:w-11`}>
+                    <IconBadge label={meta.label}>
                       <PlatformIcon platform={meta.icon} title={meta.label} className="h-5 w-5" />
-                    </span>
+                    </IconBadge>
                     <span className="mt-3 block truncate text-xs font-black text-[#0B0B0F]">{meta.label}</span>
                   </button>
                 );
@@ -200,9 +201,9 @@ export default function ServicesPageContent() {
                     className="group flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-5 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#FFF3E0] hover:shadow-[0_24px_52px_-26px_rgba(255, 159, 0, .4)] sm:p-6"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <span className={`grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}>
+                      <IconBadge label={meta.label}>
                         <PlatformIcon platform={meta.icon} title={meta.label} className="h-6 w-6" />
-                      </span>
+                      </IconBadge>
                       <span className="rounded-full border border-[#FFF8F1] bg-[#FFF8F1] px-3 py-1 text-[10px] font-black uppercase text-[#111827]">
                         {service.qualityType}
                       </span>
@@ -291,15 +292,13 @@ export default function ServicesPageContent() {
                     aria-labelledby={`directory-${platformId}-heading`}
                   >
                     <div className="flex items-center gap-3">
-                      <span
-                        className={`grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br ${meta.gradient} text-white shadow-lg`}
-                      >
+                      <IconBadge label={meta.label} size="sm">
                         <PlatformIcon
                           platform={meta.icon}
                           title={meta.label}
                           className="h-5 w-5"
                         />
-                      </span>
+                      </IconBadge>
                       <h3
                         id={`directory-${platformId}-heading`}
                         className="text-lg font-black text-[#0B0B0F]"

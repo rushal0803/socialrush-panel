@@ -9,9 +9,11 @@ import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
 import PlatformIcon from "@/components/PlatformIcon";
+import IconBadge from "@/components/IconBadge";
 import SafeImage from "@/components/SafeImage";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
+import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 
 /* ─────────────────── animation variants ─────────────────── */
 const fadeUp: Variants = {
@@ -387,7 +389,7 @@ export default function HomepageContent() {
           <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {featuredServices.map((svc) => (
               <motion.article key={svc.name} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] ${svc.border} ${svc.bg}`}>
-                <div className={`inline-flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${svc.grad}`}><PlatformIcon platform={svc.platform} className="h-6 w-6" /></div>
+                <IconBadge label={svc.name}><PlatformIcon platform={svc.platform} className="h-6 w-6" /></IconBadge>
                 <h3 className="mt-4 text-lg font-bold text-slate-900">{svc.name}</h3>
                 <p className="mt-2 text-sm leading-6 text-slate-600">{svc.text}</p>
                 <div className="mt-4 flex gap-2">
@@ -492,6 +494,7 @@ export default function HomepageContent() {
             <div>
               <Logo light />
               <p className="mt-3 text-sm leading-7 text-slate-500">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, transparent pricing, secure checkout, dashboard tracking and WhatsApp support.</p>
+              <FooterSocialLinks />
               <div className="mt-5 flex flex-wrap gap-2">
                 <Link href="/packages" className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3.5 py-2 text-xs font-bold text-white shadow-sm">View Packages</Link>
                 <Link href="/register" className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm">Create Account</Link>

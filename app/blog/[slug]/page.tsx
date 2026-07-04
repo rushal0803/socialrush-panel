@@ -78,7 +78,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
       name: "SocialRUSH",
       logo: {
         "@type": "ImageObject",
-        url: new URL("/brand/socialrush-logo.png", SEO_SITE_URL).toString(),
+        url: new URL("/images/brand/socialrush-logo-transparent.png", SEO_SITE_URL).toString(),
       },
     },
   };
