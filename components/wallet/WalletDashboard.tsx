@@ -716,11 +716,42 @@ export default function WalletDashboard({
             <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">
               Three simple steps
             </h2>
-            <div className="mt-3 flex flex-wrap gap-2 text-[10px] font-bold uppercase tracking-[0.1em] text-[#D1D5DB]">
-              {["1. Payment method", "2. Enter amount", "3. Review & pay"].map((step) => (
-                <span key={step} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5">
-                  {step}
-                </span>
+            <div className="mt-4 grid grid-cols-3 gap-2 sm:gap-3">
+              {[
+                { number: 1, label: "Payment method", state: "complete" },
+                { number: 2, label: "Enter amount", state: amount >= minimumAmount ? "complete" : "active" },
+                { number: 3, label: "Review & pay", state: amount >= minimumAmount ? "active" : "upcoming" },
+              ].map((step) => (
+                <div
+                  key={step.number}
+                  className={`flex min-w-0 items-center gap-2 rounded-xl border px-2.5 py-2.5 sm:px-3 ${
+                    step.state === "complete"
+                      ? "border-emerald-400/30 bg-emerald-500/10"
+                      : step.state === "active"
+                        ? "border-orange-400/55 bg-orange-500/15 shadow-[0_12px_28px_-22px_rgba(255,122,0,.8)]"
+                        : "border-white/10 bg-[#111111]"
+                  }`}
+                >
+                  <span
+                    className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black ${
+                      step.state === "complete"
+                        ? "bg-emerald-500 text-white"
+                        : step.state === "active"
+                          ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white"
+                          : "bg-white/10 text-[#9CA3AF]"
+                    }`}
+                  >
+                    {step.state === "complete" ? "✓" : step.number}
+                  </span>
+                  <span className="min-w-0">
+                    <span className="block text-[8px] font-black uppercase tracking-[0.1em] text-[#9CA3AF]">
+                      Step {step.number}
+                    </span>
+                    <span className={`block truncate text-[9px] font-black sm:text-[10px] ${step.state === "upcoming" ? "text-[#9CA3AF]" : "text-white"}`}>
+                      {step.label}
+                    </span>
+                  </span>
+                </div>
               ))}
             </div>
           </div>
