@@ -5,7 +5,7 @@ import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 const groups = [
   { title: "Growth services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/buy-instagram-likes-india"], ["Instagram Views", "/buy-instagram-views-india"], ["YouTube Subscribers", "/buy-youtube-subscribers-india"], ["YouTube Likes", "/buy-youtube-likes-india"], ["YouTube Views", "/buy-youtube-views-india"], ["Facebook Followers", "/buy-facebook-followers-india"], ["LinkedIn Followers", "/buy-linkedin-followers-india"], ["Telegram Members", "/buy-telegram-members-india"], ["Twitter/X Followers", "/buy-twitter-followers-india"]] },
   { title: "Platform", links: [["Services", "/services"], ["Pricing", "/pricing"], ["Login", "/login"], ["Register", "/register"], ["Dashboard", "/dashboard"], ["Support", "/dashboard/support"]] },
-  { title: "Company & legal", links: [["About", "/about"], ["Case Studies", "/case-studies"], ["FAQ", "/faq"], ["Contact", "/contact"], ["Privacy Policy", "/privacy"], ["Refund Policy", "/refund-policy"], ["Terms", "/terms"]] },
+  { title: "Company & legal", links: [["About", "/about"], ["Case Studies", "/case-studies"], ["FAQ", "/faq"], ["Contact", "/contact"], ["Privacy Policy", "/privacy-policy"], ["Refund Policy", "/refund-policy"], ["Terms & Conditions", "/terms-and-conditions"]] },
 ];
 
 export default function MarketingFooter({ tone = "default" }: { tone?: "default" | "light3d" }) {

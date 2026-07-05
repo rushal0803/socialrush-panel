@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { Plus, RotateCcw, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
@@ -26,16 +27,16 @@ type Campaign = {
 
 const statuses = ["all", "pending", "processing", "in_progress", "completed", "partial", "cancelled", "refunded", "failed", "refill_requested", "refilling"];
 const statusStyle: Record<string, string> = {
-  pending: "bg-amber-50 text-amber-700",
-  processing: "bg-orange-50 text-orange-700",
-  in_progress: "bg-amber-50 text-amber-700",
-  completed: "bg-emerald-50 text-emerald-700",
-  partial: "bg-amber-50 text-amber-700",
-  cancelled: "bg-slate-100 text-slate-600",
-  refunded: "bg-amber-50 text-amber-700",
-  failed: "bg-red-50 text-red-700",
-  refill_requested: "bg-orange-50 text-orange-700",
-  refilling: "bg-orange-50 text-orange-700",
+  pending: "border border-amber-400/25 bg-amber-500/10 text-amber-200",
+  processing: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
+  in_progress: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
+  completed: "border border-emerald-400/25 bg-emerald-500/10 text-emerald-200",
+  partial: "border border-amber-400/25 bg-amber-500/10 text-amber-200",
+  cancelled: "border border-white/15 bg-white/5 text-[#D1D5DB]",
+  refunded: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
+  failed: "border border-red-400/25 bg-red-500/10 text-red-200",
+  refill_requested: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
+  refilling: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
 };
 
 function StatusBadge({ status }: { status: string }) {
@@ -113,48 +114,53 @@ export default function CampaignHistoryPage() {
   );
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-[linear-gradient(180deg,#FFF8F1,#FFF8F1)] p-4 sm:p-6 lg:p-8">
+    <main className="min-h-[calc(100vh-5rem)] bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.12),transparent_34%),#050505] p-4 text-white sm:p-6 lg:p-8">
       <div className="mx-auto max-w-[1700px]">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
-            <span className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-600">Campaign operations</span>
-            <h1 className="mt-2 text-3xl font-bold tracking-tight text-[#0B0B0F]">Order History</h1>
-            <p className="mt-2 text-sm text-slate-500">Track all campaign records with delivery-level operational columns.</p>
+            <span className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-400">Campaign operations</span>
+            <h1 className="mt-2 text-3xl font-black tracking-tight text-white">Order History</h1>
+            <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">Track campaign status, delivery progress, and order details in one place.</p>
           </div>
-          <Link href="/dashboard/new-order" className="rounded-xl bg-orange-600 px-5 py-3 text-sm font-bold text-white shadow-lg shadow-orange-600/20">
-            + New Order
+          <Link href="/dashboard/new-order" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_16px_34px_-18px_rgba(255,122,0,.75)] transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
+            <Plus className="h-4 w-4" /> New Order
           </Link>
         </div>
 
-        <section className="mt-7 rounded-3xl border border-white bg-white/80 p-4 shadow-sm backdrop-blur-xl">
+        <section className="mt-7 rounded-3xl border border-orange-400/20 bg-[#111111] p-4 shadow-[0_24px_55px_-36px_rgba(255,122,0,.7)] sm:p-5">
           <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-[1.4fr_1fr_1fr_auto]">
-            <input
-              value={search}
-              onChange={(event) => setSearch(event.target.value)}
-              className="w-full rounded-xl border border-slate-200 px-4 py-3 text-xs outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
-              placeholder="Search order ID, service, link"
-            />
-            <select value={status} onChange={(event) => setStatus(event.target.value)} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs capitalize outline-none">
+            <label className="relative block">
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-orange-400" />
+              <input
+                value={search}
+                onChange={(event) => setSearch(event.target.value)}
+                className="min-h-12 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] py-3 pl-11 pr-4 text-sm text-white outline-none transition placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+                placeholder="Search order ID, service, link"
+              />
+            </label>
+            <select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-12 rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm capitalize text-white outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15">
               {statuses.map((item) => (
                 <option key={item} value={item}>
                   {item === "all" ? "All statuses" : item.replaceAll("_", " ")}
                 </option>
               ))}
             </select>
-            <select value={platform} onChange={(event) => setPlatform(event.target.value)} className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs outline-none">
+            <select value={platform} onChange={(event) => setPlatform(event.target.value)} className="min-h-12 rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm text-white outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15">
               <option value="all">All platforms</option>
               {platforms.map((item) => (
                 <option key={item}>{item}</option>
               ))}
             </select>
-            <button onClick={() => { setSearch(""); setStatus("all"); setPlatform("all"); }} className="rounded-xl bg-slate-100 px-4 py-3 text-xs font-bold text-slate-600">Reset</button>
+            <button type="button" onClick={() => { setSearch(""); setStatus("all"); setPlatform("all"); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 py-3 text-sm font-bold text-orange-200 transition-all duration-200 ease-out hover:border-orange-400 hover:bg-orange-500/15 active:scale-[.98]">
+              <RotateCcw className="h-4 w-4" /> Reset
+            </button>
           </div>
         </section>
 
-        <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mt-5 overflow-hidden rounded-3xl border border-slate-200/80 bg-white shadow-sm">
+        <motion.section initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} className="mt-5 hidden overflow-hidden rounded-3xl border border-orange-400/20 bg-[#111111] shadow-[0_26px_60px_-40px_rgba(255,122,0,.7)] lg:block">
           <div className="overflow-x-auto">
             <table className="w-full min-w-[1400px] text-left text-xs">
-              <thead className="bg-slate-50 text-[9px] uppercase tracking-wider text-slate-400">
+              <thead className="border-b border-orange-400/20 bg-[#0B0B0F] text-[9px] uppercase tracking-wider text-orange-200">
                 <tr>
                   {[
                     "Order ID",
@@ -174,40 +180,40 @@ export default function CampaignHistoryPage() {
                   ))}
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-100">
+              <tbody className="divide-y divide-white/10">
                 {loading && (
                   <tr>
-                    <td colSpan={12} className="p-14 text-center text-slate-400">Loading orders...</td>
+                    <td colSpan={12} className="p-14 text-center text-[#9CA3AF]">Loading orders...</td>
                   </tr>
                 )}
 
                 {!loading &&
                   filtered.map((item) => (
-                    <tr key={item.id} className="hover:bg-slate-50">
-                      <td className="px-5 py-4 font-bold text-orange-600">{readableOrderId(item.id)}</td>
-                      <td className="px-5 py-4 text-slate-500">{new Date(item.createdAt).toLocaleString("en-IN")}</td>
+                    <tr key={item.id} className="text-[#D1D5DB] transition hover:bg-orange-500/[.04]">
+                      <td className="px-5 py-4 font-bold text-orange-300">{readableOrderId(item.id)}</td>
+                      <td className="px-5 py-4 text-[#9CA3AF]">{new Date(item.createdAt).toLocaleString("en-IN")}</td>
                       <td className="max-w-[220px] px-5 py-4">
-                        <p className="truncate font-semibold">{item.service}</p>
-                        <p className="mt-1 text-[10px] text-slate-400 capitalize">{item.platform} · {item.packageName || "Standard"}</p>
+                        <p className="truncate font-semibold text-white">{item.service}</p>
+                        <p className="mt-1 text-[10px] capitalize text-[#9CA3AF]">{item.platform} · {item.packageName || "Standard"}</p>
                       </td>
-                      <td className="max-w-[220px] truncate px-5 py-4 text-slate-500">{item.link}</td>
-                      <td className="px-5 py-4 font-semibold">{item.quantity.toLocaleString("en-IN")}</td>
-                      <td className="px-5 py-4 font-bold">{money(item.amount)}</td>
+                      <td className="max-w-[220px] truncate px-5 py-4 text-[#9CA3AF]">{item.link}</td>
+                      <td className="px-5 py-4 font-semibold text-white">{item.quantity.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4 font-bold text-orange-200">{money(item.amount)}</td>
                       <td className="px-5 py-4"><StatusBadge status={item.status} /></td>
-                      <td className="px-5 py-4 text-slate-600">{item.startCount === null ? "Pending detection" : item.startCount.toLocaleString("en-IN")}</td>
-                      <td className="px-5 py-4 text-slate-600">{item.currentCount === null ? "—" : item.currentCount.toLocaleString("en-IN")}</td>
-                      <td className="px-5 py-4 text-slate-600">{item.remains === null ? "—" : item.remains.toLocaleString("en-IN")}</td>
-                      <td className="px-5 py-4"><div className="h-2 w-24 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-500 to-amber-400" style={{ width: `${item.progress ?? 0}%` }} /></div><p className="mt-1 text-[9px] text-slate-500">{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</p></td>
+                      <td className="px-5 py-4 text-[#D1D5DB]">{item.startCount === null ? "Pending detection" : item.startCount.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4 text-[#D1D5DB]">{item.currentCount === null ? "—" : item.currentCount.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4 text-[#D1D5DB]">{item.remains === null ? "—" : item.remains.toLocaleString("en-IN")}</td>
+                      <td className="px-5 py-4"><div className="h-2 w-24 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFB000]" style={{ width: `${item.progress ?? 0}%` }} /></div><p className="mt-1 text-[9px] text-[#9CA3AF]">{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</p></td>
                       <td className="px-5 py-4">
                         <div className="flex gap-2">
-                          <Link href="/dashboard/support" className="rounded-lg bg-orange-50 px-3 py-1.5 text-[10px] font-bold text-orange-700">
+                          <Link href="/dashboard/support" className="rounded-lg border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold text-orange-200">
                             Raise Ticket
                           </Link>
                           <a
                             href={`https://wa.me/918860330771?text=${encodeURIComponent(`Hi SocialRUSH, I need help with order ${readableOrderId(item.id)}.`)}`}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="rounded-lg bg-emerald-50 px-3 py-1.5 text-[10px] font-bold text-emerald-700"
+                            className="rounded-lg border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-bold text-emerald-200"
                           >
                             WhatsApp
                           </a>
@@ -218,12 +224,87 @@ export default function CampaignHistoryPage() {
 
                 {!loading && !filtered.length && (
                   <tr>
-                    <td colSpan={12} className="p-14 text-center text-slate-400">No orders match this filter.</td>
+                    <td colSpan={12} className="p-14 text-center text-[#9CA3AF]">No orders match this filter.</td>
                   </tr>
                 )}
               </tbody>
             </table>
           </div>
+        </motion.section>
+
+        <motion.section initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} className="mt-5 grid gap-4 lg:hidden">
+          {loading ? (
+            <div className="rounded-3xl border border-orange-400/20 bg-[#111111] p-8 text-center text-sm text-[#9CA3AF]">
+              Loading orders...
+            </div>
+          ) : null}
+
+          {!loading && filtered.map((item) => (
+            <article key={item.id} className="min-w-0 rounded-3xl border border-orange-400/25 bg-[#111111] p-5 shadow-[0_22px_48px_-34px_rgba(255,122,0,.7)]">
+              <div className="flex flex-wrap items-start justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-black uppercase tracking-[.14em] text-[#9CA3AF]">Order ID</p>
+                  <p className="mt-1 text-base font-black text-orange-300">{readableOrderId(item.id)}</p>
+                </div>
+                <StatusBadge status={item.status} />
+              </div>
+
+              <div className="mt-4 rounded-2xl border border-white/10 bg-[#151515] p-4">
+                <p className="text-sm font-bold leading-6 text-white">{item.service}</p>
+                <p className="mt-1 text-xs capitalize text-[#9CA3AF]">{item.platform} · {item.packageName || "Standard"}</p>
+              </div>
+
+              <dl className="mt-4 grid grid-cols-2 gap-3">
+                {[
+                  ["Date", new Date(item.createdAt).toLocaleDateString("en-IN")],
+                  ["Quantity", item.quantity.toLocaleString("en-IN")],
+                  ["Amount", money(item.amount)],
+                  ["Start count", item.startCount === null ? "Pending" : item.startCount.toLocaleString("en-IN")],
+                ].map(([label, value]) => (
+                  <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#0B0B0F] p-3">
+                    <dt className="text-[9px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt>
+                    <dd className={`mt-1.5 break-words text-sm font-bold ${label === "Amount" ? "text-orange-200" : "text-white"}`}>{value}</dd>
+                  </div>
+                ))}
+              </dl>
+
+              <div className="mt-3 rounded-2xl border border-white/10 bg-[#0B0B0F] p-3">
+                <p className="text-[9px] font-black uppercase tracking-wider text-[#9CA3AF]">Campaign link</p>
+                <p className="mt-1.5 break-all text-sm leading-6 text-[#D1D5DB]">{item.link}</p>
+              </div>
+
+              <div className="mt-4">
+                <div className="flex items-center justify-between text-[10px] font-bold text-[#9CA3AF]">
+                  <span>Delivery progress</span>
+                  <span>{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</span>
+                </div>
+                <div className="mt-2 h-2 overflow-hidden rounded-full bg-white/10">
+                  <div className="h-full rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFB000]" style={{ width: `${item.progress ?? 0}%` }} />
+                </div>
+              </div>
+
+              <div className="mt-5 grid grid-cols-2 gap-3">
+                <Link href="/dashboard/support" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2.5 text-xs font-bold text-orange-200 transition-all duration-200 ease-out active:scale-[.98]">
+                  Raise Ticket
+                </Link>
+                <a
+                  href={`https://wa.me/918860330771?text=${encodeURIComponent(`Hi SocialRUSH, I need help with order ${readableOrderId(item.id)}.`)}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 py-2.5 text-xs font-bold text-emerald-200 transition-all duration-200 ease-out active:scale-[.98]"
+                >
+                  WhatsApp
+                </a>
+              </div>
+            </article>
+          ))}
+
+          {!loading && !filtered.length ? (
+            <div className="rounded-3xl border border-orange-400/20 bg-[#111111] p-8 text-center">
+              <p className="text-sm font-bold text-white">No orders match this filter.</p>
+              <p className="mt-2 text-xs leading-5 text-[#9CA3AF]">Try changing the search or filter options above.</p>
+            </div>
+          ) : null}
         </motion.section>
       </div>
     </main>

@@ -13,7 +13,7 @@ import IconBadge from "@/components/IconBadge";
 import SafeImage from "@/components/SafeImage";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
-import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
+import MarketingFooter from "@/components/marketing/MarketingFooter";
 
 /* ─────────────────── animation variants ─────────────────── */
 const fadeUp: Variants = {
@@ -175,13 +175,6 @@ const homepagePosts = [
     category: "Professional Growth",
     excerpt: "Build a clearer professional presence with focused content, positioning and profile updates.",
   },
-] as const;
-
-const footerLinks = [
-  { heading: "Quick Links", links: [["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Blog", "/blog"], ["About Us", "/about"]] },
-  { heading: "Popular Growth", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/buy-instagram-likes-india"], ["Instagram Views", "/buy-instagram-views-india"], ["YouTube Subscribers", "/buy-youtube-subscribers-india"], ["YouTube Likes", "/buy-youtube-likes-india"], ["YouTube Views", "/buy-youtube-views-india"], ["LinkedIn Followers", "/buy-linkedin-followers-india"], ["Facebook Followers", "/buy-facebook-followers-india"], ["Telegram Members", "/buy-telegram-members-india"]] },
-  { heading: "Support", links: [["FAQ", "/faq"], ["Contact Us", "/contact"], ["Support Center", "/dashboard/support"], ["How It Works", "/#how-it-works"]] },
-  { heading: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms & Conditions", "/terms-and-conditions"], ["Refund Policy", "/refund-policy"]] },
 ] as const;
 
 /* ─────────────────── SVG icon component ─────────────────── */
@@ -487,36 +480,7 @@ export default function HomepageContent() {
         </div>
       </motion.section>
 
-      {/* FOOTER */}
-      <footer className="brand-footer px-4 pb-24 pt-10 sm:px-6 lg:px-8">
-        <div className="brand-footer-surface mx-auto max-w-7xl overflow-hidden rounded-3xl border p-7 backdrop-blur sm:p-10">
-          <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-5">
-            <div>
-              <Logo light />
-              <p className="mt-3 text-sm leading-7 text-slate-500">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, transparent pricing, secure checkout, dashboard tracking and WhatsApp support.</p>
-              <FooterSocialLinks />
-              <div className="mt-5 flex flex-wrap gap-2">
-                <Link href="/packages" className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3.5 py-2 text-xs font-bold text-white shadow-sm">View Packages</Link>
-                <Link href="/register" className="rounded-xl border border-slate-200 bg-white px-3.5 py-2 text-xs font-bold text-slate-700 shadow-sm">Create Account</Link>
-              </div>
-            </div>
-            {footerLinks.map((group) => (
-              <div key={group.heading}>
-                <p className="text-sm font-bold text-slate-900">{group.heading}</p>
-                <div className="mt-3 grid gap-2">
-                  {group.links.map(([label, href]) => (
-                    <Link key={label} href={href} className="text-sm text-slate-500 transition hover:text-orange-600">{label}</Link>
-                  ))}
-                </div>
-              </div>
-            ))}
-          </div>
-          <div className="mt-8 flex flex-col justify-between gap-2 border-t border-slate-100 pt-6 text-[11px] text-slate-400 sm:flex-row">
-            <p>&#169; 2026 SocialRUSH. All rights reserved.</p>
-            <p>Secure Checkout &#183; Real-time Tracking &#183; Multi-currency &#183; 24/7 Support</p>
-          </div>
-        </div>
-      </footer>
+      <MarketingFooter />
       </main>
     </LazyMotion>
   );

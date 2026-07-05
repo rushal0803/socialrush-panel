@@ -9,6 +9,7 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
+import MarketingFooter from "@/components/marketing/MarketingFooter";
 
 const navLinks = [
   ["Home", "/"],
@@ -18,37 +19,6 @@ const navLinks = [
   ["Blog", "/blog"],
   ["FAQ", "/faq"],
   ["Contact", "/contact"],
-] as const;
-
-const footerColumns = [
-  {
-    title: "Quick Links",
-    links: [
-      ["Home", "/"],
-      ["Services", "/services"],
-      ["Packages", "/packages"],
-      ["Blog", "/blog"],
-      ["FAQ", "/faq"],
-    ],
-  },
-  {
-    title: "Support",
-    links: [
-      ["Contact Us", "/contact"],
-      ["Support", "/support"],
-      ["Account Login", "/login"],
-      ["Create Account", "/register"],
-      ["Start Order", "/login?next=/dashboard/new-order"],
-    ],
-  },
-  {
-    title: "Legal",
-    links: [
-      ["Privacy Policy", "/privacy-policy"],
-      ["Refund Policy", "/refund-policy"],
-      ["Terms & Conditions", "/terms-and-conditions"],
-    ],
-  },
 ] as const;
 
 function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
@@ -239,49 +209,12 @@ function BlogHeader() {
   );
 }
 
-function BlogFooter() {
-  return (
-    <footer className="brand-footer relative mt-14 overflow-hidden px-5 pb-9 pt-14 text-white sm:px-6 lg:px-8">
-      <div className="pointer-events-none absolute -left-20 top-10 h-56 w-56 rounded-full bg-orange-200/45 blur-3xl" />
-      <div className="pointer-events-none absolute -right-20 bottom-8 h-56 w-56 rounded-full bg-amber-200/45 blur-3xl" />
-      <div className="brand-footer-surface relative mx-auto max-w-7xl rounded-[30px] border p-7 backdrop-blur sm:p-10">
-        <div className="grid gap-9 border-b border-[#FFF8F1] pb-9 lg:grid-cols-[1.35fr_1fr_1fr_1fr]">
-          <div>
-            <Logo light />
-            <p className="mt-4 max-w-sm text-sm leading-7 text-[#111827]">
-              Premium social media growth support for creators, brands, and agencies focused on smarter campaign execution and measurable visibility.
-            </p>
-          </div>
-
-          {footerColumns.map((column) => (
-            <div key={column.title}>
-              <h3 className="text-sm font-extrabold text-[#0B0B0F]">{column.title}</h3>
-              <div className="mt-4 space-y-2 text-sm text-[#111827]">
-                {column.links.map(([label, href]) => (
-                  <Link key={href} href={href} className="block transition hover:text-[#0B0B0F]">
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className="flex flex-col gap-2 pt-6 text-xs text-[#111827] sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 SocialRUSH. All rights reserved.</p>
-          <p>Secure checkout, campaign tracking, and creator-first support.</p>
-        </div>
-      </div>
-    </footer>
-  );
-}
-
 export default function BlogShell({ children }: { children: React.ReactNode }) {
   return (
     <main className="public-dark min-h-screen overflow-x-clip bg-[#050505] text-white">
       <BlogHeader />
       {children}
-      <BlogFooter />
+      <MarketingFooter />
     </main>
   );
 }
