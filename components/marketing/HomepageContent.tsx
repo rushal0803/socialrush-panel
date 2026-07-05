@@ -269,8 +269,8 @@ export default function HomepageContent() {
               )}
             </button>
           </div>
-          <MobileMenuLayer open={menuOpen} onClose={() => setMenuOpen(false)}>
-              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-orange-400/20 bg-[#0B0B0F]/98 px-4 pb-4 pt-14 shadow-2xl">
+          <MobileMenuLayer open={menuOpen} onClose={() => setMenuOpen(false)} showCloseButton={false}>
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-orange-400/20 bg-[#0B0B0F]/98 px-4 pb-4 pt-4 shadow-2xl">
                 <div className="max-h-full overflow-y-auto border-t border-white/10 pt-3">
                   <nav className="grid gap-0.5">
                     {navLinks.map((item) => (
