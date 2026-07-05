@@ -59,7 +59,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-IN">
-      <body className="overflow-x-clip bg-white text-slate-950">
+      <body className="overflow-x-clip bg-[#050505] text-white">
         <ClientProviders>
           <script
             type="application/ld+json"
