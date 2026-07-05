@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { ShieldCheck } from "lucide-react";
 import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
@@ -127,7 +128,7 @@ export default function PackagesPageContent() {
                     key={platform.key}
                     type="button"
                     onClick={() => selectPlatform(platform.key)}
-                    className={`min-w-0 rounded-2xl border p-3 text-left transition sm:p-4 ${
+                    className={`min-w-0 rounded-2xl border p-3 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:p-4 ${
                       active
                         ? "border-orange-400/80 bg-orange-500/15 shadow-[0_16px_36px_-24px_rgba(255,122,0,.75)] ring-2 ring-orange-500/10"
                         : "border-white/10 bg-[#111111] hover:border-orange-400/45"
@@ -154,7 +155,7 @@ export default function PackagesPageContent() {
                   key={service}
                   type="button"
                   onClick={() => setSelectedService(service)}
-                  className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
+                  className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] ${
                     activeService === service
                       ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]"
                       : "border border-white/10 bg-[#0B0B0F] text-[#D1D5DB] hover:border-orange-400/40"
@@ -222,6 +223,10 @@ export default function PackagesPageContent() {
                               {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
                             </p>
                             <p className="mt-4 line-clamp-3 text-sm leading-6 text-[#D1D5DB]">{pkg.description}</p>
+                            <span className="mt-3 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold text-emerald-200">
+                              <ShieldCheck className="h-3.5 w-3.5" />
+                              Refill support if eligible
+                            </span>
 
                             <dl className="mt-5 grid grid-cols-2 gap-3 text-xs">
                               <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 p-3">
@@ -244,7 +249,7 @@ export default function PackagesPageContent() {
 
                             <Link
                               href={`/packages/checkout?packageId=${encodeURIComponent(pkg.packageId)}`}
-                              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255, 196, 0, .3)] transition hover:-translate-y-0.5"
+                              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98]"
                             >
                               Select Package
                             </Link>

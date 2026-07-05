@@ -16,7 +16,7 @@ import {
 } from "lucide-react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import PlatformIcon from "@/components/PlatformIcon";
 import { getPackageById, type BigPackage } from "@/lib/big-packages";
@@ -55,6 +55,22 @@ function getServiceCode(pkg: BigPackage) {
   return `${platformCode[pkg.platform]}-${pkg.service}`;
 }
 
+function withTimeout<T>(request: PromiseLike<T>, timeoutMs = 7000): Promise<T> {
+  return new Promise<T>((resolve, reject) => {
+    const timeout = window.setTimeout(() => reject(new Error("Wallet request timed out.")), timeoutMs);
+    Promise.resolve(request).then(
+      (value) => {
+        window.clearTimeout(timeout);
+        resolve(value);
+      },
+      (reason) => {
+        window.clearTimeout(timeout);
+        reject(reason);
+      },
+    );
+  });
+}
+
 export default function PackageCheckoutContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -67,8 +83,52 @@ export default function PackageCheckoutContent() {
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [isAuthLoading, setIsAuthLoading] = useState(true);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [walletLoadError, setWalletLoadError] = useState("");
   const [placingOrder, setPlacingOrder] = useState(false);
   const [error, setError] = useState("");
+
+  const refreshWalletBalance = useCallback(async () => {
+    const supabase = createClient();
+    setIsAuthLoading(true);
+    setWalletLoadError("");
+
+    try {
+      const {
+        data: { user },
+        error: authError,
+      } = await withTimeout(supabase.auth.getUser());
+
+      if (authError) {
+        setIsLoggedIn(false);
+        setWalletBalance(null);
+        setWalletLoadError("Could not load wallet balance. Please refresh or continue after login.");
+        return;
+      }
+
+      setIsLoggedIn(Boolean(user));
+      if (!user) {
+        setWalletBalance(null);
+        return;
+      }
+
+      const { data: profile, error: profileError } = await withTimeout(
+        supabase.from("profiles").select("balance").eq("id", user.id).maybeSingle(),
+      );
+
+      if (profileError) {
+        setWalletBalance(null);
+        setWalletLoadError("Could not load wallet balance. Please refresh or continue after login.");
+        return;
+      }
+
+      setWalletBalance(Number(profile?.balance ?? 0));
+    } catch {
+      setWalletBalance(null);
+      setWalletLoadError("Could not load wallet balance. Please refresh or continue after login.");
+    } finally {
+      setIsAuthLoading(false);
+    }
+  }, []);
 
   useEffect(() => {
     const raw = window.localStorage.getItem(PENDING_CHECKOUT_KEY);
@@ -86,43 +146,22 @@ export default function PackageCheckoutContent() {
   }, [packageId]);
 
   useEffect(() => {
-    const supabase = createClient();
-
-    async function loadSessionAndBalance() {
-      const { data: { user } } = await supabase.auth.getUser();
-      setIsLoggedIn(Boolean(user));
-      if (!user) {
-        setWalletBalance(null);
-        setIsAuthLoading(false);
-        return;
-      }
-      const { data: profile } = await supabase.from("profiles").select("balance").eq("id", user.id).maybeSingle();
-      setWalletBalance(Number(profile?.balance ?? 0));
-      setIsAuthLoading(false);
-    }
-
-    void loadSessionAndBalance();
-    const { data: listener } = supabase.auth.onAuthStateChange(async (_event, session) => {
-      setIsLoggedIn(Boolean(session?.user));
-      if (!session?.user) {
-        setWalletBalance(null);
-        return;
-      }
-      const { data: profile } = await supabase.from("profiles").select("balance").eq("id", session.user.id).maybeSingle();
-      setWalletBalance(Number(profile?.balance ?? 0));
-    });
+    void refreshWalletBalance();
 
     const handleBalanceUpdate = (event: Event) => {
       const value = Number((event as CustomEvent<number>).detail);
-      if (Number.isFinite(value)) setWalletBalance(value);
+      if (Number.isFinite(value)) {
+        setWalletBalance(value);
+        setWalletLoadError("");
+        setIsAuthLoading(false);
+      }
     };
     window.addEventListener("wallet-balance-updated", handleBalanceUpdate);
 
     return () => {
-      listener.subscription.unsubscribe();
       window.removeEventListener("wallet-balance-updated", handleBalanceUpdate);
     };
-  }, []);
+  }, [refreshWalletBalance]);
 
   if (!pkg) {
     return (
@@ -229,16 +268,17 @@ export default function PackageCheckoutContent() {
               Back to packages
             </Link>
 
-            <div className="mt-3 rounded-[1.75rem] border border-white/90 bg-white/68 p-4 shadow-[0_24px_65px_-36px_rgba(255, 159, 0, .45)] backdrop-blur-2xl sm:p-5">
-              <div className="grid gap-3 sm:grid-cols-3">
+            <div className="mt-3 rounded-[1.75rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_24px_65px_-36px_rgba(255,122,0,.55)] sm:p-5">
+              <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
                 <CheckoutStep number="1" title="Package Selected" state="complete" />
                 <CheckoutStep number="2" title="Campaign Details" state="active" />
                 <CheckoutStep number="3" title="Wallet Payment" state="upcoming" />
+                <CheckoutStep number="4" title="Order Summary" state="upcoming" />
               </div>
             </div>
 
             <div className="mt-5 grid min-w-0 gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
-              <article className="min-w-0 rounded-[2rem] border border-white/90 bg-white/80 p-5 shadow-[0_30px_70px_-38px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-8">
+              <article className="min-w-0 rounded-[2rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_30px_70px_-38px_rgba(255,122,0,.65)] sm:p-8">
                 <div className="max-w-2xl">
                   <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">Premium campaign checkout</p>
                   <h1 className="mt-2 text-2xl font-black tracking-tight text-[#0B0B0F] sm:text-4xl">Complete your campaign details</h1>
@@ -279,42 +319,42 @@ export default function PackageCheckoutContent() {
                   </div>
                 </div>
 
-                <div className="mt-7 rounded-[1.65rem] border border-white/90 bg-white/72 p-4 shadow-[0_18px_45px_-34px_rgba(255, 159, 0, .5)] sm:p-6">
+                <div className="mt-7 rounded-[1.65rem] border border-orange-400/20 bg-[#151515] p-4 shadow-[0_18px_45px_-34px_rgba(255,122,0,.55)] sm:p-6">
                   <div className="flex items-center gap-3">
                     <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-50 text-orange-600"><Link2 className="h-5 w-5" /></span>
                     <div>
-                      <h2 className="text-lg font-black text-[#0B0B0F]">Campaign destination</h2>
-                      <p className="mt-0.5 text-xs text-[#111827]">Tell us where this campaign should be delivered.</p>
+                      <h2 className="text-lg font-black text-white">Campaign details</h2>
+                      <p className="mt-0.5 text-xs text-[#D1D5DB]">Tell us where this campaign should be delivered.</p>
                     </div>
                   </div>
 
                   <div className="mt-5 grid gap-5">
-                    <label className="text-xs font-black text-[#0B0B0F]">
+                    <label className="text-xs font-black text-white">
                       Campaign Link / Username
-                      <span className="mt-2 flex rounded-2xl border border-[#FFF3E0] bg-white shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .55)] transition focus-within:border-[#FF9F00] focus-within:ring-4 focus-within:ring-orange-100/70">
+                      <span className="mt-2 flex rounded-2xl border border-orange-400/25 bg-[#0B0B0F] shadow-[0_12px_28px_-24px_rgba(255,122,0,.7)] transition-all duration-200 ease-out focus-within:border-[#FF7A00] focus-within:ring-4 focus-within:ring-orange-500/15">
                         <span className="grid w-12 shrink-0 place-items-center text-[#FF9F00]"><Link2 className="h-5 w-5" /></span>
                         <input
                           value={targetLink}
                           onChange={(event) => setTargetLink(event.target.value)}
                           aria-invalid={Boolean(error && !targetLink.trim())}
                           aria-describedby="campaign-link-help"
-                          className="min-h-14 min-w-0 flex-1 rounded-r-2xl bg-transparent pr-4 text-base font-medium text-[#0B0B0F] outline-none placeholder:text-[#FF9F00]"
-                          placeholder="Paste a public campaign link"
+                          className="min-h-14 min-w-0 flex-1 rounded-r-2xl bg-transparent pr-4 text-base font-medium text-white outline-none placeholder:text-[#6B7280]"
+                          placeholder="Paste public profile, post, video, channel or page link"
                         />
                       </span>
-                      <span id="campaign-link-help" className="mt-2 block text-[11px] font-medium leading-5 text-[#111827]">
-                        Enter a public profile, post, reel, video, channel, or page link.
+                      <span id="campaign-link-help" className="mt-2 block text-[11px] font-medium leading-5 text-[#D1D5DB]">
+                        Only public links are required. Never share passwords.
                       </span>
                     </label>
 
-                    <label className="text-xs font-black text-[#0B0B0F]">
+                    <label className="text-xs font-black text-white">
                       <span className="flex items-center gap-2"><NotebookPen className="h-4 w-4 text-amber-600" />Notes (Optional)</span>
                       <textarea
                         value={notes}
                         onChange={(event) => setNotes(event.target.value)}
-                        rows={4}
-                        className="mt-2 w-full resize-y rounded-2xl border border-[#FFF3E0] bg-white px-4 py-3.5 text-base font-medium text-[#0B0B0F] shadow-[0_12px_28px_-24px_rgba(255, 159, 0, .55)] outline-none transition placeholder:text-[#FF9F00] focus:border-[#FF9F00] focus:ring-4 focus:ring-orange-100/70"
-                        placeholder="Share any relevant delivery instructions..."
+                        rows={3}
+                        className="mt-2 w-full resize-y rounded-2xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base font-medium text-white shadow-[0_12px_28px_-24px_rgba(255,122,0,.7)] outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-[#FF7A00] focus:ring-4 focus:ring-orange-500/15"
+                        placeholder="Add delivery instructions if needed"
                       />
                     </label>
                   </div>
@@ -335,25 +375,44 @@ export default function PackageCheckoutContent() {
                     isAuthLoading={isAuthLoading}
                     isLoggedIn={isLoggedIn}
                     hasEnoughBalance={hasEnoughBalance}
+                    walletLoadError={walletLoadError}
+                    onRefresh={() => void refreshWalletBalance()}
                   />
                 </div>
 
                 <div className="mt-6 grid gap-3 sm:flex sm:flex-wrap">
-                  <button
-                    type="button"
-                    disabled={placingOrder || isAuthLoading || !targetLink.trim()}
-                    onClick={placeOrder}
-                    className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255, 196, 0, .7)] transition duration-200 hover:-translate-y-0.5 hover:shadow-[0_22px_38px_-14px_rgba(255, 196, 0, .8)] active:translate-y-0 disabled:cursor-not-allowed disabled:opacity-50 disabled:shadow-none sm:w-auto"
-                  >
-                    {placingOrder ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
-                    {placingOrder ? "Placing Order..." : isLoggedIn ? "Place Order Securely" : "Login to Continue"}
-                  </button>
-                  {!hasEnoughBalance && isLoggedIn && !isAuthLoading ? (
-                    <Link href="/dashboard/wallet" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border border-[#FFF3E0] bg-white px-6 py-3.5 text-sm font-black text-[#0B0B0F] shadow-sm transition hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-[#FFF8F1] sm:w-auto">
+                  {isAuthLoading ? (
+                    <button type="button" disabled className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border border-orange-400/20 bg-white/10 px-7 py-3.5 text-sm font-black text-[#D1D5DB] sm:w-auto">
+                      <LoaderCircle className="h-4 w-4 animate-spin" />
+                      Checking wallet balance...
+                    </button>
+                  ) : walletLoadError && isLoggedIn ? (
+                    <button type="button" onClick={() => void refreshWalletBalance()} className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
+                      <RefreshCw className="h-4 w-4" />
+                      Refresh Balance
+                    </button>
+                  ) : isLoggedIn && !hasEnoughBalance ? (
+                    <>
+                    <Link href="/dashboard/wallet" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
                       <WalletCards className="h-4 w-4" />
                       Add Funds
                     </Link>
-                  ) : null}
+                    <button type="button" onClick={() => void refreshWalletBalance()} className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl border border-orange-400/30 bg-[#151515] px-6 py-3.5 text-sm font-black text-white transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-orange-400 active:scale-[.98] sm:w-auto">
+                      <RefreshCw className="h-4 w-4" />
+                      Refresh Balance
+                    </button>
+                    </>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled={placingOrder || !targetLink.trim()}
+                      onClick={placeOrder}
+                      className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_22px_38px_-14px_rgba(255,196,0,.8)] active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-60 disabled:shadow-none sm:w-auto"
+                    >
+                      {placingOrder ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <LockKeyhole className="h-4 w-4" />}
+                      {placingOrder ? "Placing order..." : isLoggedIn ? "Place Order Securely" : "Login to Continue"}
+                    </button>
+                  )}
                 </div>
                 <p className="mt-4 text-xs font-semibold leading-6 text-[#111827]">{getCurrencyDisclaimer()}</p>
               </article>
@@ -367,6 +426,8 @@ export default function PackageCheckoutContent() {
                     isAuthLoading={isAuthLoading}
                     isLoggedIn={isLoggedIn}
                     hasEnoughBalance={hasEnoughBalance}
+                    walletLoadError={walletLoadError}
+                    onRefresh={() => void refreshWalletBalance()}
                   />
                 </div>
               </aside>
@@ -451,6 +512,8 @@ function CheckoutSummary({
   isAuthLoading,
   isLoggedIn,
   hasEnoughBalance,
+  walletLoadError,
+  onRefresh,
 }: {
   pkg: BigPackage;
   currency: Parameters<typeof formatCurrency>[1];
@@ -458,6 +521,8 @@ function CheckoutSummary({
   isAuthLoading: boolean;
   isLoggedIn: boolean;
   hasEnoughBalance: boolean;
+  walletLoadError: string;
+  onRefresh: () => void;
 }) {
   const platformLabel = pkg.platform === "X" ? "X / Twitter" : pkg.platform;
 
@@ -483,40 +548,52 @@ function CheckoutSummary({
           <SummaryRow label="Service" value={serviceLabel[pkg.service]} />
           <SummaryRow label="Quantity" value={pkg.quantityLabel} />
           <SummaryRow label="Delivery" value={pkg.deliveryTime} />
+          <SummaryRow label="Price" value={formatCurrency(pkg.basePriceINR, currency)} />
           <div className="border-t border-dashed border-[#FFF3E0] pt-4">
-            <SummaryRow label="Total payable" value={formatCurrency(pkg.basePriceINR, currency)} strong />
+            <SummaryRow label="Final payable" value={formatCurrency(pkg.basePriceINR, currency)} strong />
           </div>
         </div>
 
         {isAuthLoading ? (
-          <div className="mt-6 rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4">
-            <div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-[#111827]">
+          <div className="mt-6 rounded-2xl border border-orange-400/25 bg-orange-500/10 p-4">
+            <div className="flex items-center gap-2 text-xs font-black text-orange-100">
               <LoaderCircle className="h-4 w-4 animate-spin" />
-              Checking wallet balance
+              Checking wallet balance...
             </div>
-            <div className="mt-3 h-7 w-32 animate-pulse rounded-lg bg-[#FFF8F1]" />
-            <div className="mt-2 h-3 w-full animate-pulse rounded bg-[#FFF8F1]" />
+            <p className="mt-2 text-xs leading-5 text-[#D1D5DB]">This will not block the rest of your campaign details.</p>
+          </div>
+        ) : walletLoadError ? (
+          <div className="mt-6 rounded-2xl border border-red-400/30 bg-red-500/10 p-4">
+            <p className="text-xs font-bold leading-5 text-red-100">{walletLoadError}</p>
+            <button type="button" onClick={onRefresh} className="mt-3 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-orange-400/30 bg-[#151515] px-4 py-2.5 text-xs font-black text-white transition-all duration-200 ease-out hover:border-orange-400 hover:bg-orange-500/10 active:scale-[.98]">
+              <RefreshCw className="h-4 w-4" />
+              Refresh Balance
+            </button>
           </div>
         ) : !isLoggedIn ? (
           <div className="mt-6 rounded-2xl border border-orange-200 bg-orange-50/85 p-4">
             <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-orange-700"><LockKeyhole className="h-4 w-4" />Secure account required</p>
-            <p className="mt-2 text-sm font-black text-[#0B0B0F]">Login to check your wallet</p>
+            <p className="mt-2 text-sm font-black text-[#0B0B0F]">Login required to check wallet balance.</p>
             <p className="mt-1 text-xs leading-5 text-[#111827]">Your campaign details will be kept when you continue to login.</p>
           </div>
         ) : hasEnoughBalance ? (
           <div className="mt-6 rounded-2xl border border-emerald-200 bg-emerald-50/90 p-4 shadow-sm">
             <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-emerald-700"><CheckCircle2 className="h-4 w-4" />Wallet ready</p>
-            <p className="mt-2 break-words text-xl font-black text-emerald-800">{formatCurrency(walletBalance ?? 0, currency)}</p>
-            <p className="mt-1 text-xs font-semibold leading-5 text-emerald-700">Your balance is sufficient for this package.</p>
+            <p className="mt-2 break-words text-xl font-black text-emerald-800">Wallet Balance: {formatCurrency(walletBalance ?? 0, currency)}</p>
+            <p className="mt-1 text-xs font-semibold leading-5 text-emerald-700">Wallet balance available. You can place this order securely.</p>
           </div>
         ) : (
           <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50/90 p-4 shadow-sm">
             <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-amber-700"><WalletCards className="h-4 w-4" />Balance required</p>
-            <p className="mt-2 break-words text-xl font-black text-amber-900">{formatCurrency(walletBalance ?? 0, currency)}</p>
-            <p className="mt-1 text-xs font-semibold leading-5 text-amber-800">Your wallet balance is lower than the package total.</p>
-            <Link href="/dashboard/wallet" className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-amber-600 px-4 py-2.5 text-xs font-black text-white transition hover:bg-amber-700">
+            <p className="mt-2 break-words text-xl font-black text-amber-900">Wallet Balance: {formatCurrency(walletBalance ?? 0, currency)}</p>
+            <p className="mt-1 text-xs font-semibold leading-5 text-amber-800">Insufficient wallet balance. Please add funds to continue.</p>
+            <Link href="/dashboard/wallet" className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98]">
               Add Funds
             </Link>
+            <button type="button" onClick={onRefresh} className="mt-2 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-amber-400/35 bg-[#151515] px-4 py-2.5 text-xs font-black text-white transition-all duration-200 ease-out hover:border-orange-400 active:scale-[.98]">
+              <RefreshCw className="h-4 w-4" />
+              Refresh Balance
+            </button>
           </div>
         )}
 

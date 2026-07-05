@@ -38,6 +38,15 @@ type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
 
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
+const platformLinkPlaceholders: Record<PlatformId, string> = {
+  instagram: "https://instagram.com/yourprofile",
+  youtube: "https://youtube.com/@channel",
+  facebook: "https://facebook.com/page",
+  linkedin: "https://linkedin.com/in/profile",
+  telegram: "https://t.me/channel",
+  tiktok: "https://tiktok.com/@profile",
+  x: "https://x.com/profile",
+};
 
 function cleanQuantity(value: string) {
   return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
@@ -337,11 +346,39 @@ export default function NewOrderPage() {
                 <button type="button" onClick={() => scrollTo(serviceRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change service</button>
               </div>
               <div className="mt-5 grid gap-5 lg:grid-cols-2">
-                <label className="block text-xs font-black text-white"><span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4 text-orange-400" />{linkRule.label}</span><input value={targetLink} onChange={(event) => { setTargetLink(event.target.value); setError(""); }} placeholder={linkRule.placeholder} className="mt-2 min-h-13 w-full rounded-xl border border-white/10 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" /><span className={`mt-2 block text-[11px] leading-5 ${linkError ? "text-red-300" : "text-[#9CA3AF]"}`}>{linkError || linkRule.helper}</span></label>
-                <label className="block text-xs font-black text-white"><span className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</span><input value={quantityInput} onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className="mt-2 min-h-13 w-full rounded-xl border border-white/10 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" /><span className={`mt-2 block text-[11px] ${quantityError ? "text-red-300" : "text-[#9CA3AF]"}`}>{quantityError || "Enter the quantity you want for this campaign."}</span></label>
+                <label className="block text-xs font-black text-white">
+                  <span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4 text-orange-400" />Public Link / Username</span>
+                  <input
+                    value={targetLink}
+                    onChange={(event) => { setTargetLink(event.target.value); setError(""); }}
+                    placeholder={platform ? platformLinkPlaceholders[platform] : linkRule.placeholder}
+                    className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+                  />
+                  <span className={`mt-2 block text-[11px] leading-5 ${linkError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
+                    {linkError || "Use the public URL where you want the service delivered."}
+                  </span>
+                </label>
+                <label className="block text-xs font-black text-white">
+                  <span className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</span>
+                  <input
+                    value={quantityInput}
+                    onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }}
+                    inputMode="numeric"
+                    placeholder="Enter quantity"
+                    className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+                  />
+                  <span className={`mt-2 block text-[11px] leading-5 ${quantityError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
+                    {quantityError || "Enter the quantity you want for this campaign."}
+                  </span>
+                </label>
               </div>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-orange-400/35 bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)]"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p><p className="mt-2 text-2xl font-black text-white">{quantity > 0 && !quantityError ? formatCurrency(totalPrice, currency) : "Enter quantity to calculate"}</p></div>
+                <div className={`rounded-2xl border bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)] ${quantityError ? "border-red-400/40" : "border-orange-400/35"}`}>
+                  <p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p>
+                  <p className={`mt-2 text-xl font-black sm:text-2xl ${quantityError ? "text-red-200" : "text-white"}`}>
+                    {!quantityInput ? "Enter quantity to calculate" : quantityError || formatCurrency(totalPrice, currency)}
+                  </p>
+                </div>
                 <div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" /><p className="text-sm font-bold text-emerald-100">No password required. Only public link needed.</p></div>
               </div>
               {formIsValid ? <button type="button" onClick={() => scrollTo(summaryRef)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20 sm:w-auto">Review order summary <ArrowRight className="h-4 w-4" /></button> : null}
