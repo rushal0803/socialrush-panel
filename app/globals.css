@@ -440,6 +440,33 @@ h6 {
   color: #ff9f00 !important;
 }
 
+:where(.public-dark, .dashboard-shell, .brand-footer) button:not(:disabled),
+:where(.public-dark, .dashboard-shell, .brand-footer) a[class*="inline-flex"] {
+  transition-property: color, background-color, border-color, box-shadow, filter, opacity, transform;
+  transition-duration: 200ms;
+  transition-timing-function: ease-out;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  :where(.public-dark, .dashboard-shell, .brand-footer) button:not(:disabled):hover,
+  :where(.public-dark, .dashboard-shell, .brand-footer) a[class*="inline-flex"]:hover {
+    border-color: rgba(255, 122, 0, 0.55);
+    box-shadow: 0 14px 32px -20px rgba(255, 122, 0, 0.85);
+    transform: translateY(-2px);
+  }
+}
+
+:where(.public-dark, .dashboard-shell, .brand-footer) button:not(:disabled):active,
+:where(.public-dark, .dashboard-shell, .brand-footer) a[class*="inline-flex"]:active {
+  filter: brightness(0.94);
+  transform: scale(0.98);
+}
+
+:where(.public-dark, .dashboard-shell) button:disabled {
+  cursor: not-allowed;
+  filter: saturate(0.65);
+}
+
 @keyframes landing-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-9px); }

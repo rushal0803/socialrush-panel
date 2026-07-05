@@ -367,8 +367,8 @@ export default function ContactPageContent() {
                   className="rounded-3xl border border-white/85 bg-white/90 p-5 shadow-[0_14px_32px_rgba(255, 159, 0, .14)] backdrop-blur"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] text-[#0B0B0F]">
-                      <MarketingIcon name={item.icon} className="h-4.5 w-4.5" />
+                    <span className="grid h-12 w-12 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF6A00] to-[#FF9F00] text-white shadow-[0_12px_28px_rgba(255,106,0,.3)]">
+                      <MarketingIcon name={item.icon} className="h-5 w-5 text-white" />
                     </span>
                     <h3 className="text-base font-extrabold text-[#0B0B0F]">{item.title}</h3>
                   </div>
