@@ -47,15 +47,15 @@ export default function MobileMenuLayer({
       role="dialog"
       aria-label="Mobile navigation"
     >
-      <div aria-hidden="true" className="absolute inset-0 bg-slate-950/20 backdrop-blur-sm" />
+      <div aria-hidden="true" className="absolute inset-0 bg-[#050505]/95" />
       <div className="absolute inset-0 z-[100000] overflow-y-auto overscroll-contain px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 sm:px-5">
-        <div onClick={keepOpen} className="relative">
+        <div onClick={keepOpen} className="mobile-menu-theme relative">
           {showCloseButton ? (
             <button
               type="button"
               aria-label="Close mobile navigation"
               onClick={onClose}
-              className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-xl border border-slate-200/80 bg-white/95 text-xl font-semibold text-slate-600 shadow-lg"
+              className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-xl border border-orange-400/30 bg-[#151515] text-xl font-semibold text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)]"
             >
               ×
             </button>

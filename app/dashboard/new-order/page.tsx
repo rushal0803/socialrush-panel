@@ -55,13 +55,13 @@ function ProgressItem({ number, title, state }: { number: number; title: string;
       aria-current={state === "active" ? "step" : undefined}
       className={`flex min-w-0 items-center gap-2 rounded-xl border px-3 py-2.5 transition ${
         state === "active"
-          ? "border-amber-300 bg-white text-[#0B0B0F] shadow-sm"
+          ? "border-orange-400/70 bg-orange-500/15 text-white shadow-[0_0_0_3px_rgba(255,122,0,.08)]"
           : state === "complete"
-            ? "border-emerald-200 bg-emerald-50/80 text-emerald-800"
-            : "border-white/80 bg-white/45 text-[#111827]"
+            ? "border-emerald-400/35 bg-emerald-500/10 text-emerald-200"
+            : "border-white/10 bg-[#111111] text-[#9CA3AF]"
       }`}
     >
-      <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black ${state === "active" ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white" : state === "complete" ? "bg-emerald-500 text-white" : "bg-slate-100 text-slate-500"}`}>
+        <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black ${state === "active" ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white" : state === "complete" ? "bg-emerald-500 text-white" : "bg-white/10 text-[#9CA3AF]"}`}>
         {state === "complete" ? <Check className="h-4 w-4" /> : number}
       </span>
       <span className="truncate text-[10px] font-black uppercase tracking-[0.08em] sm:text-xs">{title}</span>
@@ -245,22 +245,22 @@ export default function NewOrderPage() {
   const addFundsHref = `/dashboard/wallet?amount=${encodeURIComponent(String(amountRequired))}&returnTo=${encodeURIComponent(returnTo)}`;
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_0%_0%,#FFF3E0_0%,transparent_34%),radial-gradient(circle_at_100%_0%,#FFF8F1_0%,transparent_36%),radial-gradient(circle_at_50%_100%,#ffe9e2_0%,transparent_30%),linear-gradient(180deg,#FFF8F1_0%,#FFF8F1_100%)] px-4 pb-32 pt-5 sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
+    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-36 pt-5 text-white sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-amber-200/40 blur-3xl" />
-        <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+        <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-orange-600/15 blur-3xl" />
+        <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-[1450px]">
-        <section className="relative overflow-hidden rounded-[1.6rem] border border-white/75 bg-white/65 p-5 shadow-[0_30px_80px_-38px_rgba(15,23,42,.5)] backdrop-blur-2xl sm:p-8">
-          <span className="inline-flex items-center gap-2 rounded-full border border-orange-100 bg-white/85 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-orange-700">
+        <section className="relative overflow-hidden rounded-[1.6rem] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_30px_80px_-42px_rgba(255,122,0,.65)] sm:p-8">
+          <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-orange-300">
             <Sparkles className="h-3.5 w-3.5" /> Guided order flow
           </span>
-          <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.04em] text-[#0B0B0F] sm:text-5xl">Start a Growth Campaign</h1>
-          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base">Choose your platform and service, add campaign details, then review everything before confirming.</p>
+          <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.04em] text-white sm:text-5xl">Start a Growth Campaign</h1>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:text-base">Choose your platform and service, add campaign details, then review everything before confirming.</p>
         </section>
 
-        <section aria-label="Order progress" className="sticky top-16 z-20 mt-4 rounded-2xl border border-white/90 bg-white/80 p-2 shadow-[0_16px_36px_-24px_rgba(15,23,42,.45)] backdrop-blur-xl sm:top-20 sm:p-3">
+        <section aria-label="Order progress" className="sticky top-20 z-20 mt-4 rounded-2xl border border-orange-400/20 bg-[#0B0B0F]/95 p-2 shadow-[0_16px_36px_-24px_rgba(0,0,0,.8)] backdrop-blur-xl sm:p-3">
           <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
             <ProgressItem number={1} title="Platform" state={progressState(1, currentStep)} />
             <ProgressItem number={2} title="Service" state={progressState(2, currentStep)} />
@@ -269,9 +269,9 @@ export default function NewOrderPage() {
           </div>
         </section>
 
-        <section ref={platformRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/85 bg-white/68 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
-          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Step 1</p>
-          <h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">Choose your platform</h2>
+        <section ref={platformRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
+          <p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 1</p>
+          <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Choose your platform</h2>
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7">
             {platformOrder.map((platformId) => {
               const meta = platformMeta[platformId];
@@ -284,24 +284,24 @@ export default function NewOrderPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => choosePlatform(platformId)}
                   aria-pressed={active}
-                  className={`relative min-w-0 rounded-2xl border p-3 text-left shadow-[0_18px_38px_-28px_rgba(15,23,42,.5)] transition sm:p-4 ${active ? "border-transparent bg-white ring-2 ring-[#FF9F00]" : "border-white/85 bg-white/72 hover:border-[#FFF3E0]"}`}
+                  className={`relative min-w-0 rounded-2xl border p-3 text-left transition sm:p-4 ${active ? "border-orange-400/80 bg-orange-500/15 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"}`}
                 >
                   {active ? <CheckCircle2 className="absolute right-2 top-2 h-5 w-5 text-emerald-600" /> : null}
                       <IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge>
-                  <span className="mt-3 block break-words text-xs font-black text-[#0B0B0F]">{meta.label}</span>
+                  <span className="mt-3 block break-words text-xs font-black text-white">{meta.label}</span>
                 </motion.button>
               );
             })}
           </div>
         </section>
 
-        <section ref={serviceRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/85 bg-white/68 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
+        <section ref={serviceRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
-            <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Step 2</p><h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">Choose your service</h2></div>
-            {platform ? <button type="button" onClick={() => scrollTo(platformRef)} className="rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-xs font-bold text-[#FF9F00]">Change platform</button> : null}
+            <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 2</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Choose your service</h2></div>
+            {platform ? <button type="button" onClick={() => scrollTo(platformRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change platform</button> : null}
           </div>
           {!platform ? (
-            <div className="mt-5 rounded-2xl border border-dashed border-[#FFF3E0] bg-white/55 p-8 text-center text-sm font-semibold text-[#111827]">Choose a platform to see available services.</div>
+            <div className="mt-5 rounded-2xl border border-dashed border-orange-400/25 bg-[#0B0B0F] p-8 text-center text-sm font-semibold text-[#D1D5DB]">Choose a platform to see available services.</div>
           ) : services.length === 0 ? (
             <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-800">No services available for this platform right now. Please contact support.</div>
           ) : (
@@ -310,15 +310,15 @@ export default function NewOrderPage() {
                 const active = selectedService?.code === service.code;
                 const experience = serviceExperience[service.code];
                 return (
-                  <motion.article key={service.code} whileHover={{ y: -4 }} className={`flex min-w-0 flex-col rounded-3xl border p-5 shadow-[0_22px_48px_-32px_rgba(15,23,42,.5)] transition ${active ? "border-amber-300 bg-white ring-2 ring-amber-200" : "border-white/85 bg-white/82"}`}>
+                  <motion.article key={service.code} whileHover={{ y: -4 }} className={`flex min-w-0 flex-col rounded-3xl border p-5 transition ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge label={platformMeta[service.platform].label}><PlatformIcon platform={platformMeta[service.platform].label} className="h-6 w-6" /></IconBadge>
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
                     </div>
-                    <h3 className="mt-4 text-lg font-black text-[#0B0B0F]">{experience.name}</h3>
-                    <p className="mt-2 text-sm leading-6 text-[#111827]">{service.description}</p>
-                    <div className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl bg-[#FFF8F1] p-3"><span className="text-[#111827]">Rate</span><strong className="mt-1 block text-[#0B0B0F]">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl bg-[#FFF8F1] p-3"><span className="text-[#111827]">Delivery</span><strong className="mt-1 block text-[#0B0B0F]">{service.deliveryTime}</strong></div></div>
-                    <details className="mt-4 rounded-xl border border-[#FFF8F1] bg-white"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-[#FF9F00]"><Info className="mr-2 inline h-4 w-4" />How it works</summary><p className="border-t border-[#FFF8F1] px-3 py-3 text-xs leading-6 text-[#111827]">{growthMethod(service)}</p></details>
+                    <h3 className="mt-4 text-lg font-black text-white">{experience.name}</h3>
+                    <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{service.description}</p>
+                    <div className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-3"><span className="text-[#9CA3AF]">Rate</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-3"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
+                    <details className="mt-4 rounded-xl border border-white/10 bg-[#151515]"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-orange-300"><Info className="mr-2 inline h-4 w-4" />How it works</summary><p className="border-t border-white/10 px-3 py-3 text-xs leading-6 text-[#D1D5DB]">{growthMethod(service)}</p></details>
                     <button type="button" onClick={() => chooseService(service)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255, 196, 0, .65)]">
                       {active ? "Service Selected" : "Choose Service"} <ArrowRight className="h-4 w-4" />
                     </button>
@@ -331,30 +331,30 @@ export default function NewOrderPage() {
 
         {selectedService && linkRule ? (
           <>
-            <section ref={detailsRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/85 bg-white/72 p-5 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] backdrop-blur-xl sm:p-6">
+            <section ref={detailsRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Step 3</p><h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">Enter campaign details</h2></div>
-                <button type="button" onClick={() => scrollTo(serviceRef)} className="rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-xs font-bold text-[#FF9F00]">Change service</button>
+                <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 3</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Enter campaign details</h2></div>
+                <button type="button" onClick={() => scrollTo(serviceRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change service</button>
               </div>
               <div className="mt-5 grid gap-5 lg:grid-cols-2">
-                <label className="block text-xs font-black text-[#0B0B0F]"><span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4" />{linkRule.label}</span><input value={targetLink} onChange={(event) => { setTargetLink(event.target.value); setError(""); }} placeholder={linkRule.placeholder} className="mt-2 min-h-13 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 py-3.5 text-sm text-[#0B0B0F] outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-200/40" /><span className={`mt-2 block text-[11px] leading-5 ${linkError ? "text-red-600" : "text-[#111827]"}`}>{linkError || linkRule.helper}</span></label>
-                <label className="block text-xs font-black text-[#0B0B0F]"><span className="inline-flex items-center gap-2"><Hash className="h-4 w-4" />Quantity</span><input value={quantityInput} onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className="mt-2 min-h-13 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 py-3.5 text-sm text-[#0B0B0F] outline-none transition focus:border-amber-400 focus:ring-4 focus:ring-amber-200/40" /><span className={`mt-2 block text-[11px] ${quantityError ? "text-red-600" : "text-[#111827]"}`}>{quantityError || "Enter the quantity you want for this campaign."}</span></label>
+                <label className="block text-xs font-black text-white"><span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4 text-orange-400" />{linkRule.label}</span><input value={targetLink} onChange={(event) => { setTargetLink(event.target.value); setError(""); }} placeholder={linkRule.placeholder} className="mt-2 min-h-13 w-full rounded-xl border border-white/10 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" /><span className={`mt-2 block text-[11px] leading-5 ${linkError ? "text-red-300" : "text-[#9CA3AF]"}`}>{linkError || linkRule.helper}</span></label>
+                <label className="block text-xs font-black text-white"><span className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</span><input value={quantityInput} onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className="mt-2 min-h-13 w-full rounded-xl border border-white/10 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none transition placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" /><span className={`mt-2 block text-[11px] ${quantityError ? "text-red-300" : "text-[#9CA3AF]"}`}>{quantityError || "Enter the quantity you want for this campaign."}</span></label>
               </div>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <div className="rounded-2xl border border-amber-100 bg-gradient-to-r from-amber-50 to-orange-50 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-[#111827]">Price preview</p><p className="mt-2 text-2xl font-black text-[#0B0B0F]">{quantity > 0 && !quantityError ? formatCurrency(totalPrice, currency) : "Enter quantity"}</p></div>
-                <div className="flex items-center gap-3 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-700" /><p className="text-sm font-bold text-emerald-800">No password required. Only public link needed.</p></div>
+                <div className="rounded-2xl border border-orange-400/35 bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)]"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p><p className="mt-2 text-2xl font-black text-white">{quantity > 0 && !quantityError ? formatCurrency(totalPrice, currency) : "Enter quantity to calculate"}</p></div>
+                <div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" /><p className="text-sm font-bold text-emerald-100">No password required. Only public link needed.</p></div>
               </div>
-              {formIsValid ? <button type="button" onClick={() => scrollTo(summaryRef)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-[#0B0B0F] px-5 py-3 text-sm font-black text-white sm:w-auto">Review order summary <ArrowRight className="h-4 w-4" /></button> : null}
+              {formIsValid ? <button type="button" onClick={() => scrollTo(summaryRef)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20 sm:w-auto">Review order summary <ArrowRight className="h-4 w-4" /></button> : null}
             </section>
 
-            <section ref={summaryRef} className="scroll-mt-40 mt-6 rounded-3xl border border-white/90 bg-white/78 p-5 shadow-[0_30px_65px_-36px_rgba(15,23,42,.55)] backdrop-blur-xl sm:p-7">
+            <section ref={summaryRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_30px_65px_-40px_rgba(255,122,0,.6)] sm:p-7">
               <div className="flex flex-wrap items-start justify-between gap-3">
-                <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Step 4</p><h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">Review order summary</h2></div>
-                <button type="button" onClick={() => scrollTo(detailsRef)} className="rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-xs font-bold text-[#FF9F00]">Change details</button>
+                <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 4</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Review order summary</h2></div>
+                <button type="button" onClick={() => scrollTo(detailsRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change details</button>
               </div>
               <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
                 <dl className="grid gap-3 sm:grid-cols-2">
-                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim() || "Not entered"],["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"],["Delivery", selectedService.deliveryTime],["Refill support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#111827]">{label}</dt><dd className="mt-2 break-all text-sm font-bold text-[#0B0B0F]">{value}</dd></div>)}
+                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim() || "Not entered"],["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"],["Delivery", selectedService.deliveryTime],["Refill support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 break-all text-sm font-bold text-white">{value}</dd></div>)}
                 </dl>
                 <aside className="rounded-3xl bg-[#0B0B0F] p-5 text-white shadow-xl">
                   <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-orange-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>
@@ -381,9 +381,9 @@ export default function NewOrderPage() {
           </>
         ) : null}
 
-        <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold text-[#111827]">
-          <span className="inline-flex items-center gap-2 rounded-xl border border-white/85 bg-white/78 px-3 py-2"><ShieldCheck className="h-4 w-4 text-emerald-600" /> Secure wallet checkout</span>
-          <span className="inline-flex items-center gap-2 rounded-xl border border-white/85 bg-white/78 px-3 py-2"><Clock3 className="h-4 w-4 text-orange-600" /> Track from dashboard</span>
+        <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold text-[#D1D5DB]">
+          <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-[#111111] px-3 py-2"><ShieldCheck className="h-4 w-4 text-emerald-300" /> Secure wallet checkout</span>
+          <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-[#111111] px-3 py-2"><Clock3 className="h-4 w-4 text-orange-300" /> Track from dashboard</span>
         </div>
       </div>
     </main>

@@ -94,23 +94,23 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </button>
       </div>
 
-      <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[6.15rem]">
+      <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[6.15rem]" showCloseButton={false}>
           <motion.div
             initial={{ opacity: 0, y: -12 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className={isLight3d ? "mx-auto w-full max-w-7xl rounded-3xl border border-white/80 bg-white/95 px-4 pb-5 pt-14 shadow-[0_24px_48px_-30px_rgba(15,23,42,.48)] backdrop-blur-2xl lg:hidden" : "mx-auto w-full max-w-7xl rounded-2xl border border-amber-300/20 bg-[#0B0B0F] px-4 pb-5 pt-14 shadow-xl lg:hidden"}
+            className="mx-auto max-h-[calc(100dvh-7rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-orange-400/25 bg-[#0B0B0F] px-4 pb-4 pt-3 shadow-[0_24px_55px_-28px_rgba(255,122,0,.55)] lg:hidden"
           >
             <nav className="mx-auto grid max-w-7xl gap-1">
               {nav.map(([label, href]) => (
-                <Link key={href} href={href} onClick={() => setOpen(false)} className={isLight3d ? "rounded-xl px-3 py-3 text-sm font-semibold text-[#FF9F00] transition hover:bg-[#FFF8F1] hover:text-[#0B0B0F]" : "rounded-xl px-3 py-3 text-sm font-semibold text-slate-200 transition hover:bg-white/10 hover:text-amber-200"}>
+                <Link key={href} href={href} onClick={() => setOpen(false)} className="min-h-10 rounded-xl border border-white/5 bg-white/[.03] px-3 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-orange-400/25 hover:bg-orange-400/10 hover:text-orange-100">
                   {label}
                 </Link>
               ))}
             </nav>
 
-            <div className={isLight3d ? "mx-auto mt-4 grid max-w-7xl gap-2 border-t border-[#FFF8F1] pt-4" : "mx-auto mt-4 grid max-w-7xl gap-2 border-t border-amber-300/20 pt-4"}>
+            <div className="mx-auto mt-3 grid max-w-7xl gap-2 border-t border-orange-400/20 pt-3">
               <div className="w-fit">
                 <CurrencyDropdown tone={tone} />
               </div>

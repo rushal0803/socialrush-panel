@@ -70,7 +70,7 @@ export default function PackagesPageContent() {
 
   return (
     <BlogShell>
-      <div className="relative overflow-x-clip pb-20 lg:pb-24">
+      <div className="packages-page relative overflow-x-clip pb-24 lg:pb-24">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-16 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-8%] top-44 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
@@ -78,19 +78,19 @@ export default function PackagesPageContent() {
         </div>
 
         <section className="relative px-4 pb-6 pt-6 sm:px-6 sm:pb-8 sm:pt-8 lg:px-8 lg:pt-12">
-          <div className="mx-auto w-full max-w-7xl rounded-[28px] border border-white/80 bg-white/78 p-5 shadow-[0_24px_60px_rgba(255, 159, 0, .22)] backdrop-blur-xl sm:rounded-[34px] sm:p-8">
+          <div className="mx-auto w-full max-w-7xl rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_60px_-34px_rgba(255,122,0,.7)] sm:rounded-[34px] sm:p-8">
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
-              <p className="inline-flex rounded-full border border-white/85 bg-white/88 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-[#FF9F00] sm:px-4 sm:py-2 sm:text-xs">
+              <p className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-orange-300 sm:px-4 sm:py-2 sm:text-xs">
                 Premium Package Selection
               </p>
-              <h1 className="mt-4 text-3xl font-black leading-tight text-[#0B0B0F] sm:mt-5 sm:text-5xl">
+              <h1 className="mt-4 text-3xl font-black leading-tight text-white sm:mt-5 sm:text-5xl">
                 Choose Your Package
               </h1>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-[#111827] sm:mt-4 sm:text-lg sm:leading-8">
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
                 Select a platform, choose a service, and compare only the packages that match your campaign.
               </p>
-              <p className="mt-3 text-xs font-semibold text-[#111827]">{getCurrencyDisclaimer()}</p>
-              <p className="mt-2 max-w-3xl text-xs leading-6 text-[#111827]">
+              <p className="mt-3 text-xs font-semibold text-[#9CA3AF]">{getCurrencyDisclaimer()}</p>
+              <p className="mt-2 max-w-3xl text-xs leading-6 text-[#9CA3AF]">
                 Final price may vary based on selected package, quantity, service quality, and availability. Please check the live package price before placing your order.
               </p>
               <Link
@@ -101,7 +101,7 @@ export default function PackagesPageContent() {
               </Link>
               <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
                 {trustBadges.map((chip) => (
-                  <span key={chip} className="rounded-full border border-white/85 bg-white/90 px-3 py-1.5 text-[11px] font-semibold text-[#0B0B0F] shadow-[0_8px_20px_rgba(255, 159, 0, .12)]">
+                  <span key={chip} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-[11px] font-semibold text-orange-100">
                     {chip}
                   </span>
                 ))}
@@ -115,9 +115,9 @@ export default function PackagesPageContent() {
             <div className="mb-4 flex items-end justify-between gap-3">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 1</p>
-                <h2 className="mt-1 text-xl font-black text-[#0B0B0F] sm:text-2xl">Select a platform</h2>
+                <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Select a platform</h2>
               </div>
-              <span className="text-xs font-semibold text-[#111827]">7 platforms</span>
+              <span className="text-xs font-semibold text-[#9CA3AF]">7 platforms</span>
             </div>
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
               {platforms.map((platform) => {
@@ -129,14 +129,14 @@ export default function PackagesPageContent() {
                     onClick={() => selectPlatform(platform.key)}
                     className={`min-w-0 rounded-2xl border p-3 text-left transition sm:p-4 ${
                       active
-                        ? "border-transparent bg-white shadow-[0_16px_36px_rgba(255, 159, 0, .2)] ring-2 ring-[#FF9F00]"
-                        : "border-white/85 bg-white/80 hover:border-[#FFF3E0]"
+                        ? "border-orange-400/80 bg-orange-500/15 shadow-[0_16px_36px_-24px_rgba(255,122,0,.75)] ring-2 ring-orange-500/10"
+                        : "border-white/10 bg-[#111111] hover:border-orange-400/45"
                     }`}
                   >
                     <IconBadge label={platform.label}>
                       <PlatformIcon platform={platform.label} className="h-6 w-6" />
                     </IconBadge>
-                    <span className="mt-3 block truncate text-xs font-bold text-[#0B0B0F]">{platform.label}</span>
+                    <span className="mt-3 block truncate text-xs font-bold text-white">{platform.label}</span>
                   </button>
                 );
               })}
@@ -145,9 +145,9 @@ export default function PackagesPageContent() {
         </section>
 
         <section className="relative px-4 py-5 sm:px-6 lg:px-8">
-          <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-white/85 bg-white/72 p-4 shadow-[0_18px_42px_rgba(255, 159, 0, .12)] backdrop-blur-xl sm:p-5">
+          <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.6)] sm:p-5">
             <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 2</p>
-            <h2 className="mt-1 text-xl font-black text-[#0B0B0F] sm:text-2xl">Choose a service</h2>
+            <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Choose a service</h2>
             <div className="mt-4 flex flex-wrap gap-2.5">
               {services.map((service) => (
                 <button
@@ -157,7 +157,7 @@ export default function PackagesPageContent() {
                   className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-bold transition ${
                     activeService === service
                       ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]"
-                      : "border border-[#FFF3E0] bg-white text-[#0B0B0F]"
+                      : "border border-white/10 bg-[#0B0B0F] text-[#D1D5DB] hover:border-orange-400/40"
                   }`}
                 >
                   {serviceLabels[service]}
@@ -192,10 +192,10 @@ export default function PackagesPageContent() {
                     >
                       <div className="mb-5">
                         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3</p>
-                        <h2 id={headingId} className="mt-1 text-xl font-black text-[#0B0B0F] sm:text-2xl">
+                        <h2 id={headingId} className="mt-1 text-xl font-black text-white sm:text-2xl">
                           {platform.label} {serviceLabels[service]} packages
                         </h2>
-                        <p className="mt-2 text-sm text-[#111827]">
+                        <p className="mt-2 text-sm text-[#D1D5DB]">
                           Choose one package to continue to the dedicated checkout page.
                         </p>
                       </div>
@@ -204,41 +204,41 @@ export default function PackagesPageContent() {
                         {categoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
-                            className="flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/92 p-5 shadow-[0_16px_36px_rgba(255, 159, 0, .18)] transition hover:-translate-y-1 sm:p-6"
+                            className="flex min-w-0 flex-col rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition hover:-translate-y-1 hover:border-orange-400/45 sm:p-6"
                           >
                             <div className="flex items-start justify-between gap-3">
                               <IconBadge label={pkg.platform}>
                                 <PlatformIcon platform={pkg.platform} className="h-6 w-6" />
                               </IconBadge>
                               {pkg.discountBadge ? (
-                                <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-[#111827]">
+                                <span className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-orange-200">
                                   {pkg.discountBadge}
                                 </span>
                               ) : null}
                             </div>
 
-                            <h3 className="mt-4 text-xl font-extrabold text-[#0B0B0F]">{pkg.title}</h3>
-                            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#111827]">
+                            <h3 className="mt-4 text-xl font-extrabold text-white">{pkg.title}</h3>
+                            <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#9CA3AF]">
                               {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
                             </p>
-                            <p className="mt-4 text-sm leading-6 text-[#111827]">{pkg.description}</p>
+                            <p className="mt-4 line-clamp-3 text-sm leading-6 text-[#D1D5DB]">{pkg.description}</p>
 
                             <dl className="mt-5 grid grid-cols-2 gap-3 text-xs">
-                              <div className="rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] p-3">
-                                <dt className="text-[#111827]">Price</dt>
-                                <dd className="mt-1 break-words text-base font-extrabold text-[#0B0B0F]">{formatCurrency(pkg.basePriceINR, currency)}</dd>
+                              <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 p-3">
+                                <dt className="text-orange-200">Price</dt>
+                                <dd className="mt-1 break-words text-base font-extrabold text-white">{formatCurrency(pkg.basePriceINR, currency)}</dd>
                               </div>
-                              <div className="rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] p-3">
-                                <dt className="text-[#111827]">Quantity</dt>
-                                <dd className="mt-1 font-bold text-[#0B0B0F]">{pkg.quantityLabel}</dd>
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                                <dt className="text-[#9CA3AF]">Quantity</dt>
+                                <dd className="mt-1 font-bold text-white">{pkg.quantityLabel}</dd>
                               </div>
-                              <div className="rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] p-3">
-                                <dt className="text-[#111827]">Delivery</dt>
-                                <dd className="mt-1 font-bold text-[#0B0B0F]">{pkg.deliveryTime}</dd>
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                                <dt className="text-[#9CA3AF]">Delivery</dt>
+                                <dd className="mt-1 font-bold text-white">{pkg.deliveryTime}</dd>
                               </div>
-                              <div className="rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] p-3">
-                                <dt className="text-[#111827]">Best for</dt>
-                                <dd className="mt-1 font-bold leading-5 text-[#0B0B0F]">{pkg.bestFor}</dd>
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                                <dt className="text-[#9CA3AF]">Best for</dt>
+                                <dd className="mt-1 font-bold leading-5 text-white">{pkg.bestFor}</dd>
                               </div>
                             </dl>
 
