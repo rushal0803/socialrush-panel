@@ -379,7 +379,7 @@ export default function NewOrderPage() {
                     {!quantityInput ? "Enter quantity to calculate" : quantityError || formatCurrency(totalPrice, currency)}
                   </p>
                 </div>
-                <div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" /><p className="text-sm font-bold text-emerald-100">No password required. Only public link needed.</p></div>
+                <div className="safety-note flex items-center gap-3 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 shadow-[0_16px_38px_rgba(0,0,0,0.22)]"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" /><p className="text-sm font-bold leading-6 text-white">No password required. Only your public link is needed.</p></div>
               </div>
               {formIsValid ? <button type="button" onClick={() => scrollTo(summaryRef)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-5 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20 sm:w-auto">Review order summary <ArrowRight className="h-4 w-4" /></button> : null}
             </section>

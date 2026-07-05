@@ -419,37 +419,40 @@ export default function IndiaServiceLandingPage({
               </article>
             ))}
           </div>
-          <p className="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4 text-center text-sm font-bold text-emerald-800">
-            No password required. Only your public profile, post, video, channel, or page link is needed.
-          </p>
+          <div className="safety-note mt-6 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 text-center shadow-[0_16px_38px_rgba(0,0,0,.22)]">
+            <p className="text-sm font-black text-white">No password required.</p>
+            <p className="mt-1 text-sm leading-6 text-[#D1D5DB]">
+              Only your public profile, post, video, channel, or page link is needed.
+            </p>
+          </div>
         </div>
       </section>
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2">
-          <article className="rounded-[2rem] border border-emerald-100 bg-white p-6 shadow-[0_24px_56px_-38px_rgba(255, 159, 0, .5)] sm:p-8">
+          <article className="rounded-[2rem] border border-emerald-400/35 bg-[#111111] p-6 shadow-[0_24px_56px_-38px_rgba(0,0,0,.65)] sm:p-8">
             <ShieldCheck className="h-8 w-8 text-emerald-600" />
-            <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">
+            <h2 className="mt-5 text-2xl font-black text-white">
               Is it safe to buy {page.serviceName} from SocialRUSH?
             </h2>
-            <p className="mt-4 text-sm leading-7 text-[#111827]">
+            <p className="mt-4 text-sm leading-7 text-[#D1D5DB]">
               {page.safety}
             </p>
-            <p className="mt-3 text-sm leading-7 text-[#111827]">
+            <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">
               No campaign can guarantee virality, revenue, rankings, or permanent
               platform outcomes. Combine visible growth with useful content and
               responsible account management.
             </p>
           </article>
-          <article className="rounded-[2rem] border border-orange-100 bg-white p-6 shadow-[0_24px_56px_-38px_rgba(255, 159, 0, .5)] sm:p-8">
+          <article className="rounded-[2rem] border border-orange-400/35 bg-[#111111] p-6 shadow-[0_24px_56px_-38px_rgba(0,0,0,.65)] sm:p-8">
             <RefreshCw className="h-8 w-8 text-orange-600" />
-            <h2 className="mt-5 text-2xl font-black text-[#0B0B0F]">
+            <h2 className="mt-5 text-2xl font-black text-white">
               Delivery and refill support
             </h2>
-            <p className="mt-4 text-sm leading-7 text-[#111827]">
+            <p className="mt-4 text-sm leading-7 text-[#D1D5DB]">
               {page.deliveryCopy}
             </p>
-            <p className="mt-3 text-sm leading-7 text-[#111827]">
+            <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">
               Current refill or support coverage is shown before checkout. Contact
               support with your order ID if an eligible campaign needs review.
             </p>

@@ -444,9 +444,12 @@ export default function BuyInstagramFollowersIndiaPage() {
               </article>
             ))}
           </div>
-          <p className="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4 text-center text-sm font-bold text-emerald-800">
-            No password required. Only your public profile, post, video, channel, or page link is needed.
-          </p>
+          <div className="safety-note mt-6 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 text-center shadow-[0_16px_38px_rgba(0,0,0,.22)]">
+            <p className="text-sm font-black text-white">No password required.</p>
+            <p className="mt-1 text-sm leading-6 text-[#D1D5DB]">
+              Only your public profile, post, video, channel, or page link is needed.
+            </p>
+          </div>
         </div>
       </section>
 
@@ -614,15 +617,15 @@ export default function BuyInstagramFollowersIndiaPage() {
         }
         .secondary-button, .resource-link {
           display: inline-flex; min-height: 3rem; align-items: center; justify-content: center;
-          border: 1px solid #FFF3E0; border-radius: .75rem; background: rgba(255,255,255,.9);
+          border: 1px solid rgba(255,122,0,.35); border-radius: .75rem; background: #151515;
           padding: .75rem 1.5rem; color: #FF9F00; font-size: .875rem; font-weight: 900;
         }
-        .soft-card { border: 1px solid #FFF8F1; border-radius: 1rem; background: white; box-shadow: 0 16px 34px -28px rgba(255, 159, 0, .45); }
-        .glass-card { border: 1px solid rgba(255,255,255,.9); border-radius: 1.5rem; background: rgba(255,255,255,.8); box-shadow: 0 22px 52px -36px rgba(255, 159, 0, .5); backdrop-filter: blur(20px); }
-        .content-card { border-width: 1px; border-radius: 2rem; background: white; padding: 2rem; box-shadow: 0 24px 56px -38px rgba(255, 159, 0, .5); }
+        .soft-card { border: 1px solid rgba(255,122,0,.25); border-radius: 1rem; background: #111111; box-shadow: 0 16px 34px -28px rgba(0,0,0,.75); }
+        .glass-card { border: 1px solid rgba(255,122,0,.25); border-radius: 1.5rem; background: rgba(17,17,17,.92); box-shadow: 0 22px 52px -36px rgba(0,0,0,.8); backdrop-filter: blur(20px); }
+        .content-card { border-width: 1px; border-radius: 2rem; background: #111111; padding: 2rem; box-shadow: 0 24px 56px -38px rgba(0,0,0,.8); }
         .eyebrow { font-size: .75rem; font-weight: 900; letter-spacing: .16em; text-transform: uppercase; color: #FF9F00; }
-        .section-title { margin-top: .75rem; font-size: 1.875rem; line-height: 1.15; font-weight: 900; letter-spacing: -.025em; color: #0B0B0F; }
-        .body-copy { margin-top: 1rem; font-size: .875rem; line-height: 1.75rem; color: #111827; }
+        .section-title { margin-top: .75rem; font-size: 1.875rem; line-height: 1.15; font-weight: 900; letter-spacing: -.025em; color: #FFFFFF; }
+        .body-copy { margin-top: 1rem; font-size: .875rem; line-height: 1.75rem; color: #D1D5DB; opacity: 1; }
         @media (min-width: 640px) { .section-title { font-size: 2.25rem; } }
       `}</style>
     </PublicShell>

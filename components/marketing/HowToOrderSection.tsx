@@ -104,7 +104,7 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
           {steps.map(({ title, text, icon: Icon, gradient }, index) => (
             <article
               key={title}
-              className="rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_14px_38px_-18px_rgba(15,23,42,.22)] backdrop-blur transition hover:-translate-y-1"
+              className="rounded-2xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_14px_38px_-18px_rgba(0,0,0,.55)] backdrop-blur transition hover:-translate-y-1 hover:border-orange-400/50"
             >
               <div className="flex items-start gap-4">
                 <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-lg ${gradient}`}>
@@ -112,29 +112,34 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
                 </span>
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-500">Step {index + 1}</p>
-                  <h3 className="mt-1 text-base font-extrabold text-slate-900">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
+                  <h3 className="mt-1 text-base font-extrabold text-white">{title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{text}</p>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="mt-6 rounded-2xl border border-emerald-100 bg-emerald-50/80 p-4 text-center shadow-sm">
-          <p className="inline-flex items-center justify-center gap-2 text-sm font-bold text-emerald-800">
-            <LockKeyhole className="h-4 w-4 shrink-0" aria-hidden="true" />
-            No password required. Only your public profile, post, video, channel, or page link is needed.
-          </p>
+        <div className="safety-note mt-6 flex items-start gap-3 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 text-left shadow-[0_16px_38px_rgba(0,0,0,0.22)] sm:items-center">
+          <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-400/15 text-emerald-300">
+            <LockKeyhole className="h-5 w-5" aria-hidden="true" />
+          </span>
+          <div>
+            <p className="text-sm font-black text-white">No password required.</p>
+            <p className="mt-1 text-sm leading-6 text-[#D1D5DB]">
+              Only your public profile, post, video, channel, or page link is needed.
+            </p>
+          </div>
         </div>
 
         <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
           <Link href="/dashboard/new-order" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-amber-300/30 transition hover:-translate-y-0.5">
             Start Order
           </Link>
-          <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">
+          <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-400/30 bg-[#111111] px-6 py-3 text-sm font-bold text-white shadow-sm transition hover:border-orange-400 hover:text-orange-300">
             View Packages
           </Link>
-          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-200 bg-white px-6 py-3 text-sm font-bold text-emerald-700 shadow-sm transition hover:border-emerald-300 hover:bg-emerald-50">
+          <a href={whatsappUrl} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-400/35 bg-[#111111] px-6 py-3 text-sm font-bold text-emerald-300 shadow-sm transition hover:border-emerald-400 hover:bg-[#0B1F18]">
             Chat on WhatsApp
           </a>
         </div>
