@@ -159,6 +159,19 @@ h6 {
   color: #d1d5db !important;
 }
 
+.dashboard-shell [class*="text-slate-700"],
+.dashboard-shell [class*="text-slate-600"] {
+  color: #d1d5db !important;
+}
+
+.dashboard-shell [class*="text-slate-500"],
+.dashboard-shell [class*="text-slate-400"],
+.dashboard-shell [class*="text-white/40"],
+.dashboard-shell [class*="text-white/50"] {
+  color: #9ca3af !important;
+  opacity: 1 !important;
+}
+
 .dashboard-shell [class*="bg-white/"],
 .dashboard-shell [class~="bg-white"] {
   background-color: rgba(17, 17, 17, 0.94) !important;
@@ -361,7 +374,43 @@ h6 {
 
 .public-dark input::placeholder,
 .public-dark textarea::placeholder {
-  color: #6b7280 !important;
+  color: #9ca3af !important;
+}
+
+/* Shared, high-contrast safety note used across ordering and guidance flows. */
+.safety-note {
+  border-color: rgba(52, 211, 153, 0.45) !important;
+  background: #0b1f18 !important;
+  color: #fff !important;
+}
+
+.safety-note p {
+  opacity: 1 !important;
+}
+
+/* Long-form service copy must stay readable on dark cards. */
+.public-dark article p,
+.public-dark details p {
+  line-height: 1.7;
+}
+
+.public-dark [class*="text-orange-100/"],
+.public-dark [class*="text-white/40"],
+.public-dark [class*="text-white/50"] {
+  color: #d1d5db !important;
+  opacity: 1 !important;
+}
+
+.public-dark [class*="bg-emerald-50"],
+.public-dark [class*="bg-green-50"] {
+  border-color: rgba(52, 211, 153, 0.45) !important;
+  background: #0b1f18 !important;
+}
+
+.public-dark [class*="bg-emerald-50"] p,
+.public-dark [class*="bg-green-50"] p {
+  color: #d1d5db !important;
+  opacity: 1 !important;
 }
 
 .public-dark input:focus,
