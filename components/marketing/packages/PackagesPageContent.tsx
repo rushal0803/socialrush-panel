@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { ShieldCheck } from "lucide-react";
-import { useMemo, useState } from "react";
+import { CheckCircle2, ShieldCheck } from "lucide-react";
+import { useMemo, useRef, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
@@ -50,6 +50,8 @@ const buyerGuides = [
 export default function PackagesPageContent() {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>("Instagram");
+  const [selectedPackageId, setSelectedPackageId] = useState("");
+  const packageStepRef = useRef<HTMLElement>(null);
 
   const services = useMemo(
     () =>
@@ -63,10 +65,14 @@ export default function PackagesPageContent() {
 
   function selectPlatform(platform: Platform) {
     setSelectedPlatform(platform);
+    setSelectedPackageId("");
     const firstService = serviceOrder.find((service) =>
       bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service),
     );
     if (firstService) setSelectedService(firstService);
+    window.requestAnimationFrame(() => {
+      packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
   }
 
   return (
@@ -111,6 +117,14 @@ export default function PackagesPageContent() {
           </div>
         </section>
 
+        <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:gap-3 sm:p-3">
+            <PackageStep number="1" title="Platform" state="complete" />
+            <PackageStep number="2" title="Package" state="active" />
+            <PackageStep number="3" title="Checkout" state="upcoming" />
+          </div>
+        </section>
+
         <section className="relative px-4 py-5 sm:px-6 lg:px-8">
           <div className="mx-auto w-full max-w-7xl">
             <div className="mb-4 flex items-end justify-between gap-3">
@@ -145,10 +159,13 @@ export default function PackagesPageContent() {
           </div>
         </section>
 
-        <section className="relative px-4 py-5 sm:px-6 lg:px-8">
+        <section ref={packageStepRef} className="relative scroll-mt-24 px-4 py-5 sm:px-6 lg:px-8">
           <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.6)] sm:p-5">
             <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 2</p>
-            <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Choose a service</h2>
+            <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Choose a package</h2>
+            <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">
+              Pick a service type to compare packages for {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.
+            </p>
             <div className="mt-4 flex flex-wrap gap-2.5">
               {services.map((service) => (
                 <button
@@ -192,7 +209,7 @@ export default function PackagesPageContent() {
                       hidden={!active}
                     >
                       <div className="mb-5">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3</p>
+                        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Available packages</p>
                         <h2 id={headingId} className="mt-1 text-xl font-black text-white sm:text-2xl">
                           {platform.label} {serviceLabels[service]} packages
                         </h2>
@@ -205,7 +222,11 @@ export default function PackagesPageContent() {
                         {categoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
-                            className="flex min-w-0 flex-col rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition hover:-translate-y-1 hover:border-orange-400/45 sm:p-6"
+                            className={`flex min-w-0 flex-col rounded-3xl border bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-6 ${
+                              selectedPackageId === pkg.packageId
+                                ? "border-orange-400 ring-2 ring-orange-500/15"
+                                : "border-orange-400/20"
+                            }`}
                           >
                             <div className="flex items-start justify-between gap-3">
                               <IconBadge label={pkg.platform}>
@@ -249,6 +270,7 @@ export default function PackagesPageContent() {
 
                             <Link
                               href={`/packages/checkout?packageId=${encodeURIComponent(pkg.packageId)}`}
+                              onClick={() => setSelectedPackageId(pkg.packageId)}
                               className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98]"
                             >
                               Select Package
@@ -302,5 +324,50 @@ export default function PackagesPageContent() {
         </section>
       </div>
     </BlogShell>
+  );
+}
+
+function PackageStep({
+  number,
+  title,
+  state,
+}: {
+  number: string;
+  title: string;
+  state: "complete" | "active" | "upcoming";
+}) {
+  const complete = state === "complete";
+  const active = state === "active";
+
+  return (
+    <div
+      className={`flex min-w-0 items-center gap-2 rounded-xl border px-2.5 py-2.5 sm:gap-3 sm:px-4 ${
+        complete
+          ? "border-emerald-400/30 bg-emerald-500/10"
+          : active
+            ? "border-orange-400/55 bg-orange-500/15 shadow-[0_12px_28px_-22px_rgba(255,122,0,.8)]"
+            : "border-white/10 bg-[#0B0B0F]"
+      }`}
+    >
+      <span
+        className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black sm:h-8 sm:w-8 ${
+          complete
+            ? "bg-emerald-500 text-white"
+            : active
+              ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white"
+              : "bg-white/10 text-[#9CA3AF]"
+        }`}
+      >
+        {complete ? <CheckCircle2 className="h-4 w-4" /> : number}
+      </span>
+      <span className="min-w-0">
+        <span className="block text-[8px] font-black uppercase tracking-[0.12em] text-[#9CA3AF] sm:text-[9px]">
+          Step {number}
+        </span>
+        <span className={`block truncate text-[10px] font-black sm:text-xs ${active || complete ? "text-white" : "text-[#9CA3AF]"}`}>
+          {title}
+        </span>
+      </span>
+    </div>
   );
 }
