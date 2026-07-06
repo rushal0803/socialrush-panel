@@ -18,6 +18,7 @@ import {
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
 import {
+  getCanonicalIndiaServicePath,
   getIndiaServiceFaqs,
   getIndiaServicePage,
   type IndiaServiceSlug,
@@ -98,12 +99,14 @@ function jsonLd(value: object) {
 
 export default function IndiaServiceLandingPage({
   slug,
+  canonicalPath = getCanonicalIndiaServicePath(slug),
 }: {
   slug: IndiaServiceSlug;
+  canonicalPath?: string;
 }) {
   const page = getIndiaServicePage(slug);
   const faqs = getIndiaServiceFaqs(slug);
-  const pageUrl = `${SEO_SITE_URL}/${page.slug}`;
+  const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
   const blogKey = page.platformKey === "x" ? "twitter" : page.platformKey;
   const relatedBlogs = (relatedBlogMap[blogKey] ?? relatedBlogMap.instagram)
     .map((articleSlug) => blogArticles.find((article) => article.slug === articleSlug))
@@ -525,7 +528,7 @@ export default function IndiaServiceLandingPage({
               return (
                 <Link
                   key={related.slug}
-                  href={`/${related.slug}`}
+                  href={getCanonicalIndiaServicePath(relatedSlug)}
                   className="rounded-3xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-30px_rgba(255, 159, 0, .45)] transition hover:-translate-y-1 hover:border-[#FFF3E0]"
                 >
                   <PlatformIcon

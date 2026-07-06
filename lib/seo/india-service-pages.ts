@@ -20,6 +20,26 @@ export const indiaServiceSlugs = [
 
 export type IndiaServiceSlug = (typeof indiaServiceSlugs)[number];
 
+export const canonicalIndiaServicePaths: Record<IndiaServiceSlug, string> = {
+  "buy-instagram-followers-india": "/buy-instagram-followers",
+  "buy-instagram-likes-india": "/instagram-likes",
+  "buy-instagram-views-india": "/instagram-views",
+  "buy-youtube-subscribers-india": "/youtube-subscribers",
+  "buy-youtube-likes-india": "/youtube-likes",
+  "buy-youtube-views-india": "/youtube-views",
+  "buy-linkedin-followers-india": "/linkedin-followers",
+  "buy-linkedin-likes-india": "/linkedin-likes",
+  "buy-twitter-followers-india": "/twitter-followers",
+  "buy-facebook-followers-india": "/facebook-followers",
+  "buy-facebook-likes-india": "/facebook-likes",
+  "buy-telegram-members-india": "/telegram-members",
+  "buy-tiktok-followers-india": "/tiktok-followers",
+};
+
+export function getCanonicalIndiaServicePath(slug: IndiaServiceSlug) {
+  return canonicalIndiaServicePaths[slug];
+}
+
 type IndiaServicePage = {
   slug: IndiaServiceSlug;
   serviceCode: ServiceCode;
@@ -465,9 +485,12 @@ export function getIndiaServicePage(slug: IndiaServiceSlug) {
   return { ...pages[slug], price: SERVICE_PRICES[pages[slug].serviceCode] };
 }
 
-export function getIndiaServiceMetadata(slug: IndiaServiceSlug): Metadata {
+export function getIndiaServiceMetadata(
+  slug: IndiaServiceSlug,
+  canonicalPath = getCanonicalIndiaServicePath(slug),
+): Metadata {
   const page = getIndiaServicePage(slug);
-  const url = `${SEO_SITE_URL}/${page.slug}`;
+  const url = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
   const title = `Buy ${page.serviceName} India | SocialRUSH`;
   return {
     title: { absolute: title },

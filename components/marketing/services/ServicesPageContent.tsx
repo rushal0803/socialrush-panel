@@ -56,19 +56,19 @@ const serviceNames: Record<string, string> = {
 };
 
 const seoServicePaths: Record<string, string> = {
-  "instagram-followers": "/buy-instagram-followers-india",
-  "instagram-likes": "/buy-instagram-likes-india",
-  "instagram-views": "/buy-instagram-views-india",
-  "youtube-subscribers": "/buy-youtube-subscribers-india",
-  "youtube-likes": "/buy-youtube-likes-india",
-  "youtube-views": "/buy-youtube-views-india",
-  "facebook-followers": "/buy-facebook-followers-india",
-  "facebook-likes": "/buy-facebook-likes-india",
-  "linkedin-followers": "/buy-linkedin-followers-india",
-  "linkedin-likes": "/buy-linkedin-likes-india",
-  "telegram-members": "/buy-telegram-members-india",
-  "tiktok-followers": "/buy-tiktok-followers-india",
-  "x-followers": "/buy-twitter-followers-india",
+  "instagram-followers": "/buy-instagram-followers",
+  "instagram-likes": "/instagram-likes",
+  "instagram-views": "/instagram-views",
+  "youtube-subscribers": "/youtube-subscribers",
+  "youtube-likes": "/youtube-likes",
+  "youtube-views": "/youtube-views",
+  "facebook-followers": "/facebook-followers",
+  "facebook-likes": "/facebook-likes",
+  "linkedin-followers": "/linkedin-followers",
+  "linkedin-likes": "/linkedin-likes",
+  "telegram-members": "/telegram-members",
+  "tiktok-followers": "/tiktok-followers",
+  "x-followers": "/twitter-followers",
 };
 
 const trustBadges = [

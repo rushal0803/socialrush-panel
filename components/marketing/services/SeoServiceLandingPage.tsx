@@ -400,7 +400,7 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
               const related = getSeoServicePage(relatedSlug);
               const relatedHref =
                 related.slug === "instagram-followers"
-                  ? "/buy-instagram-followers-india"
+                  ? "/buy-instagram-followers"
                   : `/${related.slug}`;
               return (
                 <Link key={related.slug} href={relatedHref} className="group rounded-3xl border border-white/90 bg-white/80 p-5 shadow-[0_18px_42px_-30px_rgba(255, 159, 0, .45)] transition hover:-translate-y-1 hover:border-[#FFF3E0] sm:p-6">

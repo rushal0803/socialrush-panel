@@ -36,15 +36,15 @@ const serviceLabels: Record<Service, string> = {
 const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
 const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
 const buyerGuides = [
-  ["Instagram Followers", "/buy-instagram-followers-india"],
-  ["Instagram Likes", "/buy-instagram-likes-india"],
-  ["Instagram Views", "/buy-instagram-views-india"],
-  ["YouTube Subscribers", "/buy-youtube-subscribers-india"],
-  ["YouTube Likes", "/buy-youtube-likes-india"],
-  ["YouTube Views", "/buy-youtube-views-india"],
-  ["LinkedIn Followers", "/buy-linkedin-followers-india"],
-  ["Facebook Followers", "/buy-facebook-followers-india"],
-  ["Telegram Members", "/buy-telegram-members-india"],
+  ["Instagram Followers", "/buy-instagram-followers"],
+  ["Instagram Likes", "/instagram-likes"],
+  ["Instagram Views", "/instagram-views"],
+  ["YouTube Subscribers", "/youtube-subscribers"],
+  ["YouTube Likes", "/youtube-likes"],
+  ["YouTube Views", "/youtube-views"],
+  ["LinkedIn Followers", "/linkedin-followers"],
+  ["Facebook Followers", "/facebook-followers"],
+  ["Telegram Members", "/telegram-members"],
 ] as const;
 
 export default function PackagesPageContent() {
@@ -101,7 +101,7 @@ export default function PackagesPageContent() {
                 Final price may vary based on selected package, quantity, service quality, and availability. Please check the live package price before placing your order.
               </p>
               <Link
-                href="/buy-instagram-followers-india"
+                href="/buy-instagram-followers"
                 className="mt-4 inline-flex text-sm font-bold text-orange-700 underline decoration-orange-300 underline-offset-4 transition hover:text-amber-700"
               >
                 Learn about buying Instagram followers in India
