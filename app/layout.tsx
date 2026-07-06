@@ -17,11 +17,13 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: "/favicon.ico", sizes: "any" },
+      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
       { url: "/favicon-48x48.png", type: "image/png", sizes: "48x48" },
       { url: "/icon-192.png", type: "image/png", sizes: "192x192" },
       { url: "/icon-512.png", type: "image/png", sizes: "512x512" },
     ],
-    shortcut: "/favicon-48x48.png",
+    shortcut: "/favicon-32x32.png",
     apple: [
       {
         url: "/apple-touch-icon.png",
@@ -34,25 +36,25 @@ export const metadata: Metadata = {
     type: "website",
     locale: "en_IN",
     siteName: "SocialRUSH",
-    title: "Social Media Growth Services India | SocialRUSH",
+    title: "SocialRUSH | Social Media Growth Services for Creators & Brands",
     description:
-      "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
-    url: "/",
+      "SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, secure checkout, transparent pricing, dashboard tracking and WhatsApp support.",
+    url: siteUrl,
     images: [
       {
-        url: "/images/hero-3d.png",
-        width: 1448,
-        height: 1086,
-        alt: "SocialRUSH social media growth services dashboard",
+        url: `${siteUrl}/og-image.png`,
+        width: 1200,
+        height: 630,
+        alt: "SocialRUSH social media growth services for creators and brands",
       },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    title: "Social Media Growth Services India | SocialRUSH",
+    title: "SocialRUSH | Social Media Growth Services for Creators & Brands",
     description:
-      "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
-    images: ["/images/hero-3d.png"],
+      "SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, secure checkout, transparent pricing, dashboard tracking and WhatsApp support.",
+    images: [`${siteUrl}/og-image.png`],
   },
 };
 
@@ -69,7 +71,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
                 "@type": "Organization",
                 name: "SocialRUSH",
                 url: siteUrl,
-                logo: new URL("/images/brand/socialrush-logo-transparent.png", siteUrl).toString(),
+                logo: new URL("/images/brand/socialrush-logo.png", siteUrl).toString(),
                 sameAs: [
                   "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
                   "https://www.facebook.com/share/18VDDFqWzY/",
