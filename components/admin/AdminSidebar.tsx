@@ -37,7 +37,7 @@ export function AdminNav({ mobile = false }: { mobile?: boolean }) {
               if (mobile) event.currentTarget.closest("details")?.removeAttribute("open");
             }}
             className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
-              active ? "text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"
+              active ? "text-white" : "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white"
             }`}
           >
             {active && (
@@ -67,18 +67,18 @@ export default function AdminSidebar() {
 
       <div className="mx-2 mt-6 rounded-xl border border-orange-400/20 bg-white/[.04] px-3 py-2.5 shadow-[0_10px_20px_rgba(0,0,0,.3)]">
         <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Administration</p>
-        <p className="mt-1 text-xs font-semibold text-[#0B0B0F]">Control center</p>
+        <p className="mt-1 text-xs font-semibold text-white">Control center</p>
       </div>
 
-      <p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#111827]">Management</p>
+      <p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#9CA3AF]">Management</p>
       <AdminNav />
 
       <div className="mt-auto">
-        <Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
+        <Link href="/dashboard" className="flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white">
           ← Customer dashboard
         </Link>
         <form action={logout}>
-          <button className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
+          <button className="mt-1 flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white">
             ↪ Sign out
           </button>
         </form>
