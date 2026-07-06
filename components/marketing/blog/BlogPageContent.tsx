@@ -11,6 +11,14 @@ const categories = ["All", ...Array.from(new Set(blogArticles.map((article) => a
 const featuredArticle = blogArticles[0];
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
+const relatedServiceLinks = [
+  ["Instagram Followers", "/buy-instagram-followers"],
+  ["Instagram Likes", "/instagram-likes"],
+  ["YouTube Subscribers", "/youtube-subscribers"],
+  ["Facebook Followers", "/facebook-followers"],
+  ["LinkedIn Followers", "/linkedin-followers"],
+  ["Packages", "/packages"],
+] as const;
 
 const fadeUp = {
   hidden: { opacity: 0, y: 22 },
@@ -125,6 +133,38 @@ export default function BlogPageContent() {
                 </div>
               </div>
             </motion.div>
+          </div>
+        </section>
+
+        <section className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
+          <div className="mx-auto w-full max-w-7xl rounded-[30px] border border-white/85 bg-white/85 p-6 shadow-[0_18px_42px_rgba(255,159,0,.16)] backdrop-blur sm:p-8">
+            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
+              <div>
+                <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00]">
+                  Related SocialRUSH services
+                </p>
+                <h2 className="mt-2 text-2xl font-extrabold text-[#0B0B0F]">
+                  Explore services mentioned in our growth guides
+                </h2>
+              </div>
+              <Link
+                href="/services"
+                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(255,196,0,.28)]"
+              >
+                View All Services
+              </Link>
+            </div>
+            <div className="mt-5 flex flex-wrap gap-3">
+              {relatedServiceLinks.map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="rounded-full border border-[#FFF3E0] bg-white px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:border-[#FF9F00] hover:text-[#FF7A00]"
+                >
+                  {label}
+                </Link>
+              ))}
+            </div>
           </div>
         </section>
 
