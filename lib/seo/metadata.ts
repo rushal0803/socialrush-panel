@@ -27,7 +27,7 @@ export function createPageMetadata({
 }: PageMetadataOptions): Metadata {
   const canonicalUrl = new URL(path, `${SEO_SITE_URL}/`).toString();
   const socialTitle = title.includes("SocialRUSH") ? title : `${title} | SocialRUSH`;
-  const imageUrl = `${SEO_SITE_URL}/images/hero-3d.png`;
+  const imageUrl = `${SEO_SITE_URL}/og-image.png`;
 
   return {
     title,
@@ -46,9 +46,9 @@ export function createPageMetadata({
       images: [
         {
           url: imageUrl,
-          width: 1448,
-          height: 1086,
-          alt: "SocialRUSH social media growth services dashboard",
+          width: 1200,
+          height: 630,
+          alt: "SocialRUSH social media growth services for creators and brands",
         },
       ],
     },
