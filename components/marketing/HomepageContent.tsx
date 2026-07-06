@@ -103,7 +103,7 @@ const featuredServices = [
   {
     name: "Instagram Campaign Support",
     platform: "instagram",
-    href: "/buy-instagram-followers-india",
+    href: "/buy-instagram-followers",
     text: "Explore profile and content campaign options for Instagram.",
     grad: "from-orange-500 to-orange-600",
     bg: "from-orange-50 to-orange-50",
@@ -112,7 +112,7 @@ const featuredServices = [
   {
     name: "YouTube Channel Support",
     platform: "youtube",
-    href: "/buy-youtube-subscribers-india",
+    href: "/youtube-subscribers",
     text: "Compare channel and video support services with clear delivery details.",
     grad: "from-red-500 to-red-600",
     bg: "from-red-50 to-red-50",
@@ -121,7 +121,7 @@ const featuredServices = [
   {
     name: "LinkedIn Profile Support",
     platform: "linkedin",
-    href: "/buy-linkedin-followers-india",
+    href: "/linkedin-followers",
     text: "Review professional profile and company page support options.",
     grad: "from-amber-500 to-orange-600",
     bg: "from-amber-50 to-orange-50",
@@ -130,7 +130,7 @@ const featuredServices = [
   {
     name: "Facebook Page Support",
     platform: "facebook",
-    href: "/buy-facebook-followers-india",
+    href: "/facebook-followers",
     text: "Find page and content campaign services with transparent pricing.",
     grad: "from-orange-500 to-orange-600",
     bg: "from-orange-50 to-orange-50",
@@ -139,7 +139,7 @@ const featuredServices = [
   {
     name: "TikTok Campaign Support",
     platform: "tiktok",
-    href: "/buy-tiktok-followers-india",
+    href: "/tiktok-followers",
     text: "Explore structured campaign support for public TikTok profiles and content.",
     grad: "from-[#FF7A00] to-[#FFB000]",
     bg: "from-orange-50 to-orange-50",
@@ -148,7 +148,7 @@ const featuredServices = [
   {
     name: "Twitter/X Profile Support",
     platform: "twitter",
-    href: "/buy-twitter-followers-india",
+    href: "/twitter-followers",
     text: "Explore profile campaign options with visible pricing and tracking.",
     grad: "from-amber-500 to-slate-700",
     bg: "from-amber-50 to-slate-50",
