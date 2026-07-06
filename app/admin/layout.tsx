@@ -21,7 +21,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!profile || profile.role !== "admin") redirect("/dashboard/new-order");
 
   return (
-    <div className="dashboard-shell relative flex min-h-screen">
+    <div className="admin-shell dashboard-shell relative flex min-h-screen text-[#D1D5DB]">
       <AdminSidebar />
       <div className="min-w-0 flex-1">
         <AdminHeader name={profile.full_name} email={user.email || ""} />

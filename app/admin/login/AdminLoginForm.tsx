@@ -59,5 +59,64 @@ export default function AdminLoginForm({ initialError = "" }: { initialError?: s
     router.refresh();
   }
 
-  return <main className="grid min-h-screen place-items-center bg-[radial-gradient(circle_at_top_right,#FFF3E0_0,transparent_35%),linear-gradient(180deg,#FFF8F1,#FFF8F1)] p-5"><section className="w-full max-w-md rounded-3xl border border-white bg-white/90 p-7 shadow-[0_30px_100px_-35px_rgba(255, 159, 0, .45)] backdrop-blur-xl sm:p-9"><Logo /><div className="mt-8"><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-600">Private administration</p><h1 className="mt-3 text-3xl font-black text-[#0B0B0F]">Admin sign in</h1><p className="mt-2 text-sm leading-6 text-slate-500">Use an account whose profile role is set to admin.</p></div><form onSubmit={submit} className="mt-7 space-y-4"><label className="block text-xs font-bold text-slate-700">Email<input type="email" required autoComplete="email" value={email} onChange={(event) => setEmail(event.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3.5 text-sm outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10" /></label><label className="block text-xs font-bold text-slate-700">Password<input type="password" required autoComplete="current-password" value={password} onChange={(event) => setPassword(event.target.value)} className="mt-2 w-full rounded-xl border border-slate-200 px-4 py-3.5 text-sm outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10" /></label>{error && <p role="alert" className="rounded-xl border border-red-100 bg-red-50 p-3 text-xs leading-5 text-red-700">{error}</p>}<button disabled={loading} className="w-full rounded-xl bg-orange-600 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-600/20 disabled:opacity-60">{loading ? "Checking access…" : "Sign in to admin"}</button></form><a href="/" className="mt-5 block text-center text-xs font-semibold text-slate-500 hover:text-orange-600">← Return to website</a></section></main>;
+  return (
+    <main className="grid min-h-screen place-items-center bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_35%),linear-gradient(180deg,#050505,#0B0B0F)] p-4 sm:p-5">
+      <section className="w-full max-w-md rounded-3xl border border-orange-400/25 bg-[#111111]/95 p-6 text-[#D1D5DB] shadow-[0_30px_100px_-35px_rgba(255,122,0,.6)] backdrop-blur-xl sm:p-9">
+        <Logo light />
+        <div className="mt-8">
+          <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-400">
+            Private administration
+          </p>
+          <h1 className="mt-3 text-3xl font-black text-white">Admin sign in</h1>
+          <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">
+            Use an account whose profile role is set to admin.
+          </p>
+        </div>
+        <form onSubmit={submit} className="mt-7 space-y-4">
+          <label className="block text-xs font-bold text-[#D1D5DB]">
+            Email
+            <input
+              type="email"
+              required
+              autoComplete="email"
+              value={email}
+              onChange={(event) => setEmail(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+            />
+          </label>
+          <label className="block text-xs font-bold text-[#D1D5DB]">
+            Password
+            <input
+              type="password"
+              required
+              autoComplete="current-password"
+              value={password}
+              onChange={(event) => setPassword(event.target.value)}
+              className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+            />
+          </label>
+          {error ? (
+            <p
+              role="alert"
+              className="rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-xs leading-5 text-red-200"
+            >
+              {error}
+            </p>
+          ) : null}
+          <button
+            disabled={loading}
+            className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-600/20 transition hover:-translate-y-0.5 active:scale-[.98] disabled:cursor-not-allowed disabled:bg-none disabled:bg-[#2A2A2A] disabled:text-[#9CA3AF] disabled:shadow-none"
+          >
+            {loading ? "Checking access…" : "Sign in to admin"}
+          </button>
+        </form>
+        <a
+          href="/"
+          className="mt-5 block text-center text-xs font-semibold text-[#9CA3AF] hover:text-orange-400"
+        >
+          ← Return to website
+        </a>
+      </section>
+    </main>
+  );
 }

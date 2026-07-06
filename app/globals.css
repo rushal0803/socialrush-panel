@@ -223,6 +223,129 @@ h6 {
   color: #fca5a5 !important;
 }
 
+/* Admin-only dark surfaces. Keep this scoped so public and customer UI is untouched. */
+.admin-shell {
+  color: #d1d5db;
+}
+
+.admin-shell main {
+  width: 100%;
+}
+
+.admin-shell .panel-card,
+.admin-shell section[class*="bg-white"],
+.admin-shell article[class*="bg-white"] {
+  border-color: rgba(255, 122, 0, 0.28) !important;
+  background: #111111 !important;
+  color: #d1d5db !important;
+  box-shadow: 0 22px 54px rgba(0, 0, 0, 0.34) !important;
+}
+
+.admin-shell table {
+  background: #111111;
+  color: #d1d5db;
+}
+
+.admin-shell thead,
+.admin-shell thead[class*="bg-"] {
+  background: #0b0b0f !important;
+  color: #ff9f00 !important;
+}
+
+.admin-shell th {
+  border-color: rgba(255, 122, 0, 0.2);
+  color: #ff9f00 !important;
+  font-weight: 800;
+}
+
+.admin-shell tbody,
+.admin-shell tbody[class*="divide-"] {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+.admin-shell tbody tr {
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background: #111111;
+}
+
+.admin-shell tbody tr:hover,
+.admin-shell tr[class*="hover:bg-slate"]:hover {
+  background: #171717 !important;
+}
+
+.admin-shell td {
+  color: #d1d5db;
+}
+
+.admin-shell [class*="bg-slate-50"],
+.admin-shell [class*="bg-slate-100"] {
+  background-color: rgba(255, 255, 255, 0.06) !important;
+}
+
+.admin-shell [class*="bg-orange-50"],
+.admin-shell [class*="bg-amber-50"] {
+  background-color: rgba(255, 159, 0, 0.1) !important;
+}
+
+.admin-shell [class*="bg-emerald-50"] {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+}
+
+.admin-shell [class*="bg-red-50"] {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+}
+
+.admin-shell [class*="border-slate-100"],
+.admin-shell [class*="border-slate-200"],
+.admin-shell [class*="divide-slate-100"] {
+  border-color: rgba(255, 255, 255, 0.1) !important;
+}
+
+.admin-shell label {
+  color: #d1d5db;
+}
+
+.admin-shell input::placeholder,
+.admin-shell textarea::placeholder {
+  color: #9ca3af !important;
+  opacity: 1;
+}
+
+.admin-shell select option {
+  background: #111111;
+  color: #fff;
+}
+
+.admin-shell summary {
+  color: inherit;
+}
+
+.admin-shell button,
+.admin-shell a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.admin-shell button:not(:disabled),
+.admin-shell a[class*="rounded"] {
+  transition:
+    transform 180ms ease,
+    border-color 180ms ease,
+    background-color 180ms ease,
+    box-shadow 180ms ease;
+}
+
+@media (hover: hover) {
+  .admin-shell button:not(:disabled):hover,
+  .admin-shell a[class*="rounded"]:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.admin-shell button:not(:disabled):active,
+.admin-shell a[class*="rounded"]:active {
+  transform: scale(0.98);
+}
+
 @keyframes auth-float {
   0%, 100% { transform: translateY(0px); }
   50% { transform: translateY(-14px); }
