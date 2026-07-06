@@ -503,6 +503,7 @@ export function getIndiaServiceMetadata(
       `No password ${page.serviceName}`,
       "Social media growth service India",
     ],
+    robots: { index: true, follow: true },
     alternates: { canonical: url },
     openGraph: {
       type: "website",

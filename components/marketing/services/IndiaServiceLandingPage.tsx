@@ -37,36 +37,45 @@ const trustCards: Array<{ title: string; icon: LucideIcon }> = [
 
 const relatedBlogMap: Record<string, string[]> = {
   instagram: [
+    "how-to-increase-instagram-followers-safely-in-india",
     "how-to-grow-instagram-followers-in-india",
     "instagram-followers-price-in-india",
     "is-it-safe-to-buy-instagram-followers",
+    "instagram-followers-vs-engagement",
   ],
   youtube: [
+    "how-to-promote-new-youtube-channel-in-india",
+    "how-to-get-more-youtube-views-on-new-videos",
     "how-to-increase-youtube-subscribers-in-india",
     "youtube-views-price-in-india",
     "youtube-views-get-more-reach",
   ],
   linkedin: [
+    "linkedin-profile-growth-tips-for-business-owners",
     "linkedin-followers-for-business-growth",
     "best-way-to-grow-linkedin-followers-for-business",
     "linkedin-growth-tips-personal-brands",
   ],
   facebook: [
+    "facebook-page-growth-tips-for-local-businesses",
     "best-social-media-growth-services-for-indian-creators",
     "social-media-growth-strategy-indian-creators",
     "choose-the-right-social-media-service",
   ],
   telegram: [
+    "how-social-media-growth-campaigns-work",
     "best-social-media-growth-services-for-indian-creators",
     "social-media-growth-strategy-indian-creators",
     "social-media-campaign-mistakes-to-avoid",
   ],
   tiktok: [
+    "how-social-media-growth-campaigns-work",
     "best-social-media-growth-services-for-indian-creators",
     "social-media-growth-strategy-indian-creators",
     "choose-the-right-social-media-service",
   ],
   twitter: [
+    "why-public-link-ordering-is-safer",
     "best-social-media-growth-services-for-indian-creators",
     "social-media-growth-strategy-indian-creators",
     "linkedin-growth-tips-personal-brands",

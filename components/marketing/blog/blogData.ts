@@ -695,6 +695,350 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
   },
+  {
+    slug: "how-to-increase-instagram-followers-safely-in-india",
+    category: "Instagram Growth",
+    title: "How to Increase Instagram Followers Safely in India",
+    description:
+      "A practical safety-first guide for Indian creators and brands who want more Instagram followers without sharing passwords or making risky claims.",
+    readingTime: "9 min read",
+    image: "/images/blog/instagram-growth.png",
+    intro:
+      "Increasing Instagram followers safely starts with a public, trustworthy profile and a repeatable content system. For Indian creators, founders, local businesses, and agencies, the goal should be credible growth that supports long-term visibility rather than shortcuts that create account risk or confuse new visitors.",
+    sections: [
+      {
+        heading: "Make the Profile Easy to Trust",
+        body:
+          "Before running any campaign, make sure a new visitor can understand who you are, what you share, and why they should follow. A clear profile photo, simple bio, relevant highlights, and a few strong pinned posts help growth activity convert into actual interest.",
+        tips: [
+          "Use a profile photo or logo that is recognizable on mobile.",
+          "Write a bio that explains the audience and outcome clearly.",
+          "Pin posts that show your best content, proof, or offer.",
+        ],
+      },
+      {
+        heading: "Use Safe Public-Link Campaigns",
+        body:
+          "A safer ordering process should only require your public Instagram profile link. Avoid any provider that asks for your password, recovery code, or private account access. Public-link ordering keeps ownership with you and makes the campaign easier to track.",
+        tips: [
+          "Keep your Instagram profile public during delivery.",
+          "Do not change the username while an order is active.",
+          "Review delivery and refill information before confirming.",
+        ],
+      },
+      {
+        heading: "Support Growth With Better Content",
+        body:
+          "Follower growth works best when the profile has a reason to retain new attention. Use reels, carousels, stories, and useful captions to show what your account is about. Growth support can improve presentation, but content gives people a reason to stay.",
+        tips: [
+          "Publish around three repeatable topics your audience cares about.",
+          "Use captions that invite saves, comments, or profile visits.",
+          "Review which posts bring profile actions, not just likes.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "instagram-followers-vs-engagement",
+    category: "Instagram Growth",
+    title: "Instagram Followers vs Engagement: What Matters More?",
+    description:
+      "Understand when follower count helps, when engagement matters more, and how Indian creators can balance profile credibility with content quality.",
+    readingTime: "9 min read",
+    image: "/images/blog/instagram-growth.png",
+    intro:
+      "Followers and engagement both shape Instagram perception, but they do different jobs. Followers support profile credibility and first impressions, while engagement shows whether content is connecting with people. A healthy strategy treats both as signals rather than chasing one number blindly.",
+    sections: [
+      {
+        heading: "Followers Help With First Impressions",
+        body:
+          "When someone discovers your profile from a reel, comment, ad, collaboration, or search result, follower count is one of the first context clues they notice. A credible-looking profile can reduce hesitation, especially for creators, local brands, consultants, and small businesses.",
+        tips: [
+          "Use follower campaigns to support profile presentation, not replace content.",
+          "Keep your bio and pinned posts aligned with your audience promise.",
+          "Measure profile visits and follows together to understand conversion.",
+        ],
+      },
+      {
+        heading: "Engagement Shows Content Fit",
+        body:
+          "Likes, comments, shares, saves, replies, and watch time reveal whether people care about what you publish. A smaller account with strong engagement can often produce more business value than a larger account with unclear positioning.",
+        tips: [
+          "Track saves and replies on educational or high-intent posts.",
+          "Use comments to learn audience language and objections.",
+          "Improve hooks and visuals before increasing promotion spend.",
+        ],
+      },
+      {
+        heading: "Balance Both With Campaign Goals",
+        body:
+          "If the profile looks new, follower growth may help credibility. If content already gets reach but weak response, engagement work may be more useful. Choose the service based on the bottleneck, not just the most popular option.",
+        tips: [
+          "Pick one primary campaign goal for each order.",
+          "Compare follower growth, engagement rate, and profile actions weekly.",
+          "Use packages and services pages to compare current options.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-to-promote-new-youtube-channel-in-india",
+    category: "YouTube Growth",
+    title: "How to Promote a New YouTube Channel in India",
+    description:
+      "A practical launch guide for Indian YouTubers who want better channel presentation, clearer discovery, and safer promotion habits.",
+    readingTime: "9 min read",
+    image: "/images/blog/youtube-growth.png",
+    intro:
+      "Promoting a new YouTube channel is not just about pushing one video. A stronger launch connects channel positioning, searchable topics, thumbnails, playlists, audience trust, and measured promotion so viewers understand why they should subscribe.",
+    sections: [
+      {
+        heading: "Package the Channel Before Promotion",
+        body:
+          "A new viewer should quickly understand the channel topic, upload promise, and next video to watch. Your banner, About section, featured video, playlists, and thumbnails should all point toward the same audience expectation.",
+        tips: [
+          "Write a channel description that explains who the content helps.",
+          "Create playlists around topics, not upload dates only.",
+          "Use consistent thumbnail style so videos feel connected.",
+        ],
+      },
+      {
+        heading: "Promote Videos That Can Retain Viewers",
+        body:
+          "Promotion works better when the video itself is ready. Choose videos with clear titles, strong openings, useful structure, and a next-step path. Sending attention to an unclear video can increase views without building subscribers.",
+        tips: [
+          "Improve the first 30 seconds before increasing reach.",
+          "Add chapters or visual structure for longer videos.",
+          "Use end screens and pinned comments to guide the next action.",
+        ],
+      },
+      {
+        heading: "Use Subscriber Support Carefully",
+        body:
+          "Subscriber campaigns can support visible channel credibility, but they should not be treated as a replacement for content strategy. Use public channel links only and review delivery, refill, and pricing information before ordering.",
+        tips: [
+          "Never share Google account access or passwords.",
+          "Keep the channel public and active during delivery.",
+          "Track subscribers alongside watch time and returning viewers.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-to-get-more-youtube-views-on-new-videos",
+    category: "YouTube Growth",
+    title: "How to Get More YouTube Views on New Videos",
+    description:
+      "Learn how titles, thumbnails, retention, playlists, and safe public-link promotion can help new YouTube videos get more reach.",
+    readingTime: "9 min read",
+    image: "/images/blog/youtube-growth.png",
+    intro:
+      "New YouTube videos need a strong first impression and a clear reason to keep watching. More views come from better packaging, retention, topic selection, internal channel links, and measured promotion rather than one isolated tactic.",
+    sections: [
+      {
+        heading: "Improve the Click Before You Promote",
+        body:
+          "The title and thumbnail decide whether YouTube viewers give a new video a chance. Make the promise specific, reduce clutter, and ensure the visual matches the actual content. Misleading packaging may create clicks but weak retention.",
+        tips: [
+          "Use one clear idea per thumbnail.",
+          "Make titles benefit-led without exaggeration.",
+          "Compare click-through rate with average view duration.",
+        ],
+      },
+      {
+        heading: "Build Retention Into the Video Structure",
+        body:
+          "YouTube distribution depends heavily on viewer satisfaction. A strong hook, fast context, useful examples, and clean pacing give viewers reasons to continue. Promotion is more valuable when the content can hold attention.",
+        tips: [
+          "Open with the result or problem, not a long intro.",
+          "Preview what the viewer will learn in the first minute.",
+          "Remove repeated explanations during editing.",
+        ],
+      },
+      {
+        heading: "Use Views Campaigns as Support, Not a Shortcut",
+        body:
+          "A YouTube views campaign can support visibility for a prepared public video. Check current pricing, delivery estimates, and order terms first, then track progress in the dashboard while reviewing YouTube analytics separately.",
+        tips: [
+          "Submit only the public video link.",
+          "Keep the video public during delivery.",
+          "Monitor watch time, comments, and subscriber conversion.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "linkedin-profile-growth-tips-for-business-owners",
+    category: "LinkedIn Marketing",
+    title: "LinkedIn Profile Growth Tips for Business Owners",
+    description:
+      "A simple LinkedIn growth guide for founders, consultants, and business owners who want more professional visibility without risky tactics.",
+    readingTime: "9 min read",
+    image: "/images/blog/linkedin-marketing.png",
+    intro:
+      "LinkedIn growth for business owners should support credibility, conversations, hiring, partnerships, and demand. The best results come from clear positioning, useful posts, consistent engagement, and a complete profile that earns trust quickly.",
+    sections: [
+      {
+        heading: "Make Your Profile Explain the Business Clearly",
+        body:
+          "A business owner profile should make the offer, audience, and expertise easy to understand. Visitors often decide whether to connect or enquire after scanning the headline, banner, featured section, and recent posts.",
+        tips: [
+          "Write a headline that names the audience and outcome.",
+          "Use the featured section for proof, offers, or useful resources.",
+          "Keep the About section clear, specific, and easy to skim.",
+        ],
+      },
+      {
+        heading: "Publish From Experience, Not Generic Advice",
+        body:
+          "LinkedIn audiences respond to useful, specific experience. Share decisions, lessons, customer questions, market observations, and practical frameworks. This builds authority more effectively than generic motivational posts.",
+        tips: [
+          "Turn customer questions into educational posts.",
+          "Share one practical lesson per post.",
+          "Use simple formatting for mobile readability.",
+        ],
+      },
+      {
+        heading: "Use Follower Growth to Support Authority",
+        body:
+          "Follower campaigns can support presentation when the profile already communicates expertise. Use public profile or company page links only, review current pricing, and track growth alongside qualified conversations.",
+        tips: [
+          "Never share account passwords or private LinkedIn access.",
+          "Keep profile details and company links updated.",
+          "Measure profile views, comments, and enquiries together.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "facebook-page-growth-tips-for-local-businesses",
+    category: "Facebook Marketing",
+    title: "Facebook Page Growth Tips for Local Businesses",
+    description:
+      "Practical Facebook page growth advice for Indian local businesses that want clearer visibility, trust, and customer conversations.",
+    readingTime: "9 min read",
+    image: "/images/blog/social-media-tips.png",
+    intro:
+      "Facebook can still support local discovery when a business page is complete, helpful, and easy to contact. Growth should focus on trust signals, useful posts, visible activity, and clear next steps for local customers.",
+    sections: [
+      {
+        heading: "Complete the Page Before Growing It",
+        body:
+          "A Facebook page should answer basic customer questions quickly: what you offer, where you serve, how to contact you, and why people should trust you. Incomplete details reduce the value of any visibility campaign.",
+        tips: [
+          "Update address, hours, phone, website, and WhatsApp details.",
+          "Pin a useful offer, service guide, or introduction post.",
+          "Use real photos of products, team, location, or work when possible.",
+        ],
+      },
+      {
+        heading: "Post for Local Trust and Relevance",
+        body:
+          "Local businesses grow when content answers real community needs. Share service explanations, customer education, local updates, behind-the-scenes notes, and practical reminders instead of only promotional posts.",
+        tips: [
+          "Use simple language your customers actually use.",
+          "Show process and availability clearly.",
+          "Invite questions through comments and messages.",
+        ],
+      },
+      {
+        heading: "Use Page Growth Support Responsibly",
+        body:
+          "Follower campaigns can improve visible page presentation, but they work best when the page is ready for visitors. Use only the public page link and keep pricing, delivery, and support expectations clear before ordering.",
+        tips: [
+          "Do not share Facebook passwords or admin access.",
+          "Track page follows, messages, and website clicks together.",
+          "Use support if you are unsure which package fits your goal.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "why-public-link-ordering-is-safer",
+    category: "Safety",
+    title: "Why Public Link Ordering Is Safer Than Password-Based Services",
+    description:
+      "Learn why SocialRUSH uses public profile, post, video, page, and channel links instead of asking for account passwords.",
+    readingTime: "9 min read",
+    image: "/images/blog/brand-visibility.png",
+    intro:
+      "Public-link ordering is a safer way to request social media growth services because it keeps account ownership and private credentials with the customer. You provide only the destination that needs support, such as a public profile, post, reel, video, page, or channel link.",
+    sections: [
+      {
+        heading: "Passwords Create Unnecessary Risk",
+        body:
+          "Any service that asks for your password, recovery code, or private account access creates avoidable risk. It can expose your account, billing details, connected pages, personal messages, and business assets.",
+        tips: [
+          "Never share passwords or two-factor authentication codes.",
+          "Avoid providers that ask to log in on your behalf.",
+          "Use official platform security settings and strong passwords.",
+        ],
+      },
+      {
+        heading: "Public Links Keep the Order Specific",
+        body:
+          "A public link tells the service exactly what destination needs support without giving access to the account. It also makes order tracking clearer because the submitted link is tied to the campaign record.",
+        tips: [
+          "Submit the exact profile, post, video, page, or channel URL.",
+          "Keep the destination public during delivery.",
+          "Avoid changing usernames or deleting content while an order is active.",
+        ],
+      },
+      {
+        heading: "Safer Ordering Still Requires Good Judgment",
+        body:
+          "Public-link ordering reduces credential risk, but customers should still review pricing, delivery, refill terms, and support policies before placing an order. Avoid exaggerated claims or guaranteed outcomes.",
+        tips: [
+          "Read the order summary before payment.",
+          "Contact support if the required link type is unclear.",
+          "Track order status from the dashboard rather than relying on messages only.",
+        ],
+      },
+    ],
+  },
+  {
+    slug: "how-social-media-growth-campaigns-work",
+    category: "Social Media Strategy",
+    title: "How Social Media Growth Campaigns Work",
+    description:
+      "A plain-English explanation of social media growth campaigns, public-link ordering, pricing, delivery, tracking, and safety checks.",
+    readingTime: "9 min read",
+    image: "/images/blog/brand-visibility.png",
+    intro:
+      "A social media growth campaign is a structured way to support a specific public destination, such as a profile, post, video, channel, or page. The best campaigns start with a clear goal, transparent pricing, safe ordering, and dashboard tracking.",
+    sections: [
+      {
+        heading: "Start With a Clear Campaign Objective",
+        body:
+          "Different services support different goals. Followers can improve profile presentation, likes can support content engagement, views can help content visibility, and subscribers can support channel credibility. Choose based on the bottleneck you want to improve.",
+        tips: [
+          "Select one platform and one service at a time.",
+          "Review the public destination before placing an order.",
+          "Match quantity and package size to a realistic goal.",
+        ],
+      },
+      {
+        heading: "Review Price, Delivery, and Refill Details",
+        body:
+          "A professional campaign flow should show the selected service, quantity, total price, delivery estimate, refill eligibility, and required public link before confirmation. This helps avoid confusion and keeps expectations clear.",
+        tips: [
+          "Check the live package price before ordering.",
+          "Confirm whether refill support applies to the selected service.",
+          "Use the dashboard record if you need help later.",
+        ],
+      },
+      {
+        heading: "Track the Order After Confirmation",
+        body:
+          "Once the order is placed, the dashboard should help you follow status and keep a record of the campaign. Use support if delivery takes longer than the displayed estimate or if the submitted link needs review.",
+        tips: [
+          "Keep the submitted link public during delivery.",
+          "Avoid duplicate orders for the same destination until the first is reviewed.",
+          "Measure campaign activity alongside organic platform analytics.",
+        ],
+      },
+    ],
+  },
 ];
 
 type EditorialProfile = {
@@ -711,7 +1055,103 @@ type EditorialProfile = {
 };
 
 const editorialProfiles: Record<string, EditorialProfile> = {
-  "how-to-grow-fast-on-instagram": {
+
+  "how-to-increase-instagram-followers-safely-in-india": {
+    platform: "Instagram",
+    audience: "Indian creators, local brands, influencers, coaches, founders, and agencies who want safer follower growth",
+    goal: "increase profile credibility while protecting account access and improving the reason people choose to follow",
+    discovery: "profile clarity, reels, carousels, collaborations, audience research, public-link campaigns, and consistent community interaction",
+    conversion: "a clear bio, useful pinned posts, visible proof, public profile accessibility, and a simple reason to follow",
+    metrics: "followers, profile visits, reach, saves, comments, website taps, enquiries, and follower quality indicators",
+    cadence: "three useful Instagram posts per week, daily light engagement, and one campaign review checkpoint every seven days",
+    risk: "using unsafe providers that ask for passwords or expecting follower count to replace content quality",
+    serviceLabel: "Instagram Followers India",
+    serviceHref: "/buy-instagram-followers",
+  },
+  "instagram-followers-vs-engagement": {
+    platform: "Instagram",
+    audience: "Indian creators and brands deciding whether to focus on followers, likes, views, comments, or content quality",
+    goal: "balance visible profile credibility with genuine content response and a healthier campaign measurement system",
+    discovery: "audience-first content, visible follower support, engagement analysis, reels distribution, saves, shares, and comments",
+    conversion: "a trustworthy profile, strong posts, clear calls to action, relevant highlights, and content that matches visitor expectations",
+    metrics: "followers, engagement rate, saves, shares, comments, profile visits, link clicks, and repeat viewers",
+    cadence: "weekly review of follower growth and engagement quality with one focused service or content test at a time",
+    risk: "treating either followers or engagement as the only number that matters without understanding the customer journey",
+    serviceLabel: "Instagram Likes India",
+    serviceHref: "/instagram-likes",
+  },
+  "how-to-promote-new-youtube-channel-in-india": {
+    platform: "YouTube",
+    audience: "new Indian YouTube creators, educators, reviewers, musicians, podcasters, and brand channels",
+    goal: "make a new channel easier to understand, discover, subscribe to, and evaluate professionally",
+    discovery: "searchable topics, thumbnails, video titles, playlists, subscriber support, shorts, community posts, and cross-platform promotion",
+    conversion: "a clear channel promise, prepared playlists, featured video, strong thumbnails, public channel link, and next-video paths",
+    metrics: "subscribers, impressions, click-through rate, average view duration, returning viewers, comments, and channel page visits",
+    cadence: "one long-form upload or two shorts per week with a monthly channel packaging review",
+    risk: "promoting an unclear channel before viewers understand why they should subscribe",
+    serviceLabel: "YouTube Subscribers India",
+    serviceHref: "/youtube-subscribers",
+  },
+  "how-to-get-more-youtube-views-on-new-videos": {
+    platform: "YouTube",
+    audience: "Indian creators and brands trying to increase views on new public YouTube videos",
+    goal: "improve early discovery and viewer satisfaction without relying on misleading thumbnails or risky access requests",
+    discovery: "strong titles, thumbnails, retention-focused structure, playlists, Shorts, community sharing, and public video campaigns",
+    conversion: "a clear video promise, strong first 30 seconds, relevant end screen, pinned comment, and channel subscription path",
+    metrics: "views, impressions, click-through rate, retention, watch time, comments, subscribers gained, and returning viewers",
+    cadence: "review the first 48 hours, improve packaging if needed, and plan one supporting campaign only after the video is ready",
+    risk: "buying attention for videos that cannot hold viewers or confusing views with complete channel growth",
+    serviceLabel: "YouTube Views India",
+    serviceHref: "/youtube-views",
+  },
+  "linkedin-profile-growth-tips-for-business-owners": {
+    platform: "LinkedIn",
+    audience: "Indian founders, consultants, agency owners, B2B service providers, coaches, and local business leaders",
+    goal: "turn a LinkedIn profile into a credible business asset that supports visibility and qualified conversations",
+    discovery: "expert posts, profile optimization, company page links, employee interaction, thoughtful comments, and follower support",
+    conversion: "a clear headline, relevant proof, featured resources, simple contact path, and consistent professional voice",
+    metrics: "profile views, followers, post impressions, qualified comments, connection requests, website visits, and enquiries",
+    cadence: "two practical posts and three thoughtful comment sessions per week with monthly profile cleanup",
+    risk: "posting generic advice without a clear business angle or treating followers as a substitute for expertise",
+    serviceLabel: "LinkedIn Followers India",
+    serviceHref: "/linkedin-followers",
+  },
+  "facebook-page-growth-tips-for-local-businesses": {
+    platform: "Facebook",
+    audience: "Indian local businesses, service providers, shops, clinics, restaurants, educators, and community brands",
+    goal: "make the Facebook page more credible, easier to contact, and more useful for local discovery",
+    discovery: "complete page details, local content, customer education, public page follower support, groups, messaging, and useful updates",
+    conversion: "clear contact details, pinned service post, trustworthy photos, fast replies, simple offers, and public page accessibility",
+    metrics: "followers, page visits, messages, website clicks, post reach, reactions, comments, and local enquiry quality",
+    cadence: "three practical page updates per week and one local trust post or offer every week",
+    risk: "running visibility campaigns before the page answers basic customer questions",
+    serviceLabel: "Facebook Followers India",
+    serviceHref: "/facebook-followers",
+  },
+  "why-public-link-ordering-is-safer": {
+    platform: "social media",
+    audience: "creators, businesses, agencies, and customers comparing safer social growth providers",
+    goal: "explain why public-link ordering protects account ownership and makes campaign tracking clearer",
+    discovery: "public profiles, posts, reels, videos, pages, channels, order summaries, safety notes, and support records",
+    conversion: "a correct public destination link, transparent order details, secure checkout, no password request, and dashboard tracking",
+    metrics: "order accuracy, support requests, delivery status, link validity, campaign completion, and customer confidence",
+    cadence: "checking link visibility before every order and reviewing safety details before checkout",
+    risk: "sharing passwords, recovery codes, admin access, or private credentials with any growth service",
+    serviceLabel: "Compare Packages",
+    serviceHref: "/packages",
+  },
+  "how-social-media-growth-campaigns-work": {
+    platform: "social media",
+    audience: "Indian creators, businesses, agencies, influencers, and brands new to managed social growth campaigns",
+    goal: "help customers understand service selection, pricing, public-link ordering, tracking, delivery, and support before buying",
+    discovery: "platform selection, service descriptions, live packages, public links, wallet checkout, order tracking, and support tickets",
+    conversion: "a prepared public destination, chosen service, reviewed quantity, transparent total, and secure confirmation flow",
+    metrics: "order status, delivery progress, total spend, profile visits, content reach, engagement quality, and support outcomes",
+    cadence: "planning one focused campaign, tracking it from dashboard, and reviewing results before placing another order",
+    risk: "placing random orders without a clear service goal, correct link, or prepared profile/content destination",
+    serviceLabel: "SocialRUSH Packages",
+    serviceHref: "/packages",
+  },  "how-to-grow-fast-on-instagram": {
     platform: "Instagram",
     audience: "creators, local brands, and growing businesses",
     goal: "turn profile visits into relevant followers and repeat engagement",
@@ -973,6 +1413,40 @@ function buildFaqs(article: BlogArticle, profile: EditorialProfile) {
   ];
 }
 
+function serviceLinksForProfile(profile: EditorialProfile) {
+  const platform = profile.platform.toLowerCase();
+
+  if (platform.includes("instagram")) {
+    return [
+      { label: "Instagram Followers", href: "/buy-instagram-followers" },
+      { label: "Instagram Likes", href: "/instagram-likes" },
+      { label: "Instagram Views", href: "/instagram-views" },
+    ];
+  }
+
+  if (platform.includes("youtube")) {
+    return [
+      { label: "YouTube Subscribers", href: "/youtube-subscribers" },
+      { label: "YouTube Views", href: "/youtube-views" },
+    ];
+  }
+
+  if (platform.includes("linkedin")) {
+    return [{ label: "LinkedIn Followers", href: "/linkedin-followers" }];
+  }
+
+  if (platform.includes("facebook")) {
+    return [{ label: "Facebook Followers", href: "/facebook-followers" }];
+  }
+
+  return [
+    { label: "Instagram Followers", href: "/buy-instagram-followers" },
+    { label: "YouTube Subscribers", href: "/youtube-subscribers" },
+    { label: "Facebook Followers", href: "/facebook-followers" },
+    { label: "LinkedIn Followers", href: "/linkedin-followers" },
+  ];
+}
+
 export const blogArticles: BlogArticle[] = baseBlogArticles.map((article) => {
   const profile = editorialProfiles[article.slug];
   const relatedLinks = article.relatedLinks ?? [];
@@ -992,10 +1466,14 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.map((article) => {
     sections: [...article.sections, ...buildLongFormSections(profile)],
     relatedLinks: [
       { label: profile.serviceLabel, href: profile.serviceHref },
+      ...serviceLinksForProfile(profile),
       { label: "Compare Packages", href: "/packages" },
       { label: "Explore All Services", href: "/services" },
       { label: "Contact SocialRUSH", href: "/contact" },
-    ],
+    ].filter(
+      (link, index, links) =>
+        links.findIndex((candidate) => candidate.href === link.href) === index,
+    ),
     faqs: buildFaqs(article, profile),
     publishedAt: "2026-05-20",
     updatedAt: "2026-07-01",
