@@ -23,6 +23,8 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
   const profile = order.profiles as unknown as { full_name?: string; email?: string; phone?: string } | null;
   const service = order.services as unknown as { name?: string; delivery_time?: string; refill_policy?: string } | null;
   const progress = order.progress_percent === null ? 0 : Number(order.progress_percent);
+  const refundTransaction = (transactions ?? []).find((item) => item.type === "refund");
+  const walletRefunded = Boolean(refundTransaction);
 
   return (
     <main className="mx-auto max-w-[1500px] p-4 sm:p-8">
@@ -41,11 +43,18 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
             <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">{[["Starting",count(order.starting_count)],["Current",count(order.current_count)],["Delivered",count(order.delivered_count)],["Remaining",count(order.remaining_count)]].map(([label,value]) => <div key={label} className="rounded-2xl bg-slate-50 p-4"><p className="text-[9px] font-bold uppercase text-slate-400">{label}</p><p className="mt-2 text-lg font-black">{value}</p></div>)}</div>
             <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400" style={{ width: `${progress}%` }} /></div>
             <p className="mt-2 text-right text-xs font-bold text-orange-700">{order.progress_percent === null ? "Progress unavailable" : `${progress.toFixed(2)}% delivered`}</p>
-            {order.count_detection_status === "failed" ? <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-semibold text-amber-800">Starting count could not be detected. Please enter manually. {order.count_detection_message}</p> : null}
+            {order.count_detection_status === "failed" ? <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-semibold text-amber-800">Automatic count unavailable. Please update manually. {order.count_detection_message}</p> : null}
+            {order.count_detection_status === "manual" ? <p className="mt-4 rounded-xl border border-orange-400/25 bg-orange-500/10 p-3 text-xs font-semibold text-orange-200">Counts are currently maintained manually by an administrator.</p> : null}
             <p className="mt-4 text-xs text-slate-500">Detection: <strong>{order.count_detection_status || "not attempted"}</strong> · Source: {order.count_detection_source || "—"} · Last checked: {order.last_count_checked_at ? new Date(order.last_count_checked_at).toLocaleString("en-IN") : "Never"}</p>
           </section>
 
-          <AdminOrderControls order={order} />
+          <AdminOrderControls
+            order={{
+              ...order,
+              walletRefunded,
+              refundedAmount: refundTransaction ? Number(refundTransaction.amount ?? 0) : null,
+            }}
+          />
         </div>
 
         <aside className="space-y-6">
@@ -56,6 +65,10 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
           <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm">
             <h2 className="text-base font-black text-[#0B0B0F]">Payment & wallet deduction</h2>
             <p className="mt-4 text-xs text-slate-500">Payment status <AdminStatus value={order.payment_status || "paid"} /></p>
+            <p className="mt-3 text-xs text-slate-500">
+              Wallet Refund{" "}
+              <AdminStatus value={walletRefunded ? "refunded" : "pending"} />
+            </p>
             <div className="mt-4 space-y-3">{(transactions ?? []).map((item) => <div key={item.id} className="rounded-xl bg-slate-50 p-3"><div className="flex justify-between gap-3 text-xs"><strong className="capitalize">{item.type}</strong><strong>{money(item.amount)}</strong></div><p className="mt-1 text-[10px] text-slate-500">{item.description || item.payment_method} · {new Date(item.created_at).toLocaleString("en-IN")}</p></div>)}{!transactions?.length ? <p className="text-xs text-slate-400">No linked ledger entry found.</p> : null}</div>
           </section>
           <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm">

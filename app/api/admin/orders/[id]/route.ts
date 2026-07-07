@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
+import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
 
 const allowedStatuses = new Set([
   "pending", "processing", "in_progress", "partial", "completed", "cancelled",
@@ -52,12 +53,26 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
     update.status = status;
   }
 
-  for (const key of ["starting_count", "current_count", "partial_quantity_delivered"] as const) {
+  const { data: currentOrder, error: currentOrderError } = await auth.supabase
+    .from("orders")
+    .select("id,user_id,charge,status")
+    .eq("id", params.id)
+    .maybeSingle();
+  if (currentOrderError) return NextResponse.json({ error: currentOrderError.message }, { status: 400 });
+  if (!currentOrder) return NextResponse.json({ error: "Order not found" }, { status: 404 });
+
+  for (const key of ["starting_count", "current_count", "partial_quantity_delivered", "remaining_count"] as const) {
     if (body[key] !== undefined) {
       const count = nullableCount(body[key]);
       if (count === undefined) return NextResponse.json({ error: `${key} must be a non-negative whole number` }, { status: 422 });
       update[key] = count;
     }
+  }
+
+  if (body.delivered_count !== undefined && body.partial_quantity_delivered === undefined) {
+    const count = nullableCount(body.delivered_count);
+    if (count === undefined) return NextResponse.json({ error: "delivered_count must be a non-negative whole number" }, { status: 422 });
+    update.partial_quantity_delivered = count;
   }
 
   if (body.starting_count !== undefined) {
@@ -78,10 +93,31 @@ export async function PATCH(request: NextRequest, { params }: { params: { id: st
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   if (!data) return NextResponse.json({ error: "Order not found" }, { status: 404 });
 
+  let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;
+  if (
+    (update.status === "cancelled" || update.status === "refunded") &&
+    currentOrder.status !== "cancelled" &&
+    currentOrder.status !== "refunded"
+  ) {
+    try {
+      refund = await refundOrderToWalletOnce(auth.supabase, currentOrder, "Refund for cancelled order");
+    } catch (refundError) {
+      return NextResponse.json(
+        {
+          error:
+            refundError instanceof Error
+              ? `Order status updated, but wallet refund failed: ${refundError.message}`
+              : "Order status updated, but wallet refund failed.",
+        },
+        { status: 500 },
+      );
+    }
+  }
+
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${params.id}`);
   revalidatePath("/dashboard/orders");
   revalidatePath("/dashboard/order-history");
-  return NextResponse.json({ data });
+  revalidatePath("/dashboard/wallet");
+  return NextResponse.json({ data, refund });
 }
-

@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
+import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -118,25 +119,7 @@ export async function updateOrder(formData: FormData) {
   const shouldRefund = refundStatuses.has(nextStatus) && !refundStatuses.has(currentOrder.status);
 
   if (shouldRefund) {
-    const amount = Number(currentOrder.charge ?? 0);
-    if (amount > 0) {
-      await supabase.rpc("admin_adjust_balance", {
-        p_user_id: currentOrder.user_id,
-        p_amount: amount,
-        p_operation: "add",
-      });
-
-      await supabase
-        .from("transactions")
-        .insert({
-          user_id: currentOrder.user_id,
-          amount,
-          type: "refund",
-          status: "completed",
-          payment_method: "wallet",
-          description: `Refund issued for cancelled order ${orderId}`,
-        });
-    }
+    await refundOrderToWalletOnce(supabase, currentOrder);
   }
 
   revalidatePath("/admin/orders"); revalidatePath("/admin");
