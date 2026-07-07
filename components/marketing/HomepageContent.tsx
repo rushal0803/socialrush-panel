@@ -177,6 +177,44 @@ const homepagePosts = [
   },
 ] as const;
 
+const homepageSeoLinks = [
+  {
+    title: "Buy Instagram Followers",
+    href: "/buy-instagram-followers",
+    text: "Compare Instagram follower packages in India with public-link ordering and dashboard tracking.",
+  },
+  {
+    title: "YouTube Subscribers",
+    href: "/youtube-subscribers",
+    text: "Review YouTube subscriber pricing, delivery guidance, and channel-link requirements.",
+  },
+  {
+    title: "Instagram Likes",
+    href: "/instagram-likes",
+    text: "Support selected public posts or reels with clear Instagram likes pricing.",
+  },
+  {
+    title: "Facebook Followers",
+    href: "/facebook-followers",
+    text: "Explore Facebook page growth options for public pages and profiles.",
+  },
+  {
+    title: "LinkedIn Followers",
+    href: "/linkedin-followers",
+    text: "Plan LinkedIn profile growth campaigns for professional visibility.",
+  },
+  {
+    title: "Social Media Growth Packages",
+    href: "/packages",
+    text: "Browse SocialRUSH packages across Instagram, YouTube, Facebook, LinkedIn and more.",
+  },
+  {
+    title: "Growth Blog",
+    href: "/blog",
+    text: "Read helpful guides on pricing, safety, public-link ordering and campaign planning.",
+  },
+] as const;
+
 /* ─────────────────── SVG icon component ─────────────────── */
 function SvgIcon({ path, size = 20, className = "" }: { path: string; size?: number; className?: string }) {
   return (
@@ -392,6 +430,31 @@ export default function HomepageContent() {
               </motion.article>
             ))}
           </motion.div>
+        </div>
+      </motion.section>
+
+      {/* BLOG */}
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-6 shadow-[0_24px_56px_-36px_rgba(255,122,0,.55)] sm:p-8">
+          <div className="max-w-3xl">
+            <span className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-300">SocialRUSH India</span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white">Social media growth services and packages in India</h2>
+            <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">
+              Explore SocialRUSH service pages for creators, brands and businesses comparing social media growth services India, social media growth packages India and platform-specific campaign options.
+            </p>
+          </div>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {homepageSeoLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-4 transition hover:-translate-y-1 hover:border-orange-400/50 hover:bg-orange-500/10 active:scale-[.98]"
+              >
+                <h3 className="text-sm font-black text-white transition group-hover:text-[#FF9F00]">{item.title}</h3>
+                <p className="mt-2 text-xs leading-6 text-[#D1D5DB]">{item.text}</p>
+              </Link>
+            ))}
+          </div>
         </div>
       </motion.section>
 
