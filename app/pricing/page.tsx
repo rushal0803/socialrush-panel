@@ -136,17 +136,17 @@ export default function PricingPage() {
 
           <div className="relative mx-auto w-full max-w-xl [perspective:1200px]">
             <div className="absolute -inset-5 rounded-[44px] bg-gradient-to-r from-orange-300/25 via-amber-300/25 to-orange-300/30 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[34px] border border-white/90 bg-white/70 p-5 shadow-[0_38px_80px_-38px_rgba(255, 159, 0, .48)] backdrop-blur-2xl sm:p-7 lg:[transform:rotateY(-4deg)_rotateX(2deg)]">
-              <div className="flex items-center justify-between gap-4 border-b border-[#FFF8F1] pb-5">
+            <div className="relative overflow-hidden rounded-[34px] border border-orange-400/35 bg-[#111111] p-5 shadow-[0_38px_80px_-38px_rgba(255,122,0,.58)] backdrop-blur-2xl sm:p-7 lg:[transform:rotateY(-4deg)_rotateX(2deg)]">
+              <div className="flex items-center justify-between gap-4 border-b border-orange-400/20 pb-5">
                 <div>
                   <p className="text-[10px] font-extrabold uppercase tracking-[.2em] text-[#FFC400]">
                     Live service catalog
                   </p>
-                  <p className="mt-1 text-lg font-black text-[#0B0B0F]">
+                  <p className="mt-1 text-lg font-black text-white">
                     Choose your platform
                   </p>
                 </div>
-                <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1 text-[10px] font-bold text-emerald-700">
+                <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1 text-[10px] font-bold text-emerald-200">
                   Prices visible
                 </span>
               </div>
@@ -157,28 +157,28 @@ export default function PricingPage() {
                     key={platform}
                     className={`group rounded-2xl border p-3 shadow-[0_16px_30px_-24px_rgba(255, 159, 0, .5)] transition duration-300 hover:-translate-y-1 ${
                       index === 0
-                        ? "border-orange-200 bg-gradient-to-br from-orange-50 to-white"
-                        : "border-white bg-white/80"
+                        ? "border-orange-400/55 bg-orange-500/15"
+                        : "border-orange-400/20 bg-[#151515]"
                     }`}
                   >
-                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FFF8F1] to-[#FFF8F1] text-[#FF9F00] shadow-inner">
+                    <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_12px_26px_-16px_rgba(255,122,0,.8)]">
                       <PlatformIcon platform={platform} className="h-5 w-5" />
                     </span>
-                    <p className="mt-3 truncate text-[11px] font-extrabold text-[#0B0B0F]">
+                    <p className="mt-3 truncate text-[11px] font-extrabold text-white">
                       {platform}
                     </p>
                   </div>
                 ))}
-                <div className="col-span-2 flex items-center justify-between gap-3 rounded-2xl border border-[#FFF3E0] bg-gradient-to-r from-[#FFF8F1] to-[#FFF8F1] p-4 sm:col-span-2">
+                <div className="col-span-2 flex items-center justify-between gap-3 rounded-2xl border border-orange-400/35 bg-[#151515] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.75)] sm:col-span-2">
                   <div>
-                    <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#FFC400]">
+                    <p className="text-[10px] font-bold uppercase tracking-[.14em] text-[#FF9F00]">
                       Your checkout
                     </p>
-                    <p className="mt-1 text-xs font-extrabold text-[#0B0B0F]">
+                    <p className="mt-1 text-xs font-extrabold text-[#D1D5DB]">
                       Rate × quantity = exact total
                     </p>
                   </div>
-                  <MarketingIcon name="arrow" className="h-5 w-5 shrink-0 text-[#FFC400]" />
+                  <MarketingIcon name="arrow" className="h-5 w-5 shrink-0 text-[#FF9F00]" />
                 </div>
               </div>
             </div>
