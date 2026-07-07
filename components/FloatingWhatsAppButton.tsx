@@ -16,8 +16,14 @@ export default function FloatingWhatsAppButton() {
     pathname === "/dashboard/wallet" ||
     pathname === "/dashboard/add-funds";
   const isAdminRoute = pathname === "/admin" || pathname.startsWith("/admin/");
+  const isDashboardActionRoute =
+    pathname === "/dashboard/account" ||
+    pathname === "/dashboard/support" ||
+    pathname === "/dashboard/billing" ||
+    pathname === "/dashboard/orders" ||
+    pathname === "/dashboard/order-history";
 
-  if (hasInlineOrderHelp || isWalletRoute || isCheckoutRoute || isAdminRoute) return null;
+  if (hasInlineOrderHelp || isWalletRoute || isCheckoutRoute || isAdminRoute || isDashboardActionRoute) return null;
 
   return (
     <a

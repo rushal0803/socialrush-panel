@@ -60,7 +60,7 @@ export default function RegisterForm() {
   return (
     <>
       {attempted && error && (
-        <div role="alert" aria-live="polite" className="mt-6 rounded-xl border border-red-200 bg-red-50 p-3 text-xs leading-5 text-red-700">
+        <div role="alert" aria-live="polite" className="mt-6 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-xs leading-5 text-red-200">
           {error}
         </div>
       )}
@@ -68,15 +68,15 @@ export default function RegisterForm() {
       {/* Email Signup Form */}
       <form onSubmit={handleSubmit} className="mt-7 space-y-5">
         <div>
-          <label htmlFor="fullName" className="text-sm font-semibold text-slate-700">Full name</label>
+          <label htmlFor="fullName" className="text-sm font-semibold text-[#D1D5DB]">Full name</label>
           <input id="fullName" name="fullName" autoComplete="name" required placeholder="Alex Morgan" className="auth-field" />
         </div>
         <div>
-          <label htmlFor="email" className="text-sm font-semibold text-slate-700">Email address</label>
+          <label htmlFor="email" className="text-sm font-semibold text-[#D1D5DB]">Email address</label>
           <input id="email" name="email" type="email" autoComplete="email" required placeholder="you@company.com" className="auth-field" />
         </div>
         <div>
-          <label htmlFor="password" className="text-sm font-semibold text-slate-700">Password</label>
+          <label htmlFor="password" className="text-sm font-semibold text-[#D1D5DB]">Password</label>
           <div className="relative mt-2">
             <input
               id="password"
@@ -92,14 +92,14 @@ export default function RegisterForm() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 transition hover:text-slate-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#9CA3AF] transition hover:text-white"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
         </div>
         <div>
-          <label htmlFor="confirmPassword" className="text-sm font-semibold text-slate-700">Confirm password</label>
+          <label htmlFor="confirmPassword" className="text-sm font-semibold text-[#D1D5DB]">Confirm password</label>
           <div className="relative mt-2">
             <input
               id="confirmPassword"
@@ -115,13 +115,13 @@ export default function RegisterForm() {
               type="button"
               onClick={() => setShowConfirmPassword((v) => !v)}
               aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 transition hover:text-slate-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#9CA3AF] transition hover:text-white"
             >
               {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
         </div>
-        <label className="flex items-start gap-2 text-sm leading-5 text-slate-500">
+        <label className="flex items-start gap-2 text-sm leading-5 text-[#D1D5DB]">
           <input type="checkbox" required className="mt-0.5 h-4 w-4 rounded border-slate-300 accent-orange-500" />
           <span>
             I agree to the{" "}
@@ -133,7 +133,7 @@ export default function RegisterForm() {
         <button
           type="submit"
           disabled={loading}
-          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105 hover:shadow-orange-400/60 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:brightness-105 hover:shadow-orange-400/50 active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? "Creating account..." : "Create Account"}
         </button>
