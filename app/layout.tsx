@@ -69,6 +69,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "Organization",
+                "@id": new URL("/#organization", siteUrl).toString(),
                 name: "SocialRUSH",
                 url: siteUrl,
                 logo: new URL("/images/brand/socialrush-logo.png", siteUrl).toString(),
@@ -92,8 +93,10 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
               __html: JSON.stringify({
                 "@context": "https://schema.org",
                 "@type": "WebSite",
+                "@id": new URL("/#website", siteUrl).toString(),
                 name: "SocialRUSH",
                 url: siteUrl,
+                publisher: { "@id": new URL("/#organization", siteUrl).toString() },
               }),
             }}
           />
