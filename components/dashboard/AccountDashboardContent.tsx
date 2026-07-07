@@ -50,9 +50,9 @@ export default function AccountDashboardContent({
   return (
     <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip px-4 pb-24 pt-5 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0">
-        <div className="absolute -left-16 top-10 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
-        <div className="absolute right-[-5rem] top-16 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="absolute bottom-10 left-1/3 h-64 w-64 rounded-full bg-amber-200/30 blur-3xl" />
+        <div className="absolute -left-16 top-10 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl" />
+        <div className="absolute right-[-5rem] top-16 h-80 w-80 rounded-full bg-amber-500/20 blur-3xl" />
+        <div className="absolute bottom-10 left-1/3 h-64 w-64 rounded-full bg-amber-500/15 blur-3xl" />
       </div>
 
       <div className="relative mx-auto max-w-6xl">
@@ -60,33 +60,33 @@ export default function AccountDashboardContent({
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4 }}
-          className="rounded-[2rem] border border-white/80 bg-white/72 p-6 shadow-[0_26px_60px_-36px_rgba(15,23,42,.45)] backdrop-blur-2xl sm:p-8"
+          className="rounded-[2rem] border border-orange-400/25 bg-[#111111] p-6 shadow-[0_26px_60px_-36px_rgba(255,122,0,.45)] backdrop-blur-2xl sm:p-8"
         >
           <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_320px] lg:items-center">
             <div>
-              <p className="inline-flex rounded-full border border-white/85 bg-white/85 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
+              <p className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-orange-200">
                 Profile settings
               </p>
-              <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-[#0B0B0F] sm:text-4xl">Account</h1>
-              <p className="mt-2 text-sm leading-7 text-[#111827]">Manage your profile, company, website, and billing identity.</p>
+              <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-white sm:text-4xl">Account</h1>
+              <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Manage your profile, company, website, and billing identity.</p>
             </div>
 
-            <motion.div whileHover={{ y: -4 }} className="rounded-[1.6rem] border border-white/80 bg-white/80 p-5 shadow-[0_20px_42px_-28px_rgba(15,23,42,.4)]">
+            <motion.div whileHover={{ y: -4 }} className="rounded-[1.6rem] border border-orange-400/25 bg-[#151515] p-5 shadow-[0_20px_42px_-28px_rgba(255,122,0,.45)]">
               <div className="flex items-center gap-4">
                 <span className="grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-lg font-black text-white shadow-[0_14px_28px_-18px_rgba(255, 196, 0, .65)]">
                   {initials}
                 </span>
                 <div className="min-w-0">
-                  <p className="truncate text-sm font-black text-[#0B0B0F]">{displayName}</p>
-                  <p className="truncate text-xs text-[#111827]">{email}</p>
+                  <p className="truncate text-sm font-black text-white">{displayName}</p>
+                  <p className="truncate text-xs text-[#D1D5DB]">{email}</p>
                 </div>
               </div>
               <div className="mt-4 grid grid-cols-2 gap-3 text-xs">
-                <div className="rounded-xl bg-[#FFF8F1] px-3 py-2 text-[#111827]">
+                <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 px-3 py-2 text-[#D1D5DB]">
                   Role
-                  <p className="mt-1 font-black text-[#0B0B0F] capitalize">{role || "user"}</p>
+                  <p className="mt-1 font-black text-white capitalize">{role || "user"}</p>
                 </div>
-                <div className="rounded-xl bg-[#FFF8F1] px-3 py-2 text-[#111827]">
+                <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 px-3 py-2 text-[#D1D5DB]">
                   Status
                   <p className="mt-1 font-black text-emerald-700">Active</p>
                 </div>
@@ -95,8 +95,8 @@ export default function AccountDashboardContent({
           </div>
         </motion.section>
 
-        {saved && <p className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 p-3 text-sm text-emerald-700">Account details saved.</p>}
-        {error && <p className="mt-5 rounded-xl border border-red-200 bg-red-50 p-3 text-sm text-red-700">{error}</p>}
+        {saved && <p className="mt-5 rounded-xl border border-emerald-400/25 bg-emerald-500/10 p-3 text-sm text-emerald-200">Account details saved.</p>}
+        {error && <p className="mt-5 rounded-xl border border-red-400/25 bg-red-500/10 p-3 text-sm text-red-200">{error}</p>}
 
         <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
           {[
@@ -112,24 +112,24 @@ export default function AccountDashboardContent({
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: index * 0.05 }}
               whileHover={{ y: -4 }}
-              className="rounded-3xl border border-white/85 bg-white/85 p-4 shadow-[0_20px_44px_-30px_rgba(15,23,42,.35)] backdrop-blur-xl"
+              className="rounded-3xl border border-orange-400/20 bg-[#111111] p-4 shadow-[0_20px_44px_-30px_rgba(255,122,0,.45)] backdrop-blur-xl"
             >
-              <span className="grid h-10 w-10 place-items-center rounded-2xl bg-[#FFF8F1] text-[#111827]">
+              <span className="grid h-10 w-10 place-items-center rounded-2xl bg-orange-500/10 text-orange-200">
                 <item.icon className="h-5 w-5" />
               </span>
-              <p className="mt-3 text-xs font-black uppercase tracking-[0.11em] text-[#111827]">{item.label}</p>
+              <p className="mt-3 text-xs font-black uppercase tracking-[0.11em] text-[#D1D5DB]">{item.label}</p>
             </motion.article>
           ))}
         </section>
 
         <section className="mt-6 grid gap-6 lg:grid-cols-[260px_minmax(0,1fr)]">
-          <aside className="rounded-3xl border border-white/85 bg-white/90 p-6 text-center shadow-[0_22px_52px_-34px_rgba(15,23,42,.4)] backdrop-blur-xl">
+          <aside className="rounded-3xl border border-orange-400/25 bg-[#111111] p-6 text-center shadow-[0_22px_52px_-34px_rgba(255,122,0,.45)] backdrop-blur-xl">
             <span className="mx-auto grid h-24 w-24 place-items-center rounded-3xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-2xl font-black text-white shadow-[0_18px_34px_-20px_rgba(255, 196, 0, .65)]">
               {initials}
             </span>
-            <p className="mt-4 font-black text-[#0B0B0F]">{displayName}</p>
-            <p className="mt-1 text-xs text-[#111827]">{email}</p>
-            <div className="mt-5 rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-3 text-xs text-[#111827]">
+            <p className="mt-4 font-black text-white">{displayName}</p>
+            <p className="mt-1 text-xs text-[#D1D5DB]">{email}</p>
+            <div className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/10 p-3 text-xs text-[#D1D5DB]">
               Login method: Email + Password
             </div>
             <Link href="/dashboard/settings" className="btn-dashboard-secondary mt-4 inline-flex w-full px-4 py-2.5 text-sm">
@@ -138,13 +138,13 @@ export default function AccountDashboardContent({
             <button
               type="button"
               onClick={handleLogout}
-              className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#FF7A00] transition hover:-translate-y-0.5 hover:border-[#FFF3E0] hover:bg-[#FFF8F1]"
+              className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-orange-400/30 bg-[#151515] px-4 py-2.5 text-sm font-bold text-[#FF9F00] transition hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-orange-500/10 active:scale-[.98]"
             >
               Logout
             </button>
           </aside>
 
-          <form action={updateAction} className="rounded-3xl border border-white/85 bg-white/90 p-6 shadow-[0_22px_52px_-34px_rgba(15,23,42,.4)] backdrop-blur-xl sm:p-8">
+          <form action={updateAction} className="rounded-3xl border border-orange-400/25 bg-[#111111] p-6 shadow-[0_22px_52px_-34px_rgba(255,122,0,.45)] backdrop-blur-xl sm:p-8">
             <div className="grid gap-5 sm:grid-cols-2">
               <label className="text-xs font-bold text-[#FF9F00]">
                 First name
@@ -161,7 +161,7 @@ export default function AccountDashboardContent({
               <label className="text-xs font-bold text-[#FF9F00]">
                 Company name
                 <div className="relative mt-2">
-                  <Building2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#111827]" />
+                  <Building2 className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-[#9CA3AF]" />
                   <input name="company_name" defaultValue={profile?.company_name || ""} className="dashboard-input pl-10" />
                 </div>
               </label>
@@ -180,8 +180,8 @@ export default function AccountDashboardContent({
               <textarea name="billing_address" defaultValue={profile?.billing_address || ""} rows={4} className="dashboard-input mt-2" />
             </label>
 
-            <div className="mt-6 flex flex-col gap-3 border-t border-[#FFF8F1] pt-6 sm:flex-row sm:items-center sm:justify-between">
-              <Link href="/dashboard/settings" className="text-sm font-bold text-[#FF9F00] transition hover:text-[#0B0B0F]">
+            <div className="mt-6 flex flex-col gap-3 border-t border-orange-400/20 pt-6 sm:flex-row sm:items-center sm:justify-between">
+              <Link href="/dashboard/settings" className="text-sm font-bold text-[#FF9F00] transition hover:text-white">
                 Manage security settings
               </Link>
               <button className="btn-dashboard-primary inline-flex items-center justify-center gap-2 px-5 py-3 text-sm">

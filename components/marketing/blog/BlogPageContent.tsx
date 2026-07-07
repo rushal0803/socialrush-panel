@@ -320,8 +320,8 @@ export default function BlogPageContent() {
             </motion.div>
             {cardsWithFallback.length === 0 ? (
               <div className="rounded-3xl border border-white/85 bg-white/85 p-8 text-center shadow-[0_14px_34px_rgba(255, 159, 0, .14)]">
-                <h3 className="text-xl font-extrabold text-[#0B0B0F]">No matching articles</h3>
-                <p className="mt-2 text-sm text-[#111827]">Try another category or a broader search.</p>
+                <h3 className="text-xl font-extrabold text-[#0B0B0F]">No articles found for this category.</h3>
+                <p className="mt-2 text-sm text-[#111827]">Try another category or search for a broader growth topic.</p>
               </div>
             ) : null}
           </div>

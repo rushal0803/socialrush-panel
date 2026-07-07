@@ -102,7 +102,7 @@ export default function LoginForm() {
   return (
     <>
       {error && (
-        <div role="alert" className="mt-6 rounded-xl border border-red-200 bg-red-50 p-3 text-xs leading-5 text-red-700">
+        <div role="alert" className="mt-6 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-xs leading-5 text-red-200">
           {error}
         </div>
       )}
@@ -112,7 +112,7 @@ export default function LoginForm() {
         type="button"
         onClick={handleGoogleLogin}
         disabled={googleLoading || loading}
-        className="mt-7 w-full flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 hover:border-slate-300 disabled:cursor-not-allowed disabled:opacity-60"
+        className="mt-7 flex w-full items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-white/[.06] px-5 py-3.5 text-sm font-semibold text-white shadow-sm transition hover:-translate-y-0.5 hover:border-orange-400/50 hover:bg-orange-500/10 disabled:cursor-not-allowed disabled:opacity-70"
       >
         <svg className="h-5 w-5" viewBox="0 0 24 24">
           <path fill="currentColor" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
@@ -125,19 +125,19 @@ export default function LoginForm() {
 
       {/* Divider */}
       <div className="mt-6 flex items-center gap-3">
-        <div className="h-px flex-1 bg-slate-200"></div>
-        <span className="text-xs font-medium text-slate-500">or continue with email</span>
-        <div className="h-px flex-1 bg-slate-200"></div>
+        <div className="h-px flex-1 bg-orange-400/20"></div>
+        <span className="text-xs font-medium text-[#9CA3AF]">or continue with email</span>
+        <div className="h-px flex-1 bg-orange-400/20"></div>
       </div>
 
       <form onSubmit={handleSubmit} className="mt-7 space-y-5">
         <div>
-          <label htmlFor="email" className="text-sm font-semibold text-slate-700">Email address</label>
+          <label htmlFor="email" className="text-sm font-semibold text-[#D1D5DB]">Email address</label>
           <input id="email" name="email" type="email" autoComplete="email" required placeholder="you@company.com" className="auth-field" />
         </div>
         <div>
           <div className="flex items-center justify-between">
-            <label htmlFor="password" className="text-sm font-semibold text-slate-700">Password</label>
+            <label htmlFor="password" className="text-sm font-semibold text-[#D1D5DB]">Password</label>
             <Link href="/forgot-password" className="text-xs font-semibold text-orange-600 transition hover:text-orange-500">Forgot password?</Link>
           </div>
           <div className="relative mt-2">
@@ -154,13 +154,13 @@ export default function LoginForm() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-slate-500 transition hover:text-slate-700"
+              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#9CA3AF] transition hover:text-white"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
           </div>
         </div>
-        <label className="flex items-center gap-2 text-sm text-slate-500">
+        <label className="flex items-center gap-2 text-sm text-[#D1D5DB]">
           <input
             type="checkbox"
             checked={keepSignedIn}
@@ -172,7 +172,7 @@ export default function LoginForm() {
         <button
           type="submit"
           disabled={loading || googleLoading}
-          className="w-full inline-flex items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105 hover:shadow-orange-400/60 disabled:cursor-not-allowed disabled:opacity-60"
+          className="inline-flex w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-orange-500/30 transition hover:-translate-y-0.5 hover:brightness-105 hover:shadow-orange-400/50 active:scale-[.98] disabled:cursor-not-allowed disabled:opacity-70"
         >
           {loading ? "Signing in..." : "Login"}
         </button>

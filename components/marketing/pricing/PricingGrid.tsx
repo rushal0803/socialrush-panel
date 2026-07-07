@@ -130,7 +130,7 @@ export default function PricingGrid() {
                           <h4 className="text-xs font-extrabold text-white">
                             {service.name}
                           </h4>
-                          <span className="rounded-full border border-emerald-100 bg-emerald-50 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-[.1em] text-emerald-700">
+                          <span className="rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2 py-0.5 text-[8px] font-extrabold uppercase tracking-[.1em] text-emerald-200">
                             Live rate
                           </span>
                         </div>
