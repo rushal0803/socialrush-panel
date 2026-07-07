@@ -9,12 +9,6 @@ Disallow: /auth/
 Disallow: /packages/checkout
 Disallow: /login
 Disallow: /register
-Disallow: /account
-Disallow: /wallet
-Disallow: /orders
-Disallow: /billing
-Disallow: /support
-Disallow: /new-campaign
-Disallow: /order-summary
+Disallow: /signup
 
 Sitemap: https://www.getsocialrush.com/sitemap.xml

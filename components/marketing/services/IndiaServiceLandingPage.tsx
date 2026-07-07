@@ -93,6 +93,87 @@ const comparisonRows = [
   ["Professional experience", "Dashboard and order tracking", "Inconsistent"],
 ] as const;
 
+const keywordResourceMap: Record<string, Array<{ label: string; href: string; text: string }>> = {
+  instagram: [
+    {
+      label: "Buy Instagram followers India",
+      href: "/buy-instagram-followers",
+      text: "Compare follower packages, delivery notes, no-password ordering and refill information.",
+    },
+    {
+      label: "Instagram followers price in India",
+      href: "/blog/instagram-followers-price-in-india",
+      text: "Understand what affects Instagram follower pricing before choosing a campaign size.",
+    },
+    {
+      label: "Instagram likes India",
+      href: "/instagram-likes",
+      text: "Review Instagram likes for public posts and reels with transparent pricing.",
+    },
+    {
+      label: "Instagram views India",
+      href: "/instagram-views",
+      text: "Explore Instagram video and reel view support with fast public-link ordering.",
+    },
+  ],
+  youtube: [
+    {
+      label: "Buy YouTube subscribers India",
+      href: "/youtube-subscribers",
+      text: "Review subscriber pricing, public channel link requirements and delivery expectations.",
+    },
+    {
+      label: "YouTube views price India",
+      href: "/blog/youtube-views-price-in-india",
+      text: "Learn how view package pricing can vary by quantity, service quality and availability.",
+    },
+    {
+      label: "YouTube likes India",
+      href: "/youtube-likes",
+      text: "Compare like campaigns for public YouTube videos with dashboard tracking.",
+    },
+    {
+      label: "YouTube views India",
+      href: "/youtube-views",
+      text: "Explore YouTube view campaigns for public videos and channel growth planning.",
+    },
+  ],
+  linkedin: [
+    {
+      label: "LinkedIn followers India",
+      href: "/linkedin-followers",
+      text: "Compare LinkedIn follower campaigns for profiles and company pages.",
+    },
+    {
+      label: "LinkedIn profile growth India",
+      href: "/blog/linkedin-profile-growth-tips-for-business-owners",
+      text: "Read practical profile growth tips for founders, consultants and business owners.",
+    },
+    {
+      label: "LinkedIn followers for business growth",
+      href: "/blog/linkedin-followers-for-business-growth",
+      text: "Understand how visible professional audiences can support business credibility.",
+    },
+  ],
+  facebook: [
+    {
+      label: "Facebook followers India",
+      href: "/facebook-followers",
+      text: "Review Facebook follower campaign options for public pages and profiles.",
+    },
+    {
+      label: "Facebook page growth India",
+      href: "/blog/facebook-page-growth-tips-for-local-businesses",
+      text: "Learn how local businesses can improve page visibility and trust signals.",
+    },
+    {
+      label: "Facebook likes India",
+      href: "/facebook-likes",
+      text: "Explore Facebook likes for eligible public posts with clear order guidance.",
+    },
+  ],
+};
+
 const reasonIcons = [
   BriefcaseBusiness,
   BadgeIndianRupee,
@@ -120,6 +201,26 @@ export default function IndiaServiceLandingPage({
   const relatedBlogs = (relatedBlogMap[blogKey] ?? relatedBlogMap.instagram)
     .map((articleSlug) => blogArticles.find((article) => article.slug === articleSlug))
     .filter((article): article is (typeof blogArticles)[number] => Boolean(article));
+  const keywordResources =
+    keywordResourceMap[blogKey] ??
+    keywordResourceMap[page.platformKey] ??
+    [
+      {
+        label: "Social media growth packages India",
+        href: "/packages",
+        text: "Compare SocialRUSH packages with transparent pricing, public-link ordering and dashboard tracking.",
+      },
+      {
+        label: "Social media growth services India",
+        href: "/services",
+        text: "Browse SocialRUSH services across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X.",
+      },
+      {
+        label: "How social media growth campaigns work",
+        href: "/blog/how-social-media-growth-campaigns-work",
+        text: "Learn the basics of public-link ordering, delivery, tracking and support.",
+      },
+    ];
   const packagesHref = `/packages?platform=${encodeURIComponent(
     page.platformKey,
   )}&service=${encodeURIComponent(page.packageService)}`;
@@ -522,6 +623,48 @@ export default function IndiaServiceLandingPage({
                 <p className="mt-2 text-sm leading-6 text-[#111827]">{article.description}</p>
               </Link>
             ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/25 bg-[#111111] p-6 shadow-[0_24px_56px_-36px_rgba(255,122,0,.55)] sm:p-8">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-[#FF9F00]">
+            Helpful related searches
+          </p>
+          <h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-white">
+            Compare {page.platform} growth options before ordering
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB]">
+            These SocialRUSH resources help Indian customers compare prices, delivery expectations, public-link requirements and related platform services without relying on exaggerated claims.
+          </p>
+          <div className="mt-7 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+            {keywordResources.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-5 transition hover:-translate-y-1 hover:border-orange-400/50 hover:bg-orange-500/10 active:scale-[.98]"
+              >
+                <h3 className="text-base font-black text-white transition group-hover:text-[#FF9F00]">
+                  {item.label}
+                </h3>
+                <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{item.text}</p>
+              </Link>
+            ))}
+          </div>
+          <div className="mt-6 flex flex-wrap gap-3">
+            <Link
+              href="/packages"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-black text-white"
+            >
+              View Packages
+            </Link>
+            <Link
+              href="/blog"
+              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-5 py-2.5 text-sm font-black text-orange-100"
+            >
+              Read Growth Guides
+            </Link>
           </div>
         </div>
       </section>
