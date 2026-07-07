@@ -319,9 +319,19 @@ export default function BlogPageContent() {
               ))}
             </motion.div>
             {cardsWithFallback.length === 0 ? (
-              <div className="rounded-3xl border border-white/85 bg-white/85 p-8 text-center shadow-[0_14px_34px_rgba(255, 159, 0, .14)]">
+              <div className="rounded-3xl border border-orange-400/30 bg-[#111111] p-8 text-center shadow-[0_18px_42px_-28px_rgba(255, 122, 0, .65)]">
                 <h3 className="text-xl font-extrabold text-[#0B0B0F]">No articles found for this category.</h3>
-                <p className="mt-2 text-sm text-[#111827]">Try another category or search for a broader growth topic.</p>
+                <p className="mt-2 text-sm text-[#111827]">Try another topic or view all guides.</p>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setActiveCategory("All");
+                    setSearchQuery("");
+                  }}
+                  className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-[0_14px_30px_-18px_rgba(255,122,0,.8)] transition hover:-translate-y-0.5 active:scale-[.98]"
+                >
+                  View All Articles
+                </button>
               </div>
             ) : null}
           </div>

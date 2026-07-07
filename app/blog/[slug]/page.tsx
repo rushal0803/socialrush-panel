@@ -21,6 +21,14 @@ function countArticleWords(parts: string[]) {
   return parts.join(" ").trim().split(/\s+/).filter(Boolean).length;
 }
 
+function getArticleImage(image?: string | null) {
+  return image || "/og-image.png";
+}
+
+function getArticleSections(article: ReturnType<typeof getArticleBySlug>) {
+  return article?.sections?.length ? article.sections : [];
+}
+
 export function generateStaticParams() {
   return articleSlugs.map((slug) => ({ slug }));
 }
@@ -35,8 +43,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   }
 
   return createPageMetadata({
-    title: article.title,
-    description: article.description,
+    title: article.title || "SocialRUSH Blog",
+    description: article.description || article.intro || "Read practical SocialRUSH social media growth guidance for creators, brands and businesses.",
     path: `/blog/${article.slug}`,
     keywords: [article.title, article.category, "social media growth India"],
   });
@@ -50,10 +58,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   }
 
   const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
+  const articleImage = getArticleImage(article.image);
+  const articleSections = getArticleSections(article);
+  const articleFaqs = article.faqs ?? [];
+  const articleRelatedLinks = article.relatedLinks ?? [];
   const articleWordCount = countArticleWords([
-    article.intro,
-    ...article.sections.flatMap((section) => [section.heading, section.body, ...section.tips]),
-    ...(article.faqs?.flatMap((faq) => [faq.question, faq.answer]) ?? []),
+    article.intro ?? "",
+    ...articleSections.flatMap((section) => [section.heading, section.body, ...(section.tips ?? [])]),
+    ...articleFaqs.flatMap((faq) => [faq.question, faq.answer]),
   ]);
   const relatedArticles = blogArticles
     .filter((candidate) => candidate.slug !== article.slug)
@@ -66,7 +78,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     description: article.description,
     mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     url: articleUrl,
-    image: [new URL(article.image, SEO_SITE_URL).toString()],
+    image: [new URL(articleImage, SEO_SITE_URL).toString()],
     datePublished: article.publishedAt ?? "2026-05-20",
     dateModified: article.updatedAt ?? "2026-07-01",
     articleSection: article.category,
@@ -82,11 +94,11 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
       },
     },
   };
-  const faqSchema = article.faqs?.length
+  const faqSchema = articleFaqs.length
     ? {
         "@context": "https://schema.org",
         "@type": "FAQPage",
-        mainEntity: article.faqs.map((faq) => ({
+        mainEntity: articleFaqs.map((faq) => ({
           "@type": "Question",
           name: faq.question,
           acceptedAnswer: { "@type": "Answer", text: faq.answer },
@@ -127,8 +139,8 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           <div className="mt-6 overflow-hidden rounded-[30px] border border-white/85 bg-white/86 p-4 shadow-[0_20px_48px_rgba(255, 159, 0, .17)] backdrop-blur sm:p-6">
             <div className="relative h-[220px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] sm:h-[310px]">
               <SafeImage
-                src={article.image}
-                fallbackSrc={article.image.replace(/\.png$/i, ".webp")}
+                src={articleImage}
+                fallbackSrc={articleImage.replace(/\.png$/i, ".webp")}
                 alt={article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 960px"
@@ -152,7 +164,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           >
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
-              {article.sections.map((section, index) => (
+              {articleSections.map((section, index) => (
                 <li key={section.heading}>
                   <a
                     href={`#${toSectionId(section.heading)}`}
@@ -165,7 +177,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               {article.faqs?.length ? (
                 <li>
                   <a href="#frequently-asked-questions" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
-                    {article.sections.length + 1}. Frequently asked questions
+                    {articleSections.length + 1}. Frequently asked questions
                   </a>
                 </li>
               ) : null}
@@ -173,7 +185,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           </nav>
 
           <div className="mt-8 space-y-6">
-            {article.sections.map((section) => (
+            {articleSections.map((section) => (
               <section
                 key={section.heading}
                 id={toSectionId(section.heading)}
@@ -183,7 +195,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                 <p className="mt-3 text-[15px] leading-7 text-[#111827]">{section.body}</p>
                 <h3 className="mt-5 text-base font-extrabold text-[#0B0B0F]">Practical actions</h3>
                 <ul className="mt-4 space-y-2">
-                  {section.tips.map((tip) => (
+                  {(section.tips ?? []).map((tip) => (
                     <li key={tip} className="flex items-start gap-2 text-sm leading-6 text-[#FF9F00]">
                       <span className="mt-1 h-2 w-2 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FF9F00]" />
                       <span>{tip}</span>
@@ -194,14 +206,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             ))}
           </div>
 
-          {article.faqs?.length ? (
+          {articleFaqs.length ? (
             <section
               id="frequently-asked-questions"
               className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
             >
               <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Frequently asked questions</h2>
               <div className="mt-5 space-y-4">
-                {article.faqs.map((faq) => (
+                {articleFaqs.map((faq) => (
                   <details key={faq.question} className="group rounded-2xl border border-[#FFF3E0] bg-[#FFF8F1] p-5">
                     <summary className="cursor-pointer list-none text-base font-bold text-[#0B0B0F]">
                       {faq.question}
@@ -213,14 +225,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </section>
           ) : null}
 
-          {article.relatedLinks?.length ? (
+          {articleRelatedLinks.length ? (
             <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
               <h2 className="text-xl font-extrabold text-[#0B0B0F]">Related services and next steps</h2>
               <p className="mt-2 text-sm leading-7 text-[#111827]">
                 Continue with the service or pricing information most relevant to this strategy.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                {article.relatedLinks.map((item) => (
+                {articleRelatedLinks.map((item) => (
                   <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2.5 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5 hover:border-[#FF9F00]">
                     {item.label}
                   </Link>
