@@ -23,7 +23,7 @@ function NavIcon({ name }: { name: string }) {
   return <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>;
 }
 
-export function AdminNav({ mobile = false }: { mobile?: boolean }) {
+export function AdminNav({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
   return (
     <nav className={mobile ? "grid gap-1" : "space-y-1"}>
@@ -33,8 +33,8 @@ export function AdminNav({ mobile = false }: { mobile?: boolean }) {
           <Link
             key={href}
             href={href}
-            onClick={(event) => {
-              if (mobile) event.currentTarget.closest("details")?.removeAttribute("open");
+            onClick={() => {
+              if (mobile) onNavigate?.();
             }}
             className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
               active ? "text-white" : "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white"

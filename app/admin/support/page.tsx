@@ -57,7 +57,7 @@ export default async function AdminSupportPage({
       <div className="mt-6 grid min-w-0 gap-5 xl:grid-cols-[360px_minmax(0,1fr)]">
         <section className="panel-card min-w-0 overflow-hidden">
           <div className="border-b border-slate-100 p-5">
-            <h2 className="text-sm font-bold">Ticket queue</h2>
+            <h2 className="text-sm font-bold text-white">Ticket queue</h2>
             <p className="mt-1 text-xs text-slate-400">{tickets?.length ?? 0} conversations</p>
           </div>
           <div className="max-h-[440px] divide-y divide-slate-100 overflow-y-auto xl:max-h-[700px]">
@@ -67,7 +67,7 @@ export default async function AdminSupportPage({
                 <Link
                   key={ticket.id}
                   href={`/admin/support?ticket=${ticket.id}`}
-                  className={`block p-4 sm:p-5 ${selectedId === ticket.id ? "bg-orange-50" : "hover:bg-slate-50"}`}
+                  className={`block p-4 transition sm:p-5 ${selectedId === ticket.id ? "bg-orange-500/10" : "hover:bg-white/[.06]"}`}
                 >
                   <div className="flex items-center justify-between gap-3">
                     <span className="text-[10px] font-bold text-orange-600">#{ticket.id.slice(0, 8).toUpperCase()}</span>
@@ -100,17 +100,17 @@ export default async function AdminSupportPage({
                   <select
                     name="status"
                     defaultValue={selected.status}
-                    className="min-h-11 min-w-0 flex-1 rounded-xl border border-slate-200 bg-white px-3 text-xs font-bold capitalize sm:flex-none"
+                    className="min-h-11 min-w-0 flex-1 rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 text-xs font-bold capitalize text-white sm:flex-none"
                   >
                     {ticketStatuses.map((status) => (
                       <option key={status} value={status}>{status[0].toUpperCase() + status.slice(1)}</option>
                     ))}
                   </select>
-                  <button className="min-h-11 rounded-xl bg-[#0B0B0F] px-4 text-xs font-bold text-white">Update</button>
+                  <button className="min-h-11 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-xs font-bold text-white transition hover:-translate-y-0.5 active:scale-[.98]">Update</button>
                 </form>
               </header>
 
-              <div className="max-h-[420px] flex-1 space-y-4 overflow-y-auto bg-slate-50/60 p-4 sm:max-h-[520px] sm:p-6 xl:max-h-none">
+              <div className="max-h-[420px] flex-1 space-y-4 overflow-y-auto bg-[#0B0B0F]/70 p-4 sm:max-h-[520px] sm:p-6 xl:max-h-none">
                 {(messages ?? []).map((message) => {
                   const sender = message.profiles as unknown as { full_name?: string; role?: string } | null;
                   const admin = sender?.role === "admin" || message.sender_id !== selected.user_id;
@@ -121,7 +121,7 @@ export default async function AdminSupportPage({
                           {admin ? "ADM" : "USR"}
                         </span>
                         <div className="min-w-0">
-                          <div className={`break-words rounded-2xl p-4 text-xs leading-6 shadow-sm ${admin ? "rounded-tr-sm bg-orange-600 text-white" : "rounded-tl-sm bg-white text-slate-600"}`}>
+                          <div className={`break-words rounded-2xl p-4 text-xs leading-6 shadow-sm ${admin ? "rounded-tr-sm bg-orange-600 text-white" : "rounded-tl-sm border border-white/10 bg-[#151515] text-[#D1D5DB]"}`}>
                             {message.message}
                           </div>
                           <p className={`mt-2 text-[9px] text-slate-400 ${admin ? "text-right" : ""}`}>
@@ -135,16 +135,16 @@ export default async function AdminSupportPage({
                 {!messages?.length && <p className="py-10 text-center text-xs text-slate-400">No messages in this conversation.</p>}
               </div>
 
-              <form action={replyToTicket} className="sticky bottom-0 z-10 shrink-0 border-t border-slate-100 bg-white p-4 shadow-[0_-12px_30px_-24px_rgba(15,23,42,.45)] sm:p-5">
+              <form action={replyToTicket} className="sticky bottom-0 z-10 shrink-0 border-t border-orange-400/20 bg-[#111111] p-4 shadow-[0_-12px_30px_-24px_rgba(0,0,0,.65)] sm:p-5">
                 <input type="hidden" name="ticket_id" value={selected.id} />
-                <label htmlFor="admin-reply" className="text-xs font-bold text-slate-700">Reply as SocialRUSH Support</label>
+                <label htmlFor="admin-reply" className="text-xs font-bold text-orange-300">Reply as SocialRUSH Support</label>
                 <div className="mt-2 flex flex-col gap-3 sm:flex-row sm:items-end">
                   <textarea
                     id="admin-reply"
                     name="message"
                     required
                     rows={3}
-                    className="min-h-24 min-w-0 flex-1 resize-y rounded-xl border border-slate-200 px-4 py-3 text-sm outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
+                    className="min-h-24 min-w-0 flex-1 resize-y rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/10"
                     placeholder={selected.status === "closed" ? "Replying will reopen this ticket as Answered." : "Write your reply to the customer..."}
                   />
                   <button className={`${primaryButton} min-h-11 w-full shrink-0 sm:w-auto`}>Send Reply</button>

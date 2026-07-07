@@ -389,29 +389,29 @@ export default function SupportPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm"
           >
             <motion.div
               initial={{ scale: 0.95, y: 16 }}
               animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-xl rounded-3xl border border-white/80 bg-white/95 p-6 shadow-[0_30px_90px_-40px_rgba(15,23,42,.75)]"
+              className="w-full max-w-xl rounded-3xl border border-orange-400/30 bg-[#111111] p-6 text-[#D1D5DB] shadow-[0_30px_90px_-40px_rgba(0,0,0,.9)]"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.14em] text-[#FF9F00]">New support request</p>
-                  <h2 className="mt-2 text-xl font-black text-[#0B0B0F]">Create a ticket</h2>
+                  <h2 className="mt-2 text-xl font-black text-white">Create a ticket</h2>
                 </div>
                 <button
                   type="button"
                   onClick={() => setCreating(false)}
-                  className="grid h-8 w-8 place-items-center rounded-lg bg-[#FFF8F1] text-lg text-[#111827]"
+                  className="grid h-8 w-8 place-items-center rounded-lg border border-white/10 bg-white/[.06] text-lg text-white transition hover:bg-orange-500/10"
                 >
                   ×
                 </button>
               </div>
 
               <form action={createTicket} className="mt-6 space-y-4">
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#111827]">
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Category
                   <select name="category" required className="dashboard-input mt-2">
                     {categories.map((item) => (
@@ -420,7 +420,7 @@ export default function SupportPage() {
                   </select>
                 </label>
 
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#111827]">
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Subject
                   <input
                     name="subject"
@@ -431,7 +431,7 @@ export default function SupportPage() {
                   />
                 </label>
 
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-[#111827]">
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Message
                   <textarea
                     name="message"
@@ -442,7 +442,7 @@ export default function SupportPage() {
                   />
                 </label>
 
-                <div className="rounded-xl border border-dashed border-[#FFF3E0] bg-[#FFF8F1] p-4 text-center text-[11px] font-semibold text-[#111827]">
+                <div className="rounded-xl border border-dashed border-orange-400/35 bg-orange-500/10 p-4 text-center text-[11px] font-semibold text-[#D1D5DB]">
                   Attach screenshot or payment proof
                   <span className="mt-1 block text-[10px] text-[#FF9F00]">Attachment upload coming soon</span>
                 </div>
