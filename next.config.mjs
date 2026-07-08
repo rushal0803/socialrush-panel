@@ -21,6 +21,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/blog/how-to-grow-fast-on-instagram-without-looking-fake",
+        destination: "/blog/how-to-grow-fast-on-instagram",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: "getsocialrush.com" }],
         destination: "https://www.getsocialrush.com/:path*",
