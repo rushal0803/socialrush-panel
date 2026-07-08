@@ -210,8 +210,10 @@ function BlogHeader() {
 }
 
 export default function BlogShell({ children }: { children: React.ReactNode }) {
+  const pathname = usePathname();
+
   return (
-    <main className="public-dark min-h-screen overflow-x-clip bg-[#050505] text-white">
+    <main key={pathname} className="public-dark min-h-screen overflow-x-clip bg-[#050505] text-white">
       <BlogHeader />
       {children}
       <MarketingFooter />
