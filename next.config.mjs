@@ -11,6 +11,16 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/buy-instagram-followers",
+        destination: "/buy-instagram-followers-india",
+        permanent: true,
+      },
+      {
+        source: "/blog/linkedin-growth-tips-for-personal-brands",
+        destination: "/blog/linkedin-growth-tips-personal-brands",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: "getsocialrush.com" }],
         destination: "https://www.getsocialrush.com/:path*",

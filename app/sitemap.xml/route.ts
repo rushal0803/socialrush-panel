@@ -36,9 +36,17 @@ function absoluteUrl(path: string) {
   return new URL(path, `${SEO_SITE_URL}/`).toString();
 }
 
+function sitemapServicePath(slug: (typeof indiaServiceSlugs)[number]) {
+  if (slug === "buy-instagram-followers-india") {
+    return "/buy-instagram-followers-india";
+  }
+
+  return canonicalIndiaServicePaths[slug];
+}
+
 export function GET() {
   const now = new Date().toISOString();
-  const serviceRoutes = indiaServiceSlugs.map((slug) => canonicalIndiaServicePaths[slug]);
+  const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
   const blogRoutes = blogArticles.map((article) => `/blog/${article.slug}`);
   const routes = [...new Set([...publicRoutes, ...serviceRoutes, ...blogRoutes])];
 
