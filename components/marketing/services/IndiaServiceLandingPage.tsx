@@ -97,7 +97,7 @@ const keywordResourceMap: Record<string, Array<{ label: string; href: string; te
   instagram: [
     {
       label: "Buy Instagram followers India",
-      href: "/buy-instagram-followers",
+      href: "/buy-instagram-followers-india",
       text: "Compare follower packages, delivery notes, no-password ordering and refill information.",
     },
     {
@@ -356,7 +356,7 @@ export default function IndiaServiceLandingPage({
               {page.platform} growth service India
             </span>
             <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#0B0B0F] sm:text-5xl lg:text-6xl">
-              Buy {page.serviceName} India
+              Buy {page.serviceName} in India
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-[#111827] sm:text-lg">
               {page.intro}

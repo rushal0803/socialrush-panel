@@ -12,7 +12,7 @@ const featuredArticle = blogArticles[0];
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
 const relatedServiceLinks = [
-  ["Instagram Followers", "/buy-instagram-followers"],
+  ["Instagram Followers", "/buy-instagram-followers-india"],
   ["Instagram Likes", "/instagram-likes"],
   ["YouTube Subscribers", "/youtube-subscribers"],
   ["Facebook Followers", "/facebook-followers"],

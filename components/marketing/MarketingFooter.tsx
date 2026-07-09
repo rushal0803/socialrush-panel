@@ -3,7 +3,7 @@ import Logo from "@/components/Logo";
 import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 
 const groups = [
-  { title: "Growth services", links: [["Instagram Followers", "/buy-instagram-followers"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Likes", "/youtube-likes"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"], ["Telegram Members", "/telegram-members"], ["Twitter/X Followers", "/twitter-followers"]] },
+  { title: "Growth services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Likes", "/youtube-likes"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"], ["Telegram Members", "/telegram-members"], ["Twitter/X Followers", "/twitter-followers"]] },
   { title: "Platform", links: [["Services", "/services"], ["Packages", "/packages"], ["Blog", "/blog"], ["Pricing", "/pricing"], ["Login", "/login"], ["Register", "/register"], ["Dashboard", "/dashboard"], ["Support", "/dashboard/support"]] },
   { title: "Company & legal", links: [["About", "/about"], ["Case Studies", "/case-studies"], ["FAQ", "/faq"], ["Contact", "/contact"], ["Privacy Policy", "/privacy-policy"], ["Refund Policy", "/refund-policy"], ["Terms & Conditions", "/terms-and-conditions"]] },
 ];

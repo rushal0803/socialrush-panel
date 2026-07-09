@@ -56,7 +56,7 @@ const serviceNames: Record<string, string> = {
 };
 
 const seoServicePaths: Record<string, string> = {
-  "instagram-followers": "/buy-instagram-followers",
+  "instagram-followers": "/buy-instagram-followers-india",
   "instagram-likes": "/instagram-likes",
   "instagram-views": "/instagram-views",
   "youtube-subscribers": "/youtube-subscribers",
@@ -86,6 +86,22 @@ const customerBenefits = [
   "WhatsApp support for help",
 ] as const;
 
+const descriptiveServiceAnchors: Record<string, string> = {
+  "instagram-followers": "Buy Instagram Followers India",
+  "instagram-likes": "Instagram Likes India",
+  "instagram-views": "Instagram Views India",
+  "youtube-subscribers": "YouTube Subscribers India",
+  "youtube-likes": "YouTube Likes India",
+  "youtube-views": "YouTube Views India",
+  "facebook-followers": "Facebook Followers India",
+  "facebook-likes": "Facebook Likes India",
+  "linkedin-followers": "LinkedIn Followers India",
+  "linkedin-likes": "LinkedIn Likes India",
+  "telegram-members": "Telegram Members India",
+  "tiktok-followers": "TikTok Followers India",
+  "x-followers": "Twitter/X Followers India",
+};
+
 function packagePlatform(platform: SmmPlatformId) {
   return platform === "x" ? "twitter" : platform;
 }
@@ -109,10 +125,10 @@ export default function ServicesPageContent() {
               <Sparkles className="h-3.5 w-3.5" /> Premium Service Catalog
             </p>
             <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.03em] text-[#0B0B0F] sm:text-5xl">
-              Social Media Growth Services
+              Social Media Growth Services India
             </h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base sm:leading-8">
-              Choose your platform, compare services, and start your growth campaign in a few clicks.
+              Explore SocialRUSH social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok, and X/Twitter. Compare public-link ordering, transparent pricing, delivery estimates, and dashboard tracking before you start.
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-wrap">
@@ -211,7 +227,7 @@ export default function ServicesPageContent() {
 
                     <h3 className="mt-4 text-lg font-black text-[#0B0B0F]">
                       <Link href={serviceDetailPath} className="transition hover:text-orange-600">
-                        {serviceNames[service.code] || service.name}
+                        {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                       </Link>
                     </h3>
                     <p className="mt-2 flex-1 text-sm leading-6 text-[#111827]">{service.description}</p>
@@ -329,7 +345,7 @@ export default function ServicesPageContent() {
                                 href={detailPath}
                                 className="transition hover:text-orange-600"
                               >
-                                {serviceNames[service.code] || service.name}
+                                {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                               </Link>
                             </h4>
                             <p className="mt-2 flex-1 text-sm leading-6 text-[#111827]">
