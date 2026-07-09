@@ -21,7 +21,7 @@ export const indiaServiceSlugs = [
 export type IndiaServiceSlug = (typeof indiaServiceSlugs)[number];
 
 export const canonicalIndiaServicePaths: Record<IndiaServiceSlug, string> = {
-  "buy-instagram-followers-india": "/buy-instagram-followers",
+  "buy-instagram-followers-india": "/buy-instagram-followers-india",
   "buy-instagram-likes-india": "/instagram-likes",
   "buy-instagram-views-india": "/instagram-views",
   "buy-youtube-subscribers-india": "/youtube-subscribers",
@@ -85,7 +85,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Follower delivery starts after confirmation and follows the estimate shown with the selected package. Eligible refill terms are displayed before ordering.",
     metaDescription:
-      "Buy Instagram followers in India with transparent pricing, no-password ordering, delivery tracking and refill support from SocialRUSH.",
+      "Buy Instagram followers in India with SocialRUSH. Public-link ordering, transparent pricing, dashboard tracking and WhatsApp support. No password required.",
     ogDescription:
       "Compare Instagram follower packages in India with clear INR pricing, public-link ordering, refill information and dashboard tracking.",
     audiences: ["Creators", "Influencers", "Local brands", "Agencies"],

@@ -103,7 +103,7 @@ const featuredServices = [
   {
     name: "Instagram Campaign Support",
     platform: "instagram",
-    href: "/buy-instagram-followers",
+    href: "/buy-instagram-followers-india",
     text: "Explore profile and content campaign options for Instagram.",
     grad: "from-orange-500 to-orange-600",
     bg: "from-orange-50 to-orange-50",
@@ -180,7 +180,7 @@ const homepagePosts = [
 const homepageSeoLinks = [
   {
     title: "Buy Instagram Followers",
-    href: "/buy-instagram-followers",
+    href: "/buy-instagram-followers-india",
     text: "Compare Instagram follower packages in India with public-link ordering and dashboard tracking.",
   },
   {
@@ -348,8 +348,8 @@ export default function HomepageContent() {
               SMART GROWTH • REAL RESULTS
             </motion.span>
             <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-[58px]">
-              Smart Social Growth{" "}
-              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Feels Real</span>
+              SocialRUSH Social Media Growth Services{" "}
+              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Feel Real</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, transparent pricing, secure checkout, dashboard tracking and WhatsApp support.</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">

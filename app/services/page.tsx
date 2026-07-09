@@ -3,11 +3,11 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Instagram, YouTube & Social Growth Services India",
+  title: "Social Media Growth Services India",
   description:
-    "Explore social media growth services in India, including Instagram followers and likes, YouTube subscribers and views, LinkedIn followers and Twitter followers.",
+    "Explore SocialRUSH social media growth services for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X/Twitter.",
   path: "/services",
-  keywords: ["Instagram growth services India", "YouTube growth services India"],
+  keywords: ["social media growth services India", "Instagram growth services India", "YouTube growth services India"],
 });
 
 export default function ServicesPage() {

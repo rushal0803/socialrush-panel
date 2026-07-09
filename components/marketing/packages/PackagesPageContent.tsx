@@ -36,7 +36,7 @@ const serviceLabels: Record<Service, string> = {
 const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
 const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
 const buyerGuides = [
-  ["Instagram Followers", "/buy-instagram-followers"],
+  ["Instagram Followers", "/buy-instagram-followers-india"],
   ["Instagram Likes", "/instagram-likes"],
   ["Instagram Views", "/instagram-views"],
   ["YouTube Subscribers", "/youtube-subscribers"],
@@ -101,7 +101,7 @@ export default function PackagesPageContent() {
                 Final price may vary based on selected package, quantity, service quality, and availability. Please check the live package price before placing your order.
               </p>
               <Link
-                href="/buy-instagram-followers"
+                href="/buy-instagram-followers-india"
                 className="mt-4 inline-flex text-sm font-bold text-orange-700 underline decoration-orange-300 underline-offset-4 transition hover:text-amber-700"
               >
                 Learn about buying Instagram followers in India

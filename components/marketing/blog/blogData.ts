@@ -321,7 +321,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "Instagram Followers Service", href: "/buy-instagram-followers" },
+      { label: "Instagram Followers Service", href: "/buy-instagram-followers-india" },
       { label: "Instagram Likes Service", href: "/instagram-likes" },
       { label: "View Packages", href: "/packages?platform=Instagram" },
     ],
@@ -369,7 +369,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "Buy Instagram Followers India", href: "/buy-instagram-followers" },
+      { label: "Buy Instagram Followers India", href: "/buy-instagram-followers-india" },
       { label: "Transparent Pricing", href: "/pricing" },
       { label: "View Instagram Packages", href: "/packages?platform=Instagram" },
     ],
@@ -417,7 +417,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "Instagram Followers Safety & Details", href: "/buy-instagram-followers" },
+      { label: "Instagram Followers Safety & Details", href: "/buy-instagram-followers-india" },
       { label: "Refund Policy", href: "/refund-policy" },
       { label: "Contact SocialRUSH", href: "/contact" },
     ],
@@ -1066,7 +1066,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "three useful Instagram posts per week, daily light engagement, and one campaign review checkpoint every seven days",
     risk: "using unsafe providers that ask for passwords or expecting follower count to replace content quality",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "instagram-followers-vs-engagement": {
     platform: "Instagram",
@@ -1161,7 +1161,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "three useful feed posts, regular Stories, and two focused community sessions each week",
     risk: "chasing sudden spikes without checking whether new visitors understand the account",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "youtube-views-get-more-reach": {
     platform: "YouTube",
@@ -1197,7 +1197,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "a manageable publishing schedule combined with short daily community and response blocks",
     risk: "mistaking frequent posting for genuine engagement while audience questions go unanswered",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "choose-the-right-social-media-service": {
     platform: "social media",
@@ -1221,7 +1221,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "checking setup before confirmation, monitoring without constant changes, and reviewing results after delivery",
     risk: "submitting the wrong link, changing visibility during delivery, or expecting a campaign to fix weak content",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "how-to-grow-instagram-followers-in-india": {
     platform: "Instagram",
@@ -1233,7 +1233,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "a realistic weekly mix of Reels, carousels, Stories, and conversations timed around audience activity",
     risk: "using broad trends that generate impressions but attract people with no interest in the account",
     serviceLabel: "Buy Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "instagram-followers-price-in-india": {
     platform: "Instagram",
@@ -1245,7 +1245,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "reviewing current package terms before purchase and checking progress from the order dashboard",
     risk: "choosing the lowest headline price without reviewing delivery, support, or account readiness",
     serviceLabel: "Instagram Followers Packages",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "is-it-safe-to-buy-instagram-followers": {
     platform: "Instagram",
@@ -1257,7 +1257,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "checking campaign progress periodically while continuing normal publishing and community activity",
     risk: "sharing passwords, buying from anonymous sellers, or trusting guaranteed-viral and permanent-forever claims",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "how-to-increase-youtube-subscribers-in-india": {
     platform: "YouTube",
@@ -1293,7 +1293,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "one core weekly idea adapted carefully for each active platform, followed by review and iteration",
     risk: "spreading effort across too many platforms without a clear audience or measurable objective",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
   "youtube-views-price-in-india": {
     platform: "YouTube",
@@ -1329,7 +1329,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "planning one focused campaign at a time and reviewing dashboard progress alongside organic analytics",
     risk: "buying disconnected metrics across several platforms without a clear audience or content strategy",
     serviceLabel: "Instagram Followers India",
-    serviceHref: "/buy-instagram-followers",
+    serviceHref: "/buy-instagram-followers-india",
   },
 };
 
@@ -1418,7 +1418,7 @@ function serviceLinksForProfile(profile: EditorialProfile) {
 
   if (platform.includes("instagram")) {
     return [
-      { label: "Instagram Followers", href: "/buy-instagram-followers" },
+      { label: "Instagram Followers", href: "/buy-instagram-followers-india" },
       { label: "Instagram Likes", href: "/instagram-likes" },
       { label: "Instagram Views", href: "/instagram-views" },
     ];
@@ -1440,7 +1440,7 @@ function serviceLinksForProfile(profile: EditorialProfile) {
   }
 
   return [
-    { label: "Instagram Followers", href: "/buy-instagram-followers" },
+    { label: "Instagram Followers", href: "/buy-instagram-followers-india" },
     { label: "YouTube Subscribers", href: "/youtube-subscribers" },
     { label: "Facebook Followers", href: "/facebook-followers" },
     { label: "LinkedIn Followers", href: "/linkedin-followers" },
