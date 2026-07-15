@@ -129,11 +129,3 @@ export const caseStudies = [
   {type:"Boutique agency",category:"Multi-platform",goal:"Manage repeat client requests without scattered payment and status records.",strategy:"Centralized wallet funding, structured orders, campaign history, and support tickets.",result:"A cleaner operational workflow with transparent pricing and searchable order records."},
 ];
 
-export const testimonials = [
-  ["The dashboard is straightforward. I can see the rate, place an order, and track the status without messaging someone for every update.","AK","Independent creator"],
-  ["Wallet funding and campaign history made repeat orders much easier for our small marketing team.","RS","Local business owner"],
-  ["We manage several creator campaigns, so having order IDs, amounts, and support in one place is genuinely useful.","NM","Agency manager"],
-  ["The delivery estimate was clear and support responded with an order-specific update when I needed help.","VP","YouTube creator"],
-  ["I used the campaign history to coordinate a release across Instagram and TikTok without losing track of links or totals.","MJ","Independent artist"],
-  ["Being able to review the exact charge before wallet checkout made budgeting much easier for our launch campaigns.","DT","Startup founder"],
-];

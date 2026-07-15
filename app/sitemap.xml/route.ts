@@ -18,9 +18,17 @@ const publicRoutes = [
   "/contact",
   "/faq",
   "/case-studies",
+  "/testimonials",
   "/privacy-policy",
   "/refund-policy",
   "/terms-and-conditions",
+] as const;
+
+const canonicalServiceDetailRoutes = [
+  "/services/facebook-views",
+  "/services/facebook-shares",
+  "/services/tiktok-likes",
+  "/services/tiktok-views",
 ] as const;
 
 function escapeXml(value: string) {
@@ -48,7 +56,14 @@ export function GET() {
   const now = new Date().toISOString();
   const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
   const blogRoutes = blogArticles.map((article) => `/blog/${article.slug}`);
-  const routes = [...new Set([...publicRoutes, ...serviceRoutes, ...blogRoutes])];
+  const routes = [
+    ...new Set([
+      ...publicRoutes,
+      ...serviceRoutes,
+      ...canonicalServiceDetailRoutes,
+      ...blogRoutes,
+    ]),
+  ];
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
