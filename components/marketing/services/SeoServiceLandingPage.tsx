@@ -23,6 +23,7 @@ import {
   getSeoServiceFaqs,
   getSeoServicePage,
   getSeoServiceStructuredData,
+  seoServiceSlugs,
   type SeoServiceSlug,
 } from "@/lib/seo/service-landing-pages";
 
@@ -141,6 +142,19 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
   const growthTips = getGrowthTips(page.service.platform, page.service.code);
   const commonMistakes = getCommonMistakes(page.destination);
   const deliveryExplanation = getDeliveryExplanation(page.service.code, page.destination);
+  const allServiceLinks = seoServiceSlugs
+    .filter((serviceSlug) => serviceSlug !== slug)
+    .map((serviceSlug) => {
+      const servicePage = getSeoServicePage(serviceSlug);
+      return {
+        href:
+          servicePage.slug === "instagram-followers"
+            ? "/buy-instagram-followers-india"
+            : `/${servicePage.slug}`,
+        label: servicePage.displayName,
+        platform: servicePage.platform.icon,
+      };
+    });
 
   return (
     <PublicShell tone="light3d">
@@ -415,6 +429,39 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
                 </Link>
               );
             })}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">
+            Service directory
+          </p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F]">
+            Compare SocialRUSH service pages
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#111827]">
+            Move between related Instagram, YouTube, Facebook, LinkedIn,
+            Telegram and Twitter/X service pages to compare requirements and
+            campaign options.
+          </p>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+            {allServiceLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-2xl border border-white/90 bg-white/85 p-4 shadow-[0_16px_36px_-30px_rgba(255,159,0,.5)] transition hover:-translate-y-1 hover:border-[#FFF3E0]"
+              >
+                <PlatformIcon platform={item.platform} className="h-5 w-5 text-orange-600" />
+                <h3 className="mt-3 text-sm font-black text-[#0B0B0F]">
+                  {item.label}
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-[#111827]">
+                  Review price guidance, FAQs, delivery notes and package links.
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>

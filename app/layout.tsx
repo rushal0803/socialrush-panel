@@ -93,11 +93,46 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             dangerouslySetInnerHTML={{
               __html: JSON.stringify({
                 "@context": "https://schema.org",
+                "@type": "LocalBusiness",
+                "@id": new URL("/#localbusiness", siteUrl).toString(),
+                name: "SocialRUSH",
+                url: siteUrl,
+                image: new URL("/og-image.png", siteUrl).toString(),
+                logo: new URL("/images/brand/socialrush-logo.png", siteUrl).toString(),
+                telephone: "+91-88603-30771",
+                priceRange: "₹₹",
+                areaServed: {
+                  "@type": "Country",
+                  name: "India",
+                },
+                sameAs: [
+                  "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+                  "https://www.facebook.com/share/18VDDFqWzY/",
+                ],
+              }).replace(/</g, "\\u003c"),
+            }}
+          />
+          <script
+            type="application/ld+json"
+            dangerouslySetInnerHTML={{
+              __html: JSON.stringify({
+                "@context": "https://schema.org",
                 "@type": "WebSite",
                 "@id": new URL("/#website", siteUrl).toString(),
                 name: "SocialRUSH",
                 url: siteUrl,
                 publisher: { "@id": new URL("/#organization", siteUrl).toString() },
+                potentialAction: {
+                  "@type": "SearchAction",
+                  target: {
+                    "@type": "EntryPoint",
+                    urlTemplate: new URL(
+                      "/services?search={search_term_string}",
+                      siteUrl,
+                    ).toString(),
+                  },
+                  "query-input": "required name=search_term_string",
+                },
               }),
             }}
           />

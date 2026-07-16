@@ -250,9 +250,18 @@ export function getSeoServicePage(slug: SeoServiceSlug) {
 
 export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
   const page = getSeoServicePage(slug);
+  const descriptions: Partial<Record<SeoServiceSlug, string>> = {
+    "youtube-subscribers":
+      "Buy YouTube subscribers in India with SocialRUSH. Public channel-link ordering, transparent pricing, dashboard tracking, delivery guidance and no password required.",
+    "facebook-followers":
+      "Buy Facebook followers in India with SocialRUSH. Compare public page/profile follower services with transparent pricing, dashboard tracking and WhatsApp support.",
+  };
+
   return createPageMetadata({
     title: page.keyword,
-    description: `${page.keyword} with SocialRUSH. View transparent pricing, delivery guidance, refill availability, secure checkout and easy order tracking.`,
+    description:
+      descriptions[slug] ??
+      `${page.keyword} with SocialRUSH. View transparent pricing, delivery guidance, refill availability, secure checkout and easy order tracking.`,
     path: `/${page.slug}`,
     keywords: [
       page.keyword,

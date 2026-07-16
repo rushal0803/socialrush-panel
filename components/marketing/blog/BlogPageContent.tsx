@@ -107,8 +107,8 @@ export default function BlogPageContent() {
                 >
                   {!heroImageError ? (
                     <SafeImage
-                      src="/images/blog/blog-hero.png"
-                      fallbackSrc="/images/blog/blog-hero.webp"
+                      src="/images/blog/blog-hero.webp"
+                      fallbackSrc="/images/blog/blog-hero.png"
                       alt="SocialRUSH blog hero"
                       width={900}
                       height={507}

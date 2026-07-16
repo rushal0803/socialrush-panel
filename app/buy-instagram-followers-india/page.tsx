@@ -38,7 +38,7 @@ const whatsappHref =
 export const metadata: Metadata = {
   title: { absolute: "Buy Instagram Followers India | SocialRUSH" },
   description:
-    "Buy Instagram followers in India with SocialRUSH. Get fast delivery, no password required, transparent pricing, refill support, and safe Instagram growth services.",
+    "Buy Instagram followers in India with SocialRUSH. Public-profile-link ordering, transparent INR pricing, dashboard tracking, WhatsApp support and no password required.",
   keywords: [
     "Buy Instagram Followers India",
     "Buy Instagram followers",
@@ -60,9 +60,9 @@ export const metadata: Metadata = {
     url: pageUrl,
     images: [
       {
-        url: `${SEO_SITE_URL}/images/hero-3d.png`,
-        width: 1448,
-        height: 1086,
+        url: `${SEO_SITE_URL}/og-image.png`,
+        width: 1200,
+        height: 630,
         alt: "SocialRUSH Instagram followers service in India",
       },
     ],
@@ -72,7 +72,7 @@ export const metadata: Metadata = {
     title: "Buy Instagram Followers India | SocialRUSH",
     description:
       "Compare transparent Instagram follower packages in India with no-password ordering, delivery tracking, and refill support where eligible.",
-    images: [`${SEO_SITE_URL}/images/hero-3d.png`],
+    images: [`${SEO_SITE_URL}/og-image.png`],
   },
 };
 
@@ -305,7 +305,7 @@ export default function BuyInstagramFollowersIndiaPage() {
               Instagram growth service India
             </span>
             <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.08] tracking-[-0.04em] text-[#0B0B0F] sm:text-5xl lg:text-6xl">
-              Buy Instagram Followers India
+              Buy Instagram Followers in India
             </h1>
             <p className="mt-6 max-w-3xl text-base leading-8 text-[#111827] sm:text-lg">
               SocialRUSH helps creators, influencers, businesses, agencies, and

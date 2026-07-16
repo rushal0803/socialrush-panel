@@ -514,9 +514,9 @@ export function getIndiaServiceMetadata(
       url,
       images: [
         {
-          url: `${SEO_SITE_URL}/images/hero-3d.png`,
-          width: 1448,
-          height: 1086,
+          url: `${SEO_SITE_URL}/og-image.png`,
+          width: 1200,
+          height: 630,
           alt: `${page.serviceName} service in India`,
         },
       ],
@@ -525,7 +525,7 @@ export function getIndiaServiceMetadata(
       card: "summary_large_image",
       title,
       description: page.ogDescription,
-      images: [`${SEO_SITE_URL}/images/hero-3d.png`],
+      images: [`${SEO_SITE_URL}/og-image.png`],
     },
   };
 }
