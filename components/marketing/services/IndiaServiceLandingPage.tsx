@@ -21,6 +21,7 @@ import {
   getCanonicalIndiaServicePath,
   getIndiaServiceFaqs,
   getIndiaServicePage,
+  indiaServiceSlugs,
   type IndiaServiceSlug,
 } from "@/lib/seo/india-service-pages";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
@@ -221,6 +222,16 @@ export default function IndiaServiceLandingPage({
         text: "Learn the basics of public-link ordering, delivery, tracking and support.",
       },
     ];
+  const allServiceLinks = indiaServiceSlugs
+    .filter((serviceSlug) => serviceSlug !== slug)
+    .map((serviceSlug) => {
+      const servicePage = getIndiaServicePage(serviceSlug);
+      return {
+        href: getCanonicalIndiaServicePath(serviceSlug),
+        label: servicePage.serviceName,
+        platform: servicePage.platform,
+      };
+    });
   const packagesHref = `/packages?platform=${encodeURIComponent(
     page.platformKey,
   )}&service=${encodeURIComponent(page.packageService)}`;
@@ -503,6 +514,38 @@ export default function IndiaServiceLandingPage({
                   {audience}
                 </h3>
               </article>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">
+            Service directory
+          </p>
+          <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F]">
+            Compare SocialRUSH service pages
+          </h2>
+          <p className="mt-3 max-w-3xl text-sm leading-7 text-[#111827]">
+            Explore related Instagram, YouTube, Facebook, LinkedIn, Telegram,
+            TikTok and Twitter/X growth pages before choosing a package.
+          </p>
+          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {allServiceLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="rounded-2xl border border-white/90 bg-white/85 p-4 shadow-[0_16px_36px_-30px_rgba(255,159,0,.5)] transition hover:-translate-y-1 hover:border-[#FFF3E0]"
+              >
+                <PlatformIcon platform={item.platform} className="h-5 w-5 text-orange-600" />
+                <h3 className="mt-3 text-sm font-black text-[#0B0B0F]">
+                  {item.label}
+                </h3>
+                <p className="mt-1 text-xs leading-5 text-[#111827]">
+                  View pricing, FAQs, delivery notes and ordering guidance.
+                </p>
+              </Link>
             ))}
           </div>
         </div>

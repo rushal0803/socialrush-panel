@@ -27,7 +27,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Build momentum with profile clarity, content rhythm, and audience-first actions that feel authentic.",
     readingTime: "4 min read",
-    image: "/images/blog/instagram-growth.png",
+    image: "/images/blog/instagram-growth.webp",
     intro:
       "Fast growth on Instagram should still feel human. The best-performing creators improve profile trust, publish consistently, and create simple engagement loops that bring people back.",
     sections: [
@@ -70,7 +70,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Improve early watch signals, click appeal, and consistency to increase your content discovery window.",
     readingTime: "6 min read",
-    image: "/images/blog/youtube-growth.png",
+    image: "/images/blog/youtube-growth.webp",
     intro:
       "YouTube rewards viewer satisfaction over short-term tricks. Better reach comes from stronger click-through rate, retention, and a clear publishing system.",
     sections: [
@@ -113,7 +113,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Position your expertise, sharpen your posting angle, and use engagement loops to stay visible.",
     readingTime: "5 min read",
-    image: "/images/blog/linkedin-marketing.png",
+    image: "/images/blog/linkedin-marketing.webp",
     intro:
       "LinkedIn growth is built on authority and consistency. Personal brands that perform well share useful perspectives, engage with intent, and document practical outcomes.",
     sections: [
@@ -156,7 +156,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Reliable interaction patterns shape perception and long-term credibility across social platforms.",
     readingTime: "3 min read",
-    image: "/images/blog/social-media-tips.png",
+    image: "/images/blog/social-media-tips.webp",
     intro:
       "Audiences trust brands that show up regularly. Consistent engagement proves reliability and keeps your account top of mind during buying decisions.",
     sections: [
@@ -199,7 +199,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Map service choices to campaign goals so your budget supports meaningful growth outcomes.",
     readingTime: "5 min read",
-    image: "/images/blog/brand-visibility.png",
+    image: "/images/blog/brand-visibility.webp",
     intro:
       "The right service depends on your current objective. Better choices come from matching campaign type to funnel stage, content quality, and audience intent.",
     sections: [
@@ -242,7 +242,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Avoid common planning errors that cause low conversion, weak retention, or wasted campaign spend.",
     readingTime: "4 min read",
-    image: "/images/blog/campaign-strategy.png",
+    image: "/images/blog/campaign-strategy.webp",
     intro:
       "Most campaign failures come from unclear messaging and weak execution systems. A focused plan with good pacing and review cycles improves both ROI and trust.",
     sections: [
@@ -285,7 +285,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical Instagram growth plan for Indian creators and businesses using clearer positioning, useful content, and responsible social proof.",
     readingTime: "7 min read",
-    image: "/images/blog/instagram-growth.png",
+    image: "/images/blog/instagram-growth.webp",
     intro:
       "Growing an Instagram audience in India is not one tactic. It is a sequence: make the profile easy to understand, publish content people can recognize and share, then support discovery without losing credibility.",
     sections: [
@@ -333,7 +333,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Understand Instagram follower pricing in India, what affects campaign value, and which delivery, refill, and support details to review.",
     readingTime: "6 min read",
-    image: "/images/blog/instagram-growth.png",
+    image: "/images/blog/instagram-growth.webp",
     intro:
       "The cheapest number on a pricing table rarely explains the full service. A useful comparison includes the confirmed rate, delivery window, public-link requirement, refill terms, checkout security, and a way to track the order.",
     sections: [
@@ -381,7 +381,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Review the safety questions to ask before ordering Instagram follower growth, including passwords, public links, pacing, tracking, and refill terms.",
     readingTime: "7 min read",
-    image: "/images/blog/instagram-growth.png",
+    image: "/images/blog/instagram-growth.webp",
     intro:
       "Safety depends on the ordering process and the promises being made. No service can replace good content, but customers can reduce avoidable risk by protecting account access, reading delivery terms, and choosing a trackable campaign.",
     sections: [
@@ -429,7 +429,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical YouTube subscriber strategy for Indian creators using stronger channel positioning, searchable videos, series, and responsible growth support.",
     readingTime: "8 min read",
-    image: "/images/blog/youtube-growth.png",
+    image: "/images/blog/youtube-growth.webp",
     intro:
       "Subscriber growth becomes easier when every part of the channel answers one question: why should a viewer return? Clear topics, useful video series, strong packaging, and a trustworthy channel presentation work together.",
     sections: [
@@ -477,7 +477,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Build LinkedIn followers for a business through clearer expertise, employee participation, useful posts, and transparent growth support.",
     readingTime: "7 min read",
-    image: "/images/blog/linkedin-marketing.png",
+    image: "/images/blog/linkedin-marketing.webp",
     intro:
       "Businesses grow on LinkedIn when they publish knowledge people can use and make their expertise easy to recognize. Follower count matters most when it supports authority, distribution, and qualified conversations.",
     sections: [
@@ -525,7 +525,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A channel-by-channel social media growth framework for Indian creators balancing content, discovery, social proof, tracking, and sustainable routines.",
     readingTime: "9 min read",
-    image: "/images/blog/campaign-strategy.png",
+    image: "/images/blog/campaign-strategy.webp",
     intro:
       "Indian creators do not need to be everywhere at once. A better strategy gives each platform a job, connects content to a repeatable audience promise, and measures whether attention becomes trust.",
     sections: [
@@ -573,7 +573,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Understand how YouTube views pricing works in India, what affects campaign cost, and which quality and safety details to review before ordering.",
     readingTime: "9 min read",
-    image: "/images/blog/youtube-growth.png",
+    image: "/images/blog/youtube-growth.webp",
     intro:
       "The lowest YouTube views price is not automatically the best value. Indian creators should compare the current rate, delivery window, destination requirements, tracking, support, and the role a view campaign will play in a broader channel strategy.",
     sections: [
@@ -616,7 +616,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn how Indian businesses can build a relevant LinkedIn audience through expertise, employee participation, page optimisation, and transparent growth support.",
     readingTime: "9 min read",
-    image: "/images/blog/linkedin-marketing.png",
+    image: "/images/blog/linkedin-marketing.webp",
     intro:
       "LinkedIn followers support business growth when they help useful expertise reach customers, candidates, partners, and industry peers. A credible company page combines clear positioning, consistent publishing, employee participation, and accountable campaign decisions.",
     sections: [
@@ -659,7 +659,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical framework for Indian creators comparing Instagram, YouTube, LinkedIn, Facebook, Telegram, TikTok, and X growth services.",
     readingTime: "9 min read",
-    image: "/images/blog/campaign-strategy.png",
+    image: "/images/blog/campaign-strategy.webp",
     intro:
       "The best growth service depends on the platform, content format, audience goal, public destination, budget, and measurement plan. Indian creators can make better decisions by matching one clear objective to one suitable service instead of ordering disconnected metrics.",
     sections: [
@@ -702,7 +702,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical safety-first guide for Indian creators and brands who want more Instagram followers without sharing passwords or making risky claims.",
     readingTime: "9 min read",
-    image: "/images/blog/instagram-growth.png",
+    image: "/images/blog/instagram-growth.webp",
     intro:
       "Increasing Instagram followers safely starts with a public, trustworthy profile and a repeatable content system. For Indian creators, founders, local businesses, and agencies, the goal should be credible growth that supports long-term visibility rather than shortcuts that create account risk or confuse new visitors.",
     sections: [
@@ -745,7 +745,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Understand when follower count helps, when engagement matters more, and how Indian creators can balance profile credibility with content quality.",
     readingTime: "9 min read",
-    image: "/images/blog/instagram-growth.png",
+    image: "/images/blog/instagram-growth.webp",
     intro:
       "Followers and engagement both shape Instagram perception, but they do different jobs. Followers support profile credibility and first impressions, while engagement shows whether content is connecting with people. A healthy strategy treats both as signals rather than chasing one number blindly.",
     sections: [
@@ -788,7 +788,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical launch guide for Indian YouTubers who want better channel presentation, clearer discovery, and safer promotion habits.",
     readingTime: "9 min read",
-    image: "/images/blog/youtube-growth.png",
+    image: "/images/blog/youtube-growth.webp",
     intro:
       "Promoting a new YouTube channel is not just about pushing one video. A stronger launch connects channel positioning, searchable topics, thumbnails, playlists, audience trust, and measured promotion so viewers understand why they should subscribe.",
     sections: [
@@ -831,7 +831,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn how titles, thumbnails, retention, playlists, and safe public-link promotion can help new YouTube videos get more reach.",
     readingTime: "9 min read",
-    image: "/images/blog/youtube-growth.png",
+    image: "/images/blog/youtube-growth.webp",
     intro:
       "New YouTube videos need a strong first impression and a clear reason to keep watching. More views come from better packaging, retention, topic selection, internal channel links, and measured promotion rather than one isolated tactic.",
     sections: [
@@ -874,7 +874,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A simple LinkedIn growth guide for founders, consultants, and business owners who want more professional visibility without risky tactics.",
     readingTime: "9 min read",
-    image: "/images/blog/linkedin-marketing.png",
+    image: "/images/blog/linkedin-marketing.webp",
     intro:
       "LinkedIn growth for business owners should support credibility, conversations, hiring, partnerships, and demand. The best results come from clear positioning, useful posts, consistent engagement, and a complete profile that earns trust quickly.",
     sections: [
@@ -917,7 +917,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Practical Facebook page growth advice for Indian local businesses that want clearer visibility, trust, and customer conversations.",
     readingTime: "9 min read",
-    image: "/images/blog/social-media-tips.png",
+    image: "/images/blog/social-media-tips.webp",
     intro:
       "Facebook can still support local discovery when a business page is complete, helpful, and easy to contact. Growth should focus on trust signals, useful posts, visible activity, and clear next steps for local customers.",
     sections: [
@@ -960,7 +960,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn why SocialRUSH uses public profile, post, video, page, and channel links instead of asking for account passwords.",
     readingTime: "9 min read",
-    image: "/images/blog/brand-visibility.png",
+    image: "/images/blog/brand-visibility.webp",
     intro:
       "Public-link ordering is a safer way to request social media growth services because it keeps account ownership and private credentials with the customer. You provide only the destination that needs support, such as a public profile, post, reel, video, page, or channel link.",
     sections: [
@@ -1003,7 +1003,7 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A plain-English explanation of social media growth campaigns, public-link ordering, pricing, delivery, tracking, and safety checks.",
     readingTime: "9 min read",
-    image: "/images/blog/brand-visibility.png",
+    image: "/images/blog/brand-visibility.webp",
     intro:
       "A social media growth campaign is a structured way to support a specific public destination, such as a profile, post, video, channel, or page. The best campaigns start with a clear goal, transparent pricing, safe ordering, and dashboard tracking.",
     sections: [

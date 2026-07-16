@@ -47,6 +47,24 @@ const buyerGuides = [
   ["Telegram Members", "/telegram-members"],
 ] as const;
 
+const packageSeoFaqs = [
+  {
+    question: "What are SocialRUSH social media growth packages?",
+    answer:
+      "SocialRUSH packages combine platform, service type, quantity, delivery estimate and price so customers can compare Instagram, YouTube, Facebook and other social growth options before checkout.",
+  },
+  {
+    question: "Can I compare packages before placing an order?",
+    answer:
+      "Yes. Select a platform and service type to compare package quantity, price, delivery time and best-for notes before opening the checkout page.",
+  },
+  {
+    question: "Are package prices shown before payment?",
+    answer:
+      "Yes. The selected package price and order details are shown before checkout so you can review the total before confirming.",
+  },
+] as const;
+
 export default function PackagesPageContent() {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>("Instagram");
@@ -286,6 +304,20 @@ export default function PackagesPageContent() {
         </div>
 
         <HowToOrderSection />
+
+        <section className="relative px-4 py-8 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[28px] border border-orange-400/20 bg-[#111111] p-6 shadow-[0_20px_48px_rgba(255,122,0,.16)] sm:p-8">
+            <h2 className="text-2xl font-black text-white">Social media growth package FAQs</h2>
+            <div className="mt-5 grid gap-4 md:grid-cols-3">
+              {packageSeoFaqs.map((faq) => (
+                <article key={faq.question} className="rounded-2xl border border-orange-400/20 bg-[#151515] p-5">
+                  <h3 className="text-base font-black text-white">{faq.question}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">{faq.answer}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="relative px-4 py-8 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[28px] border border-white/85 bg-white/78 p-6 shadow-[0_20px_48px_rgba(255, 159, 0, .13)] backdrop-blur-xl sm:p-8">

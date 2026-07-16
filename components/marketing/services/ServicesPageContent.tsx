@@ -86,6 +86,24 @@ const customerBenefits = [
   "WhatsApp support for help",
 ] as const;
 
+const serviceSeoFaqs = [
+  {
+    question: "Which social media growth services are available in India?",
+    answer:
+      "SocialRUSH lists Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X services with public-link ordering, transparent pricing and dashboard tracking.",
+  },
+  {
+    question: "Can I compare Instagram followers, YouTube subscribers and Facebook followers?",
+    answer:
+      "Yes. Use the service cards and package links to compare current rates, delivery estimates, refill/support terms and the correct public link required for each platform.",
+  },
+  {
+    question: "Do SocialRUSH services require my account password?",
+    answer:
+      "No. SocialRUSH uses public profile, post, video, channel, page or group links. You should never share a social media password to place an order.",
+  },
+] as const;
+
 const descriptiveServiceAnchors: Record<string, string> = {
   "instagram-followers": "Buy Instagram Followers India",
   "instagram-likes": "Instagram Likes India",
@@ -405,6 +423,25 @@ export default function ServicesPageContent() {
         </section>
 
         <HowToOrderSection />
+
+        <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8">
+            <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
+              Service FAQs
+            </p>
+            <h2 className="mt-2 text-2xl font-black text-[#0B0B0F]">
+              Questions about SocialRUSH growth services
+            </h2>
+            <div className="mt-6 grid gap-4 md:grid-cols-3">
+              {serviceSeoFaqs.map((faq) => (
+                <article key={faq.question} className="rounded-2xl border border-white/85 bg-white/88 p-5">
+                  <h3 className="text-base font-black text-[#0B0B0F]">{faq.question}</h3>
+                  <p className="mt-3 text-sm leading-7 text-[#111827]">{faq.answer}</p>
+                </article>
+              ))}
+            </div>
+          </div>
+        </section>
 
         <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-10">
