@@ -62,6 +62,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
   const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
   const articleImage = getArticleImage(article.image);
+  const articleAuthor = article.author ?? "SocialRUSH Editorial Team";
   const articleSections = getArticleSections(article);
   const articleFaqs = article.faqs ?? [];
   const articleRelatedLinks = article.relatedLinks ?? [];
@@ -87,7 +88,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     articleSection: article.category,
     wordCount: articleWordCount,
     inLanguage: "en-IN",
-    author: { "@type": "Organization", name: "SocialRUSH" },
+    author: { "@type": "Person", name: articleAuthor },
     publisher: {
       "@type": "Organization",
       name: "SocialRUSH",
@@ -155,6 +156,13 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#FF9F00]">
               <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.category}</span>
               <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.readingTime}</span>
+              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">By {articleAuthor}</span>
+              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
+                Published {article.publishedAt ?? "2026-05-20"}
+              </span>
+              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
+                Updated {article.updatedAt ?? "2026-07-01"}
+              </span>
             </div>
 
             <h1 className="mt-4 text-3xl font-black leading-tight text-[#0B0B0F] sm:text-4xl">{article.title}</h1>
