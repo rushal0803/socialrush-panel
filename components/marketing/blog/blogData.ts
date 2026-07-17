@@ -17,9 +17,181 @@ export type BlogArticle = {
   faqs?: Array<{ question: string; answer: string }>;
   publishedAt?: string;
   updatedAt?: string;
+  author?: string;
 };
 
 const baseBlogArticles: BlogArticle[] = [
+  {
+    slug: "how-to-grow-instagram-followers-organically-india",
+    category: "Instagram Growth",
+    title: "How to Grow Instagram Followers Organically in India",
+    description:
+      "Learn practical ways to grow Instagram followers organically in India using profile optimization, Reels, content planning and genuine engagement.",
+    readingTime: "10 min read",
+    image: "/images/blog/instagram-growth.webp",
+    author: "Rushal Thakur",
+    publishedAt: "2026-07-18",
+    updatedAt: "2026-07-18",
+    intro:
+      "Growing Instagram followers organically in India is not about chasing shortcuts. It is about making your profile easy to understand, publishing content people want to save or share, and building genuine relationships with the audience you want to reach. For Indian creators, small businesses, startups and personal brands, organic growth also needs local relevance: language, timing, pricing awareness, cultural moments and community trust all matter. This guide gives you a practical plan you can follow without promising overnight results or depending on risky tactics.",
+    sections: [
+      {
+        heading: "Optimize your Instagram profile before asking people to follow",
+        body:
+          "Your profile is the landing page for every Reel, comment, collaboration and share. Before you focus on reach, make sure a new visitor can understand who you are, what you offer and why your account is worth following within a few seconds. Use a clear profile photo or logo, a simple username, a bio that explains your niche, and highlights that answer common questions. If you are a local business in India, mention the city or service area when it helps customers trust you. If you are a creator or personal brand, make your topic and promise obvious instead of trying to sound broad.",
+        tips: [
+          "Write a bio that explains your audience, your topic and your value in one or two short lines.",
+          "Pin three strong posts: an introduction, a useful educational post and one post that shows credibility or personality.",
+          "Keep highlights clean: Start Here, Services, Reviews if real, FAQs, Work, Behind the Scenes or Contact.",
+          "Use a simple call to action such as DM for enquiry, view packages, book a call or check the link in bio.",
+        ],
+      },
+      {
+        heading: "Choose a content niche people can recognize",
+        body:
+          "Organic growth becomes easier when people know what to expect from you. A niche does not need to be tiny, but it should be specific enough that your ideal follower can say, this account is for me. For example, a fitness creator can focus on home workouts for Indian office workers, a cafe can focus on local food culture and offers, and a startup founder can focus on building in public for Indian entrepreneurs. Once your niche is clear, build three to five content pillars around it so you are not posting random ideas every day.",
+        tips: [
+          "Define your main audience in plain words: students, local shoppers, founders, creators, professionals or parents.",
+          "Create content pillars such as education, proof, behind the scenes, customer questions and personal opinions.",
+          "Avoid changing your topic every week because it makes the account difficult to remember.",
+          "Review your best posts monthly and refine your niche around what attracts the right audience, not only the biggest reach.",
+        ],
+      },
+      {
+        heading: "Build a Reels strategy around repeatable formats",
+        body:
+          "Reels are still one of the strongest discovery formats on Instagram, but a good Reels strategy is not just trending audio. The strongest accounts use repeatable formats: quick tips, before-and-after explanations, myth busting, mini tutorials, product use cases, local market observations, customer questions, founder lessons and simple storytelling. Start with a strong hook in the first two seconds, keep the video focused on one idea, and make sure the caption adds context for people who want to learn more.",
+        tips: [
+          "Create five repeatable Reel formats you can produce every week without needing a large production setup.",
+          "Open with a clear hook: a problem, question, mistake, result, checklist or local insight.",
+          "Keep early Reels simple: clean lighting, readable text, clear audio and one strong takeaway.",
+          "Turn frequently asked customer questions into short Reels because they usually match real audience intent.",
+        ],
+      },
+      {
+        heading: "Post consistently without burning out",
+        body:
+          "Consistency matters, but consistency does not mean posting ten times a day. A realistic schedule is better than an aggressive plan you quit after one week. For many Indian creators and businesses, a practical starting rhythm is three to five Reels per week, one or two carousels, regular stories and daily comment replies. Batch your ideas once a week, record similar videos together, and reuse winning topics from different angles. The goal is to show Instagram and your audience that your account is active, useful and dependable.",
+        tips: [
+          "Plan one weekly content session for ideas, one for recording and one for editing or scheduling.",
+          "Use a simple calendar with content pillars instead of deciding what to post at the last minute.",
+          "Repurpose one strong idea into a Reel, carousel, story poll and caption discussion.",
+          "Track consistency for 30 days before judging whether your strategy is working.",
+        ],
+      },
+      {
+        heading: "Write captions and hashtags for clarity, not tricks",
+        body:
+          "Captions help people understand the value behind a post and give Instagram more context about the topic. Start with a strong first line, explain the idea in simple language, and end with a useful prompt. Hashtags can still help with classification and small discovery pockets, but they are not magic. Use a balanced mix of niche, platform, local and topic hashtags. For Indian pages, city or community hashtags can help when the content is genuinely local. Avoid stuffing unrelated hashtags just because they have large search volume.",
+        tips: [
+          "Use the first line of the caption to state the benefit or question clearly.",
+          "Add context, examples or steps instead of repeating what is already visible in the Reel.",
+          "Use 8 to 15 relevant hashtags instead of a long block of random tags.",
+          "Test local hashtags such as city, industry or community terms when they match your actual audience.",
+        ],
+      },
+      {
+        heading: "Engage with the community like a real person",
+        body:
+          "Organic followers come from relationships, not only posts. Spend time replying to comments, answering DMs, commenting on relevant accounts, joining conversations and recognizing repeat viewers. This is especially important for personal brands, local businesses and early-stage creators because people often follow after seeing you contribute somewhere else. Do not leave generic comments like nice post. Add useful context, a specific opinion or a helpful answer that makes people curious about your profile.",
+        tips: [
+          "Spend 15 to 30 minutes before and after posting engaging with relevant accounts.",
+          "Reply to comments with thoughtful answers instead of one-word responses.",
+          "Use story polls, question boxes and quick replies to create low-pressure interaction.",
+          "Follow up with warm leads or genuine enquiries, but avoid spammy mass messages.",
+        ],
+      },
+      {
+        heading: "Use collaborations to reach trusted audiences",
+        body:
+          "Collaborations can speed up organic discovery because they place your account in front of people who already trust someone else. You can collaborate with creators, local pages, customers, vendors, complementary businesses, podcast hosts, community admins or event organizers. Keep collaborations simple: joint Reels, expert tips, Instagram Live sessions, shared checklists, giveaway partnerships only when relevant, or customer story posts. The best collaborations feel useful to both audiences, not like a forced promotion.",
+        tips: [
+          "List 20 accounts that share your audience but are not direct competitors.",
+          "Pitch a specific content idea instead of asking vaguely for collaboration.",
+          "Use Instagram's Collab post feature when both accounts are comfortable sharing the post.",
+          "Measure whether collaborations bring profile visits, saves, enquiries and relevant followers.",
+        ],
+      },
+      {
+        heading: "Use Instagram Insights to improve your decisions",
+        body:
+          "Insights help you stop guessing. Instead of judging content only by likes, review reach, watch time, retention, saves, shares, profile visits, follows from post and story replies. A Reel with fewer likes but many profile visits may be more valuable than a funny post that reaches random people. Check which topics bring the right followers, which formats get saves, and which hooks retain viewers. Use that information to refine your content pillars every week.",
+        tips: [
+          "Review your top five posts every week and identify the hook, topic, format and audience response.",
+          "Track saves and shares for educational content because they show deeper value.",
+          "Watch profile visits and follows from post to understand conversion, not just reach.",
+          "Stop repeating content that only attracts the wrong audience, even if it gets a temporary spike.",
+        ],
+      },
+      {
+        heading: "Avoid common mistakes that slow organic growth",
+        body:
+          "Many accounts struggle because they skip fundamentals. A private profile, unclear bio, inconsistent posting, copied trends, low-quality visuals, irrelevant hashtags, ignored comments and too many sales posts can all reduce trust. Another mistake is expecting follower growth to solve weak content. Followers are more likely to stay when your profile gives them a reason to return. Treat growth as a system: profile, content, community, collaboration and measurement.",
+        tips: [
+          "Do not make your account private if your goal is public discovery.",
+          "Avoid copying competitors without adapting the idea to your own voice and audience.",
+          "Do not change usernames or delete key posts during an active campaign unless necessary.",
+          "Never share your Instagram password with any service or third party for follower growth.",
+        ],
+      },
+      {
+        heading: "Follow a realistic 30-day Instagram action plan",
+        body:
+          "A 30-day plan gives you enough time to build momentum without expecting instant transformation. In week one, clean your profile, define your audience, choose content pillars and create your first batch of ideas. In week two, publish consistently and test different hooks. In week three, focus on engagement, collaborations and story interactions. In week four, review Insights, double down on the best topics and improve weak parts of your profile or content workflow. This plan works best when you document what you learn instead of chasing random tactics.",
+        tips: [
+          "Days 1 to 7: update bio, highlights, pinned posts, niche statement and 20 content ideas.",
+          "Days 8 to 14: publish at least three Reels and one carousel while testing different hooks.",
+          "Days 15 to 21: contact collaboration partners, reply faster and use stories for audience questions.",
+          "Days 22 to 30: review Insights, repeat top-performing formats and plan the next month with better data.",
+        ],
+      },
+      {
+        heading: "Where SocialRUSH can support your growth plan",
+        body:
+          "Organic growth should be your foundation. SocialRUSH can support that foundation when you want a clearer ordering process, public-link campaign support, transparent pricing and dashboard tracking. If you are comparing options, explore the SocialRUSH services page and packages page before ordering, and use the Instagram followers service page to understand how public-link ordering works. Paid support should not replace content quality, but it can sit beside a responsible organic strategy when used carefully.",
+        tips: [
+          "Review service details and pricing before placing any order.",
+          "Use only public profile, post, Reel, video, channel or page links.",
+          "Keep posting and engaging while any growth campaign is active.",
+          "Contact support if you are unsure which package fits your goal.",
+        ],
+      },
+    ],
+    relatedLinks: [
+      { label: "Instagram Followers Service", href: "/buy-instagram-followers-india" },
+      { label: "Explore SocialRUSH Services", href: "/services" },
+      { label: "View SocialRUSH Packages", href: "/packages" },
+      { label: "Instagram Likes Service", href: "/instagram-likes" },
+      { label: "Contact SocialRUSH", href: "/contact" },
+    ],
+    faqs: [
+      {
+        question: "How long does it take to grow Instagram followers organically in India?",
+        answer:
+          "Organic growth usually takes consistent effort over weeks and months. The speed depends on your niche, content quality, posting rhythm, audience relevance and engagement habits. A realistic first goal is to improve profile visits, saves, shares and meaningful comments before expecting fast follower growth.",
+      },
+      {
+        question: "How often should I post Reels for organic growth?",
+        answer:
+          "Most creators and small businesses can start with three to five focused Reels per week. Quality and repeatable formats matter more than volume. If you can only post three strong Reels consistently, that is better than posting daily content that feels rushed or unclear.",
+      },
+      {
+        question: "Do hashtags still help Instagram growth?",
+        answer:
+          "Hashtags can help Instagram understand your topic and may support small discovery pockets, but they are not a complete growth strategy. Use relevant niche, local and topic hashtags. Avoid unrelated hashtags that bring the wrong audience or make the caption look spammy.",
+      },
+      {
+        question: "Should small businesses focus on followers or engagement first?",
+        answer:
+          "Small businesses should focus on trust and engagement first. Followers matter, but enquiries, saves, shares, profile visits, comments and repeat story interactions often show whether the audience is relevant. A smaller active audience can be more useful than a large audience that never responds.",
+      },
+      {
+        question: "Can SocialRUSH help with Instagram growth?",
+        answer:
+          "SocialRUSH provides public-link ordering, transparent pricing, dashboard tracking and support for eligible social media growth campaigns. It should be used alongside good content, profile optimization and genuine engagement, not as a replacement for an organic strategy.",
+      },
+    ],
+  },
   {
     slug: "how-to-grow-fast-on-instagram",
     category: "Instagram Growth",
@@ -1483,5 +1655,9 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.map((article) => {
 export const articleSlugs = blogArticles.map((article) => article.slug);
 
 export function getArticleBySlug(slug: string) {
-  return blogArticles.find((article) => article.slug === slug);
+  const normalizedSlug = decodeURIComponent(String(slug || ""))
+    .trim()
+    .replace(/^\/+|\/+$/g, "");
+
+  return blogArticles.find((article) => article.slug === normalizedSlug);
 }
