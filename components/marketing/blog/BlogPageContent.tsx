@@ -25,6 +25,9 @@ const fadeUp = {
   visible: { opacity: 1, y: 0 },
 };
 
+const normalizeCategory = (value: string) => value.trim().toLowerCase();
+const normalizeSearch = (value: string) => value.trim().toLowerCase();
+
 export default function BlogPageContent() {
   const [heroImageError, setHeroImageError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
@@ -33,17 +36,27 @@ export default function BlogPageContent() {
 
   const cardsWithFallback = useMemo(
     () => {
-      const query = searchQuery.trim().toLowerCase();
+      const query = normalizeSearch(searchQuery);
+      const selectedCategory = normalizeCategory(activeCategory);
+
       return blogArticles
-        .filter((article) => activeCategory === "All" || article.category === activeCategory)
-        .filter(
-          (article) =>
-            !query ||
+        .filter((article) => {
+          const matchesCategory =
+            selectedCategory === "all" ||
+            normalizeCategory(article.category) === selectedCategory;
+
+          const matchesSearch =
+            query === "" ||
             article.title.toLowerCase().includes(query) ||
             article.description.toLowerCase().includes(query) ||
-            article.category.toLowerCase().includes(query),
-        )
-        .map((card) => ({ ...card, hasImage: Boolean(card.image) && !imageErrors[card.slug] }));
+            article.category.toLowerCase().includes(query);
+
+          return matchesCategory && matchesSearch;
+        })
+        .map((article) => ({
+          ...article,
+          hasImage: Boolean(article.image) && !imageErrors[article.slug],
+        }));
     },
     [activeCategory, imageErrors, searchQuery],
   );
@@ -251,9 +264,9 @@ export default function BlogPageContent() {
         <section id="articles" className="relative px-5 pb-8 pt-6 sm:px-6 lg:px-8 lg:pb-12 lg:pt-8">
           <div className="mx-auto w-full max-w-7xl">
             <motion.div
-              initial="hidden"
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.15 }}
+              key={`${activeCategory}-${normalizeSearch(searchQuery) || "all"}`}
+              initial={false}
+              animate="visible"
               variants={{
                 hidden: { opacity: 0 },
                 visible: {
