@@ -2101,7 +2101,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn how Indian businesses can build a relevant LinkedIn audience through expertise, employee participation, page optimisation, and transparent growth support.",
     readingTime: "9 min read",
-    image: "/images/blog/linkedin-marketing.webp",
+    image: "/images/blog/linkedin-followers-business-growth-india.png",
+    imageAlt:
+      "LinkedIn business growth dashboard for Indian companies with follower and lead growth",
     intro:
       "LinkedIn followers support business growth when they help useful expertise reach customers, candidates, partners, and industry peers. A credible company page combines clear positioning, consistent publishing, employee participation, and accountable campaign decisions.",
     sections: [
@@ -2144,7 +2146,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical framework for Indian creators comparing Instagram, YouTube, LinkedIn, Facebook, Telegram, TikTok, and X growth services.",
     readingTime: "9 min read",
-    image: "/images/blog/campaign-strategy.webp",
+    image: "/images/blog/best-social-media-growth-services-indian-creators.png",
+    imageAlt:
+      "Social media growth services comparison for Indian creators across major platforms",
     intro:
       "The best growth service depends on the platform, content format, audience goal, public destination, budget, and measurement plan. Indian creators can make better decisions by matching one clear objective to one suitable service instead of ordering disconnected metrics.",
     sections: [
@@ -2187,7 +2191,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical safety-first guide for Indian creators and brands who want more Instagram followers without sharing passwords or making risky claims.",
     readingTime: "9 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/increase-instagram-followers-safely-india.png",
+    imageAlt:
+      "Safe Instagram follower growth strategy in India with trust and growth indicators",
     intro:
       "Increasing Instagram followers safely starts with a public, trustworthy profile and a repeatable content system. For Indian creators, founders, local businesses, and agencies, the goal should be credible growth that supports long-term visibility rather than shortcuts that create account risk or confuse new visitors.",
     sections: [
@@ -2464,7 +2470,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical launch guide for Indian YouTubers who want better channel presentation, clearer discovery, and safer promotion habits.",
     readingTime: "9 min read",
-    image: "/images/blog/youtube-growth.webp",
+    image: "/images/blog/promote-new-youtube-channel-india.png",
+    imageAlt:
+      "New YouTube channel promotion strategy for creators in India",
     intro:
       "Promoting a new YouTube channel is not just about pushing one video. A stronger launch connects channel positioning, searchable topics, thumbnails, playlists, audience trust, and measured promotion so viewers understand why they should subscribe.",
     sections: [
@@ -2507,7 +2515,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn how titles, thumbnails, retention, playlists, and safe public-link promotion can help new YouTube videos get more reach.",
     readingTime: "9 min read",
-    image: "/images/blog/youtube-growth.webp",
+    image: "/images/blog/get-more-youtube-views-new-videos.png",
+    imageAlt:
+      "YouTube analytics dashboard showing how to get more views on new videos",
     intro:
       "New YouTube videos need a strong first impression and a clear reason to keep watching. More views come from better packaging, retention, topic selection, internal channel links, and measured promotion rather than one isolated tactic.",
     sections: [
@@ -2550,7 +2560,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A simple LinkedIn growth guide for founders, consultants, and business owners who want more professional visibility without risky tactics.",
     readingTime: "9 min read",
-    image: "/images/blog/linkedin-marketing.webp",
+    image: "/images/blog/linkedin-profile-growth-business-owners.png",
+    imageAlt:
+      "LinkedIn profile growth strategy for business owners with profile optimization tips",
     intro:
       "LinkedIn growth for business owners should support credibility, conversations, hiring, partnerships, and demand. The best results come from clear positioning, useful posts, consistent engagement, and a complete profile that earns trust quickly.",
     sections: [
@@ -2638,7 +2650,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn why SocialRUSH uses public profile, post, video, page, and channel links instead of asking for account passwords.",
     readingTime: "9 min read",
-    image: "/images/blog/brand-visibility.webp",
+    image: "/images/blog/public-link-ordering-safer-than-password-services.png",
+    imageAlt:
+      "Public link ordering compared with password-based services for safer ordering",
     intro:
       "Public-link ordering is a safer way to request social media growth services because it keeps account ownership and private credentials with the customer. You provide only the destination that needs support, such as a public profile, post, reel, video, page, or channel link.",
     sections: [
@@ -2681,7 +2695,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A plain-English explanation of social media growth campaigns, public-link ordering, pricing, delivery, tracking, and safety checks.",
     readingTime: "9 min read",
-    image: "/images/blog/brand-visibility.webp",
+    image: "/images/blog/social-media-growth-campaigns-work.png",
+    imageAlt:
+      "Social media growth campaign workflow showing targeting, content, analytics and conversions",
     intro:
       "A social media growth campaign is a structured way to support a specific public destination, such as a profile, post, video, channel, or page. The best campaigns start with a clear goal, transparent pricing, safe ordering, and dashboard tracking.",
     sections: [
