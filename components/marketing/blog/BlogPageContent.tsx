@@ -63,7 +63,7 @@ export default function BlogPageContent() {
 
   return (
     <BlogShell>
-      <div className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_#FFF8F1_0%,_#FFF8F1_42%,_#FFF8F1_100%)] text-[#0B0B0F]">
+      <div className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] text-white">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-28 left-[-6%] h-72 w-72 rounded-full bg-orange-200/40 blur-3xl" />
           <div className="absolute right-[-8%] top-24 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />
@@ -79,13 +79,13 @@ export default function BlogPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65 }}
             >
-              <p className="inline-flex rounded-full border border-white/80 bg-white/80 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-[#0B0B0F] shadow-[0_8px_25px_rgba(255, 159, 0, .12)] backdrop-blur">
+              <p className="inline-flex rounded-full border border-orange-400/30 bg-[#111111]/85 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-orange-200 shadow-[0_8px_25px_rgba(255, 159, 0, .18)] backdrop-blur">
                 SocialRUSH Resource Hub
               </p>
-              <h1 className="mt-5 max-w-xl text-4xl font-black leading-tight text-[#0B0B0F] sm:text-5xl">
+              <h1 className="mt-5 max-w-xl text-4xl font-black leading-tight text-white sm:text-5xl">
                 Social Growth Insights, Tips &amp; Strategies
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-[#111827] sm:text-lg">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-[#D1D5DB] sm:text-lg">
                 Learn how creators, brands, and agencies can grow smarter with practical social media guides,
                 platform tips, and campaign strategies.
               </p>
@@ -98,7 +98,7 @@ export default function BlogPageContent() {
                 </a>
                 <Link
                   href="/services"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#FFF3E0] bg-white/85 px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_26px_rgba(255, 159, 0, .12)] backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00]"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-orange-400/35 bg-white/[.06] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_26px_rgba(255, 159, 0, .16)] backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-orange-400/10"
                 >
                   View Services
                 </Link>
@@ -112,11 +112,11 @@ export default function BlogPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65, delay: 0.12 }}
             >
-              <div className="relative mx-auto max-w-xl rounded-[30px] border border-white/70 bg-white/70 p-5 shadow-[0_28px_60px_rgba(255, 159, 0, .22)] backdrop-blur">
+              <div className="relative mx-auto max-w-xl rounded-[30px] border border-orange-400/25 bg-[#111111]/82 p-5 shadow-[0_28px_60px_rgba(255, 122, 0, .24)] backdrop-blur">
                 <motion.div
                   animate={{ y: [0, -10, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-br from-white to-[#FFF8F1] p-3"
+                  className="relative overflow-hidden rounded-3xl border border-orange-400/25 bg-gradient-to-br from-[#050505] via-[#111111] to-[#221607] p-3"
                 >
                   {!heroImageError ? (
                     <SafeImage
@@ -130,17 +130,17 @@ export default function BlogPageContent() {
                       onError={() => setHeroImageError(true)}
                     />
                   ) : (
-                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_30%_20%,_#FFF3E0_0%,_#FFF8F1_46%,_#FFF8F1_100%)]">
-                      <span className="rounded-2xl border border-white/80 bg-white/90 px-4 py-2 text-sm font-extrabold tracking-[0.08em] text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .2)]">
+                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_30%_20%,_rgba(255,122,0,.22)_0%,_#111111_48%,_#050505_100%)]">
+                      <span className="rounded-2xl border border-orange-400/30 bg-[#111111]/90 px-4 py-2 text-sm font-extrabold tracking-[0.08em] text-orange-100 shadow-[0_10px_24px_rgba(255, 159, 0, .2)]">
                         BLOG
                       </span>
                     </div>
                   )}
                 </motion.div>
-                <div className="absolute -left-6 top-6 rounded-2xl border border-white/70 bg-white/90 px-4 py-3 text-xs font-semibold text-[#0B0B0F] shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
+                <div className="absolute -left-6 top-6 rounded-2xl border border-orange-400/30 bg-[#111111]/95 px-4 py-3 text-xs font-semibold text-white shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
                   Weekly Growth Guides
                 </div>
-                <div className="absolute -bottom-6 right-5 rounded-2xl border border-white/70 bg-white/90 px-4 py-3 text-xs font-semibold text-[#0B0B0F] shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
+                <div className="absolute -bottom-6 right-5 rounded-2xl border border-orange-400/30 bg-[#111111]/95 px-4 py-3 text-xs font-semibold text-white shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
                   Creator + Brand Playbooks
                 </div>
               </div>

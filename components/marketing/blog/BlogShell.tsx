@@ -41,7 +41,7 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
-        className={`inline-flex items-center gap-2 rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-xs font-bold text-[#0B0B0F] shadow-[0_8px_20px_rgba(255, 159, 0, .14)] transition hover:border-[#FF9F00] ${compact ? "min-h-10" : "min-h-11"}`}
+        className={`inline-flex items-center gap-2 rounded-xl border border-orange-400/35 bg-white/[.06] px-3 py-2 text-xs font-bold text-white shadow-[0_8px_20px_rgba(255, 159, 0, .14)] transition hover:border-[#FF9F00] ${compact ? "min-h-10" : "min-h-11"}`}
         aria-haspopup="listbox"
         aria-expanded={open}
       >
@@ -50,7 +50,7 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
       </button>
 
       {open && (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-50 min-w-[180px] overflow-hidden rounded-xl border border-[#FFF3E0] bg-white shadow-2xl">
+        <div className="absolute right-0 top-[calc(100%+8px)] z-50 min-w-[180px] overflow-hidden rounded-xl border border-orange-400/30 bg-[#111111] shadow-2xl">
           <ul role="listbox" className="py-1">
             {currencies.map((item) => (
               <li key={item.code}>
@@ -60,7 +60,7 @@ function BlogCurrencyDropdown({ compact = false }: { compact?: boolean }) {
                     setCurrency(item.code as Currency);
                     setOpen(false);
                   }}
-                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs transition hover:bg-[#FFF8F1] ${currency === item.code ? "text-[#0B0B0F]" : "text-[#111827]"}`}
+                  className={`flex w-full items-center justify-between px-3 py-2 text-left text-xs transition hover:bg-orange-400/10 ${currency === item.code ? "text-orange-200" : "text-[#D1D5DB]"}`}
                 >
                   <span>{item.code}</span>
                   <span className="text-[11px] text-[#FF9F00]">{item.symbol}</span>
@@ -98,14 +98,14 @@ function BlogHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-[9999] border-b border-white/50 bg-[#FFF8F1]/70 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-7xl rounded-3xl border border-white/85 bg-white/88 shadow-[0_16px_40px_rgba(255, 159, 0, .16)] backdrop-blur-xl">
+    <header className="sticky top-0 z-[9999] border-b border-orange-400/20 bg-[#050505]/90 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl rounded-3xl border border-orange-400/25 bg-[#0B0B0F]/88 shadow-[0_16px_40px_rgba(255, 122, 0, .18)] backdrop-blur-xl">
         <div className="flex min-h-[76px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-7">
           <Logo priority />
 
           <nav className="hidden items-center gap-1.5 xl:flex">
             {navLinks.map(([label, href]) => (
-              <Link key={href} href={href} className="rounded-xl px-3 py-2 text-sm font-semibold text-[#0B0B0F] transition hover:bg-[#FFF8F1] hover:text-[#0B0B0F]">
+              <Link key={href} href={href} className="rounded-xl px-3 py-2 text-sm font-semibold text-[#D1D5DB] transition hover:bg-white/[.06] hover:text-orange-200">
                 {label}
               </Link>
             ))}
@@ -115,23 +115,23 @@ function BlogHeader() {
             <BlogCurrencyDropdown compact />
             {isLoggedIn ? (
               <>
-                <Link href="/dashboard/account" className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:bg-[#FFF8F1]">
+                <Link href="/dashboard/account" className="inline-flex min-h-10 items-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-2 text-sm font-bold text-white transition hover:border-[#FF9F00] hover:bg-orange-400/10">
                   Profile
                 </Link>
                 <button
                   type="button"
                   onClick={logout}
-                  className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:border-[#FF9F00]"
+                  className="inline-flex min-h-10 items-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-2 text-sm font-bold text-white transition hover:border-[#FF9F00] hover:bg-orange-400/10"
                 >
                   Logout
                 </button>
               </>
             ) : (
               <>
-                <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:border-[#FF9F00]">
+                <Link href="/login" className="inline-flex min-h-10 items-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-2 text-sm font-bold text-white transition hover:border-[#FF9F00] hover:bg-orange-400/10">
                   Login
                 </Link>
-                <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:bg-[#FFF8F1]">
+                <Link href="/register" className="inline-flex min-h-10 items-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-2 text-sm font-bold text-white transition hover:border-[#FF9F00] hover:bg-orange-400/10">
                   Sign Up
                 </Link>
               </>
@@ -149,7 +149,7 @@ function BlogHeader() {
               event.stopPropagation();
               setOpen((value) => !value);
             }}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-[#FFF3E0] bg-white text-xl text-[#0B0B0F] lg:hidden"
+            className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/35 bg-white/[.06] text-xl text-white lg:hidden"
           >
             {open ? "×" : "☰"}
           </button>
@@ -177,23 +177,23 @@ function BlogHeader() {
                 </div>
                 {isLoggedIn ? (
                   <>
-                    <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#0B0B0F]">
+                    <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-3 text-sm font-bold text-white">
                       Profile
                     </Link>
                     <button
                       type="button"
                       onClick={logout}
-                      className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-3 text-sm font-bold text-[#0B0B0F]"
+                      className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-3 text-sm font-bold text-white"
                     >
                       Logout
                     </button>
                   </>
                 ) : (
                   <>
-                    <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-3 text-sm font-bold text-[#0B0B0F]">
+                    <Link href="/login" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-3 text-sm font-bold text-white">
                       Login
                     </Link>
-                    <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#0B0B0F]">
+                    <Link href="/register" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/35 bg-white/[.06] px-4 py-3 text-sm font-bold text-white">
                       Sign Up
                     </Link>
                   </>

@@ -110,7 +110,7 @@ export default function ContactPageContent() {
 
   return (
     <BlogShell>
-      <div className="relative overflow-x-clip pb-24">
+      <div className="relative overflow-x-clip bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] pb-24 text-white">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-12 top-14 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-9%] top-40 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
@@ -126,13 +126,13 @@ export default function ContactPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65 }}
             >
-              <p className="inline-flex rounded-full border border-white/80 bg-white/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00] shadow-[0_8px_24px_rgba(255, 159, 0, .12)] backdrop-blur">
+              <p className="inline-flex rounded-full border border-orange-400/30 bg-[#111111]/85 px-4 py-2 text-xs font-bold uppercase tracking-[0.13em] text-orange-200 shadow-[0_8px_24px_rgba(255, 159, 0, .18)] backdrop-blur">
                 Contact SocialRUSH
               </p>
-              <h1 className="mt-5 text-4xl font-black leading-tight text-[#0B0B0F] sm:text-5xl">
+              <h1 className="mt-5 text-4xl font-black leading-tight text-white sm:text-5xl">
                 Let&apos;s Build Your Growth Campaign Together
               </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-[#111827] sm:text-lg">
+              <p className="mt-5 max-w-2xl text-base leading-8 text-[#D1D5DB] sm:text-lg">
                 Have questions about services, pricing, orders, or support? Our team is here to help you choose
                 the right growth solution.
               </p>
@@ -148,13 +148,13 @@ export default function ContactPageContent() {
                 </a>
                 <Link
                   href="/services"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition duration-300 hover:-translate-y-0.5"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-orange-400/35 bg-white/[.06] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(255, 159, 0, .16)] transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-orange-400/10"
                 >
                   View Services
                 </Link>
                 <Link
                   href="/login?next=/dashboard/new-order"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .12)] transition duration-300 hover:-translate-y-0.5"
+                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-orange-400/35 bg-white/[.06] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(255, 159, 0, .16)] transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-orange-400/10"
                 >
                   Start Order
                 </Link>
@@ -164,7 +164,7 @@ export default function ContactPageContent() {
                 {["Fast response", "Secure support", "Order help", "Custom campaign guidance"].map((chip) => (
                   <span
                     key={chip}
-                    className="rounded-full border border-white/85 bg-white/85 px-3 py-1.5 text-xs font-semibold text-[#0B0B0F] shadow-[0_8px_20px_rgba(255, 159, 0, .12)]"
+                    className="rounded-full border border-orange-400/25 bg-[#111111]/75 px-3 py-1.5 text-xs font-semibold text-orange-100 shadow-[0_8px_20px_rgba(255, 159, 0, .14)]"
                   >
                     {chip}
                   </span>
@@ -179,11 +179,11 @@ export default function ContactPageContent() {
               viewport={{ once: true, amount: 0.2 }}
               transition={{ duration: 0.65, delay: 0.12 }}
             >
-              <div className="relative mx-auto w-full max-w-xl rounded-[30px] border border-white/75 bg-white/78 p-4 shadow-[0_28px_58px_rgba(255, 159, 0, .2)] backdrop-blur">
+              <div className="relative mx-auto w-full max-w-xl rounded-[30px] border border-orange-400/25 bg-[#111111]/82 p-4 shadow-[0_28px_58px_rgba(255, 122, 0, .24)] backdrop-blur">
                 <motion.div
                   animate={{ y: [0, -9, 0] }}
                   transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative overflow-hidden rounded-3xl border border-white/70 bg-gradient-to-br from-white to-[#FFF8F1] p-3"
+                  className="relative overflow-hidden rounded-3xl border border-orange-400/25 bg-gradient-to-br from-[#050505] via-[#111111] to-[#221607] p-3"
                 >
                   {!heroImageError ? (
                     <SafeImage
@@ -197,8 +197,8 @@ export default function ContactPageContent() {
                       onError={() => setHeroImageError(true)}
                     />
                   ) : (
-                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_25%_15%,_#FFF3E0_0%,_#FFF8F1_48%,_#FFF8F1_100%)]">
-                      <div className="rounded-2xl border border-white/80 bg-white/90 px-4 py-3 text-sm font-extrabold text-[#0B0B0F] shadow-[0_10px_24px_rgba(255, 159, 0, .2)]">
+                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_25%_15%,_rgba(255,122,0,.22)_0%,_#111111_48%,_#050505_100%)]">
+                      <div className="rounded-2xl border border-orange-400/30 bg-[#111111]/90 px-4 py-3 text-sm font-extrabold text-orange-100 shadow-[0_10px_24px_rgba(255, 159, 0, .2)]">
                         Contact Support
                       </div>
                     </div>
