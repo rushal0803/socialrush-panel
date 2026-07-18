@@ -22,6 +22,7 @@ export type BlogArticle = {
   breadcrumbTitle?: string;
   readingTime: string;
   image: string;
+  imageAlt?: string;
   intro: string;
   sections: BlogSection[];
   keyTakeaway?: string;
@@ -56,7 +57,9 @@ const baseBlogArticles: BlogArticle[] = [
       "A practical guide for small businesses to build trust using genuine reviews, testimonials, customer content and credible online signals.",
     breadcrumbTitle: "How Small Businesses Can Build Social Proof Online",
     readingTime: "12 min read",
-    image: "/images/blog/social-proof.webp",
+    image: "/images/blog/small-business-social-proof.svg",
+    imageAlt:
+      "Small business building online trust with customer reviews, testimonials and social proof",
     author: "Rushal Thakur",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",

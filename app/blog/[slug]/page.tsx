@@ -176,7 +176,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               <SafeImage
                 src={articleImage}
                 fallbackSrc={articleImage.replace(/\.png$/i, ".webp")}
-                alt={article.title}
+                alt={article.imageAlt ?? article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 960px"
                 className="object-cover"
