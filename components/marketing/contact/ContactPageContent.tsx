@@ -188,7 +188,6 @@ export default function ContactPageContent() {
                   {!heroImageError ? (
                     <SafeImage
                       src="/images/pages/contact-support-dark.png"
-                      fallbackSrc="/images/contact/contact-3d.webp"
                       alt="SocialRUSH customer support representative helping customers with orders and services"
                       width={900}
                       height={900}
