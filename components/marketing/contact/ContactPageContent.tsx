@@ -187,13 +187,13 @@ export default function ContactPageContent() {
                 >
                   {!heroImageError ? (
                     <SafeImage
-                      src="/images/contact/contact-3d.webp"
-                      fallbackSrc="/images/contact/contact-3d.png"
-                      alt="SocialRUSH contact support"
+                      src="/images/pages/contact-support-dark.png"
+                      fallbackSrc="/images/contact/contact-3d.webp"
+                      alt="SocialRUSH customer support representative helping customers with orders and services"
                       width={900}
                       height={900}
                       sizes="(max-width: 1023px) 100vw, 50vw"
-                      className="h-auto w-full rounded-2xl object-cover"
+                      className="h-auto w-full rounded-2xl object-contain"
                       priority
                       onError={() => setHeroImageError(true)}
                     />

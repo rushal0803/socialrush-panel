@@ -120,13 +120,13 @@ export default function BlogPageContent() {
                 >
                   {!heroImageError ? (
                     <SafeImage
-                      src="/images/blog/blog-hero.webp"
-                      fallbackSrc="/images/blog/blog-hero.png"
-                      alt="SocialRUSH blog hero"
+                      src="/images/pages/blog-resource-hub-dark.png"
+                      fallbackSrc="/images/blog/blog-hero.webp"
+                      alt="Social media creator planning content and reviewing growth analytics"
                       width={900}
-                      height={507}
+                      height={675}
                       sizes="(max-width: 1023px) 100vw, 50vw"
-                      className="h-auto w-full rounded-2xl object-cover"
+                      className="h-auto w-full rounded-2xl object-contain"
                       priority
                       onError={() => setHeroImageError(true)}
                     />
