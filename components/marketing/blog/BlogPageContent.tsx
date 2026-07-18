@@ -121,7 +121,6 @@ export default function BlogPageContent() {
                   {!heroImageError ? (
                     <SafeImage
                       src="/images/pages/blog-resource-hub-dark.png"
-                      fallbackSrc="/images/blog/blog-hero.webp"
                       alt="Social media creator planning content and reviewing growth analytics"
                       width={900}
                       height={675}
