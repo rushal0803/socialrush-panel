@@ -64,6 +64,7 @@ export function GET() {
       ...blogRoutes,
     ]),
   ];
+  const blogUpdatedAt = new Map(blogArticles.map((article) => [`/blog/${article.slug}`, article.updatedAt ?? now]));
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -75,9 +76,11 @@ ${routes
     const changefreq = isBlogArticle ? "weekly" : "monthly";
     const priority = isHome ? "1.0" : isServicePage ? "0.9" : route === "/blog" ? "0.8" : "0.7";
 
+    const lastmod = blogUpdatedAt.get(route) ?? now;
+
     return `  <url>
     <loc>${escapeXml(absoluteUrl(route))}</loc>
-    <lastmod>${now}</lastmod>
+    <lastmod>${lastmod}</lastmod>
     <changefreq>${changefreq}</changefreq>
     <priority>${priority}</priority>
   </url>`;

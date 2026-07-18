@@ -56,6 +56,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/blog/best-way-to-grow-linkedin-followers-for-business",
+        destination: "/blog/linkedin-followers-for-business-growth",
+        permanent: true,
+      },
+      {
         source: "/:path*",
         has: [{ type: "host", value: "getsocialrush.com" }],
         destination: "https://www.getsocialrush.com/:path*",
