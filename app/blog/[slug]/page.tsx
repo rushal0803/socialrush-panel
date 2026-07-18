@@ -51,6 +51,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     path: `/blog/${article.slug}`,
     keywords: [article.title, article.category, "social media growth India"],
   });
+  const articleImage = getArticleImage(article.image);
+  const articleImageUrl = new URL(articleImage, SEO_SITE_URL).toString();
 
   return {
     ...metadata,
@@ -62,11 +64,20 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
       ...metadata.openGraph,
       title: article.openGraphTitle || metadata.openGraph?.title,
       description: article.openGraphDescription || metadata.openGraph?.description,
+      images: [
+        {
+          url: articleImageUrl,
+          width: 1200,
+          height: 800,
+          alt: article.imageAlt ?? article.title,
+        },
+      ],
     },
     twitter: {
       ...metadata.twitter,
       title: article.openGraphTitle || metadata.twitter?.title,
       description: article.openGraphDescription || metadata.twitter?.description,
+      images: [articleImageUrl],
     },
   };
 }
@@ -172,14 +183,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           </Link>
 
           <div className="mt-6 overflow-hidden rounded-[30px] border border-white/85 bg-white/86 p-4 shadow-[0_20px_48px_rgba(255, 159, 0, .17)] backdrop-blur sm:p-6">
-            <div className="relative h-[220px] overflow-hidden rounded-2xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1] sm:h-[310px]">
+            <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[#050505] via-[#15110a] to-[#2B1600]">
               <SafeImage
                 src={articleImage}
-                fallbackSrc={articleImage.replace(/\.png$/i, ".webp")}
+                fallbackSrc={articleImage.replace(/\.(png|jpg|jpeg)$/i, ".webp")}
                 alt={article.imageAlt ?? article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 960px"
-                className="object-cover"
+                className="object-contain"
                 priority
               />
             </div>
