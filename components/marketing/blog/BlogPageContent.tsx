@@ -282,21 +282,21 @@ export default function BlogPageContent() {
                   variants={fadeUp}
                   transition={{ duration: 0.55 }}
                   whileHover={{ y: -8 }}
-                  className="rounded-3xl border border-white/85 bg-white/90 p-4 shadow-[0_16px_36px_rgba(255, 159, 0, .18)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_46px_rgba(255, 159, 0, .24)]"
+                  className="flex h-full flex-col rounded-3xl border border-white/85 bg-white/90 p-4 shadow-[0_16px_36px_rgba(255, 159, 0, .18)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_46px_rgba(255, 159, 0, .24)]"
                 >
                   <Link
                     href={`/blog/${post.slug}`}
                     aria-label={`Read ${post.title}`}
-                    className="relative block h-44 overflow-hidden rounded-2xl bg-gradient-to-br from-[#FFF8F1] via-[#FFF8F1] to-[#FFF8F1]"
+                    className="relative block aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[#050505] via-[#15110a] to-[#2B1600]"
                   >
                     {post.hasImage ? (
                       <SafeImage
                         src={post.image as string}
-                        fallbackSrc={(post.image as string).replace(/\.png$/i, ".webp")}
-                        alt={post.title}
+                        fallbackSrc={(post.image as string).replace(/\.(png|jpg|jpeg)$/i, ".webp")}
+                        alt={post.imageAlt ?? post.title}
                         fill
                         sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="object-cover"
+                        className="object-contain"
                         onError={() =>
                           setImageErrors((current) => ({
                             ...current,
@@ -305,7 +305,7 @@ export default function BlogPageContent() {
                         }
                       />
                     ) : (
-                      <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_25%_15%,_#FFF3E0_0%,_#FFF8F1_48%,_#FFF8F1_100%)] px-6 text-center text-sm font-semibold text-[#0B0B0F]">
+                      <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_25%_15%,_rgba(255,159,0,0.32)_0%,_#111111_48%,_#050505_100%)] px-6 text-center text-sm font-semibold text-[#FF9F00]">
                         <span>Article illustration</span>
                       </div>
                     )}
@@ -317,7 +317,7 @@ export default function BlogPageContent() {
                     </Link>
                   </h3>
                   <p className="mt-2 text-sm leading-6 text-[#111827]">{post.description}</p>
-                  <div className="mt-5 flex items-center justify-between gap-3">
+                  <div className="mt-auto flex items-center justify-between gap-3 pt-5">
                     <div className="flex flex-wrap gap-2">
                       <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#FF9F00]">
                         {post.readingTime}

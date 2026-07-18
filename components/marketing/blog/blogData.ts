@@ -57,7 +57,7 @@ const baseBlogArticles: BlogArticle[] = [
       "A practical guide for small businesses to build trust using genuine reviews, testimonials, customer content and credible online signals.",
     breadcrumbTitle: "How Small Businesses Can Build Social Proof Online",
     readingTime: "12 min read",
-    image: "/images/blog/small-business-social-proof.svg",
+    image: "/images/blog/small-business-social-proof.png",
     imageAlt:
       "Small business building online trust with customer reviews, testimonials and social proof",
     author: "Rushal Thakur",
@@ -406,7 +406,9 @@ const baseBlogArticles: BlogArticle[] = [
       "Discover practical Instagram posting-time strategies for Indian creators, businesses and brands using Insights and audience testing.",
     breadcrumbTitle: "Best Time to Post on Instagram in India",
     readingTime: "12 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/best-time-instagram-india.png",
+    imageAlt:
+      "Instagram posting schedule in India with audience activity times and content planning",
     author: "Rushal Thakur",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
@@ -708,7 +710,9 @@ const baseBlogArticles: BlogArticle[] = [
       "Understand common reasons for Instagram follower drops and learn practical ways to retain a relevant and engaged audience.",
     breadcrumbTitle: "Why Instagram Followers Drop",
     readingTime: "12 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/instagram-followers-drop.png",
+    imageAlt:
+      "Instagram analytics showing follower decline and recovery strategies",
     author: "Rushal Thakur",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
@@ -1033,7 +1037,9 @@ const baseBlogArticles: BlogArticle[] = [
       "A practical beginner guide to growing a YouTube channel and reaching the first 1,000 subscribers.",
     breadcrumbTitle: "How to Get Your First 1,000 YouTube Subscribers",
     readingTime: "12 min read",
-    image: "/images/blog/youtube-growth.webp",
+    image: "/images/blog/first-1000-youtube-subscribers.png",
+    imageAlt:
+      "YouTube channel growth dashboard for reaching the first 1000 subscribers",
     author: "Rushal Thakur",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
@@ -1308,7 +1314,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Learn practical ways to grow Instagram followers organically in India using profile optimization, Reels, content planning and genuine engagement.",
     readingTime: "10 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/grow-instagram-organically-india.png",
+    imageAlt:
+      "Instagram content planning dashboard for organic follower growth in India",
     author: "Rushal Thakur",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
@@ -1565,7 +1573,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Position your expertise, sharpen your posting angle, and use engagement loops to stay visible.",
     readingTime: "5 min read",
-    image: "/images/blog/linkedin-marketing.webp",
+    image: "/images/blog/linkedin-growth-personal-brands.png",
+    imageAlt:
+      "LinkedIn personal brand growth plan with profile and content strategy",
     intro:
       "LinkedIn growth is built on authority and consistency. Personal brands that perform well share useful perspectives, engage with intent, and document practical outcomes.",
     sections: [
@@ -1833,7 +1843,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Review the safety questions to ask before ordering Instagram follower growth, including passwords, public links, pacing, tracking, and refill terms.",
     readingTime: "7 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/safe-buy-instagram-followers.png",
+    imageAlt:
+      "Safe Instagram followers checklist with public link ordering and account protection",
     intro:
       "Safety depends on the ordering process and the promises being made. No service can replace good content, but customers can reduce avoidable risk by protecting account access, reading delivery terms, and choosing a trackable campaign.",
     sections: [
@@ -2205,7 +2217,9 @@ const baseBlogArticles: BlogArticle[] = [
       "Learn how follower count and genuine engagement affect Instagram growth, brand collaborations and business results.",
     breadcrumbTitle: "Instagram Followers vs Engagement",
     readingTime: "11 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/instagram-followers-vs-engagement.png",
+    imageAlt:
+      "Instagram followers and engagement comparison with likes comments saves and shares",
     author: "Rushal Thakur",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
@@ -2559,7 +2573,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Practical Facebook page growth advice for Indian local businesses that want clearer visibility, trust, and customer conversations.",
     readingTime: "9 min read",
-    image: "/images/blog/social-media-tips.webp",
+    image: "/images/blog/facebook-page-growth-india.png",
+    imageAlt:
+      "Facebook page growth strategy for Indian local businesses and customer trust",
     intro:
       "Facebook can still support local discovery when a business page is complete, helpful, and easy to contact. Growth should focus on trust signals, useful posts, visible activity, and clear next steps for local customers.",
     sections: [
