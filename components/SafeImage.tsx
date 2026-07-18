@@ -38,7 +38,7 @@ export default function SafeImage({
       <span
         role="img"
         aria-label={alt}
-        className={`${fill ? "absolute inset-0" : "flex w-full"} items-center justify-center bg-gradient-to-br from-orange-50 via-amber-50 to-amber-50 text-[#111827] ${className}`}
+        className={`${fill ? "absolute inset-0" : "flex w-full"} items-center justify-center bg-gradient-to-br from-[#050505] via-[#15110a] to-[#331a00] text-[#FF9F00] ${className}`}
         style={{
           ...style,
           ...(!fill && typeof width === "number" && typeof height === "number"
@@ -46,7 +46,7 @@ export default function SafeImage({
             : {}),
         }}
       >
-        <span className="grid h-14 w-14 place-items-center rounded-2xl bg-white/80 shadow-sm">
+        <span className="grid h-14 w-14 place-items-center rounded-2xl border border-[#FF9F00]/40 bg-[#111111]/90 shadow-[0_18px_40px_rgba(255,122,0,0.25)]">
           <svg viewBox="0 0 36 36" className="h-9 w-9" fill="none" aria-hidden="true">
             <path d="M8 24.5 14.2 18l4.1 3.7L27.8 11" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
             <path d="M21.5 11h6.3v6.3" stroke="currentColor" strokeWidth="3.2" strokeLinecap="round" strokeLinejoin="round" />
@@ -68,7 +68,7 @@ export default function SafeImage({
       className={className}
       placeholder={props.placeholder ?? "blur"}
       blurDataURL={props.blurDataURL ?? blurPlaceholder}
-      unoptimized={usingFallback || props.unoptimized}
+      unoptimized={usingFallback || currentSrc.toLowerCase().endsWith(".svg") || props.unoptimized}
       onError={(event) => {
         if (fallbackSrc && !usingFallback) {
           setCurrentSrc(fallbackSrc);
