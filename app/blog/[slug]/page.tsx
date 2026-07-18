@@ -45,12 +45,30 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     };
   }
 
-  return createPageMetadata({
-    title: article.title || "SocialRUSH Blog",
-    description: article.description || article.intro || "Read practical SocialRUSH social media growth guidance for creators, brands and businesses.",
+  const metadata = createPageMetadata({
+    title: article.metaTitle || article.title || "SocialRUSH Blog",
+    description: article.metaDescription || article.description || article.intro || "Read practical SocialRUSH social media growth guidance for creators, brands and businesses.",
     path: `/blog/${article.slug}`,
     keywords: [article.title, article.category, "social media growth India"],
   });
+
+  return {
+    ...metadata,
+    robots: {
+      index: true,
+      follow: true,
+    },
+    openGraph: {
+      ...metadata.openGraph,
+      title: article.openGraphTitle || metadata.openGraph?.title,
+      description: article.openGraphDescription || metadata.openGraph?.description,
+    },
+    twitter: {
+      ...metadata.twitter,
+      title: article.openGraphTitle || metadata.twitter?.title,
+      description: article.openGraphDescription || metadata.twitter?.description,
+    },
+  };
 }
 
 export default function BlogDetailPage({ params }: { params: { slug: string } }) {
@@ -63,11 +81,17 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
   const articleImage = getArticleImage(article.image);
   const articleAuthor = article.author ?? "SocialRUSH Editorial Team";
+  const breadcrumbTitle = article.breadcrumbTitle ?? article.title;
   const articleSections = getArticleSections(article);
   const articleFaqs = article.faqs ?? [];
   const articleRelatedLinks = article.relatedLinks ?? [];
+  const articleComparison = article.comparison;
   const articleWordCount = countArticleWords([
     article.intro ?? "",
+    article.keyTakeaway ?? "",
+    articleComparison?.heading ?? "",
+    articleComparison?.intro ?? "",
+    ...(articleComparison?.rows.flatMap((row) => [row.factor, row.followers, row.engagement]) ?? []),
     ...articleSections.flatMap((section) => [section.heading, section.body, ...(section.tips ?? [])]),
     ...articleFaqs.flatMap((faq) => [faq.question, faq.answer]),
   ]);
@@ -116,7 +140,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
         items={[
           { name: "Home", path: "/" },
           { name: "Blog", path: "/blog" },
-          { name: article.title, path: `/blog/${article.slug}` },
+          { name: breadcrumbTitle, path: `/blog/${article.slug}` },
         ]}
       />
       <script
@@ -136,6 +160,13 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
         </div>
 
         <div className="relative mx-auto w-full max-w-5xl">
+          <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-2 text-sm font-semibold text-[#111827]">
+            <Link href="/" className="transition hover:text-[#FF7A00]">Home</Link>
+            <span aria-hidden="true" className="text-[#FF9F00]">/</span>
+            <Link href="/blog" className="transition hover:text-[#FF7A00]">Blog</Link>
+            <span aria-hidden="true" className="text-[#FF9F00]">/</span>
+            <span className="text-[#0B0B0F]">{breadcrumbTitle}</span>
+          </nav>
           <Link href="/blog#articles" className="inline-flex rounded-xl border border-[#FFF3E0] bg-white/85 px-4 py-2 text-sm font-semibold text-[#0B0B0F] shadow-[0_8px_22px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5">
             Back to Blog
           </Link>
@@ -169,6 +200,13 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             <p className="mt-4 text-base leading-8 text-[#111827]">{article.intro}</p>
           </div>
 
+          {article.keyTakeaway ? (
+            <aside className="mt-8 rounded-3xl border border-[#FFC400]/45 bg-gradient-to-br from-[#0B0B0F] via-[#151515] to-[#2a1600] p-6 text-white shadow-[0_18px_42px_rgba(255, 122, 0, .24)]">
+              <h2 className="text-xl font-extrabold">Key takeaway</h2>
+              <p className="mt-3 text-sm leading-7 text-orange-100">{article.keyTakeaway}</p>
+            </aside>
+          ) : null}
+
           <nav
             aria-label="Table of contents"
             className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
@@ -185,10 +223,17 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                   </a>
                 </li>
               ))}
+              {articleComparison ? (
+                <li>
+                  <a href="#followers-vs-engagement-comparison" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
+                    {articleSections.length + 1}. {articleComparison.heading}
+                  </a>
+                </li>
+              ) : null}
               {article.faqs?.length ? (
                 <li>
                   <a href="#frequently-asked-questions" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
-                    {articleSections.length + 1}. Frequently asked questions
+                    {articleSections.length + (articleComparison ? 2 : 1)}. Frequently asked questions
                   </a>
                 </li>
               ) : null}
@@ -217,6 +262,36 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             ))}
           </div>
 
+          {articleComparison ? (
+            <section
+              id="followers-vs-engagement-comparison"
+              className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
+            >
+              <h2 className="text-2xl font-extrabold text-[#0B0B0F]">{articleComparison.heading}</h2>
+              <p className="mt-3 text-[15px] leading-7 text-[#111827]">{articleComparison.intro}</p>
+              <div className="mt-5 overflow-x-auto rounded-2xl border border-[#FFF3E0]">
+                <table className="min-w-[720px] divide-y divide-[#FFF3E0] bg-white text-left text-sm">
+                  <thead className="bg-[#FFF8F1] text-xs uppercase tracking-[0.08em] text-[#0B0B0F]">
+                    <tr>
+                      <th scope="col" className="px-4 py-3 font-extrabold">Factor</th>
+                      <th scope="col" className="px-4 py-3 font-extrabold">Followers</th>
+                      <th scope="col" className="px-4 py-3 font-extrabold">Engagement</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-[#FFF3E0] text-[#111827]">
+                    {articleComparison.rows.map((row) => (
+                      <tr key={row.factor}>
+                        <th scope="row" className="px-4 py-4 align-top font-extrabold text-[#0B0B0F]">{row.factor}</th>
+                        <td className="px-4 py-4 align-top leading-6">{row.followers}</td>
+                        <td className="px-4 py-4 align-top leading-6">{row.engagement}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </section>
+          ) : null}
+
           {articleFaqs.length ? (
             <section
               id="frequently-asked-questions"
@@ -235,6 +310,15 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               </div>
             </section>
           ) : null}
+
+          <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
+            <h2 className="text-xl font-extrabold text-[#0B0B0F]">About the author</h2>
+            <p className="mt-3 text-sm leading-7 text-[#111827]">
+              {articleAuthor} creates practical SocialRUSH guides about social media growth, platform strategy,
+              public-link ordering, campaign planning, and online-branding decisions for creators, businesses, and
+              personal brands.
+            </p>
+          </section>
 
           {articleRelatedLinks.length ? (
             <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
