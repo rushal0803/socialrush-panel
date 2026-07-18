@@ -83,7 +83,7 @@ export default function AuthShell({
                   width={600}
                   height={750}
                   sizes="(min-width: 1024px) 42vw, 0px"
-                  className="h-auto w-full rounded-3xl object-cover"
+                  className="h-auto w-full rounded-3xl object-contain"
                 />
               </div>
             </div>

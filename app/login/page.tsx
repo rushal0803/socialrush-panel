@@ -31,8 +31,8 @@ export default async function LoginPage() {
       footerText="Don't have an account?"
       footerLink="/register"
       footerLabel="Sign up"
-      image="/images/auth/login-3d.png"
-      imageAlt="SocialRUSH login visual"
+      image="/images/auth/login-dashboard-dark.png"
+      imageAlt="SocialRUSH secure login dashboard with social media growth analytics"
     >
       <Suspense fallback={null}>
         <LoginForm />

@@ -31,8 +31,8 @@ export default async function RegisterPage() {
       footerText="Already have an account?"
       footerLink="/login"
       footerLabel="Login"
-      image="/images/auth/signup-3d.png"
-      imageAlt="SocialRUSH sign up visual"
+      image="/images/auth/register-onboarding-dark.png"
+      imageAlt="SocialRUSH account registration and social media growth onboarding dashboard"
     >
       <RegisterForm />
     </AuthShell>
