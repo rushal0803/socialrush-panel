@@ -1487,7 +1487,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Build momentum with profile clarity, content rhythm, and audience-first actions that feel authentic.",
     readingTime: "4 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/how-to-grow-fast-instagram-without-looking-fake.png",
+    imageAlt:
+      "Instagram profile growing through authentic content and community engagement",
     intro:
       "Fast growth on Instagram should still feel human. The best-performing creators improve profile trust, publish consistently, and create simple engagement loops that bring people back.",
     sections: [
@@ -1530,7 +1532,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Improve early watch signals, click appeal, and consistency to increase your content discovery window.",
     readingTime: "6 min read",
-    image: "/images/blog/youtube-growth.webp",
+    image: "/images/blog/youtube-views-more-reach.png",
+    imageAlt:
+      "YouTube analytics showing factors that help videos gain more reach",
     intro:
       "YouTube rewards viewer satisfaction over short-term tricks. Better reach comes from stronger click-through rate, retention, and a clear publishing system.",
     sections: [
@@ -1618,7 +1622,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Reliable interaction patterns shape perception and long-term credibility across social platforms.",
     readingTime: "3 min read",
-    image: "/images/blog/social-media-tips.webp",
+    image: "/images/blog/consistent-engagement-builds-trust.png",
+    imageAlt:
+      "Consistent social media engagement building community trust",
     intro:
       "Audiences trust brands that show up regularly. Consistent engagement proves reliability and keeps your account top of mind during buying decisions.",
     sections: [
@@ -1661,7 +1667,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Map service choices to campaign goals so your budget supports meaningful growth outcomes.",
     readingTime: "5 min read",
-    image: "/images/blog/brand-visibility.webp",
+    image: "/images/blog/choose-right-social-media-service.png",
+    imageAlt:
+      "Comparing social media services by quality, price, safety and support",
     intro:
       "The right service depends on your current objective. Better choices come from matching campaign type to funnel stage, content quality, and audience intent.",
     sections: [
@@ -1704,7 +1712,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Avoid common planning errors that cause low conversion, weak retention, or wasted campaign spend.",
     readingTime: "4 min read",
-    image: "/images/blog/campaign-strategy.webp",
+    image: "/images/blog/social-media-campaign-mistakes.png",
+    imageAlt:
+      "Common social media campaign mistakes and ways to improve results",
     intro:
       "Most campaign failures come from unclear messaging and weak execution systems. A focused plan with good pacing and review cycles improves both ROI and trust.",
     sections: [
@@ -1747,7 +1757,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical Instagram growth plan for Indian creators and businesses using clearer positioning, useful content, and responsible social proof.",
     readingTime: "7 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/grow-instagram-followers-india-practical-plan.png",
+    imageAlt:
+      "Practical Instagram follower growth plan for creators in India",
     intro:
       "Growing an Instagram audience in India is not one tactic. It is a sequence: make the profile easy to understand, publish content people can recognize and share, then support discovery without losing credibility.",
     sections: [
@@ -1795,7 +1807,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Understand Instagram follower pricing in India, what affects campaign value, and which delivery, refill, and support details to review.",
     readingTime: "6 min read",
-    image: "/images/blog/instagram-growth.webp",
+    image: "/images/blog/instagram-followers-price-india.png",
+    imageAlt:
+      "Comparing Instagram follower prices, quality, delivery and support in India",
     intro:
       "The cheapest number on a pricing table rarely explains the full service. A useful comparison includes the confirmed rate, delivery window, public-link requirement, refill terms, checkout security, and a way to track the order.",
     sections: [
@@ -1893,7 +1907,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A practical YouTube subscriber strategy for Indian creators using stronger channel positioning, searchable videos, series, and responsible growth support.",
     readingTime: "8 min read",
-    image: "/images/blog/youtube-growth.webp",
+    image: "/images/blog/increase-youtube-subscribers-india.png",
+    imageAlt:
+      "YouTube subscriber growth strategy for creators in India",
     intro:
       "Subscriber growth becomes easier when every part of the channel answers one question: why should a viewer return? Clear topics, useful video series, strong packaging, and a trustworthy channel presentation work together.",
     sections: [
@@ -1990,7 +2006,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "A channel-by-channel social media growth framework for Indian creators balancing content, discovery, social proof, tracking, and sustainable routines.",
     readingTime: "9 min read",
-    image: "/images/blog/campaign-strategy.webp",
+    image: "/images/blog/social-media-growth-strategy-indian-creators.png",
+    imageAlt:
+      "Social media growth strategy for Indian creators across major platforms",
     intro:
       "Indian creators do not need to be everywhere at once. A better strategy gives each platform a job, connects content to a repeatable audience promise, and measures whether attention becomes trust.",
     sections: [
@@ -2038,7 +2056,9 @@ const baseBlogArticles: BlogArticle[] = [
     description:
       "Understand how YouTube views pricing works in India, what affects campaign cost, and which quality and safety details to review before ordering.",
     readingTime: "9 min read",
-    image: "/images/blog/youtube-growth.webp",
+    image: "/images/blog/youtube-views-price-india-buyer-guide.png",
+    imageAlt:
+      "Comparing YouTube views pricing, quality and delivery options in India",
     intro:
       "The lowest YouTube views price is not automatically the best value. Indian creators should compare the current rate, delivery window, destination requirements, tracking, support, and the role a view campaign will play in a broader channel strategy.",
     sections: [
