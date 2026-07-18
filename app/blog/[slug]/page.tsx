@@ -274,8 +274,12 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                   <thead className="bg-[#FFF8F1] text-xs uppercase tracking-[0.08em] text-[#0B0B0F]">
                     <tr>
                       <th scope="col" className="px-4 py-3 font-extrabold">Factor</th>
-                      <th scope="col" className="px-4 py-3 font-extrabold">Followers</th>
-                      <th scope="col" className="px-4 py-3 font-extrabold">Engagement</th>
+                      <th scope="col" className="px-4 py-3 font-extrabold">
+                        {articleComparison.leftLabel ?? "Followers"}
+                      </th>
+                      <th scope="col" className="px-4 py-3 font-extrabold">
+                        {articleComparison.rightLabel ?? "Engagement"}
+                      </th>
                     </tr>
                   </thead>
                   <tbody className="divide-y divide-[#FFF3E0] text-[#111827]">
