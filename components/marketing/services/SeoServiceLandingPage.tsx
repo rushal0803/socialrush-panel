@@ -154,7 +154,9 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
         label: servicePage.displayName,
         platform: servicePage.platform.icon,
       };
-    });
+    })
+    .sort((left, right) => Number(right.platform === page.service.platform) - Number(left.platform === page.service.platform))
+    .slice(0, 5);
 
   return (
     <PublicShell tone="light3d">

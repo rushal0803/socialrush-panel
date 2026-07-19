@@ -372,28 +372,19 @@ export default function ServicesPageContent() {
           </div>
         </div>
 
-        <section
-          aria-labelledby="complete-service-directory-heading"
-          className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8"
-        >
-          <div className="mx-auto max-w-7xl">
+        <section aria-labelledby="complete-service-directory-heading" className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_20px_48px_-34px_rgba(255,122,0,.55)] sm:p-7">
             <div className="max-w-3xl">
-              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
-                Complete service directory
-              </p>
-              <h2
-                id="complete-service-directory-heading"
-                className="mt-2 text-2xl font-black text-[#0B0B0F] sm:text-3xl"
-              >
-                Browse every SocialRUSH growth service
+              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF9F00]">Compact service directory</p>
+              <h2 id="complete-service-directory-heading" className="mt-2 text-2xl font-black text-white sm:text-3xl">
+                Browse all currently available SocialRUSH services
               </h2>
-              <p className="mt-3 text-sm leading-7 text-[#111827]">
-                Compare all currently available platform services, starting rates,
-                delivery estimates, and refill terms.
+              <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">
+                Open a platform to compare service pages, starting rates, delivery estimates, and refill/support terms.
               </p>
             </div>
 
-            <div className="mt-7 space-y-9">
+            <div className="mt-7 space-y-3">
               {platformOrder.map((platformId) => {
                 const meta = platformMeta[platformId];
                 const platformServices = activeSmmServices.filter(
@@ -401,25 +392,29 @@ export default function ServicesPageContent() {
                 );
 
                 return (
-                  <section
+                  <details
                     key={`directory-${platformId}`}
-                    aria-labelledby={`directory-${platformId}-heading`}
+                    className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-4"
+                    open={platformId === selectedPlatform}
                   >
-                    <div className="flex items-center gap-3">
-                      <IconBadge label={meta.label} size="sm">
-                        <PlatformIcon
-                          platform={meta.icon}
-                          title={meta.label}
-                          className="h-5 w-5"
-                        />
-                      </IconBadge>
-                      <h3
-                        id={`directory-${platformId}-heading`}
-                        className="text-lg font-black text-[#0B0B0F]"
-                      >
-                        {meta.label} services
-                      </h3>
-                    </div>
+                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+                      <span className="flex min-w-0 items-center gap-3">
+                        <IconBadge label={meta.label} size="sm">
+                          <PlatformIcon platform={meta.icon} title={meta.label} className="h-5 w-5" />
+                        </IconBadge>
+                        <span className="min-w-0">
+                          <span id={`directory-${platformId}-heading`} className="block text-base font-black text-white">
+                            {meta.label} services
+                          </span>
+                          <span className="mt-1 block text-xs font-semibold text-[#9CA3AF]">
+                            {platformServices.length} services · prices and support terms listed
+                          </span>
+                        </span>
+                      </span>
+                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-orange-400/25 bg-orange-500/10 text-lg font-black text-orange-200 transition group-open:rotate-45">
+                        +
+                      </span>
+                    </summary>
 
                     <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                       {platformServices.map((service) => {
@@ -436,37 +431,37 @@ export default function ServicesPageContent() {
                         return (
                           <article
                             key={`directory-${service.code}`}
-                            className="flex min-w-0 flex-col rounded-2xl border border-white/85 bg-white/88 p-5 shadow-[0_16px_38px_-26px_rgba(15,23,42,.32)]"
+                            className="flex min-w-0 flex-col rounded-2xl border border-orange-400/15 bg-[#0B0B0F] p-5 shadow-[0_16px_38px_-30px_rgba(255,122,0,.45)]"
                           >
-                            <h4 className="text-base font-black text-[#0B0B0F]">
+                            <h4 className="text-base font-black text-white">
                               <Link
                                 href={detailPath}
-                                className="transition hover:text-orange-600"
+                                className="transition hover:text-orange-200"
                               >
                                 {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                               </Link>
                             </h4>
-                            <p className="mt-2 flex-1 text-sm leading-6 text-[#111827]">
+                            <p className="mt-2 flex-1 text-sm leading-6 text-[#D1D5DB]">
                               {service.description}
                             </p>
                             <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
-                              <div className="rounded-xl bg-[#FFF8F1] p-3">
-                                <dt className="font-bold text-[#111827]">
+                              <div className="rounded-xl border border-orange-400/15 bg-orange-500/10 p-3">
+                                <dt className="font-bold text-orange-200">
                                   Starting price
                                 </dt>
-                                <dd className="mt-1 font-black text-[#0B0B0F]">
+                                <dd className="mt-1 font-black text-white">
                                   {formatCurrency(service.pricePer1000, currency)} / 1K
                                 </dd>
                               </div>
-                              <div className="rounded-xl bg-[#FFF8F1] p-3">
-                                <dt className="font-bold text-[#111827]">Delivery</dt>
-                                <dd className="mt-1 font-black text-[#0B0B0F]">
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                                <dt className="font-bold text-[#9CA3AF]">Delivery</dt>
+                                <dd className="mt-1 font-black text-white">
                                   {service.deliveryTime}
                                 </dd>
                               </div>
                             </dl>
-                            <p className="mt-3 text-xs leading-5 text-[#111827]">
-                              <strong className="text-[#0B0B0F]">
+                            <p className="mt-3 text-xs leading-5 text-[#D1D5DB]">
+                              <strong className="text-white">
                                 Refill/support:
                               </strong>{" "}
                               {service.refillPolicy}
@@ -474,13 +469,13 @@ export default function ServicesPageContent() {
                             <div className="mt-4 grid gap-2 min-[420px]:grid-cols-3">
                               <Link
                                 href={detailPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-center text-[11px] font-black text-[#FF9F00]"
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2 text-center text-[11px] font-black text-[#D1D5DB]"
                               >
                                 Service Details
                               </Link>
                               <Link
                                 href={packagesPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-3 py-2 text-center text-[11px] font-black text-[#FF9F00]"
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2 text-center text-[11px] font-black text-orange-200"
                               >
                                 View Packages
                               </Link>
@@ -495,7 +490,7 @@ export default function ServicesPageContent() {
                         );
                       })}
                     </div>
-                  </section>
+                  </details>
                 );
               })}
             </div>

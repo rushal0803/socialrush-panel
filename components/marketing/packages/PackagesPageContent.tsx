@@ -69,6 +69,7 @@ export default function PackagesPageContent() {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>("Instagram");
   const [selectedPackageId, setSelectedPackageId] = useState("");
+  const [showAllPackages, setShowAllPackages] = useState(false);
   const packageStepRef = useRef<HTMLElement>(null);
 
   const services = useMemo(
@@ -88,6 +89,7 @@ export default function PackagesPageContent() {
   function selectPlatform(platform: Platform) {
     setSelectedPlatform(platform);
     setSelectedPackageId("");
+    setShowAllPackages(false);
     const firstService = serviceOrder.find((service) =>
       bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service),
     );
@@ -193,7 +195,11 @@ export default function PackagesPageContent() {
                 <button
                   key={service}
                   type="button"
-                  onClick={() => setSelectedService(service)}
+                  onClick={() => {
+                    setSelectedService(service);
+                    setSelectedPackageId("");
+                    setShowAllPackages(false);
+                  }}
                   className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] ${
                     activeService === service
                       ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]"
@@ -220,6 +226,10 @@ export default function PackagesPageContent() {
                   const categoryPackages = bigPackages.filter(
                     (pkg) => pkg.platform === platform.key && pkg.service === service,
                   );
+                  const visiblePackages = showAllPackages ? categoryPackages : categoryPackages.slice(0, 6);
+                  const bestValuePackageId =
+                    categoryPackages.find((pkg) => pkg.discountBadge === "Best Value")?.packageId ??
+                    categoryPackages[Math.min(2, categoryPackages.length - 1)]?.packageId;
                   const active =
                     selectedPlatform === platform.key && activeService === service;
                   const headingId = `${platform.key.toLowerCase()}-${service}-packages`;
@@ -241,7 +251,7 @@ export default function PackagesPageContent() {
                       </div>
 
                       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {categoryPackages.map((pkg) => (
+                        {visiblePackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
                             className={`flex min-w-0 flex-col rounded-3xl border bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-6 ${
@@ -254,9 +264,9 @@ export default function PackagesPageContent() {
                               <IconBadge label={pkg.platform}>
                                 <PlatformIcon platform={pkg.platform} className="h-6 w-6" />
                               </IconBadge>
-                              {pkg.discountBadge ? (
+                              {pkg.packageId === bestValuePackageId ? (
                                 <span className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-orange-200">
-                                  {pkg.discountBadge}
+                                  Best Value
                                 </span>
                               ) : null}
                             </div>
@@ -300,6 +310,17 @@ export default function PackagesPageContent() {
                           </article>
                         ))}
                       </div>
+                      {categoryPackages.length > 6 ? (
+                        <div className="mt-6 flex justify-center">
+                          <button
+                            type="button"
+                            onClick={() => setShowAllPackages((value) => !value)}
+                            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-white/[.06] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/60 hover:bg-orange-500/10"
+                          >
+                            {showAllPackages ? "Show Fewer Packages" : `View More Packages (${categoryPackages.length - 6} more)`}
+                          </button>
+                        </div>
+                      ) : null}
                     </section>
                   );
                 }),

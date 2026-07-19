@@ -24,7 +24,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 2499,
     discountBadge: "Save 10%",
     deliveryTime: "2–5 days",
-    description: "Build quick profile growth with 5,000 real followers.",
+    description: "Start a focused Instagram follower package with 5,000 included followers.",
     bestFor: "Creators starting growth campaigns",
   },
   {
@@ -63,7 +63,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 19999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–14 days",
-    description: "Achieve 50,000+ followers for premium brand presence.",
+    description: "Large Instagram follower package for established pages and agency campaigns.",
     bestFor: "Agencies and established brands",
   },
 
@@ -635,7 +635,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 16999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–14 days",
-    description: "TikTok influencer status with 50,000 followers.",
+    description: "Large TikTok follower package for established creator and brand campaigns.",
     bestFor: "Agencies and brands",
   },
 

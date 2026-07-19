@@ -31,7 +31,7 @@ export const smmServiceCatalog: SmmService[] = [
   {
     platform: "instagram",
     code: "instagram-followers",
-    name: "Instagram Real Followers",
+    name: "Instagram Followers",
     description: "Build profile authority with gradual premium follower delivery.",
     pricePer1000: SERVICE_PRICES["instagram-followers"],
     minQuantity: 100,

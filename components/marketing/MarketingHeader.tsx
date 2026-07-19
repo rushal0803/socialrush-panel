@@ -15,8 +15,9 @@ const nav = [
   ["Services", "/services"],
   ["Packages", "/packages"],
   ["How It Works", "/#how-it-works"],
-  ["FAQ", "/#faq"],
-  ["Contact", "/#contact"],
+  ["Blog", "/blog"],
+  ["FAQ", "/faq"],
+  ["Contact", "/contact"],
 ] as const;
 
 export default function MarketingHeader({ tone = "default" }: { tone?: "default" | "light3d" }) {

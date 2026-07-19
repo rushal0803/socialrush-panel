@@ -36,8 +36,9 @@ const navLinks = [
   { label: "Home", href: "#home" },
   { label: "Services", href: "/services" },
   { label: "Packages", href: "/packages" },
-  { label: "About Us", href: "/about" },
+  { label: "How It Works", href: "#how-it-works" },
   { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "#faq" },
   { label: "Contact", href: "/contact" },
 ] as const;
 
@@ -358,8 +359,8 @@ export default function HomepageContent() {
               SMART GROWTH • REAL RESULTS
             </motion.span>
             <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-[58px]">
-              SocialRUSH Social Media Growth Services{" "}
-              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">That Feel Real</span>
+              Transparent Social Media Growth Services{" "}
+              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">for Creators and Brands</span>
             </h1>
             <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, transparent pricing, secure checkout, dashboard tracking and WhatsApp support.</p>
             <div className="mt-7 flex flex-col gap-3 sm:flex-row">

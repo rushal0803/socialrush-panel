@@ -231,7 +231,9 @@ export default function IndiaServiceLandingPage({
         label: servicePage.serviceName,
         platform: servicePage.platform,
       };
-    });
+    })
+    .sort((left, right) => Number(right.platform === page.platform) - Number(left.platform === page.platform))
+    .slice(0, 5);
   const packagesHref = `/packages?platform=${encodeURIComponent(
     page.platformKey,
   )}&service=${encodeURIComponent(page.packageService)}`;
