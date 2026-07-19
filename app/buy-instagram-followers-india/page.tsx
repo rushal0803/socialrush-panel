@@ -31,7 +31,7 @@ const pagePath = "/buy-instagram-followers-india";
 const pageUrl = `${SEO_SITE_URL}${pagePath}`;
 const packagesHref = "/packages?platform=instagram&service=followers";
 const orderHref =
-  "/dashboard/new-order?platform=instagram&service=instagram-followers";
+  "/dashboard/new-order?platform=instagram&service=followers";
 const whatsappHref =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20an%20Instagram%20followers%20package";
 

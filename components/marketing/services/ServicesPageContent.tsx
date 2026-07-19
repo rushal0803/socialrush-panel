@@ -383,13 +383,13 @@ export default function ServicesPageContent({
               const meta = platformMeta[platformId];
               const platformServices = platformId === selectedPlatform ? activePlatformServices : [];
               const active = selectedPlatform === platformId;
+              if (!active) return null;
 
               return (
                 <section
                   key={platformId}
                   id={`${platformId}-services`}
                   aria-labelledby={`${platformId}-services-heading`}
-                  hidden={!active}
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
@@ -402,7 +402,7 @@ export default function ServicesPageContent({
                   {platformServices.length > 0 ? (
                     <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {platformServices.map((service) => {
-                const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
+                const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const serviceDetailPath = seoServicePaths[service.code] ?? `/services/${service.code}`;
                 const refillAvailable = !service.refillPolicy.toLowerCase().includes("no refill");
@@ -528,8 +528,8 @@ export default function ServicesPageContent({
                           packagePlatform(service.platform),
                         )}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                         const orderPath = `/dashboard/new-order?platform=${encodeURIComponent(
-                          service.platform,
-                        )}&service=${encodeURIComponent(service.code)}`;
+                          packagePlatform(service.platform),
+                        )}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
 
                         return (
                           <article
