@@ -21,6 +21,21 @@ function toSectionId(value: string) {
     .replace(/^-|-$/g, "");
 }
 
+function cleanTocLabel(value: string) {
+  return value.replace(/^\s*\d{1,2}[\.)]\s+(?=[A-Za-z])/u, "");
+}
+
+function getUniqueSectionIds(sections: Array<{ heading: string }>) {
+  const counts = new Map<string, number>();
+
+  return sections.map((section) => {
+    const baseId = toSectionId(section.heading) || "section";
+    const nextCount = (counts.get(baseId) ?? 0) + 1;
+    counts.set(baseId, nextCount);
+    return nextCount === 1 ? baseId : `${baseId}-${nextCount}`;
+  });
+}
+
 function countArticleWords(parts: string[]) {
   return parts.join(" ").trim().split(/\s+/).filter(Boolean).length;
 }
@@ -95,6 +110,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleAuthor = article.author ?? "SocialRUSH Editorial Team";
   const breadcrumbTitle = article.breadcrumbTitle ?? article.title;
   const articleSections = getArticleSections(article);
+  const articleSectionIds = getUniqueSectionIds(articleSections);
   const tocSections = articleSections.slice(0, MAX_TOC_SECTIONS);
   const articleFaqs = article.faqs ?? [];
   const articleRelatedLinks = article.relatedLinks ?? [];
@@ -226,13 +242,13 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           >
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
-              {tocSections.map((section) => (
-                <li key={section.heading}>
+              {tocSections.map((section, index) => (
+                <li key={`${articleSectionIds[index]}-toc`}>
                   <a
-                    href={`#${toSectionId(section.heading)}`}
+                    href={`#${articleSectionIds[index]}`}
                     className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]"
                   >
-                    {section.heading.replace(/^\s*\d+\.\s*/, "")}
+                    {cleanTocLabel(section.heading)}
                   </a>
                 </li>
               ))}
@@ -244,7 +260,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               {articleComparison ? (
                 <li>
                   <a href="#followers-vs-engagement-comparison" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
-                    {articleComparison.heading.replace(/^\s*\d+\.\s*/, "")}
+                    {cleanTocLabel(articleComparison.heading)}
                   </a>
                 </li>
               ) : null}
@@ -259,10 +275,10 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           </nav>
 
           <div className="mt-8 space-y-6">
-            {articleSections.map((section) => (
+            {articleSections.map((section, index) => (
               <section
-                key={section.heading}
-                id={toSectionId(section.heading)}
+                key={articleSectionIds[index]}
+                id={articleSectionIds[index]}
                 className="rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
               >
                 <h2 className="text-2xl font-extrabold text-[#0B0B0F]">{section.heading}</h2>

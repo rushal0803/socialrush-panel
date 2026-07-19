@@ -35,17 +35,18 @@ const serviceLabels: Record<Service, string> = {
 
 const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
 const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
-const buyerGuides = [
-  ["Instagram Followers", "/buy-instagram-followers-india"],
-  ["Instagram Likes", "/instagram-likes"],
-  ["Instagram Views", "/instagram-views"],
-  ["YouTube Subscribers", "/youtube-subscribers"],
-  ["YouTube Likes", "/youtube-likes"],
-  ["YouTube Views", "/youtube-views"],
-  ["LinkedIn Followers", "/linkedin-followers"],
-  ["Facebook Followers", "/facebook-followers"],
-  ["Telegram Members", "/telegram-members"],
-] as const;
+const relatedGuideMap: Partial<Record<`${Platform}:${Service}`, Array<readonly [string, string]>>> = {
+  "Instagram:followers": [["Instagram Followers Guide", "/buy-instagram-followers-india"]],
+  "Instagram:likes": [["Instagram Likes Guide", "/instagram-likes"]],
+  "Instagram:views": [["Instagram Views Guide", "/instagram-views"]],
+  "YouTube:subscribers": [["YouTube Subscribers Guide", "/youtube-subscribers"]],
+  "YouTube:likes": [["YouTube Likes Guide", "/youtube-likes"]],
+  "YouTube:views": [["YouTube Views Guide", "/youtube-views"]],
+  "Facebook:followers": [["Facebook Followers Guide", "/facebook-followers"]],
+  "LinkedIn:followers": [["LinkedIn Followers Guide", "/linkedin-followers"]],
+  "Telegram:members": [["Telegram Members Guide", "/telegram-members"]],
+  "X:followers": [["Twitter/X Followers Guide", "/twitter-followers"]],
+};
 
 const packageSeoFaqs = [
   {
@@ -169,6 +170,7 @@ export default function PackagesPageContent({
     () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),
     [selectedPackageId],
   );
+  const relatedGuides = relatedGuideMap[`${selectedPlatform}:${activeService}`] ?? [];
 
   useEffect(() => {
     const nextPlatform = initialPlatformParam
@@ -226,12 +228,14 @@ export default function PackagesPageContent({
               <p className="mt-2 max-w-3xl text-xs leading-6 text-[#9CA3AF]">
                 Final price may vary based on selected package, quantity, service quality, and availability. Please check the live package price before placing your order.
               </p>
-              <Link
-                href="/buy-instagram-followers-india"
-                className="mt-4 inline-flex text-sm font-bold text-orange-700 underline decoration-orange-300 underline-offset-4 transition hover:text-amber-700"
-              >
-                Learn about buying Instagram followers in India
-              </Link>
+              {relatedGuides[0] ? (
+                <Link
+                  href={relatedGuides[0][1]}
+                  className="mt-4 inline-flex text-sm font-bold text-orange-300 underline decoration-orange-400/60 underline-offset-4 transition hover:text-amber-200"
+                >
+                  Read the {relatedGuides[0][0].replace(" Guide", "").toLowerCase()} guide
+                </Link>
+              ) : null}
               <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
                 {trustBadges.map((chip) => (
                   <span key={chip} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-[11px] font-semibold text-orange-100">
@@ -334,13 +338,13 @@ export default function PackagesPageContent({
                     categoryPackages[Math.min(2, categoryPackages.length - 1)]?.packageId;
                   const active =
                     selectedPlatform === platform.key && activeService === service;
+                  if (!active) return null;
                   const headingId = `${platform.key.toLowerCase()}-${service}-packages`;
 
                   return (
                     <section
                       key={`${platform.key}-${service}`}
                       aria-labelledby={headingId}
-                      hidden={!active}
                     >
                       <div className="mb-5">
                         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Available packages</p>
@@ -520,19 +524,23 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section className="relative px-4 py-8 sm:px-6 lg:px-8">
-          <div className="mx-auto max-w-7xl rounded-[28px] border border-white/85 bg-white/78 p-6 shadow-[0_20px_48px_rgba(255, 159, 0, .13)] backdrop-blur-xl sm:p-8">
-            <h2 className="text-2xl font-black text-[#0B0B0F]">Read service pricing and safety guides</h2>
-            <p className="mt-2 text-sm leading-7 text-[#111827]">Review current service details before choosing a package.</p>
-            <div className="mt-5 flex flex-wrap gap-2.5">
-              {buyerGuides.map(([label, href]) => (
-                <Link key={href} href={href} className="rounded-xl border border-[#FFF3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#FF9F00] transition hover:border-amber-300 hover:text-amber-700">
-                  {label}
-                </Link>
-              ))}
+        {relatedGuides.length ? (
+          <section className="relative px-4 py-8 sm:px-6 lg:px-8">
+            <div className="mx-auto max-w-7xl rounded-[28px] border border-white/85 bg-white/78 p-6 shadow-[0_20px_48px_rgba(255, 159, 0, .13)] backdrop-blur-xl sm:p-8">
+              <h2 className="text-2xl font-black text-[#0B0B0F]">Read relevant service guides</h2>
+              <p className="mt-2 text-sm leading-7 text-[#111827]">
+                Review current {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService].toLowerCase()} details before choosing a package.
+              </p>
+              <div className="mt-5 flex flex-wrap gap-2.5">
+                {relatedGuides.map(([label, href]) => (
+                  <Link key={href} href={href} className="rounded-xl border border-[#FFF3E0] bg-white px-4 py-2.5 text-sm font-bold text-[#FF9F00] transition hover:border-amber-300 hover:text-amber-700">
+                    {label}
+                  </Link>
+                ))}
+              </div>
             </div>
-          </div>
-        </section>
+          </section>
+        ) : null}
 
         <section className="relative px-4 py-8 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-5xl rounded-[28px] border border-white/85 bg-white/82 p-6 text-center shadow-[0_24px_58px_rgba(255, 159, 0, .16)] backdrop-blur-xl sm:p-9">

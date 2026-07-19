@@ -57,8 +57,8 @@ function normalizeQuery(value: string | null) {
 }
 
 function platformFromQuery(value: string | null): PlatformId | null {
-  const normalized = normalizeQuery(value);
-  if (normalized === "twitter") return "x";
+  const normalized = normalizeQuery(value).replace(/-\/-/g, "/").replace(/\/+/g, "/");
+  if (normalized === "twitter" || normalized === "twitter-x" || normalized === "x-twitter" || normalized === "twitter/x" || normalized === "x/twitter") return "x";
   return platformOrder.includes(normalized as PlatformId) ? (normalized as PlatformId) : null;
 }
 
