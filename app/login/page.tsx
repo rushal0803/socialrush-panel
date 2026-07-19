@@ -20,6 +20,8 @@ type LoginPageProps = {
 };
 
 export default async function LoginPage({ searchParams }: LoginPageProps) {
+  const safeNext = getSafeCustomerDestination(searchParams?.next);
+  const registerHref = `/register?next=${encodeURIComponent(safeNext)}`;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
@@ -28,7 +30,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       .select("role")
       .eq("id", user.id)
       .maybeSingle();
-    redirect(profile?.role === "admin" ? "/admin/dashboard" : getSafeCustomerDestination(searchParams?.next));
+    redirect(profile?.role === "admin" ? "/admin/dashboard" : safeNext);
   }
 
   return (
@@ -36,7 +38,7 @@ export default async function LoginPage({ searchParams }: LoginPageProps) {
       title="Welcome back to SocialRUSH"
       subtitle="Log in to manage your campaigns, wallet, orders, and growth dashboard."
       footerText="Don't have an account?"
-      footerLink="/register"
+      footerLink={registerHref}
       footerLabel="Sign up"
       image="/images/auth/login-dashboard-dark.png"
       imageAlt="SocialRUSH secure login dashboard with social media growth analytics"

@@ -1,13 +1,19 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import {
+  DEFAULT_CUSTOMER_DESTINATION,
+  getSafeCustomerDestination,
+} from "@/lib/auth/destination";
 
 export default function RegisterForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const customerDestination = getSafeCustomerDestination(searchParams.get("next"));
   const [error, setError] = useState("");
   const [attempted, setAttempted] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -35,6 +41,7 @@ export default function RegisterForm() {
     try {
       const supabase = createClient();
       const callbackUrl = new URL("/auth/callback", window.location.origin);
+      callbackUrl.searchParams.set("next", customerDestination || DEFAULT_CUSTOMER_DESTINATION);
       const { error: signupError } = await supabase.auth.signUp({
         email,
         password,
@@ -50,7 +57,7 @@ export default function RegisterForm() {
         return;
       }
 
-      router.replace("/dashboard/new-order");
+      router.replace(customerDestination);
     } catch {
       setError("Unable to create your account right now. Please try again.");
       setLoading(false);

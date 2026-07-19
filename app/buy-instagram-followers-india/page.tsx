@@ -43,7 +43,7 @@ export const metadata: Metadata = {
     "Buy Instagram Followers India",
     "Buy Instagram followers",
     "Instagram followers India",
-    "Real Instagram followers India",
+    "Instagram followers service India",
     "Instagram growth service India",
     "No password Instagram followers",
     "Instagram followers with refill support",
