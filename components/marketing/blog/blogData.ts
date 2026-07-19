@@ -1797,7 +1797,7 @@ const baseBlogArticles: BlogArticle[] = [
     relatedLinks: [
       { label: "Instagram Followers Service", href: "/buy-instagram-followers-india" },
       { label: "Instagram Likes Service", href: "/instagram-likes" },
-      { label: "View Packages", href: "/packages?platform=Instagram" },
+      { label: "View Packages", href: "/packages?platform=instagram&service=followers" },
     ],
   },
   {
@@ -1847,7 +1847,7 @@ const baseBlogArticles: BlogArticle[] = [
     relatedLinks: [
       { label: "Buy Instagram Followers India", href: "/buy-instagram-followers-india" },
       { label: "Transparent Pricing", href: "/pricing" },
-      { label: "View Instagram Packages", href: "/packages?platform=Instagram" },
+      { label: "View Instagram Packages", href: "/packages?platform=instagram&service=followers" },
     ],
   },
   {
@@ -1947,7 +1947,7 @@ const baseBlogArticles: BlogArticle[] = [
     relatedLinks: [
       { label: "YouTube Subscribers Service", href: "/youtube-subscribers" },
       { label: "YouTube Views Service", href: "/youtube-views" },
-      { label: "View YouTube Packages", href: "/packages?platform=YouTube" },
+      { label: "View YouTube Packages", href: "/packages?platform=youtube&service=subscribers" },
     ],
   },
   {
@@ -1996,7 +1996,7 @@ const baseBlogArticles: BlogArticle[] = [
     relatedLinks: [
       { label: "LinkedIn Followers Service", href: "/linkedin-followers" },
       { label: "SocialRUSH Pricing", href: "/pricing" },
-      { label: "View Packages", href: "/packages?platform=LinkedIn" },
+      { label: "View Packages", href: "/packages?platform=linkedin&service=followers" },
     ],
   },
   {
