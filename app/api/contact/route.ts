@@ -38,6 +38,7 @@ export async function POST(request: Request) {
   const ip = getClientIp(request);
 
   if (isRateLimited(ip)) {
+    console.warn("[contact] rate-limit rejection", { ip });
     return NextResponse.json(
       { error: "Too many enquiries were sent recently. Please try again in a few minutes." },
       { status: 429 },
@@ -54,6 +55,7 @@ export async function POST(request: Request) {
 
   const honeypot = cleanText(payload.website, 200);
   if (honeypot) {
+    console.info("[contact] honeypot submission ignored", { ip });
     return NextResponse.json({ message: "Thanks. Your enquiry has been received." });
   }
 
@@ -96,8 +98,14 @@ export async function POST(request: Request) {
   const resendApiKey = process.env.RESEND_API_KEY;
   const supportEmail = process.env.CONTACT_TO_EMAIL || process.env.SUPPORT_EMAIL || "support@getsocialrush.com";
   const fromEmail = process.env.CONTACT_FROM_EMAIL || "SocialRUSH Website <onboarding@resend.dev>";
+  const missingConfig = [
+    !resendApiKey ? "RESEND_API_KEY" : null,
+    process.env.NODE_ENV === "production" && !process.env.CONTACT_TO_EMAIL ? "CONTACT_TO_EMAIL" : null,
+    process.env.NODE_ENV === "production" && !process.env.CONTACT_FROM_EMAIL ? "CONTACT_FROM_EMAIL" : null,
+  ].filter(Boolean);
 
-  if (!resendApiKey) {
+  if (missingConfig.length > 0) {
+    console.warn("[contact] missing email configuration", { missingConfig });
     return NextResponse.json(
       { error: "Contact email is not configured yet. Please use WhatsApp support or try again later." },
       { status: 503 },
@@ -135,11 +143,23 @@ export async function POST(request: Request) {
   });
 
   if (!response.ok) {
+    console.error("[contact] resend delivery failure", {
+      status: response.status,
+      service,
+      source,
+      emailDomain: email.split("@")[1] || "unknown",
+    });
     return NextResponse.json(
       { error: "Unable to send your enquiry right now. Please use WhatsApp support or try again later." },
       { status: 502 },
     );
   }
+
+  console.info("[contact] enquiry delivered", {
+    service,
+    source,
+    emailDomain: email.split("@")[1] || "unknown",
+  });
 
   return NextResponse.json({ message: "Thanks. Your enquiry has been sent to SocialRUSH support." });
 }

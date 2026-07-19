@@ -12,7 +12,7 @@ import {
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import OrderNowButton from "@/components/marketing/OrderNowButton";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -139,19 +139,82 @@ function packageServiceFromCode(code: string) {
   return serviceTypeFromCode(code);
 }
 
-export default function ServicesPageContent() {
+const platformAliases: Record<string, SmmPlatformId> = {
+  instagram: "instagram",
+  youtube: "youtube",
+  youTube: "youtube",
+  facebook: "facebook",
+  linkedin: "linkedin",
+  "linked-in": "linkedin",
+  telegram: "telegram",
+  tiktok: "tiktok",
+  "tik-tok": "tiktok",
+  x: "x",
+  twitter: "x",
+  "twitter-x": "x",
+  "x-twitter": "x",
+  "twitter/x": "x",
+  "x/twitter": "x",
+};
+
+const serviceTypeAliases: Record<string, string> = {
+  all: "all",
+  follower: "followers",
+  followers: "followers",
+  subscriber: "subscribers",
+  subscribers: "subscribers",
+  like: "likes",
+  likes: "likes",
+  view: "views",
+  views: "views",
+  member: "members",
+  members: "members",
+  share: "shares",
+  shares: "shares",
+};
+
+function normalizeFilterValue(value: string | null | undefined) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, "-");
+}
+
+function platformFromParam(value: string | null | undefined): SmmPlatformId {
+  const normalized = normalizeFilterValue(value).replace(/\/+/g, "/");
+  return platformAliases[normalized] ?? platformAliases[normalized.replace(/\//g, "-")] ?? "instagram";
+}
+
+function serviceTypeFromParam(value: string | null | undefined) {
+  const normalized = normalizeFilterValue(value);
+  const lastSegment = normalized.split("-").pop() || normalized;
+  return serviceTypeAliases[normalized] ?? serviceTypeAliases[lastSegment] ?? "all";
+}
+
+type ServicesPageContentProps = {
+  initialPlatformParam?: string;
+  initialTypeParam?: string;
+  initialSearchParam?: string;
+};
+
+export default function ServicesPageContent({
+  initialPlatformParam,
+  initialTypeParam,
+  initialSearchParam,
+}: ServicesPageContentProps) {
   const { currency } = usePreferredCurrency("INR");
-  const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>("instagram");
-  const [selectedType, setSelectedType] = useState("all");
-  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>(() =>
+    platformFromParam(initialPlatformParam),
+  );
+  const [selectedType, setSelectedType] = useState(() => serviceTypeFromParam(initialTypeParam));
+  const [searchQuery, setSearchQuery] = useState(initialSearchParam?.trim() ?? "");
 
   const activePlatformServices = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
+    const platform = platformFromParam(selectedPlatform);
+    const type = serviceTypeFromParam(selectedType);
 
     return activeSmmServices.filter((service) => {
-      const matchesPlatform = service.platform === selectedPlatform;
+      const matchesPlatform = platformFromParam(service.platform) === platform;
       const serviceType = serviceTypeFromCode(service.code);
-      const matchesType = selectedType === "all" || serviceType === selectedType;
+      const matchesType = type === "all" || serviceType === type;
       const matchesSearch =
         query === "" ||
         service.name.toLowerCase().includes(query) ||
@@ -166,12 +229,18 @@ export default function ServicesPageContent() {
   const availableTypes = useMemo(() => {
     const types = new Set(
       activeSmmServices
-        .filter((service) => service.platform === selectedPlatform)
+        .filter((service) => platformFromParam(service.platform) === selectedPlatform)
         .map((service) => serviceTypeFromCode(service.code)),
     );
 
     return ["all", ...Array.from(types)];
   }, [selectedPlatform]);
+
+  useEffect(() => {
+    if (!availableTypes.includes(selectedType)) {
+      setSelectedType("all");
+    }
+  }, [availableTypes, selectedType]);
 
   return (
     <BlogShell>

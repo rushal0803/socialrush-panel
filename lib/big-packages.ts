@@ -37,7 +37,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 4499,
     discountBadge: "Save 15%",
     deliveryTime: "2–5 days",
-    description: "Reach 10,000 followers milestone with premium growth service.",
+    description: "Structured follower campaign with 10,000 included followers.",
     bestFor: "Growing Instagram pages",
   },
   {
@@ -50,8 +50,8 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 8499,
     discountBadge: "Best Value",
     deliveryTime: "4–10 days",
-    description: "Major profile expansion with 20,000 followers.",
-    bestFor: "Brands and influencers",
+    description: "Larger follower campaign with 20,000 included followers.",
+    bestFor: "Brands and creator accounts",
   },
   {
     packageId: "ig-followers-50k",
@@ -117,8 +117,8 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 7499,
     discountBadge: "Agency Pack",
     deliveryTime: "5–10 days",
-    description: "Maximum engagement with 50,000 likes.",
-    bestFor: "Viral content and campaigns",
+    description: "High-volume engagement package with 50,000 likes.",
+    bestFor: "Large content campaigns",
   },
 
   // Instagram Views
@@ -158,8 +158,8 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 7999,
     discountBadge: "Scale Pack",
     deliveryTime: "5–10 days",
-    description: "Massive reach with 500,000 views.",
-    bestFor: "Viral content strategy",
+    description: "High-volume views package with 500,000 views.",
+    bestFor: "Content visibility campaigns",
   },
   {
     packageId: "ig-views-1m",
@@ -171,7 +171,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 14999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–15 days",
-    description: "Million-view milestone for premium content.",
+    description: "Large views package with 1,000,000 included views.",
     bestFor: "High-volume campaigns",
   },
 
@@ -211,7 +211,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 17999,
     discountBadge: "Best Value",
     deliveryTime: "5–12 days",
-    description: "Serious channel authority with 5,000 subscribers.",
+    description: "Larger YouTube subscriber package with 5,000 included subscribers.",
     bestFor: "Content creators",
   },
   {
@@ -224,7 +224,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 34999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–14 days",
-    description: "Achieve 10,000+ subscribers for established authority.",
+    description: "High-volume YouTube subscriber package with 10,000 included subscribers.",
     bestFor: "Agencies and brands",
   },
 
@@ -277,7 +277,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 14999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–12 days",
-    description: "Premium engagement with 50,000 likes.",
+    description: "High-volume engagement package with 50,000 likes.",
     bestFor: "Major campaigns",
   },
 
@@ -330,7 +330,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 64999,
     discountBadge: "Agency Pack",
     deliveryTime: "10–15 days",
-    description: "Massive reach with 500,000 views.",
+    description: "High-volume views package with 500,000 views.",
     bestFor: "Large campaigns",
   },
 
@@ -344,7 +344,7 @@ export const bigPackages: BigPackage[] = [
     quantityLabel: "1,000",
     basePriceINR: 2999,
     deliveryTime: "3–7 days",
-    description: "Build professional authority with 1,000 followers.",
+    description: "Professional follower package with 1,000 included followers.",
     bestFor: "Professionals starting out",
   },
   {
@@ -357,7 +357,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 12999,
     discountBadge: "Save 10%",
     deliveryTime: "5–10 days",
-    description: "Established authority with 5,000 followers.",
+    description: "Larger professional follower package with 5,000 included followers.",
     bestFor: "Professionals and brands",
   },
   {
@@ -370,8 +370,8 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 24999,
     discountBadge: "Best Value",
     deliveryTime: "7–12 days",
-    description: "Premium thought leadership with 10,000 followers.",
-    bestFor: "C-level and influencers",
+    description: "High-volume professional follower package with 10,000 included followers.",
+    bestFor: "C-level and creator accounts",
   },
   {
     packageId: "li-followers-20k",
@@ -383,7 +383,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 47999,
     discountBadge: "Agency Pack",
     deliveryTime: "10–14 days",
-    description: "Executive-level authority with 20,000 followers.",
+    description: "Large professional follower package with 20,000 included followers.",
     bestFor: "Agencies and enterprises",
   },
 
@@ -423,7 +423,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 19999,
     discountBadge: "Best Value",
     deliveryTime: "5–10 days",
-    description: "Premium engagement with 10,000 likes.",
+    description: "High-volume professional engagement package with 10,000 likes.",
     bestFor: "Major announcements",
   },
 
@@ -476,7 +476,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 9999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–14 days",
-    description: "Major page authority with 50,000 followers.",
+    description: "Large Facebook follower package with 50,000 included followers.",
     bestFor: "Agencies and enterprises",
   },
 
@@ -529,7 +529,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 3999,
     discountBadge: "Agency Pack",
     deliveryTime: "5–10 days",
-    description: "Premium engagement with 50,000 likes.",
+    description: "High-volume engagement package with 50,000 likes.",
     bestFor: "Major campaigns",
   },
 
@@ -569,7 +569,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 11999,
     discountBadge: "Best Value",
     deliveryTime: "7–12 days",
-    description: "Build community authority with 20,000 members.",
+    description: "Larger community member package with 20,000 included members.",
     bestFor: "Established channels",
   },
   {
@@ -582,7 +582,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 27999,
     discountBadge: "Agency Pack",
     deliveryTime: "10–14 days",
-    description: "Premium community status with 50,000 members.",
+    description: "Large community member package with 50,000 included members.",
     bestFor: "Large communities",
   },
 
@@ -675,8 +675,8 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 7499,
     discountBadge: "Best Value",
     deliveryTime: "5–10 days",
-    description: "Twitter/X authority with 20,000 followers.",
-    bestFor: "Influencers",
+    description: "Larger Twitter/X follower package with 20,000 included followers.",
+    bestFor: "Established creator accounts",
   },
   {
     packageId: "x-followers-50k",
