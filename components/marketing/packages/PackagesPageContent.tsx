@@ -65,10 +65,75 @@ const packageSeoFaqs = [
   },
 ] as const;
 
-export default function PackagesPageContent() {
+const platformParamMap: Record<string, Platform> = {
+  instagram: "Instagram",
+  youtube: "YouTube",
+  facebook: "Facebook",
+  linkedin: "LinkedIn",
+  telegram: "Telegram",
+  tiktok: "TikTok",
+  x: "X",
+  twitter: "X",
+};
+
+const serviceParamMap: Record<string, Service> = {
+  follower: "followers",
+  followers: "followers",
+  subscriber: "subscribers",
+  subscribers: "subscribers",
+  like: "likes",
+  likes: "likes",
+  view: "views",
+  views: "views",
+  member: "members",
+  members: "members",
+};
+
+function normalizeParam(value: string | null) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, "-");
+}
+
+function platformFromParam(value: string | null): Platform {
+  return platformParamMap[normalizeParam(value)] ?? "Instagram";
+}
+
+function serviceFromParam(value: string | null, platform: Platform): Service {
+  const normalized = normalizeParam(value).split("-").pop() || "";
+  const service = serviceParamMap[normalized] ?? serviceParamMap[normalizeParam(value)];
+  if (service && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service)) {
+    return service;
+  }
+
+  return (
+    serviceOrder.find((candidate) =>
+      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === candidate),
+    ) ?? "followers"
+  );
+}
+
+type PackagesPageContentProps = {
+  initialPlatformParam?: string;
+  initialServiceParam?: string;
+  initialPackageIdParam?: string;
+};
+
+export default function PackagesPageContent({
+  initialPlatformParam,
+  initialServiceParam,
+  initialPackageIdParam,
+}: PackagesPageContentProps) {
   const { currency } = usePreferredCurrency("INR");
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform>("Instagram");
-  const [selectedPackageId, setSelectedPackageId] = useState("");
+  const initialPlatform = platformFromParam(initialPlatformParam ?? null);
+  const initialService = serviceFromParam(initialServiceParam ?? null, initialPlatform);
+  const initialPackageId = initialPackageIdParam || "";
+  const initialPackage = bigPackages.find(
+    (pkg) =>
+      pkg.packageId === initialPackageId &&
+      pkg.platform === initialPlatform &&
+      pkg.service === initialService,
+  );
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform>(initialPlatform);
+  const [selectedPackageId, setSelectedPackageId] = useState(initialPackage?.packageId ?? "");
   const [showAllPackages, setShowAllPackages] = useState(false);
   const packageStepRef = useRef<HTMLElement>(null);
 
@@ -79,7 +144,7 @@ export default function PackagesPageContent() {
       ),
     [selectedPlatform],
   );
-  const [selectedService, setSelectedService] = useState<Service>("followers");
+  const [selectedService, setSelectedService] = useState<Service>(initialService);
   const activeService = services.includes(selectedService) ? selectedService : services[0];
   const selectedPackage = useMemo(
     () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),

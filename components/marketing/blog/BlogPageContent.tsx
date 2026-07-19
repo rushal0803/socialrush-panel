@@ -227,7 +227,7 @@ export default function BlogPageContent() {
             <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
               <div>
                 <h2 className="text-sm font-bold uppercase tracking-[0.13em] text-[#FF9F00]">Categories</h2>
-                <p className="mt-2 text-sm text-[#111827]">Filter practical guides by the topic you need.</p>
+                <p className="mt-2 text-sm text-[#D1D5DB]">Filter practical guides by the topic you need.</p>
               </div>
               <label className="block w-full max-w-md">
                 <span className="sr-only">Search blog articles</span>
@@ -337,8 +337,8 @@ export default function BlogPageContent() {
             </motion.div>
             {cardsWithFallback.length === 0 ? (
               <div className="rounded-3xl border border-orange-400/30 bg-[#111111] p-8 text-center shadow-[0_18px_42px_-28px_rgba(255, 122, 0, .65)]">
-                <h3 className="text-xl font-extrabold text-[#0B0B0F]">No articles found for this category.</h3>
-                <p className="mt-2 text-sm text-[#111827]">Try another topic or view all guides.</p>
+                <h3 className="text-xl font-extrabold text-white">No articles found for this category.</h3>
+                <p className="mt-2 text-sm text-[#D1D5DB]">Try another topic or view all guides.</p>
                 <button
                   type="button"
                   onClick={() => {

@@ -130,7 +130,8 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
   const faqs = getSeoServiceFaqs(slug);
   const schemas = getSeoServiceStructuredData(slug);
   const packagePlatform = page.service.platform === "x" ? "X" : page.platform.label;
-  const packagesHref = `/packages?platform=${encodeURIComponent(packagePlatform)}`;
+  const packageService = page.service.code.split("-").pop() || "";
+  const packagesHref = `/packages?platform=${encodeURIComponent(packagePlatform)}&service=${encodeURIComponent(packageService)}`;
   const whatsappHref =
     "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
   const formattedPrice = page.confirmedPrice === null ? null : new Intl.NumberFormat("en-IN", {

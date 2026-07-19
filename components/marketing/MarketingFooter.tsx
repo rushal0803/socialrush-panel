@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Logo from "@/components/Logo";
 import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
+import { platformDisclaimer } from "@/lib/trust/proof-content";
 
 const groups = [
   { title: "Growth services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Likes", "/youtube-likes"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"], ["Telegram Members", "/telegram-members"], ["Twitter/X Followers", "/twitter-followers"]] },
@@ -26,6 +27,9 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
               secure checkout, dashboard tracking and WhatsApp support.
             </p>
             <FooterSocialLinks />
+            <p className={isLight3d ? "mt-4 max-w-sm text-[11px] leading-6 text-[#111827]" : "mt-4 max-w-sm text-[11px] leading-6 text-slate-500"}>
+              {platformDisclaimer}
+            </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <Link
                 href="/packages"

@@ -325,6 +325,7 @@ export default function ContactPageContent() {
                 Company website
                 <input name="website" tabIndex={-1} autoComplete="off" />
               </label>
+              <input type="hidden" name="source" value="/contact" />
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <label className="text-xs font-bold text-[#0B0B0F]">
@@ -349,6 +350,7 @@ export default function ContactPageContent() {
                 <label className="text-xs font-bold text-[#0B0B0F]">
                   WhatsApp Number
                   <input
+                    required
                     name="whatsapp"
                     className="mt-2 min-h-11 w-full rounded-xl border border-[#FFF3E0] bg-white px-4 text-sm text-[#0B0B0F] outline-none transition focus:border-[#FF9F00]"
                     placeholder="+91XXXXXXXXXX"
