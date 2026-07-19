@@ -3,7 +3,7 @@
 import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
-import { useState } from "react";
+import { type FormEvent, useState } from "react";
 import { Briefcase, Mail, MessageCircle, ShieldCheck } from "lucide-react";
 import MarketingIcon from "@/components/marketing/MarketingIcon";
 import BlogShell from "@/components/marketing/blog/BlogShell";
@@ -20,10 +20,10 @@ const contactOptions = [
   },
   {
     title: "Email Support",
-    description: "Send your query and our team will reply as soon as possible.",
+    description: "Submit your enquiry from the website and our team will reply as soon as possible.",
     icon: Mail,
-    cta: "Email Us",
-    href: "mailto:support@getsocialrush.com?subject=SocialRUSH%20Support%20Request",
+    cta: "Send Enquiry",
+    href: "#inquiry",
   },
   {
     title: "Order Help",
@@ -37,7 +37,7 @@ const contactOptions = [
     description: "For creators, brands, agencies, and partnership queries.",
     icon: Briefcase,
     cta: "Talk to Team",
-    href: "mailto:support@getsocialrush.com?subject=Business%20Enquiry",
+    href: "#inquiry",
   },
 ];
 
@@ -107,6 +107,42 @@ export default function ContactPageContent() {
 
   const [openFaq, setOpenFaq] = useState<string | null>(faqs[0]?.question ?? null);
   const [heroImageError, setHeroImageError] = useState(false);
+  const [formState, setFormState] = useState<{
+    status: "idle" | "loading" | "success" | "error";
+    message: string;
+  }>({ status: "idle", message: "" });
+
+  async function submitContactForm(event: FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+
+    setFormState({ status: "loading", message: "Sending your enquiry..." });
+
+    try {
+      const response = await fetch("/api/contact", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(Object.fromEntries(formData.entries())),
+      });
+      const result = (await response.json().catch(() => null)) as { message?: string; error?: string } | null;
+
+      if (!response.ok) {
+        throw new Error(result?.error || result?.message || "Unable to send your enquiry right now.");
+      }
+
+      form.reset();
+      setFormState({
+        status: "success",
+        message: result?.message || "Thanks. Your enquiry has been sent to SocialRUSH support.",
+      });
+    } catch (error) {
+      setFormState({
+        status: "error",
+        message: error instanceof Error ? error.message : "Unable to send your enquiry right now.",
+      });
+    }
+  }
 
   return (
     <BlogShell>
@@ -273,9 +309,7 @@ export default function ContactPageContent() {
         <section id="inquiry" className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
           <div className="mx-auto grid w-full max-w-7xl gap-7 lg:grid-cols-[1fr_.82fr]">
             <motion.form
-              action="mailto:support@getsocialrush.com"
-              method="post"
-              encType="text/plain"
+              onSubmit={submitContactForm}
               variants={fadeUp}
               initial="hidden"
               whileInView="visible"
@@ -285,8 +319,12 @@ export default function ContactPageContent() {
             >
               <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Tell us what you need</h2>
               <p className="mt-2 text-sm leading-7 text-[#111827]">
-                Submitting this form opens your default email app with your details so you can review before sending.
+                Send your enquiry directly to SocialRUSH support. We never ask for passwords or private account access.
               </p>
+              <label className="hidden" aria-hidden="true">
+                Company website
+                <input name="website" tabIndex={-1} autoComplete="off" />
+              </label>
 
               <div className="mt-6 grid gap-4 sm:grid-cols-2">
                 <label className="text-xs font-bold text-[#0B0B0F]">
@@ -346,10 +384,25 @@ export default function ContactPageContent() {
 
               <button
                 type="submit"
+                disabled={formState.status === "loading"}
                 className="mt-6 inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_35px_rgba(255, 196, 0, .42)]"
               >
-                Send Message
+                {formState.status === "loading" ? "Sending..." : "Send Message"}
               </button>
+              {formState.message ? (
+                <p
+                  role="status"
+                  className={`mt-4 rounded-2xl border px-4 py-3 text-sm font-semibold ${
+                    formState.status === "success"
+                      ? "border-emerald-200 bg-emerald-50 text-emerald-800"
+                      : formState.status === "error"
+                        ? "border-red-200 bg-red-50 text-red-700"
+                        : "border-orange-200 bg-orange-50 text-orange-800"
+                  }`}
+                >
+                  {formState.message}
+                </p>
+              ) : null}
             </motion.form>
 
             <motion.div

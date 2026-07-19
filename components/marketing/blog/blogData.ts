@@ -45,7 +45,7 @@ export type BlogArticle = {
 const baseBlogArticles: BlogArticle[] = [
   {
     slug: "how-small-businesses-build-social-proof-online",
-    category: "Creator Strategy",
+    category: "Small Business",
     title: "How Small Businesses Can Build Social Proof Online",
     description:
       "Learn ethical ways small businesses can build social proof using genuine reviews, testimonials, customer content and stronger online trust.",

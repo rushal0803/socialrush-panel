@@ -224,27 +224,27 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           >
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
-              {articleSections.map((section, index) => (
+              {articleSections.map((section) => (
                 <li key={section.heading}>
                   <a
                     href={`#${toSectionId(section.heading)}`}
                     className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]"
                   >
-                    {index + 1}. {section.heading}
+                    {section.heading.replace(/^\s*\d+\.\s*/, "")}
                   </a>
                 </li>
               ))}
               {articleComparison ? (
                 <li>
                   <a href="#followers-vs-engagement-comparison" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
-                    {articleSections.length + 1}. {articleComparison.heading}
+                    {articleComparison.heading.replace(/^\s*\d+\.\s*/, "")}
                   </a>
                 </li>
               ) : null}
               {article.faqs?.length ? (
                 <li>
                   <a href="#frequently-asked-questions" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">
-                    {articleSections.length + (articleComparison ? 2 : 1)}. Frequently asked questions
+                    Frequently asked questions
                   </a>
                 </li>
               ) : null}
