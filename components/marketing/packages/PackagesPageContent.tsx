@@ -80,6 +80,10 @@ export default function PackagesPageContent() {
   );
   const [selectedService, setSelectedService] = useState<Service>("followers");
   const activeService = services.includes(selectedService) ? selectedService : services[0];
+  const selectedPackage = useMemo(
+    () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),
+    [selectedPackageId],
+  );
 
   function selectPlatform(platform: Platform) {
     setSelectedPlatform(platform);
@@ -286,13 +290,13 @@ export default function PackagesPageContent() {
                               </div>
                             </dl>
 
-                            <Link
-                              href={`/packages/checkout?packageId=${encodeURIComponent(pkg.packageId)}`}
+                            <button
+                              type="button"
                               onClick={() => setSelectedPackageId(pkg.packageId)}
                               className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98]"
                             >
-                              Select Package
-                            </Link>
+                              {selectedPackageId === pkg.packageId ? "Selected" : "Select Package"}
+                            </button>
                           </article>
                         ))}
                       </div>
@@ -302,6 +306,80 @@ export default function PackagesPageContent() {
             )}
           </div>
         </div>
+
+        <section className="relative px-4 pb-6 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="rounded-[26px] border border-orange-400/25 bg-[#111111]/95 p-5 shadow-[0_22px_50px_-32px_rgba(255,122,0,.75)] sm:p-6 lg:sticky lg:bottom-5">
+              <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
+                <div className="min-w-0">
+                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">
+                    Selected package summary
+                  </p>
+                  {selectedPackage ? (
+                    <>
+                      <h2 className="mt-2 text-xl font-black text-white">
+                        {selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform}{" "}
+                        {serviceLabels[selectedPackage.service]} · {selectedPackage.title}
+                      </h2>
+                      <dl className="mt-4 grid gap-3 text-xs sm:grid-cols-4">
+                        <div className="rounded-2xl border border-orange-400/20 bg-orange-500/10 p-3">
+                          <dt className="text-orange-200">Price</dt>
+                          <dd className="mt-1 text-base font-black text-white">
+                            {formatCurrency(selectedPackage.basePriceINR, currency)}
+                          </dd>
+                        </div>
+                        <div className="rounded-2xl border border-white/10 bg-[#151515] p-3">
+                          <dt className="text-[#9CA3AF]">Quantity</dt>
+                          <dd className="mt-1 font-bold text-white">{selectedPackage.quantityLabel}</dd>
+                        </div>
+                        <div className="rounded-2xl border border-white/10 bg-[#151515] p-3">
+                          <dt className="text-[#9CA3AF]">Delivery</dt>
+                          <dd className="mt-1 font-bold text-white">{selectedPackage.deliveryTime}</dd>
+                        </div>
+                        <div className="rounded-2xl border border-white/10 bg-[#151515] p-3">
+                          <dt className="text-[#9CA3AF]">Best for</dt>
+                          <dd className="mt-1 font-bold leading-5 text-white">{selectedPackage.bestFor}</dd>
+                        </div>
+                      </dl>
+                    </>
+                  ) : (
+                    <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">
+                      Select a package above to review the platform, service, included quantity, price, and delivery before checkout.
+                    </p>
+                  )}
+                </div>
+                <div className="flex shrink-0 flex-col gap-2 sm:flex-row lg:flex-col">
+                  {selectedPackage ? (
+                    <Link
+                      href={`/packages/checkout?packageId=${encodeURIComponent(selectedPackage.packageId)}`}
+                      className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition hover:-translate-y-0.5"
+                    >
+                      Continue to Checkout
+                    </Link>
+                  ) : (
+                    <button
+                      type="button"
+                      disabled
+                      className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-6 py-3 text-sm font-black text-[#9CA3AF]"
+                    >
+                      Select a Package
+                    </button>
+                  )}
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setSelectedPackageId("");
+                      packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    }}
+                    className="inline-flex min-h-12 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.05] px-6 py-3 text-sm font-black text-[#D1D5DB] transition hover:border-orange-400/50 hover:text-white"
+                  >
+                    Change Selection
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
 
         <HowToOrderSection />
 

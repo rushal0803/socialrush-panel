@@ -215,6 +215,16 @@ const homepageSeoLinks = [
   },
 ] as const;
 
+const supportedPlatforms = [
+  { label: "Instagram", platform: "instagram", href: "/buy-instagram-followers-india" },
+  { label: "YouTube", platform: "youtube", href: "/youtube-subscribers" },
+  { label: "Facebook", platform: "facebook", href: "/facebook-followers" },
+  { label: "LinkedIn", platform: "linkedin", href: "/linkedin-followers" },
+  { label: "X / Twitter", platform: "twitter", href: "/twitter-followers" },
+  { label: "Telegram", platform: "telegram", href: "/telegram-members" },
+  { label: "TikTok", platform: "tiktok", href: "/tiktok-followers" },
+] as const;
+
 /* ─────────────────── SVG icon component ─────────────────── */
 function SvgIcon({ path, size = 20, className = "" }: { path: string; size?: number; className?: string }) {
   return (
@@ -380,6 +390,38 @@ export default function HomepageContent() {
           </div>
         </div>
       </motion.section>
+
+      {/* PLATFORM DISCOVERY */}
+      <section className="content-auto px-4 py-8 sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_22px_54px_-36px_rgba(255,122,0,.55)] sm:p-7">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">Supported platforms</p>
+              <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">Find the right growth path faster</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-7 text-[#D1D5DB]">
+                Start with the platform you want to grow, then compare packages and order with a public link only.
+              </p>
+            </div>
+            <Link href="/services" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/35 bg-white/[.06] px-5 py-3 text-sm font-bold text-white transition hover:border-orange-400/70 hover:bg-orange-500/10">
+              Browse Services
+            </Link>
+          </div>
+          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
+            {supportedPlatforms.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-4 transition hover:-translate-y-1 hover:border-orange-400/60 hover:bg-orange-500/10"
+              >
+                <IconBadge label={item.label} size="sm">
+                  <PlatformIcon platform={item.platform} className="h-5 w-5" />
+                </IconBadge>
+                <span className="mt-3 block text-sm font-black text-white group-hover:text-orange-200">{item.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       {/* WHY SOCIALRUSH */}
       <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">

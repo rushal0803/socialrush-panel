@@ -8,10 +8,11 @@ import {
   CreditCard,
   Headphones,
   RefreshCw,
+  Search,
   ShieldCheck,
   Sparkles,
 } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import OrderNowButton from "@/components/marketing/OrderNowButton";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -124,9 +125,49 @@ function packagePlatform(platform: SmmPlatformId) {
   return platform === "x" ? "twitter" : platform;
 }
 
+function serviceTypeFromCode(code: string) {
+  if (code.includes("followers")) return "followers";
+  if (code.includes("subscribers")) return "subscribers";
+  if (code.includes("likes")) return "likes";
+  if (code.includes("views")) return "views";
+  if (code.includes("members")) return "members";
+  if (code.includes("shares")) return "shares";
+  return "all";
+}
+
 export default function ServicesPageContent() {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>("instagram");
+  const [selectedType, setSelectedType] = useState("all");
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const activePlatformServices = useMemo(() => {
+    const query = searchQuery.trim().toLowerCase();
+
+    return activeSmmServices.filter((service) => {
+      const matchesPlatform = service.platform === selectedPlatform;
+      const serviceType = serviceTypeFromCode(service.code);
+      const matchesType = selectedType === "all" || serviceType === selectedType;
+      const matchesSearch =
+        query === "" ||
+        service.name.toLowerCase().includes(query) ||
+        service.description.toLowerCase().includes(query) ||
+        service.code.toLowerCase().includes(query) ||
+        platformMeta[service.platform].label.toLowerCase().includes(query);
+
+      return matchesPlatform && matchesType && matchesSearch;
+    });
+  }, [searchQuery, selectedPlatform, selectedType]);
+
+  const availableTypes = useMemo(() => {
+    const types = new Set(
+      activeSmmServices
+        .filter((service) => service.platform === selectedPlatform)
+        .map((service) => serviceTypeFromCode(service.code)),
+    );
+
+    return ["all", ...Array.from(types)];
+  }, [selectedPlatform]);
 
   return (
     <BlogShell>
@@ -138,14 +179,14 @@ export default function ServicesPageContent() {
         </div>
 
         <section className="relative px-4 pb-7 pt-6 sm:px-6 sm:pb-9 sm:pt-9 lg:px-8 lg:pt-12">
-          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/80 bg-white/80 p-5 shadow-[0_24px_58px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl sm:rounded-[2rem] sm:p-8 lg:p-10">
-            <p className="inline-flex items-center gap-2 rounded-full border border-orange-100 bg-orange-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-orange-700 sm:px-4 sm:text-xs">
+          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_58px_-28px_rgba(255,122,0,.45)] backdrop-blur-xl sm:rounded-[2rem] sm:p-8 lg:p-10">
+            <p className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-orange-200 sm:px-4 sm:text-xs">
               <Sparkles className="h-3.5 w-3.5" /> Premium Service Catalog
             </p>
-            <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.03em] text-[#0B0B0F] sm:text-5xl">
+            <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.03em] text-white sm:text-5xl">
               Social Media Growth Services India
             </h1>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base sm:leading-8">
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:text-base sm:leading-8">
               Explore SocialRUSH social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok, and X/Twitter. Compare public-link ordering, transparent pricing, delivery estimates, and dashboard tracking before you start.
             </p>
 
@@ -153,22 +194,22 @@ export default function ServicesPageContent() {
               {trustBadges.map(({ label, icon: Icon }) => (
                 <span
                   key={label}
-                  className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/90 bg-white/80 px-3 py-2 text-[10px] font-bold text-[#111827] shadow-sm sm:text-xs"
+                  className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-3 py-2 text-[10px] font-bold text-[#D1D5DB] shadow-sm sm:text-xs"
                 >
-                  <Icon className="h-4 w-4 shrink-0 text-orange-600" />
+                  <Icon className="h-4 w-4 shrink-0 text-orange-300" />
                   {label}
                 </span>
               ))}
             </div>
-            <p className="mt-4 text-xs font-semibold text-[#111827]">{getCurrencyDisclaimer()}</p>
+            <p className="mt-4 text-xs font-semibold text-[#9CA3AF]">{getCurrencyDisclaimer()}</p>
           </div>
         </section>
 
         <section className="relative px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="mb-4">
-              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Choose a platform</p>
-              <h2 className="mt-2 text-xl font-black text-[#0B0B0F] sm:text-2xl">Find the right growth service</h2>
+              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF9F00]">Choose a platform</p>
+              <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Find the right growth service</h2>
             </div>
 
             <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
@@ -179,21 +220,56 @@ export default function ServicesPageContent() {
                   <button
                     key={platformId}
                     type="button"
-                    onClick={() => setSelectedPlatform(platformId)}
+                    onClick={() => {
+                      setSelectedPlatform(platformId);
+                      setSelectedType("all");
+                    }}
                     aria-pressed={active}
                     className={`min-w-0 rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 sm:p-4 ${
                       active
-                        ? "border-transparent bg-white shadow-[0_18px_38px_-24px_rgba(255, 159, 0, .5)] ring-2 ring-[#FF9F00]"
-                        : "border-white/85 bg-white/72 hover:border-[#FFF3E0]"
+                        ? "border-orange-400/75 bg-orange-500/15 shadow-[0_18px_38px_-24px_rgba(255, 159, 0, .7)] ring-2 ring-[#FF9F00]/20"
+                        : "border-white/10 bg-[#111111] hover:border-orange-400/45"
                     }`}
                   >
                     <IconBadge label={meta.label}>
                       <PlatformIcon platform={meta.icon} title={meta.label} className="h-5 w-5" />
                     </IconBadge>
-                    <span className="mt-3 block truncate text-xs font-black text-[#0B0B0F]">{meta.label}</span>
+                    <span className="mt-3 block truncate text-xs font-black text-white">{meta.label}</span>
                   </button>
                 );
               })}
+            </div>
+          </div>
+        </section>
+
+        <section className="relative px-4 pt-5 sm:px-6 lg:px-8">
+          <div className="mx-auto grid max-w-7xl gap-3 rounded-[1.5rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.55)] lg:grid-cols-[1fr_auto] lg:items-center">
+            <label className="relative block">
+              <span className="sr-only">Search SocialRUSH services</span>
+              <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-orange-300" />
+              <input
+                type="search"
+                value={searchQuery}
+                onChange={(event) => setSearchQuery(event.target.value)}
+                placeholder="Search Instagram followers, YouTube views, Facebook likes..."
+                className="min-h-12 w-full rounded-2xl border border-orange-400/20 bg-[#050505] py-3 pl-11 pr-4 text-sm font-semibold text-white outline-none transition placeholder:text-[#9CA3AF] focus:border-orange-400/70 focus:ring-2 focus:ring-orange-500/15"
+              />
+            </label>
+            <div className="flex gap-2 overflow-x-auto pb-1 lg:justify-end lg:pb-0">
+              {availableTypes.map((type) => (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => setSelectedType(type)}
+                  className={`min-h-10 shrink-0 rounded-xl px-4 py-2 text-xs font-black capitalize transition ${
+                    selectedType === type
+                      ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255,122,0,.28)]"
+                      : "border border-orange-400/20 bg-white/[.06] text-[#D1D5DB] hover:border-orange-400/45 hover:text-white"
+                  }`}
+                >
+                  {type === "all" ? "All service types" : type}
+                </button>
+              ))}
             </div>
           </div>
         </section>
@@ -202,9 +278,7 @@ export default function ServicesPageContent() {
           <div className="mx-auto max-w-7xl">
             {platformOrder.map((platformId) => {
               const meta = platformMeta[platformId];
-              const platformServices = activeSmmServices.filter(
-                (service) => service.platform === platformId,
-              );
+              const platformServices = platformId === selectedPlatform ? activePlatformServices : [];
               const active = selectedPlatform === platformId;
 
               return (
@@ -216,13 +290,14 @@ export default function ServicesPageContent() {
                 >
                   <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
                     <div>
-                      <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">{meta.label}</p>
-                      <h2 id={`${platformId}-services-heading`} className="mt-2 text-2xl font-black text-[#0B0B0F]">{meta.label} services</h2>
+                      <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF9F00]">{meta.label}</p>
+                      <h2 id={`${platformId}-services-heading`} className="mt-2 text-2xl font-black text-white">{meta.label} services</h2>
                     </div>
-                    <p className="text-xs font-semibold text-[#111827]">{platformServices.length} services available</p>
+                    <p className="text-xs font-semibold text-[#D1D5DB]">{platformServices.length} matching services</p>
                   </div>
 
-                  <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                  {platformServices.length > 0 ? (
+                    <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {platformServices.map((service) => {
                 const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
                 const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}`;
@@ -285,7 +360,12 @@ export default function ServicesPageContent() {
                   </article>
                 );
                     })}
-                  </div>
+                    </div>
+                  ) : (
+                    <div className="mt-5 rounded-3xl border border-orange-400/20 bg-[#111111] p-6 text-sm leading-7 text-[#D1D5DB]">
+                      No matching services found for this platform. Try another search term, choose another service type, or contact support for help choosing the right campaign.
+                    </div>
+                  )}
                 </section>
               );
             })}
