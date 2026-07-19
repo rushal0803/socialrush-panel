@@ -35,7 +35,17 @@ const servicesFaqs = [
   },
 ];
 
-export default function ServicesPage() {
+type ServicesPageProps = {
+  searchParams?: {
+    platform?: string;
+    service?: string;
+    type?: string;
+    q?: string;
+    search?: string;
+  };
+};
+
+export default function ServicesPage({ searchParams }: ServicesPageProps) {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
@@ -53,7 +63,11 @@ export default function ServicesPage() {
           }),
         }}
       />
-      <ServicesPageContent />
+      <ServicesPageContent
+        initialPlatformParam={searchParams?.platform}
+        initialTypeParam={searchParams?.type ?? searchParams?.service}
+        initialSearchParam={searchParams?.q ?? searchParams?.search}
+      />
     </>
   );
 }
