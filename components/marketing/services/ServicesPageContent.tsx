@@ -135,6 +135,10 @@ function serviceTypeFromCode(code: string) {
   return "all";
 }
 
+function packageServiceFromCode(code: string) {
+  return serviceTypeFromCode(code);
+}
+
 export default function ServicesPageContent() {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>("instagram");
@@ -300,7 +304,7 @@ export default function ServicesPageContent() {
                     <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
                     {platformServices.map((service) => {
                 const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
-                const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}`;
+                const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const serviceDetailPath = seoServicePaths[service.code] ?? `/services/${service.code}`;
                 const refillAvailable = !service.refillPolicy.toLowerCase().includes("no refill");
 
@@ -423,7 +427,7 @@ export default function ServicesPageContent() {
                           `/services/${service.code}`;
                         const packagesPath = `/packages?platform=${encodeURIComponent(
                           packagePlatform(service.platform),
-                        )}`;
+                        )}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                         const orderPath = `/dashboard/new-order?platform=${encodeURIComponent(
                           service.platform,
                         )}&service=${encodeURIComponent(service.code)}`;

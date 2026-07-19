@@ -62,6 +62,8 @@ export async function POST(request: Request) {
   const whatsapp = cleanText(payload.whatsapp, 40);
   const service = cleanText(payload.service, 140);
   const message = cleanText(payload.message, 2000);
+  const source = cleanText(payload.source, 200) || "/contact";
+  const submittedAt = new Date().toISOString();
 
   if (name.length < 2) {
     return NextResponse.json({ error: "Please enter your full name." }, { status: 400 });
@@ -83,6 +85,14 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: "Please add a short message about your enquiry." }, { status: 400 });
   }
 
+  const linkCount = message.match(/https?:\/\//gi)?.length ?? 0;
+  if (linkCount > 3) {
+    return NextResponse.json(
+      { error: "Please remove extra links and send a simple enquiry message." },
+      { status: 400 },
+    );
+  }
+
   const resendApiKey = process.env.RESEND_API_KEY;
   const supportEmail = process.env.CONTACT_TO_EMAIL || process.env.SUPPORT_EMAIL || "support@getsocialrush.com";
   const fromEmail = process.env.CONTACT_FROM_EMAIL || "SocialRUSH Website <onboarding@resend.dev>";
@@ -101,6 +111,8 @@ export async function POST(request: Request) {
     `Email: ${email}`,
     `WhatsApp: ${whatsapp}`,
     `Service: ${service}`,
+    `Submitted: ${submittedAt}`,
+    `Source: ${source}`,
     `IP: ${ip}`,
     "",
     "Message:",

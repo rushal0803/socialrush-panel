@@ -33,7 +33,15 @@ const packagesFaqs = [
   },
 ];
 
-export default function PackagesPage() {
+type PackagesPageProps = {
+  searchParams?: {
+    platform?: string;
+    service?: string;
+    packageId?: string;
+  };
+};
+
+export default function PackagesPage({ searchParams }: PackagesPageProps) {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Packages", path: "/packages" }]} />
@@ -51,7 +59,11 @@ export default function PackagesPage() {
           }),
         }}
       />
-      <PackagesPageContent />
+      <PackagesPageContent
+        initialPlatformParam={searchParams?.platform}
+        initialServiceParam={searchParams?.service}
+        initialPackageIdParam={searchParams?.packageId}
+      />
     </>
   );
 }

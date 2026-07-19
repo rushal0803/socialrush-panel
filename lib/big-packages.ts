@@ -688,7 +688,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 16999,
     discountBadge: "Agency Pack",
     deliveryTime: "7–14 days",
-    description: "Twitter/X premium status with 50,000 followers.",
+    description: "Large Twitter/X follower package for established profiles and campaigns.",
     bestFor: "Agencies and brands",
   },
 ];

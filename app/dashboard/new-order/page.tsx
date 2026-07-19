@@ -52,6 +52,30 @@ function cleanQuantity(value: string) {
   return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
 }
 
+function normalizeQuery(value: string | null) {
+  return String(value || "").trim().toLowerCase().replace(/\s+/g, "-");
+}
+
+function platformFromQuery(value: string | null): PlatformId | null {
+  const normalized = normalizeQuery(value);
+  if (normalized === "twitter") return "x";
+  return platformOrder.includes(normalized as PlatformId) ? (normalized as PlatformId) : null;
+}
+
+function serviceFromQuery(value: string | null, requestedPlatform: PlatformId | null) {
+  const normalized = normalizeQuery(value);
+  const service =
+    customerOrderServices.find((candidate) => candidate.code === normalized) ??
+    customerOrderServices.find((candidate) => {
+      const type = candidate.code.split("-").pop();
+      return type === normalized && (!requestedPlatform || candidate.platform === requestedPlatform);
+    });
+
+  if (!service) return null;
+  if (requestedPlatform && service.platform !== requestedPlatform) return null;
+  return service;
+}
+
 function progressState(step: number, current: number) {
   if (step < current) return "complete";
   if (step === current) return "active";
@@ -83,12 +107,15 @@ export default function NewOrderPage() {
   const searchParams = useSearchParams();
   const { currency } = usePreferredCurrency("INR");
   const resumeRequested = searchParams.get("resume") === "1";
+  const requestedPlatform = platformFromQuery(searchParams.get("platform"));
+  const requestedService = serviceFromQuery(searchParams.get("service"), requestedPlatform);
   const resumedService = resumeRequested
     ? customerOrderServices.find((service) => service.code === searchParams.get("service")) ?? null
     : null;
+  const initialService = resumedService ?? requestedService;
 
-  const [platform, setPlatform] = useState<PlatformId | null>(resumedService?.platform ?? null);
-  const [selectedService, setSelectedService] = useState<SmmService | null>(resumedService);
+  const [platform, setPlatform] = useState<PlatformId | null>(initialService?.platform ?? requestedPlatform ?? null);
+  const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
   const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
   const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
