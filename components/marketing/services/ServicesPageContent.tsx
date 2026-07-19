@@ -178,7 +178,7 @@ function normalizeFilterValue(value: string | null | undefined) {
 }
 
 function platformFromParam(value: string | null | undefined): SmmPlatformId {
-  const normalized = normalizeFilterValue(value).replace(/\/+/g, "/");
+  const normalized = normalizeFilterValue(value).replace(/-\/-/g, "/").replace(/\/+/g, "/");
   return platformAliases[normalized] ?? platformAliases[normalized.replace(/\//g, "-")] ?? "instagram";
 }
 
@@ -186,6 +186,18 @@ function serviceTypeFromParam(value: string | null | undefined) {
   const normalized = normalizeFilterValue(value);
   const lastSegment = normalized.split("-").pop() || normalized;
   return serviceTypeAliases[normalized] ?? serviceTypeAliases[lastSegment] ?? "all";
+}
+
+function platformFromServiceParam(value: string | null | undefined): SmmPlatformId | null {
+  const normalized = normalizeFilterValue(value);
+  if (normalized.startsWith("instagram")) return "instagram";
+  if (normalized.startsWith("youtube")) return "youtube";
+  if (normalized.startsWith("facebook")) return "facebook";
+  if (normalized.startsWith("linkedin")) return "linkedin";
+  if (normalized.startsWith("telegram")) return "telegram";
+  if (normalized.startsWith("tiktok")) return "tiktok";
+  if (normalized.startsWith("twitter") || normalized.startsWith("x-")) return "x";
+  return null;
 }
 
 type ServicesPageContentProps = {
@@ -201,7 +213,7 @@ export default function ServicesPageContent({
 }: ServicesPageContentProps) {
   const { currency } = usePreferredCurrency("INR");
   const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>(() =>
-    platformFromParam(initialPlatformParam),
+    initialPlatformParam ? platformFromParam(initialPlatformParam) : platformFromServiceParam(initialTypeParam) ?? "instagram",
   );
   const [selectedType, setSelectedType] = useState(() => serviceTypeFromParam(initialTypeParam));
   const [searchQuery, setSearchQuery] = useState(initialSearchParam?.trim() ?? "");
@@ -209,7 +221,15 @@ export default function ServicesPageContent({
   const activePlatformServices = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
     const platform = platformFromParam(selectedPlatform);
-    const type = serviceTypeFromParam(selectedType);
+    const requestedType = serviceTypeFromParam(selectedType);
+    const typeHasServices =
+      requestedType === "all" ||
+      activeSmmServices.some(
+        (service) =>
+          platformFromParam(service.platform) === platform &&
+          serviceTypeFromCode(service.code) === requestedType,
+      );
+    const type = typeHasServices ? requestedType : "all";
 
     return activeSmmServices.filter((service) => {
       const matchesPlatform = platformFromParam(service.platform) === platform;
@@ -241,6 +261,16 @@ export default function ServicesPageContent({
       setSelectedType("all");
     }
   }, [availableTypes, selectedType]);
+
+  useEffect(() => {
+    const nextPlatform = initialPlatformParam
+      ? platformFromParam(initialPlatformParam)
+      : platformFromServiceParam(initialTypeParam) ?? "instagram";
+
+    setSelectedPlatform(nextPlatform);
+    setSelectedType(serviceTypeFromParam(initialTypeParam));
+    setSearchQuery(initialSearchParam?.trim() ?? "");
+  }, [initialPlatformParam, initialSearchParam, initialTypeParam]);
 
   return (
     <BlogShell>

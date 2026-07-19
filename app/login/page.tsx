@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import AuthShell from "@/components/AuthShell";
 import LoginForm from "@/components/auth/LoginForm";
 import { createClient } from "@/lib/supabase/server";
+import { getSafeCustomerDestination } from "@/lib/auth/destination";
 import { redirect } from "next/navigation";
 
 export const metadata: Metadata = {
@@ -12,7 +13,13 @@ export const metadata: Metadata = {
   alternates: { canonical: "/login" },
 };
 
-export default async function LoginPage() {
+type LoginPageProps = {
+  searchParams?: {
+    next?: string;
+  };
+};
+
+export default async function LoginPage({ searchParams }: LoginPageProps) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (user) {
@@ -21,7 +28,7 @@ export default async function LoginPage() {
       .select("role")
       .eq("id", user.id)
       .maybeSingle();
-    redirect(profile?.role === "admin" ? "/admin/dashboard" : "/dashboard/new-order");
+    redirect(profile?.role === "admin" ? "/admin/dashboard" : getSafeCustomerDestination(searchParams?.next));
   }
 
   return (

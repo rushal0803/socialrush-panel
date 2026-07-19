@@ -1,17 +1,20 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import {
   ADMIN_DESTINATION,
   DEFAULT_CUSTOMER_DESTINATION,
+  getSafeCustomerDestination,
 } from "@/lib/auth/destination";
 
 export default function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const customerDestination = getSafeCustomerDestination(searchParams.get("next"));
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [googleLoading, setGoogleLoading] = useState(false);
@@ -64,7 +67,7 @@ export default function LoginForm() {
         .eq("id", loginData.user.id)
         .maybeSingle();
       router.replace(
-        profile?.role === "admin" ? ADMIN_DESTINATION : DEFAULT_CUSTOMER_DESTINATION,
+        profile?.role === "admin" ? ADMIN_DESTINATION : customerDestination,
       );
       router.refresh();
     } catch {
@@ -80,7 +83,7 @@ export default function LoginForm() {
     try {
       const supabase = createClient();
       const redirectUrl = new URL("/auth/callback", window.location.origin);
-      redirectUrl.searchParams.set("next", DEFAULT_CUSTOMER_DESTINATION);
+      redirectUrl.searchParams.set("next", customerDestination || DEFAULT_CUSTOMER_DESTINATION);
 
       const { error: oauthError } = await supabase.auth.signInWithOAuth({
         provider: "google",
