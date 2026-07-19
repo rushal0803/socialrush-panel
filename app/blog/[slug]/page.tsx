@@ -9,6 +9,7 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
+const MAX_TOC_SECTIONS = 10;
 
 export const dynamic = "force-dynamic";
 export const dynamicParams = true;
@@ -94,6 +95,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleAuthor = article.author ?? "SocialRUSH Editorial Team";
   const breadcrumbTitle = article.breadcrumbTitle ?? article.title;
   const articleSections = getArticleSections(article);
+  const tocSections = articleSections.slice(0, MAX_TOC_SECTIONS);
   const articleFaqs = article.faqs ?? [];
   const articleRelatedLinks = article.relatedLinks ?? [];
   const articleComparison = article.comparison;
@@ -224,7 +226,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           >
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
-              {articleSections.map((section) => (
+              {tocSections.map((section) => (
                 <li key={section.heading}>
                   <a
                     href={`#${toSectionId(section.heading)}`}
@@ -234,6 +236,11 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                   </a>
                 </li>
               ))}
+              {articleSections.length > tocSections.length ? (
+                <li className="text-sm font-semibold leading-6 text-[#111827]">
+                  More detailed sections continue in the full guide below.
+                </li>
+              ) : null}
               {articleComparison ? (
                 <li>
                   <a href="#followers-vs-engagement-comparison" className="inline-flex text-sm font-semibold leading-6 text-[#FF9F00] transition hover:text-[#FF7A00]">

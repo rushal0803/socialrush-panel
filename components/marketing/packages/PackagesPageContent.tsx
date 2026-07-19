@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, ShieldCheck } from "lucide-react";
-import { useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
@@ -74,6 +74,10 @@ const platformParamMap: Record<string, Platform> = {
   tiktok: "TikTok",
   x: "X",
   twitter: "X",
+  "twitter-x": "X",
+  "x-twitter": "X",
+  "twitter/x": "X",
+  "x/twitter": "X",
 };
 
 const serviceParamMap: Record<string, Service> = {
@@ -94,7 +98,8 @@ function normalizeParam(value: string | null) {
 }
 
 function platformFromParam(value: string | null): Platform {
-  return platformParamMap[normalizeParam(value)] ?? "Instagram";
+  const normalized = normalizeParam(value).replace(/-\/-/g, "/").replace(/\/+/g, "/");
+  return platformParamMap[normalized] ?? platformParamMap[normalized.replace(/\//g, "-")] ?? "Instagram";
 }
 
 function serviceFromParam(value: string | null, platform: Platform): Service {
@@ -111,6 +116,18 @@ function serviceFromParam(value: string | null, platform: Platform): Service {
   );
 }
 
+function platformFromServiceParam(value: string | null): Platform | null {
+  const normalized = normalizeParam(value);
+  if (normalized.startsWith("instagram")) return "Instagram";
+  if (normalized.startsWith("youtube")) return "YouTube";
+  if (normalized.startsWith("facebook")) return "Facebook";
+  if (normalized.startsWith("linkedin")) return "LinkedIn";
+  if (normalized.startsWith("telegram")) return "Telegram";
+  if (normalized.startsWith("tiktok")) return "TikTok";
+  if (normalized.startsWith("twitter") || normalized.startsWith("x-")) return "X";
+  return null;
+}
+
 type PackagesPageContentProps = {
   initialPlatformParam?: string;
   initialServiceParam?: string;
@@ -123,7 +140,9 @@ export default function PackagesPageContent({
   initialPackageIdParam,
 }: PackagesPageContentProps) {
   const { currency } = usePreferredCurrency("INR");
-  const initialPlatform = platformFromParam(initialPlatformParam ?? null);
+  const initialPlatform = initialPlatformParam
+    ? platformFromParam(initialPlatformParam)
+    : platformFromServiceParam(initialServiceParam ?? null) ?? "Instagram";
   const initialService = serviceFromParam(initialServiceParam ?? null, initialPlatform);
   const initialPackageId = initialPackageIdParam || "";
   const initialPackage = bigPackages.find(
@@ -150,6 +169,24 @@ export default function PackagesPageContent({
     () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),
     [selectedPackageId],
   );
+
+  useEffect(() => {
+    const nextPlatform = initialPlatformParam
+      ? platformFromParam(initialPlatformParam)
+      : platformFromServiceParam(initialServiceParam ?? null) ?? "Instagram";
+    const nextService = serviceFromParam(initialServiceParam ?? null, nextPlatform);
+    const nextPackage = bigPackages.find(
+      (pkg) =>
+        pkg.packageId === (initialPackageIdParam || "") &&
+        pkg.platform === nextPlatform &&
+        pkg.service === nextService,
+    );
+
+    setSelectedPlatform(nextPlatform);
+    setSelectedService(nextService);
+    setSelectedPackageId(nextPackage?.packageId ?? "");
+    setShowAllPackages(false);
+  }, [initialPackageIdParam, initialPlatformParam, initialServiceParam]);
 
   function selectPlatform(platform: Platform) {
     setSelectedPlatform(platform);
