@@ -37,6 +37,7 @@ type PackagesPageProps = {
   searchParams?: {
     platform?: string;
     service?: string;
+    package?: string;
     packageId?: string;
   };
 };
@@ -62,7 +63,7 @@ export default function PackagesPage({ searchParams }: PackagesPageProps) {
       <PackagesPageContent
         initialPlatformParam={searchParams?.platform}
         initialServiceParam={searchParams?.service}
-        initialPackageIdParam={searchParams?.packageId}
+        initialPackageIdParam={searchParams?.package ?? searchParams?.packageId}
       />
     </>
   );
