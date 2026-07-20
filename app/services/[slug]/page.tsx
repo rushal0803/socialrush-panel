@@ -54,7 +54,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   return {
     metadataBase: new URL(siteUrl),
-    title: seo.title,
+    title: { absolute: seo.title },
     description: seo.description,
     alternates: { canonical: `/services/${params.slug}` },
     openGraph: {
