@@ -362,7 +362,7 @@ const baseBlogArticles: BlogArticle[] = [
       { label: "Explore SocialRUSH Services", href: "/services" },
       { label: "Compare SocialRUSH Packages", href: "/packages" },
       { label: "Instagram Followers Service", href: "/buy-instagram-followers-india" },
-      { label: "Facebook Followers Service", href: "/buy-facebook-followers-india" },
+      { label: "Facebook Followers Service", href: "/facebook-followers" },
     ],
     faqs: [
       {

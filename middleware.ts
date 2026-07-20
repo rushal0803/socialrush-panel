@@ -3,6 +3,8 @@ import { NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 
 const canonicalRedirects: Record<string, string> = {
+  "/buy-instagram-followers": "/buy-instagram-followers-india",
+  "/instagram-followers": "/buy-instagram-followers-india",
   "/buy-instagram-likes-india": "/instagram-likes",
   "/buy-instagram-views-india": "/instagram-views",
   "/buy-youtube-subscribers-india": "/youtube-subscribers",

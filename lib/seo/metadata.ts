@@ -26,11 +26,15 @@ export function createPageMetadata({
   keywords = [],
 }: PageMetadataOptions): Metadata {
   const canonicalUrl = new URL(path, `${SEO_SITE_URL}/`).toString();
-  const socialTitle = title.includes("SocialRUSH") ? title : `${title} | SocialRUSH`;
+  const pageTitle =
+    title === "SocialRUSH"
+      ? title
+      : title.replace(/\s*\|\s*SocialRUSH\s*$/i, "").trim();
+  const socialTitle = pageTitle.includes("SocialRUSH") ? pageTitle : `${pageTitle} | SocialRUSH`;
   const imageUrl = `${SEO_SITE_URL}/og-image.png`;
 
   return {
-    title,
+    title: pageTitle,
     description,
     keywords: [...new Set([...keywords, ...SOCIAL_GROWTH_KEYWORDS])],
     alternates: {

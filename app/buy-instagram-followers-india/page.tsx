@@ -548,9 +548,9 @@ export default function BuyInstagramFollowersIndiaPage() {
               ["All growth services", "/services"],
               ["Contact support", "/contact"],
               ["Social media growth blog", "/blog"],
-              ["YouTube subscribers", "/buy-youtube-subscribers-india"],
-              ["Instagram likes", "/buy-instagram-likes-india"],
-              ["Instagram views", "/buy-instagram-views-india"],
+              ["YouTube subscribers", "/youtube-subscribers"],
+              ["Instagram likes", "/instagram-likes"],
+              ["Instagram views", "/instagram-views"],
             ].map(([label, href]) => (
               <Link key={href} href={href} className="resource-link">
                 {label}

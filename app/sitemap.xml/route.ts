@@ -70,19 +70,11 @@ export function GET() {
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${routes
   .map((route) => {
-    const isHome = route === "/";
-    const isBlogArticle = route.startsWith("/blog/");
-    const isServicePage = serviceRoutes.includes(route);
-    const changefreq = isBlogArticle ? "weekly" : "monthly";
-    const priority = isHome ? "1.0" : isServicePage ? "0.9" : route === "/blog" ? "0.8" : "0.7";
-
     const lastmod = blogUpdatedAt.get(route) ?? now;
 
     return `  <url>
     <loc>${escapeXml(absoluteUrl(route))}</loc>
     <lastmod>${lastmod}</lastmod>
-    <changefreq>${changefreq}</changefreq>
-    <priority>${priority}</priority>
   </url>`;
   })
   .join("\n")}
