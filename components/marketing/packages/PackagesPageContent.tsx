@@ -598,10 +598,11 @@ export default function PackagesPageContent({
         </section>
 
         <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:gap-3 sm:p-3">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:grid-cols-4 sm:gap-3 sm:p-3">
             <PackageStep number="1" title="Platform" state="complete" />
-            <PackageStep number="2" title="Package" state={selectedPackage ? "complete" : "active"} />
-            <PackageStep number="3" title="Checkout" state={selectedPackage ? "active" : "upcoming"} />
+            <PackageStep number="2" title="Service" state="complete" />
+            <PackageStep number="3" title="Package" state={selectedPackage ? "complete" : "active"} />
+            <PackageStep number="4" title="Review" state={selectedPackage ? "active" : "upcoming"} />
           </div>
         </section>
 
@@ -881,9 +882,9 @@ export default function PackagesPageContent({
             <div className="flex items-center gap-3">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs font-black text-white">
-                  Continue with {selectedPackage.quantityLabel} {serviceLabels[selectedPackage.service]}
+                  Continue with {selectedPackage.title} — {formatCurrency(selectedPackage.basePriceINR, currency)}
                 </p>
-                <p className="mt-0.5 text-[11px] font-bold text-orange-200">{formatCurrency(selectedPackage.basePriceINR, currency)}</p>
+                <p className="mt-0.5 text-[11px] font-bold text-orange-200">Review package details</p>
               </div>
               <button
                 type="button"
@@ -1096,7 +1097,7 @@ function PackageReviewSection({
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
           <article className="rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_64px_-36px_rgba(255,122,0,.72)] sm:p-7">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 4</p>
             <h2 ref={summaryHeadingRef} tabIndex={-1} className="mt-2 text-2xl font-black text-white outline-none sm:text-3xl">
               Review Your Package
             </h2>
@@ -1188,7 +1189,7 @@ function PackageReviewSection({
                   className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition hover:-translate-y-0.5 active:scale-[.98] sm:w-auto"
                 >
                   <LockKeyhole className="h-4 w-4" />
-                  Login to Place Order
+                  Continue to Login
                 </Link>
               ) : walletLoadError ? (
                 <button type="button" onClick={onRefreshWallet} className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
@@ -1213,7 +1214,7 @@ function PackageReviewSection({
                   className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition hover:-translate-y-0.5 active:scale-[.98] sm:w-auto"
                 >
                   <WalletCards className="h-4 w-4" />
-                  Add {formatCurrency(amountNeeded, currency)} & Continue
+                  Add Funds
                 </Link>
               )}
               <button type="button" onClick={onChangePackage} className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl border border-orange-400/30 bg-[#151515] px-7 py-3.5 text-sm font-black text-white transition hover:border-orange-400 hover:bg-orange-500/10 active:scale-[.98] sm:w-auto">

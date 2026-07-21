@@ -121,6 +121,34 @@ const descriptiveServiceAnchors: Record<string, string> = {
   "x-followers": "Twitter/X Followers India",
 };
 
+const serviceCardDescriptions: Record<string, string> = {
+  "instagram-followers": "Compare Instagram follower campaigns with clear pricing, delivery estimates and eligible refill support.",
+  "instagram-likes": "Compare Instagram like campaigns for public posts and reels with clear package options.",
+  "instagram-views": "Review Instagram view campaigns for public reels or videos with delivery and support details.",
+  "youtube-subscribers": "Compare YouTube subscriber campaigns with channel-link requirements, pricing and delivery estimates.",
+  "youtube-likes": "Review YouTube like campaigns for public videos with clear pricing and delivery details.",
+  "youtube-views": "Compare YouTube view campaigns for public videos and Shorts with transparent package options.",
+  "facebook-followers": "Compare Facebook follower campaigns for public pages or profiles with delivery guidance.",
+  "facebook-likes": "Review Facebook like campaigns for public posts with pricing and support details.",
+  "facebook-views": "Compare Facebook video view campaigns with delivery estimates and public-link requirements.",
+  "facebook-shares": "Review Facebook share campaigns for public posts with package and delivery details.",
+  "linkedin-followers": "Compare LinkedIn follower campaigns for public profiles or company pages.",
+  "linkedin-likes": "Review LinkedIn like campaigns for public posts with pricing and delivery details.",
+  "telegram-members": "Compare Telegram member campaigns for public channels or groups with support information.",
+  "tiktok-followers": "Review TikTok follower campaigns for public profiles with clear pricing and delivery terms.",
+  "tiktok-likes": "Compare TikTok like campaigns for public videos with package and support details.",
+  "tiktok-views": "Review TikTok view campaigns for public videos with delivery estimates.",
+  "x-followers": "Compare Twitter/X follower campaigns for public profiles with pricing and tracking details.",
+};
+
+function getServiceCardDescription(code: string) {
+  return serviceCardDescriptions[code] ?? "Compare this service with clear pricing, delivery estimates and support details.";
+}
+
+function getDirectorySummary(serviceName: string) {
+  return `View current pricing, estimated delivery and refill/support terms for ${serviceName}.`;
+}
+
 function packagePlatform(platform: SmmPlatformId) {
   return platform === "x" ? "twitter" : platform;
 }
@@ -410,7 +438,7 @@ export default function ServicesPageContent({
                 return (
                   <article
                     key={service.code}
-                    className="group flex min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-5 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#FFF3E0] hover:shadow-[0_24px_52px_-26px_rgba(255, 159, 0, .4)] sm:p-6"
+                    className="group flex h-full min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-5 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#FFF3E0] hover:shadow-[0_24px_52px_-26px_rgba(255, 159, 0, .4)] sm:p-6"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge label={meta.label}>
@@ -426,39 +454,41 @@ export default function ServicesPageContent({
                         {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                       </Link>
                     </h3>
-                    <p className="mt-2 flex-1 text-sm leading-6 text-[#111827]">{service.description}</p>
+                    <p className="mt-2 text-sm leading-6 text-[#111827]">{getServiceCardDescription(service.code)}</p>
 
-                    <div className="mt-5 rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4">
-                      <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#111827]">Starting from</p>
-                      <p className="mt-1 text-xl font-black text-[#0B0B0F]">
-                        {formatCurrency(service.pricePer1000, currency)} <span className="text-xs text-[#111827]">/ 1K</span>
-                      </p>
-                    </div>
-
-                    <div className="mt-3 grid gap-2 text-xs sm:grid-cols-2">
-                      <div className="flex items-start gap-2 rounded-xl border border-[#FFF8F1] bg-white/80 p-3">
-                        <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" />
-                        <span><b className="block text-[#0B0B0F]">Delivery</b><span className="mt-1 block text-[#111827]">{service.deliveryTime}</span></span>
+                    <div className="mt-auto pt-5">
+                      <div className="rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4">
+                        <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#111827]">Starting from</p>
+                        <p className="mt-1 text-xl font-black text-[#0B0B0F]">
+                          {formatCurrency(service.pricePer1000, currency)} <span className="text-xs text-[#111827]">/ 1K</span>
+                        </p>
                       </div>
-                      <div className="flex items-start gap-2 rounded-xl border border-[#FFF8F1] bg-white/80 p-3">
-                        <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
-                        <span><b className="block text-[#0B0B0F]">{refillAvailable ? "Refill" : "Coverage"}</b><span className="mt-1 block text-[#111827]">{service.refillPolicy}</span></span>
-                      </div>
-                    </div>
 
-                    <div className="mt-5 grid gap-2 min-[420px]:grid-cols-2">
-                      <Link
-                        href={packagesPath}
-                        className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2.5 text-xs font-black text-[#FF9F00] transition hover:border-[#FF9F00] hover:bg-[#FFF8F1]"
-                      >
-                        View Packages
-                      </Link>
-                      <OrderNowButton
-                        nextPath={nextPath}
-                        className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white shadow-[0_12px_26px_rgba(255, 196, 0, .35)] transition hover:-translate-y-0.5"
-                      >
-                        Start Order <ArrowRight className="h-4 w-4" />
-                      </OrderNowButton>
+                      <div className="mt-3 grid gap-2 text-xs sm:grid-cols-2">
+                        <div className="flex items-start gap-2 rounded-xl border border-[#FFF8F1] bg-white/80 p-3">
+                          <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" />
+                          <span><b className="block text-[#0B0B0F]">Delivery</b><span className="mt-1 block text-[#111827]">{service.deliveryTime}</span></span>
+                        </div>
+                        <div className="flex items-start gap-2 rounded-xl border border-[#FFF8F1] bg-white/80 p-3">
+                          <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
+                          <span><b className="block text-[#0B0B0F]">{refillAvailable ? "Refill" : "Support"}</b><span className="mt-1 block text-[#111827]">{service.refillPolicy}</span></span>
+                        </div>
+                      </div>
+
+                      <div className="mt-5 grid gap-2 min-[420px]:grid-cols-2">
+                        <Link
+                          href={packagesPath}
+                          className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white shadow-[0_12px_26px_rgba(255, 196, 0, .28)] transition hover:-translate-y-0.5"
+                        >
+                          View Packages
+                        </Link>
+                        <OrderNowButton
+                          nextPath={nextPath}
+                          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#FFF3E0] bg-white px-4 py-2.5 text-xs font-black text-[#FF9F00] transition hover:border-[#FF9F00] hover:bg-[#FFF8F1]"
+                        >
+                          Start Order <ArrowRight className="h-4 w-4" />
+                        </OrderNowButton>
+                      </div>
                     </div>
                   </article>
                 );
@@ -545,7 +575,7 @@ export default function ServicesPageContent({
                               </Link>
                             </h4>
                             <p className="mt-2 flex-1 text-sm leading-6 text-[#D1D5DB]">
-                              {service.description}
+                              {getDirectorySummary(serviceNames[service.code] || service.name)}
                             </p>
                             <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
                               <div className="rounded-xl border border-orange-400/15 bg-orange-500/10 p-3">
@@ -578,13 +608,13 @@ export default function ServicesPageContent({
                               </Link>
                               <Link
                                 href={packagesPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2 text-center text-[11px] font-black text-orange-200"
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-[11px] font-black text-white"
                               >
                                 View Packages
                               </Link>
                               <Link
                                 href={orderPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-[11px] font-black text-white"
+                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2 text-center text-[11px] font-black text-orange-200"
                               >
                                 Start Order
                               </Link>
