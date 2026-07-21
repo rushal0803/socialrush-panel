@@ -43,10 +43,10 @@ const navLinks = [
 ] as const;
 
 const trustBadges = [
-  { label: "No Password Required", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
-  { label: "Secure Checkout", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
-  { label: "Real-time Order Tracking", icon: "↗", color: "from-[#FF7A00] to-[#FFB000]" },
-  { label: "WhatsApp Support", icon: "◎", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "No password required", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Transparent pricing", icon: "₹", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Dashboard order tracking", icon: "↗", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "WhatsApp support", icon: "◎", color: "from-[#FF7A00] to-[#FFB000]" },
 ] as const;
 
 const whySocialRush = [
@@ -362,10 +362,15 @@ export default function HomepageContent() {
               Transparent Social Media Growth Services{" "}
               <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">for Creators and Brands</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">SocialRUSH helps creators, brands and businesses manage social media growth campaigns with public-link ordering, transparent pricing, secure checkout, dashboard tracking and WhatsApp support.</p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">Start Your Order</Link>
-              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">View Packages</Link>
+            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">
+              Compare clear packages, submit your public profile or content link, and track your campaign from one secure dashboard.
+            </p>
+            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">View Packages</Link>
+              <Link href="/services" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">Explore Services</Link>
+              <Link href="#how-it-works" className="inline-flex min-h-[44px] items-center justify-center px-2 text-sm font-bold text-orange-200 underline decoration-orange-400/40 underline-offset-4 transition hover:text-orange-100 sm:min-h-0">
+                How It Works
+              </Link>
             </div>
             <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-3">
               {trustBadges.map((badge) => (
@@ -483,7 +488,7 @@ export default function HomepageContent() {
             <span className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-300">SocialRUSH India</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white">Social media growth services and packages in India</h2>
             <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">
-              Explore SocialRUSH service pages for creators, brands and businesses comparing social media growth services India, social media growth packages India and platform-specific campaign options.
+              Explore focused SocialRUSH service pages for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X campaign options in India.
             </p>
           </div>
           <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
