@@ -386,13 +386,13 @@ export default function ServicesPageContent({
                 className="min-h-12 w-full rounded-2xl border border-orange-400/20 bg-[#050505] py-3 pl-11 pr-4 text-sm font-semibold text-white outline-none transition placeholder:text-[#9CA3AF] focus:border-orange-400/70 focus:ring-2 focus:ring-orange-500/15"
               />
             </label>
-            <div className="flex gap-2 overflow-x-auto pb-1 lg:justify-end lg:pb-0">
+            <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:justify-end lg:px-0 lg:pb-0">
               {availableTypes.map((type) => (
                 <button
                   key={type}
                   type="button"
                   onClick={() => setSelectedType(type)}
-                  className={`min-h-10 shrink-0 rounded-xl px-4 py-2 text-xs font-black capitalize transition ${
+                  className={`min-h-11 shrink-0 rounded-xl px-4 py-2.5 text-xs font-black capitalize transition ${
                     selectedType === type
                       ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255,122,0,.28)]"
                       : "border border-orange-400/20 bg-white/[.06] text-[#D1D5DB] hover:border-orange-400/45 hover:text-white"
@@ -599,22 +599,22 @@ export default function ServicesPageContent({
                               </strong>{" "}
                               {service.refillPolicy}
                             </p>
-                            <div className="mt-4 grid gap-2 min-[420px]:grid-cols-3">
+                            <div className="mt-4 grid gap-2 sm:grid-cols-3">
                               <Link
                                 href={detailPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2 text-center text-[11px] font-black text-[#D1D5DB]"
+                                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2.5 text-center text-[11px] font-black text-[#D1D5DB]"
                               >
                                 Service Details
                               </Link>
                               <Link
                                 href={packagesPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-[11px] font-black text-white"
+                                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2.5 text-center text-[11px] font-black text-white"
                               >
                                 View Packages
                               </Link>
                               <Link
                                 href={orderPath}
-                                className="inline-flex min-h-10 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2 text-center text-[11px] font-black text-orange-200"
+                                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2.5 text-center text-[11px] font-black text-orange-200"
                               >
                                 Start Order
                               </Link>

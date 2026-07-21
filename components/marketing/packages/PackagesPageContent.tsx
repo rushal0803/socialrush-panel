@@ -446,7 +446,7 @@ export default function PackagesPageContent({
 
     const observer = new IntersectionObserver(
       ([entry]) => setSummaryInView(Boolean(entry?.isIntersecting)),
-      { rootMargin: "0px 0px -35% 0px", threshold: 0.18 },
+      { rootMargin: "0px", threshold: 0.01 },
     );
     observer.observe(summaryStepRef.current);
     return () => observer.disconnect();
@@ -636,7 +636,7 @@ export default function PackagesPageContent({
 
   return (
     <BlogShell>
-      <div className="packages-page relative overflow-x-clip pb-24 lg:pb-24">
+      <div className="packages-page relative overflow-x-clip pb-36 lg:pb-24">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-16 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-8%] top-44 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
@@ -961,7 +961,7 @@ export default function PackagesPageContent({
 
 
         {selectedPackage && !summaryInView ? (
-          <div className="fixed inset-x-3 bottom-20 z-40 rounded-2xl border border-orange-400/35 bg-[#111111]/95 p-3 shadow-[0_18px_42px_-18px_rgba(255,122,0,.85)] backdrop-blur-xl sm:hidden">
+          <div className="fixed inset-x-3 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-40 rounded-2xl border border-orange-400/35 bg-[#111111]/95 p-3 shadow-[0_18px_42px_-18px_rgba(255,122,0,.85)] backdrop-blur-xl sm:hidden">
             <div className="flex items-center gap-3">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs font-black text-white">

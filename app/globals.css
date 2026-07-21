@@ -208,7 +208,7 @@ p {
   }
 
   .auth-field {
-    @apply mt-2 w-full rounded-xl border px-4 py-3 text-sm text-white outline-none transition backdrop-blur;
+    @apply mt-2 min-h-12 w-full rounded-xl border px-4 py-3 text-base text-white outline-none transition backdrop-blur sm:text-sm;
     border-color: var(--sr-border);
     background: rgba(255, 255, 255, 0.06);
   }
