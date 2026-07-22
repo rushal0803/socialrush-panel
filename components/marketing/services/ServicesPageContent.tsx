@@ -145,10 +145,6 @@ function getServiceCardDescription(code: string) {
   return serviceCardDescriptions[code] ?? "Compare this service with clear pricing, delivery estimates and support details.";
 }
 
-function getDirectorySummary(serviceName: string) {
-  return `View current pricing, estimated delivery and refill/support terms for ${serviceName}.`;
-}
-
 function packagePlatform(platform: SmmPlatformId) {
   return platform === "x" ? "twitter" : platform;
 }
@@ -245,6 +241,8 @@ export default function ServicesPageContent({
   );
   const [selectedType, setSelectedType] = useState(() => serviceTypeFromParam(initialTypeParam));
   const [searchQuery, setSearchQuery] = useState(initialSearchParam?.trim() ?? "");
+  const [openDirectoryPlatform, setOpenDirectoryPlatform] = useState<SmmPlatformId>(selectedPlatform);
+  const [openFaqIndex, setOpenFaqIndex] = useState(0);
 
   const activePlatformServices = useMemo(() => {
     const query = searchQuery.trim().toLowerCase();
@@ -296,20 +294,21 @@ export default function ServicesPageContent({
       : platformFromServiceParam(initialTypeParam) ?? "instagram";
 
     setSelectedPlatform(nextPlatform);
+    setOpenDirectoryPlatform(nextPlatform);
     setSelectedType(serviceTypeFromParam(initialTypeParam));
     setSearchQuery(initialSearchParam?.trim() ?? "");
   }, [initialPlatformParam, initialSearchParam, initialTypeParam]);
 
   return (
     <BlogShell>
-      <main className="relative overflow-x-clip pb-16 sm:pb-20">
+      <main className="relative scroll-pt-28 overflow-x-clip pb-28 sm:pb-20">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-20 top-12 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-10%] top-36 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
           <div className="absolute bottom-20 left-[30%] h-72 w-72 rounded-full bg-amber-200/30 blur-3xl" />
         </div>
 
-        <section className="relative px-4 pb-7 pt-6 sm:px-6 sm:pb-9 sm:pt-9 lg:px-8 lg:pt-12">
+        <section className="relative scroll-mt-28 px-4 pb-6 pt-5 sm:px-6 sm:pb-9 sm:pt-9 lg:px-8 lg:pt-12">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_58px_-28px_rgba(255,122,0,.45)] backdrop-blur-xl sm:rounded-[2rem] sm:p-8 lg:p-10">
             <p className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-orange-200 sm:px-4 sm:text-xs">
               <Sparkles className="h-3.5 w-3.5" /> Premium Service Catalog
@@ -336,7 +335,7 @@ export default function ServicesPageContent({
           </div>
         </section>
 
-        <section className="relative px-4 sm:px-6 lg:px-8">
+        <section className="relative scroll-mt-28 px-4 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="mb-4">
               <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF9F00]">Choose a platform</p>
@@ -356,11 +355,11 @@ export default function ServicesPageContent({
                       setSelectedType("all");
                     }}
                     aria-pressed={active}
-                    className={`min-w-0 rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 sm:p-4 ${
+                    className={`min-w-0 rounded-2xl border p-2.5 text-left transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                       active
                         ? "border-orange-400/75 bg-orange-500/15 shadow-[0_18px_38px_-24px_rgba(255, 159, 0, .7)] ring-2 ring-[#FF9F00]/20"
                         : "border-white/10 bg-[#111111] hover:border-orange-400/45"
-                    }`}
+                    } ${platformId === "x" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
                   >
                     <IconBadge label={meta.label}>
                       <PlatformIcon platform={meta.icon} title={meta.label} className="h-5 w-5" />
@@ -373,7 +372,7 @@ export default function ServicesPageContent({
           </div>
         </section>
 
-        <section className="relative px-4 pt-5 sm:px-6 lg:px-8">
+        <section className="relative scroll-mt-28 px-4 pt-5 sm:px-6 lg:px-8">
           <div className="mx-auto grid max-w-7xl gap-3 rounded-[1.5rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.55)] lg:grid-cols-[1fr_auto] lg:items-center">
             <label className="relative block">
               <span className="sr-only">Search SocialRUSH services</span>
@@ -405,7 +404,7 @@ export default function ServicesPageContent({
           </div>
         </section>
 
-        <div className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8">
+        <div className="relative scroll-mt-28 px-4 pt-6 sm:px-6 sm:pt-9 lg:px-8">
           <div className="mx-auto max-w-7xl">
             {platformOrder.map((platformId) => {
               const meta = platformMeta[platformId];
@@ -428,54 +427,47 @@ export default function ServicesPageContent({
                   </div>
 
                   {platformServices.length > 0 ? (
-                    <div className="mt-5 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    <div className="mt-4 grid gap-3 md:grid-cols-2 md:gap-4 xl:grid-cols-3">
                     {platformServices.map((service) => {
                 const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const serviceDetailPath = seoServicePaths[service.code] ?? `/services/${service.code}`;
-                const refillAvailable = !service.refillPolicy.toLowerCase().includes("no refill");
-
                 return (
                   <article
                     key={service.code}
-                    className="group flex h-full min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-5 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#FFF3E0] hover:shadow-[0_24px_52px_-26px_rgba(255, 159, 0, .4)] sm:p-6"
+                    className="group flex h-full min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-4 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#FFF3E0] hover:shadow-[0_24px_52px_-26px_rgba(255, 159, 0, .4)] sm:p-6"
                   >
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge label={meta.label}>
                         <PlatformIcon platform={meta.icon} title={meta.label} className="h-6 w-6" />
                       </IconBadge>
-                      <span className="rounded-full border border-[#FFF8F1] bg-[#FFF8F1] px-3 py-1 text-[10px] font-black uppercase text-[#111827]">
-                        {service.qualityType}
-                      </span>
                     </div>
 
-                    <h3 className="mt-4 text-lg font-black text-[#0B0B0F]">
+                    <h3 className="mt-3 text-base font-black text-[#0B0B0F] sm:mt-4 sm:text-lg">
                       <Link href={serviceDetailPath} className="transition hover:text-orange-600">
                         {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                       </Link>
                     </h3>
-                    <p className="mt-2 text-sm leading-6 text-[#111827]">{getServiceCardDescription(service.code)}</p>
+                    <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-[#111827] sm:mt-2">{getServiceCardDescription(service.code)}</p>
 
-                    <div className="mt-auto pt-5">
-                      <div className="rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.12em] text-[#111827]">Starting from</p>
-                        <p className="mt-1 text-xl font-black text-[#0B0B0F]">
-                          {formatCurrency(service.pricePer1000, currency)} <span className="text-xs text-[#111827]">/ 1K</span>
-                        </p>
-                      </div>
-
-                      <div className="mt-3 grid gap-2 text-xs sm:grid-cols-2">
-                        <div className="flex items-start gap-2 rounded-xl border border-[#FFF8F1] bg-white/80 p-3">
-                          <Clock3 className="mt-0.5 h-4 w-4 shrink-0 text-orange-600" />
-                          <span><b className="block text-[#0B0B0F]">Delivery</b><span className="mt-1 block text-[#111827]">{service.deliveryTime}</span></span>
+                    <div className="mt-auto pt-4 sm:pt-5">
+                      <div className="grid grid-cols-2 gap-2 rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-3 text-xs">
+                        <div>
+                          <p className="font-bold uppercase tracking-[0.1em] text-[#111827]">Starting from</p>
+                          <p className="mt-1 text-base font-black text-[#0B0B0F] sm:text-lg">
+                            {formatCurrency(service.pricePer1000, currency)} <span className="text-[11px] text-[#111827]">/ 1K</span>
+                          </p>
                         </div>
-                        <div className="flex items-start gap-2 rounded-xl border border-[#FFF8F1] bg-white/80 p-3">
-                          <RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-amber-600" />
-                          <span><b className="block text-[#0B0B0F]">{refillAvailable ? "Refill" : "Support"}</b><span className="mt-1 block text-[#111827]">{service.refillPolicy}</span></span>
+                        <div>
+                          <p className="font-bold uppercase tracking-[0.1em] text-[#111827]">Delivery</p>
+                          <p className="mt-1 font-black leading-5 text-[#0B0B0F]">{service.deliveryTime}</p>
                         </div>
                       </div>
+                      <p className="mt-2 rounded-xl border border-[#FFF8F1] bg-white/80 px-3 py-2 text-xs leading-5 text-[#111827]">
+                        <strong className="text-[#0B0B0F]">Refill/support:</strong> {service.refillPolicy}
+                      </p>
 
-                      <div className="mt-5 grid gap-2 min-[420px]:grid-cols-2">
+                      <div className="mt-4 grid gap-2 min-[420px]:grid-cols-2 sm:mt-5">
                         <Link
                           href={packagesPath}
                           className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white shadow-[0_12px_26px_rgba(255, 196, 0, .28)] transition hover:-translate-y-0.5"
@@ -505,7 +497,7 @@ export default function ServicesPageContent({
           </div>
         </div>
 
-        <section aria-labelledby="complete-service-directory-heading" className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+        <section aria-labelledby="complete-service-directory-heading" className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_20px_48px_-34px_rgba(255,122,0,.55)] sm:p-7">
             <div className="max-w-3xl">
               <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF9F00]">Compact service directory</p>
@@ -517,20 +509,28 @@ export default function ServicesPageContent({
               </p>
             </div>
 
-            <div className="mt-7 space-y-3">
+            <div className="mt-6 space-y-3 sm:mt-7">
               {platformOrder.map((platformId) => {
                 const meta = platformMeta[platformId];
                 const platformServices = activeSmmServices.filter(
                   (service) => service.platform === platformId,
                 );
 
+                const isOpen = openDirectoryPlatform === platformId;
+
                 return (
-                  <details
+                  <section
                     key={`directory-${platformId}`}
-                    className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-4"
-                    open={platformId === selectedPlatform}
+                    className="rounded-2xl border border-orange-400/20 bg-[#151515] p-3 sm:p-4"
+                    aria-labelledby={`directory-${platformId}-heading`}
                   >
-                    <summary className="flex cursor-pointer list-none items-center justify-between gap-3">
+                    <button
+                      type="button"
+                      className="flex min-h-12 w-full cursor-pointer items-center justify-between gap-3 rounded-xl text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                      aria-expanded={isOpen}
+                      aria-controls={`directory-${platformId}-panel`}
+                      onClick={() => setOpenDirectoryPlatform(platformId)}
+                    >
                       <span className="flex min-w-0 items-center gap-3">
                         <IconBadge label={meta.label} size="sm">
                           <PlatformIcon platform={meta.icon} title={meta.label} className="h-5 w-5" />
@@ -544,12 +544,17 @@ export default function ServicesPageContent({
                           </span>
                         </span>
                       </span>
-                      <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-orange-400/25 bg-orange-500/10 text-lg font-black text-orange-200 transition group-open:rotate-45">
+                      <span className={`grid h-9 w-9 shrink-0 place-items-center rounded-xl border border-orange-400/25 bg-orange-500/10 text-lg font-black text-orange-200 transition ${isOpen ? "rotate-45" : ""}`}>
                         +
                       </span>
-                    </summary>
+                    </button>
 
-                    <div className="mt-4 grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                    <div
+                      id={`directory-${platformId}-panel`}
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen ? "mt-4 grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+                    >
+                      <div className="overflow-hidden">
+                    <div className="grid gap-3">
                       {platformServices.map((service) => {
                         const detailPath =
                           seoServicePaths[service.code] ??
@@ -557,15 +562,12 @@ export default function ServicesPageContent({
                         const packagesPath = `/packages?platform=${encodeURIComponent(
                           packagePlatform(service.platform),
                         )}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
-                        const orderPath = `/dashboard/new-order?platform=${encodeURIComponent(
-                          packagePlatform(service.platform),
-                        )}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
-
                         return (
                           <article
                             key={`directory-${service.code}`}
-                            className="flex min-w-0 flex-col rounded-2xl border border-orange-400/15 bg-[#0B0B0F] p-5 shadow-[0_16px_38px_-30px_rgba(255,122,0,.45)]"
+                            className="grid min-w-0 gap-3 rounded-2xl border border-orange-400/15 bg-[#0B0B0F] p-3 shadow-[0_16px_38px_-30px_rgba(255,122,0,.45)] sm:grid-cols-[minmax(0,1fr)_auto] sm:items-center sm:p-4"
                           >
+                            <div className="min-w-0">
                             <h4 className="text-base font-black text-white">
                               <Link
                                 href={detailPath}
@@ -574,13 +576,10 @@ export default function ServicesPageContent({
                                 {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                               </Link>
                             </h4>
-                            <p className="mt-2 flex-1 text-sm leading-6 text-[#D1D5DB]">
-                              {getDirectorySummary(serviceNames[service.code] || service.name)}
-                            </p>
-                            <dl className="mt-4 grid grid-cols-2 gap-2 text-xs">
+                            <dl className="mt-3 grid grid-cols-2 gap-2 text-xs min-[430px]:grid-cols-3">
                               <div className="rounded-xl border border-orange-400/15 bg-orange-500/10 p-3">
                                 <dt className="font-bold text-orange-200">
-                                  Starting price
+                                  Price
                                 </dt>
                                 <dd className="mt-1 font-black text-white">
                                   {formatCurrency(service.pricePer1000, currency)} / 1K
@@ -592,20 +591,15 @@ export default function ServicesPageContent({
                                   {service.deliveryTime}
                                 </dd>
                               </div>
+                              <div className="col-span-2 rounded-xl border border-white/10 bg-[#151515] p-3 min-[430px]:col-span-1">
+                                <dt className="font-bold text-[#9CA3AF]">Refill/support</dt>
+                                <dd className="mt-1 line-clamp-2 font-black text-white">
+                                  {service.refillPolicy}
+                                </dd>
+                              </div>
                             </dl>
-                            <p className="mt-3 text-xs leading-5 text-[#D1D5DB]">
-                              <strong className="text-white">
-                                Refill/support:
-                              </strong>{" "}
-                              {service.refillPolicy}
-                            </p>
-                            <div className="mt-4 grid gap-2 sm:grid-cols-3">
-                              <Link
-                                href={detailPath}
-                                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2.5 text-center text-[11px] font-black text-[#D1D5DB]"
-                              >
-                                Service Details
-                              </Link>
+                            </div>
+                            <div className="grid gap-2 min-[430px]:grid-cols-2 sm:min-w-64">
                               <Link
                                 href={packagesPath}
                                 className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2.5 text-center text-[11px] font-black text-white"
@@ -613,26 +607,28 @@ export default function ServicesPageContent({
                                 View Packages
                               </Link>
                               <Link
-                                href={orderPath}
+                                href={detailPath}
                                 className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-white/[.06] px-3 py-2.5 text-center text-[11px] font-black text-orange-200"
                               >
-                                Start Order
+                                Service Details
                               </Link>
                             </div>
                           </article>
                         );
                       })}
                     </div>
-                  </details>
+                      </div>
+                    </div>
+                  </section>
                 );
               })}
             </div>
           </div>
         </section>
 
-        <HowToOrderSection />
+        <HowToOrderSection compactMobile />
 
-        <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+        <section className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8">
             <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
               Service FAQs
@@ -640,18 +636,42 @@ export default function ServicesPageContent({
             <h2 className="mt-2 text-2xl font-black text-[#0B0B0F]">
               Questions about SocialRUSH growth services
             </h2>
-            <div className="mt-6 grid gap-4 md:grid-cols-3">
-              {serviceSeoFaqs.map((faq) => (
-                <article key={faq.question} className="rounded-2xl border border-white/85 bg-white/88 p-5">
-                  <h3 className="text-base font-black text-[#0B0B0F]">{faq.question}</h3>
-                  <p className="mt-3 text-sm leading-7 text-[#111827]">{faq.answer}</p>
-                </article>
-              ))}
+            <div className="mt-6 space-y-3">
+              {serviceSeoFaqs.map((faq, index) => {
+                const isOpen = openFaqIndex === index;
+
+                return (
+                  <article key={faq.question} className="rounded-2xl border border-white/85 bg-white/88">
+                    <h3>
+                      <button
+                        type="button"
+                        className="flex min-h-14 w-full items-center justify-between gap-4 rounded-2xl px-4 py-3 text-left text-sm font-black text-[#0B0B0F] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-500 sm:px-5 sm:text-base"
+                        aria-expanded={isOpen}
+                        aria-controls={`services-faq-${index}`}
+                        onClick={() => setOpenFaqIndex(index)}
+                      >
+                        <span>{faq.question}</span>
+                        <span className={`grid h-8 w-8 shrink-0 place-items-center rounded-xl border border-orange-200 bg-orange-50 text-lg font-black text-orange-600 transition ${isOpen ? "rotate-45" : ""}`}>
+                          +
+                        </span>
+                      </button>
+                    </h3>
+                    <div
+                      id={`services-faq-${index}`}
+                      className={`grid transition-[grid-template-rows,opacity] duration-300 ${isOpen ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}
+                    >
+                      <div className="overflow-hidden">
+                        <p className="px-4 pb-4 text-sm leading-7 text-[#111827] sm:px-5">{faq.answer}</p>
+                      </div>
+                    </div>
+                  </article>
+                );
+              })}
             </div>
           </div>
         </section>
 
-        <section className="relative px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+        <section className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-10">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Why customers choose SocialRUSH</p>
