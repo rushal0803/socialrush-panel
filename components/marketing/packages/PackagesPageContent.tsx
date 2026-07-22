@@ -7,7 +7,7 @@ import { type Dispatch, type MouseEvent, type RefObject, type SetStateAction, us
 import { usePathname, useRouter } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
-import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
@@ -122,6 +122,14 @@ function normalizeParam(value: string | null) {
 function platformFromParam(value: string | null): Platform {
   const normalized = normalizeParam(value).replace(/-\/-/g, "/").replace(/\/+/g, "/");
   return platformParamMap[normalized] ?? platformParamMap[normalized.replace(/\//g, "-")] ?? "Instagram";
+}
+
+function getFirstServiceForPlatform(platform: Platform): Service {
+  return (
+    serviceOrder.find((candidate) =>
+      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === candidate),
+    ) ?? "followers"
+  );
 }
 
 function serviceFromParam(value: string | null, platform: Platform): Service {
@@ -264,18 +272,26 @@ export default function PackagesPageContent({
   const router = useRouter();
   const pathname = usePathname();
   const { currency } = usePreferredCurrency("INR");
+  const initialPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
+  const initialHasPlatformSelection = Boolean(initialPlatformParam || initialPlatformFromService);
   const initialPlatform = initialPlatformParam
     ? platformFromParam(initialPlatformParam)
-    : platformFromServiceParam(initialServiceParam ?? null) ?? "Instagram";
-  const initialService = serviceFromParam(initialServiceParam ?? null, initialPlatform);
+    : initialPlatformFromService ?? "Instagram";
+  const initialHasServiceSelection = Boolean(initialServiceParam);
+  const initialService = initialHasServiceSelection
+    ? serviceFromParam(initialServiceParam ?? null, initialPlatform)
+    : getFirstServiceForPlatform(initialPlatform);
   const initialPackageId = initialPackageIdParam || "";
   const initialPackage = bigPackages.find(
     (pkg) =>
+      initialHasServiceSelection &&
       pkg.packageId === initialPackageId &&
       pkg.platform === initialPlatform &&
       pkg.service === initialService,
   );
   const [selectedPlatform, setSelectedPlatform] = useState<Platform>(initialPlatform);
+  const [hasPlatformSelection, setHasPlatformSelection] = useState(initialHasPlatformSelection || Boolean(initialPackage));
+  const [hasServiceSelection, setHasServiceSelection] = useState(initialHasServiceSelection || Boolean(initialPackage));
   const [selectedPackageId, setSelectedPackageId] = useState(initialPackage?.packageId ?? "");
   const [showAllPackages, setShowAllPackages] = useState(false);
   const [targetLink, setTargetLink] = useState("");
@@ -307,7 +323,7 @@ export default function PackagesPageContent({
     () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),
     [selectedPackageId],
   );
-  const relatedGuides = relatedGuideMap[`${selectedPlatform}:${activeService}`] ?? [];
+  const relatedGuides = hasServiceSelection ? relatedGuideMap[`${selectedPlatform}:${activeService}`] ?? [] : [];
   const linkRule = selectedPackage ? getPackageLinkRule(selectedPackage) : null;
   const currentLinkError = linkRule && (targetLink.trim() || showLinkError) ? validateCampaignLink(targetLink, linkRule) : "";
   const canSubmitLink = Boolean(selectedPackage && targetLink.trim() && !currentLinkError);
@@ -323,11 +339,11 @@ export default function PackagesPageContent({
   const packageUrl = selectedPackage ? getPackageUrl(selectedPackage) : "";
 
   const updatePackageUrl = useCallback(
-    (platform: Platform, service: Service, packageId?: string, mode: "push" | "replace" = "push") => {
+    (platform: Platform, service?: Service, packageId?: string, mode: "push" | "replace" = "push") => {
       const params = new URLSearchParams({
         platform: platformCode[platform],
-        service,
       });
+      if (service) params.set("service", service);
       if (packageId) params.set("package", packageId);
       const nextUrl = `${pathname}?${params.toString()}`;
       if (mode === "replace") router.replace(nextUrl, { scroll: false });
@@ -379,18 +395,26 @@ export default function PackagesPageContent({
   }, []);
 
   useEffect(() => {
+    const nextPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
+    const nextHasPlatformSelection = Boolean(initialPlatformParam || nextPlatformFromService);
     const nextPlatform = initialPlatformParam
       ? platformFromParam(initialPlatformParam)
-      : platformFromServiceParam(initialServiceParam ?? null) ?? "Instagram";
-    const nextService = serviceFromParam(initialServiceParam ?? null, nextPlatform);
+      : nextPlatformFromService ?? "Instagram";
+    const nextHasServiceSelection = Boolean(initialServiceParam);
+    const nextService = nextHasServiceSelection
+      ? serviceFromParam(initialServiceParam ?? null, nextPlatform)
+      : getFirstServiceForPlatform(nextPlatform);
     const nextPackage = bigPackages.find(
       (pkg) =>
+        nextHasServiceSelection &&
         pkg.packageId === (initialPackageIdParam || "") &&
         pkg.platform === nextPlatform &&
         pkg.service === nextService,
     );
 
     setSelectedPlatform(nextPlatform);
+    setHasPlatformSelection(nextHasPlatformSelection || Boolean(nextPackage));
+    setHasServiceSelection(nextHasServiceSelection || Boolean(nextPackage));
     setSelectedService(nextService);
     setSelectedPackageId(nextPackage?.packageId ?? "");
     setShowAllPackages(false);
@@ -454,6 +478,8 @@ export default function PackagesPageContent({
 
   function selectPlatform(platform: Platform) {
     setSelectedPlatform(platform);
+    setHasPlatformSelection(true);
+    setHasServiceSelection(false);
     setSelectedPackageId("");
     setTargetLink("");
     setError("");
@@ -466,7 +492,7 @@ export default function PackagesPageContent({
     );
     if (firstService) {
       setSelectedService(firstService);
-      updatePackageUrl(platform, firstService);
+      updatePackageUrl(platform);
     }
     trackPackageEvent("package_platform_selected", { platform: platformCode[platform] });
     window.requestAnimationFrame(() => {
@@ -475,6 +501,8 @@ export default function PackagesPageContent({
   }
 
   function selectService(service: Service) {
+    setHasPlatformSelection(true);
+    setHasServiceSelection(true);
     setSelectedService(service);
     setSelectedPackageId("");
     setTargetLink("");
@@ -492,6 +520,8 @@ export default function PackagesPageContent({
 
   function selectPackage(pkg: BigPackage) {
     setSelectedPlatform(pkg.platform);
+    setHasPlatformSelection(true);
+    setHasServiceSelection(true);
     setSelectedService(pkg.service);
     setSelectedPackageId(pkg.packageId);
     setError("");
@@ -514,6 +544,8 @@ export default function PackagesPageContent({
 
   function changePackage() {
     setSelectedPackageId("");
+    setHasPlatformSelection(true);
+    setHasServiceSelection(true);
     setError("");
     setSuccessMessage("");
     setShowLinkError(false);
@@ -636,14 +668,14 @@ export default function PackagesPageContent({
 
   return (
     <BlogShell>
-      <div className="packages-page relative overflow-x-clip pb-36 lg:pb-24">
+      <div className="packages-page relative scroll-pt-24 overflow-x-clip pb-36 lg:pb-24">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-16 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-8%] top-44 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
           <div className="absolute left-[34%] top-[55%] h-64 w-64 rounded-full bg-amber-200/35 blur-3xl" />
         </div>
 
-        <section className="relative px-4 pb-6 pt-6 sm:px-6 sm:pb-8 sm:pt-8 lg:px-8 lg:pt-12">
+        <section className="relative scroll-mt-24 px-4 pb-6 pt-5 sm:px-6 sm:pb-8 sm:pt-8 lg:px-8 lg:pt-12">
           <div className="mx-auto w-full max-w-7xl rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_60px_-34px_rgba(255,122,0,.7)] sm:rounded-[34px] sm:p-8">
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
               <p className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-orange-300 sm:px-4 sm:py-2 sm:text-xs">
@@ -655,9 +687,8 @@ export default function PackagesPageContent({
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
                 Select a platform, choose a service, and compare only the packages that match your campaign.
               </p>
-              <p className="mt-3 text-xs font-semibold text-[#9CA3AF]">{getCurrencyDisclaimer()}</p>
-              <p className="mt-2 max-w-3xl text-xs leading-6 text-[#9CA3AF]">
-                Final price may vary based on selected package, quantity, service quality, and availability. Please check the live package price before placing your order.
+              <p className="mt-3 max-w-3xl text-xs font-semibold leading-6 text-[#9CA3AF]">
+                Prices are converted from INR and may vary slightly based on exchange rates and service availability.
               </p>
               {relatedGuides[0] ? (
                 <Link
@@ -680,14 +711,22 @@ export default function PackagesPageContent({
 
         <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
           <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:grid-cols-4 sm:gap-3 sm:p-3">
-            <PackageStep number="1" title="Platform" state="complete" />
-            <PackageStep number="2" title="Service" state="complete" />
-            <PackageStep number="3" title="Package" state={selectedPackage ? "complete" : "active"} />
+            <PackageStep number="1" title="Platform" state={hasPlatformSelection ? "complete" : "active"} />
+            <PackageStep
+              number="2"
+              title="Service"
+              state={hasServiceSelection ? "complete" : hasPlatformSelection ? "active" : "upcoming"}
+            />
+            <PackageStep
+              number="3"
+              title="Package"
+              state={selectedPackage ? "complete" : hasServiceSelection ? "active" : "upcoming"}
+            />
             <PackageStep number="4" title="Review" state={selectedPackage ? "active" : "upcoming"} />
           </div>
         </section>
 
-        <section ref={platformStepRef} className="relative scroll-mt-24 px-4 py-5 sm:px-6 lg:px-8">
+        <section ref={platformStepRef} className="relative scroll-mt-28 px-4 py-5 sm:scroll-mt-32 sm:px-6 lg:px-8">
           <div className="mx-auto w-full max-w-7xl">
             <div className="mb-4 flex items-end justify-between gap-3">
               <div>
@@ -703,7 +742,8 @@ export default function PackagesPageContent({
                     setError("");
                     setSuccessMessage("");
                     requestIdRef.current = "";
-                    updatePackageUrl(selectedPlatform, activeService);
+                    setHasServiceSelection(false);
+                    updatePackageUrl(selectedPlatform);
                     platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }}
                   className="rounded-xl border border-orange-400/30 bg-orange-500/10 px-3 py-2 text-xs font-black text-orange-100 transition hover:border-orange-400"
@@ -723,7 +763,7 @@ export default function PackagesPageContent({
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
                 {platforms.map((platform) => {
-                  const active = selectedPlatform === platform.key;
+                  const active = hasPlatformSelection && selectedPlatform === platform.key;
                   return (
                     <button
                       key={platform.key}
@@ -747,16 +787,18 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section ref={packageStepRef} className="relative scroll-mt-24 px-4 py-5 sm:px-6 lg:px-8">
+        <section ref={packageStepRef} className="relative scroll-mt-28 px-4 py-5 sm:scroll-mt-32 sm:px-6 lg:px-8">
           <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.6)] sm:p-5">
             <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
               <div>
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 2</p>
-                <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Choose a package</h2>
+                <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Choose a service</h2>
                 <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">
                   {selectedPackage
                     ? "Your service and package are selected. You can change them before placing the order."
-                    : `Pick a service type to compare packages for ${selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.`}
+                    : hasPlatformSelection
+                      ? `Pick a service type to compare packages for ${selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.`
+                      : "Select a platform first to see available services."}
                 </p>
               </div>
               {selectedPackage ? (
@@ -775,7 +817,7 @@ export default function PackagesPageContent({
                 value={selectedPackage.title}
                 detail={`${selectedPackage.quantityLabel} • ${formatCurrency(selectedPackage.basePriceINR, currency)} • ${selectedPackage.deliveryTime}`}
               />
-            ) : (
+            ) : hasPlatformSelection ? (
               <div className="mt-4 flex flex-wrap gap-2.5">
                 {services.map((service) => (
                   <button
@@ -783,7 +825,7 @@ export default function PackagesPageContent({
                     type="button"
                     onClick={() => selectService(service)}
                     className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] ${
-                      activeService === service
+                      hasServiceSelection && activeService === service
                         ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]"
                         : "border border-white/10 bg-[#0B0B0F] text-[#D1D5DB] hover:border-orange-400/40"
                     }`}
@@ -792,11 +834,15 @@ export default function PackagesPageContent({
                   </button>
                 ))}
               </div>
+            ) : (
+              <div className="mt-4 rounded-2xl border border-white/10 bg-[#0B0B0F] p-4 text-sm font-semibold leading-6 text-[#D1D5DB]">
+                Choose a platform above to continue.
+              </div>
             )}
           </div>
         </section>
 
-        {!selectedPackage ? (
+        {!selectedPackage && hasPlatformSelection && hasServiceSelection ? (
         <div className="relative px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto w-full max-w-7xl">
             {platforms.flatMap((platform) =>
@@ -1209,7 +1255,7 @@ function PackageReviewSection({
   }
 
   return (
-    <section ref={summaryStepRef} className="relative scroll-mt-24 px-4 pb-6 pt-2 sm:px-6 lg:px-8">
+    <section ref={summaryStepRef} className="relative scroll-mt-28 px-4 pb-6 pt-2 sm:scroll-mt-32 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
           <article className="rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_64px_-36px_rgba(255,122,0,.72)] sm:p-7">
@@ -1359,7 +1405,6 @@ function PackageReviewSection({
               </p>
               <p className="mt-2 text-xs leading-5 text-[#D1D5DB]">Wallet is charged only after you confirm the order.</p>
             </div>
-            <p className="mt-4 text-xs font-semibold leading-6 text-[#9CA3AF]">{getCurrencyDisclaimer()}</p>
           </aside>
         </div>
       </div>

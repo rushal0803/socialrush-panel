@@ -98,9 +98,9 @@ function BlogHeader() {
   }
 
   return (
-    <header className="sticky top-0 z-[9999] border-b border-orange-400/20 bg-[#050505]/90 px-4 py-3 backdrop-blur-2xl sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-[9999] border-b border-orange-400/20 bg-[#050505]/90 px-3 py-2 backdrop-blur-2xl sm:px-6 sm:py-3 lg:px-8">
       <div className="mx-auto max-w-7xl rounded-3xl border border-orange-400/25 bg-[#0B0B0F]/88 shadow-[0_16px_40px_rgba(255, 122, 0, .18)] backdrop-blur-xl">
-        <div className="flex min-h-[76px] items-center justify-between gap-3 px-4 sm:px-6 lg:px-7">
+        <div className="flex min-h-[60px] items-center justify-between gap-3 px-3 sm:min-h-[76px] sm:px-6 lg:px-7">
           <Logo priority />
 
           <nav className="hidden items-center gap-1.5 xl:flex">
@@ -149,19 +149,19 @@ function BlogHeader() {
               event.stopPropagation();
               setOpen((value) => !value);
             }}
-            className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/35 bg-white/[.06] text-xl text-white lg:hidden"
+            className="grid h-10 w-10 place-items-center rounded-xl border border-orange-400/35 bg-white/[.06] text-xl text-white lg:hidden"
           >
             {open ? "×" : "☰"}
           </button>
         </div>
 
-        <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[6.25rem]" showCloseButton={false}>
+        <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[5rem] sm:top-[6.25rem]" showCloseButton={false}>
             <motion.div
               initial={{ opacity: 0, y: -10 }}
               animate={{ opacity: 1, y: 0 }}
               exit={{ opacity: 0, y: -8 }}
               transition={{ duration: 0.18 }}
-              className="mx-auto max-h-[calc(100dvh-7rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-orange-400/25 bg-[#0B0B0F] px-4 pb-4 pt-3 shadow-[0_24px_55px_-28px_rgba(255,122,0,.55)] lg:hidden"
+              className="mx-auto max-h-[calc(100dvh-5.75rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-orange-400/25 bg-[#0B0B0F] px-4 pb-4 pt-3 shadow-[0_24px_55px_-28px_rgba(255,122,0,.55)] sm:max-h-[calc(100dvh-7rem)] lg:hidden"
             >
               <nav className="grid gap-1">
                 {navLinks.map(([label, href]) => (
