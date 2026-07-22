@@ -304,20 +304,21 @@ export default function PackagesPageContent({
   const { currency } = usePreferredCurrency("INR");
   const initialPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
   const initialPlatformFromParam = platformFromParam(initialPlatformParam ?? null);
-  const initialPlatform = initialPlatformFromParam ?? initialPlatformFromService ?? "Instagram";
-  const initialServiceFromParam = serviceFromParam(initialServiceParam ?? null, initialPlatform);
+  const initialPlatform = initialPlatformFromParam ?? initialPlatformFromService;
+  const initialServiceFromParam = initialPlatform ? serviceFromParam(initialServiceParam ?? null, initialPlatform) : null;
   const initialHasPlatformSelection = Boolean(initialPlatformFromParam || initialPlatformFromService);
   const initialHasServiceSelection = Boolean(initialServiceFromParam);
-  const initialService = initialServiceFromParam ?? getFirstServiceForPlatform(initialPlatform);
+  const initialService = initialPlatform ? initialServiceFromParam ?? getFirstServiceForPlatform(initialPlatform) : "followers";
   const initialPackageId = initialPackageIdParam || "";
   const initialPackage = bigPackages.find(
     (pkg) =>
       initialHasServiceSelection &&
       pkg.packageId === initialPackageId &&
+      Boolean(initialPlatform) &&
       pkg.platform === initialPlatform &&
       pkg.service === initialService,
   );
-  const [selectedPlatform, setSelectedPlatform] = useState<Platform>(initialPlatform);
+  const [selectedPlatform, setSelectedPlatform] = useState<Platform | null>(initialPlatform ?? null);
   const [hasPlatformSelection, setHasPlatformSelection] = useState(initialHasPlatformSelection || Boolean(initialPackage));
   const [hasServiceSelection, setHasServiceSelection] = useState(initialHasServiceSelection || Boolean(initialPackage));
   const [selectedPackageId, setSelectedPackageId] = useState(initialPackage?.packageId ?? "");
@@ -342,18 +343,31 @@ export default function PackagesPageContent({
 
   const services = useMemo(
     () =>
-      serviceOrder.filter((service) =>
-        bigPackages.some((pkg) => pkg.platform === selectedPlatform && pkg.service === service),
-      ),
+      selectedPlatform
+        ? serviceOrder.filter((service) =>
+            bigPackages.some((pkg) => pkg.platform === selectedPlatform && pkg.service === service),
+          )
+        : [],
     [selectedPlatform],
   );
   const [selectedService, setSelectedService] = useState<Service>(initialService);
-  const activeService = services.includes(selectedService) ? selectedService : services[0];
+  const activeService = services.includes(selectedService) ? selectedService : services[0] ?? selectedService;
   const selectedPackage = useMemo(
     () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),
     [selectedPackageId],
   );
-  const relatedGuides = hasServiceSelection ? relatedGuideMap[`${selectedPlatform}:${activeService}`] ?? [] : [];
+  const relatedGuides = hasServiceSelection && selectedPlatform && activeService ? relatedGuideMap[`${selectedPlatform}:${activeService}`] ?? [] : [];
+  const activeCategoryPackages = useMemo(
+    () =>
+      selectedPlatform && hasServiceSelection
+        ? bigPackages.filter((pkg) => pkg.platform === selectedPlatform && pkg.service === activeService)
+        : [],
+    [activeService, hasServiceSelection, selectedPlatform],
+  );
+  const visibleCategoryPackages = showAllPackages ? activeCategoryPackages : activeCategoryPackages.slice(0, 6);
+  const bestValuePackageId =
+    activeCategoryPackages.find((pkg) => pkg.discountBadge === "Best Value")?.packageId ??
+    activeCategoryPackages[Math.min(2, activeCategoryPackages.length - 1)]?.packageId;
   const linkRule = selectedPackage ? getPackageLinkRule(selectedPackage) : null;
   const currentLinkError = linkRule && (targetLink.trim() || showLinkError) ? validateCampaignLink(targetLink, linkRule) : "";
   const canSubmitLink = Boolean(selectedPackage && targetLink.trim() && !currentLinkError);
@@ -434,20 +448,21 @@ export default function PackagesPageContent({
   useEffect(() => {
     const nextPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
     const nextPlatformFromParam = platformFromParam(initialPlatformParam ?? null);
-    const nextPlatform = nextPlatformFromParam ?? nextPlatformFromService ?? "Instagram";
-    const nextServiceFromParam = serviceFromParam(initialServiceParam ?? null, nextPlatform);
+    const nextPlatform = nextPlatformFromParam ?? nextPlatformFromService;
+    const nextServiceFromParam = nextPlatform ? serviceFromParam(initialServiceParam ?? null, nextPlatform) : null;
     const nextHasPlatformSelection = Boolean(nextPlatformFromParam || nextPlatformFromService);
     const nextHasServiceSelection = Boolean(nextServiceFromParam);
-    const nextService = nextServiceFromParam ?? getFirstServiceForPlatform(nextPlatform);
+    const nextService = nextPlatform ? nextServiceFromParam ?? getFirstServiceForPlatform(nextPlatform) : "followers";
     const nextPackage = bigPackages.find(
       (pkg) =>
         nextHasServiceSelection &&
         pkg.packageId === (initialPackageIdParam || "") &&
+        Boolean(nextPlatform) &&
         pkg.platform === nextPlatform &&
         pkg.service === nextService,
     );
 
-    setSelectedPlatform(nextPlatform);
+    setSelectedPlatform(nextPlatform ?? null);
     setHasPlatformSelection(nextHasPlatformSelection || Boolean(nextPackage));
     setHasServiceSelection(nextHasServiceSelection || Boolean(nextPackage));
     setSelectedService(nextService);
@@ -537,6 +552,7 @@ export default function PackagesPageContent({
   }
 
   function selectService(service: Service) {
+    if (!selectedPlatform) return;
     setHasPlatformSelection(true);
     setHasServiceSelection(true);
     setSelectedService(service);
@@ -559,6 +575,7 @@ export default function PackagesPageContent({
   }
 
   function changeService() {
+    if (!selectedPlatform) return;
     setHasPlatformSelection(true);
     setHasServiceSelection(false);
     setSelectedPackageId("");
@@ -600,6 +617,7 @@ export default function PackagesPageContent({
   }
 
   function changePackage() {
+    if (!selectedPlatform) return;
     setSelectedPackageId("");
     setHasPlatformSelection(true);
     setHasServiceSelection(true);
@@ -926,35 +944,15 @@ export default function PackagesPageContent({
         {!selectedPackage && hasPlatformSelection && hasServiceSelection ? (
         <section className="relative scroll-mt-28 px-4 py-6 sm:scroll-mt-32 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto w-full max-w-7xl">
-            {platforms.flatMap((platform) =>
-              serviceOrder
-                .filter((service) =>
-                  bigPackages.some(
-                    (pkg) => pkg.platform === platform.key && pkg.service === service,
-                  ),
-                )
-                .map((service) => {
-                  const categoryPackages = bigPackages.filter(
-                    (pkg) => pkg.platform === platform.key && pkg.service === service,
-                  );
-                  const visiblePackages = showAllPackages ? categoryPackages : categoryPackages.slice(0, 6);
-                  const bestValuePackageId =
-                    categoryPackages.find((pkg) => pkg.discountBadge === "Best Value")?.packageId ??
-                    categoryPackages[Math.min(2, categoryPackages.length - 1)]?.packageId;
-                  const active =
-                    selectedPlatform === platform.key && activeService === service;
-                  if (!active) return null;
-                  const headingId = `${platform.key.toLowerCase()}-${service}-packages`;
-
-                  return (
+            {selectedPlatform ? (
                     <section
-                      key={`${platform.key}-${service}`}
-                      aria-labelledby={headingId}
+                      key={`${selectedPlatform}-${activeService}`}
+                      aria-labelledby={`${platformCode[selectedPlatform]}-${activeService}-packages`}
                     >
                       <div className="mb-5">
                         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Available packages</p>
-                        <h2 id={headingId} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                          {platform.label} {serviceLabels[service]} packages
+                        <h2 id={`${platformCode[selectedPlatform]}-${activeService}-packages`} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                          {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService]} packages
                         </h2>
                         <p className="mt-2 text-sm text-[#D1D5DB]">
                           Choose one package to continue to the dedicated checkout page.
@@ -962,7 +960,7 @@ export default function PackagesPageContent({
                       </div>
 
                       <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-                        {visiblePackages.map((pkg) => (
+                        {visibleCategoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
                             className={`flex min-w-0 flex-col rounded-3xl border bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-6 ${
@@ -1030,21 +1028,19 @@ export default function PackagesPageContent({
                           </article>
                         ))}
                       </div>
-                      {categoryPackages.length > 6 ? (
+                      {activeCategoryPackages.length > 6 ? (
                         <div className="mt-6 flex justify-center">
                           <button
                             type="button"
                             onClick={() => setShowAllPackages((value) => !value)}
                             className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-white/[.06] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/60 hover:bg-orange-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                           >
-                            {showAllPackages ? "Show Fewer Packages" : `View More Packages (${categoryPackages.length - 6} more)`}
+                            {showAllPackages ? "Show Fewer Packages" : `View More Packages (${activeCategoryPackages.length - 6} more)`}
                           </button>
                         </div>
                       ) : null}
                     </section>
-                  );
-                }),
-            )}
+            ) : null}
           </div>
         </section>
         ) : null}
