@@ -2,7 +2,20 @@
 
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { CheckCircle2, Link2, LoaderCircle, LockKeyhole, RefreshCw, ShieldCheck, WalletCards } from "lucide-react";
+import {
+  CheckCircle2,
+  Eye,
+  Heart,
+  Link2,
+  LoaderCircle,
+  LockKeyhole,
+  RefreshCw,
+  ShieldCheck,
+  UserPlus,
+  Users,
+  WalletCards,
+  type LucideIcon,
+} from "lucide-react";
 import { type Dispatch, type MouseEvent, type RefObject, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
@@ -43,6 +56,13 @@ const serviceDescriptions: Record<Service, string> = {
   likes: "Compare engagement packages for public posts or videos with clear pricing and delivery details.",
   views: "Compare content view packages for public posts, Reels or videos with transparent totals.",
   members: "Compare community member packages with clear quantity, delivery and support details.",
+};
+const serviceVisuals: Record<Service, { badge: string; Icon: LucideIcon }> = {
+  followers: { badge: "Profile Growth", Icon: Users },
+  subscribers: { badge: "Channel Growth", Icon: UserPlus },
+  likes: { badge: "Engagement", Icon: Heart },
+  views: { badge: "Content Reach", Icon: Eye },
+  members: { badge: "Community Growth", Icon: Users },
 };
 const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
@@ -774,32 +794,26 @@ export default function PackagesPageContent({
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 1</p>
                 <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Select a platform</h2>
               </div>
-              {hasPlatformSelection ? (
-                <button
-                  type="button"
-                  onClick={() => {
-                    setSelectedPackageId("");
-                    setTargetLink("");
-                    setError("");
-                    setSuccessMessage("");
-                    requestIdRef.current = "";
-                    setHasServiceSelection(false);
-                    updatePackageUrl(selectedPlatform);
-                    platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                  }}
-                  className="rounded-xl border border-orange-400/30 bg-orange-500/10 px-3 py-2 text-xs font-black text-orange-100 transition hover:border-orange-400"
-                >
-                  Change Platform
-                </button>
-              ) : (
+              {!hasPlatformSelection ? (
                 <span className="text-xs font-semibold text-[#9CA3AF]">7 platforms</span>
-              )}
+              ) : null}
             </div>
             {hasPlatformSelection ? (
               <CompletedPackageStepCard
                 title="Platform selected"
                 value={selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}
                 detail={hasServiceSelection ? "Change it to browse another platform." : "Next, choose the service you want."}
+                actionLabel="Change Platform"
+                onAction={() => {
+                  setSelectedPackageId("");
+                  setTargetLink("");
+                  setError("");
+                  setSuccessMessage("");
+                  requestIdRef.current = "";
+                  setHasServiceSelection(false);
+                  updatePackageUrl(selectedPlatform);
+                  platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                }}
               />
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
@@ -833,25 +847,16 @@ export default function PackagesPageContent({
             <CompactStepCard number="2" title="Choose a service" detail="Select a platform to continue" />
           ) : hasServiceSelection ? (
             <div className="mx-auto w-full max-w-7xl">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 2 complete</p>
-                  <h2 ref={serviceHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                    Service selected
-                  </h2>
-                </div>
-                <button
-                  type="button"
-                  onClick={changeService}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:text-sm"
-                >
-                  Change Service
-                </button>
-              </div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 2 complete</p>
+              <h2 ref={serviceHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                Service selected
+              </h2>
               <CompletedPackageStepCard
                 title={`${selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} service`}
                 value={serviceLabels[activeService]}
                 detail="Next, choose one package for this service."
+                actionLabel="Change Service"
+                onAction={changeService}
               />
             </div>
           ) : (
@@ -866,28 +871,43 @@ export default function PackagesPageContent({
                     Pick a service type to compare packages for {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.
                   </p>
                 </div>
-                <button
-                  type="button"
-                  onClick={() => platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:text-sm"
-                >
-                  Change Platform
-                </button>
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {services.map((service) => {
                   const startingPrice = getStartingPrice(selectedPlatform, service);
+                  const { badge, Icon } = serviceVisuals[service];
+                  const selected = hasServiceSelection && activeService === service;
                   return (
                     <button
                       key={service}
                       type="button"
                       onClick={() => selectService(service)}
-                      className="flex min-h-[132px] flex-col rounded-2xl border border-white/10 bg-[#0B0B0F] p-4 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-orange-400/45 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                      aria-pressed={selected}
+                      className={`group flex min-h-[128px] w-full flex-col rounded-2xl border p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                        selected
+                          ? "border-orange-400/80 bg-orange-500/15 shadow-[0_18px_42px_-28px_rgba(255,122,0,.82)] ring-2 ring-orange-500/15"
+                          : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45 hover:bg-[#151515]"
+                      }`}
                     >
-                      <span className="text-base font-black text-white">{serviceLabels[service]}</span>
-                      <span className="mt-2 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
-                      <span className="mt-auto pt-3 text-xs font-black text-orange-200">
-                        {startingPrice !== null ? `Starts at ${formatCurrency(startingPrice, currency)}` : "View available packages"}
+                      <span className="flex min-w-0 items-start gap-3">
+                        <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white shadow-[0_12px_26px_-14px_rgba(255,122,0,.95)]">
+                          {selected ? <CheckCircle2 className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
+                        </span>
+                        <span className="min-w-0 flex-1">
+                          <span className="block truncate text-base font-black text-white">{serviceLabels[service]}</span>
+                          <span className="mt-1 inline-flex max-w-full rounded-full border border-orange-400/25 bg-orange-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-orange-200">
+                            {badge}
+                          </span>
+                        </span>
+                      </span>
+                      <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
+                      <span className="mt-auto flex min-w-0 items-center justify-between gap-3 pt-3">
+                        <span className="min-w-0 truncate text-xs font-black text-orange-200">
+                          {startingPrice !== null ? `Starts at ${formatCurrency(startingPrice, currency)}` : "View packages"}
+                        </span>
+                        <span className={`shrink-0 text-xs font-black ${selected ? "text-emerald-200" : "text-white group-hover:text-orange-100"}`}>
+                          {selected ? "Selected" : "Choose →"}
+                        </span>
                       </span>
                     </button>
                   );
@@ -1032,25 +1052,16 @@ export default function PackagesPageContent({
         {selectedPackage ? (
           <section className="relative scroll-mt-28 px-4 py-4 sm:scroll-mt-32 sm:px-6 lg:px-8">
             <div className="mx-auto w-full max-w-7xl">
-              <div className="mb-3 flex items-center justify-between gap-3">
-                <div>
-                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 3 complete</p>
-                  <h2 ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                    Package selected
-                  </h2>
-                </div>
-                <button
-                  type="button"
-                  onClick={changePackage}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:text-sm"
-                >
-                  Change Package
-                </button>
-              </div>
+              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 3 complete</p>
+              <h2 ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                Package selected
+              </h2>
               <CompletedPackageStepCard
                 title="Package selected"
                 value={selectedPackage.title}
                 detail={`${selectedPackage.quantityLabel} • ${formatCurrency(selectedPackage.basePriceINR, currency)} • ${selectedPackage.deliveryTime}`}
+                actionLabel="Change Package"
+                onAction={changePackage}
               />
             </div>
           </section>
@@ -1244,15 +1255,40 @@ function CompactStepCard({ number, title, detail }: { number: string; title: str
   );
 }
 
-function CompletedPackageStepCard({ title, value, detail }: { title: string; value: string; detail: string }) {
+function CompletedPackageStepCard({
+  title,
+  value,
+  detail,
+  actionLabel,
+  onAction,
+}: {
+  title: string;
+  value: string;
+  detail: string;
+  actionLabel?: string;
+  onAction?: () => void;
+}) {
   return (
     <div className="mt-4 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4">
-      <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">
-        <CheckCircle2 className="h-4 w-4" />
-        {title}
-      </p>
-      <p className="mt-2 text-base font-black text-white">{value}</p>
-      <p className="mt-1 text-xs leading-5 text-[#D1D5DB]">{detail}</p>
+      <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+        <div className="min-w-0">
+          <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">
+            <CheckCircle2 className="h-4 w-4 shrink-0" />
+            {title}
+          </p>
+          <p className="mt-2 break-words text-base font-black text-white">{value}</p>
+          <p className="mt-1 text-xs leading-5 text-[#D1D5DB]">{detail}</p>
+        </div>
+        {actionLabel && onAction ? (
+          <button
+            type="button"
+            onClick={onAction}
+            className="inline-flex min-h-11 shrink-0 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+          >
+            {actionLabel}
+          </button>
+        ) : null}
+      </div>
     </div>
   );
 }
