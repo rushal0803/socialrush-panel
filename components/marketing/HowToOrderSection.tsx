@@ -89,7 +89,7 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
   const steps = homepage ? homepageSteps : defaultSteps;
 
   return (
-    <section id={id} className="relative px-4 py-12 sm:px-6 sm:py-16 lg:px-8">
+    <section id={id} className={`relative px-4 sm:px-6 lg:px-8 ${homepage ? "py-8 sm:py-16" : "py-12 sm:py-16"}`}>
       <div className="mx-auto max-w-7xl">
         <div className="text-center">
           <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">
@@ -100,27 +100,28 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
           </h2>
         </div>
 
-        <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <div className={homepage ? "relative mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3" : "mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"}>
+          {homepage ? <span className="absolute bottom-4 left-[1.35rem] top-4 hidden w-px bg-orange-400/25 max-sm:block" aria-hidden="true" /> : null}
           {steps.map(({ title, text, icon: Icon, gradient }, index) => (
             <article
               key={title}
-              className="rounded-2xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_14px_38px_-18px_rgba(0,0,0,.55)] backdrop-blur transition hover:-translate-y-1 hover:border-orange-400/50"
+              className={`rounded-2xl border border-orange-400/20 bg-[#111111] shadow-[0_14px_38px_-18px_rgba(0,0,0,.55)] backdrop-blur transition hover:-translate-y-1 hover:border-orange-400/50 ${homepage ? "relative p-3 sm:p-5" : "p-5"}`}
             >
-              <div className="flex items-start gap-4">
-                <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-lg ${gradient}`}>
-                  <Icon className="h-5 w-5" aria-hidden="true" />
+              <div className={homepage ? "flex items-start gap-3 sm:gap-4" : "flex items-start gap-4"}>
+                <span className={`grid shrink-0 place-items-center rounded-xl bg-gradient-to-br text-white shadow-lg ${homepage ? "h-10 w-10 sm:h-11 sm:w-11" : "h-11 w-11"} ${gradient}`}>
+                  <Icon className={homepage ? "h-[18px] w-[18px] sm:h-5 sm:w-5" : "h-5 w-5"} aria-hidden="true" />
                 </span>
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[0.14em] text-amber-500">Step {index + 1}</p>
                   <h3 className="mt-1 text-base font-extrabold text-white">{title}</h3>
-                  <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{text}</p>
+                  <p className={homepage ? "mt-1 text-sm leading-5 text-[#D1D5DB] sm:mt-2 sm:leading-6" : "mt-2 text-sm leading-6 text-[#D1D5DB]"}>{text}</p>
                 </div>
               </div>
             </article>
           ))}
         </div>
 
-        <div className="safety-note mt-6 flex items-start gap-3 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 text-left shadow-[0_16px_38px_rgba(0,0,0,0.22)] sm:items-center">
+        <div className={`safety-note mt-5 flex items-start gap-3 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-3 text-left shadow-[0_16px_38px_rgba(0,0,0,0.22)] sm:mt-6 sm:items-center sm:p-4`}>
           <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-emerald-400/15 text-emerald-300">
             <LockKeyhole className="h-5 w-5" aria-hidden="true" />
           </span>
@@ -132,7 +133,7 @@ export default function HowToOrderSection({ id, homepage = false }: { id?: strin
           </div>
         </div>
 
-        <div className="mt-6 flex flex-col justify-center gap-3 sm:flex-row">
+        <div className="mt-5 flex flex-col justify-center gap-3 sm:mt-6 sm:flex-row">
           <Link href="/dashboard/new-order" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-6 py-3 text-sm font-bold text-white shadow-lg shadow-amber-300/30 transition hover:-translate-y-0.5">
             Start Order
           </Link>
