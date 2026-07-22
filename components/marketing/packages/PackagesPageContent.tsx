@@ -37,6 +37,13 @@ const serviceLabels: Record<Service, string> = {
 };
 
 const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
+const serviceDescriptions: Record<Service, string> = {
+  followers: "Compare profile growth packages with clear pricing, delivery estimates and eligible support.",
+  subscribers: "Compare channel subscriber packages with transparent pricing, delivery estimates and support.",
+  likes: "Compare engagement packages for public posts or videos with clear pricing and delivery details.",
+  views: "Compare content view packages for public posts, Reels or videos with transparent totals.",
+  members: "Compare community member packages with clear quantity, delivery and support details.",
+};
 const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
@@ -119,9 +126,9 @@ function normalizeParam(value: string | null) {
   return String(value || "").trim().toLowerCase().replace(/\s+/g, "-");
 }
 
-function platformFromParam(value: string | null): Platform {
+function platformFromParam(value: string | null): Platform | null {
   const normalized = normalizeParam(value).replace(/-\/-/g, "/").replace(/\/+/g, "/");
-  return platformParamMap[normalized] ?? platformParamMap[normalized.replace(/\//g, "-")] ?? "Instagram";
+  return platformParamMap[normalized] ?? platformParamMap[normalized.replace(/\//g, "-")] ?? null;
 }
 
 function getFirstServiceForPlatform(platform: Platform): Service {
@@ -132,18 +139,21 @@ function getFirstServiceForPlatform(platform: Platform): Service {
   );
 }
 
-function serviceFromParam(value: string | null, platform: Platform): Service {
+function getStartingPrice(platform: Platform, service: Service) {
+  const prices = bigPackages
+    .filter((pkg) => pkg.platform === platform && pkg.service === service)
+    .map((pkg) => pkg.basePriceINR);
+  return prices.length ? Math.min(...prices) : null;
+}
+
+function serviceFromParam(value: string | null, platform: Platform): Service | null {
   const normalized = normalizeParam(value).split("-").pop() || "";
   const service = serviceParamMap[normalized] ?? serviceParamMap[normalizeParam(value)];
   if (service && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service)) {
     return service;
   }
 
-  return (
-    serviceOrder.find((candidate) =>
-      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === candidate),
-    ) ?? "followers"
-  );
+  return null;
 }
 
 function platformFromServiceParam(value: string | null): Platform | null {
@@ -273,14 +283,12 @@ export default function PackagesPageContent({
   const pathname = usePathname();
   const { currency } = usePreferredCurrency("INR");
   const initialPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
-  const initialHasPlatformSelection = Boolean(initialPlatformParam || initialPlatformFromService);
-  const initialPlatform = initialPlatformParam
-    ? platformFromParam(initialPlatformParam)
-    : initialPlatformFromService ?? "Instagram";
-  const initialHasServiceSelection = Boolean(initialServiceParam);
-  const initialService = initialHasServiceSelection
-    ? serviceFromParam(initialServiceParam ?? null, initialPlatform)
-    : getFirstServiceForPlatform(initialPlatform);
+  const initialPlatformFromParam = platformFromParam(initialPlatformParam ?? null);
+  const initialPlatform = initialPlatformFromParam ?? initialPlatformFromService ?? "Instagram";
+  const initialServiceFromParam = serviceFromParam(initialServiceParam ?? null, initialPlatform);
+  const initialHasPlatformSelection = Boolean(initialPlatformFromParam || initialPlatformFromService);
+  const initialHasServiceSelection = Boolean(initialServiceFromParam);
+  const initialService = initialServiceFromParam ?? getFirstServiceForPlatform(initialPlatform);
   const initialPackageId = initialPackageIdParam || "";
   const initialPackage = bigPackages.find(
     (pkg) =>
@@ -306,6 +314,8 @@ export default function PackagesPageContent({
   const [summaryInView, setSummaryInView] = useState(false);
   const packageStepRef = useRef<HTMLElement>(null);
   const platformStepRef = useRef<HTMLElement>(null);
+  const serviceHeadingRef = useRef<HTMLHeadingElement>(null);
+  const packageHeadingRef = useRef<HTMLHeadingElement>(null);
   const summaryStepRef = useRef<HTMLElement>(null);
   const summaryHeadingRef = useRef<HTMLHeadingElement>(null);
   const requestIdRef = useRef("");
@@ -337,6 +347,13 @@ export default function PackagesPageContent({
     ? Math.max(0, Math.round((selectedPackage.basePriceINR - walletBalance) * 100) / 100)
     : 0;
   const packageUrl = selectedPackage ? getPackageUrl(selectedPackage) : "";
+  const currentStepAnnouncement = selectedPackage
+    ? "Step 4 active: review your package."
+    : hasServiceSelection
+      ? "Step 3 active: choose a package."
+      : hasPlatformSelection
+        ? "Step 2 active: choose a service."
+        : "Step 1 active: select a platform.";
 
   const updatePackageUrl = useCallback(
     (platform: Platform, service?: Service, packageId?: string, mode: "push" | "replace" = "push") => {
@@ -396,14 +413,12 @@ export default function PackagesPageContent({
 
   useEffect(() => {
     const nextPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
-    const nextHasPlatformSelection = Boolean(initialPlatformParam || nextPlatformFromService);
-    const nextPlatform = initialPlatformParam
-      ? platformFromParam(initialPlatformParam)
-      : nextPlatformFromService ?? "Instagram";
-    const nextHasServiceSelection = Boolean(initialServiceParam);
-    const nextService = nextHasServiceSelection
-      ? serviceFromParam(initialServiceParam ?? null, nextPlatform)
-      : getFirstServiceForPlatform(nextPlatform);
+    const nextPlatformFromParam = platformFromParam(initialPlatformParam ?? null);
+    const nextPlatform = nextPlatformFromParam ?? nextPlatformFromService ?? "Instagram";
+    const nextServiceFromParam = serviceFromParam(initialServiceParam ?? null, nextPlatform);
+    const nextHasPlatformSelection = Boolean(nextPlatformFromParam || nextPlatformFromService);
+    const nextHasServiceSelection = Boolean(nextServiceFromParam);
+    const nextService = nextServiceFromParam ?? getFirstServiceForPlatform(nextPlatform);
     const nextPackage = bigPackages.find(
       (pkg) =>
         nextHasServiceSelection &&
@@ -497,6 +512,7 @@ export default function PackagesPageContent({
     trackPackageEvent("package_platform_selected", { platform: platformCode[platform] });
     window.requestAnimationFrame(() => {
       packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => serviceHeadingRef.current?.focus(), 450);
     });
   }
 
@@ -515,6 +531,27 @@ export default function PackagesPageContent({
     trackPackageEvent("package_service_selected", {
       platform: platformCode[selectedPlatform],
       service,
+    });
+    window.requestAnimationFrame(() => {
+      packageHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => packageHeadingRef.current?.focus(), 450);
+    });
+  }
+
+  function changeService() {
+    setHasPlatformSelection(true);
+    setHasServiceSelection(false);
+    setSelectedPackageId("");
+    setTargetLink("");
+    setError("");
+    setSuccessMessage("");
+    setShowLinkError(false);
+    requestIdRef.current = "";
+    setShowAllPackages(false);
+    updatePackageUrl(selectedPlatform);
+    window.requestAnimationFrame(() => {
+      packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => serviceHeadingRef.current?.focus(), 450);
     });
   }
 
@@ -552,7 +589,8 @@ export default function PackagesPageContent({
     requestIdRef.current = "";
     updatePackageUrl(selectedPlatform, activeService);
     window.requestAnimationFrame(() => {
-      packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      packageHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+      window.setTimeout(() => packageHeadingRef.current?.focus(), 450);
     });
   }
 
@@ -710,6 +748,9 @@ export default function PackagesPageContent({
         </section>
 
         <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
+          <p className="sr-only" aria-live="polite">
+            {currentStepAnnouncement}
+          </p>
           <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:grid-cols-4 sm:gap-3 sm:p-3">
             <PackageStep number="1" title="Platform" state={hasPlatformSelection ? "complete" : "active"} />
             <PackageStep
@@ -733,7 +774,7 @@ export default function PackagesPageContent({
                 <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 1</p>
                 <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Select a platform</h2>
               </div>
-              {selectedPackage ? (
+              {hasPlatformSelection ? (
                 <button
                   type="button"
                   onClick={() => {
@@ -754,11 +795,11 @@ export default function PackagesPageContent({
                 <span className="text-xs font-semibold text-[#9CA3AF]">7 platforms</span>
               )}
             </div>
-            {selectedPackage ? (
+            {hasPlatformSelection ? (
               <CompletedPackageStepCard
                 title="Platform selected"
                 value={selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}
-                detail="Platform is locked for this package. Change it if you want to browse other services."
+                detail={hasServiceSelection ? "Change it to browse another platform." : "Next, choose the service you want."}
               />
             ) : (
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
@@ -769,11 +810,11 @@ export default function PackagesPageContent({
                       key={platform.key}
                       type="button"
                       onClick={() => selectPlatform(platform.key)}
-                      className={`min-w-0 rounded-2xl border p-3 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:p-4 ${
+                      className={`min-w-0 rounded-2xl border p-2.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         active
                           ? "border-orange-400/80 bg-orange-500/15 shadow-[0_16px_36px_-24px_rgba(255,122,0,.75)] ring-2 ring-orange-500/10"
                           : "border-white/10 bg-[#111111] hover:border-orange-400/45"
-                      }`}
+                      } ${platform.key === "X" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
                     >
                       <IconBadge label={platform.label}>
                         <PlatformIcon platform={platform.label} className="h-6 w-6" />
@@ -787,63 +828,83 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section ref={packageStepRef} className="relative scroll-mt-28 px-4 py-5 sm:scroll-mt-32 sm:px-6 lg:px-8">
-          <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.6)] sm:p-5">
-            <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
-              <div>
-                <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 2</p>
-                <h2 className="mt-1 text-xl font-black text-white sm:text-2xl">Choose a service</h2>
-                <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">
-                  {selectedPackage
-                    ? "Your service and package are selected. You can change them before placing the order."
-                    : hasPlatformSelection
-                      ? `Pick a service type to compare packages for ${selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.`
-                      : "Select a platform first to see available services."}
-                </p>
-              </div>
-              {selectedPackage ? (
+        <section ref={packageStepRef} className="relative scroll-mt-28 px-4 py-4 sm:scroll-mt-32 sm:px-6 lg:px-8">
+          {!hasPlatformSelection ? (
+            <CompactStepCard number="2" title="Choose a service" detail="Select a platform to continue" />
+          ) : hasServiceSelection ? (
+            <div className="mx-auto w-full max-w-7xl">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 2 complete</p>
+                  <h2 ref={serviceHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                    Service selected
+                  </h2>
+                </div>
                 <button
                   type="button"
-                  onClick={changePackage}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-sm font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15"
+                  onClick={changeService}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:text-sm"
                 >
-                  Change Package
+                  Change Service
                 </button>
-              ) : null}
-            </div>
-            {selectedPackage ? (
+              </div>
               <CompletedPackageStepCard
-                title={`${selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform} ${serviceLabels[selectedPackage.service]}`}
-                value={selectedPackage.title}
-                detail={`${selectedPackage.quantityLabel} • ${formatCurrency(selectedPackage.basePriceINR, currency)} • ${selectedPackage.deliveryTime}`}
+                title={`${selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} service`}
+                value={serviceLabels[activeService]}
+                detail="Next, choose one package for this service."
               />
-            ) : hasPlatformSelection ? (
-              <div className="mt-4 flex flex-wrap gap-2.5">
-                {services.map((service) => (
-                  <button
-                    key={service}
-                    type="button"
-                    onClick={() => selectService(service)}
-                    className={`min-h-11 rounded-xl px-4 py-2.5 text-sm font-bold transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] ${
-                      hasServiceSelection && activeService === service
-                        ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]"
-                        : "border border-white/10 bg-[#0B0B0F] text-[#D1D5DB] hover:border-orange-400/40"
-                    }`}
-                  >
-                    {serviceLabels[service]}
-                  </button>
-                ))}
+            </div>
+          ) : (
+            <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.6)] sm:p-5">
+              <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 2</p>
+                  <h2 ref={serviceHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                    Choose a service
+                  </h2>
+                  <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">
+                    Pick a service type to compare packages for {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.
+                  </p>
+                </div>
+                <button
+                  type="button"
+                  onClick={() => platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:text-sm"
+                >
+                  Change Platform
+                </button>
               </div>
-            ) : (
-              <div className="mt-4 rounded-2xl border border-white/10 bg-[#0B0B0F] p-4 text-sm font-semibold leading-6 text-[#D1D5DB]">
-                Choose a platform above to continue.
+              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+                {services.map((service) => {
+                  const startingPrice = getStartingPrice(selectedPlatform, service);
+                  return (
+                    <button
+                      key={service}
+                      type="button"
+                      onClick={() => selectService(service)}
+                      className="flex min-h-[132px] flex-col rounded-2xl border border-white/10 bg-[#0B0B0F] p-4 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 hover:border-orange-400/45 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                    >
+                      <span className="text-base font-black text-white">{serviceLabels[service]}</span>
+                      <span className="mt-2 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
+                      <span className="mt-auto pt-3 text-xs font-black text-orange-200">
+                        {startingPrice !== null ? `Starts at ${formatCurrency(startingPrice, currency)}` : "View available packages"}
+                      </span>
+                    </button>
+                  );
+                })}
               </div>
-            )}
-          </div>
+            </div>
+          )}
         </section>
 
+        {!selectedPackage && !hasServiceSelection ? (
+          <section className="relative px-4 py-4 sm:px-6 lg:px-8">
+            <CompactStepCard number="3" title="Choose a package" detail="Choose a service to view packages" />
+          </section>
+        ) : null}
+
         {!selectedPackage && hasPlatformSelection && hasServiceSelection ? (
-        <div className="relative px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+        <section className="relative scroll-mt-28 px-4 py-6 sm:scroll-mt-32 sm:px-6 lg:px-8 lg:py-8">
           <div className="mx-auto w-full max-w-7xl">
             {platforms.flatMap((platform) =>
               serviceOrder
@@ -872,7 +933,7 @@ export default function PackagesPageContent({
                     >
                       <div className="mb-5">
                         <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Available packages</p>
-                        <h2 id={headingId} className="mt-1 text-xl font-black text-white sm:text-2xl">
+                        <h2 id={headingId} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
                           {platform.label} {serviceLabels[service]} packages
                         </h2>
                         <p className="mt-2 text-sm text-[#D1D5DB]">
@@ -933,7 +994,7 @@ export default function PackagesPageContent({
                             <button
                               type="button"
                               onClick={() => selectPackage(pkg)}
-                              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98]"
+                              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                             >
                               {selectedPackageId === pkg.packageId ? "Selected ✓" : "Select Package"}
                             </button>
@@ -941,7 +1002,7 @@ export default function PackagesPageContent({
                               <button
                                 type="button"
                                 onClick={() => selectPackage(pkg)}
-                                className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-orange-400/35 bg-orange-500/10 px-5 py-3 text-sm font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15"
+                                className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-orange-400/35 bg-orange-500/10 px-5 py-3 text-sm font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                               >
                                 Continue to Review
                               </button>
@@ -954,7 +1015,7 @@ export default function PackagesPageContent({
                           <button
                             type="button"
                             onClick={() => setShowAllPackages((value) => !value)}
-                            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-white/[.06] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/60 hover:bg-orange-500/10"
+                            className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-white/[.06] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/60 hover:bg-orange-500/10 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                           >
                             {showAllPackages ? "Show Fewer Packages" : `View More Packages (${categoryPackages.length - 6} more)`}
                           </button>
@@ -965,7 +1026,40 @@ export default function PackagesPageContent({
                 }),
             )}
           </div>
-        </div>
+        </section>
+        ) : null}
+
+        {selectedPackage ? (
+          <section className="relative scroll-mt-28 px-4 py-4 sm:scroll-mt-32 sm:px-6 lg:px-8">
+            <div className="mx-auto w-full max-w-7xl">
+              <div className="mb-3 flex items-center justify-between gap-3">
+                <div>
+                  <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 3 complete</p>
+                  <h2 ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                    Package selected
+                  </h2>
+                </div>
+                <button
+                  type="button"
+                  onClick={changePackage}
+                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 py-2.5 text-xs font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:text-sm"
+                >
+                  Change Package
+                </button>
+              </div>
+              <CompletedPackageStepCard
+                title="Package selected"
+                value={selectedPackage.title}
+                detail={`${selectedPackage.quantityLabel} • ${formatCurrency(selectedPackage.basePriceINR, currency)} • ${selectedPackage.deliveryTime}`}
+              />
+            </div>
+          </section>
+        ) : null}
+
+        {!selectedPackage ? (
+          <section className="relative px-4 py-4 sm:px-6 lg:px-8">
+            <CompactStepCard number="4" title="Review your package" detail="Select a package to review your order" />
+          </section>
         ) : null}
 
         {selectedPackage ? (
@@ -1100,6 +1194,7 @@ function PackageStep({
 
   return (
     <div
+      aria-current={active ? "step" : undefined}
       className={`flex min-w-0 items-center gap-2 rounded-xl border px-2.5 py-2.5 sm:gap-3 sm:px-4 ${
         complete
           ? "border-emerald-400/30 bg-emerald-500/10"
@@ -1126,6 +1221,24 @@ function PackageStep({
         <span className={`block truncate text-[10px] font-black sm:text-xs ${active || complete ? "text-white" : "text-[#9CA3AF]"}`}>
           {title}
         </span>
+      </span>
+    </div>
+  );
+}
+
+function CompactStepCard({ number, title, detail }: { number: string; title: string; detail: string }) {
+  return (
+    <div
+      aria-disabled="true"
+      className="mx-auto flex min-h-[76px] w-full max-w-7xl items-center gap-3 rounded-[22px] border border-white/10 bg-[#0B0B0F]/85 p-4 text-left shadow-[0_12px_30px_-26px_rgba(255,122,0,.5)] sm:min-h-[88px] sm:p-5"
+    >
+      <span className="grid h-10 w-10 shrink-0 place-items-center rounded-2xl border border-white/10 bg-white/5 text-[#9CA3AF]">
+        <LockKeyhole className="h-4 w-4" aria-hidden="true" />
+      </span>
+      <span className="min-w-0">
+        <span className="block text-[10px] font-black uppercase tracking-[0.14em] text-[#9CA3AF]">Step {number}</span>
+        <span className="mt-1 block text-base font-black text-white sm:text-lg">{title}</span>
+        <span className="mt-1 block text-sm font-semibold leading-5 text-[#D1D5DB]">{detail}</span>
       </span>
     </div>
   );
