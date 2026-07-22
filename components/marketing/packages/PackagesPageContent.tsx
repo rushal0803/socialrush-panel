@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { motion } from "framer-motion";
 import { CheckCircle2, Link2, LoaderCircle, LockKeyhole, RefreshCw, ShieldCheck, WalletCards } from "lucide-react";
-import { type Dispatch, type RefObject, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { type Dispatch, type MouseEvent, type RefObject, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
@@ -13,7 +13,7 @@ import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 import { createClient } from "@/lib/supabase/client";
-import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
+import { linkRules, type LinkRule, validateCampaignLink } from "@/lib/order-service-experience";
 
 type Platform = BigPackage["platform"];
 type Service = BigPackage["service"];
@@ -154,6 +154,66 @@ function getServiceCode(pkg: BigPackage) {
   return `${platformCode[pkg.platform]}-${pkg.service}`;
 }
 
+const packageLinkCopy: Record<string, Partial<Pick<LinkRule, "label" | "placeholder" | "helper">>> = {
+  "instagram-followers": {
+    label: "Enter your public Instagram profile link",
+    placeholder: "https://instagram.com/yourprofile",
+    helper: "Use the public Instagram profile URL for this package.",
+  },
+  "instagram-likes": {
+    label: "Enter the public Instagram post or Reel link",
+    placeholder: "https://instagram.com/p/...",
+    helper: "Use the exact public Instagram post or Reel URL for this package.",
+  },
+  "instagram-views": {
+    label: "Enter the public Instagram post or Reel link",
+    placeholder: "https://instagram.com/reel/...",
+    helper: "Use the exact public Instagram post or Reel URL for this package.",
+  },
+  "youtube-subscribers": {
+    label: "Enter your public YouTube channel link",
+    placeholder: "https://youtube.com/@yourchannel",
+    helper: "Use your public YouTube channel, handle, or channel ID URL.",
+  },
+  "youtube-likes": {
+    label: "Enter the public YouTube video link",
+    placeholder: "https://youtube.com/watch?v=...",
+    helper: "Use the exact public YouTube video URL for this package.",
+  },
+  "youtube-views": {
+    label: "Enter the public YouTube video link",
+    placeholder: "https://youtube.com/watch?v=...",
+    helper: "Use the exact public YouTube video URL for this package.",
+  },
+  "facebook-followers": {
+    label: "Enter your public Facebook page or profile link",
+    placeholder: "https://facebook.com/yourpage",
+    helper: "Use the public Facebook page or profile URL for this package.",
+  },
+  "linkedin-followers": {
+    label: "Enter your public LinkedIn profile or company-page link",
+    placeholder: "https://linkedin.com/in/your-profile",
+    helper: "Use a public LinkedIn profile or company page URL.",
+  },
+  "x-followers": {
+    label: "Enter your public X/Twitter profile link",
+    placeholder: "https://x.com/yourprofile",
+    helper: "Use the public X/Twitter profile URL for this package.",
+  },
+  "telegram-members": {
+    label: "Enter the public Telegram group or channel link",
+    placeholder: "https://t.me/yourchannel",
+    helper: "Use the public Telegram group or channel URL for this package.",
+  },
+};
+
+function getPackageLinkRule(pkg: BigPackage): LinkRule | null {
+  const code = getServiceCode(pkg);
+  const baseRule = linkRules[code];
+  if (!baseRule) return null;
+  return { ...baseRule, ...packageLinkCopy[code] };
+}
+
 function getPackageUrl(pkg: BigPackage) {
   const params = new URLSearchParams({
     platform: platformCode[pkg.platform],
@@ -226,6 +286,7 @@ export default function PackagesPageContent({
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [successMessage, setSuccessMessage] = useState("");
+  const [showLinkError, setShowLinkError] = useState(false);
   const [summaryInView, setSummaryInView] = useState(false);
   const packageStepRef = useRef<HTMLElement>(null);
   const platformStepRef = useRef<HTMLElement>(null);
@@ -247,8 +308,8 @@ export default function PackagesPageContent({
     [selectedPackageId],
   );
   const relatedGuides = relatedGuideMap[`${selectedPlatform}:${activeService}`] ?? [];
-  const linkRule = selectedPackage ? linkRules[getServiceCode(selectedPackage)] : null;
-  const currentLinkError = linkRule && targetLink.trim() ? validateCampaignLink(targetLink, linkRule) : "";
+  const linkRule = selectedPackage ? getPackageLinkRule(selectedPackage) : null;
+  const currentLinkError = linkRule && (targetLink.trim() || showLinkError) ? validateCampaignLink(targetLink, linkRule) : "";
   const canSubmitLink = Boolean(selectedPackage && targetLink.trim() && !currentLinkError);
   const hasEnoughBalance = Boolean(
     selectedPackage &&
@@ -385,7 +446,7 @@ export default function PackagesPageContent({
 
     const observer = new IntersectionObserver(
       ([entry]) => setSummaryInView(Boolean(entry?.isIntersecting)),
-      { rootMargin: "0px 0px -35% 0px", threshold: 0.18 },
+      { rootMargin: "0px", threshold: 0.01 },
     );
     observer.observe(summaryStepRef.current);
     return () => observer.disconnect();
@@ -397,6 +458,7 @@ export default function PackagesPageContent({
     setTargetLink("");
     setError("");
     setSuccessMessage("");
+    setShowLinkError(false);
     requestIdRef.current = "";
     setShowAllPackages(false);
     const firstService = serviceOrder.find((service) =>
@@ -418,6 +480,7 @@ export default function PackagesPageContent({
     setTargetLink("");
     setError("");
     setSuccessMessage("");
+    setShowLinkError(false);
     requestIdRef.current = "";
     setShowAllPackages(false);
     updatePackageUrl(selectedPlatform, service);
@@ -433,6 +496,7 @@ export default function PackagesPageContent({
     setSelectedPackageId(pkg.packageId);
     setError("");
     setSuccessMessage("");
+    setShowLinkError(false);
     setShowAllPackages(false);
     requestIdRef.current = "";
     updatePackageUrl(pkg.platform, pkg.service, pkg.packageId);
@@ -452,6 +516,7 @@ export default function PackagesPageContent({
     setSelectedPackageId("");
     setError("");
     setSuccessMessage("");
+    setShowLinkError(false);
     requestIdRef.current = "";
     updatePackageUrl(selectedPlatform, activeService);
     window.requestAnimationFrame(() => {
@@ -466,6 +531,21 @@ export default function PackagesPageContent({
         JSON.stringify({ packageId: selectedPackage.packageId, targetLink: targetLink.trim() }),
       );
     }
+  }
+
+  function requireValidPublicLink() {
+    setSuccessMessage("");
+    setShowLinkError(true);
+    if (!selectedPackage || !linkRule) return false;
+
+    const validationError = validateCampaignLink(targetLink, linkRule);
+    if (validationError) {
+      setError("Please enter a valid public link before continuing.");
+      return false;
+    }
+
+    setError("");
+    return true;
   }
 
   function getLoginHref() {
@@ -484,6 +564,7 @@ export default function PackagesPageContent({
 
     const validationError = validateCampaignLink(targetLink, linkRule);
     if (validationError) {
+      setShowLinkError(true);
       setError(validationError);
       return;
     }
@@ -555,7 +636,7 @@ export default function PackagesPageContent({
 
   return (
     <BlogShell>
-      <div className="packages-page relative overflow-x-clip pb-24 lg:pb-24">
+      <div className="packages-page relative overflow-x-clip pb-36 lg:pb-24">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-16 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-8%] top-44 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
@@ -598,10 +679,11 @@ export default function PackagesPageContent({
         </section>
 
         <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-3 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:gap-3 sm:p-3">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:grid-cols-4 sm:gap-3 sm:p-3">
             <PackageStep number="1" title="Platform" state="complete" />
-            <PackageStep number="2" title="Package" state={selectedPackage ? "complete" : "active"} />
-            <PackageStep number="3" title="Checkout" state={selectedPackage ? "active" : "upcoming"} />
+            <PackageStep number="2" title="Service" state="complete" />
+            <PackageStep number="3" title="Package" state={selectedPackage ? "complete" : "active"} />
+            <PackageStep number="4" title="Review" state={selectedPackage ? "active" : "upcoming"} />
           </div>
         </section>
 
@@ -863,6 +945,7 @@ export default function PackagesPageContent({
             loginHref={getLoginHref()}
             addFundsHref={getAddFundsHref()}
             onPersist={persistPendingPackageOrder}
+            onRequireValidLink={requireValidPublicLink}
             onRefreshWallet={() => void refreshWalletBalance()}
             onPlaceOrder={placeOrder}
             onChangePackage={changePackage}
@@ -871,19 +954,20 @@ export default function PackagesPageContent({
             onClearMessages={() => {
               setError("");
               setSuccessMessage("");
+              setShowLinkError(false);
             }}
           />
         ) : null}
 
 
         {selectedPackage && !summaryInView ? (
-          <div className="fixed inset-x-3 bottom-20 z-40 rounded-2xl border border-orange-400/35 bg-[#111111]/95 p-3 shadow-[0_18px_42px_-18px_rgba(255,122,0,.85)] backdrop-blur-xl sm:hidden">
+          <div className="fixed inset-x-3 bottom-[calc(5.75rem+env(safe-area-inset-bottom))] z-40 rounded-2xl border border-orange-400/35 bg-[#111111]/95 p-3 shadow-[0_18px_42px_-18px_rgba(255,122,0,.85)] backdrop-blur-xl sm:hidden">
             <div className="flex items-center gap-3">
               <div className="min-w-0 flex-1">
                 <p className="truncate text-xs font-black text-white">
-                  Continue with {selectedPackage.quantityLabel} {serviceLabels[selectedPackage.service]}
+                  Continue with {selectedPackage.title} — {formatCurrency(selectedPackage.basePriceINR, currency)}
                 </p>
-                <p className="mt-0.5 text-[11px] font-bold text-orange-200">{formatCurrency(selectedPackage.basePriceINR, currency)}</p>
+                <p className="mt-0.5 text-[11px] font-bold text-orange-200">Review package details</p>
               </div>
               <button
                 type="button"
@@ -1054,6 +1138,7 @@ function PackageReviewSection({
   loginHref,
   addFundsHref,
   onPersist,
+  onRequireValidLink,
   onRefreshWallet,
   onPlaceOrder,
   onChangePackage,
@@ -1082,6 +1167,7 @@ function PackageReviewSection({
   loginHref: string;
   addFundsHref: string;
   onPersist: () => void;
+  onRequireValidLink: () => boolean;
   onRefreshWallet: () => void;
   onPlaceOrder: () => void;
   onChangePackage: () => void;
@@ -1090,13 +1176,44 @@ function PackageReviewSection({
   onClearMessages: () => void;
 }) {
   const platformLabel = selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform;
+  const walletBalanceLabel =
+    isAuthLoading
+      ? "Checking..."
+      : !isLoggedIn
+        ? "Login required"
+        : walletLoadError
+          ? "Unavailable"
+          : formatCurrency(walletBalance ?? 0, currency);
+
+  function handleLoginClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!onRequireValidLink()) {
+      event.preventDefault();
+      return;
+    }
+
+    onPersist();
+    trackPackageEvent("package_login_clicked", { packageId: selectedPackage.packageId });
+  }
+
+  function handleAddFundsClick(event: MouseEvent<HTMLAnchorElement>) {
+    if (!onRequireValidLink()) {
+      event.preventDefault();
+      return;
+    }
+
+    onPersist();
+    trackPackageEvent("package_add_funds_clicked", {
+      packageId: selectedPackage.packageId,
+      amountNeeded,
+    });
+  }
 
   return (
     <section ref={summaryStepRef} className="relative scroll-mt-24 px-4 pb-6 pt-2 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_390px] lg:items-start">
           <article className="rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_64px_-36px_rgba(255,122,0,.72)] sm:p-7">
-            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3</p>
+            <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 4</p>
             <h2 ref={summaryHeadingRef} tabIndex={-1} className="mt-2 text-2xl font-black text-white outline-none sm:text-3xl">
               Review Your Package
             </h2>
@@ -1160,7 +1277,7 @@ function PackageReviewSection({
                 </span>
               </label>
               <p id="package-public-link-help" className="mt-2 text-xs font-semibold leading-6 text-[#D1D5DB]">
-                {linkRuleHelper} Keep the profile or content public during delivery. No password is required.
+                {linkRuleHelper} The destination must remain public during delivery. SocialRUSH never asks for passwords, recovery codes, or private access.
               </p>
               {currentLinkError ? (
                 <p id="package-public-link-error" role="alert" className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-100">
@@ -1181,14 +1298,11 @@ function PackageReviewSection({
               ) : !isLoggedIn ? (
                 <Link
                   href={loginHref}
-                  onClick={() => {
-                    onPersist();
-                    trackPackageEvent("package_login_clicked", { packageId: selectedPackage.packageId });
-                  }}
+                  onClick={handleLoginClick}
                   className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition hover:-translate-y-0.5 active:scale-[.98] sm:w-auto"
                 >
                   <LockKeyhole className="h-4 w-4" />
-                  Login to Place Order
+                  Continue to Login
                 </Link>
               ) : walletLoadError ? (
                 <button type="button" onClick={onRefreshWallet} className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
@@ -1203,17 +1317,11 @@ function PackageReviewSection({
               ) : (
                 <Link
                   href={addFundsHref}
-                  onClick={() => {
-                    onPersist();
-                    trackPackageEvent("package_add_funds_clicked", {
-                      packageId: selectedPackage.packageId,
-                      amountNeeded,
-                    });
-                  }}
+                  onClick={handleAddFundsClick}
                   className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition hover:-translate-y-0.5 active:scale-[.98] sm:w-auto"
                 >
                   <WalletCards className="h-4 w-4" />
-                  Add {formatCurrency(amountNeeded, currency)} & Continue
+                  Add Funds
                 </Link>
               )}
               <button type="button" onClick={onChangePackage} className="inline-flex min-h-14 w-full items-center justify-center rounded-2xl border border-orange-400/30 bg-[#151515] px-7 py-3.5 text-sm font-black text-white transition hover:border-orange-400 hover:bg-orange-500/10 active:scale-[.98] sm:w-auto">
@@ -1232,7 +1340,8 @@ function PackageReviewSection({
               <SummaryRow label="Quantity" value={selectedPackage.quantityLabel} />
               <SummaryRow label="Public link" value={targetLink.trim() || "Not entered"} />
               <SummaryRow label="Delivery" value={selectedPackage.deliveryTime} />
-              <SummaryRow label="Wallet balance" value={isAuthLoading ? "Checking..." : !isLoggedIn ? "Login required" : walletLoadError ? "Unavailable" : formatCurrency(walletBalance ?? 0, currency)} />
+              <SummaryRow label="Refill" value="Available if eligible" />
+              <SummaryRow label="Wallet balance" value={walletBalanceLabel} />
               <div className="border-t border-dashed border-orange-400/25 pt-4">
                 <SummaryRow label="Final total" value={formatCurrency(selectedPackage.basePriceINR, currency)} strong />
               </div>
@@ -1246,7 +1355,7 @@ function PackageReviewSection({
                     ? "Login to check wallet balance and place this order."
                     : hasEnoughBalance
                       ? "Wallet balance is sufficient for this package."
-                      : `Please add ${formatCurrency(amountNeeded, currency)} to place this order.`}
+                      : `Available balance: ${walletBalanceLabel}. Required total: ${formatCurrency(selectedPackage.basePriceINR, currency)}. Please add ${formatCurrency(amountNeeded, currency)} to place this order.`}
               </p>
               <p className="mt-2 text-xs leading-5 text-[#D1D5DB]">Wallet is charged only after you confirm the order.</p>
             </div>

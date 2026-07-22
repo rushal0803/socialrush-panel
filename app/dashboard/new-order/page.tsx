@@ -334,7 +334,7 @@ export default function NewOrderPage() {
         <section ref={serviceRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 2</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Choose your service</h2></div>
-            {platform ? <button type="button" onClick={() => scrollTo(platformRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change platform</button> : null}
+            {platform ? <button type="button" onClick={() => scrollTo(platformRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Change platform</button> : null}
           </div>
           {!platform ? (
             <div className="mt-5 rounded-2xl border border-dashed border-orange-400/25 bg-[#0B0B0F] p-8 text-center text-sm font-semibold text-[#D1D5DB]">Choose a platform to see available services.</div>
@@ -370,7 +370,7 @@ export default function NewOrderPage() {
             <section ref={detailsRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 3</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Enter campaign details</h2></div>
-                <button type="button" onClick={() => scrollTo(serviceRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change service</button>
+                <button type="button" onClick={() => scrollTo(serviceRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Change service</button>
               </div>
               <div className="mt-5 grid gap-5 lg:grid-cols-2">
                 <label className="block text-xs font-black text-white">
@@ -414,11 +414,11 @@ export default function NewOrderPage() {
             <section ref={summaryRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_30px_65px_-40px_rgba(255,122,0,.6)] sm:p-7">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 4</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Review order summary</h2></div>
-                <button type="button" onClick={() => scrollTo(detailsRef)} className="rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2 text-xs font-bold text-orange-300">Change details</button>
+                <button type="button" onClick={() => scrollTo(detailsRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Change details</button>
               </div>
               <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
                 <dl className="grid gap-3 sm:grid-cols-2">
-                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim() || "Not entered"],["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"],["Delivery", selectedService.deliveryTime],["Refill support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 break-all text-sm font-bold text-white">{value}</dd></div>)}
+                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim() || "Not entered"],["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"],["Delivery", selectedService.deliveryTime],["Refill support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 text-sm font-bold text-white [overflow-wrap:anywhere]">{value}</dd></div>)}
                 </dl>
                 <aside className="rounded-3xl bg-[#0B0B0F] p-5 text-white shadow-xl">
                   <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-orange-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>

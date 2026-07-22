@@ -99,7 +99,7 @@ export default function RegisterForm() {
               type="button"
               onClick={() => setShowPassword((v) => !v)}
               aria-label={showPassword ? "Hide password" : "Show password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#9CA3AF] transition hover:text-white"
+              className="absolute right-2 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-lg text-[#9CA3AF] transition hover:bg-white/5 hover:text-white"
             >
               {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
@@ -122,7 +122,7 @@ export default function RegisterForm() {
               type="button"
               onClick={() => setShowConfirmPassword((v) => !v)}
               aria-label={showConfirmPassword ? "Hide confirm password" : "Show confirm password"}
-              className="absolute right-3 top-1/2 -translate-y-1/2 rounded-md p-1 text-[#9CA3AF] transition hover:text-white"
+              className="absolute right-2 top-1/2 inline-flex min-h-11 min-w-11 -translate-y-1/2 items-center justify-center rounded-lg text-[#9CA3AF] transition hover:bg-white/5 hover:text-white"
             >
               {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
             </button>
