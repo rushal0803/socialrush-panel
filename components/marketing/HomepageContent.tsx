@@ -120,15 +120,6 @@ const featuredServices = [
     border: "border-red-100",
   },
   {
-    name: "LinkedIn Profile Support",
-    platform: "linkedin",
-    href: "/linkedin-followers",
-    text: "Review professional profile and company page support options.",
-    grad: "from-amber-500 to-orange-600",
-    bg: "from-amber-50 to-orange-50",
-    border: "border-amber-100",
-  },
-  {
     name: "Facebook Page Support",
     platform: "facebook",
     href: "/facebook-followers",
@@ -138,21 +129,12 @@ const featuredServices = [
     border: "border-orange-100",
   },
   {
-    name: "TikTok Campaign Support",
-    platform: "tiktok",
-    href: "/tiktok-followers",
-    text: "Explore structured campaign support for public TikTok profiles and content.",
-    grad: "from-[#FF7A00] to-[#FFB000]",
-    bg: "from-orange-50 to-orange-50",
-    border: "border-orange-100",
-  },
-  {
-    name: "Twitter/X Profile Support",
-    platform: "twitter",
-    href: "/twitter-followers",
-    text: "Explore profile campaign options with visible pricing and tracking.",
-    grad: "from-amber-500 to-slate-700",
-    bg: "from-amber-50 to-slate-50",
+    name: "LinkedIn Profile Support",
+    platform: "linkedin",
+    href: "/linkedin-followers",
+    text: "Review professional profile and company page support options.",
+    grad: "from-amber-500 to-orange-600",
+    bg: "from-amber-50 to-orange-50",
     border: "border-amber-100",
   },
 ] as const;
@@ -348,35 +330,35 @@ export default function HomepageContent() {
       </header>
 
       {/* HERO */}
-      <motion.section variants={fadeUp} initial={false} animate="show" className="relative overflow-hidden bg-[#050505] px-4 pb-14 pt-10 text-white sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
+      <motion.section variants={fadeUp} initial={false} animate="show" className="relative overflow-hidden bg-[#050505] px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
         <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-[#FF7A00]/15 blur-3xl" />
         <div className="pointer-events-none absolute -right-32 bottom-0 h-[30rem] w-[30rem] rounded-full bg-[#FF9F00]/12 blur-3xl" />
         <div className="hero-grid pointer-events-none absolute inset-0 opacity-50" />
-        <div className="mx-auto grid max-w-7xl gap-10 lg:grid-cols-2 lg:items-center lg:gap-12">
+        <div className="mx-auto grid max-w-7xl gap-7 lg:grid-cols-2 lg:items-center lg:gap-12">
           <div className="relative z-10">
             <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-300 shadow-sm backdrop-blur">
               <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
-              SMART GROWTH • REAL RESULTS
+              TRANSPARENT GROWTH • CLEAR PROCESS
             </motion.span>
-            <h1 className="mt-5 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:text-5xl lg:text-[58px]">
+            <h1 className="mt-4 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:mt-5 sm:text-5xl lg:text-[58px]">
               Transparent Social Media Growth Services{" "}
               <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">for Creators and Brands</span>
             </h1>
-            <p className="mt-5 max-w-xl text-base leading-8 text-slate-300">
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:mt-5 sm:leading-8">
               Compare clear packages, submit your public profile or content link, and track your campaign from one secure dashboard.
             </p>
-            <div className="mt-7 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-center">
+            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center">
               <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">View Packages</Link>
               <Link href="/services" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">Explore Services</Link>
               <Link href="#how-it-works" className="inline-flex min-h-[44px] items-center justify-center px-2 text-sm font-bold text-orange-200 underline decoration-orange-400/40 underline-offset-4 transition hover:text-orange-100 sm:min-h-0">
                 How It Works
               </Link>
             </div>
-            <motion.div variants={stagger} initial="hidden" animate="show" className="mt-8 flex flex-wrap gap-3">
+            <motion.div variants={stagger} initial="hidden" animate="show" className="mt-5 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
               {trustBadges.map((badge) => (
-                <motion.div key={badge.label} variants={cardAnim} whileHover={{ y: -4, scale: 1.04 }} className="flex items-center gap-2 rounded-2xl border border-orange-400/20 bg-white/[.06] px-4 py-2.5 shadow-[0_8px_30px_-8px_rgba(0,0,0,.7)] backdrop-blur">
-                  <span className={`grid h-7 w-7 place-items-center rounded-lg bg-gradient-to-br text-xs font-bold text-white shadow-md ${badge.color}`}>{badge.icon}</span>
-                  <span className="text-xs font-bold text-slate-200">{badge.label}</span>
+                <motion.div key={badge.label} variants={cardAnim} whileHover={{ y: -4, scale: 1.04 }} className="flex min-h-11 items-center gap-2 rounded-2xl border border-orange-400/20 bg-white/[.06] px-3 py-2 shadow-[0_8px_30px_-8px_rgba(0,0,0,.7)] backdrop-blur sm:px-4 sm:py-2.5">
+                  <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-[11px] font-bold text-white shadow-md sm:h-7 sm:w-7 sm:text-xs ${badge.color}`}>{badge.icon}</span>
+                  <span className="text-[11px] font-bold leading-4 text-slate-200 sm:text-xs">{badge.label}</span>
                 </motion.div>
               ))}
             </motion.div>
@@ -390,7 +372,7 @@ export default function HomepageContent() {
             ))}
             <div className="relative overflow-hidden rounded-[30px] border border-orange-400/25 bg-[#111111] p-2 shadow-[0_36px_90px_-24px_rgba(255,122,0,.42)] sm:p-3">
               <div className="overflow-hidden rounded-2xl bg-[#050505]">
-                <SafeImage src="/images/home/home-hero-dashboard.png" alt="SocialRUSH campaign dashboard with order tracking and support" width={1448} height={1086} sizes="(max-width: 1023px) 100vw, 50vw" className="h-auto w-full object-cover" priority />
+                <SafeImage src="/images/home/home-hero-dashboard.png" alt="SocialRUSH campaign dashboard with order tracking and support" width={1448} height={1086} sizes="(max-width: 1023px) 100vw, 50vw" className="max-h-[248px] w-full object-contain sm:max-h-none sm:object-cover" priority />
               </div>
             </div>
           </div>
@@ -398,8 +380,8 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* PLATFORM DISCOVERY */}
-      <section className="content-auto px-4 py-8 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_22px_54px_-36px_rgba(255,122,0,.55)] sm:p-7">
+      <section className="content-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_22px_54px_-36px_rgba(255,122,0,.55)] sm:p-7">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">Supported platforms</p>
@@ -412,12 +394,12 @@ export default function HomepageContent() {
               Browse Services
             </Link>
           </div>
-          <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-6 sm:grid-cols-3 lg:grid-cols-7">
             {supportedPlatforms.map((item) => (
               <Link
                 key={item.label}
                 href={item.href}
-                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-4 transition hover:-translate-y-1 hover:border-orange-400/60 hover:bg-orange-500/10"
+                className={`group min-h-20 rounded-2xl border border-orange-400/20 bg-[#151515] p-3 transition hover:-translate-y-1 hover:border-orange-400/60 hover:bg-orange-500/10 sm:p-4 ${item.platform === "tiktok" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
               >
                 <IconBadge label={item.label} size="sm">
                   <PlatformIcon platform={item.platform} className="h-5 w-5" />
@@ -430,18 +412,18 @@ export default function HomepageContent() {
       </section>
 
       {/* WHY SOCIALRUSH */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-12 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-8 text-center">
+          <div className="mb-5 text-center sm:mb-8">
             <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Why SocialRUSH</span>
             <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Why Customers Choose <span className="bg-gradient-to-r from-[#FF7A00] to-[#FFB000] bg-clip-text text-transparent">SocialRUSH</span></h2>
           </div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
             {whySocialRush.map((item) => (
-              <motion.article key={item.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] backdrop-blur ${item.border} ${item.bg}`}>
-                <div className={`inline-flex h-11 w-11 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg ${item.grad}`}><SvgIcon path={item.icon} size={20} /></div>
-                <h3 className="mt-4 text-lg font-bold text-slate-900">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{item.text}</p>
+              <motion.article key={item.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-3 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] backdrop-blur sm:p-5 ${item.border} ${item.bg}`}>
+                <div className={`inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg sm:h-11 sm:w-11 ${item.grad}`}><SvgIcon path={item.icon} size={18} /></div>
+                <h3 className="mt-3 text-sm font-bold leading-snug text-slate-900 sm:mt-4 sm:text-lg">{item.title}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">{item.text}</p>
               </motion.article>
             ))}
           </motion.div>
@@ -452,54 +434,57 @@ export default function HomepageContent() {
       <HowToOrderSection id="how-it-works" homepage />
 
       {/* POPULAR SERVICES */}
-      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Platform Services</span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Choose a Platform. Pick a Service. Track Everything.</h2>
-              <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">Explore social media growth services across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X with transparent pricing and dashboard tracking.</p>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Choose a Platform. Pick a Service. Track Everything.</h2>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:mt-3 sm:leading-7">Explore social media growth services across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X with transparent pricing and dashboard tracking.</p>
             </div>
             <div className="flex flex-wrap gap-2">
               <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View All Services</Link>
               <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105">Start Order</Link>
             </div>
           </div>
-          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
             {featuredServices.map((svc) => (
-              <motion.article key={svc.name} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`overflow-hidden rounded-2xl border bg-gradient-to-br p-5 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] ${svc.border} ${svc.bg}`}>
+              <motion.article key={svc.name} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`overflow-hidden rounded-2xl border bg-gradient-to-br p-4 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] sm:p-5 ${svc.border} ${svc.bg}`}>
                 <IconBadge label={svc.name}><PlatformIcon platform={svc.platform} className="h-6 w-6" /></IconBadge>
-                <h3 className="mt-4 text-lg font-bold text-slate-900">{svc.name}</h3>
-                <p className="mt-2 text-sm leading-6 text-slate-600">{svc.text}</p>
-                <div className="mt-4 flex gap-2">
+                <h3 className="mt-3 text-base font-bold text-slate-900 sm:mt-4 sm:text-lg">{svc.name}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-slate-600 sm:mt-2">{svc.text}</p>
+                <div className="mt-3 flex gap-2 sm:mt-4">
                   <Link href={svc.href} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View Services</Link>
                   <Link href={startOrderHref} className={`inline-flex items-center gap-1 rounded-lg bg-gradient-to-r px-3 py-1.5 text-xs font-bold text-white shadow-sm ${svc.grad}`}>Start Order</Link>
                 </div>
               </motion.article>
             ))}
           </motion.div>
+          <p className="mt-4 text-sm font-semibold text-slate-600">
+            Also available: <Link href="/services" className="text-[#FF7A00] underline decoration-orange-300 underline-offset-4">TikTok, Telegram and X/Twitter</Link>.
+          </p>
         </div>
       </motion.section>
 
       {/* BLOG */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-6 shadow-[0_24px_56px_-36px_rgba(255,122,0,.55)] sm:p-8">
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_24px_56px_-36px_rgba(255,122,0,.55)] sm:p-8">
           <div className="max-w-3xl">
             <span className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-300">SocialRUSH India</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-white">Social media growth services and packages in India</h2>
-            <p className="mt-3 text-sm leading-7 text-[#D1D5DB]">
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Social media growth services and packages in India</h2>
+            <p className="mt-2 text-sm leading-6 text-[#D1D5DB] sm:mt-3 sm:leading-7">
               Explore focused SocialRUSH service pages for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X campaign options in India.
             </p>
           </div>
-          <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+          <div className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3 lg:grid-cols-3">
             {homepageSeoLinks.map((item) => (
               <Link
                 key={item.href}
                 href={item.href}
-                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-4 transition hover:-translate-y-1 hover:border-orange-400/50 hover:bg-orange-500/10 active:scale-[.98]"
+                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-3 transition hover:-translate-y-1 hover:border-orange-400/50 hover:bg-orange-500/10 active:scale-[.98] sm:p-4"
               >
                 <h3 className="text-sm font-black text-white transition group-hover:text-[#FF9F00]">{item.title}</h3>
-                <p className="mt-2 text-xs leading-6 text-[#D1D5DB]">{item.text}</p>
+                <p className="mt-1.5 text-xs leading-5 text-[#D1D5DB] sm:mt-2 sm:leading-6">{item.text}</p>
               </Link>
             ))}
           </div>
@@ -507,26 +492,26 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* BLOG */}
-      <motion.section id="blog" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section id="blog" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-8 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+          <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
             <div>
               <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Blog</span>
-              <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Tips, Trends &amp; Insights</h2>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Tips, Trends &amp; Insights</h2>
             </div>
             <Link href="/blog" className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View All Blogs</Link>
           </div>
-          <div className="grid gap-5 md:grid-cols-3">
+          <div className="grid gap-3 sm:gap-5 md:grid-cols-3">
             {homepagePosts.map((post) => (
-              <motion.article key={post.href} whileHover={{ y: -6 }} className="group flex min-h-64 flex-col overflow-hidden rounded-3xl border border-orange-100 bg-white/90 p-6 shadow-[0_20px_50px_-22px_rgba(15,23,42,.3)]">
+              <motion.article key={post.href} whileHover={{ y: -6 }} className="group flex flex-col overflow-hidden rounded-3xl border border-orange-100 bg-white/90 p-4 shadow-[0_20px_50px_-22px_rgba(15,23,42,.3)] sm:min-h-64 sm:p-6">
                 <div>
                   <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">{post.category}</span>
-                  <h3 className="mt-3 text-lg font-extrabold leading-snug text-slate-900">
+                  <h3 className="mt-3 text-base font-extrabold leading-snug text-slate-900 sm:text-lg">
                     <Link href={post.href} className="transition hover:text-[#FF7A00]">{post.title}</Link>
                   </h3>
-                  <p className="mt-3 text-sm leading-7 text-slate-600">{post.excerpt}</p>
+                  <p className="mt-2 text-sm leading-6 text-slate-600 sm:mt-3 sm:leading-7">{post.excerpt}</p>
                 </div>
-                <Link href={post.href} className="mt-auto inline-flex items-center gap-2 pt-6 text-sm font-bold text-[#FF7A00] transition group-hover:gap-3">Read Article <span aria-hidden="true">→</span></Link>
+                <Link href={post.href} className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#FF7A00] transition group-hover:gap-3 sm:mt-auto sm:pt-6">Read Article <span aria-hidden="true">→</span></Link>
               </motion.article>
             ))}
           </div>
@@ -534,21 +519,21 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* FAQ */}
-      <motion.section id="faq" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-14 sm:px-6 lg:px-8">
+      <motion.section id="faq" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
         <div className="mx-auto max-w-7xl">
-          <div className="mb-8 text-center">
+          <div className="mb-5 text-center sm:mb-8">
             <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">FAQ</span>
-            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900">Frequently Asked Questions</h2>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Frequently Asked Questions</h2>
           </div>
-          <div className="grid gap-4 lg:grid-cols-2">
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
             {[faqItems.slice(0, 4), faqItems.slice(4)].map((col, cIdx) => (
-              <div key={cIdx} className="space-y-3">
+              <div key={cIdx} className="space-y-2.5 sm:space-y-3">
                 {col.map((item) => {
                   const idx = faqItems.findIndex((e) => e.q === item.q);
                   const isOpen = activeFaq === idx;
                   return (
                     <article key={item.q} className={`overflow-hidden rounded-2xl border transition-all ${isOpen ? "border-amber-200 bg-white/90 shadow-[0_8px_30px_-8px_rgba(255, 196, 0, .22)]" : "border-white/80 bg-white/70 shadow-sm"} backdrop-blur`}>
-                      <button type="button" onClick={() => setActiveFaq((prev) => (prev === idx ? null : idx))} className="flex w-full items-center justify-between gap-2 px-4 py-3.5 text-left">
+                      <button type="button" onClick={() => setActiveFaq((prev) => (prev === idx ? null : idx))} aria-expanded={isOpen} aria-label={`${isOpen ? "Collapse" : "Expand"} ${item.q}`} className="flex min-h-11 w-full items-center justify-between gap-2 px-4 py-3 text-left sm:py-3.5">
                         <span className="text-sm font-semibold text-slate-800">{item.q}</span>
                         <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition-all ${isOpen ? "bg-amber-500 text-white" : "bg-slate-100 text-slate-600"}`}>{isOpen ? "−" : "+"}</span>
                       </button>
@@ -561,7 +546,7 @@ export default function HomepageContent() {
                         }`}
                       >
                         <div className="overflow-hidden">
-                          <p className="border-t border-amber-100/60 px-4 py-3 text-sm leading-7 text-slate-600">{item.a}</p>
+                          <p className="border-t border-amber-100/60 px-4 py-3 text-sm leading-6 text-slate-600 sm:leading-7">{item.a}</p>
                         </div>
                       </div>
                     </article>
@@ -574,18 +559,18 @@ export default function HomepageContent() {
       </motion.section>
 
       {/* FINAL CTA */}
-      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 pb-10 pt-4 sm:px-6 lg:px-8">
-        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-[linear-gradient(135deg,#FFF8F1_0%,#FFF8F1_35%,#FFF8F1_65%,#f0fdf4_100%)] p-8 shadow-[0_30px_60px_-20px_rgba(255, 196, 0, .25)] sm:p-12">
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 pb-8 pt-2 sm:px-6 sm:pb-10 sm:pt-4 lg:px-8">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-[linear-gradient(135deg,#FFF8F1_0%,#FFF8F1_35%,#FFF8F1_65%,#f0fdf4_100%)] p-5 shadow-[0_30px_60px_-20px_rgba(255, 196, 0, .25)] sm:p-12">
           <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-orange-300/30 blur-3xl" />
           <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-orange-300/25 blur-3xl" />
           <div className="relative text-center">
             <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Get Started Today</span>
-            <h2 className="mt-4 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Ready to Start Your Next <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">Growth Campaign?</span></h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-600">Choose your platform, select a service, submit your public link and track your order from your SocialRUSH dashboard.</p>
-            <div className="mt-7 flex flex-col items-center gap-3 sm:flex-row sm:justify-center">
-              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] px-8 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/60">Start Order</Link>
-              <Link href="/packages" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View Packages</Link>
-              <a href="https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[52px] items-center gap-2 rounded-xl border border-[#FF7A00]/30 bg-[#0B0B0F] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF9F00] hover:bg-black">Chat on WhatsApp</a>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:mt-4 sm:text-4xl">Ready to Start Your Next <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">Growth Campaign?</span></h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:mt-4 sm:leading-7">Choose your platform, select a service, submit your public link and track your order from your SocialRUSH dashboard.</p>
+            <div className="mt-5 flex w-full flex-col items-stretch gap-3 sm:mt-7 sm:flex-row sm:items-center sm:justify-center">
+              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] px-8 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/60">Start Order</Link>
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View Packages</Link>
+              <a href="https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-[#FF7A00]/30 bg-[#0B0B0F] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF9F00] hover:bg-black">Chat on WhatsApp</a>
             </div>
           </div>
         </div>
