@@ -145,7 +145,7 @@ export const bigPackages: BigPackage[] = [
     basePriceINR: 1799,
     discountBadge: "Best Value",
     deliveryTime: "2–5 days",
-    description: "Major visibility expansion with 100,000 views.",
+    description: "100,000-view package for larger video campaigns.",
     bestFor: "Growing content reach",
   },
   {
