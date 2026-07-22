@@ -45,7 +45,7 @@ export default function Logo({
         width={320}
         height={160}
         priority={priority}
-        className="h-9 w-auto max-w-[176px] object-contain sm:h-10 md:h-12"
+        className="h-10 w-auto max-w-[176px] object-contain sm:h-10 md:h-12"
       />
     </Link>
   );
