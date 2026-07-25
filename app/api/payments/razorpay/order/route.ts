@@ -24,9 +24,6 @@ const rawMethod =
   body?.paymentMethod ??
   body?.payment_method;
   const method = normalizePaymentMethod(rawMethod);
-  console.log("wallet payment method raw:", rawMethod);
-  console.log("wallet payment method normalized:", method);
-  console.log("allowed wallet methods:", allowedMethods);
   if (!Number.isFinite(amount) || amount <= 0 || amount > 500000) return NextResponse.json({ error: "Enter an amount greater than ₹0 and up to ₹5,00,000" }, { status: 422 });
   if (!method) {
     return NextResponse.json(

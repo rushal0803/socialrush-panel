@@ -49,6 +49,7 @@ export async function GET(request: NextRequest) {
   const { data, error } = await supabase
     .from("orders")
     .select("id, service_name, platform, unit_price, link, quantity, package_name, charge, status, provider_order_id, created_at, services(name)")
+    .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(limit);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
