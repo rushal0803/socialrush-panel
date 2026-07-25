@@ -68,7 +68,6 @@ export async function POST(request: NextRequest) {
     quantity?: number;
     requestId?: string;
     notes?: string | null;
-    fallbackPrice?: number;
     fallbackName?: string;
     fallbackPlatform?: string;
     fallbackMin?: number;
@@ -128,7 +127,7 @@ export async function POST(request: NextRequest) {
   if (error) {
     if (
       (error.message || "").toLowerCase().includes("unknown campaign service") &&
-      (body.serviceCode in SERVICE_PRICES || body.fallbackPrice) &&
+      body.serviceCode in SERVICE_PRICES &&
       body.fallbackName &&
       body.fallbackPlatform &&
       body.fallbackMin &&
@@ -143,15 +142,34 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const canonicalRate =
-        body.serviceCode in SERVICE_PRICES
-          ? SERVICE_PRICES[body.serviceCode as ServiceCode]
-          : Number(body.fallbackPrice);
+      const canonicalRate = SERVICE_PRICES[body.serviceCode as ServiceCode];
       const total = Math.round(((body.quantity / 1000) * canonicalRate) * 100) / 100;
       const { data: profile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
       const currentBalance = Number(profile?.balance ?? 0);
       if (currentBalance + 0.0001 < total) {
         return NextResponse.json({ error: "Insufficient campaign budget" }, { status: 400 });
+      }
+
+      const { data: existing } = await supabase
+        .from("orders")
+        .select("id, charge")
+        .eq("user_id", user.id)
+        .eq("client_request_id", body.requestId)
+        .maybeSingle();
+
+      if (existing) {
+        const { data: dupProfile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
+        return NextResponse.json(
+          {
+            data: {
+              id: existing.id,
+              charge: Number(existing.charge),
+              balance: Number(dupProfile?.balance ?? currentBalance),
+              duplicate: true,
+            },
+          },
+          { status: 201, headers: { "Cache-Control": "no-store" } },
+        );
       }
 
       const { data: inserted, error: insertError } = await supabase
@@ -167,11 +185,34 @@ export async function POST(request: NextRequest) {
           charge: total,
           status: "pending",
           package_name: "Custom",
+          client_request_id: body.requestId,
         })
         .select("id, charge")
         .single();
 
       if (insertError || !inserted) {
+        if (insertError?.code === "23505") {
+          const { data: raced } = await supabase
+            .from("orders")
+            .select("id, charge")
+            .eq("user_id", user.id)
+            .eq("client_request_id", body.requestId)
+            .maybeSingle();
+          if (raced) {
+            const { data: raceProfile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
+            return NextResponse.json(
+              {
+                data: {
+                  id: raced.id,
+                  charge: Number(raced.charge),
+                  balance: Number(raceProfile?.balance ?? currentBalance),
+                  duplicate: true,
+                },
+              },
+              { status: 201, headers: { "Cache-Control": "no-store" } },
+            );
+          }
+        }
         return NextResponse.json({ error: insertError?.message || "Unable to create campaign." }, { status: 400 });
       }
 
