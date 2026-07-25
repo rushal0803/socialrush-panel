@@ -142,14 +142,6 @@ export async function POST(request: NextRequest) {
         );
       }
 
-      const canonicalRate = SERVICE_PRICES[body.serviceCode as ServiceCode];
-      const total = Math.round(((body.quantity / 1000) * canonicalRate) * 100) / 100;
-      const { data: profile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
-      const currentBalance = Number(profile?.balance ?? 0);
-      if (currentBalance + 0.0001 < total) {
-        return NextResponse.json({ error: "Insufficient campaign budget" }, { status: 400 });
-      }
-
       const { data: existing } = await supabase
         .from("orders")
         .select("id, charge")
@@ -164,12 +156,20 @@ export async function POST(request: NextRequest) {
             data: {
               id: existing.id,
               charge: Number(existing.charge),
-              balance: Number(dupProfile?.balance ?? currentBalance),
+              balance: Number(dupProfile?.balance ?? 0),
               duplicate: true,
             },
           },
           { status: 201, headers: { "Cache-Control": "no-store" } },
         );
+      }
+
+      const canonicalRate = SERVICE_PRICES[body.serviceCode as ServiceCode];
+      const total = Math.round(((body.quantity / 1000) * canonicalRate) * 100) / 100;
+      const { data: profile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
+      const currentBalance = Number(profile?.balance ?? 0);
+      if (currentBalance + 0.0001 < total) {
+        return NextResponse.json({ error: "Insufficient campaign budget" }, { status: 400 });
       }
 
       const { data: inserted, error: insertError } = await supabase
