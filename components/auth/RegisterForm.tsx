@@ -42,7 +42,7 @@ export default function RegisterForm() {
       const supabase = createClient();
       const callbackUrl = new URL("/auth/callback", window.location.origin);
       callbackUrl.searchParams.set("next", customerDestination || DEFAULT_CUSTOMER_DESTINATION);
-      const { error: signupError } = await supabase.auth.signUp({
+      const { data, error: signupError } = await supabase.auth.signUp({
         email,
         password,
         options: {
@@ -57,7 +57,11 @@ export default function RegisterForm() {
         return;
       }
 
-      router.replace(customerDestination);
+      if (data.session) {
+        router.replace(customerDestination);
+      } else {
+        router.replace(`/verify-email?email=${encodeURIComponent(email)}`);
+      }
     } catch {
       setError("Unable to create your account right now. Please try again.");
       setLoading(false);
