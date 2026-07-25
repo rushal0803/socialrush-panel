@@ -4,6 +4,7 @@ import { ensureUserProfile } from "@/lib/auth/ensure-profile";
 import { getSupabaseConfig } from "@/lib/supabase/config";
 import {
   ADMIN_DESTINATION,
+  DEFAULT_CUSTOMER_DESTINATION,
   getSafeCustomerDestination,
 } from "@/lib/auth/destination";
 
@@ -64,6 +65,10 @@ export async function GET(request: NextRequest) {
           destination.pathname = ADMIN_DESTINATION;
           destination.search = "";
           destination.hash = "";
+          response.headers.set("location", destination.toString());
+        } else if (!destination.pathname || destination.pathname === "/") {
+          // A signed-in customer must never land on the homepage.
+          destination.pathname = DEFAULT_CUSTOMER_DESTINATION;
           response.headers.set("location", destination.toString());
         }
       }
