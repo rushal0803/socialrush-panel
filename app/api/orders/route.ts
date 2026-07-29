@@ -1,7 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
-import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
 import { detectPublicCount } from "@/lib/orders/count-detector";
 
 async function saveInitialCount(
@@ -62,214 +61,34 @@ export async function POST(request: NextRequest) {
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
   const body = await request.json().catch(() => null) as {
-    serviceId?: number;
+    intentId?: string;
     serviceCode?: string;
     link?: string;
     quantity?: number;
-    requestId?: string;
-    notes?: string | null;
-    fallbackName?: string;
-    fallbackPlatform?: string;
-    fallbackMin?: number;
-    fallbackMax?: number;
+    clientRequestId?: string;
   } | null;
 
-  if (!body?.serviceCode || !body.link || !Number.isInteger(body.quantity) || !body.requestId) {
-    return NextResponse.json({ error: "Complete service, link, quantity, and checkout request details are required" }, { status: 422 });
+  if (!body?.intentId || !body.serviceCode || !body.link || !Number.isInteger(body.quantity) || !body.clientRequestId) {
+    return NextResponse.json({ error: "Complete checkout intent details are required." }, { status: 422 });
   }
 
-  const serviceLookup = {
-    "instagram-followers": "ig-followers",
-    "instagram-likes": "ig-likes",
-    "instagram-views": "ig-views",
-    "youtube-subscribers": "yt-subscribers",
-    "youtube-likes": "yt-likes",
-    "youtube-views": "yt-views",
-    "facebook-followers": "fb-followers",
-    "facebook-likes": "fb-likes",
-    "facebook-views": "fb-views",
-    "facebook-shares": "fb-shares",
-    "linkedin-followers": "li-followers",
-    "linkedin-likes": "li-likes",
-    "telegram-members": "tg-members",
-    "tiktok-followers": "tt-followers",
-    "tiktok-likes": "tt-likes",
-    "tiktok-views": "tt-views",
-    "x-followers": "x-followers",
-  } as const;
-
-  const normalizedCode = (serviceLookup as Record<string, string>)[body.serviceCode] ?? body.serviceCode;
-
-  let serviceId = body.serviceId || 0;
-  if (!serviceId) {
-    const { data: firstService } = await supabase
-      .from("services")
-      .select("id")
-      .eq("status", "active")
-      .order("id", { ascending: true })
-      .limit(1)
-      .maybeSingle();
-    serviceId = Number(firstService?.id ?? 0);
-  }
-
-  if (!serviceId) {
-    return NextResponse.json({ error: "No active service is available for ordering right now." }, { status: 400 });
-  }
-
-  const { data, error } = await supabase.rpc("checkout_campaign_with_wallet", {
-    p_service_id: serviceId,
-    p_service_code: normalizedCode,
+  const { data, error } = await supabase.rpc("checkout_custom_intent_with_wallet", {
+    p_intent_id: body.intentId,
+    p_client_request_id: body.clientRequestId,
+    p_service_code: body.serviceCode,
     p_link: body.link,
     p_quantity: body.quantity,
-    p_request_id: body.requestId,
   });
 
   if (error) {
-    if (
-      (error.message || "").toLowerCase().includes("unknown campaign service") &&
-      body.serviceCode in SERVICE_PRICES &&
-      body.fallbackName &&
-      body.fallbackPlatform &&
-      body.fallbackMin &&
-      body.fallbackMax
-    ) {
-      if (body.quantity < body.fallbackMin || body.quantity > body.fallbackMax) {
-        return NextResponse.json(
-          {
-            error: `Quantity must be between ${Number(body.fallbackMin).toLocaleString("en-IN")} and ${Number(body.fallbackMax).toLocaleString("en-IN")}.`,
-          },
-          { status: 400 },
-        );
-      }
-
-      const { data: existing } = await supabase
-        .from("orders")
-        .select("id, charge")
-        .eq("user_id", user.id)
-        .eq("client_request_id", body.requestId)
-        .maybeSingle();
-
-      if (existing) {
-        const { data: dupProfile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
-        return NextResponse.json(
-          {
-            data: {
-              id: existing.id,
-              charge: Number(existing.charge),
-              balance: Number(dupProfile?.balance ?? 0),
-              duplicate: true,
-            },
-          },
-          { status: 201, headers: { "Cache-Control": "no-store" } },
-        );
-      }
-
-      const canonicalRate = SERVICE_PRICES[body.serviceCode as ServiceCode];
-      const total = Math.round(((body.quantity / 1000) * canonicalRate) * 100) / 100;
-      const { data: profile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
-      const currentBalance = Number(profile?.balance ?? 0);
-      if (currentBalance + 0.0001 < total) {
-        return NextResponse.json({ error: "Insufficient campaign budget" }, { status: 400 });
-      }
-
-      const { data: inserted, error: insertError } = await supabase
-        .from("orders")
-        .insert({
-          user_id: user.id,
-          service_id: serviceId,
-          service_name: body.fallbackName,
-          platform: body.fallbackPlatform,
-          link: body.link,
-          quantity: body.quantity,
-          unit_price: canonicalRate,
-          charge: total,
-          status: "pending",
-          package_name: "Custom",
-          client_request_id: body.requestId,
-        })
-        .select("id, charge")
-        .single();
-
-      if (insertError || !inserted) {
-        if (insertError?.code === "23505") {
-          const { data: raced } = await supabase
-            .from("orders")
-            .select("id, charge")
-            .eq("user_id", user.id)
-            .eq("client_request_id", body.requestId)
-            .maybeSingle();
-          if (raced) {
-            const { data: raceProfile } = await supabase.from("profiles").select("balance").eq("id", user.id).single();
-            return NextResponse.json(
-              {
-                data: {
-                  id: raced.id,
-                  charge: Number(raced.charge),
-                  balance: Number(raceProfile?.balance ?? currentBalance),
-                  duplicate: true,
-                },
-              },
-              { status: 201, headers: { "Cache-Control": "no-store" } },
-            );
-          }
-        }
-        return NextResponse.json({ error: insertError?.message || "Unable to create campaign." }, { status: 400 });
-      }
-
-      const { error: debitError } = await supabase
-        .from("transactions")
-        .insert({
-          user_id: user.id,
-          amount: total,
-          type: "debit",
-          status: "completed",
-          description: `Campaign checkout: ${body.fallbackName}`,
-          payment_method: "wallet",
-          metadata: { order_id: inserted.id, source: "fallback-checkout", notes: body.notes || null },
-        });
-
-      if (debitError) {
-        return NextResponse.json({ error: debitError.message }, { status: 400 });
-      }
-
-      const { data: updatedProfile, error: balanceError } = await supabase
-        .from("profiles")
-        .update({ balance: currentBalance - total })
-        .eq("id", user.id)
-        .select("balance")
-        .single();
-
-      if (balanceError) {
-        return NextResponse.json({ error: balanceError.message }, { status: 400 });
-      }
-
-      await saveInitialCount(supabase, {
-        orderId: inserted.id,
-        link: body.link,
-        platform: body.fallbackPlatform,
-        serviceName: body.fallbackName,
-        serviceCode: body.serviceCode,
-        customerNote: body.notes,
-      });
-
-      revalidatePath("/dashboard");
-      revalidatePath("/dashboard/orders");
-      revalidatePath("/dashboard/order-history");
-      revalidatePath("/dashboard/wallet");
-      return NextResponse.json(
-        {
-          data: {
-            id: inserted.id,
-            charge: Number(inserted.charge),
-            balance: Number(updatedProfile?.balance ?? currentBalance - total),
-            duplicate: false,
-          },
-        },
-        { status: 201, headers: { "Cache-Control": "no-store" } },
-      );
-    }
-
-    return NextResponse.json({ error: error.message }, { status: 400 });
+    const message = error.message || "Unable to complete checkout.";
+    const normalized = message.toLowerCase();
+    const status = normalized.includes("not found") ? 404
+      : normalized.includes("expired") ? 410
+        : normalized.includes("cancelled") || normalized.includes("mismatch") || normalized.includes("conflict") || normalized.includes("already belongs") ? 409
+          : normalized.includes("authentication") ? 401
+            : 400;
+    return NextResponse.json({ error: message }, { status });
   }
 
   const checkout = data as { id?: string; duplicate?: boolean } | null;
@@ -277,10 +96,7 @@ export async function POST(request: NextRequest) {
     await saveInitialCount(supabase, {
       orderId: checkout.id,
       link: body.link,
-      platform: body.fallbackPlatform,
-      serviceName: body.fallbackName,
       serviceCode: body.serviceCode,
-      customerNote: body.notes,
     });
   }
 
