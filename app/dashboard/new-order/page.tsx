@@ -16,7 +16,6 @@ import {
   Sparkles,
   Wallet,
 } from "lucide-react";
-import Link from "next/link";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency } from "@/lib/currency";
@@ -33,6 +32,7 @@ import {
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
+import { openCheckoutRazorpay } from "@/lib/payments/checkout-razorpay-client";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -124,6 +124,7 @@ export default function NewOrderPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
+  const [checkoutStage, setCheckoutStage] = useState("");
   const inFlight = useRef(false);
   const requestId = useRef("");
   const platformRef = useRef<HTMLElement>(null);
@@ -283,13 +284,133 @@ export default function NewOrderPage() {
     }
   }
 
+  async function payAndPlaceOrder() {
+    if (!selectedService || !linkRule || inFlight.current || submitting || !formIsValid) return;
+    inFlight.current = true;
+    setSubmitting(true);
+    setError("");
+    setCheckoutStage("Preparing secure checkout");
+    if (!requestId.current) requestId.current = crypto.randomUUID();
+
+    try {
+      const intentResponse = await fetch("/api/checkout/intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceCode: selectedService.code,
+          quantity,
+          link: targetLink.trim(),
+          clientRequestId: requestId.current,
+          packageName: "Custom",
+          notes: null,
+        }),
+      });
+      const intent = (await intentResponse.json()) as { data?: { id: string }; error?: string };
+      if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
+
+      const recoveryParams = new URLSearchParams(returnParams);
+      recoveryParams.set("checkoutIntent", intent.data.id);
+      recoveryParams.set("checkoutRequest", requestId.current);
+      const recoveryUrl = `/dashboard/new-order?${recoveryParams.toString()}`;
+      window.history.replaceState(null, "", recoveryUrl);
+
+      const paymentResponse = await fetch("/api/checkout/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          intentId: intent.data.id,
+          clientRequestId: requestId.current,
+          returnUrl: recoveryUrl,
+        }),
+      });
+      const payment = (await paymentResponse.json()) as {
+        data?: {
+          id?: string; keyId?: string; orderId?: string; amount?: number;
+          currency?: string; email?: string; completed?: boolean;
+        };
+        error?: string;
+        code?: string;
+      };
+      if (payment.data?.completed && payment.data.orderId) {
+        router.replace("/dashboard/orders");
+        return;
+      }
+      if (payment.code === "WALLET_SUFFICIENT") {
+        inFlight.current = false;
+        setSubmitting(false);
+        setCheckoutStage("");
+        await placeOrder();
+        return;
+      }
+      if (!paymentResponse.ok || !payment.data?.id || !payment.data.keyId || !payment.data.orderId || !payment.data.amount || !payment.data.currency) {
+        throw new Error(payment.error || "Unable to initialize payment.");
+      }
+
+      setCheckoutStage("Opening payment");
+      const result = await openCheckoutRazorpay({
+        key: payment.data.keyId,
+        amount: payment.data.amount,
+        currency: payment.data.currency,
+        name: "SocialRUSH",
+        description: "Pay the remaining amount and place your order",
+        order_id: payment.data.orderId,
+        prefill: { email: payment.data.email },
+        theme: { color: "#FF9F00" },
+      });
+
+      setCheckoutStage("Verifying payment");
+      const verificationResponse = await fetch("/api/checkout/payment/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ checkoutPaymentId: payment.data.id, ...result }),
+      });
+      const verified = (await verificationResponse.json()) as {
+        data?: { id?: string; orderId?: string; balance?: number };
+        error?: string;
+      };
+      if (!verificationResponse.ok || !verified.data?.orderId) {
+        throw new Error(verified.error || "Payment verification could not complete your order.");
+      }
+
+      setCheckoutStage("Creating order");
+      const updatedBalance = Number(verified.data.balance ?? 0);
+      setWalletBalance(updatedBalance);
+      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
+      setSuccess({ id: verified.data.orderId, charge: totalPrice, balance: updatedBalance });
+      requestId.current = "";
+      window.setTimeout(() => router.replace("/dashboard/orders"), 500);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to complete checkout.");
+      setCheckoutStage("");
+      inFlight.current = false;
+      setSubmitting(false);
+    }
+  }
+
   const returnParams = new URLSearchParams();
   if (selectedService) returnParams.set("service", selectedService.code);
   if (quantityInput) returnParams.set("quantity", quantityInput);
   if (targetLink.trim()) returnParams.set("link", targetLink.trim());
   returnParams.set("resume", "1");
-  const returnTo = `/dashboard/new-order?${returnParams.toString()}`;
-  const addFundsHref = `/dashboard/wallet?amount=${encodeURIComponent(String(amountRequired))}&returnTo=${encodeURIComponent(returnTo)}`;
+  const recoveryIntentId = searchParams.get("checkoutIntent");
+  const recoveryRequestId = searchParams.get("checkoutRequest");
+
+  useEffect(() => {
+    if (!recoveryIntentId) return;
+    if (recoveryRequestId && /^[0-9a-f-]{36}$/i.test(recoveryRequestId)) {
+      requestId.current = recoveryRequestId;
+    }
+    void fetch(`/api/checkout/payment?intentId=${encodeURIComponent(recoveryIntentId)}`, { cache: "no-store" })
+      .then(async (response) => {
+        const result = (await response.json()) as { data?: { status?: string; orderId?: string }; error?: string };
+        if (response.ok && result.data?.status === "completed" && result.data.orderId) {
+          router.replace("/dashboard/orders");
+        } else if (response.ok && result.data?.status === "failed") {
+          setError("The previous payment failed. Please start the payment again.");
+        }
+      })
+      .catch(() => undefined);
+  }, [recoveryIntentId, recoveryRequestId, router]);
 
   return (
     <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-36 pt-5 text-white sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
@@ -436,7 +557,7 @@ export default function NewOrderPage() {
                   <p className="mt-2 text-2xl font-black">{walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency)}</p>
                   <div className="my-5 border-t border-white/15" />
                   <div className="flex items-end justify-between gap-3"><span className="text-xs text-orange-100">Order total</span><strong className="text-2xl">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</strong></div>
-                  {formIsValid && walletBalance !== null && !hasEnoughWallet ? <div className="mt-4 rounded-xl bg-amber-400/15 p-3 text-xs leading-6 text-amber-100">Amount required: <strong>{formatCurrency(amountRequired, currency)}</strong></div> : null}
+                  {formIsValid && walletBalance !== null && !hasEnoughWallet ? <div className="mt-4 rounded-xl bg-amber-400/15 p-3 text-xs leading-6 text-amber-100">Pay now: <strong>{formatCurrency(amountRequired, currency)}</strong></div> : null}
                   {walletError ? <p className="mt-4 text-xs leading-5 text-amber-200">{walletError}</p> : null}
                   {error ? <p className="mt-4 rounded-xl bg-red-500/15 p-3 text-xs font-semibold text-red-100">{error}</p> : null}
                   {success ? <p className="mt-4 rounded-xl bg-emerald-500/15 p-3 text-xs font-semibold text-emerald-100">Order placed successfully. Opening Order History…</p> : null}
@@ -445,7 +566,9 @@ export default function NewOrderPage() {
                       {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Placing order…</> : <><ShieldCheck className="h-4 w-4" /> Place Order</>}
                     </button>
                   ) : formIsValid && !walletLoading ? (
-                    <Link href={addFundsHref} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg"><Wallet className="h-4 w-4" /> Add Funds</Link>
+                    <button type="button" onClick={() => void payAndPlaceOrder()} disabled={submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
+                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> {checkoutStage || "Preparing secure checkout"}</> : <><Wallet className="h-4 w-4" /> Pay {formatCurrency(amountRequired, currency)} and Place Order</>}
+                    </button>
                   ) : (
                     <button type="button" disabled className="mt-5 min-h-12 w-full rounded-xl bg-white/15 px-5 py-3 text-sm font-black text-white/60">Complete details to continue</button>
                   )}
