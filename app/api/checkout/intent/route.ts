@@ -9,6 +9,8 @@ type IntentRow = {
   service_code: string;
   quantity: number;
   destination_link: string;
+  package_name: string | null;
+  notes: string | null;
   total_paise: number;
   currency: string;
   status: string;
@@ -37,7 +39,14 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
   );
 }
 
-const INTENT_COLUMNS = "id, service_code, quantity, destination_link, total_paise, currency, status, created_at";
+const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at";
+
+const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
+  "instagram-followers": "Instagram Real Followers",
+  "linkedin-followers": "LinkedIn Profile Followers",
+  "telegram-members": "Telegram Premium Members",
+  "x-followers": "X Followers",
+};
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -56,6 +65,7 @@ export async function POST(request: NextRequest) {
   const serviceCode = typeof body?.serviceCode === "string" ? body.serviceCode.trim() : "";
   const link = typeof body?.link === "string" ? body.link.trim() : "";
   const clientRequestId = typeof body?.clientRequestId === "string" ? body.clientRequestId.trim() : "";
+  const notes = typeof body?.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
   const quantity = body?.quantity;
 
   if (!serviceCode || !link || !clientRequestId || !Number.isInteger(quantity)) {
@@ -63,6 +73,9 @@ export async function POST(request: NextRequest) {
       { error: "Service code, link, integer quantity, and clientRequestId are required." },
       { status: 422 },
     );
+  }
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(clientRequestId)) {
+    return NextResponse.json({ error: "clientRequestId must be a valid random UUID." }, { status: 422 });
   }
 
   const service = smmServiceCatalog.find((entry) => entry.code === serviceCode);
@@ -103,7 +116,7 @@ export async function POST(request: NextRequest) {
     .from("services")
     .select("id")
     .eq("status", "active")
-    .eq("name", service.name)
+    .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
     .limit(1)
     .maybeSingle();
@@ -126,12 +139,20 @@ export async function POST(request: NextRequest) {
     const matches =
       existing.service_code === service.code &&
       Number(existing.quantity) === requestedQuantity &&
-      existing.destination_link === link;
+      existing.destination_link === link &&
+      existing.package_name === "Custom" &&
+      existing.notes === notes;
     if (!matches) {
       return NextResponse.json(
         { error: "This request ID was already used with different order details." },
         { status: 409 },
       );
+    }
+    if (existing.status === "cancelled") {
+      return NextResponse.json({ error: "This checkout intent was cancelled." }, { status: 409 });
+    }
+    if (existing.status === "expired") {
+      return NextResponse.json({ error: "This checkout intent has expired." }, { status: 410 });
     }
     return intentResponse(existing, true, 200);
   }
@@ -145,8 +166,8 @@ export async function POST(request: NextRequest) {
       service_code: service.code,
       quantity: requestedQuantity,
       destination_link: link,
-      package_name: body?.packageName || null,
-      notes: body?.notes || null,
+      package_name: "Custom",
+      notes,
       total_paise: totalPaise,
       currency: "INR",
       status: "created",
@@ -162,7 +183,27 @@ export async function POST(request: NextRequest) {
         .eq("user_id", user.id)
         .eq("client_request_id", clientRequestId)
         .maybeSingle<IntentRow>();
-      if (raced) return intentResponse(raced, true, 200);
+      if (raced) {
+        const matches =
+          raced.service_code === service.code &&
+          Number(raced.quantity) === requestedQuantity &&
+          raced.destination_link === link &&
+          raced.package_name === "Custom" &&
+          raced.notes === notes;
+        if (!matches) {
+          return NextResponse.json(
+            { error: "This request ID was already used with different order details." },
+            { status: 409 },
+          );
+        }
+        if (raced.status === "cancelled") {
+          return NextResponse.json({ error: "This checkout intent was cancelled." }, { status: 409 });
+        }
+        if (raced.status === "expired") {
+          return NextResponse.json({ error: "This checkout intent has expired." }, { status: 410 });
+        }
+        return intentResponse(raced, true, 200);
+      }
     }
     return NextResponse.json({ error: insertError?.message || "Unable to create checkout intent." }, { status: 400 });
   }
