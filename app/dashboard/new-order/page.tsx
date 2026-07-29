@@ -237,23 +237,34 @@ export default function NewOrderPage() {
     inFlight.current = true;
     setSubmitting(true);
     if (!requestId.current) requestId.current = crypto.randomUUID();
-    const experience = serviceExperience[selectedService.code];
 
     try {
-      const response = await fetch("/api/orders", {
+      const intentResponse = await fetch("/api/checkout/intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           serviceCode: selectedService.code,
-          serviceId: 0,
           quantity,
           link: targetLink.trim(),
-          requestId: requestId.current,
+          clientRequestId: requestId.current,
+          packageName: "Custom",
           notes: null,
-          fallbackName: experience.name,
-          fallbackPlatform: selectedService.platform,
-          fallbackMin: selectedService.minQuantity,
-          fallbackMax: selectedService.maxQuantity,
+        }),
+      });
+      const intentResult = (await intentResponse.json()) as { data?: { id: string }; error?: string };
+      if (!intentResponse.ok || !intentResult.data?.id) {
+        throw new Error(intentResult.error || "Unable to prepare your checkout right now.");
+      }
+
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          intentId: intentResult.data.id,
+          clientRequestId: requestId.current,
+          serviceCode: selectedService.code,
+          quantity,
+          link: targetLink.trim(),
         }),
       });
       const result = (await response.json()) as { data?: ApiOrderData; error?: string };
