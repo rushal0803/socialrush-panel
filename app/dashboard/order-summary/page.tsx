@@ -31,6 +31,7 @@ import {
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import { calculateServiceTotal } from "@/lib/service-pricing";
+import { openCheckoutRazorpay } from "@/lib/payments/checkout-razorpay-client";
 
 const whatsappSupportUrl = "https://wa.me/918860330771";
 
@@ -66,6 +67,7 @@ export default function DashboardOrderSummaryPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
+  const [checkoutStage, setCheckoutStage] = useState("");
   const inFlight = useRef(false);
   const requestId = useRef("");
   const autoResumeStarted = useRef(false);
@@ -97,8 +99,6 @@ export default function DashboardOrderSummaryPage() {
   const returnParams = new URLSearchParams({ service: selectedService.code });
   if (quantityInput) returnParams.set("quantity", quantityInput);
   if (targetLink.trim()) returnParams.set("link", targetLink.trim());
-  const returnTo = `/dashboard/order-summary?${returnParams.toString()}`;
-  const addFundsHref = `/dashboard/wallet?amount=${encodeURIComponent(String(amountToPay))}&returnTo=${encodeURIComponent(returnTo)}`;
 
   const loadWalletBalance = useCallback(async () => {
     setWalletLoading(true);
@@ -229,6 +229,109 @@ export default function DashboardOrderSummaryPage() {
     }
   }
 
+  async function payAndPlaceOrder() {
+    if (inFlight.current || submitting || !canAddFunds) return;
+    inFlight.current = true;
+    setSubmitting(true);
+    setError("");
+    setCheckoutStage("Preparing secure checkout");
+    if (!requestId.current) requestId.current = crypto.randomUUID();
+
+    try {
+      const intentResponse = await fetch("/api/checkout/intent", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          serviceCode: selectedService.code,
+          quantity,
+          link: targetLink.trim(),
+          clientRequestId: requestId.current,
+          packageName: "Custom",
+          notes: null,
+        }),
+      });
+      const intent = (await intentResponse.json()) as { data?: { id: string }; error?: string };
+      if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
+
+      const recoveryParams = new URLSearchParams(returnParams);
+      recoveryParams.set("checkoutIntent", intent.data.id);
+      recoveryParams.set("checkoutRequest", requestId.current);
+      const recoveryUrl = `/dashboard/order-summary?${recoveryParams.toString()}`;
+      window.history.replaceState(null, "", recoveryUrl);
+
+      const paymentResponse = await fetch("/api/checkout/payment", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          intentId: intent.data.id,
+          clientRequestId: requestId.current,
+          returnUrl: recoveryUrl,
+        }),
+      });
+      const payment = (await paymentResponse.json()) as {
+        data?: {
+          id?: string; keyId?: string; orderId?: string; amount?: number;
+          currency?: string; email?: string; completed?: boolean;
+        };
+        error?: string;
+        code?: string;
+      };
+      if (payment.data?.completed && payment.data.orderId) {
+        router.replace("/dashboard/orders");
+        return;
+      }
+      if (payment.code === "WALLET_SUFFICIENT") {
+        inFlight.current = false;
+        setSubmitting(false);
+        setCheckoutStage("");
+        await placeOrder();
+        return;
+      }
+      if (!paymentResponse.ok || !payment.data?.id || !payment.data.keyId || !payment.data.orderId || !payment.data.amount || !payment.data.currency) {
+        throw new Error(payment.error || "Unable to initialize payment.");
+      }
+
+      setCheckoutStage("Opening payment");
+      const result = await openCheckoutRazorpay({
+        key: payment.data.keyId,
+        amount: payment.data.amount,
+        currency: payment.data.currency,
+        name: "SocialRUSH",
+        description: "Pay the remaining amount and place your order",
+        order_id: payment.data.orderId,
+        prefill: { email: payment.data.email },
+        theme: { color: "#FF9F00" },
+      });
+
+      setCheckoutStage("Verifying payment");
+      const verificationResponse = await fetch("/api/checkout/payment/verify", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ checkoutPaymentId: payment.data.id, ...result }),
+      });
+      const verified = (await verificationResponse.json()) as {
+        data?: { orderId?: string; balance?: number };
+        error?: string;
+      };
+      if (!verificationResponse.ok || !verified.data?.orderId) {
+        throw new Error(verified.error || "Payment verification could not complete your order.");
+      }
+
+      setCheckoutStage("Creating order");
+      const updatedBalance = Number(verified.data.balance ?? 0);
+      setWalletBalance(updatedBalance);
+      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
+      setSuccess({ id: verified.data.orderId, charge: totalPrice, balance: updatedBalance });
+      requestId.current = "";
+      window.setTimeout(() => router.replace("/dashboard/orders"), 500);
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to complete checkout.");
+      setCheckoutStage("");
+      inFlight.current = false;
+      setSubmitting(false);
+    }
+  }
+
   useEffect(() => {
     if (!resumeRequested || autoResumeStarted.current || !canSubmit || submitting || success) return;
     autoResumeStarted.current = true;
@@ -236,6 +339,25 @@ export default function DashboardOrderSummaryPage() {
     // The guarded resume should run once after the refreshed wallet balance is available.
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [resumeRequested, canSubmit, submitting, success]);
+
+  const recoveryIntentId = searchParams.get("checkoutIntent");
+  const recoveryRequestId = searchParams.get("checkoutRequest");
+  useEffect(() => {
+    if (!recoveryIntentId) return;
+    if (recoveryRequestId && /^[0-9a-f-]{36}$/i.test(recoveryRequestId)) {
+      requestId.current = recoveryRequestId;
+    }
+    void fetch(`/api/checkout/payment?intentId=${encodeURIComponent(recoveryIntentId)}`, { cache: "no-store" })
+      .then(async (response) => {
+        const result = (await response.json()) as { data?: { status?: string; orderId?: string }; error?: string };
+        if (response.ok && result.data?.status === "completed" && result.data.orderId) {
+          router.replace("/dashboard/orders");
+        } else if (response.ok && result.data?.status === "failed") {
+          setError("The previous payment failed. Please start the payment again.");
+        }
+      })
+      .catch(() => undefined);
+  }, [recoveryIntentId, recoveryRequestId, router]);
 
   return (
     <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[radial-gradient(circle_at_4%_0%,rgba(255, 122, 0, .44),transparent_29%),radial-gradient(circle_at_96%_4%,rgba(255, 159, 0, .42),transparent_31%),radial-gradient(circle_at_48%_100%,rgba(255, 196, 0, .34),transparent_30%),linear-gradient(180deg,#FFF8F1_0%,#FFF8F1_48%,#FFF8F1_100%)] px-4 pb-20 pt-5 sm:px-6 sm:pt-7 lg:px-8 lg:pb-24">
@@ -368,13 +490,14 @@ export default function DashboardOrderSummaryPage() {
                 wallet={walletLabel}
                 amountToPay={requiresPayment ? amountToPayLabel : formatCurrency(0, currency)}
                 shortfallMessage={shortfallMessage}
-                addFundsHref={addFundsHref}
                 hasEnoughWallet={hasEnoughWallet}
                 walletLoading={walletLoading}
                 canSubmit={canSubmit}
                 canAddFunds={canAddFunds}
                 submitting={submitting}
+                checkoutStage={checkoutStage}
                 onSubmit={() => void placeOrder()}
+                onPay={() => void payAndPlaceOrder()}
               />
             </div>
 
@@ -415,13 +538,14 @@ export default function DashboardOrderSummaryPage() {
               wallet={walletLabel}
               amountToPay={requiresPayment ? amountToPayLabel : formatCurrency(0, currency)}
               shortfallMessage={shortfallMessage}
-              addFundsHref={addFundsHref}
               hasEnoughWallet={hasEnoughWallet}
               walletLoading={walletLoading}
               canSubmit={canSubmit}
               canAddFunds={canAddFunds}
               submitting={submitting}
+              checkoutStage={checkoutStage}
               onSubmit={() => void placeOrder()}
+              onPay={() => void payAndPlaceOrder()}
             />
           </aside>
         </div>
@@ -518,13 +642,14 @@ function CheckoutCard({
   wallet,
   amountToPay,
   shortfallMessage,
-  addFundsHref,
   hasEnoughWallet,
   walletLoading,
   canSubmit,
   canAddFunds,
   submitting,
+  checkoutStage,
   onSubmit,
+  onPay,
 }: {
   selectedServiceName: string;
   platform: string;
@@ -538,13 +663,14 @@ function CheckoutCard({
   wallet: string;
   amountToPay: string;
   shortfallMessage: string;
-  addFundsHref: string;
   hasEnoughWallet: boolean;
   walletLoading: boolean;
   canSubmit: boolean;
   canAddFunds: boolean;
   submitting: boolean;
+  checkoutStage: string;
   onSubmit: () => void;
+  onPay: () => void;
 }) {
   return (
     <div className="overflow-hidden rounded-[30px] border border-white/90 bg-white/88 shadow-[0_32px_75px_-40px_rgba(255, 159, 0, .6)] backdrop-blur-2xl">
@@ -614,12 +740,15 @@ function CheckoutCard({
               <p className="mt-2 text-xs font-semibold leading-6 text-amber-800">{shortfallMessage}</p>
             </div>
             {canAddFunds ? (
-              <Link
-                href={addFundsHref}
+              <button
+                type="button"
+                onClick={onPay}
+                disabled={submitting}
                 className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255, 196, 0, .7)] transition hover:-translate-y-0.5 hover:brightness-105"
               >
-                <Wallet className="h-4 w-4" /> Add {amountToPay} &amp; Place Order
-              </Link>
+                {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Wallet className="h-4 w-4" />}
+                {submitting ? checkoutStage || "Preparing secure checkout" : `Pay ${amountToPay} and Place Order`}
+              </button>
             ) : (
               <button type="button" disabled className="mt-4 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white opacity-50">
                 <Wallet className="h-4 w-4" /> Add Funds
