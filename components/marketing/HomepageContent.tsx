@@ -1,346 +1,583 @@
+﻿"use client";
+
 import Link from "next/link";
-import type { ReactNode } from "react";
-import {
-  ArrowRight,
-  BadgeCheck,
-  Check,
-  ChevronDown,
-  CircleDollarSign,
-  CreditCard,
-  Headphones,
-  LayoutDashboard,
-  Link2,
-  LockKeyhole,
-  RefreshCw,
-  ShieldCheck,
-  Wallet,
-} from "lucide-react";
+import { homepageFaqItems as faqItems } from "@/lib/seo/homepage-faq";
+import { usePathname, useRouter } from "next/navigation";
+import { LazyMotion, domAnimation, m as motion } from "framer-motion";
+import type { Variants } from "framer-motion";
+import { useEffect, useState } from "react";
+import { createClient } from "@/lib/supabase/client";
 import Logo from "@/components/Logo";
 import PlatformIcon from "@/components/PlatformIcon";
-import MarketingHeader from "@/components/marketing/MarketingHeader";
-import PortalCTA from "@/components/marketing/PortalCTA";
-import { platformMeta, smmServiceCatalog, type SmmPlatformId } from "@/lib/smm-service-catalog";
+import IconBadge from "@/components/IconBadge";
+import SafeImage from "@/components/SafeImage";
+import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
+import HowToOrderSection from "@/components/marketing/HowToOrderSection";
+import MarketingFooter from "@/components/marketing/MarketingFooter";
 
-const platformDescriptions: Record<SmmPlatformId, string> = {
-  instagram: "Profile, post and Reel campaign services.",
-  youtube: "Channel and public video campaign services.",
-  facebook: "Page, profile and public content services.",
-  linkedin: "Professional profile and post services.",
-  telegram: "Public channel and community services.",
-  tiktok: "Profile and public video campaign services.",
-  x: "Public profile audience campaign services.",
+/* ─────────────────── animation variants ─────────────────── */
+const fadeUp: Variants = {
+  hidden: { opacity: 0, y: 32 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-const platformDetails: Record<SmmPlatformId, string> = {
-  instagram: "/buy-instagram-followers-india",
-  youtube: "/youtube-subscribers",
-  facebook: "/facebook-followers",
-  linkedin: "/linkedin-followers",
-  telegram: "/telegram-members",
-  tiktok: "/tiktok-followers",
-  x: "/twitter-followers",
+const stagger: Variants = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.09 } },
 };
 
-const platforms = (Object.keys(platformMeta) as SmmPlatformId[]).map((id) => ({
-  id,
-  ...platformMeta[id],
-  description: platformDescriptions[id],
-  detailsHref: platformDetails[id],
-}));
-
-const steps = [
-  ["Choose a service", "Select the platform and service that matches your campaign."],
-  ["Add your public link", "Submit the correct profile, post, page, channel or video link."],
-  ["Review and pay", "See the exact current total and securely pay the required amount."],
-  ["Track your order", "Follow progress from your dashboard and contact support when needed."],
-] as const;
-
-const benefits = [
-  { icon: CircleDollarSign, title: "Transparent pricing", text: "See the current rate and exact total before payment." },
-  { icon: Link2, title: "Public-link ordering", text: "No account password or OTP is required." },
-  { icon: ShieldCheck, title: "Secure payment", text: "Payments are processed and verified through Razorpay." },
-  { icon: LayoutDashboard, title: "Managed delivery", text: "Order progress is monitored through the dashboard." },
-  { icon: RefreshCw, title: "Refill assistance", text: "Eligible services display their applicable refill support." },
-  { icon: Headphones, title: "Human support", text: "Contact SocialRUSH through WhatsApp when you need help." },
-] as const;
-
-const featuredCodes = [
-  "instagram-followers",
-  "instagram-likes",
-  "youtube-subscribers",
-  "youtube-views",
-  "facebook-followers",
-  "linkedin-followers",
-] as const;
-
-const featuredRoutes: Record<(typeof featuredCodes)[number], string> = {
-  "instagram-followers": "/buy-instagram-followers-india",
-  "instagram-likes": "/instagram-likes",
-  "youtube-subscribers": "/youtube-subscribers",
-  "youtube-views": "/youtube-views",
-  "facebook-followers": "/facebook-followers",
-  "linkedin-followers": "/linkedin-followers",
+const cardAnim: Variants = {
+  hidden: { opacity: 0, y: 22 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
 };
 
-const featuredServices = featuredCodes
-  .map((code) => smmServiceCatalog.find((service) => service.code === code))
-  .filter((service): service is NonNullable<typeof service> => Boolean(service?.isActive));
-
-const safetyItems = [
-  "No password required",
-  "Never share an OTP",
-  "Public destination links only",
-  "Secure payment verification",
-  "Clear service terms",
-  "Support available",
+/* ─────────────────── data ─────────────────── */
+const navLinks = [
+  { label: "Home", href: "#home" },
+  { label: "Services", href: "/services" },
+  { label: "Packages", href: "/packages" },
+  { label: "How It Works", href: "#how-it-works" },
+  { label: "Blog", href: "/blog" },
+  { label: "FAQ", href: "#faq" },
+  { label: "Contact", href: "/contact" },
 ] as const;
 
-const faqs = [
-  ["Do I need to share my password?", "No. SocialRUSH orders use the relevant public profile, post, page, channel or video link. Never share your password or OTP."],
-  ["How is the final price calculated?", "The current service rate and selected quantity determine the exact total shown before payment."],
-  ["How do I track my order?", "Sign in to your SocialRUSH dashboard to view order status, history and available progress updates."],
-  ["Does every service include refill support?", "No. Refill support depends on the selected service. Eligible services show their applicable refill terms before ordering."],
-  ["What happens if my wallet balance is insufficient?", "You can securely pay the missing amount. After verification, the order is placed automatically without a separate manual top-up step."],
+const trustBadges = [
+  { label: "No password required", icon: "✓", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Transparent pricing", icon: "₹", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "Dashboard order tracking", icon: "↗", color: "from-[#FF7A00] to-[#FFB000]" },
+  { label: "WhatsApp support", icon: "◎", color: "from-[#FF7A00] to-[#FFB000]" },
 ] as const;
 
-const primaryButton = "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-[#0B0B0F] px-6 py-3 text-sm font-extrabold text-white shadow-[0_14px_30px_-18px_rgba(11,11,15,.7)] transition hover:-translate-y-0.5 hover:bg-black";
-const goldButton = "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF8A00] to-[#FFC400] px-6 py-3 text-sm font-extrabold text-[#0B0B0F] shadow-[0_14px_30px_-18px_rgba(255,159,0,.8)] transition hover:-translate-y-0.5 hover:brightness-105";
-const secondaryButton = "inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-extrabold text-[#0B0B0F] transition hover:border-amber-300 hover:bg-amber-50";
+const whySocialRush = [
+  {
+    title: "Public-Link Ordering",
+    text: "Start with the relevant public profile, post, video, channel, or page link.",
+    icon: "M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 14h.01M15 11h.01M12 11h.01M9 11h.01M7 21h10a2 2 0 002-2V5a2 2 0 00-2-2H7a2 2 0 00-2 2v14a2 2 0 002 2z",
+    grad: "from-orange-500 to-red-500",
+    bg: "from-orange-50 to-red-50",
+    border: "border-orange-100",
+  },
+  {
+    title: "Secure Checkout",
+    text: "Trusted payment flow and protected account ordering process.",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
+    grad: "from-amber-500 to-orange-500",
+    bg: "from-amber-50 to-orange-50",
+    border: "border-amber-100",
+  },
+  {
+    title: "Transparent Pricing",
+    text: "Review the applicable price and total before confirming an order.",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
+    grad: "from-amber-400 to-orange-500",
+    bg: "from-amber-50 to-orange-50",
+    border: "border-orange-100",
+  },
+  {
+    title: "Dashboard Tracking",
+    text: "Follow order status and available progress updates from your account.",
+    icon: "M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z",
+    grad: "from-amber-500 to-amber-600",
+    bg: "from-amber-50 to-amber-50",
+    border: "border-amber-100",
+  },
+  {
+    title: "WhatsApp Assistance",
+    text: "Ask for help with service selection, ordering, and support questions.",
+    icon: "M18.364 5.636l-3.536 3.536m0 5.656l3.536 3.536M9.172 9.172L5.636 5.636m3.536 9.192l-3.536 3.536M21 12a9 9 0 11-18 0 9 9 0 0118 0zm-5 0a4 4 0 11-8 0 4 4 0 018 0z",
+    grad: "from-emerald-500 to-teal-500",
+    bg: "from-emerald-50 to-teal-50",
+    border: "border-emerald-100",
+  },
+  {
+    title: "Refill Support If Eligible",
+    text: "Eligible services clearly show the applicable refill coverage.",
+    icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
+    grad: "from-orange-500 to-amber-500",
+    bg: "from-orange-50 to-amber-50",
+    border: "border-amber-100",
+  },
+] as const;
 
+const featuredServices = [
+  {
+    name: "Instagram Campaign Support",
+    platform: "instagram",
+    href: "/buy-instagram-followers-india",
+    text: "Explore profile and content campaign options for Instagram.",
+    grad: "from-orange-500 to-orange-600",
+    bg: "from-orange-50 to-orange-50",
+    border: "border-orange-100",
+  },
+  {
+    name: "YouTube Channel Support",
+    platform: "youtube",
+    href: "/youtube-subscribers",
+    text: "Compare channel and video support services with clear delivery details.",
+    grad: "from-red-500 to-red-600",
+    bg: "from-red-50 to-red-50",
+    border: "border-red-100",
+  },
+  {
+    name: "Facebook Page Support",
+    platform: "facebook",
+    href: "/facebook-followers",
+    text: "Find page and content campaign services with transparent pricing.",
+    grad: "from-orange-500 to-orange-600",
+    bg: "from-orange-50 to-orange-50",
+    border: "border-orange-100",
+  },
+  {
+    name: "LinkedIn Profile Support",
+    platform: "linkedin",
+    href: "/linkedin-followers",
+    text: "Review professional profile and company page support options.",
+    grad: "from-amber-500 to-orange-600",
+    bg: "from-amber-50 to-orange-50",
+    border: "border-amber-100",
+  },
+] as const;
+
+const homepagePosts = [
+  {
+    title: "How to Grow Fast on Instagram",
+    href: "/blog/how-to-grow-fast-on-instagram",
+    category: "Social Strategy",
+    excerpt: "Practical ways to improve profile clarity, publishing consistency and campaign planning.",
+  },
+  {
+    title: "YouTube Views: What Helps a Video Get More Reach",
+    href: "/blog/youtube-views-get-more-reach",
+    category: "Video Strategy",
+    excerpt: "Learn how stronger packaging, retention and distribution can support broader video reach.",
+  },
+  {
+    title: "LinkedIn Growth Tips for Personal Brands",
+    href: "/blog/linkedin-growth-tips-personal-brands",
+    category: "Professional Growth",
+    excerpt: "Build a clearer professional presence with focused content, positioning and profile updates.",
+  },
+] as const;
+
+const homepageSeoLinks = [
+  {
+    title: "Buy Instagram Followers",
+    href: "/buy-instagram-followers-india",
+    text: "Compare Instagram follower packages in India with public-link ordering and dashboard tracking.",
+  },
+  {
+    title: "YouTube Subscribers",
+    href: "/youtube-subscribers",
+    text: "Review YouTube subscriber pricing, delivery guidance, and channel-link requirements.",
+  },
+  {
+    title: "Instagram Likes",
+    href: "/instagram-likes",
+    text: "Support selected public posts or reels with clear Instagram likes pricing.",
+  },
+  {
+    title: "Facebook Followers",
+    href: "/facebook-followers",
+    text: "Explore Facebook page growth options for public pages and profiles.",
+  },
+  {
+    title: "LinkedIn Followers",
+    href: "/linkedin-followers",
+    text: "Plan LinkedIn profile growth campaigns for professional visibility.",
+  },
+  {
+    title: "Social Media Growth Packages",
+    href: "/packages",
+    text: "Browse SocialRUSH packages across Instagram, YouTube, Facebook, LinkedIn and more.",
+  },
+  {
+    title: "Growth Blog",
+    href: "/blog",
+    text: "Read helpful guides on pricing, safety, public-link ordering and campaign planning.",
+  },
+] as const;
+
+const supportedPlatforms = [
+  { label: "Instagram", platform: "instagram", href: "/buy-instagram-followers-india" },
+  { label: "YouTube", platform: "youtube", href: "/youtube-subscribers" },
+  { label: "Facebook", platform: "facebook", href: "/facebook-followers" },
+  { label: "LinkedIn", platform: "linkedin", href: "/linkedin-followers" },
+  { label: "X / Twitter", platform: "twitter", href: "/twitter-followers" },
+  { label: "Telegram", platform: "telegram", href: "/telegram-members" },
+  { label: "TikTok", platform: "tiktok", href: "/tiktok-followers" },
+] as const;
+
+/* ─────────────────── SVG icon component ─────────────────── */
+function SvgIcon({ path, size = 20, className = "" }: { path: string; size?: number; className?: string }) {
+  return (
+    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={1.8} strokeLinecap="round" strokeLinejoin="round" className={className}>
+      <path d={path} />
+    </svg>
+  );
+}
+
+/* ─────────────────── main component ─────────────────── */
 export default function HomepageContent() {
+  const router = useRouter();
+  const pathname = usePathname();
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [activeFaq, setActiveFaq] = useState<number | null>(0);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const startOrderHref = "/dashboard/new-order";
+
+  useEffect(() => {
+    const supabase = createClient();
+    void supabase.auth.getSession().then(({ data }) => setIsLoggedIn(Boolean(data.session)));
+    const { data: listener } = supabase.auth.onAuthStateChange((_event, session) => setIsLoggedIn(Boolean(session)));
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  useEffect(() => setMenuOpen(false), [pathname]);
+
+  async function logout() {
+    const supabase = createClient();
+    await supabase.auth.signOut();
+    setMenuOpen(false);
+    router.replace("/login");
+    router.refresh();
+  }
+
   return (
-    <main className="homepage-light overflow-x-clip bg-white text-[#0B0B0F]">
-      <MarketingHeader tone="light3d" />
-
-      <section id="home" className="relative overflow-hidden border-b border-slate-100 bg-[radial-gradient(circle_at_12%_12%,rgba(255,196,0,.16),transparent_28%),radial-gradient(circle_at_90%_18%,rgba(255,138,0,.12),transparent_26%),linear-gradient(180deg,#FFFCF5_0%,#FFFFFF_72%)] px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
-        <div className="mx-auto grid max-w-7xl gap-12 lg:grid-cols-[1.08fr_.92fr] lg:items-center">
-          <div>
-            <p className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-white px-3 py-1.5 text-[11px] font-black uppercase tracking-[.16em] text-amber-700 shadow-sm">
-              <BadgeCheck className="h-4 w-4" /> Premium Managed Social Media Services
-            </p>
-            <h1 className="mt-6 max-w-4xl text-4xl font-black leading-[1.04] tracking-[-.045em] text-[#0B0B0F] sm:text-5xl lg:text-[4.2rem]">
-              Professional Social Media Growth Services With Transparent Pricing
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-slate-600 sm:text-lg">
-              Choose your platform and service, submit the correct public link, complete secure payment and track your order from one professional dashboard. No password is required.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 sm:flex-row">
-              <PortalCTA className={primaryButton}>Start Your Order <ArrowRight className="h-4 w-4" /></PortalCTA>
-              <Link href="/services" className={secondaryButton}>Compare Services</Link>
-            </div>
-            <ul className="mt-8 grid gap-3 text-sm font-bold text-slate-700 sm:grid-cols-2 xl:grid-cols-3">
-              {["No password required", "Transparent pricing", "Secure Razorpay payment", "Dashboard order tracking", "Human WhatsApp support"].map((item) => (
-                <li key={item} className="flex items-center gap-2"><Check className="h-4 w-4 text-amber-600" />{item}</li>
-              ))}
-            </ul>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-xl">
-            <div className="absolute -inset-5 rounded-[2.2rem] bg-gradient-to-br from-amber-200/50 to-orange-100/30 blur-2xl" />
-            <div className="relative overflow-hidden rounded-[2rem] border border-slate-200 bg-white p-5 shadow-[0_32px_80px_-40px_rgba(15,23,42,.35)] sm:p-7">
-              <div className="flex items-center justify-between border-b border-slate-100 pb-5">
-                <div><p className="text-[10px] font-black uppercase tracking-[.16em] text-amber-700">Secure order preview</p><p className="mt-1 text-lg font-black">Campaign checkout</p></div>
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#0B0B0F] text-amber-300"><LockKeyhole className="h-5 w-5" /></span>
-              </div>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                <PreviewField label="Service" value="Instagram Followers" />
-                <PreviewField label="Quantity" value="1,000" />
-                <PreviewField label="Public link" value="instagram.com/profile" wide />
-              </div>
-              <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
-                <div className="flex justify-between text-sm text-slate-600"><span>Exact order total</span><strong className="text-[#0B0B0F]">Shown before payment</strong></div>
-                <div className="mt-3 h-2 overflow-hidden rounded-full bg-white"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-[#FF8A00] to-[#FFC400]" /></div>
-              </div>
-              <div className="mt-5 flex items-center gap-3 rounded-2xl bg-[#0B0B0F] p-4 text-white">
-                <ShieldCheck className="h-5 w-5 shrink-0 text-amber-300" />
-                <p className="text-sm font-bold leading-6">Verified payment and dashboard order tracking</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <Section id="platforms" eyebrow="Services by platform" title="Choose Your Platform" description="Compare available services, current starting prices, estimated delivery ranges and eligible refill support.">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
-          {platforms.map((platform) => (
-            <article key={platform.id} className="flex min-h-[250px] flex-col rounded-3xl border border-slate-200 bg-white p-5 shadow-[0_18px_45px_-34px_rgba(15,23,42,.35)]">
-              <span className="grid h-12 w-12 place-items-center rounded-2xl bg-[#0B0B0F] text-amber-300"><PlatformIcon platform={platform.id} className="h-5 w-5" /></span>
-              <h3 className="mt-5 text-xl font-black text-[#0B0B0F]">{platform.label}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{platform.description}</p>
-              <div className="mt-auto flex flex-wrap gap-3 pt-5 text-sm font-extrabold">
-                <Link href={platform.detailsHref} className="text-slate-700 hover:text-amber-700">View Services</Link>
-                <Link href={`/dashboard/new-order?platform=${platform.id}`} className="text-amber-700 hover:text-amber-800">Start Order →</Link>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <Section id="how-it-works" tone="soft" eyebrow="A clear process" title="How It Works" description="Four straightforward steps from service selection to dashboard tracking.">
-        <ol className="grid gap-4 lg:grid-cols-4">
-          {steps.map(([title, text], index) => (
-            <li key={title} className="relative rounded-3xl border border-slate-200 bg-white p-6">
-              <span className="grid h-10 w-10 place-items-center rounded-xl bg-amber-100 text-sm font-black text-amber-800">0{index + 1}</span>
-              <h3 className="mt-5 text-lg font-black text-[#0B0B0F]">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
-            </li>
-          ))}
-        </ol>
-      </Section>
-
-      <Section id="trust" eyebrow="Why SocialRUSH" title="Professional Ordering, Clear Expectations" description="Practical safeguards and clear information at each stage of your order.">
-        <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          {benefits.map(({ icon: Icon, title, text }) => (
-            <article key={title} className="rounded-3xl border border-slate-200 bg-white p-6 shadow-[0_18px_40px_-34px_rgba(15,23,42,.3)]">
-              <span className="grid h-11 w-11 place-items-center rounded-2xl bg-amber-100 text-amber-800"><Icon className="h-5 w-5" /></span>
-              <h3 className="mt-5 text-lg font-black text-[#0B0B0F]">{title}</h3>
-              <p className="mt-2 text-sm leading-6 text-slate-600">{text}</p>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-10 overflow-hidden rounded-[2rem] bg-[#0B0B0F] p-6 text-white shadow-[0_35px_80px_-45px_rgba(11,11,15,.8)] sm:p-9 lg:grid-cols-2 lg:items-center lg:p-12">
-          <div>
-            <p className="text-[11px] font-black uppercase tracking-[.16em] text-amber-300">Simpler secure checkout</p>
-            <h2 className="mt-4 text-3xl font-black text-white sm:text-4xl">Pay Only What Is Still Required</h2>
-            <p className="mt-5 max-w-xl text-sm leading-7 text-slate-300 sm:text-base">
-              Customers do not need to manually calculate or top up the exact wallet amount. When required, they can pay the missing amount and the order is placed automatically after secure verification.
-            </p>
-            <PortalCTA className={`${goldButton} mt-7`}>Start a Secure Order <ArrowRight className="h-4 w-4" /></PortalCTA>
-          </div>
-          <div className="rounded-3xl border border-white/10 bg-white/[.06] p-5 sm:p-6">
-            <p className="text-xs font-bold text-slate-400">Illustrative checkout example</p>
-            <dl className="mt-5 space-y-4">
-              <PaymentRow icon={CreditCard} label="Order total" value="₹599" />
-              <PaymentRow icon={Wallet} label="Wallet balance" value="₹200" />
-              <PaymentRow icon={LockKeyhole} label="Pay now" value="₹399" highlight />
-            </dl>
-            <p className="mt-5 border-t border-white/10 pt-5 text-xs leading-6 text-slate-400">Actual totals are calculated from the selected service and quantity.</p>
-          </div>
-        </div>
-      </section>
-
-      <Section id="featured-services" tone="soft" eyebrow="Popular choices" title="Featured Services" description="A focused selection of commonly requested services. Visit Services to compare the complete catalog.">
-        <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
-          {featuredServices.map((service) => (
-            <article key={service.code} className="rounded-3xl border border-slate-200 bg-white p-6">
-              <div className="flex items-center gap-3">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-[#0B0B0F] text-amber-300"><PlatformIcon platform={service.platform} className="h-5 w-5" /></span>
-                <div><p className="text-[10px] font-black uppercase tracking-[.14em] text-slate-500">{platformMeta[service.platform].label}</p><h3 className="mt-1 text-lg font-black text-[#0B0B0F]">{service.name}</h3></div>
-              </div>
-              <dl className="mt-5 grid grid-cols-2 gap-3 text-sm">
-                <ServiceDetail label="Starting rate" value={`₹${service.pricePer1000.toLocaleString("en-IN")} / 1K`} />
-                <ServiceDetail label="Delivery estimate" value={service.deliveryTime} />
-                <div className="col-span-2"><ServiceDetail label="Refill support" value={service.refillPolicy} /></div>
-              </dl>
-              <div className="mt-6 flex flex-wrap gap-3">
-                <Link href={featuredRoutes[service.code as keyof typeof featuredRoutes]} className={secondaryButton}>View Details</Link>
-                <Link href={`/dashboard/new-order?service=${service.code}`} className={primaryButton}>Start Order</Link>
-              </div>
-            </article>
-          ))}
-        </div>
-      </Section>
-
-      <section aria-label="Ordering safety" className="border-y border-amber-200 bg-amber-50 px-4 py-7 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl gap-3 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6">
-          {safetyItems.map((item) => <div key={item} className="flex items-center gap-2 text-sm font-bold text-slate-700"><ShieldCheck className="h-4 w-4 shrink-0 text-amber-700" />{item}</div>)}
-        </div>
-      </section>
-
-      <Section id="faq" eyebrow="Helpful answers" title="Frequently Asked Questions" description="Important information before you place a custom-service order.">
-        <div className="mx-auto max-w-4xl space-y-3">
-          {faqs.map(([question, answer], index) => (
-            <details key={question} open={index === 0} className="group rounded-2xl border border-slate-200 bg-white p-5">
-              <summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-base font-black text-[#0B0B0F] marker:hidden">
-                {question}
-                <ChevronDown className="h-5 w-5 shrink-0 text-amber-700 transition group-open:rotate-180" aria-hidden="true" />
-              </summary>
-              <p className="mt-3 text-sm leading-7 text-slate-600">{answer}</p>
-            </details>
-          ))}
-          <div className="pt-4 text-center"><Link href="/faq" className={secondaryButton}>View Full FAQ</Link></div>
-        </div>
-      </Section>
-
-      <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
-        <div className="mx-auto max-w-7xl rounded-[2rem] border border-amber-200 bg-[linear-gradient(135deg,#FFF7DA,#FFFDF7)] px-6 py-12 text-center sm:px-10 sm:py-16">
-          <h2 className="text-3xl font-black text-[#0B0B0F] sm:text-4xl">Ready to Start Your SocialRUSH Order?</h2>
-          <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-slate-600">Choose your service, review the exact total and track your campaign from one secure dashboard.</p>
-          <div className="mt-7 flex flex-col justify-center gap-3 sm:flex-row">
-            <PortalCTA className={primaryButton}>Start Order <ArrowRight className="h-4 w-4" /></PortalCTA>
-            <Link href="/services" className={secondaryButton}>Explore Services</Link>
-          </div>
-        </div>
-      </section>
-
-      <HomepageFooter />
-    </main>
-  );
-}
-
-function Section({ id, eyebrow, title, description, tone = "white", children }: { id?: string; eyebrow: string; title: string; description: string; tone?: "white" | "soft"; children: ReactNode }) {
-  return (
-    <section id={id} className={`${tone === "soft" ? "bg-[#FAFAF8]" : "bg-white"} scroll-mt-28 px-4 py-16 sm:px-6 sm:py-20 lg:px-8`}>
-      <div className="mx-auto max-w-7xl">
-        <div className="mb-9 max-w-3xl">
-          <p className="text-[11px] font-black uppercase tracking-[.16em] text-amber-700">{eyebrow}</p>
-          <h2 className="mt-3 text-3xl font-black text-[#0B0B0F] sm:text-4xl">{title}</h2>
-          <p className="mt-4 text-base leading-7 text-slate-600">{description}</p>
-        </div>
-        {children}
+    <LazyMotion features={domAnimation}>
+      <main className="public-dark homepage-performance overflow-x-clip bg-[#050505] text-white">
+      {/* ambient blobs */}
+      <div className="pointer-events-none fixed inset-0 hidden overflow-hidden sm:block">
+        <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-amber-200/40 blur-3xl" />
+        <div className="absolute right-0 top-20 h-[28rem] w-[28rem] rounded-full bg-orange-200/40 blur-3xl" />
+        <div className="absolute bottom-32 left-1/3 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
+        <div className="absolute -bottom-12 right-1/4 h-64 w-64 rounded-full bg-orange-200/35 blur-3xl" />
       </div>
-    </section>
-  );
-}
 
-function PreviewField({ label, value, wide = false }: { label: string; value: string; wide?: boolean }) {
-  return <div className={`${wide ? "sm:col-span-2" : ""} rounded-2xl border border-slate-200 bg-slate-50 p-4`}><p className="text-[10px] font-black uppercase tracking-[.13em] text-slate-500">{label}</p><p className="mt-2 truncate text-sm font-black text-[#0B0B0F]">{value}</p></div>;
-}
-
-function PaymentRow({ icon: Icon, label, value, highlight = false }: { icon: typeof Wallet; label: string; value: string; highlight?: boolean }) {
-  return <div className={`flex items-center justify-between gap-3 rounded-2xl p-4 ${highlight ? "bg-amber-300 text-[#0B0B0F]" : "bg-white/[.06] text-white"}`}><span className="flex items-center gap-3 text-sm font-bold"><Icon className="h-5 w-5" />{label}</span><strong className="text-xl">{value}</strong></div>;
-}
-
-function ServiceDetail({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-2xl bg-slate-50 p-3"><dt className="text-[10px] font-black uppercase tracking-[.12em] text-slate-500">{label}</dt><dd className="mt-1.5 font-bold text-slate-800">{value}</dd></div>;
-}
-
-function HomepageFooter() {
-  const whatsappUrl = "https://wa.me/918860330771";
-  const columns = [
-    ["Services", [["All Services", "/services"], ["Pricing", "/pricing"], ["Packages", "/packages"], ["Start Order", "/dashboard/new-order"]]],
-    ["Company", [["About", "/about"], ["Why SocialRUSH", "/#trust"], ["How It Works", "/#how-it-works"], ["Blog", "/blog"]]],
-    ["Support", [["FAQ", "/faq"], ["Contact", "/contact"], ["WhatsApp Support", whatsappUrl], ["Customer Dashboard", "/dashboard"]]],
-    ["Legal", [["Privacy Policy", "/privacy-policy"], ["Refund Policy", "/refund-policy"], ["Terms & Conditions", "/terms-and-conditions"]]],
-  ] as const;
-  return (
-    <footer className="bg-[#0B0B0F] px-4 pb-24 pt-14 text-white sm:px-6 sm:pb-10 lg:px-8">
-      <div className="mx-auto max-w-7xl">
-        <div className="grid gap-10 border-b border-white/10 pb-12 lg:grid-cols-[1.3fr_2fr]">
-          <div>
-            <Logo light />
-            <p className="mt-5 max-w-md text-sm leading-7 text-slate-400">Managed social media services with public-link ordering, transparent pricing, secure payment verification, dashboard tracking and human support.</p>
-            <p className="mt-4 text-sm font-bold text-slate-300">support@getsocialrush.com</p>
+      {/* HEADER */}
+      <header id="home" className="sticky top-0 z-[9999] border-b border-orange-400/15 bg-[#0B0B0F]/95 px-4 py-3 backdrop-blur-xl sm:px-6">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-2xl border border-white/10 bg-[#0B0B0F] px-4 py-3 shadow-[0_16px_40px_-20px_rgba(0,0,0,.8)] sm:px-5">
+          <div className="flex items-center justify-between gap-4">
+            <Logo light priority />
+            <nav className="hidden items-center gap-1 text-sm font-semibold text-slate-300 lg:flex">
+              {navLinks.map((item) => (
+                <Link key={item.label} href={item.href} className="relative rounded-lg px-3 py-2 transition-colors after:absolute after:inset-x-3 after:-bottom-0.5 after:h-0.5 after:origin-left after:scale-x-0 after:bg-[#FF7A00] after:transition-transform hover:bg-white/5 hover:text-white hover:after:scale-x-100">{item.label}</Link>
+              ))}
+            </nav>
+            <div className="hidden items-center gap-2 lg:flex">
+              {isLoggedIn ? (
+                <>
+                  <Link href="/dashboard/account" className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-4 py-2 text-sm font-semibold text-orange-200 transition hover:bg-orange-400/20">
+                    Profile
+                  </Link>
+                  <button
+                    type="button"
+                    onClick={logout}
+                    className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-orange-400/50 hover:text-orange-300"
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <>
+                  <Link href="/login" className="rounded-xl border border-white/15 bg-white/5 px-4 py-2 text-sm font-semibold text-white transition hover:border-orange-400/50 hover:text-orange-300">Login</Link>
+                </>
+              )}
+              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-950/30 transition hover:brightness-110">Get Started</Link>
+            </div>
+            <button type="button" aria-label="Toggle menu" aria-expanded={menuOpen} onClick={(event) => { event.stopPropagation(); setMenuOpen((v) => !v); }} className="grid h-10 w-10 place-items-center rounded-xl border border-orange-400/30 bg-white/5 text-white lg:hidden">
+              {menuOpen ? (
+                <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} fill="none"><path d="M18 6L6 18M6 6l12 12" /></svg>
+              ) : (
+                <svg width="18" height="18" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} fill="none"><path d="M4 6h16M4 12h16M4 18h16" /></svg>
+              )}
+            </button>
           </div>
-          <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
-            {columns.map(([title, links]) => (
-              <div key={title}>
-                <h3 className="text-xs font-black uppercase tracking-[.14em] text-white">{title}</h3>
-                <ul className="mt-4 space-y-3">
-                  {links.map(([label, href]) => <li key={label}><Link href={href} target={href.startsWith("http") ? "_blank" : undefined} rel={href.startsWith("http") ? "noopener noreferrer" : undefined} className="text-sm text-slate-400 hover:text-amber-300">{label}</Link></li>)}
-                </ul>
+          <MobileMenuLayer open={menuOpen} onClose={() => setMenuOpen(false)} showCloseButton={false}>
+              <motion.div initial={{ opacity: 0, y: -10 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.2, ease: "easeOut" }} className="mx-auto w-full max-w-7xl overflow-hidden rounded-2xl border border-orange-400/20 bg-[#0B0B0F]/98 px-4 pb-4 pt-4 shadow-2xl">
+                <div className="max-h-full overflow-y-auto border-t border-white/10 pt-3">
+                  <nav className="grid gap-0.5">
+                    {navLinks.map((item) => (
+                      <Link key={item.label} href={item.href} onClick={() => setMenuOpen(false)} className="rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-200 transition hover:bg-white/5 hover:text-orange-300">{item.label}</Link>
+                    ))}
+                  </nav>
+                  <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
+                    {isLoggedIn ? (
+                      <>
+                        <Link href="/dashboard/account" onClick={() => setMenuOpen(false)} className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-3 py-2.5 text-center text-sm font-semibold text-orange-200">
+                          Profile
+                        </Link>
+                        <button
+                          type="button"
+                          onClick={logout}
+                          className="rounded-xl border border-white/15 bg-white/[.06] px-3 py-2.5 text-center text-sm font-semibold text-white"
+                        >
+                          Logout
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <Link href="/login" onClick={() => setMenuOpen(false)} className="rounded-xl border border-white/15 bg-white/[.06] px-3 py-2.5 text-center text-sm font-semibold text-white">Login</Link>
+                        <Link href="/register" onClick={() => setMenuOpen(false)} className="rounded-xl border border-orange-400/30 bg-orange-400/10 px-3 py-2.5 text-center text-sm font-semibold text-orange-200">Sign Up</Link>
+                      </>
+                    )}
+                    <Link href={startOrderHref} onClick={() => setMenuOpen(false)} className="col-span-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2.5 text-center text-sm font-bold text-white shadow-lg shadow-orange-300/40">Start Order</Link>
+                  </div>
+                </div>
+              </motion.div>
+          </MobileMenuLayer>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <motion.section variants={fadeUp} initial={false} animate="show" className="relative overflow-hidden bg-[#050505] px-4 pb-10 pt-8 text-white sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
+        <div className="pointer-events-none absolute -left-40 top-10 h-96 w-96 rounded-full bg-[#FF7A00]/15 blur-3xl" />
+        <div className="pointer-events-none absolute -right-32 bottom-0 h-[30rem] w-[30rem] rounded-full bg-[#FF9F00]/12 blur-3xl" />
+        <div className="hero-grid pointer-events-none absolute inset-0 opacity-50" />
+        <div className="mx-auto grid max-w-7xl gap-7 lg:grid-cols-2 lg:items-center lg:gap-12">
+          <div className="relative z-10">
+            <motion.span initial={{ opacity: 0, scale: 0.9 }} animate={{ opacity: 1, scale: 1 }} transition={{ delay: 0.15 }} className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/10 px-4 py-1.5 text-xs font-bold uppercase tracking-widest text-orange-300 shadow-sm backdrop-blur">
+              <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
+              TRANSPARENT GROWTH • CLEAR PROCESS
+            </motion.span>
+            <h1 className="mt-4 text-4xl font-black leading-[1.08] tracking-[-0.04em] text-white sm:mt-5 sm:text-5xl lg:text-[58px]">
+              Transparent Social Media Growth Services{" "}
+              <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">for Creators and Brands</span>
+            </h1>
+            <p className="mt-4 max-w-xl text-base leading-7 text-slate-300 sm:mt-5 sm:leading-8">
+              Compare clear packages, submit your public profile or content link, and track your campaign from one secure dashboard.
+            </p>
+            <div className="mt-5 flex flex-col gap-3 sm:mt-7 sm:flex-row sm:flex-wrap sm:items-center">
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-7 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/40 transition hover:-translate-y-0.5 hover:brightness-105">View Packages</Link>
+              <Link href="/services" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-orange-400/50 bg-white/[.06] px-7 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF7A00] hover:bg-orange-400/10">Explore Services</Link>
+              <Link href="#how-it-works" className="inline-flex min-h-[44px] items-center justify-center px-2 text-sm font-bold text-orange-200 underline decoration-orange-400/40 underline-offset-4 transition hover:text-orange-100 sm:min-h-0">
+                How It Works
+              </Link>
+            </div>
+            <motion.div variants={stagger} initial="hidden" animate="show" className="mt-5 grid grid-cols-2 gap-2 sm:mt-8 sm:flex sm:flex-wrap sm:gap-3">
+              {trustBadges.map((badge) => (
+                <motion.div key={badge.label} variants={cardAnim} whileHover={{ y: -4, scale: 1.04 }} className="flex min-h-11 items-center gap-2 rounded-2xl border border-orange-400/20 bg-white/[.06] px-3 py-2 shadow-[0_8px_30px_-8px_rgba(0,0,0,.7)] backdrop-blur sm:px-4 sm:py-2.5">
+                  <span className={`grid h-6 w-6 shrink-0 place-items-center rounded-lg bg-gradient-to-br text-[11px] font-bold text-white shadow-md sm:h-7 sm:w-7 sm:text-xs ${badge.color}`}>{badge.icon}</span>
+                  <span className="text-[11px] font-bold leading-4 text-slate-200 sm:text-xs">{badge.label}</span>
+                </motion.div>
+              ))}
+            </motion.div>
+          </div>
+          <div className="relative mx-auto w-full max-w-2xl">
+            <div className="pointer-events-none absolute -inset-8 rounded-full bg-orange-300/25 blur-3xl" />
+            {["instagram", "youtube", "linkedin", "twitter"].map((platform, index) => (
+              <span key={platform} className={`absolute z-20 hidden h-12 w-12 place-items-center rounded-2xl border border-white/80 bg-white text-[#FF7A00] shadow-xl lg:grid ${index === 0 ? "-left-3 top-12" : index === 1 ? "right-6 -top-4" : index === 2 ? "-left-5 bottom-20" : "right-1 bottom-10"}`}>
+                <PlatformIcon platform={platform} className="h-6 w-6" />
+              </span>
+            ))}
+            <div className="relative overflow-hidden rounded-[30px] border border-orange-400/25 bg-[#111111] p-2 shadow-[0_36px_90px_-24px_rgba(255,122,0,.42)] sm:p-3">
+              <div className="overflow-hidden rounded-2xl bg-[#050505]">
+                <SafeImage src="/images/home/home-hero-dashboard.png" alt="SocialRUSH campaign dashboard with order tracking and support" width={1448} height={1086} sizes="(max-width: 1023px) 100vw, 50vw" className="max-h-[248px] w-full object-contain sm:max-h-none sm:object-cover" priority />
+              </div>
+            </div>
+          </div>
+        </div>
+      </motion.section>
+
+      {/* PLATFORM DISCOVERY */}
+      <section className="content-auto px-4 py-6 sm:px-6 sm:py-8 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_22px_54px_-36px_rgba(255,122,0,.55)] sm:p-7">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">Supported platforms</p>
+              <h2 className="mt-2 text-2xl font-black text-white sm:text-3xl">Find the right growth path faster</h2>
+              <p className="mt-2 max-w-2xl text-sm leading-7 text-[#D1D5DB]">
+                Start with the platform you want to grow, then compare packages and order with a public link only.
+              </p>
+            </div>
+            <Link href="/services" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/35 bg-white/[.06] px-5 py-3 text-sm font-bold text-white transition hover:border-orange-400/70 hover:bg-orange-500/10">
+              Browse Services
+            </Link>
+          </div>
+          <div className="mt-4 grid grid-cols-2 gap-3 sm:mt-6 sm:grid-cols-3 lg:grid-cols-7">
+            {supportedPlatforms.map((item) => (
+              <Link
+                key={item.label}
+                href={item.href}
+                className={`group min-h-20 rounded-2xl border border-orange-400/20 bg-[#151515] p-3 transition hover:-translate-y-1 hover:border-orange-400/60 hover:bg-orange-500/10 sm:p-4 ${item.platform === "tiktok" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
+              >
+                <IconBadge label={item.label} size="sm">
+                  <PlatformIcon platform={item.platform} className="h-5 w-5" />
+                </IconBadge>
+                <span className="mt-3 block text-sm font-black text-white group-hover:text-orange-200">{item.label}</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* WHY SOCIALRUSH */}
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-12 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-5 text-center sm:mb-8">
+            <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Why SocialRUSH</span>
+            <h2 className="mt-3 text-3xl font-extrabold tracking-tight text-slate-900 sm:text-4xl">Why Customers Choose <span className="bg-gradient-to-r from-[#FF7A00] to-[#FFB000] bg-clip-text text-transparent">SocialRUSH</span></h2>
+          </div>
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid grid-cols-2 gap-3 sm:gap-4 lg:grid-cols-3">
+            {whySocialRush.map((item) => (
+              <motion.article key={item.title} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`relative overflow-hidden rounded-2xl border bg-gradient-to-br p-3 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] backdrop-blur sm:p-5 ${item.border} ${item.bg}`}>
+                <div className={`inline-flex h-9 w-9 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-lg sm:h-11 sm:w-11 ${item.grad}`}><SvgIcon path={item.icon} size={18} /></div>
+                <h3 className="mt-3 text-sm font-bold leading-snug text-slate-900 sm:mt-4 sm:text-lg">{item.title}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-slate-600 sm:mt-2 sm:text-sm sm:leading-6">{item.text}</p>
+              </motion.article>
+            ))}
+          </motion.div>
+        </div>
+      </motion.section>
+
+      {/* HOW IT WORKS */}
+      <HowToOrderSection id="how-it-works" homepage />
+
+      {/* POPULAR SERVICES */}
+      <motion.section variants={fadeUp} initial={false} whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Platform Services</span>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Choose a Platform. Pick a Service. Track Everything.</h2>
+              <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-600 sm:mt-3 sm:leading-7">Explore social media growth services across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X with transparent pricing and dashboard tracking.</p>
+            </div>
+            <div className="flex flex-wrap gap-2">
+              <Link href="/services" className="rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View All Services</Link>
+              <Link href={startOrderHref} className="rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-orange-300/40 transition hover:brightness-105">Start Order</Link>
+            </div>
+          </div>
+          <motion.div variants={stagger} initial="hidden" whileInView="show" viewport={{ once: true }} className="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
+            {featuredServices.map((svc) => (
+              <motion.article key={svc.name} variants={cardAnim} whileHover={{ y: -7, scale: 1.02 }} className={`overflow-hidden rounded-2xl border bg-gradient-to-br p-4 shadow-[0_12px_40px_-16px_rgba(15,23,42,.18)] sm:p-5 ${svc.border} ${svc.bg}`}>
+                <IconBadge label={svc.name}><PlatformIcon platform={svc.platform} className="h-6 w-6" /></IconBadge>
+                <h3 className="mt-3 text-base font-bold text-slate-900 sm:mt-4 sm:text-lg">{svc.name}</h3>
+                <p className="mt-1.5 text-sm leading-6 text-slate-600 sm:mt-2">{svc.text}</p>
+                <div className="mt-3 flex gap-2 sm:mt-4">
+                  <Link href={svc.href} className="inline-flex items-center gap-1 rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View Services</Link>
+                  <Link href={startOrderHref} className={`inline-flex items-center gap-1 rounded-lg bg-gradient-to-r px-3 py-1.5 text-xs font-bold text-white shadow-sm ${svc.grad}`}>Start Order</Link>
+                </div>
+              </motion.article>
+            ))}
+          </motion.div>
+          <p className="mt-4 text-sm font-semibold text-slate-600">
+            Also available: <Link href="/services" className="text-[#FF7A00] underline decoration-orange-300 underline-offset-4">TikTok, Telegram and X/Twitter</Link>.
+          </p>
+        </div>
+      </motion.section>
+
+      {/* BLOG */}
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
+        <div className="mx-auto max-w-7xl rounded-[2rem] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_24px_56px_-36px_rgba(255,122,0,.55)] sm:p-8">
+          <div className="max-w-3xl">
+            <span className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-300">SocialRUSH India</span>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-white sm:text-3xl">Social media growth services and packages in India</h2>
+            <p className="mt-2 text-sm leading-6 text-[#D1D5DB] sm:mt-3 sm:leading-7">
+              Explore focused SocialRUSH service pages for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X campaign options in India.
+            </p>
+          </div>
+          <div className="mt-5 grid grid-cols-2 gap-2.5 sm:mt-7 sm:gap-3 lg:grid-cols-3">
+            {homepageSeoLinks.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="group rounded-2xl border border-orange-400/20 bg-[#151515] p-3 transition hover:-translate-y-1 hover:border-orange-400/50 hover:bg-orange-500/10 active:scale-[.98] sm:p-4"
+              >
+                <h3 className="text-sm font-black text-white transition group-hover:text-[#FF9F00]">{item.title}</h3>
+                <p className="mt-1.5 text-xs leading-5 text-[#D1D5DB] sm:mt-2 sm:leading-6">{item.text}</p>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* BLOG */}
+      <motion.section id="blog" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-5 flex flex-col gap-3 sm:mb-8 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Blog</span>
+              <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Tips, Trends &amp; Insights</h2>
+            </div>
+            <Link href="/blog" className="inline-flex rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-bold text-slate-700 shadow-sm transition hover:text-orange-600">View All Blogs</Link>
+          </div>
+          <div className="grid gap-3 sm:gap-5 md:grid-cols-3">
+            {homepagePosts.map((post) => (
+              <motion.article key={post.href} whileHover={{ y: -6 }} className="group flex flex-col overflow-hidden rounded-3xl border border-orange-100 bg-white/90 p-4 shadow-[0_20px_50px_-22px_rgba(15,23,42,.3)] sm:min-h-64 sm:p-6">
+                <div>
+                  <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-600">{post.category}</span>
+                  <h3 className="mt-3 text-base font-extrabold leading-snug text-slate-900 sm:text-lg">
+                    <Link href={post.href} className="transition hover:text-[#FF7A00]">{post.title}</Link>
+                  </h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-600 sm:mt-3 sm:leading-7">{post.excerpt}</p>
+                </div>
+                <Link href={post.href} className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-[#FF7A00] transition group-hover:gap-3 sm:mt-auto sm:pt-6">Read Article <span aria-hidden="true">→</span></Link>
+              </motion.article>
+            ))}
+          </div>
+        </div>
+      </motion.section>
+
+      {/* FAQ */}
+      <motion.section id="faq" variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.15 }} className="content-auto px-4 py-8 sm:px-6 sm:py-14 lg:px-8">
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-5 text-center sm:mb-8">
+            <span className="inline-flex rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-amber-600">FAQ</span>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Frequently Asked Questions</h2>
+          </div>
+          <div className="grid gap-3 sm:gap-4 lg:grid-cols-2">
+            {[faqItems.slice(0, 4), faqItems.slice(4)].map((col, cIdx) => (
+              <div key={cIdx} className="space-y-2.5 sm:space-y-3">
+                {col.map((item) => {
+                  const idx = faqItems.findIndex((e) => e.q === item.q);
+                  const isOpen = activeFaq === idx;
+                  return (
+                    <article key={item.q} className={`overflow-hidden rounded-2xl border transition-all ${isOpen ? "border-amber-200 bg-white/90 shadow-[0_8px_30px_-8px_rgba(255, 196, 0, .22)]" : "border-white/80 bg-white/70 shadow-sm"} backdrop-blur`}>
+                      <button type="button" onClick={() => setActiveFaq((prev) => (prev === idx ? null : idx))} aria-expanded={isOpen} aria-label={`${isOpen ? "Collapse" : "Expand"} ${item.q}`} className="flex min-h-11 w-full items-center justify-between gap-2 px-4 py-3 text-left sm:py-3.5">
+                        <span className="text-sm font-semibold text-slate-800">{item.q}</span>
+                        <span className={`flex h-6 w-6 shrink-0 items-center justify-center rounded-lg text-sm font-bold transition-all ${isOpen ? "bg-amber-500 text-white" : "bg-slate-100 text-slate-600"}`}>{isOpen ? "−" : "+"}</span>
+                      </button>
+                      <div
+                        aria-hidden={!isOpen}
+                        className={`grid overflow-hidden transition-[grid-template-rows,opacity] duration-300 ${
+                          isOpen
+                            ? "grid-rows-[1fr] opacity-100"
+                            : "grid-rows-[0fr] opacity-0"
+                        }`}
+                      >
+                        <div className="overflow-hidden">
+                          <p className="border-t border-amber-100/60 px-4 py-3 text-sm leading-6 text-slate-600 sm:leading-7">{item.a}</p>
+                        </div>
+                      </div>
+                    </article>
+                  );
+                })}
               </div>
             ))}
           </div>
         </div>
-        <div className="flex flex-col gap-3 pt-6 text-xs text-slate-500 sm:flex-row sm:items-center sm:justify-between">
-          <p>© 2026 SocialRUSH. All rights reserved.</p>
-          <p>Public-link ordering · Secure payment · Dashboard tracking</p>
+      </motion.section>
+
+      {/* FINAL CTA */}
+      <motion.section variants={fadeUp} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="content-auto px-4 pb-8 pt-2 sm:px-6 sm:pb-10 sm:pt-4 lg:px-8">
+        <div className="relative mx-auto max-w-7xl overflow-hidden rounded-3xl border border-white/80 bg-[linear-gradient(135deg,#FFF8F1_0%,#FFF8F1_35%,#FFF8F1_65%,#f0fdf4_100%)] p-5 shadow-[0_30px_60px_-20px_rgba(255, 196, 0, .25)] sm:p-12">
+          <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-orange-300/30 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-12 -left-12 h-48 w-48 rounded-full bg-orange-300/25 blur-3xl" />
+          <div className="relative text-center">
+            <span className="inline-flex rounded-full border border-orange-200 bg-orange-50 px-3 py-1 text-xs font-bold uppercase tracking-widest text-orange-600">Get Started Today</span>
+            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:mt-4 sm:text-4xl">Ready to Start Your Next <span className="bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] bg-clip-text text-transparent">Growth Campaign?</span></h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-600 sm:mt-4 sm:leading-7">Choose your platform, select a service, submit your public link and track your order from your SocialRUSH dashboard.</p>
+            <div className="mt-5 flex w-full flex-col items-stretch gap-3 sm:mt-7 sm:flex-row sm:items-center sm:justify-center">
+              <Link href={startOrderHref} className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] px-8 py-3 text-sm font-bold text-white shadow-xl shadow-orange-300/50 transition hover:brightness-105 hover:shadow-orange-300/60">Start Order</Link>
+              <Link href="/packages" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-8 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-300 hover:text-orange-600">View Packages</Link>
+              <a href="https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-[52px] items-center justify-center gap-2 rounded-xl border border-[#FF7A00]/30 bg-[#0B0B0F] px-8 py-3 text-sm font-bold text-white shadow-sm transition hover:border-[#FF9F00] hover:bg-black">Chat on WhatsApp</a>
+            </div>
+          </div>
         </div>
-      </div>
-    </footer>
+      </motion.section>
+
+      <MarketingFooter />
+      </main>
+    </LazyMotion>
   );
 }
