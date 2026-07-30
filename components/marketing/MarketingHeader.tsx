@@ -9,15 +9,15 @@ import PortalCTA from "./PortalCTA";
 import CurrencyDropdown from "./CurrencyDropdown";
 import { createClient } from "@/lib/supabase/client";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
-import { Menu, X } from "lucide-react";
 
 const nav = [
+  ["Home", "/"],
   ["Services", "/services"],
-  ["Pricing", "/pricing"],
   ["Packages", "/packages"],
   ["How It Works", "/#how-it-works"],
-  ["Why SocialRUSH", "/#trust"],
   ["Blog", "/blog"],
+  ["FAQ", "/faq"],
+  ["Contact", "/contact"],
 ] as const;
 
 export default function MarketingHeader({ tone = "default" }: { tone?: "default" | "light3d" }) {
@@ -76,9 +76,14 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
               </button>
             </>
           ) : (
-            <Link href="/login" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-2 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_20px_-14px_rgba(255, 159, 0, .45)] transition hover:border-[#FF9F00]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-amber-300/50 hover:text-amber-200"}>
-              Login
-            </Link>
+            <>
+              <Link href="/login" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-2 text-sm font-bold text-[#0B0B0F] shadow-[0_10px_20px_-14px_rgba(255, 159, 0, .45)] transition hover:border-[#FF9F00]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-white/5 px-4 py-2 text-sm font-bold text-slate-100 transition hover:border-amber-300/50 hover:text-amber-200"}>
+                Login
+              </Link>
+              <Link href="/register" className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2 text-sm font-bold text-[#FF9F00] transition hover:bg-[#FFF8F1]" : "inline-flex min-h-10 items-center rounded-xl border border-amber-300/35 bg-amber-400/10 px-4 py-2 text-sm font-bold text-amber-100 transition hover:bg-amber-400/20"}>
+                Sign Up
+              </Link>
+            </>
           )}
           <PortalCTA className={isLight3d ? "inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5" : "inline-flex min-h-10 items-center rounded-xl bg-gradient-to-r from-orange-600 to-amber-400 px-4 py-2 text-sm font-bold text-white shadow-lg shadow-orange-600/25 transition hover:shadow-amber-400/30"}>
             Start Order
@@ -86,7 +91,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </div>
 
         <button type="button" aria-label="Toggle navigation" aria-expanded={open} onClick={(event) => { event.stopPropagation(); setOpen((value) => !value); }} className={isLight3d ? "grid h-11 w-11 place-items-center rounded-xl border border-[#FFF3E0] bg-white/85 text-xl text-[#0B0B0F] shadow-[0_10px_20px_-14px_rgba(255, 159, 0, .45)] lg:hidden" : "grid h-11 w-11 place-items-center rounded-xl border border-amber-300/35 text-xl text-slate-100 lg:hidden"}>
-          {open ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+          {open ? "×" : "☰"}
         </button>
       </div>
 
@@ -96,11 +101,11 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -10 }}
             transition={{ duration: 0.22, ease: "easeOut" }}
-            className={isLight3d ? "mx-auto max-h-[calc(100dvh-7rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-slate-200 bg-white px-4 pb-4 pt-3 shadow-[0_24px_55px_-28px_rgba(15,23,42,.3)] lg:hidden" : "mx-auto max-h-[calc(100dvh-7rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-orange-400/25 bg-[#0B0B0F] px-4 pb-4 pt-3 shadow-[0_24px_55px_-28px_rgba(255,122,0,.55)] lg:hidden"}
+            className="mx-auto max-h-[calc(100dvh-7rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-orange-400/25 bg-[#0B0B0F] px-4 pb-4 pt-3 shadow-[0_24px_55px_-28px_rgba(255,122,0,.55)] lg:hidden"
           >
             <nav className="mx-auto grid max-w-7xl gap-1">
               {nav.map(([label, href]) => (
-                <Link key={href} href={href} onClick={() => setOpen(false)} className={isLight3d ? "min-h-10 rounded-xl border border-slate-100 bg-slate-50 px-3 py-2.5 text-sm font-semibold text-slate-700 transition hover:border-amber-200 hover:bg-amber-50 hover:text-amber-800" : "min-h-10 rounded-xl border border-white/5 bg-white/[.03] px-3 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-orange-400/25 hover:bg-orange-400/10 hover:text-orange-100"}>
+                <Link key={href} href={href} onClick={() => setOpen(false)} className="min-h-10 rounded-xl border border-white/5 bg-white/[.03] px-3 py-2.5 text-sm font-semibold text-slate-200 transition hover:border-orange-400/25 hover:bg-orange-400/10 hover:text-orange-100">
                   {label}
                 </Link>
               ))}
@@ -128,9 +133,14 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                   </button>
                 </>
               ) : (
-                <Link href="/login" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-3 text-sm font-bold text-[#0B0B0F]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-amber-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
-                  Login
-                </Link>
+                <>
+                  <Link href="/login" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/88 px-4 py-3 text-sm font-bold text-[#0B0B0F]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-amber-300/35 px-4 py-3 text-sm font-bold text-slate-100"}>
+                    Login
+                  </Link>
+                  <Link href="/register" onClick={() => setOpen(false)} className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-3 text-sm font-bold text-[#FF9F00]" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-300/35 bg-orange-400/10 px-4 py-3 text-sm font-bold text-orange-100"}>
+                    Sign Up
+                  </Link>
+                </>
               )}
               <PortalCTA className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-3 text-sm font-bold text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)]" : "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-3 text-sm font-bold text-white"}>
                 Start Order
