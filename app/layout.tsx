@@ -3,6 +3,7 @@ import "./globals.css";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import PageAnalytics from "@/components/analytics/PageAnalytics";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -142,6 +143,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             }}
           />
           {children}
+          <PageAnalytics />
           <FloatingWhatsAppButton />
         </ClientProviders>
       </body>

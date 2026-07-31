@@ -3,6 +3,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { razorpayConfig, razorpayRequest, verifyHmac } from "@/lib/payments/razorpay";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 type RazorpayPayment = {
   id: string;
@@ -66,6 +67,7 @@ export async function POST(request: NextRequest) {
       p_provider_payment_id: providerPayment.id,
     });
     if (error) return NextResponse.json({ error: error.message }, { status: 409 });
+    await recordTrustedEvent({eventName:"payment_successful",customerId:user.id,pagePath:"/dashboard/new-order",metadata:{method:"razorpay"}});
 
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/orders");
