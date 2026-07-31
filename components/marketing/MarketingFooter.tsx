@@ -8,7 +8,7 @@ import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 type FooterGroup = { title: string; links: readonly (readonly [string, string])[] };
 
 const groups: readonly FooterGroup[] = [
-  { title: "Company", links: [["About Us", "/about"], ["Contact Us", "/contact"], ["How It Works", "/#how-it-works"], ["Reviews", "/reviews"], ["Case Studies", "/case-studies"], ["Customer Safety", "/testimonials"], ["Blog", "/blog"]] },
+  { title: "Company", links: [["About Us", "/about"], ["Creator Tools", "/tools"], ["Contact Us", "/contact"], ["How It Works", "/#how-it-works"], ["Reviews", "/reviews"], ["Case Studies", "/case-studies"], ["Customer Safety", "/testimonials"], ["Blog", "/blog"]] },
   { title: "Top Services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"]] },
   { title: "Popular Services", links: [["Telegram Members", "/telegram-members"], ["TikTok Followers", "/tiktok-followers"], ["Twitter/X Followers", "/twitter-followers"], ["LinkedIn Likes", "/linkedin-likes"], ["Facebook Likes", "/facebook-likes"]] },
   { title: "More Platforms", links: [["Instagram Services", "/services?platform=instagram"], ["YouTube Services", "/services?platform=youtube"], ["Facebook Services", "/services?platform=facebook"], ["LinkedIn Services", "/services?platform=linkedin"], ["Telegram Services", "/services?platform=telegram"], ["TikTok Services", "/services?platform=tiktok"], ["Twitter/X Services", "/services?platform=x"]] },

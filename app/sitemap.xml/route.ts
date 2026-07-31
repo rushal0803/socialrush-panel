@@ -28,6 +28,12 @@ const publicRoutes = [
   "/privacy-policy",
   "/refund-policy",
   "/terms-and-conditions",
+  "/tools",
+  "/tools/instagram-engagement-rate-calculator",
+  "/tools/social-media-image-resizer",
+  "/tools/youtube-thumbnail-preview",
+  "/tools/instagram-caption-counter",
+  "/tools/utm-link-builder",
 ] as const;
 
 const canonicalServiceDetailRoutes = [
