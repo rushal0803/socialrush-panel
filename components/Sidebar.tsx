@@ -16,6 +16,8 @@ export const dashboardLinks = [
   { label: "New Order", href: "/dashboard/new-order", icon: "plus" },
   { label: "Packages", href: "/dashboard/packages", icon: "packages" },
   { label: "Orders", href: "/dashboard/orders", icon: "orders" },
+  { label: "Saved Profiles", href: "/dashboard/saved-profiles", icon: "bookmark" },
+  { label: "Rewards", href: "/dashboard/rewards", icon: "gift" },
   { label: "Wallet", href: "/dashboard/wallet", icon: "wallet" },
   { label: "Billing", href: "/dashboard/billing", icon: "orders" },
   { label: "Support", href: "/dashboard/support", icon: "support" },
@@ -57,6 +59,17 @@ function NavIcon({ name }: { name: string }) {
         <path d="M12 4v16" />
       </>
     ),
+    bookmark: (
+      <>
+        <path d="M6 4.5A1.5 1.5 0 0 1 7.5 3h9A1.5 1.5 0 0 1 18 4.5V21l-6-3.5L6 21V4.5Z" />
+      </>
+    ),
+    gift: (
+      <>
+        <path d="M3 9h18v4H3zM5 13v8h14v-8M12 9v12" />
+        <path d="M12 9H8.5a2.5 2.5 0 1 1 2.5-2.5V9Zm0 0h3.5A2.5 2.5 0 1 0 13 6.5V9Z" />
+      </>
+    ),
     support: (
       <>
         <path d="M4 13a8 8 0 0 1 16 0v5a2 2 0 0 1-2 2h-2v-7h4M4 13v7h4v-7H4Z" />
@@ -82,7 +95,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
   const pathname = usePathname();
 
   return (
-    <nav className={mobile ? "grid gap-2" : "space-y-1"} aria-label="Dashboard navigation">
+    <nav className={mobile ? "grid gap-2" : "min-h-0 flex-1 space-y-1 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
       {dashboardLinks.map((item) => {
         const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
         return (
@@ -163,7 +176,7 @@ export default function Sidebar({
       <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Main menu</p>
       <NavLinks />
 
-      <div className="mt-auto rounded-2xl border border-orange-400/20 bg-white/[.04] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.3)]">
+      <div className="mt-4 rounded-2xl border border-orange-400/20 bg-white/[.04] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.3)]">
         <div className="flex items-center justify-between">
           <p className="text-xs font-semibold text-[#111827]">Available balance</p>
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
