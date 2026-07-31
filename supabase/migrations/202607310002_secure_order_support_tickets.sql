@@ -4,6 +4,14 @@ alter table public.support_tickets
   add column if not exists last_reply_at timestamptz,
   add column if not exists resolved_at timestamptz;
 
+-- The previous constraint permits only legacy workflow values. Remove it before
+-- translating rows to the structured workflow; otherwise values such as
+-- waiting_for_customer are rejected during the update.
+alter table public.support_tickets
+  drop constraint if exists support_tickets_status_check;
+
+-- Preserve every ticket while translating all legacy statuses used by earlier
+-- customer and admin support screens into their current equivalents.
 update public.support_tickets set status = case status
   when 'pending' then 'waiting_for_support'
   when 'answered' then 'waiting_for_customer'
@@ -11,7 +19,8 @@ update public.support_tickets set status = case status
   else status end
 where status in ('pending','answered','solved');
 
-alter table public.support_tickets drop constraint if exists support_tickets_status_check;
+-- Add the constraint only after all existing rows are compatible. These are
+-- the complete statuses used by the current customer and admin ticket system.
 alter table public.support_tickets add constraint support_tickets_status_check
   check (status in ('open','waiting_for_support','waiting_for_customer','resolved','closed'));
 
