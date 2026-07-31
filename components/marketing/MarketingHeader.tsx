@@ -46,8 +46,8 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
 
   return (
     <header className="sticky top-0 z-[9999] border-b border-orange-400/25 bg-[#07080D]/90 backdrop-blur-2xl after:absolute after:inset-x-0 after:bottom-[-1px] after:h-px after:bg-gradient-to-r after:from-transparent after:via-[#FF7600]/70 after:to-transparent">
-      <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-2 px-4 sm:gap-4 sm:px-6 lg:px-8">
-        <Logo light priority className="shrink-0" />
+      <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-1.5 px-3 min-[390px]:gap-2 min-[390px]:px-4 sm:gap-4 sm:px-6 lg:px-8">
+        <Logo light priority className="min-w-0 shrink [&_img]:max-w-[150px] min-[390px]:[&_img]:max-w-[174px] sm:[&_img]:max-w-[218px]" />
 
         <nav className="hidden items-center gap-1 text-sm font-semibold text-[#A8AFBD] xl:flex" aria-label="Primary navigation">
           {nav.map(([label, href]) => {
@@ -84,7 +84,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </div>
 
         <div className="flex items-center gap-2 lg:hidden">
-          <PortalCTA className="hidden min-h-10 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-3 py-2 text-xs font-black text-white min-[360px]:inline-flex sm:px-4 sm:text-sm">
+          <PortalCTA className="hidden min-h-10 items-center justify-center whitespace-nowrap rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-2.5 py-2 text-xs font-black text-white min-[360px]:inline-flex min-[390px]:px-3 sm:px-4 sm:text-sm">
             Start Order
           </PortalCTA>
           <button
