@@ -82,6 +82,13 @@ const homepageSteps = [
   },
 ] as const;
 
+const servicePageSteps = [
+  { title: "Choose a Service", text: "Select your platform and growth option.", icon: BadgeCheck, gradient: "from-orange-500 to-amber-500" },
+  { title: "Submit Your Public Link", text: "Enter the relevant public profile, post, page or video link.", icon: Link2, gradient: "from-amber-500 to-orange-500" },
+  { title: "Review and Pay", text: "Confirm pricing and complete checkout securely.", icon: WalletCards, gradient: "from-[#FF7A00] to-[#FFB000]" },
+  { title: "Track Your Order", text: "Follow progress from your dashboard.", icon: Activity, gradient: "from-orange-500 to-red-500" },
+] as const;
+
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service";
 
@@ -94,7 +101,7 @@ export default function HowToOrderSection({
   homepage?: boolean;
   compactMobile?: boolean;
 }) {
-  const steps = homepage ? homepageSteps : defaultSteps;
+  const steps = homepage ? homepageSteps : compactMobile ? servicePageSteps : defaultSteps;
   const compactTimeline = homepage || compactMobile;
 
   return (
@@ -109,7 +116,7 @@ export default function HowToOrderSection({
           </h2>
         </div>
 
-        <div className={compactTimeline ? "relative mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3" : "mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"}>
+        <div className={compactTimeline ? `relative mt-6 grid gap-3 sm:mt-8 sm:grid-cols-2 sm:gap-4 ${compactMobile ? "lg:grid-cols-4" : "lg:grid-cols-3"}` : "mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-3"}>
           {compactTimeline ? <span className="absolute bottom-4 left-[1.35rem] top-4 hidden w-px bg-orange-400/25 max-sm:block" aria-hidden="true" /> : null}
           {steps.map(({ title, text, icon: Icon, gradient }, index) => (
             <article
@@ -137,7 +144,7 @@ export default function HowToOrderSection({
           <div>
             <p className="text-sm font-black text-white">No password required.</p>
             <p className="mt-1 text-sm leading-6 text-[#D1D5DB]">
-              Only your public profile, post, video, channel, or page link is needed.
+              Only the relevant public link is needed.
             </p>
           </div>
         </div>
