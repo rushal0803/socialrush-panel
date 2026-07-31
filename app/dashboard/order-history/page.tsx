@@ -253,7 +253,7 @@ export default function CampaignHistoryPage() {
                       <td className="px-5 py-4">
                         <div className="flex gap-2">
                           <Link href={`/dashboard/orders/${item.id}`} className="rounded-lg bg-orange-500 px-3 py-1.5 text-[10px] font-bold text-white">View Order</Link>
-                          <Link href={`/dashboard/support?order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-[#D1D5DB]">Support</Link>
+                          <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-[#D1D5DB]">Support</Link>
                         </div>
                       </td>
                     </tr>
@@ -325,8 +325,8 @@ export default function CampaignHistoryPage() {
               <div className="mt-5 grid grid-cols-2 gap-2">
                 <Link href={`/dashboard/orders/${item.id}`} className="col-span-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 text-sm font-black text-white"><Eye className="h-4 w-4" />View Order</Link>
                 {reorderHref(item) ? <Link href={reorderHref(item)!} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-bold text-orange-200">Reorder</Link> : null}
-                <Link href={`/dashboard/support?order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]">Get Support</Link>
-                {item.refillEligible ? <Link href={`/dashboard/support?order=${encodeURIComponent(readableOrderId(item.id))}&category=Refill%20request`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 text-xs font-bold text-emerald-200">{item.refillRequestedAt ? "View Refill Request" : "Request Refill"}</Link> : null}
+                <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]">Get Support</Link>
+                {item.refillEligible ? <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(readableOrderId(item.id))}&category=drop_or_refill`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 text-xs font-bold text-emerald-200">{item.refillRequestedAt ? "View Refill Request" : "Request Refill"}</Link> : null}
                 <button type="button" onClick={() => void navigator.clipboard.writeText(readableOrderId(item.id))} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]"><Copy className="h-3.5 w-3.5" />Copy ID</button>
               </div>
             </article>
