@@ -22,6 +22,10 @@ export type WalletTransaction = {
   payment_method: string | null;
   description: string | null;
   created_at: string;
+  provider_order_id: string | null;
+  provider_payment_id: string | null;
+  provider_refund_id: string | null;
+  metadata: Record<string, unknown> | null;
 };
 export type WalletOrder = {
   id: string;
@@ -72,7 +76,7 @@ const methods = PAYMENT_METHODS;
 const defaultPaymentMethod =
   methods.find((item) => isPaymentMethodEnabled(item.id))?.id ?? "upi";
 
-const quickAmounts = [100, 500, 1000, 2000];
+const quickAmounts = [100, 500, 1000, 2000, 5000];
 
 const trustCards = [
   {
@@ -446,7 +450,11 @@ export default function WalletDashboard({
   const [amountInput, setAmountInput] = useState(() => cleanAmountInput(searchParams.get("amount") || ""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
-  const [success, setSuccess] = useState(false);
+  const [success, setSuccess] = useState<{ paymentId: string; transactionId: string; amount: number; balance: number; completedAt: string } | null>(null);
+  const [transactionSearch, setTransactionSearch] = useState("");
+  const [transactionFilter, setTransactionFilter] = useState("all");
+  const [dateFilter, setDateFilter] = useState("all");
+  const [selectedTransaction, setSelectedTransaction] = useState<WalletTransaction | null>(null);
   const amount = useMemo(() => Number(amountInput || 0), [amountInput]);
   const series = useMemo(
     () => monthlySeries(initial.transactions, initial.orders),
@@ -512,6 +520,7 @@ export default function WalletDashboard({
         amount: number;
         currency: string;
         email: string;
+        transactionId: string;
       };
       error?: string;
     };
@@ -542,7 +551,7 @@ export default function WalletDashboard({
           body: JSON.stringify(result),
         });
         const verified = (await verification.json()) as {
-          data?: { balance: number };
+          data?: { balance: number; paymentId?: string };
           error?: string;
         };
         setLoading(false);
@@ -555,8 +564,7 @@ export default function WalletDashboard({
         window.dispatchEvent(
           new CustomEvent("wallet-balance-updated", { detail: updatedBalance }),
         );
-        setSuccess(true);
-        window.setTimeout(() => setSuccess(false), 3500);
+        setSuccess({ paymentId: verified.data.paymentId || result.razorpay_payment_id, transactionId: payload.data?.transactionId || "", amount, balance: updatedBalance, completedAt: new Date().toISOString() });
         if (returnTo) {
           const separator = returnTo.includes("?") ? "&" : "?";
           router.replace(`${returnTo}${separator}resume=1`);
@@ -605,9 +613,17 @@ export default function WalletDashboard({
       note: "Awaiting confirmation",
       icon: "pending",
     },
-  ];
+  ].filter((stat) => stat.icon !== "pending" || stat.value > 0);
 
   const selectedMethod = methods.find((item) => item.id === method) ?? methods[0];
+  const filteredTransactions = useMemo(() => initial.transactions.filter((item) => {
+    const relatedOrder = String(item.metadata?.order_id || "");
+    const haystack = `${item.id} ${item.provider_order_id || ""} ${item.provider_payment_id || ""} ${item.provider_refund_id || ""} ${relatedOrder} ${item.description || ""}`.toLowerCase();
+    const matchesSearch = haystack.includes(transactionSearch.toLowerCase());
+    const matchesType = transactionFilter === "all" || (transactionFilter === "credit" ? item.type === "credit" && item.status === "completed" : transactionFilter === "debit" ? item.type === "debit" : transactionFilter === "refund" ? item.type === "refund" : transactionFilter === "processing" ? item.status === "pending" : transactionFilter === "failed" ? item.status === "failed" : true);
+    const days = dateFilter === "all" ? 0 : Number(dateFilter);
+    return matchesSearch && matchesType && (!days || new Date(item.created_at).getTime() >= Date.now() - days * 86400000);
+  }), [dateFilter, initial.transactions, transactionFilter, transactionSearch]);
   const selectedStatus = loading
     ? "Processing"
     : amount >= minimumAmount
@@ -669,9 +685,11 @@ export default function WalletDashboard({
                   {currency}
                 </span>
               </div>
+              <p className="mt-3 text-xs font-semibold text-orange-100">Your wallet is charged only after you confirm an order.</p>
             </div>
           </div>
         </motion.section>
+        <div className="mt-3 flex flex-wrap gap-2"><a href="#add-funds" className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-xs font-black text-white">Add Funds</a><a href="#transactions" className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-bold text-[#D1D5DB]">View Transactions</a><a href="/dashboard/support?category=payment_or_wallet" className="inline-flex min-h-11 items-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-xs font-bold text-orange-200">Payment Help</a></div>
 
         <section className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4 xl:grid-cols-4">
           {stats.map((stat, index) => (
@@ -708,7 +726,7 @@ export default function WalletDashboard({
           ))}
         </section>
 
-        <section className="mt-5 overflow-hidden rounded-[1.5rem] border border-orange-400/25 bg-[#0F0F0F] shadow-[0_30px_80px_-45px_rgba(255,122,0,.65)] sm:rounded-[2rem]">
+        <section id="add-funds" className="mt-5 scroll-mt-24 overflow-hidden rounded-[1.5rem] border border-orange-400/25 bg-[#0F0F0F] shadow-[0_30px_80px_-45px_rgba(255,122,0,.65)] sm:rounded-[2rem]">
           <div className="border-b border-white/10 px-5 py-5 sm:px-6 xl:px-7">
             <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-400">
               Add funds
@@ -883,7 +901,7 @@ export default function WalletDashboard({
                       Amount is charged in INR. {currency !== "INR" ? `Approx in ${currency}: ${money(amount)}.` : ""}
                     </p>
 
-                  <div className="mt-4 grid grid-cols-2 gap-2.5 sm:grid-cols-4 sm:gap-3">
+                  <div className="mt-4 grid grid-cols-2 gap-2.5 min-[390px]:grid-cols-3 sm:grid-cols-5 sm:gap-3">
                     {quickAmounts.map((value) => {
                       const active = amount === value;
                       return (
@@ -997,15 +1015,13 @@ export default function WalletDashboard({
                           ? "Enter amount to continue"
                           : amount < minimumAmount
                             ? `Minimum ${money(minimumAmount)} required`
-                            : `Continue securely • ${money(amount)}`}
+                            : "Proceed to Secure Payment"}
                     </button>
                     <a
-                      href="https://wa.me/918860330771"
-                      target="_blank"
-                      rel="noopener noreferrer"
+                      href="/dashboard/support?category=payment_or_wallet"
                       className="mt-3 inline-flex w-full items-center justify-center text-xs font-bold text-orange-300 transition hover:text-orange-200"
                     >
-                      Need payment help? WhatsApp Support
+                      Get Payment Help
                     </a>
                   </div>
                 </div>
@@ -1130,7 +1146,7 @@ export default function WalletDashboard({
           </div>
         </section>
 
-        <section className="mt-6 overflow-hidden rounded-[2rem] border border-orange-400/20 bg-[#0F0F0F] shadow-[0_28px_70px_-44px_rgba(255,122,0,.6)]">
+        <section id="transactions" className="mt-6 scroll-mt-24 overflow-hidden rounded-[2rem] border border-orange-400/20 bg-[#0F0F0F] shadow-[0_28px_70px_-44px_rgba(255,122,0,.6)]">
           <div className="flex flex-col gap-3 border-b border-white/10 p-5 sm:flex-row sm:items-center sm:justify-between sm:p-6">
             <div>
               <p className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-400">
@@ -1141,11 +1157,12 @@ export default function WalletDashboard({
               </h2>
             </div>
             <span className="inline-flex w-fit rounded-2xl border border-orange-400/20 bg-orange-500/10 px-3 py-2 text-[10px] font-bold uppercase tracking-[0.14em] text-orange-300">
-              {initial.transactions.length} records
+              {filteredTransactions.length} records
             </span>
           </div>
+          <div className="grid gap-3 border-b border-white/10 p-4 sm:grid-cols-3"><input value={transactionSearch} onChange={(event) => setTransactionSearch(event.target.value)} className="min-h-11 min-w-0 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white outline-none" placeholder="Search transaction, payment, order" /><select value={transactionFilter} onChange={(event) => setTransactionFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All activity</option><option value="credit">Wallet Credit</option><option value="debit">Order Payment</option><option value="refund">Refund</option><option value="processing">Payment Processing</option><option value="failed">Payment Failed</option></select><select value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All dates</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
           <div className="grid gap-4 p-4 sm:p-5 lg:hidden">
-            {initial.transactions.map((item) => (
+            {filteredTransactions.map((item) => (
               <motion.article
                 key={item.id}
                 whileHover={{ y: -3 }}
@@ -1185,9 +1202,10 @@ export default function WalletDashboard({
                     </p>
                   </div>
                 </div>
+                <div className="mt-3 flex gap-2"><button type="button" onClick={() => setSelectedTransaction(item)} className="min-h-11 flex-1 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-bold text-orange-200">View Details</button><button type="button" aria-label="Copy transaction ID" onClick={() => void navigator.clipboard.writeText(item.id)} className="min-h-11 rounded-xl border border-white/10 px-3 text-xs font-bold">Copy ID</button></div>
               </motion.article>
             ))}
-            {initial.transactions.length === 0 && (
+            {filteredTransactions.length === 0 && (
               <div className="rounded-[1.5rem] border border-white/10 bg-[#151515] p-10 text-center text-sm text-[#9CA3AF]">
                 No wallet transactions yet.
               </div>
@@ -1212,7 +1230,7 @@ export default function WalletDashboard({
                 </tr>
               </thead>
               <tbody className="divide-y divide-white/10">
-                {initial.transactions.map((item) => (
+                {filteredTransactions.map((item) => (
                   <tr key={item.id} className="bg-[#0F0F0F] transition hover:bg-[#181818]">
                     <td className="px-6 py-4 font-black text-white">
                       #{item.id.slice(0, 8).toUpperCase()}
@@ -1232,10 +1250,11 @@ export default function WalletDashboard({
                         <i className="h-1.5 w-1.5 rounded-full bg-current" />
                         {item.status}
                       </span>
+                      <button type="button" onClick={() => setSelectedTransaction(item)} className="ml-2 text-[10px] font-bold text-orange-300">Details</button>
                     </td>
                   </tr>
                 ))}
-                {initial.transactions.length === 0 && (
+                {filteredTransactions.length === 0 && (
                   <tr>
                     <td colSpan={5} className="p-14 text-center text-[#9CA3AF]">
                       No wallet transactions yet.
@@ -1247,6 +1266,9 @@ export default function WalletDashboard({
           </div>
         </section>
       </div>
+      <AnimatePresence>
+        {selectedTransaction ? <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm" onClick={() => setSelectedTransaction(null)}><motion.article initial={{scale:.96,y:12}} animate={{scale:1,y:0}} onClick={(event) => event.stopPropagation()} className="max-h-[85dvh] w-full max-w-lg overflow-y-auto rounded-3xl border border-orange-400/30 bg-[#111111] p-5 shadow-2xl sm:p-6"><div className="flex items-center justify-between gap-3"><h2 className="text-xl font-black">Transaction Details</h2><button type="button" onClick={() => setSelectedTransaction(null)} className="grid h-11 w-11 place-items-center rounded-xl border border-white/10">×</button></div><dl className="mt-5 space-y-2 text-xs">{[["Transaction ID",selectedTransaction.id],["Payment reference",selectedTransaction.provider_payment_id || selectedTransaction.provider_order_id || selectedTransaction.provider_refund_id || "Not available"],["Type",selectedTransaction.type],["Amount",`${selectedTransaction.type === "debit" ? "−" : "+"}${money(selectedTransaction.amount)}`],["Application fee",money(0)],["Wallet impact",selectedTransaction.status === "completed" ? (selectedTransaction.type === "debit" ? `Debit ${money(selectedTransaction.amount)}` : `Credit ${money(selectedTransaction.amount)}`) : "No completed wallet impact"],["Status",selectedTransaction.status],["Related order",String(selectedTransaction.metadata?.order_id || "Not linked")],["Created",new Date(selectedTransaction.created_at).toLocaleString("en-IN")],["Description",selectedTransaction.description || "Not provided"]].map(([label,value]) => <div key={label} className="flex min-w-0 justify-between gap-4 rounded-xl bg-[#0B0B0F] p-3"><dt className="shrink-0 text-[#9CA3AF]">{label}</dt><dd className="min-w-0 break-all text-right font-bold text-white">{value}</dd></div>)}</dl><div className="mt-4 grid gap-2 sm:grid-cols-2"><button type="button" onClick={() => void navigator.clipboard.writeText(selectedTransaction.id)} className="min-h-11 rounded-xl border border-white/10 text-xs font-bold">Copy Transaction ID</button><a href={`/dashboard/support?category=payment_or_wallet&transaction=${encodeURIComponent(selectedTransaction.id)}&payment=${encodeURIComponent(selectedTransaction.provider_payment_id || selectedTransaction.provider_order_id || "")}&status=${encodeURIComponent(selectedTransaction.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 text-xs font-bold text-white">Get Payment Help</a></div><p className="mt-4 text-[11px] leading-5 text-amber-200">Never share your card PIN, CVV, OTP, UPI PIN, password or full banking credentials.</p></motion.article></motion.div> : null}
+      </AnimatePresence>
       <AnimatePresence>
         {success && (
           <motion.div
@@ -1269,13 +1291,14 @@ export default function WalletDashboard({
               >
                 ✓
               </motion.span>
-              <h2 className="mt-5 text-2xl font-black text-white">Wallet funded!</h2>
+              <h2 className="mt-5 text-2xl font-black text-white">Payment successful</h2>
               <p className="mt-2 text-sm text-[#D1D5DB]">
-                {money(amount)} was added successfully.
+                {money(success.amount)} was verified and credited to your wallet.
               </p>
               <p className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/10 p-3 text-sm font-black text-orange-300">
-                New balance: {money(balance)}
+                New balance: {money(success.balance)}
               </p>
+              <dl className="mt-4 space-y-2 text-left text-xs"><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Payment reference</dt><dd className="mt-1 break-all font-bold text-white">{success.paymentId}</dd></div><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Wallet credit</dt><dd className="mt-1 font-bold text-emerald-300">{money(success.amount)}</dd></div><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Verified at</dt><dd className="mt-1 font-bold text-white">{new Date(success.completedAt).toLocaleString("en-IN")}</dd></div></dl><div className="mt-4 grid gap-2"><button type="button" onClick={() => { setSuccess(null); document.getElementById("transactions")?.scrollIntoView({behavior:"smooth"}); }} className="min-h-11 rounded-xl border border-white/10 text-xs font-bold text-white">View Transaction</button><a href="/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 text-xs font-bold text-white">Create New Order</a></div>
             </motion.div>
           </motion.div>
         )}
