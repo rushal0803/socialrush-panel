@@ -5,20 +5,19 @@ import {
   ArrowRight,
   CheckCircle2,
   Clock3,
-  CreditCard,
   Headphones,
   RefreshCw,
   Search,
   ShieldCheck,
   Sparkles,
+  X,
 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
-import OrderNowButton from "@/components/marketing/OrderNowButton";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
-import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import {
   activeSmmServices,
@@ -73,36 +72,26 @@ const seoServicePaths: Record<string, string> = {
 };
 
 const trustBadges = [
-  { label: "Fast Delivery", icon: Clock3 },
-  { label: "Refill Support", icon: RefreshCw },
-  { label: "Secure Payment", icon: ShieldCheck },
-  { label: "24/7 WhatsApp Help", icon: Headphones },
+  { label: "Estimated Delivery", icon: Clock3 },
+  { label: "Refill Support Where Eligible", icon: RefreshCw },
+  { label: "Secure Checkout", icon: ShieldCheck },
+  { label: "WhatsApp Support", icon: Headphones },
 ] as const;
 
-const customerBenefits = [
-  "Easy order process",
-  "Affordable packages",
-  "Fast campaign start",
-  "Refill support on eligible services",
-  "WhatsApp support for help",
-] as const;
+const platformIconColors: Record<SmmPlatformId, string> = {
+  instagram: "text-pink-400",
+  youtube: "text-red-500",
+  facebook: "text-blue-400",
+  linkedin: "text-sky-400",
+  telegram: "text-cyan-400",
+  tiktok: "text-fuchsia-300",
+  x: "text-white",
+};
 
 const serviceSeoFaqs = [
-  {
-    question: "Which social media growth services are available in India?",
-    answer:
-      "SocialRUSH lists Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X services with public-link ordering, transparent pricing and dashboard tracking.",
-  },
-  {
-    question: "Can I compare Instagram followers, YouTube subscribers and Facebook followers?",
-    answer:
-      "Yes. Use the service cards and package links to compare current rates, delivery estimates, refill/support terms and the correct public link required for each platform.",
-  },
-  {
-    question: "Do SocialRUSH services require my account password?",
-    answer:
-      "No. SocialRUSH uses public profile, post, video, channel, page or group links. You should never share a social media password to place an order.",
-  },
+  { question: "Which social media growth services are available in India?", answer: "SocialRUSH lists Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and Twitter/X services with public-link ordering, transparent pricing and dashboard tracking." },
+  { question: "Can I compare Instagram followers, YouTube subscribers and Facebook followers?", answer: "Yes. Use the service cards and package links to compare current rates, delivery estimates, refill/support terms and the correct public link required for each platform." },
+  { question: "Do SocialRUSH services require my account password?", answer: "No. SocialRUSH uses public profile, post, video, channel, page or group links. You should never share a social media password to place an order." },
 ] as const;
 
 const descriptiveServiceAnchors: Record<string, string> = {
@@ -301,37 +290,36 @@ export default function ServicesPageContent({
 
   return (
     <BlogShell>
-      <main className="relative scroll-pt-28 overflow-x-clip pb-28 sm:pb-20">
+      <main className="relative scroll-pt-28 overflow-x-clip pb-16 sm:pb-20">
         <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -left-20 top-12 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
-          <div className="absolute right-[-10%] top-36 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
-          <div className="absolute bottom-20 left-[30%] h-72 w-72 rounded-full bg-amber-200/30 blur-3xl" />
+          <div className="absolute -left-20 top-12 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl" />
+          <div className="absolute right-[-10%] top-36 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />
         </div>
 
-        <section className="relative scroll-mt-28 px-4 pb-6 pt-5 sm:px-6 sm:pb-9 sm:pt-9 lg:px-8 lg:pt-12">
-          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_58px_-28px_rgba(255,122,0,.45)] backdrop-blur-xl sm:rounded-[2rem] sm:p-8 lg:p-10">
+        <section className="relative scroll-mt-28 px-4 pb-5 pt-4 sm:px-6 sm:pb-7 sm:pt-7 lg:px-8 lg:pt-9">
+          <div className="mx-auto max-w-7xl rounded-[1.5rem] border border-white/10 bg-[#111111] p-4 shadow-[0_20px_48px_-32px_rgba(255,122,0,.4)] sm:rounded-[1.75rem] sm:p-7 lg:p-8">
             <p className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-orange-200 sm:px-4 sm:text-xs">
               <Sparkles className="h-3.5 w-3.5" /> Clear Service Catalog
             </p>
-            <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.03em] text-white sm:text-5xl">
+            <h1 className="mt-3 text-[2rem] font-black leading-[1.08] tracking-[-0.03em] text-white sm:text-5xl">
               Growth Services Built Around Your Goals
             </h1>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:text-base sm:leading-8">
-              Choose a platform, review clear service details, and find the right option for your campaign.
+            <p className="mt-3 max-w-3xl text-sm leading-6 text-[#D1D5DB] sm:text-base sm:leading-7">
+              Choose a platform, compare clear pricing and delivery details, and find the right option for your goal.
             </p>
 
-            <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-wrap">
+            <div className="mt-4 grid grid-cols-2 gap-2 sm:grid-cols-4">
               {trustBadges.map(({ label, icon: Icon }) => (
                 <span
                   key={label}
-                  className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-3 py-2 text-[10px] font-bold text-[#D1D5DB] shadow-sm sm:text-xs"
+                  className="inline-flex min-h-9 items-center gap-2 rounded-xl border border-white/10 bg-white/[.05] px-2.5 py-1.5 text-[10px] font-bold leading-4 text-[#D1D5DB] sm:px-3 sm:text-xs"
                 >
                   <Icon className="h-4 w-4 shrink-0 text-orange-300" />
                   {label}
                 </span>
               ))}
             </div>
-            <p className="mt-4 text-xs font-semibold text-[#9CA3AF]">{getCurrencyDisclaimer()}</p>
+            <p className="mt-3 text-[11px] font-semibold text-[#9CA3AF]">Prices shown may vary based on service availability and selected currency.</p>
           </div>
         </section>
 
@@ -342,7 +330,7 @@ export default function ServicesPageContent({
               <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Find the right growth service</h2>
             </div>
 
-            <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
+            <div className="grid grid-cols-2 gap-2.5 sm:grid-cols-3 lg:grid-cols-4">
               {platformOrder.map((platformId) => {
                 const meta = platformMeta[platformId];
                 const active = selectedPlatform === platformId;
@@ -355,16 +343,17 @@ export default function ServicesPageContent({
                       setSelectedType("all");
                     }}
                     aria-pressed={active}
-                    className={`min-w-0 rounded-2xl border p-2.5 text-left transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                    className={`relative flex min-h-20 min-w-0 items-center gap-3 rounded-2xl border p-3 text-left transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${
                       active
-                        ? "border-orange-400/75 bg-orange-500/15 shadow-[0_18px_38px_-24px_rgba(255, 159, 0, .7)] ring-2 ring-[#FF9F00]/20"
+                        ? "border-2 border-orange-400 bg-[#151821] shadow-[0_18px_38px_-26px_rgba(255,159,0,.7)]"
                         : "border-white/10 bg-[#111111] hover:border-orange-400/45"
-                    } ${platformId === "x" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
+                    } ${platformId === "x" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.3125rem)] sm:col-span-1 sm:max-w-none lg:col-span-1" : ""}`}
                   >
-                    <IconBadge label={meta.label}>
+                    {active ? <CheckCircle2 className="absolute right-2 top-2 h-4 w-4 text-orange-400" aria-hidden="true" /> : null}
+                    <span className={`grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-white/10 bg-[#0B0B0F] ${platformIconColors[platformId]}`}>
                       <PlatformIcon platform={meta.icon} title={meta.label} className="h-5 w-5" />
-                    </IconBadge>
-                    <span className="mt-3 block truncate text-xs font-black text-white">{meta.label}</span>
+                    </span>
+                    <span className="min-w-0 truncate text-xs font-black text-white">{meta.label}</span>
                   </button>
                 );
               })}
@@ -381,9 +370,19 @@ export default function ServicesPageContent({
                 type="search"
                 value={searchQuery}
                 onChange={(event) => setSearchQuery(event.target.value)}
-                placeholder="Search Instagram followers, YouTube views, Facebook likes..."
-                className="min-h-12 w-full rounded-2xl border border-orange-400/20 bg-[#050505] py-3 pl-11 pr-4 text-sm font-semibold text-white outline-none transition placeholder:text-[#9CA3AF] focus:border-orange-400/70 focus:ring-2 focus:ring-orange-500/15"
+                placeholder="Search followers, likes, views or a platform…"
+                className="min-h-12 w-full rounded-2xl border border-white/10 bg-[#050505] py-3 pl-11 pr-12 text-sm font-semibold text-white outline-none transition placeholder:text-[#9CA3AF] focus:border-orange-400/70 focus:ring-2 focus:ring-orange-500/15"
               />
+              {searchQuery ? (
+                <button
+                  type="button"
+                  onClick={() => setSearchQuery("")}
+                  aria-label="Clear service search"
+                  className="absolute right-2 top-1/2 grid h-9 w-9 -translate-y-1/2 place-items-center rounded-xl text-[#9CA3AF] transition hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300"
+                >
+                  <X className="h-4 w-4" />
+                </button>
+              ) : null}
             </label>
             <div className="-mx-1 flex gap-2 overflow-x-auto px-1 pb-1 lg:mx-0 lg:justify-end lg:px-0 lg:pb-0">
               {availableTypes.map((type) => (
@@ -394,7 +393,7 @@ export default function ServicesPageContent({
                   className={`min-h-11 shrink-0 rounded-xl px-4 py-2.5 text-xs font-black capitalize transition ${
                     selectedType === type
                       ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white shadow-[0_10px_24px_rgba(255,122,0,.28)]"
-                      : "border border-orange-400/20 bg-white/[.06] text-[#D1D5DB] hover:border-orange-400/45 hover:text-white"
+                      : "border border-white/10 bg-white/[.05] text-[#D1D5DB] hover:border-orange-400/45 hover:text-white"
                   }`}
                 >
                   {type === "all" ? "All service types" : type}
@@ -429,57 +428,56 @@ export default function ServicesPageContent({
                   {platformServices.length > 0 ? (
                     <div className="mt-4 grid gap-3 md:grid-cols-2 md:gap-4 xl:grid-cols-3">
                     {platformServices.map((service) => {
-                const nextPath = `/dashboard/new-order?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const serviceDetailPath = seoServicePaths[service.code] ?? `/services/${service.code}`;
                 return (
                   <article
                     key={service.code}
-                    className="group flex h-full min-w-0 flex-col rounded-3xl border border-white/85 bg-white/88 p-4 shadow-[0_18px_44px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-[#FFF3E0] hover:shadow-[0_24px_52px_-26px_rgba(255, 159, 0, .4)] sm:p-6"
+                    className="group flex h-full min-w-0 flex-col rounded-3xl border border-white/10 bg-[#111111] p-4 shadow-[0_18px_44px_-32px_rgba(0,0,0,.6)] transition hover:-translate-y-1 hover:border-orange-400/50 focus-within:border-orange-400/50 sm:p-5"
                   >
                     <div className="flex items-start justify-between gap-3">
-                      <IconBadge label={meta.label}>
+                      <span className={`grid h-11 w-11 place-items-center rounded-xl border border-white/10 bg-[#151821] ${platformIconColors[service.platform]}`}>
                         <PlatformIcon platform={meta.icon} title={meta.label} className="h-6 w-6" />
-                      </IconBadge>
+                      </span>
                     </div>
 
-                    <h3 className="mt-3 text-base font-black text-[#0B0B0F] sm:mt-4 sm:text-lg">
-                      <Link href={serviceDetailPath} className="transition hover:text-orange-600">
+                    <h3 className="mt-3 text-base font-black text-white sm:text-lg">
+                      <Link href={serviceDetailPath} className="transition hover:text-orange-200">
                         {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                       </Link>
                     </h3>
-                    <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-[#111827] sm:mt-2">{getServiceCardDescription(service.code)}</p>
+                    <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{getServiceCardDescription(service.code)}</p>
 
                     <div className="mt-auto pt-4 sm:pt-5">
-                      <div className="grid grid-cols-2 gap-2 rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-3 text-xs">
+                      <div className="grid grid-cols-2 gap-2 rounded-2xl bg-[#0B0B0F] p-3 text-xs">
                         <div>
-                          <p className="font-bold uppercase tracking-[0.1em] text-[#111827]">Starting from</p>
-                          <p className="mt-1 text-base font-black text-[#0B0B0F] sm:text-lg">
-                            {formatCurrency(service.pricePer1000, currency)} <span className="text-[11px] text-[#111827]">/ 1K</span>
+                          <p className="font-bold uppercase tracking-[0.1em] text-[#9CA3AF]">Starting from</p>
+                          <p className="mt-1 text-base font-black text-white sm:text-lg">
+                            {formatCurrency(service.pricePer1000, currency)} <span className="text-[11px] text-[#9CA3AF]">per 1K</span>
                           </p>
                         </div>
                         <div>
-                          <p className="font-bold uppercase tracking-[0.1em] text-[#111827]">Delivery</p>
-                          <p className="mt-1 font-black leading-5 text-[#0B0B0F]">{service.deliveryTime}</p>
+                          <p className="font-bold uppercase tracking-[0.1em] text-[#9CA3AF]">Delivery</p>
+                          <p className="mt-1 font-black leading-5 text-white">{service.deliveryTime}</p>
                         </div>
                       </div>
-                      <p className="mt-2 rounded-xl border border-[#FFF8F1] bg-white/80 px-3 py-2 text-xs leading-5 text-[#111827]">
-                        <strong className="text-[#0B0B0F]">Refill/support:</strong> {service.refillPolicy}
+                      <p className="mt-2 rounded-xl bg-white/[.05] px-3 py-2 text-xs leading-5 text-[#D1D5DB]">
+                        <strong className="text-white">Refill/support:</strong> {service.refillPolicy}
                       </p>
 
-                      <div className="mt-4 grid gap-2 min-[420px]:grid-cols-2 sm:mt-5">
+                      <div className="mt-4 grid gap-2 min-[390px]:grid-cols-2">
                         <Link
                           href={packagesPath}
                           className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white shadow-[0_12px_26px_rgba(255, 196, 0, .28)] transition hover:-translate-y-0.5"
                         >
                           View Packages
                         </Link>
-                        <OrderNowButton
-                          nextPath={nextPath}
-                          className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-[#FFF3E0] bg-white px-4 py-2.5 text-xs font-black text-[#FF9F00] transition hover:border-[#FF9F00] hover:bg-[#FFF8F1]"
+                        <Link
+                          href={serviceDetailPath}
+                          className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-4 py-2.5 text-xs font-black text-[#D1D5DB] transition hover:border-orange-400/45 hover:text-white"
                         >
-                          Start Order <ArrowRight className="h-4 w-4" />
-                        </OrderNowButton>
+                          Service Details
+                        </Link>
                       </div>
                     </div>
                   </article>
@@ -497,7 +495,7 @@ export default function ServicesPageContent({
           </div>
         </div>
 
-        <section aria-labelledby="complete-service-directory-heading" className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+        {false ? <section aria-labelledby="complete-service-directory-heading" className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/20 bg-[#111111] p-5 shadow-[0_20px_48px_-34px_rgba(255,122,0,.55)] sm:p-7">
             <div className="max-w-3xl">
               <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#FF9F00]">Compact service directory</p>
@@ -624,11 +622,11 @@ export default function ServicesPageContent({
               })}
             </div>
           </div>
-        </section>
+        </section> : null}
 
         <HowToOrderSection compactMobile />
 
-        <section className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
+        {false ? <section className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8">
             <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
               Service FAQs
@@ -669,33 +667,25 @@ export default function ServicesPageContent({
               })}
             </div>
           </div>
-        </section>
+        </section> : null}
 
-        <section className="relative scroll-mt-28 px-4 pt-10 sm:px-6 sm:pt-14 lg:px-8">
-          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/85 bg-white/78 p-5 shadow-[0_24px_58px_-32px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-8 lg:flex lg:items-center lg:justify-between lg:gap-10">
-            <div>
-              <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Why customers choose SocialRUSH</p>
-              <h2 className="mt-2 text-2xl font-black text-[#0B0B0F]">A simpler way to start and track growth</h2>
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {customerBenefits.map((benefit) => (
-                  <p key={benefit} className="flex items-center gap-2 text-sm font-semibold text-[#111827]">
-                    <CheckCircle2 className="h-4 w-4 shrink-0 text-emerald-600" />
-                    {benefit}
-                  </p>
-                ))}
-              </div>
+        <section className="relative scroll-mt-28 px-4 pt-8 sm:px-6 sm:pt-12 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-white/10 bg-[#111111] p-5 text-center shadow-[0_24px_58px_-34px_rgba(255,122,0,.55)] sm:p-8">
+            <h2 className="text-2xl font-black text-white sm:text-3xl">Ready to Choose Your Growth Service?</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-[#D1D5DB]">
+              Compare available options, review clear pricing and start your order with confidence.
+            </p>
+            <div className="mx-auto mt-5 grid max-w-xl gap-2 min-[390px]:grid-cols-2">
+              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,122,0,.8)] transition hover:-translate-y-0.5">
+                View Packages <ArrowRight className="h-4 w-4" />
+              </Link>
+              <Link href="/register" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/45">
+                Create Account
+              </Link>
             </div>
-            <div className="mt-7 shrink-0 lg:mt-0">
-              <OrderNowButton
-                nextPath="/dashboard/new-order"
-                className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_16px_34px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5 sm:w-auto"
-              >
-                Start Your First Order <ArrowRight className="h-4 w-4" />
-              </OrderNowButton>
-              <p className="mt-3 flex items-center justify-center gap-2 text-[10px] font-semibold text-[#111827]">
-                <CreditCard className="h-3.5 w-3.5" /> Secure wallet checkout
-              </p>
-            </div>
+            <a href="https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20service" target="_blank" rel="noopener noreferrer" className="mt-4 inline-flex min-h-10 items-center justify-center gap-2 rounded-xl px-4 py-2 text-xs font-bold text-emerald-300 transition hover:bg-emerald-400/10">
+              <Headphones className="h-4 w-4" /> WhatsApp support
+            </a>
           </div>
         </section>
       </main>

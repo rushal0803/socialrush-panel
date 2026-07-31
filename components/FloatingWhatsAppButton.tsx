@@ -9,6 +9,7 @@ export default function FloatingWhatsAppButton() {
   const pathname = usePathname();
   const hasInlineOrderHelp = pathname === "/dashboard/order-summary";
   const isPackagesRoute = pathname === "/packages";
+  const isServicesRoute = pathname === "/services";
   const isCheckoutRoute =
     pathname.includes("order-summary") ||
     pathname.includes("/checkout") ||
@@ -24,7 +25,7 @@ export default function FloatingWhatsAppButton() {
     pathname === "/dashboard/orders" ||
     pathname === "/dashboard/order-history";
 
-  if (hasInlineOrderHelp || isPackagesRoute || isWalletRoute || isCheckoutRoute || isAdminRoute || isDashboardActionRoute) return null;
+  if (hasInlineOrderHelp || isPackagesRoute || isServicesRoute || isWalletRoute || isCheckoutRoute || isAdminRoute || isDashboardActionRoute) return null;
 
   return (
     <a
