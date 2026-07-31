@@ -26,6 +26,7 @@ import {
 } from "@/lib/seo/india-service-pages";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import { blogArticles } from "@/components/marketing/blog/blogData";
+import { getLiveServiceFacts } from "@/lib/seo/live-service";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -188,7 +189,7 @@ function jsonLd(value: object) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-export default function IndiaServiceLandingPage({
+export default async function IndiaServiceLandingPage({
   slug,
   canonicalPath = getCanonicalIndiaServicePath(slug),
 }: {
@@ -196,7 +197,17 @@ export default function IndiaServiceLandingPage({
   canonicalPath?: string;
 }) {
   const page = getIndiaServicePage(slug);
-  const faqs = getIndiaServiceFaqs(slug);
+  const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
+  const available = Boolean(live?.available);
+  const currentPrice = live?.rate;
+  const delivery = live?.deliveryTime || "Current estimate unavailable";
+  const refill = live?.refillPolicy || "Current terms unavailable";
+  const faqs = getIndiaServiceFaqs(slug).map((faq) => {
+    if (faq.question.startsWith("What is the price")) return { ...faq, answer: currentPrice ? `The current starting rate is ₹${currentPrice.toLocaleString("en-IN")} per 1,000 ${page.unitName}. The exact total is shown before confirmation.` : "Live pricing is temporarily unavailable. Check the Services page before ordering." };
+    if (faq.question === "How long does delivery take?") return { ...faq, answer: `The current estimate is ${delivery}. Actual timing can vary with quantity, destination availability, and platform conditions.` };
+    if (faq.question === "Is refill support available?") return { ...faq, answer: `${refill}. Confirm the current coverage before ordering.` };
+    return faq;
+  });
   const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
   const blogKey = page.platformKey === "x" ? "twitter" : page.platformKey;
   const relatedBlogs = (relatedBlogMap[blogKey] ?? relatedBlogMap.instagram)
@@ -250,9 +261,7 @@ export default function IndiaServiceLandingPage({
     ],
     [
       "Clear pricing before checkout",
-      `Review the current ₹${page.price.toLocaleString(
-        "en-IN",
-      )} per 1K rate and exact campaign total before confirming.`,
+      currentPrice ? `Review the current ₹${currentPrice.toLocaleString("en-IN")} per 1K rate and exact campaign total before confirming.` : "Review the current rate and exact campaign total before confirming.",
     ],
     [
       "Easy public-link ordering",
@@ -340,9 +349,9 @@ export default function IndiaServiceLandingPage({
     offers: {
       "@type": "Offer",
       priceCurrency: "INR",
-      price: page.price,
+      ...(currentPrice ? { price: currentPrice } : {}),
       unitText: `1000 ${page.unitName}`,
-      availability: "https://schema.org/InStock",
+      availability: available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       url: `${SEO_SITE_URL}${packagesHref}`,
     },
   };
@@ -385,10 +394,10 @@ export default function IndiaServiceLandingPage({
                 View Packages <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
-                href={orderHref}
+                href={available ? orderHref : "#service-status"}
                 className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-black text-[#FF9F00]"
               >
-                Order Now
+                {available ? "Start Order" : "Temporarily unavailable"}
               </Link>
               <a
                 href={whatsappHref}
@@ -407,14 +416,14 @@ export default function IndiaServiceLandingPage({
                 <PlatformIcon platform={page.platform} className="h-7 w-7" />
               </span>
               <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700">
-                Available in India
+                {available ? "Available now" : "Temporarily unavailable"}
               </span>
             </div>
             <p className="mt-7 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">
               {page.serviceName}
             </p>
             <p className="mt-2 text-4xl font-black text-[#0B0B0F]">
-              ₹{page.price.toLocaleString("en-IN")}{" "}
+              {currentPrice ? `₹${currentPrice.toLocaleString("en-IN")}` : "Live price unavailable"}{" "}
               <span className="text-sm text-[#111827]">per 1K</span>
             </p>
             <p className="mt-3 text-xs leading-6 text-[#111827]">
@@ -430,21 +439,22 @@ export default function IndiaServiceLandingPage({
               <div className="flex justify-between gap-4">
                 <dt className="text-[#111827]">Delivery</dt>
                 <dd className="text-right font-black text-[#0B0B0F]">
-                  {page.delivery}
+                  {delivery}
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
                 <dt className="text-[#111827]">Refill/support</dt>
                 <dd className="max-w-[65%] text-right font-black text-[#0B0B0F]">
-                  {page.refill}
+                  {refill}
                 </dd>
               </div>
             </dl>
             <Link
-              href={orderHref}
+              id="service-status"
+              href={available ? orderHref : "/services"}
               className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white"
             >
-              Buy {page.serviceName} Now
+              {available ? `Start ${page.serviceName} Order` : "View available alternatives"}
             </Link>
           </aside>
         </div>
