@@ -4,115 +4,69 @@ import Link from "next/link";
 import { useState } from "react";
 import Logo from "@/components/Logo";
 import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
-import { platformDisclaimer } from "@/lib/trust/proof-content";
 
-const groups = [
-  { title: "Growth services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Likes", "/youtube-likes"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"], ["Telegram Members", "/telegram-members"], ["Twitter/X Followers", "/twitter-followers"]] },
-  { title: "Platform", links: [["Services", "/services"], ["Packages", "/packages"], ["Blog", "/blog"], ["Pricing", "/pricing"], ["Login", "/login"], ["Register", "/register"], ["Dashboard", "/dashboard"], ["Support", "/dashboard/support"]] },
-  { title: "Company & legal", links: [["About", "/about"], ["Case Studies", "/case-studies"], ["Customer Safety", "/testimonials"], ["FAQ", "/faq"], ["Contact", "/contact"], ["Privacy Policy", "/privacy-policy"], ["Refund Policy", "/refund-policy"], ["Terms & Conditions", "/terms-and-conditions"]] },
-];
+type FooterGroup = { title: string; links: readonly (readonly [string, string])[] };
 
-const mobileGroups = [
-  { title: "Services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"]] },
-  { title: "Company", links: [["About", "/about"], ["Case Studies", "/case-studies"], ["Blog", "/blog"], ["Pricing", "/pricing"]] },
-  { title: "Support", links: [["Services", "/services"], ["Packages", "/packages"], ["FAQ", "/faq"], ["Contact", "/contact"], ["Support", "/dashboard/support"]] },
-  { title: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Refund Policy", "/refund-policy"], ["Terms & Conditions", "/terms-and-conditions"]] },
+const groups: readonly FooterGroup[] = [
+  { title: "Company", links: [["About Us", "/about"], ["Contact Us", "/contact"], ["How It Works", "/#how-it-works"], ["Reviews", "/reviews"], ["Case Studies", "/case-studies"], ["Customer Safety", "/testimonials"], ["Blog", "/blog"]] },
+  { title: "Top Services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"]] },
+  { title: "Popular Services", links: [["Telegram Members", "/telegram-members"], ["TikTok Followers", "/tiktok-followers"], ["Twitter/X Followers", "/twitter-followers"], ["LinkedIn Likes", "/linkedin-likes"], ["Facebook Likes", "/facebook-likes"]] },
+  { title: "More Platforms", links: [["Instagram Services", "/services?platform=instagram"], ["YouTube Services", "/services?platform=youtube"], ["Facebook Services", "/services?platform=facebook"], ["LinkedIn Services", "/services?platform=linkedin"], ["Telegram Services", "/services?platform=telegram"], ["TikTok Services", "/services?platform=tiktok"], ["Twitter/X Services", "/services?platform=x"]] },
+  { title: "Customer Account", links: [["Dashboard", "/dashboard"], ["New Order", "/dashboard/new-order"], ["Orders", "/dashboard/orders"], ["Saved Profiles", "/dashboard/saved-profiles"], ["Rewards", "/dashboard/rewards"], ["Wallet", "/dashboard/wallet"], ["Support", "/dashboard/support"]] },
+  { title: "Help & Legal", links: [["FAQ", "/faq"], ["Contact Support", "/contact"], ["Refund Policy", "/refund-policy"], ["Privacy Policy", "/privacy-policy"], ["Terms and Conditions", "/terms-and-conditions"]] },
 ] as const;
 
+const payments = ["UPI", "Cards via Razorpay", "Net Banking", "Wallet Balance"] as const;
+const trust = ["Secure Checkout", "Wallet Support", "Public-Link Ordering", "Order Tracking", "Customer Support", "Multi-Currency Pricing"] as const;
+
+function groupId(title: string) { return `footer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`; }
+
+function FooterLinks({ group }: { group: FooterGroup }) {
+  return <ul className="mt-4 space-y-2.5">{group.links.map(([label, href]) => <li key={label}><Link href={href} className="inline-flex min-h-7 items-center text-sm leading-6 text-[#A8AFBD] outline-none transition hover:text-orange-300 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-orange-400">{label}</Link></li>)}</ul>;
+}
+
 export default function MarketingFooter({ tone = "default" }: { tone?: "default" | "light3d" }) {
-  const isLight3d = tone === "light3d";
-  const whatsappUrl = "https://wa.me/918860330771";
-  const [openMobileGroup, setOpenMobileGroup] = useState<string>(mobileGroups[0].title);
-
+  void tone;
+  const [openGroup, setOpenGroup] = useState(groups[1].title);
+  const year = new Date().getFullYear();
   return (
-    <footer className={isLight3d ? "brand-footer relative overflow-hidden px-4 pb-[calc(4.5rem+env(safe-area-inset-bottom))] pt-8 text-white sm:px-6 sm:pb-9 sm:pt-12 lg:px-8" : "brand-footer relative px-4 pb-[calc(4.5rem+env(safe-area-inset-bottom))] pt-8 text-white sm:px-6 sm:pb-8 sm:pt-12 lg:px-8"}>
-      <div className={isLight3d ? "pointer-events-none absolute -left-24 top-6 h-64 w-64 rounded-full bg-orange-200/35 blur-3xl" : "pointer-events-none absolute -left-24 top-8 h-64 w-64 rounded-full bg-orange-600/15 blur-3xl"} />
-      <div className={isLight3d ? "pointer-events-none absolute -right-20 bottom-8 h-64 w-64 rounded-full bg-amber-200/35 blur-3xl" : "pointer-events-none absolute -right-20 bottom-8 h-64 w-64 rounded-full bg-amber-400/15 blur-3xl"} />
+    <footer className="relative overflow-hidden border-t border-orange-400/15 bg-[#07080D] px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-10 text-white sm:px-6 sm:pb-10 lg:px-8 lg:pt-14">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-56 w-[34rem] max-w-full -translate-x-1/2 bg-orange-500/[.08] blur-3xl" />
       <div className="relative mx-auto max-w-7xl">
-        <div className={isLight3d ? "brand-footer-surface grid gap-4 rounded-3xl border p-4 backdrop-blur-2xl sm:gap-6 sm:p-8 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-10" : "brand-footer-surface grid gap-4 border pb-6 sm:gap-6 lg:grid-cols-[1.4fr_1fr_1fr_1fr] lg:gap-10 lg:pb-12"}>
-          <div className={isLight3d ? "rounded-2xl border border-[#FFF8F1] bg-white/80 p-4 sm:p-5" : ""}>
-            <Logo light className="[&>img]:h-11 sm:[&>img]:h-10 md:[&>img]:h-12" />
-            <p className={isLight3d ? "mt-3 max-w-sm text-xs leading-6 text-[#111827] sm:mt-5" : "mt-3 max-w-sm text-xs leading-6 text-slate-400 sm:mt-5"}>
-              SocialRUSH helps creators and brands compare social growth services, order with a public link and track progress securely.
-            </p>
-            <FooterSocialLinks />
-            <p className={isLight3d ? "mt-4 max-w-sm text-[11px] leading-6 text-[#111827]" : "mt-4 max-w-sm text-[11px] leading-6 text-slate-500"}>
-              {platformDisclaimer}
-            </p>
-            <div className="mt-4 grid grid-cols-2 gap-2 sm:mt-6 sm:flex sm:flex-row sm:flex-wrap">
-              <Link
-                href="/packages"
-                className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2.5 text-center text-xs font-bold text-white shadow-[0_14px_30px_-14px_rgba(255,196,0,.65)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4" : "inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-600 px-3 py-2.5 text-center text-xs font-bold transition hover:bg-orange-500 sm:w-auto sm:px-4"}
-              >
-                View Packages
-              </Link>
-              <Link
-                href="/register"
-                className={isLight3d ? "inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-2.5 text-center text-xs font-bold text-[#FF9F00] transition sm:w-auto sm:px-4" : "inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-3 py-2.5 text-center text-xs font-bold text-white transition hover:border-orange-400/35 sm:w-auto sm:px-4"}
-              >
-                Create Account
-              </Link>
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className={isLight3d ? "col-span-2 inline-flex min-h-10 items-center justify-center rounded-xl px-3 py-2 text-xs font-bold text-emerald-700 transition hover:bg-emerald-50 sm:w-auto" : "col-span-2 inline-flex min-h-10 items-center justify-center rounded-xl px-3 py-2 text-xs font-bold text-emerald-300 transition hover:bg-emerald-400/10 sm:w-auto"}
-              >
-                WhatsApp Support
-              </a>
+        <section className="grid gap-8 rounded-3xl border border-white/[.08] bg-[#101219] p-5 sm:p-7 lg:grid-cols-[1.35fr_.65fr] lg:items-start lg:p-8" aria-label="About SocialRUSH">
+          <div className="min-w-0">
+            <Logo light className="[&>img]:h-11 [&>img]:max-w-[190px] sm:[&>img]:h-12" />
+            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#A8AFBD]">SocialRUSH helps creators, brands and businesses order social media growth services through transparent pricing, public-link ordering, secure checkout, dashboard tracking and customer support.</p>
+            <div className="mt-5 flex flex-col items-start gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-5">
+              <a href="mailto:support@getsocialrush.com" className="min-h-10 break-all py-2 font-semibold text-orange-300 outline-none hover:text-orange-200 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-orange-400">support@getsocialrush.com</a>
+              <a href="https://wa.me/918860330771" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center py-2 font-semibold text-emerald-300 outline-none hover:text-emerald-200 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-emerald-400">WhatsApp Support</a>
             </div>
           </div>
+          <FooterSocialLinks />
+        </section>
 
-          <div className="space-y-2 lg:hidden">
-            {mobileGroups.map((group) => {
-              const isOpen = openMobileGroup === group.title;
-              return (
-                <div key={group.title} className="overflow-hidden border-b border-white/10">
-                  <button
-                    type="button"
-                    aria-expanded={isOpen}
-                    aria-controls={`footer-mobile-${group.title.toLowerCase()}`}
-                    onClick={() => setOpenMobileGroup((current) => (current === group.title ? "" : group.title))}
-                    className="flex min-h-11 w-full items-center justify-between px-2 py-2.5 text-left text-xs font-black uppercase tracking-[0.14em] text-white"
-                  >
-                    {group.title}
-                    <span className="grid h-7 w-7 place-items-center rounded-lg bg-orange-500/15 text-orange-200" aria-hidden="true">
-                      {isOpen ? "−" : "+"}
-                    </span>
-                  </button>
-                  <div id={`footer-mobile-${group.title.toLowerCase()}`} className={isOpen ? "grid grid-rows-[1fr]" : "grid grid-rows-[0fr]"}>
-                    <div className="overflow-hidden">
-                      <div className="grid grid-cols-2 gap-x-3 gap-y-1 pb-3 pt-1">
-                        {group.links.map(([label, href]) => (
-                          <Link key={label} href={href} className="rounded-lg px-2 py-2 text-xs font-semibold text-slate-300 transition hover:bg-orange-500/10 hover:text-orange-200">
-                            {label}
-                          </Link>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
+        <nav className="mt-8" aria-label="Footer navigation">
+          <div className="space-y-1 lg:hidden">
+            {groups.map((group) => { const open = openGroup === group.title; const id = groupId(group.title); return <section key={group.title} className="border-b border-white/10"><h2><button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpenGroup(open ? "" : group.title)} className="flex min-h-14 w-full items-center justify-between gap-4 py-3 text-left text-xs font-black uppercase tracking-[.14em] text-white outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-400"><span>{group.title}</span><span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-orange-400/20 bg-orange-500/10 text-lg text-orange-300">{open ? "−" : "+"}</span></button></h2><div id={id} className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}><div className="overflow-hidden"><div className="grid grid-cols-1 gap-x-4 pb-4 min-[390px]:grid-cols-2"><FooterLinks group={group} /></div></div></div></section>; })}
           </div>
+          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-3 xl:grid-cols-6">
+            {groups.map((group) => <section key={group.title} className="min-w-0"><h2 className="text-xs font-black uppercase tracking-[.14em] text-white">{group.title}</h2><FooterLinks group={group} /></section>)}
+          </div>
+        </nav>
 
-          {groups.map((group) => (
-            <div key={group.title} className={isLight3d ? "hidden rounded-2xl border border-[#FFF8F1] bg-white/80 p-4 sm:p-5 lg:block" : "hidden lg:block"}>
-              <h3 className={isLight3d ? "text-xs font-bold text-[#0B0B0F]" : "text-xs font-bold"}>{group.title}</h3>
-              <div className={isLight3d ? "mt-5 space-y-3 text-xs text-[#111827]" : "mt-5 space-y-3 text-xs text-slate-400"}>
-                {group.links.map(([label, href]) => (
-                  <Link key={label} href={href} className={isLight3d ? "block transition hover:text-[#0B0B0F]" : "block transition hover:text-white"}>
-                    {label}
-                  </Link>
-                ))}
-              </div>
-            </div>
-          ))}
-        </div>
+        <section className="mt-10 grid gap-6 border-y border-white/10 py-7 md:grid-cols-2" aria-label="Payment and trust information">
+          <div><h2 className="text-xs font-black uppercase tracking-[.14em]">Supported Payment Methods</h2><ul className="mt-4 flex flex-wrap gap-2">{payments.map(item => <li key={item} className="rounded-lg border border-white/10 bg-white/[.04] px-3 py-2 text-xs font-semibold text-[#D1D5DB]">{item}</li>)}</ul></div>
+          <div><h2 className="text-xs font-black uppercase tracking-[.14em]">Ordering with confidence</h2><ul className="mt-4 flex flex-wrap gap-x-4 gap-y-2">{trust.map(item => <li key={item} className="flex items-center gap-2 text-xs font-semibold text-[#A8AFBD]"><span className="h-1.5 w-1.5 rounded-full bg-orange-400" />{item}</li>)}</ul></div>
+        </section>
 
-        <div className={isLight3d ? "mt-6 flex flex-col justify-between gap-3 border-t border-[#FFF8F1] pt-6 text-[10px] text-[#111827] sm:flex-row" : "flex flex-col justify-between gap-3 pt-7 text-[10px] text-slate-500 sm:flex-row"}>
-          <p>© 2026 SocialRUSH. All rights reserved.</p>
-          <p>Secure Checkout · Wallet Support · WhatsApp Support · Multi-currency Pricing · Order Tracking</p>
+        <section className="py-7 text-xs leading-6 text-[#8F96A3]" aria-label="Customer safety and independence">
+          <p>SocialRUSH is an independent service provider and is not affiliated with, endorsed by or officially connected to Instagram, Meta, YouTube, Google, LinkedIn, X, TikTok or Telegram.</p>
+          <p className="mt-2">SocialRUSH never asks for your social media password, OTP or recovery code. Only a valid public profile, post, page, channel or video link is required.</p>
+        </section>
+
+        <div className="flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-[#8F96A3] sm:flex-row sm:items-center sm:justify-between">
+          <p>© {year} SocialRUSH. All rights reserved.</p>
+          <nav aria-label="Footer legal links"><ul className="flex flex-wrap gap-x-5 gap-y-2"><li><Link className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400" href="/privacy-policy">Privacy</Link></li><li><Link className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400" href="/terms-and-conditions">Terms</Link></li><li><Link className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400" href="/refund-policy">Refund Policy</Link></li></ul></nav>
         </div>
       </div>
     </footer>
