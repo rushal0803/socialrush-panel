@@ -1,0 +1,1 @@
+"use client";import{useState}from"react";export default function CopyReferral({value}:{value:string}){const[copied,setCopied]=useState(false);return <button onClick={async()=>{await navigator.clipboard.writeText(value);setCopied(true)}} className="mt-4 min-h-11 rounded-xl bg-orange-500 px-5 font-black">{copied?"Copied":"Copy referral link"}</button>}

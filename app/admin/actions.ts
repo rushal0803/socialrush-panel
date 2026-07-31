@@ -17,6 +17,9 @@ async function requireAdmin() {
 function text(formData: FormData, name: string) { return String(formData.get(name) || "").trim(); }
 function number(formData: FormData, name: string) { return Number(formData.get(name)); }
 
+export async function updateRewardRules(formData: FormData) { const {supabase,user}=await requireAdmin();const {error}=await supabase.from("reward_programme_rules").update({enabled:text(formData,"enabled")==="true",manual_approval:text(formData,"manual_approval")==="true",minimum_order_amount:number(formData,"minimum_order_amount"),referrer_reward:number(formData,"referrer_reward"),new_customer_reward:number(formData,"new_customer_reward"),referral_expiry_days:number(formData,"referral_expiry_days"),loyalty_spend_threshold:number(formData,"loyalty_spend_threshold")||null,loyalty_reward:number(formData,"loyalty_reward")||null,updated_by:user.id,updated_at:new Date().toISOString()}).eq("id",true);if(error)throw new Error(error.message);revalidatePath("/admin/rewards");revalidatePath("/dashboard/rewards") }
+export async function reviewReward(formData: FormData){const{supabase}=await requireAdmin();const id=text(formData,"id"),decision=text(formData,"decision");if(decision==="credit"){const{error}=await supabase.rpc("admin_credit_reward",{p_event:id});if(error)throw new Error(error.message)}else{await supabase.from("customer_reward_events").update({status:"rejected",internal_note:text(formData,"note"),updated_at:new Date().toISOString()}).eq("id",id)}revalidatePath("/admin/rewards");revalidatePath("/dashboard/rewards")}
+
 export async function moderateReview(formData: FormData) {
   const { supabase, user } = await requireAdmin(); const id=text(formData,"id"); const status=text(formData,"status");
   if(!["pending","approved","rejected"].includes(status)) throw new Error("Invalid review status.");
