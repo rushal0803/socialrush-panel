@@ -17,6 +17,18 @@ async function requireAdmin() {
 function text(formData: FormData, name: string) { return String(formData.get(name) || "").trim(); }
 function number(formData: FormData, name: string) { return Number(formData.get(name)); }
 
+export async function moderateReview(formData: FormData) {
+  const { supabase, user } = await requireAdmin(); const id=text(formData,"id"); const status=text(formData,"status");
+  if(!["pending","approved","rejected"].includes(status)) throw new Error("Invalid review status.");
+  const {error}=await supabase.from("customer_reviews").update({moderation_status:status,featured:text(formData,"featured")==="true",published_at:status==="approved"?new Date().toISOString():null,updated_at:new Date().toISOString()}).eq("id",id); if(error)throw new Error(error.message);
+  await supabase.from("review_moderation_notes").upsert({review_id:id,note:text(formData,"note"),updated_by:user.id,updated_at:new Date().toISOString()}); revalidatePath("/admin/reviews"); revalidatePath("/reviews");
+}
+
+export async function saveCaseStudy(formData: FormData) {
+  const {supabase}=await requireAdmin(); const id=text(formData,"id"); const published=text(formData,"published")==="true"; const permission=text(formData,"permission_confirmed")==="true"; if(published&&!permission)throw new Error("Publishing requires confirmed customer permission.");
+  const payload={slug:text(formData,"slug").toLowerCase().replace(/[^a-z0-9-]+/g,"-").replace(/^-|-$/g,""),title:text(formData,"title"),platform:text(formData,"platform"),service_name:text(formData,"service_name"),customer_type:text(formData,"customer_type"),challenge:text(formData,"challenge"),service_selected:text(formData,"service_selected"),ordered_quantity:number(formData,"ordered_quantity")||null,delivery_timeline:text(formData,"delivery_timeline")||null,outcome:text(formData,"outcome"),customer_quote:text(formData,"customer_quote")||null,permission_confirmed:permission,published,featured:text(formData,"featured")==="true",seo_title:text(formData,"seo_title")||null,seo_description:text(formData,"seo_description")||null,related_service_href:text(formData,"related_service_href")||null,related_packages_href:text(formData,"related_packages_href")||null,published_at:published?new Date().toISOString():null,updated_at:new Date().toISOString()}; const result=id?await supabase.from("case_studies").update(payload).eq("id",id):await supabase.from("case_studies").insert(payload);if(result.error)throw new Error(result.error.message);revalidatePath("/admin/case-studies");revalidatePath("/case-studies");
+}
+
 export async function addService(formData: FormData) {
   const { supabase } = await requireAdmin();
   const isActive = text(formData, "is_active") !== "false";

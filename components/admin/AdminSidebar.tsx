@@ -9,7 +9,8 @@ import { logout } from "@/app/auth/actions";
 const links = [
   ["Overview", "/admin/dashboard", "grid"], ["Services", "/admin/services", "layers"], ["Packages", "/admin/packages", "tag"],
   ["Orders", "/admin/orders", "cart"], ["Users", "/admin/users", "users"], ["Payments", "/admin/payments", "wallet"],
-  ["Support", "/admin/support", "support"], ["Settings", "/admin/settings", "settings"],
+  ["Support", "/admin/support", "support"], ["Reviews", "/admin/reviews", "users"],
+  ["Case Studies", "/admin/case-studies", "layers"], ["Settings", "/admin/settings", "settings"],
 ] as const;
 
 function NavIcon({ name }: { name: string }) {
