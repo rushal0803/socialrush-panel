@@ -2,6 +2,7 @@
 
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeHelp, Mail, MessageSquare, Ticket, WalletCards, CircleAlert } from "lucide-react";
@@ -20,7 +21,7 @@ type MessageType = {
   created_at: string;
 };
 
-const categories = ["Order issue", "Payment issue", "Refill request", "Account issue", "Service question"];
+const categories = ["Order pending", "Partial delivery", "Drop or refill", "Incorrect link", "Cancellation", "Payment issue", "Other", "Refill request"];
 
 const statusStyle: Record<string, string> = {
   open: "bg-orange-500/10 text-orange-200 ring-orange-400/25",
@@ -80,6 +81,7 @@ function parseSubject(subject: string) {
 }
 
 export default function SupportPage() {
+  const searchParams = useSearchParams();
   const [tickets, setTickets] = useState<TicketType[]>([]);
   const [messages, setMessages] = useState<MessageType[]>([]);
   const [activeId, setActiveId] = useState("");
@@ -106,6 +108,10 @@ export default function SupportPage() {
     void loadTickets();
     void createClient().auth.getUser().then(({ data }) => setUserId(data.user?.id || ""));
   }, [loadTickets]);
+
+  useEffect(() => {
+    if (searchParams.get("order")) setCreating(true);
+  }, [searchParams]);
 
   useEffect(() => {
     if (!activeId) {
@@ -413,7 +419,7 @@ export default function SupportPage() {
               <form action={createTicket} className="mt-6 space-y-4">
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Category
-                  <select name="category" required className="dashboard-input mt-2">
+                  <select name="category" required defaultValue={searchParams.get("category") || (searchParams.get("status") === "partial" ? "Partial delivery" : "Other")} className="dashboard-input mt-2">
                     {categories.map((item) => (
                       <option key={item}>{item}</option>
                     ))}
@@ -426,6 +432,7 @@ export default function SupportPage() {
                     name="subject"
                     required
                     minLength={3}
+                    defaultValue={searchParams.get("order") ? `Support for order ${searchParams.get("order")}` : ""}
                     className="dashboard-input mt-2"
                     placeholder="Briefly describe the issue"
                   />
@@ -437,6 +444,7 @@ export default function SupportPage() {
                     name="message"
                     required
                     rows={5}
+                    defaultValue={searchParams.get("order") ? `Order ID: ${searchParams.get("order")}\nPlatform: ${searchParams.get("platform") || ""}\nService: ${searchParams.get("service") || ""}\nCurrent status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe what you need help with:` : ""}
                     className="dashboard-input mt-2 resize-none"
                     placeholder="Include relevant order or transaction details..."
                   />
