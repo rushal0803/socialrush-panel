@@ -114,13 +114,16 @@ export async function POST(request: NextRequest) {
 
   const { data: matchedService } = await supabase
     .from("services")
-    .select("id")
+    .select("id, accepts_new_orders, health_status")
     .eq("status", "active")
     .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
     .limit(1)
     .maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
+  if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
+    return NextResponse.json({ error: "This service is temporarily unavailable. Please choose another service." }, { status: 409 });
+  }
 
   const admin = createAdminClient();
 

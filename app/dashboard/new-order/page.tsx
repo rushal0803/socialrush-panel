@@ -33,6 +33,8 @@ import { calculateServiceTotal } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import { openCheckoutRazorpay } from "@/lib/payments/checkout-razorpay-client";
+import ServiceHealthBadge from "@/components/ServiceHealthBadge";
+import { useServiceHealth } from "@/lib/use-service-health";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -100,6 +102,7 @@ export default function NewOrderPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const { currency } = usePreferredCurrency("INR");
+  const healthByService = useServiceHealth();
   const resumeRequested = searchParams.get("resume") === "1";
   const requestedPlatform = platformFromQuery(searchParams.get("platform"));
   const requestedService = serviceFromQuery(searchParams.get("service"), requestedPlatform);
@@ -168,6 +171,8 @@ export default function NewOrderPage() {
   };
 
   const chooseService = (service: SmmService) => {
+    const health = healthByService[service.code];
+    if (health && (!health.acceptsNewOrders || health.status === "paused")) return;
     setSelectedService(service);
     resetOrderDetails();
     scrollTo(detailsRef);
@@ -473,6 +478,8 @@ export default function NewOrderPage() {
               {services.map((service) => {
                 const active = selectedService?.code === service.code;
                 const experience = serviceExperience[service.code];
+                const health = healthByService[service.code];
+                const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
                 return (
                   <motion.article key={service.code} whileHover={{ y: -3 }} className={`flex min-w-0 flex-col rounded-2xl border p-4 transition sm:p-5 ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
                     <div className="flex items-start justify-between gap-3">
@@ -480,11 +487,12 @@ export default function NewOrderPage() {
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
                     </div>
                     <h3 className="mt-3 text-base font-black text-white sm:text-lg">{experience.name}</h3>
+                    <div className="mt-2"><ServiceHealthBadge health={health} showMessage /></div>
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">From</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
                     <p className="mt-2 text-xs font-semibold text-emerald-300">{service.refillPolicy}</p>
                     <details className="mt-3 rounded-xl border border-white/10 bg-[#151515]"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-orange-300"><Info className="mr-2 inline h-4 w-4" />Details &amp; how it works</summary><div className="border-t border-white/10 px-3 py-3 text-xs leading-6 text-[#D1D5DB]"><p>{service.description}</p><p className="mt-2">{growthMethod(service)}</p></div></details>
-                    <button type="button" onClick={() => chooseService(service)} className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255,196,0,.65)]">
-                      {active ? "Service Selected" : "Choose Service"} <ArrowRight className="h-4 w-4" />
+                    <button type="button" disabled={unavailable} onClick={() => chooseService(service)} className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255,196,0,.65)] disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-[#9CA3AF] disabled:shadow-none">
+                      {unavailable ? "Choose another service" : active ? "Service Selected" : "Choose Service"} <ArrowRight className="h-4 w-4" />
                     </button>
                   </motion.article>
                 );
@@ -500,6 +508,7 @@ export default function NewOrderPage() {
                 <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 3</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Enter campaign details</h2></div>
                 <button type="button" onClick={() => scrollTo(serviceRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Change service</button>
               </div>
+              {(["high_demand", "slower_delivery"] as const).includes(healthByService[selectedService.code]?.status as "high_demand" | "slower_delivery") ? <div className="mt-4 rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4"><ServiceHealthBadge health={healthByService[selectedService.code]} showMessage /><p className="mt-2 text-xs leading-5 text-amber-100">Delivery may take longer than the standard estimate. The configured estimate remains {selectedService.deliveryTime}.</p></div> : null}
               <div className="mt-5 grid gap-5 lg:grid-cols-2">
                 <label className="block text-xs font-black text-white">
                   <span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4 text-orange-400" />Public Link / Username</span>

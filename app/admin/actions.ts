@@ -59,6 +59,40 @@ export async function updateService(formData: FormData) {
   revalidatePath("/admin/services");
 }
 
+export async function updateServiceHealth(formData: FormData) {
+  const { supabase, user } = await requireAdmin();
+  const id = number(formData, "id");
+  const healthStatus = text(formData, "health_status");
+  const allowed = new Set(["stable", "high_demand", "slower_delivery", "limited", "paused", "maintenance"]);
+  if (!Number.isInteger(id) || !allowed.has(healthStatus)) throw new Error("Invalid service health update.");
+
+  const { data: current, error: readError } = await supabase.from("services").select("health_status").eq("id", id).single();
+  if (readError || !current) throw new Error("Service health could not be loaded.");
+  const acceptsNewOrders = text(formData, "accepts_new_orders") === "true" && healthStatus !== "paused";
+  const lastTested = text(formData, "last_tested_at");
+  const internalNote = text(formData, "admin_health_note") || null;
+  const { error } = await supabase.from("services").update({
+    health_status: healthStatus,
+    health_message: text(formData, "health_message") || null,
+    accepts_new_orders: acceptsNewOrders,
+    last_tested_at: lastTested ? new Date(lastTested).toISOString() : null,
+    health_updated_at: new Date().toISOString(),
+  }).eq("id", id);
+  if (error) throw new Error(`Health update failed: ${error.message}`);
+  const { error: historyError } = await supabase.from("service_health_history").insert({
+    service_id: id,
+    previous_status: current.health_status,
+    new_status: healthStatus,
+    changed_by: user.id,
+    internal_reason: internalNote,
+  });
+  if (historyError) throw new Error(`Health saved, but audit history failed: ${historyError.message}`);
+  revalidatePath("/admin/services");
+  revalidatePath("/dashboard/new-order");
+  revalidatePath("/services");
+  revalidatePath("/packages");
+}
+
 export async function deleteService(formData: FormData) {
   const { supabase } = await requireAdmin();
   await supabase.from("services").delete().eq("id", number(formData, "id"));
