@@ -41,6 +41,16 @@ const platforms: Array<{ key: Platform; label: string }> = [
   { key: "X", label: "X / Twitter" },
 ];
 
+const platformIconColors: Record<Platform, string> = {
+  Instagram: "text-pink-400",
+  YouTube: "text-red-500",
+  Facebook: "text-blue-400",
+  LinkedIn: "text-sky-400",
+  Telegram: "text-cyan-400",
+  TikTok: "text-fuchsia-300",
+  X: "text-white",
+};
+
 const serviceLabels: Record<Service, string> = {
   followers: "Followers",
   subscribers: "Subscribers",
@@ -365,9 +375,9 @@ export default function PackagesPageContent({
     [activeService, hasServiceSelection, selectedPlatform],
   );
   const visibleCategoryPackages = showAllPackages ? activeCategoryPackages : activeCategoryPackages.slice(0, 6);
-  const bestValuePackageId =
-    activeCategoryPackages.find((pkg) => pkg.discountBadge === "Best Value")?.packageId ??
-    activeCategoryPackages[Math.min(2, activeCategoryPackages.length - 1)]?.packageId;
+  const bestValuePackageId = activeCategoryPackages.find(
+    (pkg) => pkg.discountBadge?.toLowerCase() === "best value",
+  )?.packageId;
   const linkRule = selectedPackage ? getPackageLinkRule(selectedPackage) : null;
   const currentLinkError = linkRule && (targetLink.trim() || showLinkError) ? validateCampaignLink(targetLink, linkRule) : "";
   const canSubmitLink = Boolean(selectedPackage && targetLink.trim() && !currentLinkError);
@@ -571,24 +581,6 @@ export default function PackagesPageContent({
     window.requestAnimationFrame(() => {
       packageHeadingRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
       window.setTimeout(() => packageHeadingRef.current?.focus(), 450);
-    });
-  }
-
-  function changeService() {
-    if (!selectedPlatform) return;
-    setHasPlatformSelection(true);
-    setHasServiceSelection(false);
-    setSelectedPackageId("");
-    setTargetLink("");
-    setError("");
-    setSuccessMessage("");
-    setShowLinkError(false);
-    requestIdRef.current = "";
-    setShowAllPackages(false);
-    updatePackageUrl(selectedPlatform);
-    window.requestAnimationFrame(() => {
-      packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-      window.setTimeout(() => serviceHeadingRef.current?.focus(), 450);
     });
   }
 
@@ -817,23 +809,12 @@ export default function PackagesPageContent({
               ) : null}
             </div>
             {hasPlatformSelection ? (
-              <CompletedPackageStepCard
-                title="Platform selected"
-                value={selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}
-                detail={hasServiceSelection ? "Change it to browse another platform." : "Next, choose the service you want."}
-                actionLabel="Change Platform"
-                onAction={() => {
-                  setSelectedPackageId("");
-                  setTargetLink("");
-                  setError("");
-                  setSuccessMessage("");
-                  requestIdRef.current = "";
-                  setHasServiceSelection(false);
-                  updatePackageUrl(selectedPlatform);
-                  platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
-                }}
-              />
+              <p className="mb-3 flex items-center gap-2 text-xs font-bold text-orange-200">
+                <CheckCircle2 className="h-4 w-4" /> Platform selected. Choose another platform at any time.
+              </p>
             ) : (
+              <p className="sr-only">Choose one of the available platforms.</p>
+            )}
               <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
                 {platforms.map((platform) => {
                   const active = hasPlatformSelection && selectedPlatform === platform.key;
@@ -842,41 +823,29 @@ export default function PackagesPageContent({
                       key={platform.key}
                       type="button"
                       onClick={() => selectPlatform(platform.key)}
-                      className={`min-w-0 rounded-2xl border p-2.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                      aria-pressed={active}
+                      className={`relative min-w-0 rounded-2xl border p-2.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         active
-                          ? "border-orange-400/80 bg-orange-500/15 shadow-[0_16px_36px_-24px_rgba(255,122,0,.75)] ring-2 ring-orange-500/10"
+                          ? "border-2 border-orange-400 bg-[#1A1612] shadow-[0_18px_40px_-24px_rgba(255,122,0,.9)]"
                           : "border-white/10 bg-[#111111] hover:border-orange-400/45"
                       } ${platform.key === "X" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
                     >
-                      <IconBadge label={platform.label}>
+                      {active ? <CheckCircle2 className="absolute right-2.5 top-2.5 h-5 w-5 text-orange-400" aria-hidden="true" /> : null}
+                      <span className={`grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-[#151515] ${active ? platformIconColors[platform.key] : "text-orange-300"}`}>
                         <PlatformIcon platform={platform.label} className="h-6 w-6" />
-                      </IconBadge>
+                      </span>
                       <span className="mt-3 block truncate text-xs font-bold text-white">{platform.label}</span>
+                      {active ? <span className="mt-1 block text-[10px] font-black uppercase tracking-[0.12em] text-orange-300">Selected</span> : null}
                     </button>
                   );
                 })}
               </div>
-            )}
           </div>
         </section>
 
         <section ref={packageStepRef} className="relative scroll-mt-28 px-4 py-4 sm:scroll-mt-32 sm:px-6 lg:px-8">
           {!hasPlatformSelection ? (
             <CompactStepCard number="2" title="Choose a service" detail="Select a platform to continue" />
-          ) : hasServiceSelection ? (
-            <div className="mx-auto w-full max-w-7xl">
-              <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-emerald-300">Step 2 complete</p>
-              <h2 ref={serviceHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                Service selected
-              </h2>
-              <CompletedPackageStepCard
-                title={`${selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} service`}
-                value={serviceLabels[activeService]}
-                detail="Next, choose one package for this service."
-                actionLabel="Change Service"
-                onAction={changeService}
-              />
-            </div>
           ) : (
             <div className="mx-auto w-full max-w-7xl rounded-[24px] border border-orange-400/20 bg-[#111111] p-4 shadow-[0_18px_42px_-30px_rgba(255,122,0,.6)] sm:p-5">
               <div className="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
@@ -903,7 +872,7 @@ export default function PackagesPageContent({
                       aria-pressed={selected}
                       className={`group flex min-h-[128px] w-full flex-col rounded-2xl border p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         selected
-                          ? "border-orange-400/80 bg-orange-500/15 shadow-[0_18px_42px_-28px_rgba(255,122,0,.82)] ring-2 ring-orange-500/15"
+                          ? "border-2 border-orange-400 bg-[#1A1612] shadow-[0_20px_44px_-26px_rgba(255,122,0,.9)]"
                           : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45 hover:bg-[#151515]"
                       }`}
                     >
@@ -923,8 +892,8 @@ export default function PackagesPageContent({
                         <span className="min-w-0 truncate text-xs font-black text-orange-200">
                           {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "View packages"}
                         </span>
-                        <span className={`shrink-0 text-xs font-black ${selected ? "text-emerald-200" : "text-white group-hover:text-orange-100"}`}>
-                          {selected ? "Selected" : "Choose →"}
+                        <span className="inline-flex min-h-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-xs font-black text-white shadow-[0_10px_22px_-12px_rgba(255,122,0,.9)]">
+                          {selected ? <><CheckCircle2 className="h-3.5 w-3.5" /> Selected</> : "Compare Packages"}
                         </span>
                       </span>
                     </button>
@@ -959,11 +928,11 @@ export default function PackagesPageContent({
                         </p>
                       </div>
 
-                      <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
+                      <div className="grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4">
                         {visibleCategoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
-                            className={`flex min-w-0 flex-col rounded-3xl border bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-6 ${
+                            className={`flex h-full min-w-0 flex-col rounded-3xl border bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-6 ${
                               selectedPackageId === pkg.packageId
                                 ? "border-orange-400 ring-2 ring-orange-500/15"
                                 : "border-orange-400/20"
@@ -990,7 +959,7 @@ export default function PackagesPageContent({
                               Refill support if eligible
                             </span>
 
-                            <dl className="mt-5 grid grid-cols-2 gap-3 text-xs">
+                            <dl className="mt-5 grid auto-rows-fr grid-cols-2 gap-3 text-xs">
                               <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 p-3">
                                 <dt className="text-orange-200">Price</dt>
                                 <dd className="mt-1 break-words text-base font-extrabold text-white">{formatCurrency(pkg.basePriceINR, currency)}</dd>
@@ -1012,7 +981,7 @@ export default function PackagesPageContent({
                             <button
                               type="button"
                               onClick={() => selectPackage(pkg)}
-                              className="mt-5 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                              className="mt-auto inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_28px_rgba(255,196,0,.3)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:shadow-[0_18px_34px_rgba(255,122,0,.4)] active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                             >
                               {selectedPackageId === pkg.packageId ? "Selected ✓" : "Select Package"}
                             </button>
@@ -1204,7 +1173,7 @@ function PackageStep({
       aria-current={active ? "step" : undefined}
       className={`flex min-w-0 items-center gap-2 rounded-xl border px-2.5 py-2.5 sm:gap-3 sm:px-4 ${
         complete
-          ? "border-emerald-400/30 bg-emerald-500/10"
+          ? "border-white/10 bg-white/[0.06]"
           : active
             ? "border-orange-400/55 bg-orange-500/15 shadow-[0_12px_28px_-22px_rgba(255,122,0,.8)]"
             : "border-white/10 bg-[#0B0B0F]"
@@ -1213,7 +1182,7 @@ function PackageStep({
       <span
         className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black sm:h-8 sm:w-8 ${
           complete
-            ? "bg-emerald-500 text-white"
+            ? "bg-orange-500/15 text-orange-300"
             : active
               ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white"
               : "bg-white/10 text-[#9CA3AF]"
@@ -1265,10 +1234,10 @@ function CompletedPackageStepCard({
   onAction?: () => void;
 }) {
   return (
-    <div className="mt-4 rounded-2xl border border-emerald-400/25 bg-emerald-500/10 p-4">
+    <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.05] p-4">
       <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
         <div className="min-w-0">
-          <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-emerald-200">
+          <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.14em] text-orange-300">
             <CheckCircle2 className="h-4 w-4 shrink-0" />
             {title}
           </p>
