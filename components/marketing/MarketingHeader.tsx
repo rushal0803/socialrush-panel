@@ -15,6 +15,7 @@ const nav = [
   ["Home", "/"],
   ["Services", "/services"],
   ["Packages", "/packages"],
+  ["Tools", "/tools"],
   ["How It Works", "/#how-it-works"],
   ["Blog", "/blog"],
   ["FAQ", "/faq"],
