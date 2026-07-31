@@ -67,7 +67,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-IN">
-      <body className="overflow-x-clip bg-[#050505] text-white">
+      <body className="overflow-x-clip bg-[#07080D] text-white">
         <ClientProviders>
           <script
             type="application/ld+json"

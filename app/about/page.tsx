@@ -56,13 +56,13 @@ export default function AboutPage() {
               About SocialRUSH
             </span>
             <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#0B0B0F] sm:text-5xl lg:text-6xl">
-              Social growth should feel{" "}
+              We&apos;re Making Social Growth{" "}
               <span className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 bg-clip-text text-transparent">
-                clear, secure and manageable.
+                Simpler and More Transparent
               </span>
             </h1>
             <p className="mt-6 max-w-2xl text-base leading-8 text-[#111827] sm:text-lg">
-              SocialRUSH gives creators, influencers, brands, agencies and resellers one professional place to discover services, fund campaigns, place orders and track progress.
+              SocialRUSH gives creators, brands and businesses one clear place to compare services, place orders and track campaigns—without sharing account passwords.
             </p>
             <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
               <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white bg-white/85 px-6 py-3 text-sm font-black text-[#0B0B0F] shadow-[0_14px_30px_-20px_rgba(255, 159, 0, .5)] transition hover:-translate-y-0.5 hover:border-orange-200">
@@ -133,6 +133,24 @@ export default function AboutPage() {
               </div>
             </div>
           </div>
+        </div>
+      </section>
+
+      <section className="border-y border-white/[0.06] bg-[#0C0E14] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
+        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
+          {[
+            ["sparkles", "What We Believe", "Clarity, responsible ordering and reliable customer support."],
+            ["dashboard", "How We Help", "Simple platform selection, transparent packages and convenient campaign tracking."],
+            ["shield", "Our Promise", "Clear information before checkout, no password requirement and support when needed."],
+          ].map(([icon, title, description]) => (
+            <article key={title} className="rounded-[1.25rem] border border-white/[0.09] bg-[#101219] p-6 shadow-[0_18px_44px_rgba(0,0,0,.2)]">
+              <span className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/20 bg-orange-500/[0.07] text-[#FF9A2E]">
+                <MarketingIcon name={icon as MarketingIconName} className="h-5 w-5" />
+              </span>
+              <h2 className="mt-5 text-xl font-black text-white">{title}</h2>
+              <p className="mt-3 text-sm leading-7 text-[#A8AFBD]">{description}</p>
+            </article>
+          ))}
         </div>
       </section>
 
