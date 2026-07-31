@@ -24,6 +24,8 @@ import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
+import ServiceHealthBadge from "@/components/ServiceHealthBadge";
+import { useServiceHealth } from "@/lib/use-service-health";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 import { createClient } from "@/lib/supabase/client";
 import { linkRules, type LinkRule, validateCampaignLink } from "@/lib/order-service-experience";
@@ -312,6 +314,7 @@ export default function PackagesPageContent({
   const router = useRouter();
   const pathname = usePathname();
   const { currency } = usePreferredCurrency("INR");
+  const healthByService = useServiceHealth();
   const initialPlatformFromService = platformFromServiceParam(initialServiceParam ?? null);
   const initialPlatformFromParam = platformFromParam(initialPlatformParam ?? null);
   const initialPlatform = initialPlatformFromParam ?? initialPlatformFromService;
@@ -864,11 +867,15 @@ export default function PackagesPageContent({
                   const startingPrice = getStartingPrice(selectedPlatform, service);
                   const { badge, Icon } = serviceVisuals[service];
                   const selected = hasServiceSelection && activeService === service;
+                  const servicePackage = bigPackages.find((pkg) => pkg.platform === selectedPlatform && pkg.service === service);
+                  const health = servicePackage ? healthByService[getServiceCode(servicePackage)] : undefined;
+                  const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
                   return (
                     <button
                       key={service}
                       type="button"
-                      onClick={() => selectService(service)}
+                      onClick={() => { if (!unavailable) selectService(service); }}
+                      disabled={unavailable}
                       aria-pressed={selected}
                       className={`group flex min-h-[128px] w-full flex-col rounded-2xl border p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         selected
@@ -885,6 +892,7 @@ export default function PackagesPageContent({
                           <span className="mt-1 inline-flex max-w-full rounded-full border border-orange-400/25 bg-orange-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-orange-200">
                             {badge}
                           </span>
+                          <span className="mt-2 block"><ServiceHealthBadge health={health} /></span>
                         </span>
                       </span>
                       <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
@@ -893,7 +901,7 @@ export default function PackagesPageContent({
                           {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "View packages"}
                         </span>
                         <span className="inline-flex min-h-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-xs font-black text-white shadow-[0_10px_22px_-12px_rgba(255,122,0,.9)]">
-                          {selected ? <><CheckCircle2 className="h-3.5 w-3.5" /> Selected</> : "Compare Packages"}
+                          {unavailable ? "Choose another service" : selected ? <><CheckCircle2 className="h-3.5 w-3.5" /> Selected</> : "Compare Packages"}
                         </span>
                       </span>
                     </button>

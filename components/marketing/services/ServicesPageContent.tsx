@@ -16,6 +16,8 @@ import { useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
+import ServiceHealthBadge from "@/components/ServiceHealthBadge";
+import { useServiceHealth } from "@/lib/use-service-health";
 import HowToOrderSection from "@/components/marketing/HowToOrderSection";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -225,6 +227,7 @@ export default function ServicesPageContent({
   initialSearchParam,
 }: ServicesPageContentProps) {
   const { currency } = usePreferredCurrency("INR");
+  const healthByService = useServiceHealth();
   const [selectedPlatform, setSelectedPlatform] = useState<SmmPlatformId>(() =>
     initialPlatformParam ? platformFromParam(initialPlatformParam) : platformFromServiceParam(initialTypeParam) ?? "instagram",
   );
@@ -430,6 +433,7 @@ export default function ServicesPageContent({
                     {platformServices.map((service) => {
                 const packagesPath = `/packages?platform=${encodeURIComponent(packagePlatform(service.platform))}&service=${encodeURIComponent(packageServiceFromCode(service.code))}`;
                 const serviceDetailPath = seoServicePaths[service.code] ?? `/services/${service.code}`;
+                const health = healthByService[service.code];
                 return (
                   <article
                     key={service.code}
@@ -446,6 +450,7 @@ export default function ServicesPageContent({
                         {descriptiveServiceAnchors[service.code] || serviceNames[service.code] || service.name}
                       </Link>
                     </h3>
+                    <div className="mt-2"><ServiceHealthBadge health={health} showMessage /></div>
                     <p className="mt-1.5 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{getServiceCardDescription(service.code)}</p>
 
                     <div className="mt-auto pt-4 sm:pt-5">
@@ -466,12 +471,12 @@ export default function ServicesPageContent({
                       </p>
 
                       <div className="mt-4 grid gap-2 min-[390px]:grid-cols-2">
-                        <Link
+                        {health && (!health.acceptsNewOrders || health.status === "paused") ? <span className="inline-flex min-h-11 items-center justify-center rounded-xl bg-white/10 px-4 py-2.5 text-center text-xs font-black text-[#9CA3AF]">Choose another service</span> : <Link
                           href={packagesPath}
                           className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white shadow-[0_12px_26px_rgba(255, 196, 0, .28)] transition hover:-translate-y-0.5"
                         >
                           View Packages
-                        </Link>
+                        </Link>}
                         <Link
                           href={serviceDetailPath}
                           className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-4 py-2.5 text-xs font-black text-[#D1D5DB] transition hover:border-orange-400/45 hover:text-white"
