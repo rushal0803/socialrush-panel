@@ -38,18 +38,12 @@ type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
 
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
-const platformLinkPlaceholders: Record<PlatformId, string> = {
-  instagram: "https://instagram.com/yourprofile",
-  youtube: "https://youtube.com/@channel",
-  facebook: "https://facebook.com/page",
-  linkedin: "https://linkedin.com/in/profile",
-  telegram: "https://t.me/channel",
-  tiktok: "https://tiktok.com/@profile",
-  x: "https://x.com/profile",
-};
-
 function cleanQuantity(value: string) {
   return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+}
+
+function validQuickQuantities(service: SmmService) {
+  return [1000, 5000, 10000].filter((value) => value >= service.minQuantity && value <= service.maxQuantity);
 }
 
 function normalizeQuery(value: string | null) {
@@ -86,7 +80,7 @@ function ProgressItem({ number, title, state }: { number: number; title: string;
   return (
     <div
       aria-current={state === "active" ? "step" : undefined}
-      className={`flex min-w-0 items-center gap-2 rounded-xl border px-3 py-2.5 transition ${
+      className={`flex min-w-0 flex-col items-center justify-center gap-1 rounded-lg border px-1 py-1.5 transition sm:flex-row sm:gap-2 sm:rounded-xl sm:px-3 sm:py-2.5 ${
         state === "active"
           ? "border-orange-400/70 bg-orange-500/15 text-white shadow-[0_0_0_3px_rgba(255,122,0,.08)]"
           : state === "complete"
@@ -94,10 +88,10 @@ function ProgressItem({ number, title, state }: { number: number; title: string;
             : "border-white/10 bg-[#111111] text-[#9CA3AF]"
       }`}
     >
-        <span className={`grid h-7 w-7 shrink-0 place-items-center rounded-lg text-[10px] font-black ${state === "active" ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white" : state === "complete" ? "bg-emerald-500 text-white" : "bg-white/10 text-[#9CA3AF]"}`}>
+        <span aria-hidden="true" className={`grid h-6 w-6 shrink-0 place-items-center rounded-md text-[10px] font-black sm:h-7 sm:w-7 sm:rounded-lg ${state === "active" ? "bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-white" : state === "complete" ? "bg-emerald-500 text-white" : "bg-white/10 text-[#9CA3AF]"}`}>
         {state === "complete" ? <Check className="h-4 w-4" /> : number}
       </span>
-      <span className="truncate text-[10px] font-black uppercase tracking-[0.08em] sm:text-xs">{title}</span>
+      <span className="max-w-full truncate text-[9px] font-black uppercase tracking-[0.04em] sm:text-xs sm:tracking-[0.08em]">{title}</span>
     </div>
   );
 }
@@ -150,7 +144,9 @@ export default function NewOrderPage() {
   const totalPrice = selectedService ? calculateServiceTotal(selectedService.code, quantity) : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
+  const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
   const currentStep = !platform ? 1 : !selectedService ? 2 : !formIsValid ? 3 : 4;
+  const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
 
   const scrollTo = (ref: React.RefObject<HTMLElement>) => {
     window.setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
@@ -428,8 +424,8 @@ export default function NewOrderPage() {
           <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:text-base">Choose your platform and service, add campaign details, then review everything before confirming.</p>
         </section>
 
-        <section aria-label="Order progress" className="sticky top-20 z-20 mt-4 rounded-2xl border border-orange-400/20 bg-[#0B0B0F]/95 p-2 shadow-[0_16px_36px_-24px_rgba(0,0,0,.8)] backdrop-blur-xl sm:p-3">
-          <div className="grid grid-cols-2 gap-2 lg:grid-cols-4">
+        <section aria-label="Order progress" className="sticky top-[4.75rem] z-20 mt-3 rounded-xl border border-orange-400/20 bg-[#0B0B0F]/95 p-1.5 shadow-[0_16px_36px_-24px_rgba(0,0,0,.8)] backdrop-blur-xl sm:top-20 sm:mt-4 sm:rounded-2xl sm:p-3">
+          <div className="grid grid-cols-4 gap-1 sm:gap-2">
             <ProgressItem number={1} title="Platform" state={progressState(1, currentStep)} />
             <ProgressItem number={2} title="Service" state={progressState(2, currentStep)} />
             <ProgressItem number={3} title="Details" state={progressState(3, currentStep)} />
@@ -452,7 +448,7 @@ export default function NewOrderPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => choosePlatform(platformId)}
                   aria-pressed={active}
-                  className={`relative min-w-0 rounded-2xl border p-3 text-left transition sm:p-4 ${active ? "border-orange-400/80 bg-orange-500/15 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"}`}
+                  className={`relative min-h-24 min-w-0 rounded-2xl border p-3 text-left transition sm:p-4 ${platformId === platformOrder[platformOrder.length - 1] ? "col-span-2 w-[calc(50%_-_0.375rem)] justify-self-center sm:col-span-1 sm:w-auto" : ""} ${active ? "border-orange-400/80 bg-orange-500/15 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"}`}
                 >
                   {active ? <CheckCircle2 className="absolute right-2 top-2 h-5 w-5 text-emerald-600" /> : null}
                       <IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge>
@@ -478,16 +474,16 @@ export default function NewOrderPage() {
                 const active = selectedService?.code === service.code;
                 const experience = serviceExperience[service.code];
                 return (
-                  <motion.article key={service.code} whileHover={{ y: -4 }} className={`flex min-w-0 flex-col rounded-3xl border p-5 transition ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
+                  <motion.article key={service.code} whileHover={{ y: -3 }} className={`flex min-w-0 flex-col rounded-2xl border p-4 transition sm:p-5 ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge label={platformMeta[service.platform].label}><PlatformIcon platform={platformMeta[service.platform].label} className="h-6 w-6" /></IconBadge>
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
                     </div>
-                    <h3 className="mt-4 text-lg font-black text-white">{experience.name}</h3>
-                    <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{service.description}</p>
-                    <div className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-3"><span className="text-[#9CA3AF]">Rate</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-3"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
-                    <details className="mt-4 rounded-xl border border-white/10 bg-[#151515]"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-orange-300"><Info className="mr-2 inline h-4 w-4" />How it works</summary><p className="border-t border-white/10 px-3 py-3 text-xs leading-6 text-[#D1D5DB]">{growthMethod(service)}</p></details>
-                    <button type="button" onClick={() => chooseService(service)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255, 196, 0, .65)]">
+                    <h3 className="mt-3 text-base font-black text-white sm:text-lg">{experience.name}</h3>
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">From</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
+                    <p className="mt-2 text-xs font-semibold text-emerald-300">{service.refillPolicy}</p>
+                    <details className="mt-3 rounded-xl border border-white/10 bg-[#151515]"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-orange-300"><Info className="mr-2 inline h-4 w-4" />Details &amp; how it works</summary><div className="border-t border-white/10 px-3 py-3 text-xs leading-6 text-[#D1D5DB]"><p>{service.description}</p><p className="mt-2">{growthMethod(service)}</p></div></details>
+                    <button type="button" onClick={() => chooseService(service)} className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255,196,0,.65)]">
                       {active ? "Service Selected" : "Choose Service"} <ArrowRight className="h-4 w-4" />
                     </button>
                   </motion.article>
@@ -510,11 +506,11 @@ export default function NewOrderPage() {
                   <input
                     value={targetLink}
                     onChange={(event) => { setTargetLink(event.target.value); setError(""); }}
-                    placeholder={platform ? platformLinkPlaceholders[platform] : linkRule.placeholder}
+                    placeholder={linkRule.placeholder}
                     className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
                   />
                   <span className={`mt-2 block text-[11px] leading-5 ${linkError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
-                    {linkError || "Use the public URL where you want the service delivered."}
+                    {linkError || linkRule.helper}
                   </span>
                 </label>
                 <label className="block text-xs font-black text-white">
@@ -527,16 +523,18 @@ export default function NewOrderPage() {
                     className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
                   />
                   <span className={`mt-2 block text-[11px] leading-5 ${quantityError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
-                    {quantityError || "Enter the quantity you want for this campaign."}
+                    {quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")} · Whole numbers`}
                   </span>
+                  {quickQuantities.length ? <span className="mt-3 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-10 rounded-full border px-3 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/20 text-orange-200" : "border-white/15 bg-white/5 text-[#D1D5DB]"}`}>{value / 1000}K</button>)}</span> : null}
                 </label>
               </div>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div className={`rounded-2xl border bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)] ${quantityError ? "border-red-400/40" : "border-orange-400/35"}`}>
                   <p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p>
                   <p className={`mt-2 text-xl font-black sm:text-2xl ${quantityError ? "text-red-200" : "text-white"}`}>
-                    {!quantityInput ? "Enter quantity to calculate" : quantityError || formatCurrency(totalPrice, currency)}
+                    {!formIsValid ? "Enter a valid public link and quantity to calculate your final total." : formatCurrency(totalPrice, currency)}
                   </p>
+                  {formIsValid ? <p className="mt-2 text-xs text-[#D1D5DB]">{formatCurrency(selectedService.pricePer1000, currency)} / 1K × {quantity.toLocaleString("en-IN")}</p> : null}
                 </div>
                 <div className="safety-note flex items-center gap-3 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 shadow-[0_16px_38px_rgba(0,0,0,0.22)]"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" /><p className="text-sm font-bold leading-6 text-white">No password required. Only your public link is needed.</p></div>
               </div>
@@ -546,16 +544,17 @@ export default function NewOrderPage() {
             <section ref={summaryRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_30px_65px_-40px_rgba(255,122,0,.6)] sm:p-7">
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 4</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Review order summary</h2></div>
-                <button type="button" onClick={() => scrollTo(detailsRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Change details</button>
+                {formIsValid ? <button type="button" onClick={() => scrollTo(detailsRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Edit details</button> : null}
               </div>
-              <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
+              {!formIsValid ? <div className="mt-5 flex items-center gap-3 rounded-2xl border border-dashed border-white/15 bg-[#0B0B0F] p-4 text-sm font-semibold text-[#D1D5DB]"><LockKeyhole className="h-5 w-5 shrink-0 text-[#9CA3AF]" />Enter your public link and quantity to review your order.</div> : <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
                 <dl className="grid gap-3 sm:grid-cols-2">
-                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim() || "Not entered"],["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"],["Delivery", selectedService.deliveryTime],["Refill support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 text-sm font-bold text-white [overflow-wrap:anywhere]">{value}</dd></div>)}
+                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim()],["Quantity", quantity.toLocaleString("en-IN")],["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`],["Delivery", selectedService.deliveryTime],["Refill / support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 text-sm font-bold text-white [overflow-wrap:anywhere]">{value}</dd></div>)}
                 </dl>
                 <aside className="rounded-3xl bg-[#0B0B0F] p-5 text-white shadow-xl">
                   <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-orange-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>
                   <p className="mt-2 text-2xl font-black">{walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency)}</p>
                   <div className="my-5 border-t border-white/15" />
+                  {remainingBalance !== null ? <div className="mb-3 flex items-center justify-between gap-3 text-xs"><span className="text-[#D1D5DB]">Wallet after order</span><strong>{formatCurrency(remainingBalance, currency)}</strong></div> : null}
                   <div className="flex items-end justify-between gap-3"><span className="text-xs text-orange-100">Order total</span><strong className="text-2xl">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</strong></div>
                   {formIsValid && walletBalance !== null && !hasEnoughWallet ? <div className="mt-4 rounded-xl bg-amber-400/15 p-3 text-xs leading-6 text-amber-100">Pay now: <strong>{formatCurrency(amountRequired, currency)}</strong></div> : null}
                   {walletError ? <p className="mt-4 text-xs leading-5 text-amber-200">{walletError}</p> : null}
@@ -563,18 +562,18 @@ export default function NewOrderPage() {
                   {success ? <p className="mt-4 rounded-xl bg-emerald-500/15 p-3 text-xs font-semibold text-emerald-100">Order placed successfully. Opening Order History…</p> : null}
                   {hasEnoughWallet ? (
                     <button type="button" onClick={() => void placeOrder()} disabled={!formIsValid || walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
-                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Placing order…</> : <><ShieldCheck className="h-4 w-4" /> Place Order</>}
+                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Placing order…</> : <><ShieldCheck className="h-4 w-4" /> Confirm &amp; Place Order</>}
                     </button>
                   ) : formIsValid && !walletLoading ? (
                     <button type="button" onClick={() => void payAndPlaceOrder()} disabled={submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
-                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> {checkoutStage || "Preparing secure checkout"}</> : <><Wallet className="h-4 w-4" /> Pay {formatCurrency(amountRequired, currency)} and Place Order</>}
+                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> {checkoutStage || "Preparing secure checkout"}</> : <><Wallet className="h-4 w-4" /> Add Funds &amp; Continue</>}
                     </button>
                   ) : (
                     <button type="button" disabled className="mt-5 min-h-12 w-full rounded-xl bg-white/15 px-5 py-3 text-sm font-black text-white/60">Complete details to continue</button>
                   )}
                   <p className="mt-3 flex items-center justify-center gap-2 text-[10px] text-orange-100"><RefreshCw className="h-3.5 w-3.5" /> Wallet charged only after confirmation</p>
                 </aside>
-              </div>
+              </div>}
             </section>
           </>
         ) : null}
@@ -582,6 +581,11 @@ export default function NewOrderPage() {
         <div className="mt-6 flex flex-wrap gap-3 text-xs font-semibold text-[#D1D5DB]">
           <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-[#111111] px-3 py-2"><ShieldCheck className="h-4 w-4 text-emerald-300" /> Secure wallet checkout</span>
           <span className="inline-flex items-center gap-2 rounded-xl border border-white/10 bg-[#111111] px-3 py-2"><Clock3 className="h-4 w-4 text-orange-300" /> Track from dashboard</span>
+        </div>
+        <div className="fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 lg:hidden">
+          <div className="mx-auto max-w-md rounded-2xl border border-orange-400/30 bg-[#0B0B0F]/95 p-2 shadow-2xl backdrop-blur-xl">
+            {currentStep === 1 ? <button type="button" disabled={!platform} onClick={() => scrollTo(serviceRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Services</button> : currentStep === 2 ? <button type="button" disabled={!selectedService} onClick={() => scrollTo(detailsRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Details</button> : currentStep === 3 ? <button type="button" disabled={!formIsValid} onClick={() => scrollTo(summaryRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Review Order</button> : hasEnoughWallet ? <button type="button" disabled={submitting || Boolean(success)} onClick={() => void placeOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Confirm &amp; Place Order</button> : <button type="button" disabled={walletLoading || submitting || Boolean(success)} onClick={() => void payAndPlaceOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Add Funds &amp; Continue</button>}
+          </div>
         </div>
       </div>
     </main>

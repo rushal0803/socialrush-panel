@@ -49,14 +49,16 @@ function CurrencySelector() {
         onClick={() => setOpen((value) => !value)}
         aria-expanded={open}
         aria-haspopup="menu"
-        className="inline-flex h-10 items-center gap-2 rounded-xl border border-orange-400/25 bg-white/[.06] px-3 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 sm:px-3.5"
+        aria-label={`Currency: ${active.code}`}
+        className="inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl border border-orange-400/25 bg-white/[.06] px-2 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 min-[360px]:px-3 sm:px-3.5"
       >
-        <span className="sm:hidden">{active.symbol} {active.code}</span>
+        <span className="min-[360px]:hidden">{active.symbol}</span>
+        <span className="hidden min-[360px]:inline sm:hidden">{active.symbol} {active.code}</span>
         <span className="hidden sm:inline-flex items-center gap-2">
-          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#111827]">Currency:</span>
+          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#9CA3AF]">Currency:</span>
           <span>{active.code} {active.symbol}</span>
         </span>
-        <ChevronDown className="h-4 w-4 text-[#111827]" />
+        <ChevronDown className="hidden h-4 w-4 text-[#9CA3AF] min-[360px]:block" />
       </button>
 
       {open ? (
@@ -90,15 +92,15 @@ function CurrencySelector() {
 export default function DashboardHeaderBar({ name, role, initials }: { name: string; role: string; initials: string }) {
   return (
     <header className="sticky top-0 z-[9999] border-b border-orange-400/20 bg-[#0B0B0F]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
-      <div className="mx-auto flex min-h-14 max-w-[1800px] items-center gap-1.5 min-[430px]:gap-2 sm:gap-4">
-        <Logo light compactOnMobile priority />
+      <div className="mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4">
+        <Logo light compactOnMobile priority className="[&_img]:!h-10 [&_img]:!max-w-[112px] min-[360px]:[&_img]:!h-11 min-[360px]:[&_img]:!max-w-[132px] sm:[&_img]:!h-[3.25rem] sm:[&_img]:!max-w-[218px]" />
 
         <div className="ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3">
           <CurrencySelector />
 
           <Link
             href="/dashboard/add-funds"
-            className="inline-flex h-10 w-10 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255, 196, 0, .6)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,196,0,.6)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
           >
             <Wallet className="h-4 w-4" />
             <span className="hidden sm:inline">Add Funds</span>
