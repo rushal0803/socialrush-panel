@@ -12,6 +12,10 @@ type TicketType = {
   subject: string;
   status: string;
   created_at: string;
+  updated_at: string;
+  category: string;
+  order_id: string | null;
+  orders?: { platform?: string; service_name?: string; status?: string; refill_eligible?: boolean; services?: { refill_policy?: string } | null } | null;
 };
 
 type MessageType = {
@@ -21,12 +25,13 @@ type MessageType = {
   created_at: string;
 };
 
-const categories = ["Order pending", "Partial delivery", "Drop or refill", "Incorrect link", "Cancellation", "Payment issue", "Other", "Refill request"];
+const categories = [["order_pending","Order pending"],["partial_delivery","Partial delivery"],["drop_or_refill","Drop or refill"],["incorrect_public_link","Incorrect public link"],["cancellation_request","Cancellation request"],["payment_or_wallet","Payment or wallet issue"],["account_issue","Account issue"],["service_availability","Service availability"],["other","Other"]] as const;
 
 const statusStyle: Record<string, string> = {
   open: "bg-orange-500/10 text-orange-200 ring-orange-400/25",
-  answered: "bg-emerald-500/10 text-emerald-200 ring-emerald-400/25",
-  waiting: "bg-amber-500/10 text-amber-200 ring-amber-400/25",
+  waiting_for_support: "bg-amber-500/10 text-amber-200 ring-amber-400/25",
+  waiting_for_customer: "bg-blue-500/10 text-blue-200 ring-blue-400/25",
+  resolved: "bg-emerald-500/10 text-emerald-200 ring-emerald-400/25",
   closed: "bg-white/5 text-[#D1D5DB] ring-white/10",
 };
 
@@ -89,6 +94,11 @@ export default function SupportPage() {
   const [loading, setLoading] = useState(true);
   const [creating, setCreating] = useState(false);
   const [toast, setToast] = useState("");
+  const [error, setError] = useState("");
+  const [search, setSearch] = useState("");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [orders, setOrders] = useState<Array<{ id:string; platform:string; service_name:string; status:string; refill_eligible:boolean }>>([]);
+  const [email, setEmail] = useState("");
 
   const activeTicket = useMemo(
     () => tickets.find((item) => item.id === activeId),
@@ -96,8 +106,10 @@ export default function SupportPage() {
   );
 
   const loadTickets = useCallback(async () => {
+    setLoading(true); setError("");
     const response = await fetch("/api/support/tickets");
-    const payload = (await response.json()) as { data?: TicketType[] };
+    const payload = (await response.json()) as { data?: TicketType[]; error?: string };
+    if (!response.ok) { setError(payload.error || "Tickets could not be loaded."); setLoading(false); return; }
     const rows = payload.data ?? [];
     setTickets(rows);
     setActiveId((current) => current || rows[0]?.id || "");
@@ -106,7 +118,9 @@ export default function SupportPage() {
 
   useEffect(() => {
     void loadTickets();
-    void createClient().auth.getUser().then(({ data }) => setUserId(data.user?.id || ""));
+    const supabase = createClient();
+    void supabase.auth.getUser().then(({ data }) => { setUserId(data.user?.id || ""); setEmail(data.user?.email || ""); });
+    void supabase.from("orders").select("id,platform,service_name,status,refill_eligible").order("created_at",{ascending:false}).limit(100).then(({data}) => setOrders((data as typeof orders | null) || []));
   }, [loadTickets]);
 
   useEffect(() => {
@@ -131,20 +145,23 @@ export default function SupportPage() {
   async function createTicket(formData: FormData) {
     const category = String(formData.get("category") || "");
     const subject = String(formData.get("subject") || "");
-    const message = String(formData.get("message") || "");
+    const reference = String(formData.get("payment_reference") || "").trim();
+    const message = `${String(formData.get("message") || "")}${reference ? `\n\nPayment/transaction reference: ${reference}` : ""}`;
+    const orderId = String(formData.get("order_id") || "") || null;
 
     const response = await fetch("/api/support/tickets", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ subject: `[${category}] ${subject}`, message }),
+      body: JSON.stringify({ category, subject, message, orderId }),
     });
 
+    const payload = await response.json().catch(() => ({})) as { error?: string };
     if (response.ok) {
       setCreating(false);
       setToast("Ticket created successfully");
       await loadTickets();
       window.setTimeout(() => setToast(""), 2500);
-    }
+    } else setError(payload.error || "Ticket could not be created.");
   }
 
   async function sendReply(formData: FormData) {
@@ -152,8 +169,8 @@ export default function SupportPage() {
     if (!activeId || !userId || !message) return;
 
     const supabase = createClient();
-    await supabase.from("support_messages").insert({ ticket_id: activeId, sender_id: userId, message });
-    await supabase.from("support_tickets").update({ status: "open" }).eq("id", activeId);
+    const { error: replyError } = await supabase.rpc("reply_to_support_ticket", { p_ticket_id: activeId, p_message: message });
+    if (replyError) { setError(replyError.message); return; }
 
     const { data } = await supabase
       .from("support_messages")
@@ -167,9 +184,12 @@ export default function SupportPage() {
 
   async function closeTicket() {
     if (!activeTicket) return;
-    await createClient().from("support_tickets").update({ status: "closed" }).eq("id", activeTicket.id);
+    await createClient().rpc("resolve_my_support_ticket", { p_ticket_id: activeTicket.id });
     await loadTickets();
   }
+
+  const filteredTickets = useMemo(() => tickets.filter((ticket) => (statusFilter === "all" || ticket.status === statusFilter) && `${ticket.id} ${ticket.order_id || ""} ${ticket.subject} ${ticket.status}`.toLowerCase().includes(search.toLowerCase())), [tickets, search, statusFilter]);
+  const ticketSummary = useMemo(() => ({ open: tickets.filter((item) => ["open","waiting_for_support","waiting_for_customer"].includes(item.status)).length, waiting: tickets.filter((item) => item.status === "waiting_for_customer").length, resolved: tickets.filter((item) => ["resolved","closed"].includes(item.status)).length }), [tickets]);
 
   return (
     <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip px-4 pb-28 pt-5 sm:px-6 lg:px-8">
@@ -191,22 +211,22 @@ export default function SupportPage() {
               <p className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-orange-200">
                 Customer care
               </p>
-              <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-white sm:text-4xl">Support Center</h1>
-              <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Get professional help with campaigns, payments, refills, and your account.</p>
+              <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-white sm:text-4xl">Support Centre</h1>
+              <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Get help with orders, payments, delivery, refill eligibility or account questions.</p>
               <button
                 type="button"
                 onClick={() => setCreating(true)}
                 className="btn-dashboard-primary mt-5 inline-flex min-h-11 items-center justify-center gap-2 px-5 py-2.5 text-sm"
               >
                 <Ticket className="h-4 w-4" />
-                Create ticket
+                Create Support Ticket
               </button>
             </div>
             <motion.article whileHover={{ y: -4 }} className="rounded-[1.6rem] border border-orange-400/25 bg-[#151515] p-5 shadow-[0_20px_42px_-28px_rgba(255,122,0,.45)]">
               <p className="text-[10px] font-black uppercase tracking-[0.15em] text-[#9CA3AF]">Support profile</p>
-              <p className="mt-3 text-sm font-semibold text-[#FF9F00]">Average response time: 30-90 minutes</p>
-              <p className="mt-1 text-xs text-[#D1D5DB]">Support hours: 24/7 for active orders</p>
-              <p className="mt-1 text-xs text-[#D1D5DB]">Include order or payment ID for faster resolution</p>
+              <p className="mt-3 text-sm font-semibold text-[#FF9F00]">Secure account support</p>
+              <p className="mt-1 text-xs text-[#D1D5DB]">Include the related order when your issue concerns delivery or refill eligibility.</p>
+              <p className="mt-1 text-xs text-[#D1D5DB]">Never share passwords, OTPs, UPI PINs, CVV or recovery codes.</p>
             </motion.article>
           </div>
         </motion.section>
@@ -214,6 +234,9 @@ export default function SupportPage() {
         {toast ? (
           <p className="mt-5 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-200">{toast}</p>
         ) : null}
+        {error ? <p role="alert" className="mt-5 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-sm font-semibold text-red-200">{error}</p> : null}
+        <section className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">{[["Open tickets",ticketSummary.open],["Waiting for reply",ticketSummary.waiting],["Resolved",ticketSummary.resolved]].map(([label,value]) => <article key={label} className="rounded-2xl border border-white/10 bg-[#111111] p-3 sm:p-4"><p className="text-[9px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</p><p className="mt-2 text-xl font-black text-white">{value}</p></article>)}</section>
+        <section className="mt-4 grid gap-3 rounded-2xl border border-orange-400/20 bg-[#111111] p-3 sm:grid-cols-[1fr_220px]"><input value={search} onChange={(event) => setSearch(event.target.value)} className="dashboard-input" placeholder="Search ticket ID, order ID or subject" /><select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="dashboard-input"><option value="all">All statuses</option><option value="open">Open</option><option value="waiting_for_support">Waiting for Support</option><option value="waiting_for_customer">Waiting for Customer</option><option value="resolved">Resolved</option><option value="closed">Closed</option></select></section>
 
         <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
           {supportCards.map((card, index) => {
@@ -271,8 +294,8 @@ export default function SupportPage() {
                   ))}
                 </div>
               ) : (
-                tickets.map((ticket) => {
-                  const parsed = parseSubject(ticket.subject);
+                filteredTickets.map((ticket) => {
+                  const parsed = { title: parseSubject(ticket.subject).title, category: ticket.category?.replaceAll("_", " ") || parseSubject(ticket.subject).category };
                   return (
                     <button
                       key={ticket.id}
@@ -285,7 +308,7 @@ export default function SupportPage() {
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-[10px] font-black text-[#FF9F00]">#{ticket.id.slice(0, 8).toUpperCase()}</span>
                         <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${statusStyle[ticket.status] || statusStyle.open}`}>
-                          {ticket.status}
+                          {ticket.status === "waiting_for_customer" ? "Waiting for Your Reply" : ticket.status.replaceAll("_", " ")}
                         </span>
                       </div>
                       <p className="mt-3 truncate text-xs font-bold text-white">{parsed.title}</p>
@@ -298,10 +321,10 @@ export default function SupportPage() {
                 })
               )}
 
-              {!loading && tickets.length === 0 ? (
+              {!loading && filteredTickets.length === 0 ? (
                 <div className="p-10 text-center">
-                  <p className="text-sm font-black text-white">No tickets yet</p>
-                  <p className="mt-2 text-xs text-[#D1D5DB]">Create a ticket whenever you need help.</p>
+                  <p className="text-sm font-black text-white">{tickets.length ? "No matching tickets" : "No support tickets yet"}</p>
+                  <p className="mt-2 text-xs text-[#D1D5DB]">{tickets.length ? "Try another search or status filter." : "When you need help with an order or account issue, create a ticket here."}</p>
                 </div>
               ) : null}
             </div>
@@ -315,11 +338,13 @@ export default function SupportPage() {
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] font-black text-[#FF9F00]">#{activeTicket.id.slice(0, 8).toUpperCase()}</span>
                       <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${statusStyle[activeTicket.status] || statusStyle.open}`}>
-                        {activeTicket.status}
+                        {activeTicket.status === "waiting_for_customer" ? "Waiting for Your Reply" : activeTicket.status.replaceAll("_", " ")}
                       </span>
                     </div>
                     <h2 className="mt-2 text-sm font-black text-white">{parseSubject(activeTicket.subject).title}</h2>
-                    <p className="mt-1 text-[11px] text-[#9CA3AF]">{parseSubject(activeTicket.subject).category}</p>
+                    <p className="mt-1 text-[11px] capitalize text-[#9CA3AF]">{activeTicket.category?.replaceAll("_", " ") || parseSubject(activeTicket.subject).category}</p>
+                    <p className="mt-1 text-[10px] text-[#9CA3AF]">Created {new Date(activeTicket.created_at).toLocaleString("en-IN")} · Updated {new Date(activeTicket.updated_at).toLocaleString("en-IN")}</p>
+                    {activeTicket.order_id ? <Link href={`/dashboard/orders/${activeTicket.order_id}`} className="mt-2 inline-flex text-xs font-bold text-orange-300">View Related Order</Link> : null}
                   </div>
 
                   <button
@@ -327,7 +352,7 @@ export default function SupportPage() {
                     onClick={closeTicket}
                     className="rounded-xl border border-orange-400/25 bg-[#151515] px-4 py-2 text-[11px] font-bold text-[#D1D5DB] hover:border-orange-400/50 hover:text-white transition hover:-translate-y-0.5"
                   >
-                    Close ticket
+                    Mark as Resolved
                   </button>
                 </header>
 
@@ -360,7 +385,7 @@ export default function SupportPage() {
                   {messages.length === 0 ? <p className="py-14 text-center text-xs text-[#D1D5DB]">No messages yet.</p> : null}
                 </div>
 
-                {activeTicket.status !== "closed" ? (
+                {!(["closed","resolved"].includes(activeTicket.status)) ? (
                   <form action={sendReply} className="border-t border-orange-400/20 p-4 sm:p-5">
                     <textarea
                       name="message"
@@ -419,12 +444,15 @@ export default function SupportPage() {
               <form action={createTicket} className="mt-6 space-y-4">
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Category
-                  <select name="category" required defaultValue={searchParams.get("category") || (searchParams.get("status") === "partial" ? "Partial delivery" : "Other")} className="dashboard-input mt-2">
-                    {categories.map((item) => (
-                      <option key={item}>{item}</option>
+                  <select name="category" required defaultValue={searchParams.get("category") || (searchParams.get("status") === "partial" ? "partial_delivery" : "other")} className="dashboard-input mt-2">
+                    {categories.map(([value,label]) => (
+                      <option key={value} value={value}>{label}</option>
                     ))}
                   </select>
                 </label>
+
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Related order<select name="order_id" defaultValue={searchParams.get("orderId") || ""} className="dashboard-input mt-2"><option value="">No related order</option>{orders.map((order) => <option key={order.id} value={order.id}>{order.id.slice(0,8).toUpperCase()} · {order.platform} · {order.service_name} · {order.status.replaceAll("_"," ")}</option>)}</select></label>
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Contact email<input value={email} readOnly className="dashboard-input mt-2 opacity-75" /></label>
 
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Subject
@@ -438,6 +466,8 @@ export default function SupportPage() {
                   />
                 </label>
 
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Payment or transaction reference (optional)<input name="payment_reference" className="dashboard-input mt-2" placeholder="Reference ID only" /></label>
+
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Message
                   <textarea
@@ -450,13 +480,10 @@ export default function SupportPage() {
                   />
                 </label>
 
-                <div className="rounded-xl border border-dashed border-orange-400/35 bg-orange-500/10 p-4 text-center text-[11px] font-semibold text-[#D1D5DB]">
-                  Attach screenshot or payment proof
-                  <span className="mt-1 block text-[10px] text-[#FF9F00]">Attachment upload coming soon</span>
-                </div>
+                <div className="rounded-xl border border-amber-400/35 bg-amber-500/10 p-4 text-[11px] font-semibold leading-5 text-amber-100">For your security, never provide card numbers, CVV, UPI PIN, OTP, passwords or recovery codes. Secure attachment storage is not configured, so attachments are not accepted.</div>
 
                 <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-[0_16px_34px_-18px_rgba(255, 196, 0, .62)] transition hover:-translate-y-0.5">
-                  Submit ticket
+                  Confirm &amp; Create Ticket
                 </button>
               </form>
             </motion.div>

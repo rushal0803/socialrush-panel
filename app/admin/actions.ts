@@ -226,7 +226,9 @@ export async function reviewPayment(formData: FormData) {
 
 export async function setTicketStatus(formData: FormData) {
   const { supabase } = await requireAdmin();
-  await supabase.from("support_tickets").update({ status: text(formData, "status") }).eq("id", text(formData, "ticket_id"));
+  const status = text(formData, "status");
+  if (!["open","waiting_for_support","waiting_for_customer","resolved","closed"].includes(status)) throw new Error("Invalid ticket status.");
+  await supabase.from("support_tickets").update({ status, updated_at: new Date().toISOString(), resolved_at: status === "resolved" ? new Date().toISOString() : null }).eq("id", text(formData, "ticket_id"));
   revalidatePath("/admin/support");
 }
 
@@ -273,7 +275,7 @@ export async function replyToTicket(formData: FormData) {
     message,
   });
   if (error) throw new Error(`Unable to send support reply: ${error.message}`);
-  const { error: statusError } = await supabase.from("support_tickets").update({ status: "answered" }).eq("id", ticketId);
+  const { error: statusError } = await supabase.from("support_tickets").update({ status: "waiting_for_customer", updated_at: new Date().toISOString(), last_reply_at: new Date().toISOString() }).eq("id", ticketId);
   if (statusError) throw new Error(`Reply sent, but ticket status could not be updated: ${statusError.message}`);
   revalidatePath("/admin/support");
   revalidatePath("/dashboard/support");
@@ -283,5 +285,14 @@ export async function replyToTicket(formData: FormData) {
 export async function closeTicket(formData: FormData) {
   const { supabase } = await requireAdmin();
   await supabase.from("support_tickets").update({ status: "closed" }).eq("id", text(formData, "ticket_id"));
+  revalidatePath("/admin/support");
+}
+
+export async function addSupportInternalNote(formData: FormData) {
+  const { supabase, user } = await requireAdmin();
+  const note = text(formData, "note");
+  if (!note) return;
+  const { error } = await supabase.from("support_internal_notes").insert({ ticket_id: text(formData, "ticket_id"), admin_id: user.id, note });
+  if (error) throw new Error(`Internal note could not be saved: ${error.message}`);
   revalidatePath("/admin/support");
 }
