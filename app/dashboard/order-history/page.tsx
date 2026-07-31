@@ -1,12 +1,13 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { Plus, RotateCcw, Search } from "lucide-react";
+import { AlertTriangle, CheckCircle2, CircleDashed, Clock3, Copy, Eye, Plus, RefreshCw, RotateCcw, Search } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { customerOrderServices } from "@/lib/order-service-experience";
 
 type Campaign = {
   id: string;
@@ -23,6 +24,10 @@ type Campaign = {
   deliveredCount: number | null;
   remains: number | null;
   progress: number | null;
+  deliveryTime: string | null;
+  refillPolicy: string | null;
+  refillEligible: boolean;
+  refillRequestedAt: string | null;
 };
 
 const statuses = ["all", "pending", "processing", "in_progress", "completed", "partial", "cancelled", "refunded", "failed", "refill_requested", "refilling"];
@@ -32,20 +37,29 @@ const statusStyle: Record<string, string> = {
   in_progress: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
   completed: "border border-emerald-400/25 bg-emerald-500/10 text-emerald-200",
   partial: "border border-amber-400/25 bg-amber-500/10 text-amber-200",
-  cancelled: "border border-white/15 bg-white/5 text-[#D1D5DB]",
-  refunded: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
+  cancelled: "border border-red-400/25 bg-red-500/10 text-red-200",
+  refunded: "border border-blue-400/25 bg-blue-500/10 text-blue-200",
   failed: "border border-red-400/25 bg-red-500/10 text-red-200",
   refill_requested: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
   refilling: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
 };
 
 function StatusBadge({ status }: { status: string }) {
+  const StatusIcon = status === "completed" ? CheckCircle2 : ["cancelled", "failed"].includes(status) ? AlertTriangle : ["processing", "in_progress", "refilling"].includes(status) ? RefreshCw : Clock3;
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold capitalize ${statusStyle[status] || statusStyle.pending}`}>
-      <i className="h-1.5 w-1.5 rounded-full bg-current" />
+      <StatusIcon aria-hidden="true" className="h-3 w-3" />
       {status.replaceAll("_", " ")}
     </span>
   );
+}
+
+function reorderHref(item: Campaign) {
+  const service = customerOrderServices.find((candidate) => candidate.name.toLowerCase() === item.service.toLowerCase())
+    ?? customerOrderServices.find((candidate) => candidate.platform === item.platform.toLowerCase() && item.service.toLowerCase().includes(candidate.code.split("-").pop() || ""));
+  if (!service) return null;
+  const params = new URLSearchParams({ platform: service.platform, service: service.code, quantity: String(item.quantity), link: item.link, resume: "1" });
+  return `/dashboard/new-order?${params.toString()}`;
 }
 
 function readableOrderId(id: string) {
@@ -63,17 +77,27 @@ export default function CampaignHistoryPage() {
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("all");
   const [platform, setPlatform] = useState("all");
+  const [dateRange, setDateRange] = useState("all");
+  const [loadError, setLoadError] = useState("");
+  const [reloadKey, setReloadKey] = useState(0);
 
   useEffect(() => {
     const supabase = createClient();
     const loadOrders = async () => {
-      const { data } = await supabase
+      setLoading(true);
+      setLoadError("");
+      const { data, error: queryError } = await supabase
         .from("orders")
-        .select("id, service_name, platform, link, quantity, charge, status, created_at, package_name, starting_count, current_count, delivered_count, remaining_count, progress_percent, services(name, categories(name))")
+        .select("id, service_name, platform, link, quantity, charge, status, created_at, package_name, starting_count, current_count, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))")
         .order("created_at", { ascending: false });
+        if (queryError) {
+          setLoadError("Orders could not be loaded right now.");
+          setLoading(false);
+          return;
+        }
         setCampaigns(
           (data ?? []).map((row) => {
-            const service = row.services as unknown as { name?: string; categories?: { name?: string } | null } | null;
+            const service = row.services as unknown as { name?: string; delivery_time?: string; refill_policy?: string; categories?: { name?: string } | null } | null;
             const quantity = Number(row.quantity ?? 0);
             return {
               id: row.id,
@@ -90,6 +114,10 @@ export default function CampaignHistoryPage() {
               deliveredCount: row.delivered_count === null ? null : Number(row.delivered_count),
               remains: row.remaining_count === null ? null : Number(row.remaining_count),
               progress: row.progress_percent === null ? null : Number(row.progress_percent),
+              deliveryTime: service?.delivery_time || null,
+              refillPolicy: service?.refill_policy || null,
+              refillEligible: Boolean(row.refill_eligible),
+              refillRequestedAt: row.refill_requested_at || null,
             };
           }),
         );
@@ -98,20 +126,29 @@ export default function CampaignHistoryPage() {
     void loadOrders();
     const channel = supabase.channel("customer-order-tracking").on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => void loadOrders()).subscribe();
     return () => { void supabase.removeChannel(channel); };
-  }, []);
+  }, [reloadKey]);
 
   const platforms = useMemo(() => Array.from(new Set(campaigns.map((item) => item.platform))).sort(), [campaigns]);
 
   const filtered = useMemo(
     () =>
       campaigns.filter((item) => {
-        const matchesSearch = `${item.id} ${item.service} ${item.link}`.toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = `${item.id} ${readableOrderId(item.id)} ${item.platform} ${item.service} ${item.link}`.toLowerCase().includes(search.toLowerCase());
         const matchesStatus = status === "all" || item.status === status;
         const matchesPlatform = platform === "all" || item.platform === platform;
-        return matchesSearch && matchesStatus && matchesPlatform;
+        const days = dateRange === "all" ? 0 : Number(dateRange);
+        const matchesDate = !days || new Date(item.createdAt).getTime() >= Date.now() - days * 86400000;
+        return matchesSearch && matchesStatus && matchesPlatform && matchesDate;
       }),
-    [campaigns, search, status, platform],
+    [campaigns, search, status, platform, dateRange],
   );
+
+  const summary = useMemo(() => ({
+    total: campaigns.length,
+    active: campaigns.filter((item) => ["pending", "processing", "in_progress", "refill_requested", "refilling"].includes(item.status)).length,
+    completed: campaigns.filter((item) => item.status === "completed").length,
+    attention: campaigns.filter((item) => ["partial", "cancelled", "failed", "refunded"].includes(item.status)).length,
+  }), [campaigns]);
 
   return (
     <main className="min-h-[calc(100vh-5rem)] bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.12),transparent_34%),#050505] p-4 text-white sm:p-6 lg:p-8">
@@ -119,16 +156,23 @@ export default function CampaignHistoryPage() {
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
             <span className="text-[10px] font-bold uppercase tracking-[.18em] text-orange-400">Campaign operations</span>
-            <h1 className="mt-2 text-3xl font-black tracking-tight text-white">Order History</h1>
-            <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">Track campaign status, delivery progress, and order details in one place.</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight text-white">Your Orders</h1>
+            <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">Track active campaigns, review completed orders and manage support requests.</p>
           </div>
           <Link href="/dashboard/new-order" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_16px_34px_-18px_rgba(255,122,0,.75)] transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
             <Plus className="h-4 w-4" /> New Order
           </Link>
         </div>
 
+        <section className="mt-6 grid grid-cols-2 gap-3 lg:grid-cols-4">
+          {[["Total orders", summary.total, CircleDashed, "text-white"],["Active orders", summary.active, RefreshCw, "text-orange-300"],["Completed", summary.completed, CheckCircle2, "text-emerald-300"],["Needs attention", summary.attention, AlertTriangle, "text-amber-300"]].map(([label, value, Icon, tone]) => {
+            const SummaryIcon = Icon as typeof CircleDashed;
+            return <article key={String(label)} className="rounded-2xl border border-white/10 bg-[#111111] p-4"><div className="flex items-center gap-2 text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]"><SummaryIcon className={`h-4 w-4 ${tone}`} />{String(label)}</div><p className="mt-2 text-2xl font-black text-white">{String(value)}</p></article>;
+          })}
+        </section>
+
         <section className="mt-7 rounded-3xl border border-orange-400/20 bg-[#111111] p-4 shadow-[0_24px_55px_-36px_rgba(255,122,0,.7)] sm:p-5">
-          <div className="grid gap-3 md:grid-cols-3 xl:grid-cols-[1.4fr_1fr_1fr_auto]">
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-[1.5fr_1fr_1fr_1fr_auto]">
             <label className="relative block">
               <Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-orange-400" />
               <input
@@ -151,7 +195,8 @@ export default function CampaignHistoryPage() {
                 <option key={item}>{item}</option>
               ))}
             </select>
-            <button type="button" onClick={() => { setSearch(""); setStatus("all"); setPlatform("all"); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 py-3 text-sm font-bold text-orange-200 transition-all duration-200 ease-out hover:border-orange-400 hover:bg-orange-500/15 active:scale-[.98]">
+            <select value={dateRange} onChange={(event) => setDateRange(event.target.value)} aria-label="Order date range" className="min-h-12 rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm text-white outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"><option value="all">All dates</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select>
+            <button type="button" onClick={() => { setSearch(""); setStatus("all"); setPlatform("all"); setDateRange("all"); }} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 py-3 text-sm font-bold text-orange-200 transition-all duration-200 ease-out hover:border-orange-400 hover:bg-orange-500/15 active:scale-[.98]">
               <RotateCcw className="h-4 w-4" /> Reset
             </button>
           </div>
@@ -186,6 +231,7 @@ export default function CampaignHistoryPage() {
                     <td colSpan={12} className="p-14 text-center text-[#9CA3AF]">Loading orders...</td>
                   </tr>
                 )}
+                {!loading && loadError ? <tr><td colSpan={12} className="p-14 text-center"><p className="font-bold text-red-200">{loadError}</p><button type="button" onClick={() => setReloadKey((value) => value + 1)} className="mt-3 rounded-xl bg-orange-500 px-4 py-2 font-bold text-white">Retry</button></td></tr> : null}
 
                 {!loading &&
                   filtered.map((item) => (
@@ -206,17 +252,8 @@ export default function CampaignHistoryPage() {
                       <td className="px-5 py-4"><div className="h-2 w-24 overflow-hidden rounded-full bg-white/10"><div className="h-full rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FFB000]" style={{ width: `${item.progress ?? 0}%` }} /></div><p className="mt-1 text-[9px] text-[#9CA3AF]">{item.progress === null ? "Awaiting count" : `${item.progress.toFixed(1)}%`}</p></td>
                       <td className="px-5 py-4">
                         <div className="flex gap-2">
-                          <Link href="/dashboard/support" className="rounded-lg border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold text-orange-200">
-                            Raise Ticket
-                          </Link>
-                          <a
-                            href={`https://wa.me/918860330771?text=${encodeURIComponent(`Hi SocialRUSH, I need help with order ${readableOrderId(item.id)}.`)}`}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="rounded-lg border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-bold text-emerald-200"
-                          >
-                            WhatsApp
-                          </a>
+                          <Link href={`/dashboard/orders/${item.id}`} className="rounded-lg bg-orange-500 px-3 py-1.5 text-[10px] font-bold text-white">View Order</Link>
+                          <Link href={`/dashboard/support?order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-[#D1D5DB]">Support</Link>
                         </div>
                       </td>
                     </tr>
@@ -238,6 +275,7 @@ export default function CampaignHistoryPage() {
               Loading orders...
             </div>
           ) : null}
+          {!loading && loadError ? <div className="rounded-3xl border border-red-400/25 bg-red-500/10 p-8 text-center"><p className="text-sm font-bold text-red-100">{loadError}</p><button type="button" onClick={() => setReloadKey((value) => value + 1)} className="mt-4 min-h-11 rounded-xl bg-orange-500 px-5 text-sm font-bold text-white">Retry</button></div> : null}
 
           {!loading && filtered.map((item) => (
             <article key={item.id} className="min-w-0 rounded-3xl border border-orange-400/25 bg-[#111111] p-5 shadow-[0_22px_48px_-34px_rgba(255,122,0,.7)]">
@@ -253,6 +291,7 @@ export default function CampaignHistoryPage() {
                 <p className="text-sm font-bold leading-6 text-white">{item.service}</p>
                 <p className="mt-1 text-xs capitalize text-[#9CA3AF]">{item.platform} · {item.packageName || "Standard"}</p>
               </div>
+              <div className="mt-3 min-w-0 rounded-2xl border border-white/10 bg-[#0B0B0F] p-3"><p className="text-[9px] font-black uppercase tracking-wider text-[#9CA3AF]">Delivery estimate</p><p className="mt-1.5 text-sm font-bold text-white">{item.deliveryTime || "Not specified"}</p></div>
 
               <dl className="mt-4 grid grid-cols-2 gap-3">
                 {[
@@ -283,26 +322,21 @@ export default function CampaignHistoryPage() {
                 </div>
               </div>
 
-              <div className="mt-5 grid grid-cols-2 gap-3">
-                <Link href="/dashboard/support" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2.5 text-xs font-bold text-orange-200 transition-all duration-200 ease-out active:scale-[.98]">
-                  Raise Ticket
-                </Link>
-                <a
-                  href={`https://wa.me/918860330771?text=${encodeURIComponent(`Hi SocialRUSH, I need help with order ${readableOrderId(item.id)}.`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 py-2.5 text-xs font-bold text-emerald-200 transition-all duration-200 ease-out active:scale-[.98]"
-                >
-                  WhatsApp
-                </a>
+              <div className="mt-5 grid grid-cols-2 gap-2">
+                <Link href={`/dashboard/orders/${item.id}`} className="col-span-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 text-sm font-black text-white"><Eye className="h-4 w-4" />View Order</Link>
+                {reorderHref(item) ? <Link href={reorderHref(item)!} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-bold text-orange-200">Reorder</Link> : null}
+                <Link href={`/dashboard/support?order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]">Get Support</Link>
+                {item.refillEligible ? <Link href={`/dashboard/support?order=${encodeURIComponent(readableOrderId(item.id))}&category=Refill%20request`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 text-xs font-bold text-emerald-200">{item.refillRequestedAt ? "View Refill Request" : "Request Refill"}</Link> : null}
+                <button type="button" onClick={() => void navigator.clipboard.writeText(readableOrderId(item.id))} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]"><Copy className="h-3.5 w-3.5" />Copy ID</button>
               </div>
             </article>
           ))}
 
-          {!loading && !filtered.length ? (
+          {!loading && !loadError && !filtered.length ? (
             <div className="rounded-3xl border border-orange-400/20 bg-[#111111] p-8 text-center">
-              <p className="text-sm font-bold text-white">No orders match this filter.</p>
-              <p className="mt-2 text-xs leading-5 text-[#9CA3AF]">Try changing the search or filter options above.</p>
+              <p className="text-sm font-bold text-white">{campaigns.length ? "No orders match these filters" : "No orders yet"}</p>
+              <p className="mt-2 text-xs leading-5 text-[#9CA3AF]">{campaigns.length ? "Try changing the search or filter options above." : "Start your first campaign and track its progress here."}</p>
+              {!campaigns.length ? <Link href="/dashboard/new-order" className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-5 text-sm font-bold text-white">Create New Order</Link> : null}
             </div>
           ) : null}
         </motion.section>
