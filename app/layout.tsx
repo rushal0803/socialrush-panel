@@ -1,4 +1,5 @@
 import type { Metadata, Viewport } from "next";
+import Script from "next/script";
 import "./globals.css";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
@@ -67,8 +68,16 @@ export const viewport: Viewport = {
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en-IN">
-      <body className="overflow-x-clip bg-[#07080D] text-white">
+  <html lang="en-IN">
+  <Script
+    id="google-adsense"
+    async
+    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5748505888279439"
+    crossOrigin="anonymous"
+    strategy="beforeInteractive"
+  />
+
+  <body className="overflow-x-clip bg-[#07080D] text-white">
         <ClientProviders>
           <script
             type="application/ld+json"
