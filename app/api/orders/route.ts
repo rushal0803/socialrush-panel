@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { detectPublicCount } from "@/lib/orders/count-detector";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 async function saveInitialCount(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -93,6 +94,7 @@ export async function POST(request: NextRequest) {
 
   const checkout = data as { id?: string; duplicate?: boolean } | null;
   if (checkout?.id && !checkout.duplicate) {
+    await recordTrustedEvent({eventName:"order_created",customerId:user.id,pagePath:"/dashboard/new-order",metadata:{order_reference:checkout.id}});
     await saveInitialCount(supabase, {
       orderId: checkout.id,
       link: body.link,

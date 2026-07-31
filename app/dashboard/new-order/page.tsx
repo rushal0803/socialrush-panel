@@ -35,6 +35,7 @@ import IconBadge from "@/components/IconBadge";
 import { openCheckoutRazorpay } from "@/lib/payments/checkout-razorpay-client";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { useServiceHealth } from "@/lib/use-service-health";
+import { track } from "@/lib/analytics/events";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -126,6 +127,7 @@ export default function NewOrderPage() {
   const [checkoutStage, setCheckoutStage] = useState("");
   const inFlight = useRef(false);
   const requestId = useRef("");
+  const funnelSignals = useRef(new Set<string>());
   const platformRef = useRef<HTMLElement>(null);
   const serviceRef = useRef<HTMLElement>(null);
   const detailsRef = useRef<HTMLElement>(null);
@@ -153,6 +155,18 @@ export default function NewOrderPage() {
   const currentStep = !platform ? 1 : !selectedService ? 2 : !formIsValid ? 3 : 4;
   const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
 
+  useEffect(() => {
+    const emitOnce = (key: string, event: Parameters<typeof track>[0], metadata: Record<string, string | number | boolean | null>) => {
+      if (funnelSignals.current.has(key)) return;
+      funnelSignals.current.add(key);
+      track(event, metadata);
+    };
+    if (selectedService) emitOnce(`details:${selectedService.code}`, "campaign_details_started", { step: "details" });
+    if (selectedService && targetLink.trim() && !linkError) emitOnce(`link:${selectedService.code}`, "valid_link_entered", { step: "details", link_type: "public_destination", validation_passed: true });
+    if (selectedService && quantityInput && !quantityError) emitOnce(`quantity:${selectedService.code}`, "quantity_entered", { step: "details" });
+    if (formIsValid) emitOnce(`summary:${selectedService?.code}`, "order_summary_viewed", { step: "summary" });
+  }, [formIsValid, linkError, quantityError, quantityInput, selectedService, targetLink]);
+
   const scrollTo = (ref: React.RefObject<HTMLElement>) => {
     window.setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
   };
@@ -166,6 +180,7 @@ export default function NewOrderPage() {
   };
 
   const choosePlatform = (nextPlatform: PlatformId) => {
+    track("platform_selected", { step: "platform" });
     setPlatform(nextPlatform);
     setSelectedService(null);
     resetOrderDetails();
@@ -175,6 +190,7 @@ export default function NewOrderPage() {
   const chooseService = (service: SmmService) => {
     const health = healthByService[service.code];
     if (health && (!health.acceptsNewOrders || health.status === "paused")) return;
+    track("service_selected", { step: "service" });
     setSelectedService(service);
     resetOrderDetails();
     scrollTo(detailsRef);
@@ -241,6 +257,7 @@ export default function NewOrderPage() {
     }
 
     inFlight.current = true;
+    track("order_confirmation_started", { step: "confirmation" });
     setSubmitting(true);
     if (!requestId.current) requestId.current = crypto.randomUUID();
 
@@ -283,6 +300,7 @@ export default function NewOrderPage() {
       window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
       window.setTimeout(() => router.push("/dashboard/orders"), 900);
     } catch (cause) {
+      track("order_creation_failed", { step: "confirmation", error_category: "order_creation" });
       setError(cause instanceof Error ? cause.message : "Unable to place your order right now.");
       inFlight.current = false;
       setSubmitting(false);

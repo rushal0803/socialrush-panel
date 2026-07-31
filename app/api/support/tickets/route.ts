@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 export async function GET() {
   const supabase = await createClient();
@@ -18,5 +19,6 @@ export async function POST(request: NextRequest) {
   if (!body?.subject || !body.message) return NextResponse.json({ error: "Subject and message are required" }, { status: 422 });
   const { data, error } = await supabase.rpc("create_support_ticket", { p_category: body.category, p_subject: body.subject, p_message: body.message, p_order_id: body.orderId || null });
   if (error) return NextResponse.json({ error: error.message }, { status: error.message.includes("already have") ? 409 : 400 });
+  await recordTrustedEvent({eventName:"support_ticket_created",customerId:user.id,pagePath:"/dashboard/support",metadata:{category:String(body.category||"other")}});
   return NextResponse.json({ data: { id: data } }, { status: 201 });
 }

@@ -1,0 +1,2 @@
+import"server-only";import{createAdminClient}from"@/lib/supabase/admin";
+export async function recordTrustedEvent(input:{eventName:"order_created"|"payment_successful"|"wallet_credited"|"support_ticket_created";customerId:string;pagePath:string;metadata?:Record<string,string|number|boolean|null>}){try{await createAdminClient().from("analytics_events").insert({event_name:input.eventName,customer_id:input.customerId,page_path:input.pagePath,device_category:"unknown",safe_metadata:input.metadata||{}})}catch{/* Analytics never blocks business operations. */}}
