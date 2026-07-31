@@ -1,4 +1,5 @@
 import Link from "next/link";
+import PublicReviewsSection from "@/components/reviews/PublicReviewsSection";
 import {
   ArrowRight,
   BadgeCheck,
@@ -172,6 +173,7 @@ export default function HomepageContent() {
         </div>
       </section>
 
+      <PublicReviewsSection limit={3} />
       <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
         <div className="relative mx-auto max-w-7xl overflow-hidden rounded-[1.5rem] border border-orange-400/25 bg-[#101219] px-6 py-12 text-center shadow-[0_28px_70px_rgba(0,0,0,.28)] sm:px-10 sm:py-16">
           <div className="pointer-events-none absolute left-1/2 top-0 h-40 w-96 -translate-x-1/2 bg-orange-500/[0.1] blur-3xl" />

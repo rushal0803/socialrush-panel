@@ -19,6 +19,8 @@ const publicRoutes = [
   "/faq",
   "/case-studies",
   "/testimonials",
+  "/reviews",
+  "/trust",
   "/privacy-policy",
   "/refund-policy",
   "/terms-and-conditions",
