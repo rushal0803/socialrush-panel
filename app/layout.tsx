@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 import "./globals.css";
 import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
@@ -16,6 +15,9 @@ export const metadata: Metadata = {
   },
   description:
     "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
+    other: {
+  "google-adsense-account": "ca-pub-5748505888279439",
+},
   icons: {
     icon: [
       { url: "/favicon.ico" },
@@ -66,18 +68,12 @@ export const viewport: Viewport = {
   initialScale: 1,
 };
 
-export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
+export default function RootLayout({
+  children,
+}: Readonly<{ children: React.ReactNode }>) {
   return (
-  <html lang="en-IN">
-  <Script
-    id="google-adsense"
-    async
-    src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-5748505888279439"
-    crossOrigin="anonymous"
-    strategy="beforeInteractive"
-  />
-
-  <body className="overflow-x-clip bg-[#07080D] text-white">
+    <html lang="en-IN">
+      <body className="overflow-x-clip bg-[#07080D] text-white">
         <ClientProviders>
           <script
             type="application/ld+json"
