@@ -17,6 +17,11 @@ export function getSafeCustomerDestination(value: string | null | undefined) {
     return DEFAULT_CUSTOMER_DESTINATION;
   }
 
+  // The homepage is never a valid post-login destination for a customer.
+  if (!destination.pathname || destination.pathname === "/") {
+    return DEFAULT_CUSTOMER_DESTINATION;
+  }
+
   const allowedCustomerPaths = [
     "/dashboard/new-order",
     "/dashboard/order-summary",
