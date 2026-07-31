@@ -38,6 +38,7 @@ import { useServiceHealth } from "@/lib/use-service-health";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
+type SavedProfile = { id: string; label: string; platform: string; public_url: string; last_used_at: string | null };
 
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 function cleanQuantity(value: string) {
@@ -114,6 +115,7 @@ export default function NewOrderPage() {
   const [platform, setPlatform] = useState<PlatformId | null>(initialService?.platform ?? requestedPlatform ?? null);
   const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
   const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
+  const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
   const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [walletLoading, setWalletLoading] = useState(true);
@@ -205,6 +207,8 @@ export default function NewOrderPage() {
 
   useEffect(() => {
     void loadWalletBalance();
+    const db = createClient();
+    void db.from("saved_social_profiles").select("id,label,platform,public_url,last_used_at").order("last_used_at", { ascending: false, nullsFirst: false }).then(({data}) => setSavedProfiles((data || []) as SavedProfile[]));
     const updateBalance = (event: Event) => {
       const value = Number((event as CustomEvent<number>).detail);
       if (Number.isFinite(value)) setWalletBalance(value);
@@ -512,6 +516,7 @@ export default function NewOrderPage() {
               <div className="mt-5 grid gap-5 lg:grid-cols-2">
                 <label className="block text-xs font-black text-white">
                   <span className="inline-flex items-center gap-2"><LinkIcon className="h-4 w-4 text-orange-400" />Public Link / Username</span>
+                  {savedProfiles.some((item) => item.platform === platform) ? <select aria-label="Choose a saved profile" defaultValue="" onChange={(event) => { const saved=savedProfiles.find(item=>item.id===event.target.value);if(saved)setTargetLink(saved.public_url); }} className="mt-2 min-h-12 w-full rounded-xl border border-white/15 bg-[#0B0B0F] px-3 text-sm text-white"><option value="">Use a new public link</option>{savedProfiles.filter(item=>item.platform===platform).map(item=><option key={item.id} value={item.id}>{item.label}</option>)}</select> : null}
                   <input
                     value={targetLink}
                     onChange={(event) => { setTargetLink(event.target.value); setError(""); }}
