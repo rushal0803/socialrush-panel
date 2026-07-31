@@ -466,7 +466,7 @@ export default function SupportPage() {
                   />
                 </label>
 
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Payment or transaction reference (optional)<input name="payment_reference" className="dashboard-input mt-2" placeholder="Reference ID only" /></label>
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Payment or transaction reference (optional)<input name="payment_reference" defaultValue={searchParams.get("payment") || searchParams.get("transaction") || ""} className="dashboard-input mt-2" placeholder="Reference ID only" /></label>
 
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Message
@@ -474,7 +474,7 @@ export default function SupportPage() {
                     name="message"
                     required
                     rows={5}
-                    defaultValue={searchParams.get("order") ? `Order ID: ${searchParams.get("order")}\nPlatform: ${searchParams.get("platform") || ""}\nService: ${searchParams.get("service") || ""}\nCurrent status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe what you need help with:` : ""}
+                    defaultValue={searchParams.get("order") ? `Order ID: ${searchParams.get("order")}\nPlatform: ${searchParams.get("platform") || ""}\nService: ${searchParams.get("service") || ""}\nCurrent status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe what you need help with:` : searchParams.get("transaction") ? `Transaction ID: ${searchParams.get("transaction")}\nPayment status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe the payment or wallet issue:` : ""}
                     className="dashboard-input mt-2 resize-none"
                     placeholder="Include relevant order or transaction details..."
                   />

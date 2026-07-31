@@ -6,7 +6,7 @@ export default async function AddFundsPage() {
   const { supabase, user, profile } = await getDashboardContext();
   if (!user) redirect("/login?next=/dashboard/add-funds");
   const [{ data: transactionRows }, { data: orderRows, count: orderCount }] = await Promise.all([
-    supabase.from("transactions").select("id, amount, type, status, payment_method, description, created_at").order("created_at", { ascending: false }).limit(100),
+    supabase.from("transactions").select("id, amount, type, status, payment_method, provider_order_id, provider_payment_id, provider_refund_id, description, metadata, created_at").order("created_at", { ascending: false }).limit(100),
     supabase.from("orders").select("id, charge, status, created_at, service_name, services(name)", { count: "exact" }).order("created_at", { ascending: false }).limit(100),
   ]);
   const transactions: WalletTransaction[] = (transactionRows ?? []).map((item) => ({ ...item, amount: Number(item.amount) }));
