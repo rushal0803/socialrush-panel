@@ -755,13 +755,13 @@ export default function PackagesPageContent({
           <div className="mx-auto w-full max-w-7xl rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_60px_-34px_rgba(255,122,0,.7)] sm:rounded-[34px] sm:p-8">
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
               <p className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-orange-300 sm:px-4 sm:py-2 sm:text-xs">
-                Premium Package Selection
+                Find Your Best Growth Plan
               </p>
               <h1 className="mt-4 text-3xl font-black leading-tight text-white sm:mt-5 sm:text-5xl">
-                Choose Your Package
+                Choose the Right Package for Your Goal
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
-                Select a platform, choose a service, and compare only the packages that match your campaign.
+                Select your platform, compare available services, and review pricing, delivery and support details before checkout.
               </p>
               <p className="mt-3 max-w-3xl text-xs font-semibold leading-6 text-[#9CA3AF]">
                 Prices are converted from INR and may vary slightly based on exchange rates and service availability.
@@ -790,18 +790,18 @@ export default function PackagesPageContent({
             {currentStepAnnouncement}
           </p>
           <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:grid-cols-4 sm:gap-3 sm:p-3">
-            <PackageStep number="1" title="Platform" state={hasPlatformSelection ? "complete" : "active"} />
+            <PackageStep number="1" title="Pick a Platform" state={hasPlatformSelection ? "complete" : "active"} />
             <PackageStep
               number="2"
-              title="Service"
+              title="Choose Your Goal"
               state={hasServiceSelection ? "complete" : hasPlatformSelection ? "active" : "upcoming"}
             />
             <PackageStep
               number="3"
-              title="Package"
+              title="Compare Packages"
               state={selectedPackage ? "complete" : hasServiceSelection ? "active" : "upcoming"}
             />
-            <PackageStep number="4" title="Review" state={selectedPackage ? "active" : "upcoming"} />
+            <PackageStep number="4" title="Review & Start" state={selectedPackage ? "active" : "upcoming"} />
           </div>
         </section>
 
@@ -921,7 +921,7 @@ export default function PackagesPageContent({
                       <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
                       <span className="mt-auto flex min-w-0 items-center justify-between gap-3 pt-3">
                         <span className="min-w-0 truncate text-xs font-black text-orange-200">
-                          {startingPrice !== null ? `Starts at ${formatCurrency(startingPrice, currency)}` : "View packages"}
+                          {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "View packages"}
                         </span>
                         <span className={`shrink-0 text-xs font-black ${selected ? "text-emerald-200" : "text-white group-hover:text-orange-100"}`}>
                           {selected ? "Selected" : "Choose →"}

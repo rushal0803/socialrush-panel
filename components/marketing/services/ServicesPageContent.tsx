@@ -311,13 +311,13 @@ export default function ServicesPageContent({
         <section className="relative scroll-mt-28 px-4 pb-6 pt-5 sm:px-6 sm:pb-9 sm:pt-9 lg:px-8 lg:pt-12">
           <div className="mx-auto max-w-7xl rounded-[1.75rem] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_58px_-28px_rgba(255,122,0,.45)] backdrop-blur-xl sm:rounded-[2rem] sm:p-8 lg:p-10">
             <p className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.14em] text-orange-200 sm:px-4 sm:text-xs">
-              <Sparkles className="h-3.5 w-3.5" /> Premium Service Catalog
+              <Sparkles className="h-3.5 w-3.5" /> Clear Service Catalog
             </p>
             <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.03em] text-white sm:text-5xl">
-              Social Media Growth Services India
+              Growth Services Built Around Your Goals
             </h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:text-base sm:leading-8">
-              Explore SocialRUSH social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok, and X/Twitter. Compare public-link ordering, transparent pricing, delivery estimates, and dashboard tracking before you start.
+              Choose a platform, review clear service details, and find the right option for your campaign.
             </p>
 
             <div className="mt-6 grid grid-cols-2 gap-2.5 sm:grid-cols-4 lg:flex lg:flex-wrap">

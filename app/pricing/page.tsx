@@ -108,15 +108,13 @@ export default function PricingPage() {
               Transparent campaign pricing
             </div>
             <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.05] tracking-[-.045em] text-[#0B0B0F] sm:text-5xl lg:text-[62px]">
-              Clear pricing before every{" "}
-              <span className="bg-gradient-to-r from-[#FF7A00] to-[#FFB000] bg-clip-text text-transparent">
-                campaign.
+              Simple Pricing. Complete Clarity.{" "}
+              <span className="bg-gradient-to-r from-[#FF6200] to-[#FF9A00] bg-clip-text text-transparent">
+                No Surprises.
               </span>
             </h1>
             <p className="mt-6 max-w-2xl text-sm leading-7 text-[#111827] sm:text-base sm:leading-8">
-              Compare public starting rates by platform, then review the current
-              quantity, destination, and exact total inside your secure dashboard
-              before any wallet charge is applied.
+              Compare starting rates, choose your quantity, and review the exact total before confirming your order.
             </p>
 
             <div className="mt-7 grid gap-2 sm:grid-cols-2">
