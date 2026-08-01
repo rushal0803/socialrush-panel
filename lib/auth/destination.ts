@@ -5,6 +5,13 @@ export function getSafeCustomerDestination(value: string | null | undefined) {
   const raw = String(value || "").trim();
   if (!raw) return DEFAULT_CUSTOMER_DESTINATION;
 
+  // A return path must be a site-relative path. This rejects scheme-relative
+  // URLs (//example.com), external URLs, and malformed values before they can
+  // become a post-login redirect.
+  if (!raw.startsWith("/") || raw.startsWith("//")) {
+    return DEFAULT_CUSTOMER_DESTINATION;
+  }
+
   let destination: URL;
 
   try {
@@ -13,17 +20,7 @@ export function getSafeCustomerDestination(value: string | null | undefined) {
     return DEFAULT_CUSTOMER_DESTINATION;
   }
 
-  if (destination.origin !== "https://www.getsocialrush.com") {
-    return DEFAULT_CUSTOMER_DESTINATION;
-  }
-
-  const allowedCustomerPaths = [
-    "/dashboard/new-order",
-    "/dashboard/order-summary",
-    "/packages/checkout",
-  ];
-
-  if (!allowedCustomerPaths.includes(destination.pathname)) {
+  if (destination.origin !== "https://www.getsocialrush.com" || !destination.pathname.startsWith("/")) {
     return DEFAULT_CUSTOMER_DESTINATION;
   }
 

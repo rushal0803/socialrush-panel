@@ -160,7 +160,7 @@ export default function HomepageContent() {
 
       <section className="px-4 py-16 sm:px-6 sm:py-20 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
-          <SectionHeading title="Why Creators and Brands Choose SocialRUSH" description="Clear information, private account access and practical support throughout your campaign." />
+          <SectionHeading title="Why Creators and Brands Choose SocialRUSH" description="Clear information, no private account access, and practical support throughout your campaign." />
           <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {reasons.map(([Icon, title, text]) => (
               <article key={title} className="rounded-[1.25rem] border border-white/[0.09] bg-[#101219] p-6">

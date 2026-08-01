@@ -124,7 +124,7 @@ export default function FaqPageContent({ categories }: { categories: FaqCategory
                 </div>
               </div>
 
-              <FaqAccordion3D items={category.items} />
+              <FaqAccordion3D items={category.items} idPrefix={`faq-${category.key}`} />
             </div>
           ))}
         </motion.div>

@@ -8,12 +8,9 @@ import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 type FooterGroup = { title: string; links: readonly (readonly [string, string])[] };
 
 const groups: readonly FooterGroup[] = [
-  { title: "Company", links: [["About Us", "/about"], ["Creator Tools", "/tools"], ["Contact Us", "/contact"], ["How It Works", "/#how-it-works"], ["Reviews", "/reviews"], ["Case Studies", "/case-studies"], ["Customer Safety", "/testimonials"], ["Blog", "/blog"]] },
-  { title: "Top Services", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["Instagram Likes", "/instagram-likes"], ["Instagram Views", "/instagram-views"], ["YouTube Subscribers", "/youtube-subscribers"], ["YouTube Views", "/youtube-views"], ["Facebook Followers", "/facebook-followers"], ["LinkedIn Followers", "/linkedin-followers"]] },
-  { title: "Popular Services", links: [["Telegram Members", "/telegram-members"], ["TikTok Followers", "/tiktok-followers"], ["Twitter/X Followers", "/twitter-followers"], ["LinkedIn Likes", "/linkedin-likes"], ["Facebook Likes", "/facebook-likes"]] },
-  { title: "More Platforms", links: [["Instagram Services", "/services?platform=instagram"], ["YouTube Services", "/services?platform=youtube"], ["Facebook Services", "/services?platform=facebook"], ["LinkedIn Services", "/services?platform=linkedin"], ["Telegram Services", "/services?platform=telegram"], ["TikTok Services", "/services?platform=tiktok"], ["Twitter/X Services", "/services?platform=x"]] },
-  { title: "Customer Account", links: [["Dashboard", "/dashboard"], ["New Order", "/dashboard/new-order"], ["Orders", "/dashboard/orders"], ["Saved Profiles", "/dashboard/saved-profiles"], ["Rewards", "/dashboard/rewards"], ["Wallet", "/dashboard/wallet"], ["Support", "/dashboard/support"]] },
-  { title: "Help & Legal", links: [["FAQ", "/faq"], ["Contact Support", "/contact"], ["Refund Policy", "/refund-policy"], ["Privacy Policy", "/privacy-policy"], ["Terms and Conditions", "/terms-and-conditions"]] },
+  { title: "Company", links: [["About Us", "/about"], ["Reviews", "/reviews"], ["Case Studies", "/case-studies"], ["Blog", "/blog"], ["Contact", "/contact"]] },
+  { title: "Resources", links: [["Creator Tools", "/tools"], ["FAQ", "/faq"], ["Services", "/services"], ["Pricing", "/pricing"], ["Customer Safety", "/trust"]] },
+  { title: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms and Conditions", "/terms-and-conditions"], ["Refund Policy", "/refund-policy"]] },
 ] as const;
 
 const payments = ["UPI", "Cards via Razorpay", "Net Banking", "Wallet Balance"] as const;
@@ -22,7 +19,7 @@ const trust = ["Secure Checkout", "Wallet Support", "Public-Link Ordering", "Ord
 function groupId(title: string) { return `footer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`; }
 
 function FooterLinks({ group }: { group: FooterGroup }) {
-  return <ul className="mt-4 space-y-2.5">{group.links.map(([label, href]) => <li key={label}><Link href={href} className="inline-flex min-h-7 items-center text-sm leading-6 text-[#A8AFBD] outline-none transition hover:text-orange-300 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-orange-400">{label}</Link></li>)}</ul>;
+  return <ul className="mt-4 space-y-1">{group.links.map(([label, href]) => <li key={label}><Link href={href} className="inline-flex min-h-11 items-center text-sm leading-6 text-[#A8AFBD] outline-none transition hover:text-orange-300 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-orange-400">{label}</Link></li>)}</ul>;
 }
 
 export default function MarketingFooter({ tone = "default" }: { tone?: "default" | "light3d" }) {
@@ -49,7 +46,7 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
           <div className="space-y-1 lg:hidden">
             {groups.map((group) => { const open = openGroup === group.title; const id = groupId(group.title); return <section key={group.title} className="border-b border-white/10"><h2><button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpenGroup(open ? "" : group.title)} className="flex min-h-14 w-full items-center justify-between gap-4 py-3 text-left text-xs font-black uppercase tracking-[.14em] text-white outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-400"><span>{group.title}</span><span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-orange-400/20 bg-orange-500/10 text-lg text-orange-300">{open ? "−" : "+"}</span></button></h2><div id={id} className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}><div className="overflow-hidden"><div className="grid grid-cols-1 gap-x-4 pb-4 min-[390px]:grid-cols-2"><FooterLinks group={group} /></div></div></div></section>; })}
           </div>
-          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-3 xl:grid-cols-6">
+          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-3">
             {groups.map((group) => <section key={group.title} className="min-w-0"><h2 className="text-xs font-black uppercase tracking-[.14em] text-white">{group.title}</h2><FooterLinks group={group} /></section>)}
           </div>
         </nav>
