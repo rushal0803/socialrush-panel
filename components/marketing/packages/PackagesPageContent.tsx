@@ -76,7 +76,7 @@ const serviceVisuals: Record<Service, { badge: string; Icon: LucideIcon }> = {
   views: { badge: "Content Reach", Icon: Eye },
   members: { badge: "Community Growth", Icon: Users },
 };
-const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "24x7 Support", "Delivery Tracking"] as const;
+const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "Customer Support", "Delivery Tracking"] as const;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
 type ApiOrderData = {

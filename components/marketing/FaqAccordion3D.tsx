@@ -9,13 +9,14 @@ export type FaqItem = {
   answer: string;
 };
 
-export default function FaqAccordion3D({ items }: { items: FaqItem[] }) {
+export default function FaqAccordion3D({ items, idPrefix = "faq" }: { items: FaqItem[]; idPrefix?: string }) {
   const [openIndex, setOpenIndex] = useState(0);
 
   return (
     <div className="space-y-4">
       {items.map((item, index) => {
         const isOpen = openIndex === index;
+        const answerId = `${idPrefix}-answer-${index}`;
 
         return (
           <motion.article
@@ -23,13 +24,14 @@ export default function FaqAccordion3D({ items }: { items: FaqItem[] }) {
             layout
             whileHover={{ y: -4, scale: 1.005 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="overflow-hidden rounded-2xl border border-white/80 bg-white/80 shadow-[0_18px_42px_-20px_rgba(15,23,42,.26)] backdrop-blur-xl"
+            className="overflow-hidden rounded-2xl border border-white/80 bg-white/80 shadow-[0_18px_42px_-20px_rgba(15,23,42,.26)] backdrop-blur-xl motion-reduce:transform-none"
           >
             <button
               type="button"
               aria-expanded={isOpen}
+              aria-controls={answerId}
               onClick={() => setOpenIndex((current) => (current === index ? -1 : index))}
-              className="flex w-full items-center gap-4 px-5 py-4 text-left sm:px-6 sm:py-5"
+              className="flex w-full items-center gap-4 px-5 py-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:px-6 sm:py-5"
             >
               <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] via-[#FF9F00] to-[#FFC400] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 122, 0, .35)]">
                 {String(index + 1).padStart(2, "0")}
@@ -45,8 +47,9 @@ export default function FaqAccordion3D({ items }: { items: FaqItem[] }) {
             </button>
 
             <div
+              id={answerId}
               aria-hidden={!isOpen}
-              className={`grid transition-[grid-template-rows,opacity] duration-300 ${
+              className={`grid transition-[grid-template-rows,opacity] duration-300 motion-reduce:transition-none ${
                 isOpen
                   ? "grid-rows-[1fr] opacity-100"
                   : "grid-rows-[0fr] opacity-0"
