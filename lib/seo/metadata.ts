@@ -36,7 +36,9 @@ export function createPageMetadata({
   return {
     title: pageTitle,
     description,
-    keywords: [...new Set([...keywords, ...SOCIAL_GROWTH_KEYWORDS])],
+    // Keywords do not influence ranking. Keep only page-specific terms where
+    // they add useful context instead of repeating a sitewide keyword block.
+    keywords: [...new Set(keywords)],
     alternates: {
       canonical: canonicalUrl,
     },

@@ -13,9 +13,6 @@ Disallow: /admin/
 Disallow: /api/
 Disallow: /auth/
 Disallow: /packages/checkout
-Disallow: /login
-Disallow: /register
-Disallow: /signup
 
 Sitemap: ${SEO_SITE_URL}/sitemap.xml
 `;
