@@ -12,14 +12,12 @@ import { createClient } from "@/lib/supabase/client";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 const nav = [
-  ["Home", "/"],
   ["Services", "/services"],
-  ["Packages", "/packages"],
-  ["Tools", "/tools"],
   ["How It Works", "/#how-it-works"],
-  ["Blog", "/blog"],
-  ["FAQ", "/faq"],
-  ["Contact", "/contact"],
+  ["Why SocialRUSH", "/#why-socialrush"],
+  ["Reviews", "/reviews"],
+  ["Tools", "/tools"],
+  ["Support", "/support"],
 ] as const;
 
 export default function MarketingHeader({ tone = "default" }: { tone?: "default" | "light3d" }) {
@@ -52,7 +50,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
 
         <nav className="hidden items-center gap-1 text-sm font-semibold text-[#A8AFBD] xl:flex" aria-label="Primary navigation">
           {nav.map(([label, href]) => {
-            const active = href === "/" ? pathname === "/" : !href.includes("#") && pathname.startsWith(href);
+            const active = !href.includes("#") && pathname.startsWith(href);
             return (
               <Link
                 key={href}
