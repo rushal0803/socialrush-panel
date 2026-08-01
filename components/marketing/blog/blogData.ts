@@ -38,6 +38,7 @@ export type BlogArticle = {
   publishedAt?: string;
   updatedAt?: string;
   author?: string;
+  featured?: boolean;
   expandWithEditorialProfile?: boolean;
   redirectTo?: string;
 };
@@ -3149,8 +3150,8 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
     return {
       ...article,
       relatedLinks,
-      publishedAt: article.publishedAt ?? "2026-05-20",
-      updatedAt: article.updatedAt ?? "2026-07-01",
+      publishedAt: article.publishedAt,
+      updatedAt: article.updatedAt,
     };
   }
 
@@ -3169,8 +3170,8 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
         links.findIndex((candidate) => candidate.href === link.href) === index,
     ),
     faqs: article.faqs ?? buildFaqs(article, profile),
-    publishedAt: article.publishedAt ?? "2026-05-20",
-    updatedAt: article.updatedAt ?? "2026-07-01",
+    publishedAt: article.publishedAt,
+    updatedAt: article.updatedAt,
   };
 });
 
