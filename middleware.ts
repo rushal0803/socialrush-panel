@@ -19,6 +19,7 @@ const canonicalRedirects: Record<string, string> = {
   "/buy-tiktok-followers-india": "/tiktok-followers",
   "/privacy": "/privacy-policy",
   "/refund": "/refund-policy",
+  "/testimonials": "/reviews",
   "/services/facebook-brand-engagement": "/facebook-followers",
   "/services/instagram-audience-growth": "/buy-instagram-followers-india",
   "/services/instagram-content-reach": "/instagram-views",

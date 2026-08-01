@@ -5,8 +5,9 @@ import {
   canonicalIndiaServicePaths,
   indiaServiceSlugs,
 } from "@/lib/seo/india-service-pages";
+import { createAdminClient } from "@/lib/supabase/admin";
 
-export const dynamic = "force-static";
+export const dynamic = "force-dynamic";
 
 const publicRoutes = [
   "/",
@@ -18,7 +19,6 @@ const publicRoutes = [
   "/contact",
   "/faq",
   "/case-studies",
-  "/testimonials",
   "/reviews",
   "/trust",
   "/compare",
@@ -64,29 +64,43 @@ function sitemapServicePath(slug: (typeof indiaServiceSlugs)[number]) {
   return canonicalIndiaServicePaths[slug];
 }
 
-export function GET() {
-  const now = new Date().toISOString();
+type CaseStudySitemapEntry = { slug: string; published_at: string | null };
+
+export async function GET() {
   const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
   const blogRoutes = blogArticles.map((article) => `/blog/${article.slug}`);
+  const { data: caseStudies } = await createAdminClient()
+    .from("case_studies")
+    .select("slug,published_at")
+    .eq("published", true)
+    .eq("permission_confirmed", true);
+  const approvedCaseStudies = (caseStudies ?? []) as CaseStudySitemapEntry[];
+  const caseStudyRoutes = approvedCaseStudies.map((study) => `/case-studies/${study.slug}`);
   const routes = [
     ...new Set([
       ...publicRoutes,
       ...serviceRoutes,
       ...canonicalServiceDetailRoutes,
       ...blogRoutes,
+      ...caseStudyRoutes,
     ]),
   ];
-  const blogUpdatedAt = new Map(blogArticles.map((article) => [`/blog/${article.slug}`, article.updatedAt ?? now]));
+  const lastModified = new Map<string, string>();
+  blogArticles.forEach((article) => {
+    if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt);
+  });
+  approvedCaseStudies.forEach((study) => {
+    if (study.published_at) lastModified.set(`/case-studies/${study.slug}`, study.published_at);
+  });
 
   const body = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
 ${routes
   .map((route) => {
-    const lastmod = blogUpdatedAt.get(route) ?? now;
+    const lastmod = lastModified.get(route);
 
     return `  <url>
-    <loc>${escapeXml(absoluteUrl(route))}</loc>
-    <lastmod>${lastmod}</lastmod>
+    <loc>${escapeXml(absoluteUrl(route))}</loc>${lastmod ? `\n    <lastmod>${escapeXml(lastmod)}</lastmod>` : ""}
   </url>`;
   })
   .join("\n")}
