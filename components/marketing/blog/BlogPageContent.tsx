@@ -8,7 +8,7 @@ import BlogShell from "@/components/marketing/blog/BlogShell";
 import { blogArticles } from "@/components/marketing/blog/blogData";
 
 const categories = ["All", ...Array.from(new Set(blogArticles.map((article) => article.category)))];
-const featuredArticle = blogArticles[0];
+const featuredArticle = blogArticles.find((article) => article.featured) ?? [...blogArticles].sort((left, right) => Date.parse(right.publishedAt || "") - Date.parse(left.publishedAt || ""))[0];
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
 const relatedServiceLinks = [
@@ -83,11 +83,10 @@ export default function BlogPageContent() {
                 SocialRUSH Resource Hub
               </p>
               <h1 className="mt-5 max-w-xl text-4xl font-black leading-tight text-white sm:text-5xl">
-                Social Growth Insights, Tips &amp; Strategies
+                Practical Social Media Guides for Creators and Businesses
               </h1>
               <p className="mt-5 max-w-2xl text-base leading-8 text-[#D1D5DB] sm:text-lg">
-                Learn how creators, brands, and agencies can grow smarter with practical social media guides,
-                platform tips, and campaign strategies.
+                Practical guidance on content planning, social proof, Instagram, YouTube, platform growth, campaign strategy, and small-business marketing.
               </p>
               <div className="mt-8 flex flex-wrap gap-3">
                 <a
@@ -97,10 +96,10 @@ export default function BlogPageContent() {
                   Explore Articles
                 </a>
                 <Link
-                  href="/services"
+                  href="/tools"
                   className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-orange-400/35 bg-white/[.06] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_26px_rgba(255, 159, 0, .16)] backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-orange-400/10"
                 >
-                  View Services
+                  Explore Creator Tools
                 </Link>
               </div>
             </motion.div>
@@ -138,7 +137,7 @@ export default function BlogPageContent() {
                   )}
                 </motion.div>
                 <div className="absolute -left-6 top-6 rounded-2xl border border-orange-400/30 bg-[#111111]/95 px-4 py-3 text-xs font-semibold text-white shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
-                  Weekly Growth Guides
+                  Practical editorial guides
                 </div>
                 <div className="absolute -bottom-6 right-5 rounded-2xl border border-orange-400/30 bg-[#111111]/95 px-4 py-3 text-xs font-semibold text-white shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
                   Creator + Brand Playbooks
@@ -240,14 +239,14 @@ export default function BlogPageContent() {
                 />
               </label>
             </div>
-            <div className="mt-4 flex flex-wrap gap-3">
+            <div className="mt-4 flex max-w-full gap-3 overflow-x-auto pb-1">
               {categories.map((category) => (
                 <button
                   type="button"
                   key={category}
                   onClick={() => setActiveCategory(category)}
                   aria-pressed={activeCategory === category}
-                  className={`rounded-full border px-4 py-2 text-sm font-semibold shadow-[0_10px_22px_rgba(255, 159, 0, .14)] backdrop-blur transition ${
+                  className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold shadow-[0_10px_22px_rgba(255, 159, 0, .14)] backdrop-blur transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${
                     activeCategory === category
                       ? "border-[#FFC400] bg-gradient-to-r from-[#FFC400] to-[#FF9F00] text-white"
                       : "border-white/90 bg-white/85 text-[#0B0B0F] hover:border-[#FF9F00]"
@@ -321,9 +320,7 @@ export default function BlogPageContent() {
                       <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#FF9F00]">
                         {post.readingTime}
                       </span>
-                      <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#111827]">
-                        {post.publishedAt ?? "2026-05-20"}
-                      </span>
+                      {post.publishedAt ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#111827]">{post.publishedAt}</span> : null}
                     </div>
                     <Link
                       href={`/blog/${post.slug}`}
