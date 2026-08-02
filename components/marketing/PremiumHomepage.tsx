@@ -8,7 +8,7 @@ import PublicShell from "./PublicShell";
 import PlatformIcon from "@/components/PlatformIcon";
 import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
-import { serviceHealthLabels, serviceHealthTone, type ServiceHealth } from "@/lib/service-health";
+import { serviceHealthLabels, type ServiceHealth } from "@/lib/service-health";
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "tiktok", "telegram", "x"];
 const tools = [[TrendingUp,"Engagement Rate Calculator","/tools/engagement-rate-calculator"],[MessageCircle,"Caption Counter","/tools/caption-counter"],[ImageIcon,"Image Resizer","/tools/image-resizer"],[PlaySquare,"YouTube Thumbnail Preview","/tools/youtube-thumbnail-preview"],[Link2,"UTM Link Builder","/tools/utm-link-builder"]] as const;
