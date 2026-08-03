@@ -1,8 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
-import { smmServiceCatalog } from "@/lib/smm-service-catalog";
+import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
+import { getServiceById } from "@/lib/smm-service-catalog";
 
 type IntentRow = {
   id: string;
@@ -78,7 +78,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "clientRequestId must be a valid random UUID." }, { status: 422 });
   }
 
-  const service = smmServiceCatalog.find((entry) => entry.code === serviceCode);
+  const service = getServiceById(serviceCode);
   if (!service) {
     return NextResponse.json({ error: "Unknown service code." }, { status: 400 });
   }
@@ -87,14 +87,8 @@ export async function POST(request: NextRequest) {
   }
 
   const requestedQuantity = quantity as number;
-  if (requestedQuantity < service.minQuantity || requestedQuantity > service.maxQuantity) {
-    return NextResponse.json(
-      {
-        error: `Quantity must be between ${service.minQuantity.toLocaleString("en-IN")} and ${service.maxQuantity.toLocaleString("en-IN")}.`,
-      },
-      { status: 400 },
-    );
-  }
+  const quantityError = validateQuantity(requestedQuantity, service);
+  if (quantityError) return NextResponse.json({ error: quantityError }, { status: 400 });
 
   let parsedLink: URL;
   try {
@@ -106,9 +100,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "A valid destination link is required." }, { status: 400 });
   }
 
-  const rate = SERVICE_PRICES[service.code as ServiceCode];
-  const totalPaise = Math.round((requestedQuantity / 1000) * rate * 100);
-  if (totalPaise <= 0) {
+  const totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
+  if (!Number.isSafeInteger(totalPaise) || totalPaise <= 0) {
     return NextResponse.json({ error: "Calculated total is invalid for this quantity." }, { status: 400 });
   }
 
