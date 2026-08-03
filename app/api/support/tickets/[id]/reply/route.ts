@@ -1,11 +1,16 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { safeSupportText, supportError } from "@/lib/support/customer";
+import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  if (!isUuid(params.id)) return NextResponse.json({ error: "Ticket not found." }, { status: 404 });
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request, 8_192); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "support-reply", 20, 60 * 60_000, user.id); if (limited) return limited;
   const body = await request.json().catch(() => null) as { message?: unknown } | null;
   const message = safeSupportText(body?.message, 10, 4000);
   if (!message) return NextResponse.json({ error: "Enter a reply between 10 and 4,000 characters without HTML." }, { status: 422 });

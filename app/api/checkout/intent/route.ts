@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 type IntentRow = {
   id: string;
@@ -52,6 +53,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "checkout-intent", 20, 60_000, user.id); if (limited) return limited;
 
   const body = await request.json().catch(() => null) as {
     serviceCode?: string;
@@ -128,7 +132,7 @@ export async function POST(request: NextRequest) {
     .maybeSingle<IntentRow>();
 
   if (existingError) {
-    return NextResponse.json({ error: existingError.message }, { status: 400 });
+    return NextResponse.json({ error: "Unable to check checkout request." }, { status: 503 });
   }
 
   if (existing) {
@@ -201,7 +205,7 @@ export async function POST(request: NextRequest) {
         return intentResponse(raced, true, 200);
       }
     }
-    return NextResponse.json({ error: insertError?.message || "Unable to create checkout intent." }, { status: 400 });
+    return NextResponse.json({ error: "Unable to create checkout intent." }, { status: 503 });
   }
 
   return intentResponse(inserted, false, 201);

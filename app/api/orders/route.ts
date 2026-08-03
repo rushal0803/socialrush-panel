@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { detectPublicCount } from "@/lib/orders/count-detector";
 import { recordTrustedEvent } from "@/lib/analytics/server";
+import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 async function saveInitialCount(
   supabase: Awaited<ReturnType<typeof createClient>>,
@@ -60,6 +61,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "wallet-checkout", 12, 60_000, user.id); if (limited) return limited;
 
   const body = await request.json().catch(() => null) as {
     intentId?: string;
@@ -89,7 +93,7 @@ export async function POST(request: NextRequest) {
         : normalized.includes("cancelled") || normalized.includes("mismatch") || normalized.includes("conflict") || normalized.includes("already belongs") ? 409
           : normalized.includes("authentication") ? 401
             : 400;
-    return NextResponse.json({ error: message }, { status });
+    return NextResponse.json({ error: status === 404 ? "Checkout intent not found." : status === 410 ? "Checkout intent has expired." : status === 409 ? "Checkout request conflicts with its current state." : "Unable to complete checkout." }, { status });
   }
 
   const checkout = data as { id?: string; duplicate?: boolean } | null;

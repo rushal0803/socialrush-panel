@@ -4,6 +4,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { razorpayConfig, razorpayRequest, verifyHmac } from "@/lib/payments/razorpay";
 import { recordTrustedEvent } from "@/lib/analytics/server";
+import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 type RazorpayPayment = {
   id: string;
@@ -17,6 +18,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "checkout-verify", 15, 60_000, user.id); if (limited) return limited;
 
   const body = await request.json().catch(() => null) as {
     checkoutPaymentId?: string;
@@ -66,7 +70,7 @@ export async function POST(request: NextRequest) {
       p_checkout_payment_id: checkoutPayment.id,
       p_provider_payment_id: providerPayment.id,
     });
-    if (error) return NextResponse.json({ error: error.message }, { status: 409 });
+    if (error) return NextResponse.json({ error: "Checkout settlement could not be completed." }, { status: 409 });
     await recordTrustedEvent({eventName:"payment_successful",customerId:user.id,pagePath:"/dashboard/new-order",metadata:{method:"razorpay"}});
 
     revalidatePath("/dashboard");
@@ -74,7 +78,7 @@ export async function POST(request: NextRequest) {
     revalidatePath("/dashboard/order-history");
     revalidatePath("/dashboard/wallet");
     return NextResponse.json({ data }, { headers: { "Cache-Control": "no-store" } });
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Unable to verify checkout payment." }, { status: 503 });
+  } catch {
+    return NextResponse.json({ error: "Unable to verify checkout payment." }, { status: 503 });
   }
 }
