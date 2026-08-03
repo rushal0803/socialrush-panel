@@ -5,9 +5,12 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
-import type { BlogArticle } from "@/components/marketing/blog/blogData";
+import { blogArticles } from "@/components/marketing/blog/blogData";
 import { getReadingTime, getSearchText, sortArticles } from "@/lib/blog";
 
+const sortedArticles = sortArticles(blogArticles);
+const categories = ["All", ...Array.from(new Set(sortedArticles.map((article) => article.category)))];
+const featuredArticle = sortedArticles.find((article) => article.featured) ?? sortedArticles[0];
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
 const relatedServiceLinks = [
@@ -27,10 +30,7 @@ const fadeUp = {
 const normalizeCategory = (value: string) => value.trim().toLowerCase();
 const normalizeSearch = (value: string) => value.trim().toLowerCase();
 
-export default function BlogPageContent({ articles }: { articles: BlogArticle[] }) {
-  const sortedArticles = useMemo(() => sortArticles(articles), [articles]);
-  const categories = useMemo(() => ["All", ...Array.from(new Set(sortedArticles.map((article) => article.category)))], [sortedArticles]);
-  const featuredArticle = sortedArticles.find((article) => article.featured) ?? sortedArticles[0];
+export default function BlogPageContent() {
   const [heroImageError, setHeroImageError] = useState(false);
   const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
   const [activeCategory, setActiveCategory] = useState("All");
@@ -59,7 +59,7 @@ export default function BlogPageContent({ articles }: { articles: BlogArticle[] 
           hasImage: Boolean(article.image) && !imageErrors[article.slug],
         }));
     },
-    [activeCategory, featuredArticle?.slug, imageErrors, searchQuery, sortedArticles],
+    [activeCategory, imageErrors, searchQuery],
   );
 
   return (
@@ -190,7 +190,7 @@ export default function BlogPageContent({ articles }: { articles: BlogArticle[] 
         >
           <div className="mx-auto w-full max-w-7xl rounded-[30px] border border-white/75 bg-white/80 p-7 shadow-[0_25px_55px_rgba(255, 159, 0, .18)] backdrop-blur sm:p-10">
             <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00]">Featured Article</p>
-            {featuredArticle ? <><Link href={`/blog/${featuredArticle.slug}`} className="block w-fit">
+            <Link href={`/blog/${featuredArticle.slug}`} className="block w-fit">
               <h2 className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-[#0B0B0F] transition hover:text-[#FF7A00]">
                 {featuredArticle.title}
               </h2>
@@ -211,7 +211,7 @@ export default function BlogPageContent({ articles }: { articles: BlogArticle[] 
               className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255, 196, 0, .42)]"
             >
               Read Article
-            </Link></> : <p className="mt-3 text-slate-600">No published articles yet.</p>}
+            </Link>
           </div>
         </motion.section>
 

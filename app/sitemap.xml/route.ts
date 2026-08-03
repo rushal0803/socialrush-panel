@@ -6,7 +6,6 @@ import {
   indiaServiceSlugs,
 } from "@/lib/seo/india-service-pages";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { getManagedPublishedArticles } from "@/lib/managed-blog";
 
 export const dynamic = "force-dynamic";
 
@@ -69,8 +68,7 @@ type CaseStudySitemapEntry = { slug: string; published_at: string | null };
 
 export async function GET() {
   const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
-  const managedArticles = await getManagedPublishedArticles().catch(() => []);
-  const blogRoutes = [...new Set([...blogArticles, ...managedArticles].map((article) => `/blog/${article.slug}`))];
+  const blogRoutes = blogArticles.map((article) => `/blog/${article.slug}`);
   const { data: caseStudies } = await createAdminClient()
     .from("case_studies")
     .select("slug,published_at")
@@ -91,7 +89,6 @@ export async function GET() {
   blogArticles.forEach((article) => {
     if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt);
   });
-  managedArticles.forEach((article) => { if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt); });
   approvedCaseStudies.forEach((study) => {
     if (study.published_at) lastModified.set(`/case-studies/${study.slug}`, study.published_at);
   });

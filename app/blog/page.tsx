@@ -1,8 +1,6 @@
 import BlogPageContent from "@/components/marketing/blog/BlogPageContent";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
-import { blogArticles } from "@/components/marketing/blog/blogData";
-import { getManagedPublishedArticles } from "@/lib/managed-blog";
 
 export const metadata = createPageMetadata({
   title: "Social Media Growth Blog India",
@@ -12,12 +10,11 @@ export const metadata = createPageMetadata({
   keywords: ["social media growth blog India", "Instagram growth guides India"],
 });
 
-export default async function BlogPage() {
-  const managed = await getManagedPublishedArticles().catch(() => []);
+export default function BlogPage() {
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Blog", path: "/blog" }]} />
-      <BlogPageContent articles={[...managed, ...blogArticles.filter((legacy) => !managed.some((item) => item.slug === legacy.slug))]} />
+      <BlogPageContent />
     </>
   );
 }
