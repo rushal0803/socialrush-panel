@@ -1,0 +1,2 @@
+import { notFound } from "next/navigation"; import BlogEditor from "@/components/admin/BlogEditor"; import { createClient } from "@/lib/supabase/server";
+export default async function EditArticlePage({params}:{params:{id:string}}){const db=await createClient();const {data}=await db.from("blog_articles").select("*").eq("id",params.id).maybeSingle();if(!data)notFound();return <main className="p-5 sm:p-8"><h1 className="text-3xl font-black text-white">Edit article</h1><div className="mt-6 max-w-4xl"><BlogEditor article={data}/></div></main>}
