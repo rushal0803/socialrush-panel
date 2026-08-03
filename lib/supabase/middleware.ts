@@ -54,6 +54,13 @@ export async function updateSession(request: NextRequest) {
 
   const isProtected = shouldProtect(pathname);
   let response = NextResponse.next({ request: { headers: requestHeaders } });
+
+  // Marketing routes determine signed-in state in their small client header and
+  // do not need an authenticated server request.  Skipping the Supabase round
+  // trip here keeps public-page TTFB independent of auth availability.  Routes
+  // that enforce ownership/roles continue through the full session refresh.
+  if (!isProtected) return response;
+
   const { url, key } = getSupabaseConfig();
 
   const supabase = createServerClient(
@@ -72,8 +79,6 @@ export async function updateSession(request: NextRequest) {
   );
 
   const { data: { user } } = await supabase.auth.getUser();
-  if (!isProtected) return response;
-
   if (!user) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = pathname.startsWith("/admin") ? "/admin/login" : "/login";

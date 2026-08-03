@@ -3,7 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { clientAnalyticsEvents } from "@/lib/analytics/events";
 import { requireJson, rateLimit } from "@/lib/security/request";
 
-const safeKeys = new Set(["step", "link_type", "validation_passed", "error_category", "technical_reference", "currency", "method", "reorder"]);
+const safeKeys = new Set(["step", "link_type", "validation_passed", "error_category", "technical_reference", "currency", "method", "reorder", "metric", "value", "rating"]);
 const trim = (value: unknown, length: number) => typeof value === "string" ? value.slice(0, length) : null;
 
 export async function POST(request: NextRequest) {
