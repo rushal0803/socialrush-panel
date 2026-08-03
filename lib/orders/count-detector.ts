@@ -1,4 +1,5 @@
 import "server-only";
+import { safePublicUrl } from "@/lib/security/url";
 
 export type CountDetectionResult = {
   success: boolean;
@@ -39,16 +40,6 @@ function normalizeCount(value: string) {
   const multiplier = match[2] === "k" ? 1_000 : match[2] === "m" ? 1_000_000 : match[2] === "b" ? 1_000_000_000 : 1;
   const count = Math.round(Number(match[1]) * multiplier);
   return Number.isSafeInteger(count) && count >= 0 ? count : null;
-}
-
-function safeUrl(raw: string) {
-  try {
-    const url = new URL(raw);
-    if (url.protocol !== "https:" && url.protocol !== "http:") return null;
-    return url;
-  } catch {
-    return null;
-  }
 }
 
 async function fetchText(url: URL) {
@@ -145,12 +136,18 @@ async function detectInstagram(url: URL, type: string): Promise<CountDetectionRe
 export async function detectPublicCount(input: DetectionInput): Promise<CountDetectionResult> {
   const platform = String(input.platform ?? "").toLowerCase().replace(/[^a-z]/g, "");
   const type = countType(input);
-  const url = safeUrl(input.url);
+  const url = safePublicUrl(input.url);
   if (!url) return failed(platform || "unknown", type, "The submitted link is not a valid public URL.");
 
-  if (platform.includes("youtube") || /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(url.hostname)) return detectYouTube(url, type);
-  if (platform.includes("telegram") || url.hostname === "t.me") return detectTelegram(url, type);
-  if (platform.includes("instagram") || url.hostname.endsWith("instagram.com")) return detectInstagram(url, type);
+  if (platform.includes("youtube") || /(^|\.)youtube\.com$|(^|\.)youtu\.be$/.test(url.hostname)) {
+    const allowed = safePublicUrl(input.url, ["youtube.com", "youtu.be"]); return allowed ? detectYouTube(allowed, type) : failed("youtube", type, "Use a public YouTube URL.");
+  }
+  if (platform.includes("telegram") || url.hostname === "t.me") {
+    const allowed = safePublicUrl(input.url, ["t.me"]); return allowed ? detectTelegram(allowed, type) : failed("telegram", type, "Use a public Telegram URL.");
+  }
+  if (platform.includes("instagram") || url.hostname.endsWith("instagram.com")) {
+    const allowed = safePublicUrl(input.url, ["instagram.com"]); return allowed ? detectInstagram(allowed, type) : failed("instagram", type, "Use a public Instagram URL.");
+  }
   if (platform.includes("linkedin")) return failed("linkedin", type, "LinkedIn does not expose this count reliably without authorized API access. Update manually.");
   if (platform.includes("twitter") || platform === "x") return failed("twitter", type, "X does not expose this count reliably without authorized API access. Update manually.");
   return failed(platform || "unknown", type, "Automatic count detection is unavailable for this platform. Update manually.");

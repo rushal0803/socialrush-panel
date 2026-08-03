@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 import { safePaymentReference, safeSupportText, supportError } from "@/lib/support/customer";
+import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 export async function GET() {
   const supabase = await createClient();
@@ -16,6 +17,9 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request, 8_192); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "support-ticket", 8, 60 * 60_000, user.id); if (limited) return limited;
   const body = await request.json().catch(() => null) as { category?: string; subject?: string; message?: string; orderId?: string | null; paymentReference?: string } | null;
   const subject = safeSupportText(body?.subject, 5, 120);
   const message = safeSupportText(body?.message, 10, 4000);
@@ -23,6 +27,7 @@ export async function POST(request: NextRequest) {
   if (!subject) return NextResponse.json({ error: "Enter a subject between 5 and 120 characters without HTML." }, { status: 422 });
   if (!message) return NextResponse.json({ error: "Enter a message between 10 and 4,000 characters without HTML." }, { status: 422 });
   if (body?.paymentReference && !paymentReference) return NextResponse.json({ error: "Enter a valid payment or transaction reference." }, { status: 422 });
+  if (body?.orderId && !isUuid(body.orderId)) return NextResponse.json({ error: "Invalid order reference." }, { status: 422 });
   const { data, error } = await supabase.rpc("create_support_ticket_with_reference", { p_category: body?.category, p_subject: subject, p_message: message, p_order_id: body?.orderId || null, p_payment_reference: paymentReference });
   if (error) return NextResponse.json({ error: supportError(error.message) }, { status: error.message.includes("already have") ? 409 : 400 });
   await recordTrustedEvent({eventName:"support_ticket_created",customerId:user.id,pagePath:"/dashboard/support",metadata:{category:String(body.category||"other")}});

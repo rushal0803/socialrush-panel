@@ -1,11 +1,14 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { clientAnalyticsEvents } from "@/lib/analytics/events";
+import { requireJson, rateLimit } from "@/lib/security/request";
 
 const safeKeys = new Set(["step", "link_type", "validation_passed", "error_category", "technical_reference", "currency", "method", "reorder"]);
 const trim = (value: unknown, length: number) => typeof value === "string" ? value.slice(0, length) : null;
 
 export async function POST(request: NextRequest) {
+  const jsonError = requireJson(request, 8_192); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "analytics", 120, 60_000); if (limited) return limited;
   const body = await request.json().catch(() => null) as Record<string, unknown> | null;
   if (!body || !clientAnalyticsEvents.includes(body.event as never)) return new NextResponse(null, { status: 204 });
   const cookie = request.cookies.get("sr_analytics_session")?.value;
@@ -19,7 +22,8 @@ export async function POST(request: NextRequest) {
   const metadata = Object.fromEntries(Object.entries(rawMetadata as Record<string, unknown>).filter(([key, value]) => safeKeys.has(key) && ["string", "number", "boolean"].includes(typeof value)).slice(0, 12));
   const ownUrl = new URL(request.url);
   const referrer = request.headers.get("referer");
-  const attribution = referrer ? new URL(referrer) : null;
+  let attribution: URL | null = null;
+  try { attribution = referrer ? new URL(referrer) : null; } catch { /* Untrusted Referer is optional attribution. */ }
   const db = await createClient();
   try {
     await db.rpc("record_analytics_event", {
