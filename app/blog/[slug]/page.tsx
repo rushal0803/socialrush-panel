@@ -8,10 +8,11 @@ import { formatArticleDate, getArticleWords, getReadingTime, isValidDate, sortAr
 import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
+import { getManagedArticle, getManagedPublishedArticles } from "@/lib/managed-blog";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
-export const dynamicParams = false;
+export const dynamicParams = true;
 
 function toSectionId(value: string) {
   return value
@@ -43,14 +44,15 @@ function getArticleSections(article: ReturnType<typeof getArticleBySlug>) {
   return article?.sections?.length ? article.sections : [];
 }
 
-export function generateStaticParams() {
-  return [...articleSlugs, ...blogRedirects.map((entry) => entry.slug)].map((slug) => ({ slug }));
+export async function generateStaticParams() {
+  const managed = await getManagedPublishedArticles().catch(() => []);
+  return [...new Set([...articleSlugs, ...blogRedirects.map((entry) => entry.slug), ...managed.map((entry) => entry.slug)])].map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
   const redirect = blogRedirects.find((entry) => entry.slug === params.slug);
   if (redirect) return { robots: { index: false, follow: true } };
-  const article = getArticleBySlug(params.slug);
+  const article = await getManagedArticle(params.slug).catch(() => null) || getArticleBySlug(params.slug);
   if (!article) {
     return {
       title: "Blog Article Not Found",
@@ -95,10 +97,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
+export default async function BlogDetailPage({ params }: { params: { slug: string } }) {
   const redirect = blogRedirects.find((entry) => entry.slug === params.slug);
   if (redirect) permanentRedirect(redirect.destination);
-  const article = getArticleBySlug(params.slug);
+  const managedArticle = await getManagedArticle(params.slug).catch(() => null);
+  const article = managedArticle || getArticleBySlug(params.slug);
 
   if (!article) {
     notFound();
@@ -115,7 +118,8 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleRelatedLinks = article.relatedLinks ?? [];
   const articleComparison = article.comparison;
   const articleWordCount = getArticleWords(article);
-  const relatedArticles = sortArticles(blogArticles
+  const allArticles = [...(await getManagedPublishedArticles().catch(() => [])), ...blogArticles.filter((legacy) => !managedArticle || legacy.slug !== managedArticle.slug)];
+  const relatedArticles = sortArticles(allArticles
     .filter((candidate) => candidate.slug !== article.slug)
     .sort((left, right) => (Number(right.category === article.category) - Number(left.category === article.category)) || (Number(right.title.toLowerCase().includes(article.category.toLowerCase())) - Number(left.title.toLowerCase().includes(article.category.toLowerCase())))))
     .slice(0, 3);

@@ -1,0 +1,7 @@
+import { notFound } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { ensureUserProfile } from "@/lib/auth/ensure-profile";
+import BlogShell from "@/components/marketing/blog/BlogShell";
+import { managedToArticle } from "@/lib/managed-blog";
+export const metadata = { robots: { index: false, follow: false } };
+export default async function BlogPreview({ params }: { params: { id: string } }) { const db = await createClient(); const { data: { user } } = await db.auth.getUser(); const profile = user ? await ensureUserProfile(db, user).catch(() => null) : null; if (!profile || profile.role !== "admin") notFound(); const { data } = await db.from("blog_articles").select("*").eq("id", params.id).maybeSingle(); if (!data) notFound(); const article = managedToArticle(data); return <BlogShell><main className="mx-auto max-w-4xl px-5 py-12"><p className="rounded-full bg-orange-500 px-3 py-1 text-xs font-bold text-white">Draft Preview — not public</p><p className="mt-5 text-sm text-orange-300">{article.category}</p><h1 className="mt-2 text-4xl font-black">{article.title}</h1><p className="mt-4 text-slate-300">{article.description}</p><div className="mt-8 space-y-7">{article.sections.map((section) => <section key={section.heading} className="rounded-2xl bg-white/10 p-5"><h2 className="text-2xl font-black">{section.heading}</h2><p className="mt-3 whitespace-pre-line leading-7 text-slate-200">{section.body}</p></section>)}</div></main></BlogShell>; }
