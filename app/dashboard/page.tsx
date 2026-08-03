@@ -1,101 +1,38 @@
 import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
+const activeStatuses = ["pending", "processing", "in_progress", "partial", "awaiting_action"];
+type RawOrder = { id: string; service_name: string | null; platform: string | null; quantity: number | null; status: string | null; charge: number | null; created_at: string; progress_percent: number | null; refill_eligible: boolean | null };
+type RawTransaction = { id: string; amount: number | null; type: string | null; status: string | null; payment_method: string | null; created_at: string };
+type RawTicket = { id: string; subject: string; status: string; updated_at: string; order_id: string | null };
+type RawReward = { id: string; amount: number; status: string; created_at: string };
+type RawProfile = { id: string; label: string; platform: string; public_url: string; last_used_at: string | null; created_at: string };
+
 export default async function DashboardPage() {
   const { supabase, user, profile } = await getDashboardContext();
   const userId = user!.id;
-
-  const [
-    { data: orderRows },
-    { data: transactionRows },
-    { count: totalOrdersCount },
-    { count: completedOrdersCount },
-    { count: activeOrdersCount },
-    { count: supportTicketsCount },
-  ] = await Promise.all([
-    supabase
-      .from("orders")
-      .select("id, service_name, quantity, status, charge, created_at")
-      .eq("user_id", userId!)
-      .order("created_at", { ascending: false })
-      .limit(6),
-    supabase
-      .from("transactions")
-      .select("id, amount, type, status, payment_method, created_at")
-      .eq("user_id", userId!)
-      .order("created_at", { ascending: false })
-      .limit(5),
-    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId!),
-    supabase
-      .from("orders")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", userId!)
-      .eq("status", "completed"),
-    supabase
-      .from("orders")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", userId!)
-      .in("status", ["pending", "processing", "in_progress"]),
-    supabase.from("support_tickets").select("id", { count: "exact", head: true }).eq("user_id", userId!),
+  const results = await Promise.allSettled([
+    supabase.from("orders").select("id, service_name, platform, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).order("created_at", { ascending: false }).limit(5),
+    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).in("status", activeStatuses),
+    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "completed"),
+    supabase.from("transactions").select("id, amount, type, status, payment_method, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(4),
+    supabase.from("support_tickets").select("id, subject, status, updated_at, order_id").eq("user_id", userId).order("updated_at", { ascending: false }).limit(1),
+    supabase.from("support_tickets").select("id", { count: "exact", head: true }).eq("user_id", userId).in("status", ["open", "waiting_for_support", "waiting_for_customer", "answered"]),
+    supabase.from("customer_reward_events").select("id, amount, status, created_at").eq("user_id", userId).eq("status", "credited").order("created_at", { ascending: false }).limit(1),
+    supabase.from("saved_social_profiles").select("id, label, platform, public_url, last_used_at, created_at").eq("user_id", userId).order("last_used_at", { ascending: false, nullsFirst: false }).limit(3),
   ]);
+  const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
+  const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
+  const failed = (index: number) => {
+    const result = results[index];
+    return result.status === "rejected" || Boolean((result.value as { error?: unknown }).error);
+  };
 
-  const orders = (orderRows ?? []).map((item) => ({
-    id: item.id,
-    serviceName: item.service_name || "Growth service",
-    quantity: Number(item.quantity ?? 0),
-    status: item.status || "pending",
-    price: Number(item.charge ?? 0),
-    createdAt: item.created_at,
-  }));
+  const orders = value<RawOrder[]>(0, []).map((row) => ({ id: row.id, serviceName: row.service_name || "Growth service", platform: row.platform || "other", quantity: Number(row.quantity || 0), status: row.status || "pending", price: Number(row.charge || 0), createdAt: row.created_at, progress: row.progress_percent == null ? null : Number(row.progress_percent), refillEligible: Boolean(row.refill_eligible) }));
+  const transactions = value<RawTransaction[]>(3, []).map((row) => ({ id: row.id, amount: Number(row.amount || 0), type: row.type || "credit", status: row.status || "pending", paymentMethod: row.payment_method || "wallet", createdAt: row.created_at }));
+  const ticket = value<RawTicket[]>(4, [])[0] ?? null;
+  const reward = value<RawReward[]>(6, [])[0];
+  const savedProfiles = value<RawProfile[]>(7, []).map((row) => ({ ...row, lastUsedAt: row.last_used_at || row.created_at }));
 
-  const transactions = (transactionRows ?? []).map((item) => ({
-    id: item.id,
-    amount: Number(item.amount ?? 0),
-    type: item.type || "credit",
-    status: item.status || "pending",
-    paymentMethod: item.payment_method || "wallet",
-    createdAt: item.created_at,
-  }));
-
-  const totalSpend = transactions
-    .filter((item) => item.type === "debit" && item.status === "completed")
-    .reduce((sum, item) => sum + item.amount, 0);
-
-  const monthlySpendMap = new Map<string, number>();
-  for (const item of transactions.filter((entry) => entry.type === "debit")) {
-    const label = new Date(item.createdAt).toLocaleDateString("en-IN", { month: "short" });
-    monthlySpendMap.set(label, (monthlySpendMap.get(label) ?? 0) + item.amount);
-  }
-
-  const monthlySpend = Array.from(monthlySpendMap.entries())
-    .slice(-4)
-    .map(([month, value]) => ({ month, value }));
-
-  const serviceCounter = new Map<string, number>();
-  for (const order of orders) {
-    serviceCounter.set(order.serviceName, (serviceCounter.get(order.serviceName) ?? 0) + 1);
-  }
-
-  const serviceUsage = Array.from(serviceCounter.entries())
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 5)
-    .map(([name, count]) => ({ name, count }));
-
-  return (
-    <DashboardOverviewContent
-      userName={profile?.full_name?.split(" ")[0] || "Client"}
-      stats={{
-        totalOrders: totalOrdersCount ?? 0,
-        activeOrders: activeOrdersCount ?? 0,
-        completedOrders: completedOrdersCount ?? 0,
-        walletBalance: Number(profile?.balance ?? 0),
-        totalSpend,
-        supportTickets: supportTicketsCount ?? 0,
-      }}
-      transactions={transactions}
-      orders={orders}
-      monthlySpend={monthlySpend.length ? monthlySpend : [{ month: "This month", value: 0 }]}
-      serviceUsage={serviceUsage.length ? serviceUsage : [{ name: "No campaign data", count: 0 }]}
-    />
-  );
+  return <DashboardOverviewContent userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeOrders={count(1)} completedOrders={count(2)} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} errors={{ orders: failed(0) || failed(1) || failed(2), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} />;
 }
