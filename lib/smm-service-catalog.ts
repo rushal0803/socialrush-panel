@@ -10,8 +10,12 @@ export type SmmService = {
   pricePer1000: number;
   minQuantity: number;
   maxQuantity: number;
+  /** The only supported step is one unit unless a service explicitly says otherwise. */
+  quantityStep?: number;
   deliveryTime: string;
   refillPolicy: string;
+  refillSupported?: boolean;
+  refillDays?: number | null;
   qualityType: string;
   importantInstruction: string;
   isActive: boolean;
@@ -268,4 +272,21 @@ export const smmServiceCatalog: SmmService[] = [
   },
 ];
 
-export const activeSmmServices = smmServiceCatalog.filter((service) => service.isActive);
+/**
+ * Legacy entries carried their refill rule as prose.  This normalization keeps
+ * the published wording intact while exposing one typed rule to all new code.
+ */
+export const normalizedSmmServiceCatalog: readonly SmmService[] = smmServiceCatalog.map((service) => ({
+  ...service,
+  quantityStep: service.quantityStep ?? 1,
+  refillSupported: service.refillSupported ?? /refill eligible|\d+ days refill/i.test(service.refillPolicy),
+  refillDays: service.refillDays ?? (service.refillPolicy.match(/(\d+)\s*days/i) ? Number(service.refillPolicy.match(/(\d+)\s*days/i)?.[1]) : null),
+}));
+
+export const activeSmmServices = normalizedSmmServiceCatalog.filter((service) => service.isActive);
+
+export function getServiceById(code: string): SmmService | undefined {
+  return normalizedSmmServiceCatalog.find((service) => service.code === code);
+}
+
+export const getServiceBySlug = getServiceById;

@@ -212,27 +212,32 @@ export default function PackageCheckoutContent() {
       return;
     }
 
-    const fallbackPrice = Math.round((pkg.basePriceINR / (pkg.quantity / 1000)) * 10000) / 10000;
+    const clientRequestId = crypto.randomUUID();
     const payload = {
       serviceCode: getServiceCode(pkg),
-      serviceId: 0,
       quantity: pkg.quantity,
       link: targetLink.trim(),
-      requestId: crypto.randomUUID(),
+      clientRequestId,
       notes: notes.trim() || null,
-      fallbackPrice,
-      fallbackName: `${platformLabel} ${serviceLabel[pkg.service]}`,
-      fallbackPlatform: platformCode[pkg.platform],
-      fallbackMin: pkg.quantity,
-      fallbackMax: pkg.quantity,
     };
 
     try {
       setPlacingOrder(true);
-      const response = await fetch("/api/orders", {
+      const intentResponse = await fetch("/api/checkout/intent", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
+      });
+      const intentResult = (await intentResponse.json()) as { data?: { id?: string }; error?: string };
+      if (!intentResponse.ok || !intentResult.data?.id) {
+        setError(intentResult.error || "This package was updated before checkout. Please review the latest details and try again.");
+        setPlacingOrder(false);
+        return;
+      }
+      const response = await fetch("/api/orders", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...payload, intentId: intentResult.data.id }),
       });
       const result = (await response.json()) as { data?: ApiOrderData; error?: string };
       if (!response.ok || !result.data) {

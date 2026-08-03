@@ -12,7 +12,7 @@ export interface BigPackage {
   bestFor: string;
 }
 
-export const bigPackages: BigPackage[] = [
+const packageDefinitions: BigPackage[] = [
   // Instagram Followers
   {
     packageId: "ig-followers-5k",
@@ -693,6 +693,27 @@ export const bigPackages: BigPackage[] = [
   },
 ];
 
+const packagePlatformCodes: Record<BigPackage["platform"], SmmPlatformId> = {
+  Instagram: "instagram", YouTube: "youtube", LinkedIn: "linkedin", Facebook: "facebook",
+  Telegram: "telegram", TikTok: "tiktok", X: "x",
+};
+
+/**
+ * Packages are fixed-quantity presentations of catalog services.  Their public
+ * amount and delivery label deliberately derive from the same catalog used by
+ * checkout; historic card discounts are not comparison prices and are hidden.
+ */
+export const bigPackages: readonly BigPackage[] = packageDefinitions.map((pkg) => {
+  const service = getServiceById(`${packagePlatformCodes[pkg.platform]}-${pkg.service}`);
+  if (!service) return { ...pkg, discountBadge: undefined };
+  return {
+    ...pkg,
+    basePriceINR: calculateServiceTotal(service.code, pkg.quantity),
+    deliveryTime: service.deliveryTime,
+    discountBadge: undefined,
+  };
+});
+
 export function getPackageById(packageId: string): BigPackage | undefined {
   return bigPackages.find((p) => p.packageId === packageId);
 }
@@ -702,3 +723,5 @@ export function getPackagesByPlatform(platform: string): BigPackage[] {
 }
 
 export const platforms = ["Instagram", "YouTube", "LinkedIn", "Facebook", "Telegram", "TikTok", "X"] as const;
+import { calculateServiceTotal } from "./service-pricing";
+import { getServiceById, type SmmPlatformId } from "./smm-service-catalog";

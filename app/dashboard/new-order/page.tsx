@@ -29,7 +29,7 @@ import {
   serviceExperience,
   validateCampaignLink,
 } from "@/lib/order-service-experience";
-import { calculateServiceTotal } from "@/lib/service-pricing";
+import { calculateServiceTotal, validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import { openCheckoutRazorpay } from "@/lib/payments/checkout-razorpay-client";
@@ -140,10 +140,7 @@ export default function NewOrderPage() {
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
     if (!selectedService || !quantityInput) return "";
-    if (!Number.isInteger(quantity) || quantity <= 0) return "Enter a valid whole-number quantity.";
-    if (quantity < selectedService.minQuantity) return `The minimum available quantity is ${selectedService.minQuantity.toLocaleString("en-IN")}.`;
-    if (quantity > selectedService.maxQuantity) return "This quantity is currently unavailable for the selected service.";
-    return "";
+    return validateQuantity(quantity, selectedService) || "";
   }, [quantity, quantityInput, selectedService]);
   const linkRule = selectedService ? linkRules[selectedService.code] : null;
   const linkError = selectedService && linkRule && targetLink.trim() ? validateCampaignLink(targetLink, linkRule) : "";
