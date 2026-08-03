@@ -1,18 +1,17 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
-import { articleSlugs, blogArticles, getArticleBySlug } from "@/components/marketing/blog/blogData";
+import { articleSlugs, blogArticles, blogRedirects, getArticleBySlug } from "@/components/marketing/blog/blogData";
+import BlogArticleEnhancements from "@/components/marketing/blog/BlogArticleEnhancements";
+import { formatArticleDate, getArticleWords, getReadingTime, isValidDate, sortArticles } from "@/lib/blog";
 import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
-const MAX_TOC_SECTIONS = 10;
-
-export const dynamic = "force-dynamic";
-export const dynamicParams = true;
+export const dynamicParams = false;
 
 function toSectionId(value: string) {
   return value
@@ -36,10 +35,6 @@ function getUniqueSectionIds(sections: Array<{ heading: string }>) {
   });
 }
 
-function countArticleWords(parts: string[]) {
-  return parts.join(" ").trim().split(/\s+/).filter(Boolean).length;
-}
-
 function getArticleImage(image?: string | null) {
   return image || "/og-image.png";
 }
@@ -49,10 +44,12 @@ function getArticleSections(article: ReturnType<typeof getArticleBySlug>) {
 }
 
 export function generateStaticParams() {
-  return articleSlugs.map((slug) => ({ slug }));
+  return [...articleSlugs, ...blogRedirects.map((entry) => entry.slug)].map((slug) => ({ slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+  const redirect = blogRedirects.find((entry) => entry.slug === params.slug);
+  if (redirect) return { robots: { index: false, follow: true } };
   const article = getArticleBySlug(params.slug);
   if (!article) {
     return {
@@ -99,6 +96,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
 }
 
 export default function BlogDetailPage({ params }: { params: { slug: string } }) {
+  const redirect = blogRedirects.find((entry) => entry.slug === params.slug);
+  if (redirect) permanentRedirect(redirect.destination);
   const article = getArticleBySlug(params.slug);
 
   if (!article) {
@@ -107,26 +106,18 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
   const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
   const articleImage = getArticleImage(article.image);
-  const articleAuthor = article.author ?? "SocialRUSH Editorial Team";
+  const articleAuthor = article.author;
   const breadcrumbTitle = article.breadcrumbTitle ?? article.title;
   const articleSections = getArticleSections(article);
   const articleSectionIds = getUniqueSectionIds(articleSections);
-  const tocSections = articleSections.slice(0, MAX_TOC_SECTIONS);
+  const tocSections = articleSections;
   const articleFaqs = article.faqs ?? [];
   const articleRelatedLinks = article.relatedLinks ?? [];
   const articleComparison = article.comparison;
-  const articleWordCount = countArticleWords([
-    article.intro ?? "",
-    article.keyTakeaway ?? "",
-    articleComparison?.heading ?? "",
-    articleComparison?.intro ?? "",
-    ...(articleComparison?.rows.flatMap((row) => [row.factor, row.followers, row.engagement]) ?? []),
-    ...articleSections.flatMap((section) => [section.heading, section.body, ...(section.tips ?? [])]),
-    ...articleFaqs.flatMap((faq) => [faq.question, faq.answer]),
-  ]);
-  const relatedArticles = blogArticles
+  const articleWordCount = getArticleWords(article);
+  const relatedArticles = sortArticles(blogArticles
     .filter((candidate) => candidate.slug !== article.slug)
-    .sort((left, right) => Number(right.category === article.category) - Number(left.category === article.category))
+    .sort((left, right) => (Number(right.category === article.category) - Number(left.category === article.category)) || (Number(right.title.toLowerCase().includes(article.category.toLowerCase())) - Number(left.title.toLowerCase().includes(article.category.toLowerCase())))))
     .slice(0, 3);
   const articleSchema = {
     "@context": "https://schema.org",
@@ -136,12 +127,12 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     mainEntityOfPage: { "@type": "WebPage", "@id": articleUrl },
     url: articleUrl,
     image: [new URL(articleImage, SEO_SITE_URL).toString()],
-    datePublished: article.publishedAt ?? "2026-05-20",
-    dateModified: article.updatedAt ?? "2026-07-01",
+    ...(isValidDate(article.publishedAt) ? { datePublished: article.publishedAt } : {}),
+    ...(isValidDate(article.updatedAt) ? { dateModified: article.updatedAt } : {}),
     articleSection: article.category,
     wordCount: articleWordCount,
     inLanguage: "en-IN",
-    author: { "@type": "Person", name: articleAuthor },
+    ...(articleAuthor ? { author: { "@type": "Person", name: articleAuthor } } : {}),
     publisher: {
       "@type": "Organization",
       name: "SocialRUSH",
@@ -215,18 +206,15 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
             <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#FF9F00]">
               <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.category}</span>
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.readingTime}</span>
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">By {articleAuthor}</span>
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
-                Published {article.publishedAt ?? "2026-05-20"}
-              </span>
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
-                Updated {article.updatedAt ?? "2026-07-01"}
-              </span>
+              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{getReadingTime(article)}</span>
+              {articleAuthor ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">By {articleAuthor}</span> : null}
+              {formatArticleDate(article.publishedAt) ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">Published {formatArticleDate(article.publishedAt)}</span> : null}
+              {formatArticleDate(article.updatedAt) ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">Updated {formatArticleDate(article.updatedAt)}</span> : null}
             </div>
 
             <h1 className="mt-4 text-3xl font-black leading-tight text-[#0B0B0F] sm:text-4xl">{article.title}</h1>
             <p className="mt-4 text-base leading-8 text-[#111827]">{article.intro}</p>
+            <BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress={articleWordCount > 150} desktopToc={false} />
           </div>
 
           {article.keyTakeaway ? (
@@ -236,10 +224,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </aside>
           ) : null}
 
-          <nav
-            aria-label="Table of contents"
-            className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
-          >
+          <nav aria-label="Table of contents" className="mt-8 hidden rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
               {tocSections.map((section, index) => (
@@ -274,7 +259,8 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </ol>
           </nav>
 
-          <div className="mt-8 space-y-6">
+          <div id="article-body" className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,760px)_220px]">
+          <div className="space-y-8">
             {articleSections.map((section, index) => (
               <section
                 key={articleSectionIds[index]}
@@ -294,7 +280,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                 </ul>
               </section>
             ))}
-          </div>
+          </div><BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress={false} mobileToc={false} showShare={false} /></div>
 
           {articleComparison ? (
             <section
@@ -349,14 +335,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </section>
           ) : null}
 
-          <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
+          {articleAuthor ? <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">About the author</h2>
             <p className="mt-3 text-sm leading-7 text-[#111827]">
               {articleAuthor} creates practical SocialRUSH guides about social media growth, platform strategy,
               public-link ordering, campaign planning, and online-branding decisions for creators, businesses, and
               personal brands.
             </p>
-          </section>
+          </section> : null}
 
           {articleRelatedLinks.length ? (
             <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
