@@ -3,7 +3,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeHelp, Mail, MessageSquare, Ticket, WalletCards, CircleAlert } from "lucide-react";
 
@@ -95,6 +95,10 @@ export default function SupportPage() {
   const [creating, setCreating] = useState(false);
   const [toast, setToast] = useState("");
   const [error, setError] = useState("");
+  const [formError, setFormError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+  const ticketFormRef = useRef<HTMLFormElement>(null);
+  const firstInvalidFieldRef = useRef<HTMLElement | null>(null);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [orders, setOrders] = useState<Array<{ id:string; platform:string; service_name:string; status:string; refill_eligible:boolean }>>([]);
@@ -143,25 +147,42 @@ export default function SupportPage() {
   }, [activeId]);
 
   async function createTicket(formData: FormData) {
+    setSubmitting(true);
+    setFormError("");
     const category = String(formData.get("category") || "");
     const subject = String(formData.get("subject") || "");
     const reference = String(formData.get("payment_reference") || "").trim();
     const message = `${String(formData.get("message") || "")}${reference ? `\n\nPayment/transaction reference: ${reference}` : ""}`;
     const orderId = String(formData.get("order_id") || "") || null;
 
-    const response = await fetch("/api/support/tickets", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ category, subject, message, orderId }),
-    });
+    try {
+      const response = await fetch("/api/support/tickets", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ category, subject, message, orderId }),
+      });
+      const payload = await response.json().catch(() => ({})) as { error?: string };
+      if (response.ok) {
+        setCreating(false);
+        setToast("Ticket created successfully");
+        await loadTickets();
+        window.setTimeout(() => setToast(""), 2500);
+      } else setFormError(payload.error || "Ticket could not be created. Please check the form and try again.");
+    } catch {
+      setFormError("Ticket could not be submitted. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
-    const payload = await response.json().catch(() => ({})) as { error?: string };
-    if (response.ok) {
-      setCreating(false);
-      setToast("Ticket created successfully");
-      await loadTickets();
-      window.setTimeout(() => setToast(""), 2500);
-    } else setError(payload.error || "Ticket could not be created.");
+  function focusInvalidField(event: React.InvalidEvent<HTMLFormElement>) {
+    const field = event.target as HTMLElement;
+    if (firstInvalidFieldRef.current) return;
+    firstInvalidFieldRef.current = field;
+    window.requestAnimationFrame(() => {
+      field.focus();
+      field.scrollIntoView({ behavior: "smooth", block: "center" });
+    });
   }
 
   async function sendReply(formData: FormData) {
@@ -420,12 +441,12 @@ export default function SupportPage() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-50 grid items-start overflow-y-auto overscroll-contain bg-slate-950/70 p-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 backdrop-blur-sm sm:place-items-center sm:p-4"
           >
             <motion.div
               initial={{ scale: 0.95, y: 16 }}
               animate={{ scale: 1, y: 0 }}
-              className="w-full max-w-xl rounded-3xl border border-orange-400/30 bg-[#111111] p-6 text-[#D1D5DB] shadow-[0_30px_90px_-40px_rgba(0,0,0,.9)]"
+              className="my-0 w-full max-w-xl rounded-3xl border border-orange-400/30 bg-[#111111] p-4 text-[#D1D5DB] shadow-[0_30px_90px_-40px_rgba(0,0,0,.9)] sm:my-auto sm:p-6"
             >
               <div className="flex items-center justify-between gap-3">
                 <div>
@@ -441,7 +462,7 @@ export default function SupportPage() {
                 </button>
               </div>
 
-              <form action={createTicket} className="mt-6 space-y-4">
+              <form ref={ticketFormRef} action={createTicket} onInvalidCapture={focusInvalidField} className="mt-4 space-y-3 pb-[calc(120px+env(safe-area-inset-bottom))] sm:mt-6 sm:space-y-4 sm:pb-0">
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Category
                   <select name="category" required defaultValue={searchParams.get("category") || (searchParams.get("status") === "partial" ? "partial_delivery" : "other")} className="dashboard-input mt-2">
@@ -475,15 +496,16 @@ export default function SupportPage() {
                     required
                     rows={5}
                     defaultValue={searchParams.get("order") ? `Order ID: ${searchParams.get("order")}\nPlatform: ${searchParams.get("platform") || ""}\nService: ${searchParams.get("service") || ""}\nCurrent status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe what you need help with:` : searchParams.get("transaction") ? `Transaction ID: ${searchParams.get("transaction")}\nPayment status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe the payment or wallet issue:` : ""}
-                    className="dashboard-input mt-2 resize-none"
+                    className="dashboard-input mt-2 min-h-[150px] resize-none sm:min-h-[180px]"
                     placeholder="Include relevant order or transaction details..."
                   />
                 </label>
 
-                <div className="rounded-xl border border-amber-400/35 bg-amber-500/10 p-4 text-[11px] font-semibold leading-5 text-amber-100">For your security, never provide card numbers, CVV, UPI PIN, OTP, passwords or recovery codes. Secure attachment storage is not configured, so attachments are not accepted.</div>
+                <div className="rounded-xl border border-amber-400/35 bg-amber-500/10 p-3 text-[11px] font-semibold leading-5 text-amber-100 sm:p-4">For your security, never provide card numbers, CVV, UPI PIN, OTP, passwords or recovery codes. Secure attachment storage is not configured, so attachments are not accepted.</div>
 
-                <button className="inline-flex min-h-11 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-[0_16px_34px_-18px_rgba(255, 196, 0, .62)] transition hover:-translate-y-0.5">
-                  Confirm &amp; Create Ticket
+                {formError ? <p role="alert" className="rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-xs font-semibold leading-5 text-red-200">{formError}</p> : null}
+                <button type="submit" onClick={() => { firstInvalidFieldRef.current = null; }} disabled={submitting} className="inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9200] px-5 py-3 text-sm font-black text-white shadow-[0_16px_34px_-18px_rgba(255, 122, 0, .82)] transition hover:-translate-y-0.5 disabled:cursor-wait disabled:opacity-75">
+                  {submitting ? "Submitting…" : "Submit Ticket"}
                 </button>
               </form>
             </motion.div>
