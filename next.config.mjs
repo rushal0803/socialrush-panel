@@ -33,7 +33,7 @@ const nextConfig = {
             // Next.js and Razorpay require inline bootstrap scripts; this still
             // blocks plugin content, framing, and unexpected base URL changes.
             key: "Content-Security-Policy",
-            value: "default-src 'self'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline'; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self'; upgrade-insecure-requests",
           },
         ],
       },
