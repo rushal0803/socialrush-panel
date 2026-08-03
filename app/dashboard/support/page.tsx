@@ -6,6 +6,7 @@ import { useSearchParams } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeHelp, Mail, MessageSquare, Ticket, WalletCards, CircleAlert } from "lucide-react";
+import { supportStatus } from "@/lib/support/customer";
 
 type TicketType = {
   id: string;
@@ -15,6 +16,9 @@ type TicketType = {
   updated_at: string;
   category: string;
   order_id: string | null;
+  last_reply_at?: string | null;
+  customer_last_read_at?: string | null;
+  payment_reference?: string | null;
   orders?: { platform?: string; service_name?: string; status?: string; refill_eligible?: boolean; services?: { refill_policy?: string } | null } | null;
 };
 
@@ -26,14 +30,6 @@ type MessageType = {
 };
 
 const categories = [["order_pending","Order pending"],["partial_delivery","Partial delivery"],["drop_or_refill","Drop or refill"],["incorrect_public_link","Incorrect public link"],["cancellation_request","Cancellation request"],["payment_or_wallet","Payment or wallet issue"],["account_issue","Account issue"],["service_availability","Service availability"],["other","Other"]] as const;
-
-const statusStyle: Record<string, string> = {
-  open: "bg-orange-500/10 text-orange-200 ring-orange-400/25",
-  waiting_for_support: "bg-amber-500/10 text-amber-200 ring-amber-400/25",
-  waiting_for_customer: "bg-blue-500/10 text-blue-200 ring-blue-400/25",
-  resolved: "bg-emerald-500/10 text-emerald-200 ring-emerald-400/25",
-  closed: "bg-white/5 text-[#D1D5DB] ring-white/10",
-};
 
 const supportCards = [
   {
@@ -144,6 +140,9 @@ export default function SupportPage() {
       .eq("ticket_id", activeId)
       .order("created_at")
       .then(({ data }) => setMessages((data as MessageType[] | null) ?? []));
+    void supabase.rpc("mark_support_ticket_read", { p_ticket_id: activeId }).then(() => {
+      setTickets((items) => items.map((ticket) => ticket.id === activeId ? { ...ticket, customer_last_read_at: new Date().toISOString() } : ticket));
+    });
   }, [activeId]);
 
   async function createTicket(formData: FormData) {
@@ -152,14 +151,14 @@ export default function SupportPage() {
     const category = String(formData.get("category") || "");
     const subject = String(formData.get("subject") || "");
     const reference = String(formData.get("payment_reference") || "").trim();
-    const message = `${String(formData.get("message") || "")}${reference ? `\n\nPayment/transaction reference: ${reference}` : ""}`;
+    const message = String(formData.get("message") || "");
     const orderId = String(formData.get("order_id") || "") || null;
 
     try {
       const response = await fetch("/api/support/tickets", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ category, subject, message, orderId }),
+        body: JSON.stringify({ category, subject, message, orderId, paymentReference: reference || undefined }),
       });
       const payload = await response.json().catch(() => ({})) as { error?: string };
       if (response.ok) {
@@ -189,9 +188,9 @@ export default function SupportPage() {
     const message = String(formData.get("message") || "").trim();
     if (!activeId || !userId || !message) return;
 
+    const response = await fetch(`/api/support/tickets/${activeId}/reply`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ message }) });
+    if (!response.ok) { const payload = await response.json().catch(() => ({})) as { error?: string }; setError(payload.error || "Reply could not be sent. Please try again."); return; }
     const supabase = createClient();
-    const { error: replyError } = await supabase.rpc("reply_to_support_ticket", { p_ticket_id: activeId, p_message: message });
-    if (replyError) { setError(replyError.message); return; }
 
     const { data } = await supabase
       .from("support_messages")
@@ -210,7 +209,7 @@ export default function SupportPage() {
   }
 
   const filteredTickets = useMemo(() => tickets.filter((ticket) => (statusFilter === "all" || ticket.status === statusFilter) && `${ticket.id} ${ticket.order_id || ""} ${ticket.subject} ${ticket.status}`.toLowerCase().includes(search.toLowerCase())), [tickets, search, statusFilter]);
-  const ticketSummary = useMemo(() => ({ open: tickets.filter((item) => ["open","waiting_for_support","waiting_for_customer"].includes(item.status)).length, waiting: tickets.filter((item) => item.status === "waiting_for_customer").length, resolved: tickets.filter((item) => ["resolved","closed"].includes(item.status)).length }), [tickets]);
+  const ticketSummary = useMemo(() => ({ open: tickets.filter((item) => ["open","waiting_for_support","waiting_for_customer"].includes(item.status)).length, waitingSupport: tickets.filter((item) => item.status === "waiting_for_support").length, waitingCustomer: tickets.filter((item) => item.status === "waiting_for_customer").length, resolved: tickets.filter((item) => item.status === "resolved").length, unread: tickets.filter((item) => item.last_reply_at && (!item.customer_last_read_at || new Date(item.last_reply_at) > new Date(item.customer_last_read_at))).length }), [tickets]);
 
   return (
     <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip px-4 pb-28 pt-5 sm:px-6 lg:px-8">
@@ -233,14 +232,14 @@ export default function SupportPage() {
                 Customer care
               </p>
               <h1 className="mt-4 text-3xl font-black tracking-[-0.03em] text-white sm:text-4xl">Support Centre</h1>
-              <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Get help with orders, payments, delivery, refill eligibility or account questions.</p>
+              <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Create and manage support tickets from your secure SocialRUSH account.</p>
               <button
                 type="button"
                 onClick={() => setCreating(true)}
                 className="btn-dashboard-primary mt-5 inline-flex min-h-11 items-center justify-center gap-2 px-5 py-2.5 text-sm"
               >
                 <Ticket className="h-4 w-4" />
-                Create Support Ticket
+                Create New Ticket
               </button>
             </div>
             <motion.article whileHover={{ y: -4 }} className="rounded-[1.6rem] border border-orange-400/25 bg-[#151515] p-5 shadow-[0_20px_42px_-28px_rgba(255,122,0,.45)]">
@@ -256,7 +255,7 @@ export default function SupportPage() {
           <p className="mt-5 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-200">{toast}</p>
         ) : null}
         {error ? <p role="alert" className="mt-5 rounded-xl border border-red-400/30 bg-red-500/10 p-3 text-sm font-semibold text-red-200">{error}</p> : null}
-        <section className="mt-5 grid grid-cols-3 gap-2 sm:gap-3">{[["Open tickets",ticketSummary.open],["Waiting for reply",ticketSummary.waiting],["Resolved",ticketSummary.resolved]].map(([label,value]) => <article key={label} className="rounded-2xl border border-white/10 bg-[#111111] p-3 sm:p-4"><p className="text-[9px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</p><p className="mt-2 text-xl font-black text-white">{value}</p></article>)}</section>
+        <section aria-label="Ticket summary" className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-5 sm:gap-3">{[["Open Tickets",ticketSummary.open],["Waiting for Support",ticketSummary.waitingSupport],["Waiting for You",ticketSummary.waitingCustomer],["Resolved Tickets",ticketSummary.resolved],["Unread Replies",ticketSummary.unread]].map(([label,value]) => <article key={label} className="rounded-2xl border border-white/10 bg-[#111111] p-3 sm:p-4"><p className="text-[9px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</p><p className="mt-2 text-xl font-black text-white">{value}</p></article>)}</section>
         <section className="mt-4 grid gap-3 rounded-2xl border border-orange-400/20 bg-[#111111] p-3 sm:grid-cols-[1fr_220px]"><input value={search} onChange={(event) => setSearch(event.target.value)} className="dashboard-input" placeholder="Search ticket ID, order ID or subject" /><select value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="dashboard-input"><option value="all">All statuses</option><option value="open">Open</option><option value="waiting_for_support">Waiting for Support</option><option value="waiting_for_customer">Waiting for Customer</option><option value="resolved">Resolved</option><option value="closed">Closed</option></select></section>
 
         <section className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
@@ -328,8 +327,8 @@ export default function SupportPage() {
                     >
                       <div className="flex items-center justify-between gap-2">
                         <span className="text-[10px] font-black text-[#FF9F00]">#{ticket.id.slice(0, 8).toUpperCase()}</span>
-                        <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${statusStyle[ticket.status] || statusStyle.open}`}>
-                          {ticket.status === "waiting_for_customer" ? "Waiting for Your Reply" : ticket.status.replaceAll("_", " ")}
+                        <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${supportStatus(ticket.status).className}`}>
+                          {supportStatus(ticket.status).label}
                         </span>
                       </div>
                       <p className="mt-3 truncate text-xs font-bold text-white">{parsed.title}</p>
@@ -337,6 +336,7 @@ export default function SupportPage() {
                         <span>{parsed.category}</span>
                         <span>{new Date(ticket.created_at).toLocaleDateString("en-IN")}</span>
                       </div>
+                      {ticket.last_reply_at && (!ticket.customer_last_read_at || new Date(ticket.last_reply_at) > new Date(ticket.customer_last_read_at)) ? <p className="mt-2 text-[10px] font-bold text-orange-200">New reply from SocialRUSH Support</p> : null}
                     </button>
                   );
                 })
@@ -358,14 +358,15 @@ export default function SupportPage() {
                   <div>
                     <div className="flex items-center gap-2">
                       <span className="text-[10px] font-black text-[#FF9F00]">#{activeTicket.id.slice(0, 8).toUpperCase()}</span>
-                      <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${statusStyle[activeTicket.status] || statusStyle.open}`}>
-                        {activeTicket.status === "waiting_for_customer" ? "Waiting for Your Reply" : activeTicket.status.replaceAll("_", " ")}
+                      <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold uppercase ring-1 ring-inset ${supportStatus(activeTicket.status).className}`}>
+                        {supportStatus(activeTicket.status).label}
                       </span>
                     </div>
                     <h2 className="mt-2 text-sm font-black text-white">{parseSubject(activeTicket.subject).title}</h2>
                     <p className="mt-1 text-[11px] capitalize text-[#9CA3AF]">{activeTicket.category?.replaceAll("_", " ") || parseSubject(activeTicket.subject).category}</p>
                     <p className="mt-1 text-[10px] text-[#9CA3AF]">Created {new Date(activeTicket.created_at).toLocaleString("en-IN")} · Updated {new Date(activeTicket.updated_at).toLocaleString("en-IN")}</p>
                     {activeTicket.order_id ? <Link href={`/dashboard/orders/${activeTicket.order_id}`} className="mt-2 inline-flex text-xs font-bold text-orange-300">View Related Order</Link> : null}
+                    {activeTicket.payment_reference ? <p className="mt-2 text-[10px] text-[#9CA3AF]">Payment reference: {activeTicket.payment_reference.slice(0, 4)}••••{activeTicket.payment_reference.slice(-4)}</p> : null}
                   </div>
 
                   <button
@@ -394,7 +395,8 @@ export default function SupportPage() {
                               : "rounded-bl-sm border border-orange-400/20 bg-[#151515] text-[#D1D5DB]"
                           }`}
                         >
-                          <p>{message.message}</p>
+                          <p className="whitespace-pre-wrap break-words">{message.message}</p>
+                          <p className={`mt-2 text-[10px] font-bold ${mine ? "text-orange-100" : "text-orange-200"}`}>{mine ? "You" : "SocialRUSH Support"}</p>
                           <p className={`mt-2 text-[10px] ${mine ? "text-orange-100" : "text-[#9CA3AF]"}`}>
                             {new Date(message.created_at).toLocaleString("en-IN")}
                           </p>
@@ -411,6 +413,7 @@ export default function SupportPage() {
                     <textarea
                       name="message"
                       required
+                      minLength={10}
                       rows={2}
                       className="dashboard-input min-h-[110px] resize-none"
                       placeholder="Write your reply..."
@@ -480,20 +483,23 @@ export default function SupportPage() {
                   <input
                     name="subject"
                     required
-                    minLength={3}
+                    minLength={5}
+                    maxLength={120}
                     defaultValue={searchParams.get("order") ? `Support for order ${searchParams.get("order")}` : ""}
                     className="dashboard-input mt-2"
                     placeholder="Briefly describe the issue"
                   />
                 </label>
 
-                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Payment or transaction reference (optional)<input name="payment_reference" defaultValue={searchParams.get("payment") || searchParams.get("transaction") || ""} className="dashboard-input mt-2" placeholder="Reference ID only" /></label>
+                <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">Payment or transaction reference (optional)<input name="payment_reference" minLength={3} maxLength={120} pattern="[A-Za-z0-9._:/-]+" defaultValue={searchParams.get("payment") || searchParams.get("transaction") || ""} className="dashboard-input mt-2" placeholder="Reference ID only" /></label>
 
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Message
                   <textarea
                     name="message"
                     required
+                    minLength={10}
+                    maxLength={4000}
                     rows={5}
                     defaultValue={searchParams.get("order") ? `Order ID: ${searchParams.get("order")}\nPlatform: ${searchParams.get("platform") || ""}\nService: ${searchParams.get("service") || ""}\nCurrent status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe what you need help with:` : searchParams.get("transaction") ? `Transaction ID: ${searchParams.get("transaction")}\nPayment status: ${(searchParams.get("status") || "").replaceAll("_", " ")}\n\nPlease describe the payment or wallet issue:` : ""}
                     className="dashboard-input mt-2 min-h-[150px] resize-none sm:min-h-[180px]"

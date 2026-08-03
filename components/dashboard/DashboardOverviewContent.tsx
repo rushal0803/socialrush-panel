@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CircleHelp, CreditCard, Gift, HeartHandshake, LayoutList, LockKeyhole, Plus, ShieldCheck, ShoppingBag, Wallet, Zap } from "lucide-react";
 import { formatCurrency } from "@/lib/currency";
+import { supportStatus } from "@/lib/support/customer";
 
 type Order = { id: string; serviceName: string; platform: string; quantity: number; status: string; price: number; createdAt: string; progress: number | null; refillEligible: boolean };
 type Transaction = { id: string; amount: number; type: string; status: string; paymentMethod: string; createdAt: string };
@@ -10,7 +11,7 @@ const active = new Set(["pending", "processing", "in_progress", "partial", "awai
 const statusClass: Record<string, string> = { completed: "bg-emerald-500/10 text-emerald-300", processing: "bg-orange-500/10 text-orange-200", in_progress: "bg-orange-500/10 text-orange-200", pending: "bg-slate-500/15 text-slate-300", partial: "bg-amber-500/10 text-amber-200", failed: "bg-red-500/10 text-red-300", cancelled: "bg-red-500/10 text-red-300", refunded: "bg-slate-500/15 text-slate-300", open: "bg-orange-500/10 text-orange-200", waiting_for_support: "bg-amber-500/10 text-amber-200", waiting_for_customer: "bg-blue-500/10 text-blue-200", resolved: "bg-emerald-500/10 text-emerald-300", closed: "bg-slate-500/15 text-slate-300" };
 function label(value: string) { return value.replaceAll("_", " ").replace(/\b\w/g, c => c.toUpperCase()); }
 function date(value: string) { return new Intl.DateTimeFormat("en-IN", { day: "numeric", month: "short", year: "numeric" }).format(new Date(value)); }
-function Status({ value }: { value: string }) { return <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold ${statusClass[value] || "bg-slate-500/15 text-slate-300"}`}>{label(value)}</span>; }
+function Status({ value }: { value: string }) { const support = supportStatus(value); const isSupport = ["open", "waiting_for_support", "waiting_for_customer", "resolved", "closed"].includes(value); return <span className={`inline-flex rounded-full px-2.5 py-1 text-[10px] font-bold ${isSupport ? support.className : statusClass[value] || "bg-slate-500/15 text-slate-300"}`}>{isSupport ? support.label : label(value)}</span>; }
 function Panel({ children, className = "" }: { children: React.ReactNode; className?: string }) { return <section className={`dashboard-glass min-w-0 p-5 sm:p-6 ${className}`}>{children}</section>; }
 function SectionError() { return <p role="status" className="mt-4 rounded-xl border border-white/10 bg-white/[.03] p-3 text-xs text-slate-300">This section could not be loaded. Please try again.</p>; }
 function Platform({ name }: { name: string }) { return <span className="grid h-9 w-9 shrink-0 place-items-center rounded-xl bg-orange-500/10 text-xs font-black uppercase text-orange-300">{name.slice(0, 1)}</span>; }
