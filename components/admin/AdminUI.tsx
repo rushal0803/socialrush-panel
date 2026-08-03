@@ -10,12 +10,13 @@ export function AdminPageHeader({ title, description, action }: { title: string;
   );
 }
 
+import { adminStatusLabel, adminStatusTone } from "@/lib/admin/status";
+
 export function AdminStatus({ value }: { value: string }) {
-  const styles: Record<string, string> = { active: "border-emerald-400/25 bg-emerald-500/10 text-emerald-300", admin: "border-amber-400/25 bg-amber-500/10 text-amber-300", blocked: "border-red-400/25 bg-red-500/10 text-red-300", inactive: "border-white/10 bg-white/5 text-[#9CA3AF]", pending: "border-amber-400/25 bg-amber-500/10 text-amber-300", processing: "border-orange-400/25 bg-orange-500/10 text-orange-300", in_progress: "border-amber-400/25 bg-amber-500/10 text-amber-300", completed: "border-emerald-400/25 bg-emerald-500/10 text-emerald-300", paid: "border-emerald-400/25 bg-emerald-500/10 text-emerald-300", partial: "border-amber-400/25 bg-amber-500/10 text-amber-300", cancelled: "border-white/10 bg-white/5 text-[#9CA3AF]", refunded: "border-red-400/25 bg-red-500/10 text-red-300", failed: "border-red-400/25 bg-red-500/10 text-red-300", refill_requested: "border-orange-400/25 bg-orange-500/10 text-orange-300", refilling: "border-orange-400/25 bg-orange-500/10 text-orange-300", open: "border-orange-400/25 bg-orange-500/10 text-orange-300", answered: "border-emerald-400/25 bg-emerald-500/10 text-emerald-300", solved: "border-emerald-400/25 bg-emerald-500/10 text-emerald-300", closed: "border-white/10 bg-white/5 text-[#9CA3AF]" };
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold capitalize ${styles[value] || "border-white/10 bg-white/5 text-[#9CA3AF]"}`}>
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold capitalize ${adminStatusTone(value)}`}>
       <i className="h-1.5 w-1.5 rounded-full bg-current" />
-      {value.replaceAll("_", " ")}
+      {adminStatusLabel(value)}
     </span>
   );
 }

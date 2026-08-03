@@ -1,70 +1,46 @@
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
-import AdminOverviewContent from "@/components/admin/AdminOverviewContent";
+import { AdminStatus } from "@/components/admin/AdminUI";
+
+const previewLimit = 6;
+const date = (value: string | null) => value ? new Date(value).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" }) : "Not recorded";
+const ref = (id: string) => `#${id.slice(0, 8).toUpperCase()}`;
+const customer = (profile: unknown) => (profile as { full_name?: string; email?: string } | null)?.full_name || "Customer";
+
+function Section({ title, href, children, error }: { title: string; href: string; children: React.ReactNode; error?: boolean }) {
+  return <section className="dashboard-glass overflow-hidden"><div className="flex items-center justify-between gap-3 border-b border-white/10 px-4 py-4 sm:px-5"><h2 className="text-base font-black text-white">{title}</h2><Link className="min-h-11 rounded-xl px-3 py-3 text-xs font-bold text-orange-300 hover:bg-white/5" href={href}>View all</Link></div>{error ? <p role="alert" className="p-5 text-sm text-amber-200">This operational section could not be loaded. Reload to try again.</p> : children}</section>;
+}
 
 export default async function AdminDashboardPage() {
-  const supabase = await createClient();
-
-  const [
-    { count: totalUsers },
-    { count: totalOrders },
-    { count: pendingOrders },
-    { count: completedOrders },
-    { count: walletTopUps },
-    { count: supportTickets },
-    { data: completedCharges },
-    { data: users },
-    { data: transactions },
-  ] = await Promise.all([
-    supabase.from("profiles").select("id", { count: "exact", head: true }),
-    supabase.from("orders").select("id", { count: "exact", head: true }),
-    supabase.from("orders").select("id", { count: "exact", head: true }).in("status", ["pending", "processing", "in_progress"]),
-    supabase.from("orders").select("id", { count: "exact", head: true }).eq("status", "completed"),
-    supabase.from("transactions").select("id", { count: "exact", head: true }).eq("type", "credit").eq("status", "completed"),
-    supabase.from("support_tickets").select("id", { count: "exact", head: true }),
-    supabase.from("orders").select("charge").eq("status", "completed"),
-    supabase.from("profiles").select("id, full_name, email, role, created_at").order("created_at", { ascending: false }).limit(6),
-    supabase
-      .from("transactions")
-      .select("id, amount, type, status, created_at, profiles(full_name, email)")
-      .order("created_at", { ascending: false })
-      .limit(6),
+  const db = await createClient();
+  const attention = ["failed", "cancelled", "partial"];
+  const activeRefills = ["requested", "reviewing", "approved", "processing"];
+  const [newOrders, orderIssues, refills, tickets, payments, services, reviews, newCount, issueCount, refillCount, ticketCount, paymentCount, serviceCount, reviewCount] = await Promise.all([
+    db.from("orders").select("id,service_name,platform,quantity,status,payment_status,created_at,profiles(full_name)").eq("status", "pending").order("created_at", { ascending: false }).limit(previewLimit),
+    db.from("orders").select("id,service_name,quantity,status,updated_at,created_at,profiles(full_name)").in("status", attention).order("updated_at", { ascending: false }).limit(previewLimit),
+    db.from("order_refill_requests").select("id,order_id,status,requested_at,customer_note,orders(service_name,profiles(full_name))").in("status", activeRefills).order("requested_at", { ascending: false }).limit(previewLimit),
+    db.from("support_tickets").select("id,subject,category,status,order_id,updated_at,profiles(full_name)").in("status", ["open", "waiting_for_support"]).order("updated_at", { ascending: false }).limit(previewLimit),
+    db.from("transactions").select("id,amount,status,created_at,provider_payment_id,profiles(full_name)").eq("type", "credit").in("status", ["pending", "failed"]).order("created_at", { ascending: false }).limit(previewLimit),
+    db.from("services").select("id,name,platform,health_status,last_tested_at,accepts_new_orders").or("accepts_new_orders.eq.false,health_status.in.(high_demand,slower_delivery,limited,paused,maintenance)").limit(previewLimit),
+    db.from("customer_reviews").select("id,rating,title,moderation_status,created_at,display_name,orders(service_name)").eq("moderation_status", "pending").order("created_at", { ascending: false }).limit(previewLimit),
+    db.from("orders").select("id", { count: "exact", head: true }).eq("status", "pending"),
+    db.from("orders").select("id", { count: "exact", head: true }).in("status", attention),
+    db.from("order_refill_requests").select("id", { count: "exact", head: true }).in("status", activeRefills),
+    db.from("support_tickets").select("id", { count: "exact", head: true }).in("status", ["open", "waiting_for_support"]),
+    db.from("transactions").select("id", { count: "exact", head: true }).eq("type", "credit").in("status", ["pending", "failed"]),
+    db.from("services").select("id", { count: "exact", head: true }).or("accepts_new_orders.eq.false,health_status.in.(high_demand,slower_delivery,limited,paused,maintenance)"),
+    db.from("customer_reviews").select("id", { count: "exact", head: true }).eq("moderation_status", "pending"),
   ]);
-
-  const totalRevenue = (completedCharges ?? []).reduce((sum, item) => sum + Number(item.charge ?? 0), 0);
-
-  const recentUsers = (users ?? []).map((item) => ({
-    id: item.id,
-    fullName: item.full_name || "New user",
-    email: item.email || "",
-    role: item.role || "user",
-    createdAt: item.created_at,
-  }));
-
-  const recentTransactions = (transactions ?? []).map((item) => {
-    const profile = item.profiles as unknown as { full_name?: string; email?: string } | null;
-    return {
-      id: item.id,
-      amount: Number(item.amount ?? 0),
-      type: item.type || "credit",
-      status: item.status || "pending",
-      userName: profile?.full_name || profile?.email || "Unknown user",
-      createdAt: item.created_at,
-    };
-  });
-
-  return (
-    <AdminOverviewContent
-      stats={{
-        totalUsers: totalUsers ?? 0,
-        totalOrders: totalOrders ?? 0,
-        totalRevenue,
-        pendingOrders: pendingOrders ?? 0,
-        completedOrders: completedOrders ?? 0,
-        walletTopUps: walletTopUps ?? 0,
-        supportTickets: supportTickets ?? 0,
-      }}
-      recentUsers={recentUsers}
-      recentTransactions={recentTransactions}
-    />
-  );
+  const cards = [["New orders", newCount.count, "/admin/orders?status=pending"], ["Orders needing attention", issueCount.count, "/admin/orders?filter=needs-attention"], ["Active refill requests", refillCount.count, "/admin/refills?status=requested"], ["Open support tickets", ticketCount.count, "/admin/support?status=waiting_for_support"], ["Payment issues", paymentCount.count, "/admin/payments?status=issue"], ["Services degraded", serviceCount.count, "/admin/services?health=paused"], ["Pending reviews", reviewCount.count, "/admin/reviews?status=pending"]] as const;
+  const warnings = [issueCount.count ? ["Warning", `${issueCount.count} order${issueCount.count === 1 ? "" : "s"} need review`, "/admin/orders?filter=needs-attention"] : null, serviceCount.count ? ["Critical", `${serviceCount.count} service${serviceCount.count === 1 ? " is" : "s are"} affected`, "/admin/services"] : null, paymentCount.count ? ["Warning", `${paymentCount.count} payment issue${paymentCount.count === 1 ? "" : "s"} await review`, "/admin/payments?status=pending"] : null].filter(Boolean) as string[][];
+  return <main className="mx-auto max-w-[1700px] px-4 pb-8 pt-6 sm:px-8"><header><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Administration</p><h1 className="mt-2 text-3xl font-black text-white">Operations Dashboard</h1><p className="mt-2 text-sm text-slate-300">Monitor orders, support, refills, payments, service health and customer activity.</p><p className="mt-2 text-xs text-slate-400">Last updated {date(new Date().toISOString())}</p><div className="mt-4 grid gap-2 sm:flex sm:flex-wrap">{[["View Orders","/admin/orders"],["View Support","/admin/support"],["View Refills","/admin/refills"],["View Payments","/admin/payments"],["Review Moderation","/admin/reviews"],["Service Health","/admin/services"]].map(([label, href]) => <Link key={href} href={href} className="min-h-11 rounded-xl border border-orange-400/25 px-4 py-3 text-center text-xs font-bold text-orange-200 hover:bg-orange-500/10">{label}</Link>)}</div></header>
+    {warnings.length ? <section aria-label="System warnings" className="mt-6 space-y-2">{warnings.map(([level, message, href]) => <Link key={message} href={href} className="flex min-h-11 items-center justify-between gap-3 rounded-xl border border-amber-400/30 bg-amber-500/10 px-4 py-3 text-sm text-amber-100"><span><strong>{level}:</strong> {message}</span><span className="text-xs font-bold">Review</span></Link>)}</section> : null}
+    <section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{cards.map(([title, value, href]) => <Link key={title} href={href} className="dashboard-glass min-h-32 p-4 transition hover:border-orange-400/40 focus:outline-none focus:ring-2 focus:ring-orange-300"><p className="text-xs font-bold text-slate-300">{title}</p><p className="mt-3 text-3xl font-black text-white">{value ?? 0}</p><p className="mt-2 text-xs text-orange-300">Open queue →</p></Link>)}</section>
+    <div className="mt-6 grid gap-5 xl:grid-cols-2"><Section title="Orders needing attention" href="/admin/orders?filter=needs-attention" error={Boolean(orderIssues.error)}><div className="divide-y divide-white/10">{(orderIssues.data ?? []).map(o => <div className="p-4" key={o.id}><div className="flex justify-between gap-3"><div><p className="font-bold text-white">{ref(o.id)} · {o.service_name || "Service"}</p><p className="mt-1 text-xs text-slate-400">{customer(o.profiles)} · {Number(o.quantity).toLocaleString("en-IN")} · Updated {date(o.updated_at)}</p></div><AdminStatus value={o.status}/></div><Link className="mt-3 inline-block text-xs font-bold text-orange-300" href={`/admin/orders/${o.id}`}>View order</Link></div>)}{!orderIssues.data?.length && <p className="p-5 text-sm text-slate-400">No orders currently need attention.</p>}</div></Section>
+    <Section title="New orders" href="/admin/orders?status=pending" error={Boolean(newOrders.error)}><div className="divide-y divide-white/10">{(newOrders.data ?? []).map(o => <div className="flex items-center justify-between gap-3 p-4" key={o.id}><div><p className="font-bold text-white">{ref(o.id)} · {o.service_name || "Service"}</p><p className="mt-1 text-xs text-slate-400 capitalize">{o.platform || "Other"} · {Number(o.quantity).toLocaleString("en-IN")} · {date(o.created_at)}</p></div><Link className="min-h-11 rounded-xl px-3 py-3 text-xs font-bold text-orange-300" href={`/admin/orders/${o.id}`}>View</Link></div>)}{!newOrders.data?.length && <p className="p-5 text-sm text-slate-400">No new orders.</p>}</div></Section>
+    <Section title="Support queue" href="/admin/support?status=waiting_for_support" error={Boolean(tickets.error)}><div className="divide-y divide-white/10">{(tickets.data ?? []).map(t => <Link className="block p-4 hover:bg-white/5" href={`/admin/support?ticket=${t.id}`} key={t.id}><div className="flex justify-between gap-3"><div><p className="font-bold text-white">{ref(t.id)} · {t.subject}</p><p className="mt-1 text-xs text-slate-400">{customer(t.profiles)} · {t.category?.replaceAll("_", " ")} · {date(t.updated_at)}</p></div><AdminStatus value={t.status}/></div></Link>)}{!tickets.data?.length && <p className="p-5 text-sm text-slate-400">No support backlog.</p>}</div></Section>
+    <Section title="Active refill requests" href="/admin/refills?status=requested" error={Boolean(refills.error)}><div className="divide-y divide-white/10">{(refills.data ?? []).map(r => <Link className="block p-4 hover:bg-white/5" href={`/admin/orders/${r.order_id}`} key={r.id}><div className="flex justify-between gap-3"><div><p className="font-bold text-white">{ref(r.id)} · Order {ref(r.order_id)}</p><p className="mt-1 text-xs text-slate-400">Requested {date(r.requested_at)}</p></div><AdminStatus value={r.status}/></div></Link>)}{!refills.data?.length && <p className="p-5 text-sm text-slate-400">No active refill requests.</p>}</div></Section>
+    <Section title="Payment issues" href="/admin/payments?status=pending" error={Boolean(payments.error)}><div className="divide-y divide-white/10">{(payments.data ?? []).map(p => <Link className="block p-4 hover:bg-white/5" href="/admin/payments?status=pending" key={p.id}><div className="flex justify-between gap-3"><div><p className="font-bold text-white">{ref(p.id)} · ₹{Number(p.amount).toLocaleString("en-IN")}</p><p className="mt-1 text-xs text-slate-400">{customer(p.profiles)} · {date(p.created_at)}</p></div><AdminStatus value={p.status}/></div></Link>)}{!payments.data?.length && <p className="p-5 text-sm text-slate-400">No payment issues.</p>}</div></Section>
+    <Section title="Service health" href="/admin/services" error={Boolean(services.error)}><div className="divide-y divide-white/10">{(services.data ?? []).map(s => <Link className="block p-4 hover:bg-white/5" href={`/admin/services?health=${s.health_status}`} key={s.id}><div className="flex justify-between gap-3"><div><p className="font-bold text-white">{s.name}</p><p className="mt-1 text-xs text-slate-400">{s.platform || "Other"} · Last checked {date(s.last_tested_at)}</p></div><AdminStatus value={s.accepts_new_orders ? s.health_status : "paused"}/></div></Link>)}{!services.data?.length && <p className="p-5 text-sm text-slate-400">All services are operational.</p>}</div></Section>
+    <Section title="Pending review moderation" href="/admin/reviews?status=pending" error={Boolean(reviews.error)}><div className="divide-y divide-white/10">{(reviews.data ?? []).map(r => <Link className="block p-4 hover:bg-white/5" href="/admin/reviews?status=pending" key={r.id}><p className="font-bold text-white">{ref(r.id)} · {r.title}</p><p className="mt-1 text-xs text-slate-400">{r.rating}/5 · Submitted {date(r.created_at)}</p></Link>)}{!reviews.data?.length && <p className="p-5 text-sm text-slate-400">No pending reviews.</p>}</div></Section></div></main>;
 }
