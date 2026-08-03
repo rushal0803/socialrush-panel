@@ -3142,6 +3142,10 @@ function serviceLinksForProfile(profile: EditorialProfile) {
   ];
 }
 
+export const blogRedirects = baseBlogArticles
+  .filter((article) => Boolean(article.redirectTo))
+  .map((article) => ({ slug: article.slug, destination: article.redirectTo as string }));
+
 export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => !article.redirectTo).map((article) => {
   const profile = editorialProfiles[article.slug];
   const relatedLinks = article.relatedLinks ?? [];
@@ -3157,7 +3161,6 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
 
   return {
     ...article,
-    readingTime: "9 min read",
     sections: [...article.sections, ...buildLongFormSections(profile)],
     relatedLinks: [
       { label: profile.serviceLabel, href: profile.serviceHref },

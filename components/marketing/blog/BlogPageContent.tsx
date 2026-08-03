@@ -6,9 +6,11 @@ import { motion } from "framer-motion";
 import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { blogArticles } from "@/components/marketing/blog/blogData";
+import { getReadingTime, getSearchText, sortArticles } from "@/lib/blog";
 
-const categories = ["All", ...Array.from(new Set(blogArticles.map((article) => article.category)))];
-const featuredArticle = blogArticles.find((article) => article.featured) ?? [...blogArticles].sort((left, right) => Date.parse(right.publishedAt || "") - Date.parse(left.publishedAt || ""))[0];
+const sortedArticles = sortArticles(blogArticles);
+const categories = ["All", ...Array.from(new Set(sortedArticles.map((article) => article.category)))];
+const featuredArticle = sortedArticles.find((article) => article.featured) ?? sortedArticles[0];
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
 const relatedServiceLinks = [
@@ -39,7 +41,8 @@ export default function BlogPageContent() {
       const query = normalizeSearch(searchQuery);
       const selectedCategory = normalizeCategory(activeCategory);
 
-      return blogArticles
+      return sortedArticles
+        .filter((article) => article.slug !== featuredArticle?.slug)
         .filter((article) => {
           const matchesCategory =
             selectedCategory === "all" ||
@@ -47,9 +50,7 @@ export default function BlogPageContent() {
 
           const matchesSearch =
             query === "" ||
-            article.title.toLowerCase().includes(query) ||
-            article.description.toLowerCase().includes(query) ||
-            article.category.toLowerCase().includes(query);
+            getSearchText(article).includes(query);
 
           return matchesCategory && matchesSearch;
         })
@@ -202,7 +203,7 @@ export default function BlogPageContent() {
                 {featuredArticle.category}
               </span>
               <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
-                {featuredArticle.readingTime}
+                {getReadingTime(featuredArticle)}
               </span>
             </div>
             <Link
@@ -230,13 +231,14 @@ export default function BlogPageContent() {
               </div>
               <label className="block w-full max-w-md">
                 <span className="sr-only">Search blog articles</span>
-                <input
+                <div className="relative"><input
                   type="search"
                   value={searchQuery}
                   onChange={(event) => setSearchQuery(event.target.value)}
                   placeholder="Search articles"
-                  className="min-h-12 w-full rounded-2xl border border-white/90 bg-white/90 px-4 text-sm text-[#0B0B0F] shadow-[0_10px_22px_rgba(255, 159, 0, .14)] outline-none transition placeholder:text-[#111827] focus:border-[#FF9F00] focus:ring-2 focus:ring-[#FFC400]/20"
+                  className="min-h-12 w-full rounded-2xl border border-white/90 bg-white/90 px-4 pr-24 text-sm text-[#0B0B0F] shadow-[0_10px_22px_rgba(255, 159, 0, .14)] outline-none transition placeholder:text-[#111827] focus:border-[#FF9F00] focus:ring-2 focus:ring-[#FFC400]/20"
                 />
+                {searchQuery ? <button type="button" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 min-h-9 -translate-y-1/2 rounded-lg px-3 text-xs font-bold text-[#C75F00] hover:bg-orange-100">Clear</button> : null}</div>
               </label>
             </div>
             <div className="mt-4 flex max-w-full gap-3 overflow-x-auto pb-1">
@@ -252,7 +254,7 @@ export default function BlogPageContent() {
                       : "border-white/90 bg-white/85 text-[#0B0B0F] hover:border-[#FF9F00]"
                   }`}
                 >
-                  {category}
+                  {category} {category === "All" ? sortedArticles.length : sortedArticles.filter((article) => article.category === category).length}
                 </button>
               ))}
             </div>
@@ -261,6 +263,7 @@ export default function BlogPageContent() {
 
         <section id="articles" className="relative px-5 pb-8 pt-6 sm:px-6 lg:px-8 lg:pb-12 lg:pt-8">
           <div className="mx-auto w-full max-w-7xl">
+            <p aria-live="polite" className="mb-4 text-sm font-semibold text-[#D1D5DB]">{cardsWithFallback.length ? `${cardsWithFallback.length} article${cardsWithFallback.length === 1 ? "" : "s"} found` : searchQuery.trim() ? `No articles found for “${searchQuery.trim()}”` : "No articles found"}</p>
             <motion.div
               key={`${activeCategory}-${normalizeSearch(searchQuery) || "all"}`}
               initial={false}
@@ -318,7 +321,7 @@ export default function BlogPageContent() {
                   <div className="mt-auto flex items-center justify-between gap-3 pt-5">
                     <div className="flex flex-wrap gap-2">
                       <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#FF9F00]">
-                        {post.readingTime}
+                        {getReadingTime(post)}
                       </span>
                       {post.publishedAt ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#111827]">{post.publishedAt}</span> : null}
                     </div>
