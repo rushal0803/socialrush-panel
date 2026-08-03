@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowRight, BadgeCheck, Check, Clock3, CreditCard, Headphones, Heart, Image as ImageIcon, Link2, LockKeyhole, MessageCircle, Monitor, PlaySquare, RefreshCw, ShieldCheck, Sparkles, TrendingUp, Eye, Users } from "lucide-react";
 import PublicShell from "./PublicShell";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -18,15 +18,15 @@ const platformTile: Record<SmmPlatformId,string> = { instagram:"from-fuchsia-500
 function money(value:number) { return new Intl.NumberFormat("en-IN", { style:"currency", currency:"INR", maximumFractionDigits: 0 }).format(value); }
 function pretty(type:string) { return type.replace(/-/g, " ").replace(/\b\w/g, (x) => x.toUpperCase()); }
 
-export default function PremiumHomepage() {
-  const router = useRouter(); const query = useSearchParams();
-  const qPlatform = platforms.includes(query.get("platform") as SmmPlatformId) ? query.get("platform") as SmmPlatformId : "instagram";
+export default function PremiumHomepage({ searchParams }: { searchParams?: { platform?: string; service?: string } }) {
+  const router = useRouter();
+  const qPlatform = platforms.includes(searchParams?.platform as SmmPlatformId) ? searchParams?.platform as SmmPlatformId : "instagram";
   const [platform,setPlatform] = useState<SmmPlatformId>(qPlatform);
   const [serviceCode,setServiceCode] = useState(""); const [quantity,setQuantity] = useState(1000);
   const [health,setHealth] = useState<Record<string,ServiceHealth>>({}); const [tab,setTab] = useState("Orders");
   useEffect(()=>{ fetch("/api/service-health").then(r=>r.ok?r.json():null).then(x=>x?.data&&setHealth(x.data)).catch(()=>undefined); },[]);
   const services = useMemo(()=>activeSmmServices.filter(s=>s.platform===platform),[platform]);
-  const selected = services.find(s=>s.code===serviceCode) || services.find(s=>s.code.endsWith(`-${query.get("service")}`)) || services[0];
+  const selected = services.find(s=>s.code===serviceCode) || services.find(s=>s.code.endsWith(`-${searchParams?.service}`)) || services[0];
   useEffect(()=>{ if(selected && selected.code!==serviceCode) setServiceCode(selected.code); },[selected,serviceCode]);
   const unavailable = !selected || Boolean(health[selected.code] && (!health[selected.code].acceptsNewOrders || health[selected.code].status === "paused"));
   const total = selected ? calculateServiceTotal(selected.code, quantity) : 0;
