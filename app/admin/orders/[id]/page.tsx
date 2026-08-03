@@ -16,9 +16,10 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
     .maybeSingle();
   if (error || !order) notFound();
 
-  const [{ data: history }, { data: transactions }] = await Promise.all([
+  const [{ data: history }, { data: transactions }, { data: refillRequests }] = await Promise.all([
     supabase.from("order_status_history").select("*").eq("order_id", params.id).order("created_at"),
     supabase.from("transactions").select("id,amount,type,status,payment_method,description,created_at,metadata").contains("metadata", { order_id: params.id }).order("created_at"),
+    supabase.from("order_refill_requests").select("id,status,customer_note,requested_at").eq("order_id", params.id).order("requested_at", { ascending: false }),
   ]);
   const profile = order.profiles as unknown as { full_name?: string; email?: string; phone?: string } | null;
   const service = order.services as unknown as { name?: string; delivery_time?: string; refill_policy?: string } | null;
@@ -53,6 +54,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
               ...order,
               walletRefunded,
               refundedAmount: refundTransaction ? Number(refundTransaction.amount ?? 0) : null,
+              refillRequest: refillRequests?.[0] || null,
             }}
           />
         </div>

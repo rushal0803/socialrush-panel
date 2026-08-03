@@ -21,6 +21,7 @@ type Props = {
     remaining_count?: number | null;
     walletRefunded?: boolean;
     refundedAmount?: number | null;
+    refillRequest?: { id: string; status: string; customer_note: string | null; requested_at: string } | null;
   };
 };
 
@@ -73,6 +74,11 @@ export default function AdminOrderControls({ order }: Props) {
     });
   }
 
+  async function updateRefill(status: string) {
+    if (!order.refillRequest) return;
+    await request(`/api/admin/refill-requests/${order.refillRequest.id}`, { method: "PATCH", body: JSON.stringify({ status }) });
+  }
+
   return (
     <section className="rounded-3xl border border-orange-400/25 bg-[#111111] p-5 shadow-[0_22px_54px_rgba(0,0,0,.34)] sm:p-7">
       <h2 className="text-lg font-black text-white">Admin controls</h2>
@@ -101,6 +107,7 @@ export default function AdminOrderControls({ order }: Props) {
           </button>
         </div>
       </div>
+      {order.refillRequest ? <div className="mt-5 rounded-2xl border border-emerald-400/20 bg-emerald-500/10 p-4"><p className="text-[10px] font-black uppercase tracking-[.16em] text-emerald-200">Customer refill request · {order.refillRequest.status}</p><p className="mt-2 text-xs text-white">{order.refillRequest.customer_note || "No customer note."}</p><div className="mt-3 grid grid-cols-2 gap-2">{["reviewing", "processing", "completed", "rejected"].map((status) => <button key={status} type="button" disabled={busy} onClick={() => void updateRefill(status)} className="min-h-10 rounded-lg border border-white/15 bg-black/20 px-2 text-[10px] font-bold capitalize text-white">Mark {status}</button>)}</div></div> : null}
 
       <div className="mt-5 grid gap-2 sm:grid-cols-3">
         {["processing", "in_progress", "completed", "partial", "failed", "cancelled", "refill_requested", "refilling"].map((status) => (

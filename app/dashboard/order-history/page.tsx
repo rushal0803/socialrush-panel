@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { customerOrderServices } from "@/lib/order-service-experience";
+import { customerOrderStatus, customerStatusClass } from "@/lib/customer-order-status";
 
 type Campaign = {
   id: string;
@@ -30,26 +31,14 @@ type Campaign = {
   refillRequestedAt: string | null;
 };
 
-const statuses = ["all", "pending", "processing", "in_progress", "completed", "partial", "cancelled", "refunded", "failed", "refill_requested", "refilling"];
-const statusStyle: Record<string, string> = {
-  pending: "border border-amber-400/25 bg-amber-500/10 text-amber-200",
-  processing: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
-  in_progress: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
-  completed: "border border-emerald-400/25 bg-emerald-500/10 text-emerald-200",
-  partial: "border border-amber-400/25 bg-amber-500/10 text-amber-200",
-  cancelled: "border border-red-400/25 bg-red-500/10 text-red-200",
-  refunded: "border border-blue-400/25 bg-blue-500/10 text-blue-200",
-  failed: "border border-red-400/25 bg-red-500/10 text-red-200",
-  refill_requested: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
-  refilling: "border border-orange-400/25 bg-orange-500/10 text-orange-200",
-};
+const statuses = ["all", "active", "completed", "refill_eligible", "refunded_or_cancelled"];
 
 function StatusBadge({ status }: { status: string }) {
   const StatusIcon = status === "completed" ? CheckCircle2 : ["cancelled", "failed"].includes(status) ? AlertTriangle : ["processing", "in_progress", "refilling"].includes(status) ? RefreshCw : Clock3;
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[10px] font-bold capitalize ${statusStyle[status] || statusStyle.pending}`}>
+    <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold ${customerStatusClass(status)}`}>
       <StatusIcon aria-hidden="true" className="h-3 w-3" />
-      {status.replaceAll("_", " ")}
+      {customerOrderStatus(status).label}
     </span>
   );
 }
@@ -124,8 +113,6 @@ export default function CampaignHistoryPage() {
         setLoading(false);
     };
     void loadOrders();
-    const channel = supabase.channel("customer-order-tracking").on("postgres_changes", { event: "*", schema: "public", table: "orders" }, () => void loadOrders()).subscribe();
-    return () => { void supabase.removeChannel(channel); };
   }, [reloadKey]);
 
   const platforms = useMemo(() => Array.from(new Set(campaigns.map((item) => item.platform))).sort(), [campaigns]);
@@ -134,7 +121,7 @@ export default function CampaignHistoryPage() {
     () =>
       campaigns.filter((item) => {
         const matchesSearch = `${item.id} ${readableOrderId(item.id)} ${item.platform} ${item.service} ${item.link}`.toLowerCase().includes(search.toLowerCase());
-        const matchesStatus = status === "all" || item.status === status;
+        const matchesStatus = status === "all" || (status === "active" && ["pending", "processing", "in_progress", "partial", "refill_requested", "refilling"].includes(item.status)) || (status === "refill_eligible" && item.refillEligible && item.status === "completed" && !item.refillRequestedAt) || (status === "refunded_or_cancelled" && ["refunded", "cancelled"].includes(item.status)) || item.status === status;
         const matchesPlatform = platform === "all" || item.platform === platform;
         const days = dateRange === "all" ? 0 : Number(dateRange);
         const matchesDate = !days || new Date(item.createdAt).getTime() >= Date.now() - days * 86400000;
@@ -185,7 +172,7 @@ export default function CampaignHistoryPage() {
             <select value={status} onChange={(event) => setStatus(event.target.value)} className="min-h-12 rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm capitalize text-white outline-none focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15">
               {statuses.map((item) => (
                 <option key={item} value={item}>
-                  {item === "all" ? "All statuses" : item.replaceAll("_", " ")}
+                  {{ all: "All orders", active: "Active", completed: "Completed", refill_eligible: "Refill eligible", refunded_or_cancelled: "Refunded or cancelled" }[item]}
                 </option>
               ))}
             </select>
