@@ -33,6 +33,22 @@ export default function MobileMenuLayer({
     return () => document.removeEventListener("keydown", handleEscape);
   }, [onClose, open]);
 
+  useEffect(() => {
+    if (!open) return;
+
+    // Safari can restore a page from the back-forward cache without changing
+    // the pathname. Close the portal before it can remain above the dashboard.
+    const closeForNavigation = () => onClose();
+    window.addEventListener("popstate", closeForNavigation);
+    window.addEventListener("pagehide", closeForNavigation);
+    window.addEventListener("pageshow", closeForNavigation);
+    return () => {
+      window.removeEventListener("popstate", closeForNavigation);
+      window.removeEventListener("pagehide", closeForNavigation);
+      window.removeEventListener("pageshow", closeForNavigation);
+    };
+  }, [onClose, open]);
+
   if (!mounted || !open) return null;
 
   const keepOpen = (event: MouseEvent<HTMLDivElement>) => {

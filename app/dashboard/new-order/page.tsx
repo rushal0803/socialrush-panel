@@ -17,7 +17,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
@@ -102,9 +102,10 @@ function ProgressItem({ number, title, state }: { number: number; title: string;
 
 export default function NewOrderPage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
+  const [queryString, setQueryString] = useState("");
   const { currency } = usePreferredCurrency("INR");
   const healthByService = useServiceHealth();
+  const searchParams = useMemo(() => new URLSearchParams(queryString), [queryString]);
   const resumeRequested = searchParams.get("resume") === "1";
   const requestedPlatform = platformFromQuery(searchParams.get("platform"));
   const requestedService = serviceFromQuery(searchParams.get("service"), requestedPlatform);
@@ -132,6 +133,41 @@ export default function NewOrderPage() {
   const serviceRef = useRef<HTMLElement>(null);
   const detailsRef = useRef<HTMLElement>(null);
   const summaryRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const syncQuery = () => setQueryString(window.location.search);
+    syncQuery();
+    window.addEventListener("popstate", syncQuery);
+    return () => window.removeEventListener("popstate", syncQuery);
+  }, []);
+
+  useEffect(() => {
+    if (!queryString) {
+      setPlatform(null);
+      setSelectedService(null);
+      setTargetLink("");
+      setQuantityInput("");
+      return;
+    }
+    const platformFromUrl = platformFromQuery(searchParams.get("platform"));
+    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl);
+    const resumedFromUrl = searchParams.get("resume") === "1"
+      ? customerOrderServices.find((service) => service.code === searchParams.get("service")) ?? null
+      : null;
+    const service = resumedFromUrl ?? serviceFromUrl;
+
+    if (service) {
+      setPlatform(service.platform);
+      setSelectedService(service);
+    } else if (platformFromUrl) {
+      setPlatform(platformFromUrl);
+      setSelectedService(null);
+    }
+    if (searchParams.get("resume") === "1") {
+      setTargetLink(searchParams.get("link") || "");
+      setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
+    }
+  }, [queryString, searchParams]);
 
   const services = useMemo(
     () => (platform ? customerOrderServices.filter((service) => service.platform === platform) : []),
