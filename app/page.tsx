@@ -17,7 +17,11 @@ export const metadata: Metadata = {
   },
 };
 
-export default function HomePage() {
+export default function HomePage({
+  searchParams,
+}: {
+  searchParams?: { platform?: string; service?: string };
+}) {
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -37,7 +41,7 @@ export default function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-      <HomepageContent />
+      <HomepageContent searchParams={searchParams} />
     </>
   );
 }
