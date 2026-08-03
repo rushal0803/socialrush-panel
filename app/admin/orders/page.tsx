@@ -28,6 +28,7 @@ const count = (value: unknown) =>
 
 type SearchParams = {
   status?: string;
+  filter?: string;
   platform?: string;
   service?: string;
   customer?: string;
@@ -45,6 +46,7 @@ export default async function AdminOrdersPage({
   searchParams?: SearchParams;
 }) {
   const supabase = await createClient();
+  const needsAttention = searchParams.filter === "needs-attention";
   const filter = statuses.includes(searchParams.status || "")
     ? searchParams.status!
     : "all";
@@ -68,7 +70,8 @@ export default async function AdminOrdersPage({
     )
     .order("created_at", { ascending: false });
 
-  if (filter !== "all") query = query.eq("status", filter);
+  if (needsAttention) query = query.in("status", ["failed", "cancelled", "partial"]);
+  else if (filter !== "all") query = query.eq("status", filter);
   if (platform) query = query.ilike("platform", platform);
   if (serviceFilter) {
     query = query.ilike("service_name", `%${serviceFilter}%`);
@@ -133,7 +136,7 @@ export default async function AdminOrdersPage({
         />
         <select
           name="status"
-          defaultValue={filter}
+          defaultValue={needsAttention ? "all" : filter}
           className={`${filterField} capitalize`}
         >
           {statuses.map((item) => (
@@ -186,6 +189,8 @@ export default async function AdminOrdersPage({
           />
         </label>
       </form>
+
+      {needsAttention ? <p className="mt-3 text-xs font-semibold text-amber-200">Showing orders in a trusted attention state: failed, cancelled, or partial. <Link href="/admin/orders" className="underline">Reset</Link></p> : null}
 
       <section className="mt-5 grid gap-4 lg:hidden">
         {orders.map((order) => {
