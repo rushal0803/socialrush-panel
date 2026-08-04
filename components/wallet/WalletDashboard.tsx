@@ -631,7 +631,7 @@ export default function WalletDashboard({
       : "Minimum amount required";
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-hidden bg-[#050505] px-4 pb-40 pt-5 text-white sm:px-6 sm:pt-7 lg:px-8">
+    <main className="dashboard-premium-page dashboard-wallet-page relative min-h-[calc(100vh-5rem)] overflow-x-hidden bg-[#050505] px-4 pb-40 pt-5 text-white sm:px-6 sm:pt-7 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-24 top-10 h-72 w-72 rounded-full bg-orange-600/15 blur-3xl" />
         <div className="absolute right-[-5rem] top-16 h-96 w-96 rounded-full bg-amber-500/10 blur-3xl" />

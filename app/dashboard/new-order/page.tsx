@@ -462,7 +462,7 @@ export default function NewOrderPage() {
   }, [recoveryIntentId, recoveryRequestId, router]);
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-36 pt-5 text-white sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
+    <main className="dashboard-premium-page dashboard-order-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-36 pt-5 text-white sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-20 top-8 h-72 w-72 rounded-full bg-orange-600/15 blur-3xl" />
         <div className="absolute right-[-5rem] top-14 h-80 w-80 rounded-full bg-amber-500/10 blur-3xl" />
@@ -608,7 +608,7 @@ export default function NewOrderPage() {
                 <dl className="grid gap-3 sm:grid-cols-2">
                   {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim()],["Quantity", quantity.toLocaleString("en-IN")],["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`],["Delivery", selectedService.deliveryTime],["Refill / support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 text-sm font-bold text-white [overflow-wrap:anywhere]">{value}</dd></div>)}
                 </dl>
-                <aside className="rounded-3xl bg-[#0B0B0F] p-5 text-white shadow-xl">
+                <aside className="dashboard-order-summary rounded-3xl bg-[#0B0B0F] p-5 text-white shadow-xl lg:sticky lg:top-24 lg:self-start">
                   <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-orange-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>
                   <p className="mt-2 text-2xl font-black">{walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency)}</p>
                   <div className="my-5 border-t border-white/15" />

@@ -138,7 +138,7 @@ export default function CampaignHistoryPage() {
   }), [campaigns]);
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.12),transparent_34%),#050505] p-4 text-white sm:p-6 lg:p-8">
+    <main className="dashboard-premium-page dashboard-orders-page min-h-[calc(100vh-5rem)] bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.12),transparent_34%),#050505] p-4 text-white sm:p-6 lg:p-8">
       <div className="mx-auto max-w-[1700px]">
         <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-end">
           <div>
