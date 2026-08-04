@@ -4,10 +4,12 @@ export default function Header({
   email,
   fullName,
   role,
+  balance,
 }: {
   email: string;
   fullName: string;
   role: string;
+  balance: number;
 }) {
   const name = fullName || email.split("@")[0] || "Client";
   const initials = name
@@ -17,5 +19,5 @@ export default function Header({
     .slice(0, 2)
     .toUpperCase();
 
-  return <DashboardHeaderBar name={name} role={role || "user"} initials={initials} />;
+  return <DashboardHeaderBar name={name} role={role || "user"} initials={initials} balance={balance} />;
 }

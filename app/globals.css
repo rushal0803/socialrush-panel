@@ -230,6 +230,46 @@ p {
   backdrop-filter: blur(12px);
 }
 
+/* Customer dashboard primitives. These deliberately sit above legacy utility
+   styles so dashboard routes share one compact, quiet SaaS surface language. */
+.dashboard-shell main > .mx-auto {
+  width: 100%;
+}
+
+.dashboard-shell .dashboard-page {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+.dashboard-shell .dashboard-card {
+  border: 1px solid var(--sr-border);
+  background: rgba(16, 18, 25, .94);
+  box-shadow: var(--sr-shadow-card);
+}
+
+.dashboard-shell .dashboard-card:hover {
+  border-color: rgba(255, 118, 0, .26);
+}
+
+.dashboard-shell .dashboard-table thead {
+  background: rgba(7, 8, 13, .72);
+}
+
+.dashboard-shell .dashboard-table tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.dashboard-shell .dashboard-table tbody tr:hover {
+  background: rgba(255, 118, 0, .045);
+}
+
+@media (max-width: 1023px) {
+  .dashboard-shell main {
+    padding-bottom: calc(7.5rem + env(safe-area-inset-bottom));
+  }
+}
+
 .dashboard-glass {
   border-radius: var(--sr-radius-card);
   border: 1px solid var(--sr-border);

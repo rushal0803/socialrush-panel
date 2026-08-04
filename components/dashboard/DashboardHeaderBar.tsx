@@ -6,6 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import DashboardMobileMenu from "@/components/dashboard/DashboardMobileMenu";
 import Logo from "@/components/Logo";
 import { getCurrencySymbol, type Currency } from "@/lib/currency";
+import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 const dashboardCurrencies: Currency[] = ["INR", "USD", "AED", "EUR", "GBP"];
@@ -89,18 +90,23 @@ function CurrencySelector() {
   );
 }
 
-export default function DashboardHeaderBar({ name, role, initials }: { name: string; role: string; initials: string }) {
+export default function DashboardHeaderBar({ name, role, initials, balance }: { name: string; role: string; initials: string; balance: number }) {
+  const { currency } = usePreferredCurrency("INR");
   return (
-    <header className="sticky top-0 z-[9999] border-b border-orange-400/20 bg-[#0B0B0F]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
+    <header className="sticky top-0 z-[70] border-b border-white/[.08] bg-[#0c0e14]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4">
         <Logo light compactOnMobile priority className="[&_img]:!h-10 [&_img]:!max-w-[112px] min-[360px]:[&_img]:!h-11 min-[360px]:[&_img]:!max-w-[132px] sm:[&_img]:!h-[3.25rem] sm:[&_img]:!max-w-[218px]" />
 
         <div className="ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3">
           <CurrencySelector />
 
+          <Link href="/dashboard/wallet" className="hidden min-h-11 shrink-0 items-center gap-2 rounded-xl border border-white/[.1] bg-white/[.035] px-3 text-left transition hover:border-orange-400/35 hover:bg-orange-500/[.08] md:inline-flex">
+            <Wallet className="h-4 w-4 text-[#ff9a2e]" />
+            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#747b89]">Wallet</span><span className="block text-sm font-extrabold text-white">{formatCurrency(balance, currency)}</span></span>
+          </Link>
           <Link
             href="/dashboard/add-funds"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,196,0,.6)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7600] to-[#ff9a2e] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,118,0,.5)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
           >
             <Wallet className="h-4 w-4" />
             <span className="hidden sm:inline">Add Funds</span>
