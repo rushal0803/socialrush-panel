@@ -126,6 +126,7 @@ export default function NewOrderPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
   const [checkoutStage, setCheckoutStage] = useState("");
+  const [checkoutStep, setCheckoutStep] = useState(initialService ? 3 : requestedPlatform ? 2 : 1);
   const inFlight = useRef(false);
   const requestId = useRef("");
   const funnelSignals = useRef(new Set<string>());
@@ -178,7 +179,7 @@ export default function NewOrderPage() {
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
   const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
-  const currentStep = !platform ? 1 : !selectedService ? 2 : !formIsValid ? 3 : 4;
+  const currentStep = checkoutStep;
   const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
 
   useEffect(() => {
@@ -210,7 +211,6 @@ export default function NewOrderPage() {
     setPlatform(nextPlatform);
     setSelectedService(null);
     resetOrderDetails();
-    scrollTo(serviceRef);
   };
 
   const chooseService = (service: SmmService) => {
@@ -219,7 +219,6 @@ export default function NewOrderPage() {
     track("service_selected", { step: "service" });
     setSelectedService(service);
     resetOrderDetails();
-    scrollTo(detailsRef);
   };
 
   const loadWalletBalance = useCallback(async () => {
@@ -460,6 +459,68 @@ export default function NewOrderPage() {
       })
       .catch(() => undefined);
   }, [recoveryIntentId, recoveryRequestId, router]);
+
+  const moveTo = (step: number) => {
+    if (step === 2 && !platform) return;
+    if (step === 3 && !selectedService) return;
+    if (step === 4 && !formIsValid) return;
+    setError("");
+    setCheckoutStep(step);
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+  const primaryButton = (label: string, onClick: () => void, disabled = false) => (
+    <button type="button" onClick={onClick} disabled={disabled} className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-16px_rgba(255,142,0,.55)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-[#252525] disabled:bg-none disabled:text-[#777] disabled:shadow-none">
+      {label}<ArrowRight className="h-4 w-4" />
+    </button>
+  );
+
+  return (
+    <main className="dashboard-premium-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-10 pt-5 text-white sm:px-6 lg:px-8">
+      <div className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-600/10 blur-3xl" /><div className="absolute right-0 top-20 h-64 w-64 rounded-full bg-amber-500/5 blur-3xl" /></div>
+      <div className="relative mx-auto max-w-6xl">
+        <header className="mb-4 flex items-end justify-between gap-4 sm:mb-6">
+          <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">New order</p><h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Build your campaign</h1></div>
+          <p className="hidden text-right text-xs leading-5 text-[#9CA3AF] sm:block">Transparent pricing<br />Secure wallet checkout</p>
+        </header>
+        <nav aria-label="Order progress" className="mb-5 grid grid-cols-4 gap-1 rounded-2xl border border-white/10 bg-[#101010]/95 p-1.5 backdrop-blur sm:mb-6 sm:gap-2 sm:p-2">
+          {[[1, "Platform"], [2, "Service"], [3, "Details"], [4, "Review & Pay"]].map(([number, title]) => <button key={number} type="button" onClick={() => moveTo(Number(number))} disabled={Number(number) > currentStep} className="min-w-0 disabled:cursor-default"><ProgressItem number={Number(number)} title={String(title)} state={progressState(Number(number), currentStep)} /></button>)}
+        </nav>
+        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_290px]">
+          <section className="rounded-3xl border border-white/10 bg-[#111111] p-4 shadow-[0_28px_70px_-45px_rgba(0,0,0,.9)] sm:p-6">
+            {currentStep === 1 ? <div>
+              <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 1 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a platform</h2><p className="mt-2 text-sm text-[#9CA3AF]">Select where you want your campaign to run.</p>
+              <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+                {platformOrder.map((platformId) => { const meta = platformMeta[platformId]; const active = platform === platformId; return <motion.button key={platformId} type="button" whileTap={{ scale: .98 }} onClick={() => choosePlatform(platformId)} aria-pressed={active} className={`relative min-h-28 rounded-2xl border p-4 text-left transition ${active ? "border-orange-400 bg-orange-500/10 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"}`}><IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge><span className="mt-4 block text-sm font-black">{meta.label}</span>{active && <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-400" />}</motion.button>; })}
+              </div>
+              <div className="mt-6">{primaryButton("Continue to Services", () => moveTo(2), !platform)}</div>
+            </div> : null}
+            {currentStep === 2 ? <div>
+              <button type="button" onClick={() => moveTo(1)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to platforms</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 2 of 4 · {platform && platformMeta[platform].label}</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a service</h2>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2">
+                {services.map((service) => { const active = selectedService?.code === service.code; const health = healthByService[service.code]; const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused")); const experience = serviceExperience[service.code]; return <article key={service.code} className={`rounded-2xl border p-4 ${active ? "border-orange-400/80 bg-orange-500/10" : "border-white/10 bg-[#0B0B0F]"} ${unavailable ? "opacity-55" : ""}`}><div className="flex items-start justify-between gap-3"><h3 className="text-sm font-black text-white">{experience.name}</h3>{active ? <Check className="h-5 w-5 text-emerald-400" /> : null}</div><div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div><span className="text-[#777]">Price / 1K</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)}</strong></div><div><span className="text-[#777]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div><div className="mt-3 flex flex-wrap gap-2"><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{service.refillPolicy}</span><ServiceHealthBadge health={health} /></div><details className="mt-3 border-t border-white/10 pt-3"><summary className="cursor-pointer text-xs font-bold text-[#B5B5B5]">Service details</summary><p className="mt-2 text-xs leading-5 text-[#9CA3AF]">{service.description} {growthMethod(service)}</p></details><button type="button" disabled={unavailable} onClick={() => chooseService(service)} className="mt-4 min-h-11 w-full rounded-xl border border-white/15 bg-white/5 text-xs font-black text-white transition hover:border-orange-400/70 disabled:cursor-not-allowed">{unavailable ? "Unavailable" : active ? "Selected" : "Select service"}</button></article>; })}
+              </div>
+              <div className="mt-6">{primaryButton("Continue to Details", () => moveTo(3), !selectedService)}</div>
+            </div> : null}
+            {currentStep === 3 && selectedService && linkRule ? <div>
+              <button type="button" onClick={() => moveTo(2)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to services</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 3 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Campaign details</h2><p className="mt-2 text-sm text-[#9CA3AF]">Only two things needed to get started.</p>
+              <div className="mt-6 grid gap-5"><label className="text-xs font-black">Public Link / Username<input value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setError(""); }} placeholder={linkRule.placeholder} className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${linkError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${linkError ? "text-red-300" : "text-[#999]"}`}>{linkError || linkRule.helper}</span></label><label className="text-xs font-black">Quantity<input value={quantityInput} onChange={(e) => { setQuantityInput(cleanQuantity(e.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${quantityError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${quantityError ? "text-red-300" : "text-[#999]"}`}>{quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")}`}</span></label></div>
+              {quickQuantities.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-11 rounded-xl border px-4 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/15 text-orange-200" : "border-white/10 bg-white/5 text-[#bbb]"}`}>{value / 1000}K</button>)}</div>}
+              <div className="mt-5 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />No password required. Public link only.</div></div>
+              {error && <p className="mt-4 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}<div className="mt-6">{primaryButton("Review Order", () => moveTo(4), !formIsValid)}</div>
+            </div> : null}
+            {currentStep === 4 && selectedService ? <div>
+              <button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to details</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 4 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Review & pay</h2>
+              <div className="mt-5 rounded-2xl border border-white/10 bg-[#0B0B0F] p-4"><div className="flex items-center justify-between"><h3 className="font-black">Order details</h3><button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-orange-300">Edit details</button></div><dl className="mt-4 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">{[["Platform", platform && platformMeta[platform].label], ["Service", serviceExperience[selectedService.code].name], ["Public link", targetLink], ["Quantity", quantity.toLocaleString("en-IN")], ["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`], ["Delivery", selectedService.deliveryTime], ["Refill", selectedService.refillPolicy]].map(([label, value]) => <div key={String(label)} className="min-w-0"><dt className="text-[10px] font-black uppercase tracking-wider text-[#777]">{label}</dt><dd className="mt-1 break-words font-bold text-white">{value}</dd></div>)}</dl></div>
+              <div className="mt-4 rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#201406,#0b0b0b)] p-5"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Payment summary</p><div className="mt-4 space-y-3 text-sm"><div className="flex justify-between"><span className="text-[#aaa]">Order total</span><strong>{formatCurrency(totalPrice, currency)}</strong></div><div className="flex justify-between"><span className="text-[#aaa]">Wallet balance</span><strong>{walletLoading ? "Checking…" : formatCurrency(walletBalance ?? 0, currency)}</strong></div><div className="flex justify-between border-t border-white/10 pt-3"><span className="text-[#aaa]">Balance after order</span><strong>{remainingBalance === null ? "—" : formatCurrency(remainingBalance, currency)}</strong></div></div>{!walletLoading && !hasEnoughWallet && <div className="mt-4 rounded-xl bg-red-500/10 p-3 text-sm text-red-100"><strong>Insufficient wallet balance.</strong><br />You need {formatCurrency(amountRequired, currency)} more to place this order.</div>}{walletError && <p className="mt-3 text-xs text-amber-200">{walletError}</p>}{error && <p className="mt-3 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}{success && <p className="mt-3 rounded-xl bg-emerald-500/15 p-3 text-sm text-emerald-100">Order placed successfully · #{success.id}. Opening Order History…</p>}<button type="button" onClick={() => { if (hasEnoughWallet) void placeOrder(); else void payAndPlaceOrder(); }} disabled={walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black shadow-[0_18px_36px_-16px_rgba(255,142,0,.55)] disabled:cursor-not-allowed disabled:bg-[#252525] disabled:bg-none disabled:text-[#777]">{submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" />{checkoutStage || "Placing order…"}</> : hasEnoughWallet ? <><ShieldCheck className="h-4 w-4" />Confirm & Place Order</> : <><Wallet className="h-4 w-4" />Add Funds & Continue</>}</button></div>
+            </div> : null}
+          </section>
+          <aside className="hidden h-fit rounded-3xl border border-white/10 bg-[#101010] p-5 lg:sticky lg:top-24 lg:block"><p className="text-[10px] font-black uppercase tracking-[.16em] text-[#888]">Your order</p>{platform ? <><div className="mt-4 flex items-center gap-3"><IconBadge label={platformMeta[platform].label}><PlatformIcon platform={platformMeta[platform].label} className="h-5 w-5" /></IconBadge><strong className="text-sm">{platformMeta[platform].label}</strong></div><div className="my-5 border-t border-white/10" /><p className="text-sm font-bold">{selectedService ? serviceExperience[selectedService.code].name : "Choose a service"}</p><p className="mt-2 text-xs text-[#999]">{quantity ? `${quantity.toLocaleString("en-IN")} units` : "Quantity not set"}</p><div className="mt-5 rounded-xl bg-orange-500/10 p-4"><span className="text-xs text-orange-200">Current total</span><strong className="mt-1 block text-2xl">{totalPrice ? formatCurrency(totalPrice, currency) : "—"}</strong></div><p className="mt-4 text-xs text-[#999]">Wallet: {walletLoading ? "Checking…" : formatCurrency(walletBalance ?? 0, currency)}</p></> : <p className="mt-4 text-sm leading-6 text-[#999]">Choose a platform to begin your order.</p>}</aside>
+        </div>
+        <div className="mt-5 flex flex-wrap gap-3 text-xs text-[#aaa]"><span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-emerald-300" /> Secure checkout</span><span className="inline-flex items-center gap-2"><Clock3 className="h-4 w-4 text-orange-300" /> Track from dashboard</span></div>
+      </div>
+    </main>
+  );
 
   return (
     <main className="dashboard-premium-page dashboard-order-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-36 pt-5 text-white sm:px-6 sm:pb-24 sm:pt-7 lg:px-8">
