@@ -13,6 +13,13 @@ jobs:
     name: Typecheck, build, and smoke test
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      # Smoke tests exercise auth-aware UI without needing a real Supabase project.
+      # Pointing these at the local test server keeps unauthenticated requests
+      # deterministic (404/no session) while preserving the real redirects.
+      NEXT_PUBLIC_SUPABASE_URL: http://127.0.0.1:3001
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: smoke-test-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: smoke-test-service-role-key
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4

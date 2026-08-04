@@ -293,7 +293,7 @@ export default function ServicesPageContent({
 
   return (
     <BlogShell>
-      <main className="relative scroll-pt-28 overflow-x-clip pb-16 sm:pb-20">
+      <main className="premium-services relative scroll-pt-28 overflow-x-clip pb-16 sm:pb-20">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-20 top-12 h-64 w-64 rounded-full bg-orange-500/10 blur-3xl" />
           <div className="absolute right-[-10%] top-36 h-72 w-72 rounded-full bg-amber-500/10 blur-3xl" />

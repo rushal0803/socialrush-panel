@@ -173,7 +173,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       ) : null}
-      <article className="relative px-5 pb-24 pt-10 sm:px-6 lg:px-8 lg:pt-12">
+      <article className="blog-article-page relative px-5 pb-24 pt-10 sm:px-6 lg:px-8 lg:pt-12">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-[-6%] top-0 h-64 w-64 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute bottom-10 right-[-8%] h-72 w-72 rounded-full bg-amber-200/35 blur-3xl" />

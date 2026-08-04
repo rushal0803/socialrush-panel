@@ -168,7 +168,7 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
 
-      <main className="px-5 pb-20 pt-8 sm:px-6 lg:px-8">
+      <main className="service-detail-page px-5 pb-20 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">
           <section className="rounded-[32px] border border-white/80 bg-white/78 p-6 shadow-[0_24px_54px_-34px_rgba(15,23,42,.42)] backdrop-blur-xl sm:p-10">
             <p className="inline-flex rounded-full border border-[#FFF8F1] bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">

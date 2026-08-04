@@ -96,7 +96,7 @@ export default function PricingPage() {
   return (
     <PublicShell tone="light3d">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]} />
-      <div className="relative isolate overflow-hidden bg-[radial-gradient(circle_at_12%_18%,rgba(255, 122, 0, .38),transparent_28%),radial-gradient(circle_at_88%_16%,rgba(255, 159, 0, .35),transparent_30%),linear-gradient(145deg,#FFF8F1_0%,#FFF8F1_48%,#FFF8F1_100%)]">
+      <div className="pricing-page relative isolate overflow-hidden bg-[radial-gradient(circle_at_12%_18%,rgba(255, 122, 0, .38),transparent_28%),radial-gradient(circle_at_88%_16%,rgba(255, 159, 0, .35),transparent_30%),linear-gradient(145deg,#FFF8F1_0%,#FFF8F1_48%,#FFF8F1_100%)]">
         <div className="pointer-events-none absolute -left-20 top-24 h-64 w-64 rounded-full bg-orange-300/25 blur-3xl" />
         <div className="pointer-events-none absolute -right-16 top-10 h-72 w-72 rounded-full bg-orange-300/30 blur-3xl" />
         <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255, 159, 0, .07)_1px,transparent_1px),linear-gradient(90deg,rgba(255, 159, 0, .07)_1px,transparent_1px)] bg-[size:42px_42px] [mask-image:linear-gradient(to_bottom,black,transparent_82%)]" />
