@@ -13,10 +13,10 @@ import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 const nav = [
   ["Services", "/services"],
+  ["Packages", "/packages"],
+  ["Pricing", "/pricing"],
+  ["Blog", "/blog"],
   ["How It Works", "/#how-it-works"],
-  ["Why SocialRUSH", "/#why-socialrush"],
-  ["Reviews", "/reviews"],
-  ["Tools", "/tools"],
   ["Support", "/support"],
 ] as const;
 
