@@ -230,6 +230,82 @@ p {
   backdrop-filter: blur(12px);
 }
 
+/* Customer dashboard primitives. These deliberately sit above legacy utility
+   styles so dashboard routes share one compact, quiet SaaS surface language. */
+.dashboard-shell main > .mx-auto {
+  width: 100%;
+}
+
+.dashboard-shell .dashboard-page {
+  width: 100%;
+  max-width: 1600px;
+  margin-inline: auto;
+}
+
+.dashboard-shell .dashboard-card {
+  border: 1px solid var(--sr-border);
+  background: rgba(16, 18, 25, .94);
+  box-shadow: var(--sr-shadow-card);
+}
+
+.dashboard-shell .dashboard-card:hover {
+  border-color: rgba(255, 118, 0, .26);
+}
+
+.dashboard-shell .dashboard-table thead {
+  background: rgba(7, 8, 13, .72);
+}
+
+.dashboard-shell .dashboard-table tbody tr {
+  transition: background-color 160ms ease;
+}
+
+.dashboard-shell .dashboard-table tbody tr:hover {
+  background: rgba(255, 118, 0, .045);
+}
+
+.dashboard-premium-page {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(48rem 26rem at 100% -10%, rgba(255, 118, 0, .07), transparent 65%),
+    linear-gradient(180deg, rgba(12, 14, 20, .5), rgba(7, 8, 13, .15));
+}
+
+.dashboard-premium-page .dashboard-glass,
+.dashboard-premium-page [class*="bg-[#111111]"] {
+  border-color: rgba(255, 255, 255, .09);
+  box-shadow: 0 18px 46px rgba(0, 0, 0, .22);
+}
+
+.dashboard-premium-page [class*="rounded-3xl"] {
+  border-radius: 1.35rem;
+}
+
+.dashboard-order-page section > div > [class*="text-orange-400"] {
+  color: #ff9a2e !important;
+}
+
+.dashboard-order-summary {
+  border: 1px solid rgba(255, 154, 46, .24);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, .34), inset 0 1px rgba(255, 255, 255, .05);
+}
+
+.dashboard-orders-page table th {
+  color: #ffb86b;
+}
+
+.dashboard-wallet-page [class*="bg-gradient-to-r"],
+.dashboard-account-page [class*="bg-gradient-to-r"] {
+  box-shadow: 0 14px 30px rgba(255, 118, 0, .18);
+}
+
+@media (max-width: 1023px) {
+  .dashboard-shell main {
+    padding-bottom: calc(7.5rem + env(safe-area-inset-bottom));
+  }
+}
+
 .dashboard-glass {
   border-radius: var(--sr-radius-card);
   border: 1px solid var(--sr-border);

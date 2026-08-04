@@ -40,6 +40,7 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
           email={context.user.email || ""}
           fullName={context.profile.full_name}
           role={context.profile.role}
+          balance={Number(context.profile.balance ?? 0)}
         />
         {children}
       </div>

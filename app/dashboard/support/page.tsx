@@ -212,7 +212,7 @@ export default function SupportPage() {
   const ticketSummary = useMemo(() => ({ open: tickets.filter((item) => ["open","waiting_for_support","waiting_for_customer"].includes(item.status)).length, waitingSupport: tickets.filter((item) => item.status === "waiting_for_support").length, waitingCustomer: tickets.filter((item) => item.status === "waiting_for_customer").length, resolved: tickets.filter((item) => item.status === "resolved").length, unread: tickets.filter((item) => item.last_reply_at && (!item.customer_last_read_at || new Date(item.last_reply_at) > new Date(item.customer_last_read_at))).length }), [tickets]);
 
   return (
-    <main className="relative min-h-[calc(100vh-5rem)] overflow-x-clip px-4 pb-28 pt-5 sm:px-6 lg:px-8">
+    <main className="dashboard-premium-page dashboard-support-page relative min-h-[calc(100vh-5rem)] overflow-x-clip px-4 pb-28 pt-5 sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0">
         <div className="absolute -left-16 top-10 h-72 w-72 rounded-full bg-orange-500/20 blur-3xl" />
         <div className="absolute right-[-5rem] top-16 h-80 w-80 rounded-full bg-amber-500/20 blur-3xl" />
