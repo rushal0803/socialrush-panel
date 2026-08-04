@@ -51,7 +51,7 @@ export default function FaqPageContent({ categories }: { categories: FaqCategory
   const [activeCategory, setActiveCategory] = useState(categories[0]?.key ?? "general");
 
   return (
-    <div className="relative overflow-hidden bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_30%,#FFF8F1_55%,#FFF8F1_80%,#FFF8F1_100%)] text-slate-800">
+    <div className="faq-page relative overflow-hidden bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_30%,#FFF8F1_55%,#FFF8F1_80%,#FFF8F1_100%)] text-slate-800">
       <div className="pointer-events-none absolute inset-0 overflow-hidden">
         <div className="absolute -left-28 top-10 h-96 w-96 rounded-full bg-amber-200/45 blur-3xl" />
         <div className="absolute right-0 top-20 h-[30rem] w-[30rem] rounded-full bg-orange-200/40 blur-3xl" />

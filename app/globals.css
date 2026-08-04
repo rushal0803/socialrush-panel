@@ -993,3 +993,108 @@ p {
     -webkit-tap-highlight-color: transparent;
   }
 }
+
+/* Route-level public redesign language. These are intentionally scoped to the
+   marketing experience, so dashboard and admin surfaces keep their controls. */
+.public-dark .premium-services,
+.public-dark .premium-packages,
+.public-dark .faq-page,
+.public-dark .contact-page,
+.public-dark .blog-page,
+.public-dark .legal-page {
+  background-image:
+    radial-gradient(48rem 25rem at 12% 0%, rgba(255, 118, 0, .11), transparent 62%),
+    radial-gradient(42rem 24rem at 94% 26%, rgba(255, 154, 46, .075), transparent 66%);
+}
+
+.public-dark .premium-services > section:first-of-type > div,
+.public-dark .premium-packages > section:first-of-type > div {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255, 139, 43, .38);
+  background:
+    linear-gradient(115deg, rgba(255, 118, 0, .11), transparent 38%),
+    linear-gradient(145deg, #151820, #0c0e14 58%, #16120d);
+}
+
+.public-dark .premium-services > section:first-of-type > div::after,
+.public-dark .premium-packages > section:first-of-type > div::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(rgba(255,255,255,.035) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.035) 1px, transparent 1px);
+  background-size: 38px 38px;
+  mask-image: linear-gradient(120deg, black, transparent 72%);
+}
+
+.public-dark .premium-services article,
+.public-dark .premium-packages article {
+  background: linear-gradient(145deg, rgba(23, 26, 34, .98), rgba(13, 15, 20, .98)) !important;
+}
+
+.public-dark .premium-services input,
+.public-dark .premium-packages input {
+  background-color: #0a0c11 !important;
+}
+
+.public-dark .faq-page > section:first-of-type > div {
+  border-color: rgba(255, 139, 43, .35) !important;
+  background: linear-gradient(135deg, #141821, #0c0e14 62%, #19120d) !important;
+}
+
+.public-dark .faq-page details,
+.public-dark .faq-page [role="button"] {
+  border-color: rgba(255, 255, 255, .1);
+}
+
+.public-dark .contact-page form {
+  border-color: rgba(255, 139, 43, .35) !important;
+  background: linear-gradient(145deg, #161920, #0d0f14) !important;
+  box-shadow: 0 28px 60px rgba(0,0,0,.32) !important;
+}
+
+.public-dark .contact-page form input,
+.public-dark .contact-page form select,
+.public-dark .contact-page form textarea {
+  border-color: rgba(255, 139, 43, .26) !important;
+  background: #090b0f !important;
+}
+
+.public-dark .blog-page article {
+  background: linear-gradient(155deg, #161920, #0e1015) !important;
+}
+
+.public-dark .legal-page article {
+  background: linear-gradient(145deg, #151820, #0d0f14) !important;
+}
+
+.public-dark .legal-page aside > div,
+.public-dark .legal-page details {
+  background-color: #11141b !important;
+}
+
+.public-dark .pricing-page > section:first-of-type {
+  border-bottom: 1px solid rgba(255, 139, 43, .22);
+  background: linear-gradient(145deg, rgba(255,118,0,.08), transparent 46%);
+}
+
+.public-dark .pricing-page article {
+  background: linear-gradient(150deg, #161920, #0e1015) !important;
+}
+
+.auth-shell::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  opacity: .4;
+  background-image: linear-gradient(rgba(255,118,0,.045) 1px, transparent 1px), linear-gradient(90deg, rgba(255,118,0,.045) 1px, transparent 1px);
+  background-size: 46px 46px;
+  mask-image: linear-gradient(to bottom, black, transparent 72%);
+}
+
+.auth-shell [class*="rounded-3xl"][class*="bg-[#111111]"] {
+  border-color: rgba(255, 139, 43, .32) !important;
+  background: linear-gradient(145deg, rgba(24,27,35,.97), rgba(12,14,20,.97)) !important;
+}

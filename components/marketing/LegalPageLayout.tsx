@@ -38,7 +38,7 @@ export default function LegalPageLayout({
   sections,
 }: LegalPageLayoutProps) {
   return (
-    <div className="relative overflow-x-clip bg-[radial-gradient(circle_at_18%_18%,rgba(255, 159, 0, .16),transparent_38%),radial-gradient(circle_at_84%_12%,rgba(255, 122, 0, .17),transparent_42%),radial-gradient(circle_at_52%_84%,rgba(255, 159, 0, .15),transparent_45%)] pb-20 pt-8 sm:pb-24 lg:pt-10">
+    <div className="legal-page relative overflow-x-clip bg-[radial-gradient(circle_at_18%_18%,rgba(255, 159, 0, .16),transparent_38%),radial-gradient(circle_at_84%_12%,rgba(255, 122, 0, .17),transparent_42%),radial-gradient(circle_at_52%_84%,rgba(255, 159, 0, .15),transparent_45%)] pb-20 pt-8 sm:pb-24 lg:pt-10">
       <div className="pointer-events-none absolute inset-0">
         <motion.div
           aria-hidden

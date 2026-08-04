@@ -146,7 +146,7 @@ export default function ContactPageContent() {
 
   return (
     <BlogShell>
-      <div className="relative overflow-x-clip bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] pb-24 text-white">
+      <div className="contact-page relative overflow-x-clip bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] pb-24 text-white">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -left-12 top-14 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-9%] top-40 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />

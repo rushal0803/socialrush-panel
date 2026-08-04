@@ -64,7 +64,7 @@ export default function BlogPageContent() {
 
   return (
     <BlogShell>
-      <div className="relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] text-white">
+      <div className="blog-page relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] text-white">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute -top-28 left-[-6%] h-72 w-72 rounded-full bg-orange-200/40 blur-3xl" />
           <div className="absolute right-[-8%] top-24 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />

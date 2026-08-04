@@ -24,7 +24,7 @@ export default function AuthShell({
   imageAlt = "SocialRUSH visual",
 }: AuthShellProps) {
   return (
-    <main className="relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_32%),linear-gradient(165deg,#050505_0%,#0B0B0F_55%,#050505_100%)] text-slate-100">
+    <main className="auth-shell relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_32%),linear-gradient(165deg,#050505_0%,#0B0B0F_55%,#050505_100%)] text-slate-100">
       {/* ambient blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
