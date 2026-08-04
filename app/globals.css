@@ -1098,3 +1098,12 @@ p {
   border-color: rgba(255, 139, 43, .32) !important;
   background: linear-gradient(145deg, rgba(24,27,35,.97), rgba(12,14,20,.97)) !important;
 }
+
+.homepage-showcase > section:not(:first-child) { position: relative; }
+.homepage-showcase > section:not(:first-child)::before { content: ""; position: absolute; top: 0; left: 8%; right: 8%; height: 1px; background: linear-gradient(90deg, transparent, rgba(255,139,43,.42), transparent); }
+.public-dark .service-detail-page > article, .public-dark .service-detail-page section { border-radius: 1.5rem; }
+.public-dark .service-detail-page > article { background: linear-gradient(145deg, #151820, #0b0d12) !important; border: 1px solid rgba(255,139,43,.28); }
+.public-dark .blog-article-page { background: radial-gradient(36rem 19rem at 50% 0%, rgba(255,118,0,.1), transparent 70%); }
+.public-dark .blog-article-page > div { border-color: rgba(255,139,43,.22); }
+.public-dark .trust-page section { transition: transform 180ms ease, border-color 180ms ease; }
+@media (hover:hover) { .public-dark .trust-page section:hover { transform: translateY(-4px); border-color: rgba(255,139,43,.5); } }
