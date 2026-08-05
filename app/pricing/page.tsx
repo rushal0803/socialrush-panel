@@ -17,10 +17,10 @@ export const metadata = createPageMetadata({
 });
 
 const heroTrust = [
-  ["wallet", "Secure wallet checkout"],
-  ["trend", "Live pricing"],
+  ["check", "Transparent rates"],
+  ["eye", "Review before confirming"],
+  ["lock", "Public link only"],
   ["dashboard", "Order tracking"],
-  ["message", "WhatsApp support"],
 ] as const satisfies ReadonlyArray<readonly [MarketingIconName, string]>;
 
 const walletSteps = [
@@ -57,7 +57,7 @@ const walletSteps = [
 
 const trustPoints = [
   ["trend", "Transparent pricing", "See the current rate and calculated total before confirmation."],
-  ["check", "No hidden charges", "The displayed campaign total is the amount deducted from your wallet."],
+  ["eye", "Review before confirming", "Your current campaign total is visible before you submit an order."],
   ["refresh", "Refill support", "Eligible services clearly show their available refill coverage."],
   ["lock", "Secure Razorpay top-up", "Verified payments safely credit your protected account wallet."],
   ["message", "WhatsApp support", "Get human help when you need guidance with pricing or ordering."],
@@ -105,16 +105,16 @@ export default function PricingPage() {
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/75 px-4 py-2 text-[11px] font-extrabold uppercase tracking-[.18em] text-[#FFC400] shadow-[0_12px_30px_-18px_rgba(255, 196, 0, .55)] backdrop-blur-xl">
               <MarketingIcon name="sparkles" className="h-4 w-4" />
-              Transparent campaign pricing
+              Transparent pricing
             </div>
             <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.05] tracking-[-.045em] text-[#0B0B0F] sm:text-5xl lg:text-[62px]">
-              Simple Pricing. Complete Clarity.{" "}
+              Know your price{" "}
               <span className="bg-gradient-to-r from-[#FF6200] to-[#FF9A00] bg-clip-text text-transparent">
-                No Surprises.
+                before you order.
               </span>
             </h1>
             <p className="mt-6 max-w-2xl text-sm leading-7 text-[#111827] sm:text-base sm:leading-8">
-              Compare starting rates, choose your quantity, and review the exact total before confirming your order.
+              Choose your platform and service, enter your quantity, and see your estimated total before continuing to checkout.
             </p>
 
             <div className="mt-7 grid gap-2 sm:grid-cols-2">
@@ -129,6 +129,10 @@ export default function PricingPage() {
                   {label}
                 </div>
               ))}
+            </div>
+            <div className="mt-7 flex flex-wrap gap-3">
+              <Link href="#price-calculator" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-extrabold text-white shadow-[0_16px_30px_-16px_rgba(255,122,0,.7)] transition hover:-translate-y-0.5">Calculate Your Price</Link>
+              <Link href="/services" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FF9F00]/35 bg-white/70 px-5 text-sm font-extrabold text-[#0B0B0F] transition hover:border-[#FF9F00]">Explore Services</Link>
             </div>
           </div>
 
@@ -189,14 +193,13 @@ export default function PricingPage() {
         <div className="relative mx-auto max-w-7xl">
           <div className="max-w-3xl">
             <p className="text-xs font-extrabold uppercase tracking-[.2em] text-[#FFC400]">
-              Starting-price overview
+              Live pricing, your quantity
             </p>
             <h2 className="mt-4 text-3xl font-black tracking-[-.035em] text-[#0B0B0F] sm:text-4xl">
-              Compare live services by platform.
+              Calculate a live campaign estimate.
             </h2>
             <p className="mt-4 text-sm leading-7 text-[#111827]">
-              Every amount below is loaded from the same central pricing source
-              used by the SocialRUSH ordering experience.
+              The calculator uses the same central service catalog and price calculation as the SocialRUSH ordering experience.
             </p>
           </div>
           <PricingGrid />
