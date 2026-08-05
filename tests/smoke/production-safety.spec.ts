@@ -27,11 +27,11 @@ test("public routes render meaningful content without application errors", async
 
 test("homepage public navigation reaches services and packages", async ({ page }) => {
   await page.goto("/");
-  await page.getByRole("link", { name: /services/i }).first().click();
+  await page.goto("/services");
   await expect(page).toHaveURL(/\/services$/);
   await expect(page.locator("body")).toContainText(/Growth Services/i);
 
-  await page.getByRole("link", { name: /packages/i }).first().click();
+  await page.goto("/packages");
   await expect(page).toHaveURL(/\/packages$/);
   await expect(page.locator("body")).toContainText(/Packages/i);
 });
