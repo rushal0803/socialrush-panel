@@ -98,7 +98,8 @@ export async function POST(request: NextRequest) {
 
   const checkout = data as { id?: string; duplicate?: boolean } | null;
   if (checkout?.id && !checkout.duplicate) {
-    await recordTrustedEvent({eventName:"order_created",customerId:user.id,pagePath:"/dashboard/new-order",metadata:{order_reference:checkout.id}});
+    await recordTrustedEvent({eventName:"wallet_order_completed",customerId:user.id,pagePath:"/dashboard/new-order",eventId:`wallet_order:${checkout.id}`,metadata:{order_id:checkout.id}});
+    await recordTrustedEvent({eventName:"order_created",customerId:user.id,pagePath:"/dashboard/new-order",eventId:`order:${checkout.id}`,metadata:{order_id:checkout.id,method:"wallet"}});
     await saveInitialCount(supabase, {
       orderId: checkout.id,
       link: body.link,

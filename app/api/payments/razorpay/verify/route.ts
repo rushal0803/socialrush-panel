@@ -25,8 +25,8 @@ export async function POST(request: NextRequest) {
     }
     const { data: balance, error } = await supabase.rpc("credit_verified_payment", { p_provider_order_id: body.razorpay_order_id, p_provider_payment_id: body.razorpay_payment_id });
     if (error) return NextResponse.json({ error: "Payment confirmation is delayed. Do not pay again; check Wallet shortly or contact support." }, { status: 409 });
-    await recordTrustedEvent({eventName:"payment_successful",customerId:user.id,pagePath:"/dashboard/add-funds",metadata:{method:"razorpay"}});
-    await recordTrustedEvent({eventName:"wallet_credited",customerId:user.id,pagePath:"/dashboard/wallet",metadata:{method:"razorpay"}});
+    await recordTrustedEvent({eventName:"payment_completed",customerId:user.id,pagePath:"/dashboard/add-funds",eventId:`payment:${body.razorpay_payment_id}`,metadata:{method:"razorpay"}});
+    await recordTrustedEvent({eventName:"wallet_topup_completed",customerId:user.id,pagePath:"/dashboard/wallet",eventId:`wallet_credit:${body.razorpay_payment_id}`,metadata:{method:"razorpay"}});
     return NextResponse.json({ data: { balance, paymentId: body.razorpay_payment_id } });
   } catch {
     return NextResponse.json({ error: "We received your payment response, but confirmation is still processing. Do not pay again; check Wallet shortly." }, { status: 503 });

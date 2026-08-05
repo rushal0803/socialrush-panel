@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyHmac } from "@/lib/payments/razorpay";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 type WebhookPayload = {
   event?: string;
@@ -29,7 +30,7 @@ export async function POST(request: NextRequest) {
     if (payment?.order_id && payment.id) {
       const { data: checkoutPayment } = await admin
         .from("checkout_intent_payments")
-        .select("id, amount_paise, currency")
+        .select("id, amount_paise, currency, user_id")
         .eq("provider_order_id", payment.order_id)
         .maybeSingle();
       if (checkoutPayment) {
@@ -45,6 +46,7 @@ export async function POST(request: NextRequest) {
           p_provider_payment_id: payment.id,
         });
         if (error) return NextResponse.json({ error: "Checkout settlement failed" }, { status: 500 });
+        await recordTrustedEvent({ eventName: "payment_completed", customerId: checkoutPayment.user_id, pagePath: "/dashboard/new-order", eventId: `payment:${payment.id}`, metadata: { method: "razorpay", amount_minor: Number(checkoutPayment.amount_paise), currency: "INR", checkout_intent_id: checkoutPayment.id } });
         return NextResponse.json({ received: true });
       }
       const { error } = await admin.rpc("credit_wallet_payment_system", {
@@ -59,7 +61,7 @@ export async function POST(request: NextRequest) {
     if (payment?.order_id) {
       const { data: checkoutPayment } = await admin
         .from("checkout_intent_payments")
-        .select("id")
+        .select("id, user_id")
         .eq("provider_order_id", payment.order_id)
         .maybeSingle();
       if (checkoutPayment) {
@@ -69,6 +71,7 @@ export async function POST(request: NextRequest) {
           .eq("id", checkoutPayment.id)
           .eq("status", "created");
         if (error) return NextResponse.json({ error: "Checkout payment status update failed" }, { status: 500 });
+        if (checkoutPayment.user_id) await recordTrustedEvent({ eventName: "payment_failed", customerId: checkoutPayment.user_id, pagePath: "/dashboard/new-order", eventId: `payment_failed:${payment.id || payment.order_id}`, metadata: { method: "razorpay", reason: "gateway_failed" } });
         return NextResponse.json({ received: true });
       }
       const { error } = await admin

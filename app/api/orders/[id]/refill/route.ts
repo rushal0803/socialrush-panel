@@ -1,6 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
   const supabase = await createClient();
@@ -19,5 +20,6 @@ export async function POST(request: NextRequest, { params }: { params: { id: str
     const duplicate = /active refill|already/i.test(error.message);
     return NextResponse.json({ error: duplicate ? "A refill request is already being reviewed for this order." : "This refill request could not be submitted. Please contact support if the issue continues." }, { status: duplicate ? 409 : 400 });
   }
+  await recordTrustedEvent({ eventName: "refill_requested", customerId: user.id, pagePath: "/dashboard/orders", eventId: `refill:${data}`, metadata: { order_id: params.id } });
   return NextResponse.json({ data }, { status: 201 });
 }

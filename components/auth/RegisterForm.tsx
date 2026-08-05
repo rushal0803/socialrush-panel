@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useState, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import { track } from "@/lib/analytics/events";
 import {
   DEFAULT_CUSTOMER_DESTINATION,
   getSafeCustomerDestination,
@@ -25,6 +26,7 @@ export default function RegisterForm() {
     setError("");
     setAttempted(true);
     setLoading(true);
+    track("sign_up_started");
 
     const formData = new FormData(event.currentTarget);
     const email = String(formData.get("email") || "").trim();
@@ -58,6 +60,8 @@ export default function RegisterForm() {
       }
 
       if (data.session) {
+        // Account creation is confirmed by Supabase; no credentials are tracked.
+        void fetch("/api/analytics/auth-completed", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "sign_up_completed" }) });
         router.replace(customerDestination);
       } else {
         router.replace(`/verify-email?email=${encodeURIComponent(email)}`);

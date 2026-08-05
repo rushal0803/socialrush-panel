@@ -71,7 +71,9 @@ export async function POST(request: NextRequest) {
       p_provider_payment_id: providerPayment.id,
     });
     if (error) return NextResponse.json({ error: "Checkout settlement could not be completed." }, { status: 409 });
-    await recordTrustedEvent({eventName:"payment_successful",customerId:user.id,pagePath:"/dashboard/new-order",metadata:{method:"razorpay"}});
+    await recordTrustedEvent({ eventName: "payment_completed", customerId: user.id, pagePath: "/dashboard/new-order", eventId: `payment:${providerPayment.id}`, metadata: { method: "razorpay", amount_minor: Number(checkoutPayment.amount_paise), currency: checkoutPayment.currency, checkout_intent_id: checkoutPayment.id } });
+    const completed = data as { orderId?: string } | null;
+    if (completed?.orderId) await recordTrustedEvent({ eventName: "order_created", customerId: user.id, pagePath: "/dashboard/new-order", eventId: `order:${completed.orderId}`, metadata: { order_id: completed.orderId, method: "razorpay" } });
 
     revalidatePath("/dashboard");
     revalidatePath("/dashboard/orders");
