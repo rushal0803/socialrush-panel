@@ -188,10 +188,7 @@ export default function NewOrderPage() {
       funnelSignals.current.add(key);
       track(event, metadata);
     };
-    if (selectedService) emitOnce(`details:${selectedService.code}`, "campaign_details_started", { step: "details" });
-    if (selectedService && targetLink.trim() && !linkError) emitOnce(`link:${selectedService.code}`, "valid_link_entered", { step: "details", link_type: "public_destination", validation_passed: true });
-    if (selectedService && quantityInput && !quantityError) emitOnce(`quantity:${selectedService.code}`, "quantity_entered", { step: "details" });
-    if (formIsValid) emitOnce(`summary:${selectedService?.code}`, "order_summary_viewed", { step: "summary" });
+    if (selectedService) emitOnce(`view:${selectedService.code}`, "service_viewed", { service_code: selectedService.code, platform: selectedService.platform });
   }, [formIsValid, linkError, quantityError, quantityInput, selectedService, targetLink]);
 
   const scrollTo = (ref: React.RefObject<HTMLElement>) => {
@@ -207,7 +204,6 @@ export default function NewOrderPage() {
   };
 
   const choosePlatform = (nextPlatform: PlatformId) => {
-    track("platform_selected", { step: "platform" });
     setPlatform(nextPlatform);
     setSelectedService(null);
     resetOrderDetails();
@@ -216,7 +212,8 @@ export default function NewOrderPage() {
   const chooseService = (service: SmmService) => {
     const health = healthByService[service.code];
     if (health && (!health.acceptsNewOrders || health.status === "paused")) return;
-    track("service_selected", { step: "service" });
+    track("service_selected", { service_code: service.code, platform: service.platform });
+    track("order_started", { service_code: service.code, platform: service.platform });
     setSelectedService(service);
     resetOrderDetails();
   };
@@ -282,7 +279,6 @@ export default function NewOrderPage() {
     }
 
     inFlight.current = true;
-    track("order_confirmation_started", { step: "confirmation" });
     setSubmitting(true);
     if (!requestId.current) requestId.current = crypto.randomUUID();
 
@@ -303,6 +299,7 @@ export default function NewOrderPage() {
       if (!intentResponse.ok || !intentResult.data?.id) {
         throw new Error(intentResult.error || "Unable to prepare your checkout right now.");
       }
+      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentResult.data.id });
 
       const response = await fetch("/api/orders", {
         method: "POST",
@@ -325,7 +322,6 @@ export default function NewOrderPage() {
       window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
       window.setTimeout(() => router.push("/dashboard/orders"), 900);
     } catch (cause) {
-      track("order_creation_failed", { step: "confirmation", error_category: "order_creation" });
       setError(cause instanceof Error ? cause.message : "Unable to place your order right now.");
       inFlight.current = false;
       setSubmitting(false);
@@ -355,6 +351,7 @@ export default function NewOrderPage() {
       });
       const intent = (await intentResponse.json()) as { data?: { id: string }; error?: string };
       if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
+      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intent.data.id });
 
       const recoveryParams = new URLSearchParams(returnParams);
       recoveryParams.set("checkoutIntent", intent.data.id);
@@ -393,6 +390,8 @@ export default function NewOrderPage() {
       if (!paymentResponse.ok || !payment.data?.id || !payment.data.keyId || !payment.data.orderId || !payment.data.amount || !payment.data.currency) {
         throw new Error(payment.error || "Unable to initialize payment.");
       }
+
+      track("payment_started", { checkout_intent_id: intent.data.id, currency: payment.data.currency, amount_minor: Math.round(payment.data.amount) });
 
       setCheckoutStage("Opening payment");
       const result = await openCheckoutRazorpay({

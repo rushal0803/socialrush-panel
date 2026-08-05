@@ -30,6 +30,6 @@ export async function POST(request: NextRequest) {
   if (body?.orderId && !isUuid(body.orderId)) return NextResponse.json({ error: "Invalid order reference." }, { status: 422 });
   const { data, error } = await supabase.rpc("create_support_ticket_with_reference", { p_category: body?.category, p_subject: subject, p_message: message, p_order_id: body?.orderId || null, p_payment_reference: paymentReference });
   if (error) return NextResponse.json({ error: supportError(error.message) }, { status: error.message.includes("already have") ? 409 : 400 });
-  await recordTrustedEvent({eventName:"support_ticket_created",customerId:user.id,pagePath:"/dashboard/support",metadata:{category:String(body.category||"other")}});
+  await recordTrustedEvent({eventName:"support_ticket_created",customerId:user.id,pagePath:"/dashboard/support",eventId:`support_ticket:${data}`,metadata:{category:String(body.category||"other"),linked_order:Boolean(body?.orderId)} });
   return NextResponse.json({ data: { id: data } }, { status: 201 });
 }

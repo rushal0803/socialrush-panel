@@ -9,11 +9,7 @@ export default function PageAnalytics() {
 
   useEffect(() => {
     let event: ClientAnalyticsEvent | null = null;
-    if (path === "/") event = "homepage_view";
-    else if (path === "/services") event = "services_page_view";
-    else if (path === "/packages") event = "packages_page_view";
-    else if (path === "/dashboard/new-order") event = "new_order_started";
-    else if (/^\/(buy-|instagram-|youtube-|facebook-|linkedin-|telegram-|tiktok-|twitter-)|^\/services\//.test(path)) event = "service_landing_page_view";
+    if (path.startsWith("/blog/")) event = "blog_article_viewed";
     if (event) track(event);
   }, [path]);
 

@@ -60,6 +60,7 @@ export default function LoginForm() {
       if (!keepSignedIn) {
         // Supabase browser sessions persist by default. We still expose this checkbox for expected UX.
       }
+      void fetch("/api/analytics/auth-completed", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "login_completed" }) });
 
       const { data: profile } = await supabase
         .from("profiles")
