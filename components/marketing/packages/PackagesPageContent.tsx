@@ -178,6 +178,10 @@ function getStartingPrice(platform: Platform, service: Service) {
   return prices.length ? Math.min(...prices) : null;
 }
 
+function getRatePerThousand(pkg: BigPackage) {
+  return pkg.quantity > 0 ? pkg.basePriceINR / (pkg.quantity / 1000) : 0;
+}
+
 function serviceFromParam(value: string | null, platform: Platform): Service | null {
   const normalized = normalizeParam(value).split("-").pop() || "";
   const service = serviceParamMap[normalized] ?? serviceParamMap[normalizeParam(value)];
@@ -750,16 +754,16 @@ export default function PackagesPageContent({
           <div className="mx-auto w-full max-w-7xl rounded-[28px] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_24px_60px_-34px_rgba(255,122,0,.7)] sm:rounded-[34px] sm:p-8">
             <motion.div initial={{ opacity: 0, y: 12 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.45 }}>
               <p className="inline-flex rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-bold uppercase tracking-[0.13em] text-orange-300 sm:px-4 sm:py-2 sm:text-xs">
-                Find Your Best Growth Plan
+                SocialRUSH Packages
               </p>
               <h1 className="mt-4 text-3xl font-black leading-tight text-white sm:mt-5 sm:text-5xl">
-                Choose the Right Package for Your Goal
+                Choose the package that fits your goal.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
-                Select your platform, compare available services, and review pricing, delivery and support details before checkout.
+                Select your platform and service, compare package options, then review everything before you continue.
               </p>
               <p className="mt-3 max-w-3xl text-xs font-semibold leading-6 text-[#9CA3AF]">
-                Prices are converted from INR and may vary slightly based on exchange rates and service availability.
+                Transparent package pricing, public-link-only ordering and clear delivery details—before you commit.
               </p>
               {relatedGuides[0] ? (
                 <Link
@@ -775,6 +779,14 @@ export default function PackagesPageContent({
                     {chip}
                   </span>
                 ))}
+              </div>
+              <div className="mt-5 flex flex-col gap-3 sm:flex-row">
+                <button type="button" onClick={() => platformStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" })} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_14px_28px_-14px_rgba(255,122,0,.85)] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300">
+                  Find Your Package
+                </button>
+                <Link href="/services" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/[.04] px-5 py-3 text-sm font-bold text-white transition hover:border-orange-400/50 hover:bg-orange-500/10">
+                  Explore Services
+                </Link>
               </div>
             </motion.div>
           </div>
@@ -800,7 +812,7 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section ref={platformStepRef} className="relative scroll-mt-28 px-4 py-5 sm:scroll-mt-32 sm:px-6 lg:px-8">
+        <section ref={platformStepRef} className={`relative scroll-mt-28 px-4 py-5 sm:scroll-mt-32 sm:px-6 lg:px-8 ${hasPlatformSelection ? "max-lg:hidden" : ""}`}>
           <div className="mx-auto w-full max-w-7xl">
             <div className="mb-4 flex items-end justify-between gap-3">
               <div>
@@ -846,7 +858,7 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section ref={packageStepRef} className="relative scroll-mt-28 px-4 py-4 sm:scroll-mt-32 sm:px-6 lg:px-8">
+        <section ref={packageStepRef} className={`relative scroll-mt-28 px-4 py-4 sm:scroll-mt-32 sm:px-6 lg:px-8 ${hasServiceSelection ? "max-lg:hidden" : ""}`}>
           {!hasPlatformSelection ? (
             <CompactStepCard number="2" title="Choose a service" detail="Select a platform to continue" />
           ) : (
@@ -861,6 +873,17 @@ export default function PackagesPageContent({
                     Pick a service type to compare packages for {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform}.
                   </p>
                 </div>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setHasPlatformSelection(false);
+                    setHasServiceSelection(false);
+                    if (selectedPlatform) updatePackageUrl(selectedPlatform, undefined, undefined);
+                  }}
+                  className="inline-flex min-h-10 items-center justify-center self-start rounded-xl border border-white/15 px-3 text-xs font-bold text-[#D1D5DB] transition hover:border-orange-400/50 hover:text-white lg:hidden"
+                >
+                  Back to platforms
+                </button>
               </div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
                 {services.map((service) => {
@@ -918,22 +941,27 @@ export default function PackagesPageContent({
           </section>
         ) : null}
 
-        {!selectedPackage && hasPlatformSelection && hasServiceSelection ? (
-        <section className="relative scroll-mt-28 px-4 py-6 sm:scroll-mt-32 sm:px-6 lg:px-8 lg:py-8">
+        {hasPlatformSelection && hasServiceSelection ? (
+        <section className={`relative scroll-mt-28 px-4 py-6 sm:scroll-mt-32 sm:px-6 lg:px-8 lg:py-8 ${selectedPackage ? "max-lg:hidden" : ""}`}>
           <div className="mx-auto w-full max-w-7xl">
             {selectedPlatform ? (
                     <section
                       key={`${selectedPlatform}-${activeService}`}
                       aria-labelledby={`${platformCode[selectedPlatform]}-${activeService}-packages`}
                     >
-                      <div className="mb-5">
-                        <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Available packages</p>
-                        <h2 id={`${platformCode[selectedPlatform]}-${activeService}-packages`} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                          {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService]} packages
-                        </h2>
-                        <p className="mt-2 text-sm text-[#D1D5DB]">
-                          Choose one package to continue to the dedicated checkout page.
-                        </p>
+                      <div className="mb-5 flex items-start justify-between gap-3">
+                        <div>
+                          <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3 · Compare packages</p>
+                          <h2 id={`${platformCode[selectedPlatform]}-${activeService}-packages`} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
+                            {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService]} packages
+                          </h2>
+                          <p className="mt-2 text-sm text-[#D1D5DB]">
+                            Compare total price, quantity, effective rate and delivery before selecting.
+                          </p>
+                        </div>
+                        <button type="button" onClick={() => { setHasServiceSelection(false); setSelectedPackageId(""); if (selectedPlatform) updatePackageUrl(selectedPlatform); }} className="inline-flex min-h-10 shrink-0 items-center justify-center rounded-xl border border-white/15 px-3 text-xs font-bold text-[#D1D5DB] transition hover:border-orange-400/50 hover:text-white lg:hidden">
+                          Back
+                        </button>
                       </div>
 
                       <div className="grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4">
@@ -961,7 +989,7 @@ export default function PackagesPageContent({
                             <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#9CA3AF]">
                               {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
                             </p>
-                            <p className="mt-4 line-clamp-3 text-sm leading-6 text-[#D1D5DB]">{pkg.description}</p>
+                            <p className="mt-4 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{pkg.description}</p>
                             <span className="mt-3 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold text-emerald-200">
                               <ShieldCheck className="h-3.5 w-3.5" />
                               Refill support if eligible
@@ -981,8 +1009,8 @@ export default function PackagesPageContent({
                                 <dd className="mt-1 font-bold text-white">{pkg.deliveryTime}</dd>
                               </div>
                               <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
-                                <dt className="text-[#9CA3AF]">Best for</dt>
-                                <dd className="mt-1 font-bold leading-5 text-white">{pkg.bestFor}</dd>
+                                <dt className="text-[#9CA3AF]">Rate / 1K</dt>
+                                <dd className="mt-1 font-bold leading-5 text-white">{formatCurrency(getRatePerThousand(pkg), currency)}</dd>
                               </div>
                             </dl>
 
@@ -993,15 +1021,6 @@ export default function PackagesPageContent({
                             >
                               {selectedPackageId === pkg.packageId ? "Selected ✓" : "Select Package"}
                             </button>
-                            {selectedPackageId === pkg.packageId ? (
-                              <button
-                                type="button"
-                                onClick={() => selectPackage(pkg)}
-                                className="mt-3 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-orange-400/35 bg-orange-500/10 px-5 py-3 text-sm font-black text-orange-100 transition hover:border-orange-400 hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
-                              >
-                                Continue to Review
-                              </button>
-                            ) : null}
                           </article>
                         ))}
                       </div>
@@ -1418,6 +1437,7 @@ function PackageReviewSection({
                 <SummaryMetric label="Quantity" value={selectedPackage.quantityLabel} />
                 <SummaryMetric label="Delivery" value={selectedPackage.deliveryTime} />
                 <SummaryMetric label="Price" value={formatCurrency(selectedPackage.basePriceINR, currency)} highlight />
+                <SummaryMetric label="Effective rate" value={`${formatCurrency(getRatePerThousand(selectedPackage), currency)} / 1K`} />
                 <SummaryMetric label="Refill/support" value="Available if eligible" />
                 <SummaryMetric label="Best for" value={selectedPackage.bestFor} />
                 <SummaryMetric label="Final total" value={formatCurrency(selectedPackage.basePriceINR, currency)} highlight />
@@ -1506,6 +1526,7 @@ function PackageReviewSection({
               <SummaryRow label="Platform" value={platformLabel} />
               <SummaryRow label="Service" value={serviceLabels[selectedPackage.service]} />
               <SummaryRow label="Quantity" value={selectedPackage.quantityLabel} />
+              <SummaryRow label="Effective rate" value={`${formatCurrency(getRatePerThousand(selectedPackage), currency)} / 1K`} />
               <SummaryRow label="Public link" value={targetLink.trim() || "Not entered"} />
               <SummaryRow label="Delivery" value={selectedPackage.deliveryTime} />
               <SummaryRow label="Refill" value="Available if eligible" />
