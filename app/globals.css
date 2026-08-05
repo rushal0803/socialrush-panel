@@ -1209,3 +1209,61 @@ p {
 @keyframes sr-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-11px)}}@keyframes sr-pulse{70%{box-shadow:0 0 0 7px rgba(56,217,154,0)}}@keyframes sr-ticker{to{transform:translateX(-50%)}}
 @media(max-width:640px){.hero-visual{min-height:455px;padding:1rem 0 0}.wallet-card{right:-.3rem}.operational-card{right:-.3rem;bottom:3rem}.track-card{left:-.3rem}.float-card{transform:scale(.88);transform-origin:center}.final-cta{align-items:flex-start;flex-direction:column;padding:1.5rem}.status-bar{align-items:flex-start;flex-direction:column;gap:.65rem}.premium-homepage .ticker-item{margin-right:1.25rem}.dashboard-preview .dash-top{align-items:flex-start;flex-direction:column}.upper-trust-strip{grid-template-columns:1fr 1fr;gap:.25rem;padding:.45rem}.upper-trust-strip span{padding:.45rem .3rem;font-size:10px;white-space:normal}.premium-homepage > section:not(:first-child):not([aria-label]){padding-top:2.75rem;padding-bottom:2.75rem}}
 @media(prefers-reduced-motion:reduce){.ticker-content,.float-card,.status-dot{animation:none!important}}
+
+/* Responsive guardrails shared by public and customer-facing surfaces. */
+html { overflow-x: clip; }
+main, section, article, aside, form, header, footer { min-width: 0; }
+button, a, input, select, textarea { max-width: 100%; }
+input, select, textarea { font-size: max(16px, 1em); }
+.sr-primary, .sr-secondary { min-height: 44px; }
+.ticker-track { min-width: 0; flex: 1 1 0%; }
+
+@media (max-width: 767px) {
+  .premium-homepage > section:first-child { padding-top: 1.5rem; }
+  .premium-homepage h1 { font-size: clamp(2.25rem, 11vw, 3.25rem) !important; line-height: .98; }
+  .premium-homepage h2 { text-wrap: pretty; }
+  .premium-homepage .sr-primary,
+  .premium-homepage .sr-secondary { flex: 1 1 10rem; }
+
+  /* Decorative hero cards become compact, readable status chips below the
+     configurator instead of covering price, service details or the CTA. */
+  .hero-visual { display: flex; min-height: 0; flex-wrap: wrap; gap: .6rem; padding: .5rem 0 0; }
+  .hero-visual .order-window { order: 1; margin-top: 0; width: 100%; }
+  .hero-visual .float-card {
+    position: relative; inset: auto; order: 2; flex: 1 1 calc(50% - .3rem);
+    min-width: 0; margin: 0; padding: .7rem .75rem; transform: none;
+    animation: none;
+  }
+  .hero-visual .operational-card { order: 3; }
+  .hero-visual .float-card b { font-size: .82rem; }
+  .hero-visual .float-card p,
+  .hero-visual .float-card span,
+  .hero-visual .float-card small { font-size: 9px; }
+  .hero-visual .wallet-card b { font-size: 1rem; }
+  .hero-visual .track-card .status-dot,
+  .hero-visual .operational-card i { margin-right: .35rem; }
+  .hero-visual .order-window > div:last-child { padding: 1rem; }
+
+  .upper-trust-strip { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .upper-trust-strip span { white-space: normal; line-height: 1.25; }
+  .ticker-item { font-size: 11px; }
+  .platform-rail { margin-inline: -.25rem; padding-inline: .25rem; }
+  .final-cta .sr-primary, .final-cta .sr-secondary { width: 100%; }
+
+  .dashboard-shell main { padding-bottom: calc(9rem + env(safe-area-inset-bottom)); }
+  .dashboard-premium-page { padding-bottom: calc(10rem + env(safe-area-inset-bottom)) !important; }
+  .dashboard-premium-page [class*="fixed inset-x-3"] { bottom: calc(1rem + env(safe-area-inset-bottom)) !important; }
+}
+
+@media (max-width: 359px) {
+  .premium-homepage .hero-visual .float-card { flex-basis: 100%; }
+  .premium-homepage .order-window h2 { font-size: 1.25rem; }
+  .premium-homepage .order-window .grid-cols-2 { grid-template-columns: 1fr; }
+  .upper-trust-strip { grid-template-columns: 1fr; }
+}
+
+@media (min-width: 768px) and (max-width: 1023px) {
+  .premium-homepage .hero-visual { max-width: 590px; }
+  .premium-homepage > section:first-child > div > div { gap: 2.5rem; }
+  .dashboard-shell main { padding-bottom: calc(8.5rem + env(safe-area-inset-bottom)); }
+}
