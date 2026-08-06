@@ -47,7 +47,13 @@ function cleanQuantity(value: string) {
 }
 
 function validQuickQuantities(service: SmmService) {
-  return [1000, 5000, 10000].filter((value) => value >= service.minQuantity && value <= service.maxQuantity);
+  const min = service.minQuantity;
+  const max = service.maxQuantity;
+  // Derive useful choices from the configured limits instead of assuming every
+  // service supports the same 1K/5K/10K quantities.
+  const middle = Math.round(((min + max) / 2) / min) * min;
+  const larger = Math.min(max, Math.max(min * 3, middle));
+  return [...new Set([min, middle, larger])].filter((value) => value >= min && value <= max);
 }
 
 function normalizeQuery(value: string | null) {
@@ -130,6 +136,7 @@ export default function NewOrderPage() {
   const inFlight = useRef(false);
   const requestId = useRef("");
   const funnelSignals = useRef(new Set<string>());
+  const advanceTimer = useRef<number | null>(null);
   const platformRef = useRef<HTMLElement>(null);
   const serviceRef = useRef<HTMLElement>(null);
   const detailsRef = useRef<HTMLElement>(null);
@@ -163,6 +170,10 @@ export default function NewOrderPage() {
     }
   }, [queryString, searchParams]);
 
+  useEffect(() => () => {
+    if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
+  }, []);
+
   const services = useMemo(
     () => (platform ? customerOrderServices.filter((service) => service.platform === platform) : []),
     [platform],
@@ -192,7 +203,8 @@ export default function NewOrderPage() {
   }, [formIsValid, linkError, quantityError, quantityInput, selectedService, targetLink]);
 
   const scrollTo = (ref: React.RefObject<HTMLElement>) => {
-    window.setTimeout(() => ref.current?.scrollIntoView({ behavior: "smooth", block: "start" }), 80);
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    window.setTimeout(() => ref.current?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" }), 80);
   };
 
   const resetOrderDetails = () => {
@@ -204,18 +216,39 @@ export default function NewOrderPage() {
   };
 
   const choosePlatform = (nextPlatform: PlatformId) => {
+    if (advanceTimer.current || platform === nextPlatform && checkoutStep === 2) return;
     setPlatform(nextPlatform);
     setSelectedService(null);
     resetOrderDetails();
+    setCheckoutStep(1);
+    const params = new URLSearchParams();
+    params.set("platform", nextPlatform);
+    window.history.replaceState(null, "", `/dashboard/new-order?${params.toString()}`);
+    advanceTimer.current = window.setTimeout(() => {
+      setCheckoutStep(2);
+      scrollTo(serviceRef);
+      advanceTimer.current = null;
+    }, 380);
   };
 
   const chooseService = (service: SmmService) => {
     const health = healthByService[service.code];
-    if (health && (!health.acceptsNewOrders || health.status === "paused")) return;
+    if (advanceTimer.current || health && (!health.acceptsNewOrders || health.status === "paused")) return;
+    if (selectedService?.code === service.code) return;
     track("service_selected", { service_code: service.code, platform: service.platform });
     track("order_started", { service_code: service.code, platform: service.platform });
     setSelectedService(service);
     resetOrderDetails();
+    setCheckoutStep(2);
+    const params = new URLSearchParams();
+    params.set("platform", service.platform);
+    params.set("service", service.code);
+    window.history.replaceState(null, "", `/dashboard/new-order?${params.toString()}`);
+    advanceTimer.current = window.setTimeout(() => {
+      setCheckoutStep(3);
+      scrollTo(detailsRef);
+      advanceTimer.current = null;
+    }, 380);
   };
 
   const loadWalletBalance = useCallback(async () => {
@@ -465,7 +498,8 @@ export default function NewOrderPage() {
     if (step === 4 && !formIsValid) return;
     setError("");
     setCheckoutStep(step);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    const target = step === 1 ? platformRef : step === 2 ? serviceRef : step === 3 ? detailsRef : summaryRef;
+    scrollTo(target);
   };
 
   const primaryButton = (label: string, onClick: () => void, disabled = false) => (
@@ -482,7 +516,8 @@ export default function NewOrderPage() {
           <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">New order</p><h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Build your campaign</h1></div>
           <p className="hidden text-right text-xs leading-5 text-[#9CA3AF] sm:block">Transparent pricing<br />Secure wallet checkout</p>
         </header>
-        <nav aria-label="Order progress" className="mb-5 grid grid-cols-4 gap-1 rounded-2xl border border-white/10 bg-[#101010]/95 p-1.5 backdrop-blur sm:mb-6 sm:gap-2 sm:p-2">
+        <nav aria-label="Order progress" className="relative mb-5 grid grid-cols-4 gap-1 overflow-x-auto rounded-2xl border border-white/10 bg-[#101010]/95 p-1.5 backdrop-blur sm:mb-6 sm:gap-2 sm:p-2">
+          <span aria-hidden="true" className="absolute left-[12%] right-[12%] top-[1.65rem] h-px bg-white/10" />
           {[[1, "Platform"], [2, "Service"], [3, "Details"], [4, "Review & Pay"]].map(([number, title]) => <button key={number} type="button" onClick={() => moveTo(Number(number))} disabled={Number(number) > currentStep} className="min-w-0 disabled:cursor-default"><ProgressItem number={Number(number)} title={String(title)} state={progressState(Number(number), currentStep)} /></button>)}
         </nav>
         <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_290px]">
@@ -490,16 +525,16 @@ export default function NewOrderPage() {
             {currentStep === 1 ? <div>
               <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 1 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a platform</h2><p className="mt-2 text-sm text-[#9CA3AF]">Select where you want your campaign to run.</p>
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {platformOrder.map((platformId) => { const meta = platformMeta[platformId]; const active = platform === platformId; return <motion.button key={platformId} type="button" whileTap={{ scale: .98 }} onClick={() => choosePlatform(platformId)} aria-pressed={active} className={`relative min-h-28 rounded-2xl border p-4 text-left transition ${active ? "border-orange-400 bg-orange-500/10 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"}`}><IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge><span className="mt-4 block text-sm font-black">{meta.label}</span>{active && <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-400" />}</motion.button>; })}
+                {platformOrder.map((platformId) => { const meta = platformMeta[platformId]; const active = platform === platformId; const serviceCount = customerOrderServices.filter((service) => service.platform === platformId).length; return <motion.button key={platformId} type="button" whileTap={{ scale: .98 }} onClick={() => choosePlatform(platformId)} aria-pressed={active} className={`relative min-h-28 rounded-2xl border p-4 text-left transition ${active ? "border-orange-400 bg-orange-500/10 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"}`}><IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge><span className="mt-4 block text-sm font-black">{meta.label}</span><span className="mt-1 block text-[10px] font-semibold text-[#9CA3AF]">{serviceCount} service{serviceCount === 1 ? "" : "s"}</span>{active && <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-400" />}</motion.button>; })}
               </div>
-              <div className="mt-6">{primaryButton("Continue to Services", () => moveTo(2), !platform)}</div>
+              <p className="mt-5 text-center text-xs text-[#9CA3AF]" aria-live="polite">Select a platform to continue automatically.</p>
             </div> : null}
             {currentStep === 2 ? <div>
               <button type="button" onClick={() => moveTo(1)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to platforms</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 2 of 4 · {platform && platformMeta[platform].label}</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a service</h2>
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 {services.map((service) => { const active = selectedService?.code === service.code; const health = healthByService[service.code]; const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused")); const experience = serviceExperience[service.code]; return <article key={service.code} className={`rounded-2xl border p-4 ${active ? "border-orange-400/80 bg-orange-500/10" : "border-white/10 bg-[#0B0B0F]"} ${unavailable ? "opacity-55" : ""}`}><div className="flex items-start justify-between gap-3"><h3 className="text-sm font-black text-white">{experience.name}</h3>{active ? <Check className="h-5 w-5 text-emerald-400" /> : null}</div><div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div><span className="text-[#777]">Price / 1K</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)}</strong></div><div><span className="text-[#777]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div><div className="mt-3 flex flex-wrap gap-2"><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{service.refillPolicy}</span><ServiceHealthBadge health={health} /></div><details className="mt-3 border-t border-white/10 pt-3"><summary className="cursor-pointer text-xs font-bold text-[#B5B5B5]">Service details</summary><p className="mt-2 text-xs leading-5 text-[#9CA3AF]">{service.description} {growthMethod(service)}</p></details><button type="button" disabled={unavailable} onClick={() => chooseService(service)} className="mt-4 min-h-11 w-full rounded-xl border border-white/15 bg-white/5 text-xs font-black text-white transition hover:border-orange-400/70 disabled:cursor-not-allowed">{unavailable ? "Unavailable" : active ? "Selected" : "Select service"}</button></article>; })}
               </div>
-              <div className="mt-6">{primaryButton("Continue to Details", () => moveTo(3), !selectedService)}</div>
+              <p className="mt-5 text-center text-xs text-[#9CA3AF]" aria-live="polite">Select an available service to continue automatically.</p>
             </div> : null}
             {currentStep === 3 && selectedService && linkRule ? <div>
               <button type="button" onClick={() => moveTo(2)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to services</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 3 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Campaign details</h2><p className="mt-2 text-sm text-[#9CA3AF]">Only two things needed to get started.</p>
