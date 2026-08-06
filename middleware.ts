@@ -1,6 +1,7 @@
 import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
+import { DISPLAY_CURRENCY_COOKIE, getDisplayCurrencyForCountry, isCurrency } from "@/lib/currency";
 
 const canonicalRedirects: Record<string, string> = {
   "/buy-instagram-followers": "/buy-instagram-followers-india",
@@ -71,6 +72,11 @@ export async function middleware(request: NextRequest) {
   }
 
   const response = await updateSession(request);
+  // Only Vercel's edge header is used; unverified deployments stay with INR.
+  const savedCurrency = request.cookies.get(DISPLAY_CURRENCY_COOKIE)?.value;
+  if (!isCurrency(savedCurrency) && process.env.VERCEL === "1") {
+    response.cookies.set(DISPLAY_CURRENCY_COOKIE, getDisplayCurrencyForCountry(request.headers.get("x-vercel-ip-country")), { path: "/", maxAge: 31536000, sameSite: "lax", secure: true });
+  }
   const pathname = request.nextUrl.pathname;
   const isPrivateOrMachineRoute =
     pathname.startsWith("/dashboard") ||

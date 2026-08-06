@@ -11,7 +11,7 @@ export default function CurrencyDropdown({
   compact?: boolean;
   tone?: "default" | "light3d";
 }) {
-  const { currency, setCurrency } = usePreferredCurrency("INR");
+  const { currency, setCurrency } = usePreferredCurrency();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
 
@@ -27,6 +27,7 @@ export default function CurrencyDropdown({
 
   return (
     <div ref={rootRef} className="relative">
+      <span className="sr-only" id="display-currency-label">Display currency</span>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -37,6 +38,7 @@ export default function CurrencyDropdown({
         } ${compact ? "min-h-10" : "min-h-11"}`}
         aria-haspopup="listbox"
         aria-expanded={open}
+        aria-labelledby="display-currency-label"
       >
         <span>{currency}</span>
         <span className="text-[10px]">▾</span>
