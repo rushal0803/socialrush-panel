@@ -10,6 +10,7 @@ const links = [
   ["Overview", "/admin/dashboard", "grid"], ["Services", "/admin/services", "layers"], ["Packages", "/admin/packages", "tag"],
   ["Orders", "/admin/orders", "cart"], ["Refills", "/admin/refills", "layers"], ["Users", "/admin/users", "users"], ["Payments", "/admin/payments", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
+  ["Incidents", "/admin/incidents", "support"],
   ["Case Studies", "/admin/case-studies", "layers"], ["Rewards", "/admin/rewards", "wallet"], ["Settings", "/admin/settings", "settings"],
 ] as const;
 

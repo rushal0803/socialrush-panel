@@ -5,6 +5,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { razorpayConfig, razorpayRequest, verifyHmac } from "@/lib/payments/razorpay";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
+import { recordIncident } from "@/lib/monitoring/incidents";
 
 type RazorpayPayment = {
   id: string;
@@ -55,6 +56,7 @@ export async function POST(request: NextRequest) {
   try {
     const { keySecret } = razorpayConfig();
     if (!verifyHmac(`${body.razorpay_order_id}|${body.razorpay_payment_id}`, body.razorpay_signature, keySecret)) {
+      void recordIncident({ type: "razorpay_signature_verification", severity: "high", title: "Razorpay signature verification failed", summary: "A trusted checkout verification signature did not match.", source: "checkout_verify", fingerprint: `razorpay-signature:${body.checkoutPaymentId}`, relatedPaymentReference: body.razorpay_payment_id });
       return NextResponse.json({ error: "Payment signature verification failed." }, { status: 400 });
     }
     const providerPayment = await razorpayRequest<RazorpayPayment>(`/payments/${encodeURIComponent(body.razorpay_payment_id)}`);
@@ -64,13 +66,13 @@ export async function POST(request: NextRequest) {
       providerPayment.amount === Number(checkoutPayment.amount_paise) &&
       providerPayment.currency === checkoutPayment.currency &&
       providerPayment.status === "captured";
-    if (!matches) return NextResponse.json({ error: "Captured payment details do not match this checkout." }, { status: 409 });
+    if (!matches) { void recordIncident({ type: "razorpay_payment_mismatch", severity: "critical", title: "Verified payment details mismatch", summary: "A captured payment did not match its expected checkout details.", source: "checkout_verify", fingerprint: `razorpay-mismatch:${checkoutPayment.id}`, relatedPaymentReference: body.razorpay_payment_id }); return NextResponse.json({ error: "Captured payment details do not match this checkout." }, { status: 409 }); }
 
     const { data, error } = await admin.rpc("complete_checkout_intent_payment_system", {
       p_checkout_payment_id: checkoutPayment.id,
       p_provider_payment_id: providerPayment.id,
     });
-    if (error) return NextResponse.json({ error: "Checkout settlement could not be completed." }, { status: 409 });
+    if (error) { void recordIncident({ type: "verified_payment_without_order", severity: "critical", title: "Verified payment could not create an order", summary: "A verified checkout payment could not complete order creation and needs reconciliation.", source: "checkout_verify", fingerprint: `verified-payment-order:${checkoutPayment.id}`, relatedPaymentReference: providerPayment.id }); return NextResponse.json({ error: "Checkout settlement could not be completed." }, { status: 409 }); }
     await recordTrustedEvent({ eventName: "payment_completed", customerId: user.id, pagePath: "/dashboard/new-order", eventId: `payment:${providerPayment.id}`, metadata: { method: "razorpay", amount_minor: Number(checkoutPayment.amount_paise), currency: checkoutPayment.currency, checkout_intent_id: checkoutPayment.id } });
     const completed = data as { orderId?: string } | null;
     if (completed?.orderId) await recordTrustedEvent({ eventName: "order_created", customerId: user.id, pagePath: "/dashboard/new-order", eventId: `order:${completed.orderId}`, metadata: { order_id: completed.orderId, method: "razorpay" } });
@@ -81,6 +83,7 @@ export async function POST(request: NextRequest) {
     revalidatePath("/dashboard/wallet");
     return NextResponse.json({ data }, { headers: { "Cache-Control": "no-store" } });
   } catch {
+    void recordIncident({ type: "checkout_verification_error", severity: "high", title: "Checkout payment verification failed", summary: "The trusted checkout verification flow failed unexpectedly.", source: "checkout_verify", fingerprint: `checkout-verify:${body.checkoutPaymentId}`, relatedPaymentReference: body.razorpay_payment_id });
     return NextResponse.json({ error: "Unable to verify checkout payment." }, { status: 503 });
   }
 }

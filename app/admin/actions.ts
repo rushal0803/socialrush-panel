@@ -311,3 +311,15 @@ export async function addSupportInternalNote(formData: FormData) {
   if (error) throw new Error(`Internal note could not be saved: ${error.message}`);
   revalidatePath("/admin/support");
 }
+
+export async function acknowledgeIncident(formData: FormData) {
+  const { supabase, user } = await requireAdmin(); const id = text(formData, "id");
+  await supabase.from("operational_incidents").update({ status: "acknowledged", acknowledged_at: new Date().toISOString(), acknowledged_by: user.id, updated_at: new Date().toISOString() }).eq("id", id).eq("status", "open");
+  revalidatePath("/admin/incidents"); revalidatePath("/admin");
+}
+export async function resolveIncident(formData: FormData) {
+  const { supabase, user } = await requireAdmin(); const id = text(formData, "id"); const note = text(formData, "note");
+  if (note.length < 3 || note.length > 1000) throw new Error("A resolution note between 3 and 1000 characters is required.");
+  await supabase.from("operational_incidents").update({ status: "resolved", resolved_at: new Date().toISOString(), resolved_by: user.id, resolution_note: note, updated_at: new Date().toISOString() }).eq("id", id).in("status", ["open", "acknowledged"]);
+  revalidatePath("/admin/incidents"); revalidatePath("/admin");
+}

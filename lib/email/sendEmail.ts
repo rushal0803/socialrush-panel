@@ -1,4 +1,5 @@
 import "server-only";
+import { recordIncident } from "@/lib/monitoring/incidents";
 
 export type EmailMessage = { to: string; subject: string; text: string; html?: string };
 
@@ -36,10 +37,12 @@ export async function sendEmail(message: EmailMessage): Promise<EmailDelivery> {
       cache: "no-store",
     });
     const payload = await response.json().catch(() => null) as { id?: string; message?: string } | null;
-    if (!response.ok) return { accepted: false, delivered: false, provider: "resend", errorCode: `http_${response.status}` };
+    if (!response.ok) { void recordIncident({ type: "transactional_email_failure", severity: "medium", title: "Transactional email delivery failed", summary: `The email provider returned HTTP ${response.status}.`, source: "email", fingerprint: `email-provider:http-${response.status}`, metadata: { category: "provider_http" } }); return { accepted: false, delivered: false, provider: "resend", errorCode: `http_${response.status}` }; }
     return { accepted: true, delivered: true, provider: "resend", messageId: payload?.id };
   } catch (error) {
-    return { accepted: false, delivered: false, provider: "resend", errorCode: error instanceof Error && error.name === "AbortError" ? "timeout" : "request_failed" };
+    const errorCode = error instanceof Error && error.name === "AbortError" ? "timeout" : "request_failed";
+    void recordIncident({ type: "transactional_email_failure", severity: "medium", title: "Transactional email delivery failed", summary: "The email provider request could not be completed.", source: "email", fingerprint: `email-provider:${errorCode}`, metadata: { category: errorCode } });
+    return { accepted: false, delivered: false, provider: "resend", errorCode };
   } finally {
     clearTimeout(timeout);
   }
