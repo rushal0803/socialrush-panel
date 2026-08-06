@@ -4,6 +4,8 @@ import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import PageAnalytics from "@/components/analytics/PageAnalytics";
+import { cookies } from "next/headers";
+import { DISPLAY_CURRENCY_COOKIE, getServerExchangeRates, isCurrency } from "@/lib/currency";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -71,10 +73,13 @@ export const viewport: Viewport = {
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const storedCurrency = cookies().get(DISPLAY_CURRENCY_COOKIE)?.value;
+  const initialCurrency = isCurrency(storedCurrency) ? storedCurrency : "INR";
+  const rates = getServerExchangeRates();
   return (
     <html lang="en-IN">
       <body className="overflow-x-clip bg-[#07080D] text-white">
-        <ClientProviders>
+        <ClientProviders initialCurrency={initialCurrency} rates={rates}>
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{

@@ -69,7 +69,10 @@ body {
 
 html {
   scroll-behavior: smooth;
+  scroll-padding-top: calc(70px + env(safe-area-inset-top));
 }
+
+.premium-homepage .dashboard-preview { display: none; }
 
 a,
 button,
