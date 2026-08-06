@@ -10,9 +10,10 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { customerOrderServices } from "@/lib/order-service-experience";
 import PlatformIcon from "@/components/PlatformIcon";
 import { customerOrderStages, customerOrderStatus, customerStatusClass } from "@/lib/customer-order-status";
+import { formatPublicOrderId, orderWhatsAppHref } from "@/lib/orders/public-reference";
 
 type Order = {
-  id: string; link: string; quantity: number; charge: number; unit_price: number | null; status: string;
+  id: string; public_order_id: string; link: string; quantity: number; charge: number; unit_price: number | null; status: string;
   created_at: string; service_name: string | null; platform: string | null; package_name: string | null;
   starting_count: number | null; current_count: number | null; delivered_count: number | null;
   remaining_count: number | null; progress_percent: number | null; refill_eligible: boolean;
@@ -20,11 +21,6 @@ type Order = {
   updated_at: string | null; failed_reason: string | null; refund_credit_note: string | null;
   services: { name?: string; delivery_time?: string; refill_policy?: string } | null;
 };
-
-function displayId(id: string) {
-  const seed = Number.parseInt(id.replace(/-/g, "").slice(0, 8), 16);
-  return `SR-${String(Math.abs(seed % 900000) + 1000).padStart(4, "0")}`;
-}
 
 export default function CustomerOrderDetailsPage() {
   const { id } = useParams<{ id: string }>();
@@ -39,7 +35,7 @@ export default function CustomerOrderDetailsPage() {
   const [submittingRefill, setSubmittingRefill] = useState(false);
 
   useEffect(() => {
-    void createClient().from("orders").select("id,link,quantity,charge,unit_price,status,created_at,updated_at,failed_reason,refund_credit_note,service_name,platform,package_name,starting_count,current_count,delivered_count,remaining_count,progress_percent,refill_eligible,refill_requested_at,payment_status,services(name,delivery_time,refill_policy)").eq("id", id).single().then(({ data, error: queryError }) => {
+    void createClient().from("orders").select("id,public_order_id,link,quantity,charge,unit_price,status,created_at,updated_at,failed_reason,refund_credit_note,service_name,platform,package_name,starting_count,current_count,delivered_count,remaining_count,progress_percent,refill_eligible,refill_requested_at,payment_status,services(name,delivery_time,refill_policy)").eq("id", id).single().then(({ data, error: queryError }) => {
       setOrder(data as unknown as Order | null);
       setError(queryError ? "This order could not be loaded." : "");
       setLoading(false);
@@ -70,7 +66,7 @@ export default function CustomerOrderDetailsPage() {
   if (loading) return <main className="min-h-[calc(100vh-5rem)] bg-[#050505] p-5 text-white"><div className="mx-auto max-w-6xl rounded-3xl border border-orange-400/20 bg-[#111111] p-12 text-center text-[#D1D5DB]">Loading order details…</div></main>;
   if (!order || error) return <main className="min-h-[calc(100vh-5rem)] bg-[#050505] p-5 text-white"><div className="mx-auto max-w-3xl rounded-3xl border border-red-400/25 bg-[#111111] p-10 text-center"><AlertTriangle className="mx-auto h-8 w-8 text-red-300" /><p className="mt-3 font-bold">{error}</p><Link href="/dashboard/orders" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-5 font-bold">Back to orders</Link></div></main>;
 
-  const orderId = displayId(order.id);
+  const orderId = formatPublicOrderId(order.public_order_id);
   const serviceName = order.service_name || order.services?.name || "Growth service";
   const platform = order.platform || "Other";
   const statusInfo = customerOrderStatus(order.status);
@@ -94,7 +90,7 @@ export default function CustomerOrderDetailsPage() {
         <article className="rounded-3xl border border-orange-400/20 bg-[#111111] p-5 sm:p-6"><h2 className="text-lg font-black">Delivery timeline</h2>{order.progress_percent !== null ? <div className="mt-4"><div className="h-2 overflow-hidden rounded-full bg-white/10"><div className="h-full bg-gradient-to-r from-[#FF7A00] to-[#FFB000]" style={{width:`${Math.max(0,Math.min(100,order.progress_percent))}%`}} /></div><p className="mt-2 text-right text-xs font-bold text-orange-200">{order.progress_percent.toFixed(1)}% delivered</p></div> : null}<ol className="mt-5 space-y-3">{stages.map(({label,state},index) => <li key={label} className={`flex items-center gap-3 rounded-xl border p-3 ${state === "done" ? "border-emerald-400/25 bg-emerald-500/10" : state === "current" ? "border-orange-400/30 bg-orange-500/10" : "border-white/10 bg-white/[.03]"}`}>{state === "done" ? <Check className="h-4 w-4 text-emerald-300" /> : <span className="grid h-5 w-5 place-items-center rounded-full border border-current text-[9px]">{index+1}</span>}<span className="text-sm font-bold">{label}</span></li>)}</ol>{["cancelled","refunded","failed"].includes(order.status) ? <div className={`mt-4 rounded-xl border p-3 text-sm font-bold ${customerStatusClass(order.status)}`}>{statusInfo.label}{order.status === "failed" && order.failed_reason ? `: ${order.failed_reason}` : ""}</div> : null}<p className="mt-4 text-xs leading-5 text-[#9CA3AF]">Delivery times are estimates and may vary based on service availability.</p></article>
       </section>
 
-      <section className="mt-5 grid gap-3 rounded-3xl border border-white/10 bg-[#111111] p-4 sm:grid-cols-3 sm:p-5">{reorder ? <Link href={reorder} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black"><RefreshCw className="h-4 w-4" />Reorder</Link> : null}<Link href={supportHref} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-sm font-bold text-orange-200"><ExternalLink className="h-4 w-4" />Contact Support</Link>{order.refill_eligible && order.status === "completed" && !order.refill_requested_at ? <button type="button" onClick={() => setRefillOpen(true)} className="min-h-12 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 text-sm font-bold text-emerald-200">Request Refill</button> : <p className="flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[.03] px-4 text-center text-xs text-[#9CA3AF]">{order.refill_requested_at ? "Refill request received" : order.status === "cancelled" || order.status === "refunded" ? "Refills are not available for this order." : "This order is not currently eligible for refill."}</p>}</section>
+      <section className="mt-5 grid gap-3 rounded-3xl border border-white/10 bg-[#111111] p-4 sm:grid-cols-3 sm:p-5">{reorder ? <Link href={reorder} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black"><RefreshCw className="h-4 w-4" />Reorder</Link> : null}<Link href={supportHref} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-sm font-bold text-orange-200"><ExternalLink className="h-4 w-4" />Contact Support</Link><a href={orderWhatsAppHref(orderId)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 text-sm font-bold text-emerald-200">WhatsApp Support</a>{order.refill_eligible && order.status === "completed" && !order.refill_requested_at ? <button type="button" onClick={() => setRefillOpen(true)} className="min-h-12 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 text-sm font-bold text-emerald-200">Request Refill</button> : <p className="flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[.03] px-4 text-center text-xs text-[#9CA3AF]">{order.refill_requested_at ? "Refill request received" : order.status === "cancelled" || order.status === "refunded" ? "Refills are not available for this order." : "This order is not currently eligible for refill."}</p>}</section>
       {refillMessage ? <p role="status" className="mt-4 rounded-xl border border-emerald-400/25 bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-100">{refillMessage}</p> : null}
       {refillOpen ? <section role="dialog" aria-modal="true" aria-labelledby="refill-title" className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-lg rounded-3xl border border-orange-400/30 bg-[#151515] p-5 shadow-2xl"><h2 id="refill-title" className="text-lg font-black">Review refill request</h2><p className="mt-2 text-sm text-[#D1D5DB]">{orderId} · {serviceName} · {order.quantity.toLocaleString("en-IN")}. This service is currently refill eligible. Our team will review your request; submitting does not promise a result.</p><label className="mt-4 block text-xs font-bold text-orange-200">Optional note<textarea maxLength={500} value={refillNote} onChange={(event) => setRefillNote(event.target.value)} className="mt-2 min-h-24 w-full rounded-xl border border-white/15 bg-black/30 p-3 text-sm" placeholder="Describe the issue (optional)" /></label><div className="mt-4 grid grid-cols-2 gap-3"><button type="button" onClick={() => setRefillOpen(false)} className="min-h-11 rounded-xl border border-white/15">Cancel</button><button type="button" disabled={submittingRefill} onClick={() => void requestRefill()} className="min-h-11 rounded-xl bg-orange-500 font-bold disabled:opacity-60">{submittingRefill ? "Submitting…" : "Confirm request"}</button></div></section> : null}
       {order.status === "completed" ? <section className="mt-5 rounded-3xl border border-amber-400/20 bg-amber-500/[.07] p-5"><h2 className="font-black">How did this order go?</h2><p className="mt-1 text-sm text-slate-300">Share feedback tied to this completed order. Reviews are moderated before publication.</p><Link href={`/dashboard/reviews/new?order=${order.id}`} className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-amber-500 px-5 text-sm font-black text-black">Leave a verified review</Link></section> : null}

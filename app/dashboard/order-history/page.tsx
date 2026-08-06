@@ -9,9 +9,11 @@ import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { customerOrderServices } from "@/lib/order-service-experience";
 import { customerOrderStatus, customerStatusClass } from "@/lib/customer-order-status";
+import { formatPublicOrderId } from "@/lib/orders/public-reference";
 
 type Campaign = {
   id: string;
+  publicOrderId: string;
   service: string;
   platform: string;
   link: string;
@@ -51,12 +53,6 @@ function reorderHref(item: Campaign) {
   return `/dashboard/new-order?${params.toString()}`;
 }
 
-function readableOrderId(id: string) {
-  const compact = id.replace(/-/g, "");
-  const seed = Number.parseInt(compact.slice(0, 8), 16);
-  return `SR-${String(Math.abs(seed % 900000) + 1000).padStart(4, "0")}`;
-}
-
 export default function CampaignHistoryPage() {
   const { currency } = usePreferredCurrency("INR");
   const money = (value: number) => formatCurrency(value, currency);
@@ -77,7 +73,7 @@ export default function CampaignHistoryPage() {
       setLoadError("");
       const { data, error: queryError } = await supabase
         .from("orders")
-        .select("id, service_name, platform, link, quantity, charge, status, created_at, package_name, starting_count, current_count, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))")
+        .select("id, public_order_id, service_name, platform, link, quantity, charge, status, created_at, package_name, starting_count, current_count, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))")
         .order("created_at", { ascending: false });
         if (queryError) {
           setLoadError("Orders could not be loaded right now.");
@@ -90,6 +86,7 @@ export default function CampaignHistoryPage() {
             const quantity = Number(row.quantity ?? 0);
             return {
               id: row.id,
+              publicOrderId: formatPublicOrderId(row.public_order_id),
               service: row.service_name || service?.name || "Growth service",
               platform: row.platform || service?.categories?.name?.split(" ")[0] || "Other",
               link: row.link,
@@ -120,7 +117,7 @@ export default function CampaignHistoryPage() {
   const filtered = useMemo(
     () =>
       campaigns.filter((item) => {
-        const matchesSearch = `${item.id} ${readableOrderId(item.id)} ${item.platform} ${item.service} ${item.link}`.toLowerCase().includes(search.toLowerCase());
+        const matchesSearch = `${item.publicOrderId} ${item.platform} ${item.service} ${item.link}`.toLowerCase().includes(search.toLowerCase());
         const matchesStatus = status === "all" || (status === "active" && ["pending", "processing", "in_progress", "partial", "refill_requested", "refilling"].includes(item.status)) || (status === "refill_eligible" && item.refillEligible && item.status === "completed" && !item.refillRequestedAt) || (status === "refunded_or_cancelled" && ["refunded", "cancelled"].includes(item.status)) || item.status === status;
         const matchesPlatform = platform === "all" || item.platform === platform;
         const days = dateRange === "all" ? 0 : Number(dateRange);
@@ -223,7 +220,7 @@ export default function CampaignHistoryPage() {
                 {!loading &&
                   filtered.map((item) => (
                     <tr key={item.id} className="text-[#D1D5DB] transition hover:bg-orange-500/[.04]">
-                      <td className="px-5 py-4 font-bold text-orange-300">{readableOrderId(item.id)}</td>
+                      <td className="px-5 py-4 font-bold text-orange-300">{item.publicOrderId}</td>
                       <td className="px-5 py-4 text-[#9CA3AF]">{new Date(item.createdAt).toLocaleString("en-IN")}</td>
                       <td className="max-w-[220px] px-5 py-4">
                         <p className="truncate font-semibold text-white">{item.service}</p>
@@ -240,7 +237,7 @@ export default function CampaignHistoryPage() {
                       <td className="px-5 py-4">
                         <div className="flex gap-2">
                           <Link href={`/dashboard/orders/${item.id}`} className="rounded-lg bg-orange-500 px-3 py-1.5 text-[10px] font-bold text-white">View Order</Link>
-                          <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-[#D1D5DB]">Support</Link>
+                          <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(item.publicOrderId)}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="rounded-lg border border-white/15 bg-white/5 px-3 py-1.5 text-[10px] font-bold text-[#D1D5DB]">Support</Link>
                         </div>
                       </td>
                     </tr>
@@ -269,7 +266,7 @@ export default function CampaignHistoryPage() {
               <div className="flex flex-wrap items-start justify-between gap-3">
                 <div>
                   <p className="text-[10px] font-black uppercase tracking-[.14em] text-[#9CA3AF]">Order ID</p>
-                  <p className="mt-1 text-base font-black text-orange-300">{readableOrderId(item.id)}</p>
+                  <p className="mt-1 text-base font-black text-orange-300">{item.publicOrderId}</p>
                 </div>
                 <StatusBadge status={item.status} />
               </div>
@@ -312,9 +309,9 @@ export default function CampaignHistoryPage() {
               <div className="mt-5 grid grid-cols-2 gap-2">
                 <Link href={`/dashboard/orders/${item.id}`} className="col-span-2 inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 text-sm font-black text-white"><Eye className="h-4 w-4" />View Order</Link>
                 {reorderHref(item) ? <Link href={reorderHref(item)!} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-bold text-orange-200">Reorder</Link> : null}
-                <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(readableOrderId(item.id))}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]">Get Support</Link>
-                {item.refillEligible ? <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(readableOrderId(item.id))}&category=drop_or_refill`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 text-xs font-bold text-emerald-200">{item.refillRequestedAt ? "View Refill Request" : "Request Refill"}</Link> : null}
-                <button type="button" onClick={() => void navigator.clipboard.writeText(readableOrderId(item.id))} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]"><Copy className="h-3.5 w-3.5" />Copy ID</button>
+                <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(item.publicOrderId)}&platform=${encodeURIComponent(item.platform)}&service=${encodeURIComponent(item.service)}&status=${encodeURIComponent(item.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]">Get Support</Link>
+                {item.refillEligible ? <Link href={`/dashboard/support?orderId=${item.id}&order=${encodeURIComponent(item.publicOrderId)}&category=drop_or_refill`} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-3 text-xs font-bold text-emerald-200">{item.refillRequestedAt ? "View Refill Request" : "Request Refill"}</Link> : null}
+                <button type="button" onClick={() => void navigator.clipboard.writeText(item.publicOrderId)} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/5 px-3 text-xs font-bold text-[#D1D5DB]"><Copy className="h-3.5 w-3.5" />Copy ID</button>
               </div>
             </article>
           ))}
