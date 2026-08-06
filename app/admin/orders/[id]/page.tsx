@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AdminPageHeader, AdminStatus } from "@/components/admin/AdminUI";
 import AdminOrderControls from "@/components/admin/AdminOrderControls";
+import { formatPublicOrderId } from "@/lib/orders/public-reference";
 
 const money = (value: unknown) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(Number(value ?? 0));
 const count = (value: unknown) => value === null || value === undefined ? "Not available" : Number(value).toLocaleString("en-IN");
@@ -29,7 +30,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
 
   return (
     <main className="mx-auto max-w-[1500px] p-4 sm:p-8">
-      <AdminPageHeader title={`Order #${order.id.slice(0, 8).toUpperCase()}`} description="Customer, fulfillment, wallet, count, refill, and status history in one operational view." action={<Link href="/admin/orders" className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-bold text-slate-600">Back to orders</Link>} />
+      <AdminPageHeader title={`Order ${formatPublicOrderId(order.public_order_id)}`} description="Customer, fulfillment, wallet, count, refill, and status history in one operational view." action={<Link href="/admin/orders" className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-bold text-slate-600">Back to orders</Link>} />
 
       <div className="mt-7 grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
         <div className="space-y-6">

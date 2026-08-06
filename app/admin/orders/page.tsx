@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { createClient } from "@/lib/supabase/server";
 import { AdminPageHeader, AdminStatus } from "@/components/admin/AdminUI";
+import { formatPublicOrderId } from "@/lib/orders/public-reference";
 
 const statuses = [
   "all",
@@ -66,7 +67,7 @@ export default async function AdminOrdersPage({
   let query = supabase
     .from("orders")
     .select(
-      "id,user_id,link,quantity,service_name,platform,charge,status,payment_status,provider_order_id,starting_count,current_count,delivered_count,remaining_count,progress_percent,count_detection_status,count_detection_message,refill_eligible,created_at,updated_at,profiles(email,full_name,phone),services(name,delivery_time)",
+      "id,public_order_id,user_id,link,quantity,service_name,platform,charge,status,payment_status,provider_order_id,starting_count,current_count,delivered_count,remaining_count,progress_percent,count_detection_status,count_detection_message,refill_eligible,created_at,updated_at,profiles(email,full_name,phone),services(name,delivery_time)",
     )
     .order("created_at", { ascending: false });
 
@@ -98,7 +99,7 @@ export default async function AdminOrdersPage({
       email?: string;
     } | null;
     const haystack =
-      `${order.id} ${order.link} ${order.provider_order_id ?? ""} ${profile?.email ?? ""}`.toLowerCase();
+      `${order.public_order_id ?? ""} ${order.link} ${order.provider_order_id ?? ""} ${profile?.email ?? ""}`.toLowerCase();
     const customerText =
       `${profile?.full_name ?? ""} ${profile?.email ?? ""}`.toLowerCase();
     return (
@@ -215,7 +216,7 @@ export default async function AdminOrdersPage({
               <div className="flex items-start justify-between gap-3">
                 <div className="min-w-0">
                   <p className="text-sm font-black text-orange-400">
-                    #{order.id.slice(0, 8).toUpperCase()}
+                    {formatPublicOrderId(order.public_order_id)}
                   </p>
                   <p className="mt-1 truncate text-xs font-bold text-white">
                     {profile?.full_name || "Customer"}
@@ -340,11 +341,9 @@ export default async function AdminOrdersPage({
                   <tr key={order.id} className="align-top">
                     <td className="px-4 py-4">
                       <p className="font-bold text-orange-400">
-                        #{order.id.slice(0, 8).toUpperCase()}
+                        {formatPublicOrderId(order.public_order_id)}
                       </p>
-                      <p className="mt-1 text-[9px] text-[#9CA3AF]">
-                        {order.id}
-                      </p>
+                      <p className="mt-1 text-[9px] text-[#9CA3AF]">Supplier order ID: {order.provider_order_id || "Not assigned"}</p>
                     </td>
                     <td className="px-4 py-4">
                       <p className="font-semibold text-white">
