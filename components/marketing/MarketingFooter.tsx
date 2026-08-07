@@ -61,11 +61,19 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
           <p className="mt-2">SocialRUSH never asks for your social media password, OTP or recovery code. Only a valid public profile, post, page, channel or video link is required.</p>
         </section>
 
-        <div className="flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-[#8F96A3] sm:flex-row sm:items-center sm:justify-between">
-          <p>© {year} SocialRUSH. All rights reserved.</p>
-          <nav aria-label="Footer legal links"><ul className="flex flex-wrap gap-x-5 gap-y-2"><li><Link className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400" href="/privacy-policy">Privacy</Link></li><li><Link className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400" href="/terms-and-conditions">Terms</Link></li><li><Link className="hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400" href="/refund-policy">Refund Policy</Link></li></ul></nav>
-        </div>
-      </div>
+        <div className="flex flex-col gap-4 border-t border-white/10 pt-6 text-xs text-[#8F96A3] sm:flex-row sm:items-center">
+  <div>
+    <p>© {year} SocialRUSH. All rights reserved.</p>
+    <p className="mt-1">
+      SocialRUSH is owned and operated by RUSHAL.
+    </p>
+  </div>
+
+  <nav aria-label="Footer legal links">
+    ...
+  </nav>
+</div>
+</div>
     </footer>
   );
 }
