@@ -3,9 +3,9 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Social Media Growth Blog India",
+  title: "Social Media Growth Guides | SocialRUSH Blog",
   description:
-    "Read practical guides about Instagram growth, YouTube views and subscribers, LinkedIn followers, Twitter growth and social media campaign planning in India.",
+    "Read practical social media guides for creators and brands, including campaign planning, public-link requirements, content and platform tools.",
   path: "/blog",
   keywords: ["social media growth blog India", "Instagram growth guides India"],
 });

@@ -17,6 +17,7 @@ const publicRoutes = [
   "/packages",
   "/blog",
   "/contact",
+  "/support",
   "/faq",
   "/case-studies",
   "/reviews",
