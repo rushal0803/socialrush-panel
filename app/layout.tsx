@@ -12,11 +12,11 @@ const siteUrl = SEO_SITE_URL;
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
   title: {
-    default: "Social Media Growth Services India | SocialRUSH",
+    default: "Social Media Growth Services | SocialRUSH",
     template: "%s | SocialRUSH",
   },
   description:
-    "SocialRUSH provides social media growth services in India for Instagram, YouTube, Facebook, LinkedIn, TikTok and Twitter/X.",
+    "Explore transparent social media growth services, secure ordering, refill information and clear order tracking through the SocialRUSH dashboard.",
     other: {
   "google-adsense-account": "ca-pub-5748505888279439",
 },

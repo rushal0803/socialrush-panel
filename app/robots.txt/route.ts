@@ -12,7 +12,19 @@ Disallow: /admin
 Disallow: /admin/
 Disallow: /api/
 Disallow: /auth/
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
+Disallow: /reset-password
+Disallow: /verify-email
+Disallow: /account
+Disallow: /orders
+Disallow: /wallet
+Disallow: /billing
+Disallow: /new-campaign
+Disallow: /order-summary
 Disallow: /packages/checkout
+Disallow: /packages/summary
 
 Sitemap: ${SEO_SITE_URL}/sitemap.xml
 `;

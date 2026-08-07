@@ -7,6 +7,7 @@ import BlogArticleEnhancements from "@/components/marketing/blog/BlogArticleEnha
 import { formatArticleDate, getArticleWords, getReadingTime, isValidDate, sortArticles } from "@/lib/blog";
 import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import TrackedLink from "@/components/analytics/TrackedLink";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 const whatsappUrl =
@@ -352,9 +353,9 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 {articleRelatedLinks.map((item) => (
-                  <Link key={item.href} href={item.href} className="inline-flex min-h-11 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2.5 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5 hover:border-[#FF9F00]">
+                  <TrackedLink key={item.href} href={item.href} event={item.href.startsWith("/tools") ? "blog_tool_cta_clicked" : "blog_service_cta_clicked"} metadata={{ article_slug: article.slug, destination: item.href }} className="inline-flex min-h-11 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2.5 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5 hover:border-[#FF9F00]">
                     {item.label}
-                  </Link>
+                  </TrackedLink>
                 ))}
               </div>
             </nav>

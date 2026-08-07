@@ -91,7 +91,6 @@ export async function middleware(request: NextRequest) {
     pathname === "/wallet" ||
     pathname === "/orders" ||
     pathname === "/billing" ||
-    pathname === "/support" ||
     pathname === "/new-campaign" ||
     pathname === "/order-summary";
 

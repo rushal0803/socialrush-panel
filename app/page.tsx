@@ -4,16 +4,16 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { homepageFaqItems } from "@/lib/seo/homepage-faq";
 
 const homepageMetadata = createPageMetadata({
-  title: "SocialRUSH | Social Media Growth Services India",
+  title: "Social Media Growth Services | SocialRUSH",
   description:
-    "SocialRUSH helps creators, brands and businesses order social media growth services in India with public-link ordering, transparent pricing, dashboard tracking and WhatsApp support.",
+    "Explore transparent social media growth services, secure ordering, refill information and clear order tracking through the SocialRUSH dashboard.",
   path: "/",
 });
 
 export const metadata: Metadata = {
   ...homepageMetadata,
   title: {
-    absolute: "SocialRUSH | Social Media Growth Services India",
+    absolute: "Social Media Growth Services | SocialRUSH",
   },
 };
 
