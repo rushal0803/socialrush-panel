@@ -6,7 +6,12 @@ type CashfreeWebhook = { data?: { order?: { order_id?: string; order_amount?: nu
 
 export async function POST(request: NextRequest) {
   const rawBody = await request.text();
-  if (!verifyCashfreeWebhook(rawBody, request.headers.get("x-webhook-timestamp") || "", request.headers.get("x-webhook-signature") || "")) return NextResponse.json({ error: "Invalid webhook signature" }, { status: 401 });
+  const timestamp = request.headers.get("x-webhook-timestamp") || "";
+  const signature = request.headers.get("x-webhook-signature") || "";
+  const version = request.headers.get("x-webhook-version") || "";
+  if (!timestamp || !signature || !version || !verifyCashfreeWebhook(rawBody, timestamp, signature)) {
+    return NextResponse.json({ error: "Invalid webhook signature" }, { status: 401 });
+  }
   let event: CashfreeWebhook;
   try { event = JSON.parse(rawBody) as CashfreeWebhook; } catch { return NextResponse.json({ error: "Invalid webhook payload" }, { status: 400 }); }
   const orderId = event.data?.order?.order_id;

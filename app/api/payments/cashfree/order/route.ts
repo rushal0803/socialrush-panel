@@ -4,12 +4,18 @@ import { cashfreeMode, cashfreeRequest, type CashfreeOrder } from "@/lib/payment
 import { normalizePaymentMethod } from "@/lib/payments/methods";
 import { createClient } from "@/lib/supabase/server";
 
-function siteUrl() {
+function siteUrl(request: NextRequest) {
+  const requestUrl = new URL(request.url);
+  const isPreview = process.env.VERCEL_ENV === "preview";
+  if (isPreview && requestUrl.hostname.endsWith(".vercel.app")) {
+    return requestUrl.origin;
+  }
+
   const value = process.env.CASHFREE_APP_BASE_URL;
   if (!value) throw new Error("Cashfree application base URL is not configured");
   const url = new URL(value);
   if (url.protocol !== "https:") throw new Error("Cashfree application base URL must use HTTPS");
-  if (process.env.NODE_ENV === "production" && url.origin !== "https://www.getsocialrush.com") {
+  if (process.env.VERCEL_ENV === "production" && url.origin !== "https://www.getsocialrush.com") {
     throw new Error("Cashfree production return URL must use the canonical site domain");
   }
   return url.origin;
@@ -28,7 +34,8 @@ export async function POST(request: NextRequest) {
 
   const orderId = `srw_${randomUUID().replaceAll("-", "")}`;
   try {
-    const returnUrl = new URL("/dashboard/add-funds", siteUrl());
+    const appBaseUrl = siteUrl(request);
+    const returnUrl = new URL("/dashboard/add-funds", appBaseUrl);
     returnUrl.searchParams.set("cashfree_order_id", orderId);
     if (body?.returnTo?.startsWith("/") && !body.returnTo.startsWith("//")) returnUrl.searchParams.set("returnTo", body.returnTo);
     const order = await cashfreeRequest<CashfreeOrder>("/orders", {
@@ -39,7 +46,7 @@ export async function POST(request: NextRequest) {
         order_amount: Number(amount.toFixed(2)),
         order_currency: "INR",
         customer_details: { customer_id: user.id, customer_email: user.email || undefined },
-        order_meta: { return_url: returnUrl.toString(), notify_url: new URL("/api/payments/cashfree/webhook", siteUrl()).toString() },
+        order_meta: { return_url: returnUrl.toString(), notify_url: new URL("/api/payments/cashfree/webhook", appBaseUrl).toString() },
         order_note: "SocialRUSH wallet funding",
         order_tags: { user_id: user.id, funding_method: method },
       }),

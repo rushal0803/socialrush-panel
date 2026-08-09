@@ -23,8 +23,10 @@ export type CashfreePayment = {
 };
 
 export function cashfreeConfig() {
-  const clientId = process.env.CASHFREE_CLIENT_ID;
-  const clientSecret = process.env.CASHFREE_CLIENT_SECRET;
+  // APP_ID / SECRET_KEY are the deployment-facing names. Keep the former
+  // CLIENT_* names as a non-breaking compatibility fallback.
+  const clientId = process.env.CASHFREE_APP_ID || process.env.CASHFREE_CLIENT_ID;
+  const clientSecret = process.env.CASHFREE_SECRET_KEY || process.env.CASHFREE_CLIENT_SECRET;
   const environment = process.env.CASHFREE_ENV || "sandbox";
   if (!clientId || !clientSecret) throw new Error("Cashfree is not configured");
   if (environment !== "sandbox" && environment !== "production") {
@@ -58,7 +60,7 @@ export async function cashfreeRequest<T>(path: string, init: RequestInit = {}) {
 }
 
 export function verifyCashfreeWebhook(rawBody: string, timestamp: string, signature: string) {
-  const secret = process.env.CASHFREE_CLIENT_SECRET;
+  const secret = process.env.CASHFREE_SECRET_KEY || process.env.CASHFREE_CLIENT_SECRET;
   if (!secret || !timestamp || !signature) return false;
   const expected = createHmac("sha256", secret).update(`${timestamp}${rawBody}`).digest("base64");
   const left = Buffer.from(expected);

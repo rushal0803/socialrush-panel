@@ -24,6 +24,8 @@ export const PAYMENT_METHODS = [
 export type PaymentMethodId = (typeof PAYMENT_METHODS)[number]["id"];
 export type SupportedPaymentMethodId = PaymentMethodId | "wallet";
 
+const useCashfree = process.env.NEXT_PUBLIC_PAYMENT_GATEWAY === "cashfree";
+
 export const ALLOWED_PAYMENT_METHODS: readonly SupportedPaymentMethodId[] = [
   "upi",
   "card",
@@ -80,12 +82,19 @@ export function isPaymentMethod(
 }
 
 const PAYMENT_METHOD_ENABLED: Record<PaymentMethodId, boolean> = {
-  upi: process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_UPI !== "false",
-  card: process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_CARD !== "false",
-  netbanking:
-    process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_NETBANKING !== "false",
+  upi: useCashfree
+    ? process.env.NEXT_PUBLIC_CASHFREE_ENABLE_UPI !== "false"
+    : process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_UPI !== "false",
+  card: useCashfree
+    ? process.env.NEXT_PUBLIC_CASHFREE_ENABLE_CARD !== "false"
+    : process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_CARD !== "false",
+  netbanking: useCashfree
+    ? process.env.NEXT_PUBLIC_CASHFREE_ENABLE_NETBANKING !== "false"
+    : process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_NETBANKING !== "false",
   international_card:
-    process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_INTERNATIONAL_CARD === "true",
+    useCashfree
+      ? process.env.NEXT_PUBLIC_CASHFREE_ENABLE_INTERNATIONAL_CARD === "true"
+      : process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_INTERNATIONAL_CARD === "true",
 };
 
 export function isPaymentMethodEnabled(method: SupportedPaymentMethodId) {

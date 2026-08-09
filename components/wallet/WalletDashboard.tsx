@@ -13,6 +13,7 @@ import {
   normalizePaymentMethod,
   type PaymentMethodId,
 } from "@/lib/payments/methods";
+import { paymentGateway } from "@/lib/payments/gateway";
 
 export type WalletTransaction = {
   id: string;
@@ -468,7 +469,6 @@ export default function WalletDashboard({
       ? requested
       : defaultPaymentMethod;
   });
-  const [gateway, setGateway] = useState<"razorpay" | "cashfree">("cashfree");
   const [amountInput, setAmountInput] = useState(() => cleanAmountInput(searchParams.get("amount") || ""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -564,7 +564,7 @@ export default function WalletDashboard({
       return;
     }
     setLoading(true);
-    if (gateway === "cashfree") {
+    if (paymentGateway === "cashfree") {
       const loaded = await loadCashfree();
       if (!loaded || !window.Cashfree) {
         setError("Secure Cashfree checkout could not be loaded. Please try again.");
@@ -935,7 +935,7 @@ export default function WalletDashboard({
                               </small>
                             ) : item.id === "international_card" ? (
                               <small className="mt-2 block text-[10px] font-bold leading-4 text-[#D1D5DB]">
-                                Requires international payments enabled in Razorpay.
+                                Requires international payments enabled for this checkout provider.
                               </small>
                             ) : null}
                           </span>
@@ -946,13 +946,9 @@ export default function WalletDashboard({
                 </div>
                 <div className="mt-5 border-t border-white/10 pt-4">
                   <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#D1D5DB]">Checkout provider</p>
-                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
-                    {(["razorpay", "cashfree"] as const).map((item) => (
-                      <button key={item} type="button" onClick={() => { setGateway(item); setError(""); }} className={`min-h-12 rounded-xl border px-4 text-left text-xs font-black transition ${gateway === item ? "border-orange-400 bg-orange-500/15 text-white" : "border-white/10 bg-[#0B0B0F] text-[#D1D5DB] hover:border-orange-400/45"}`}>
-                        {item === "razorpay" ? "Razorpay" : "Cashfree"}
-                        <span className="mt-1 block text-[10px] font-medium text-[#9CA3AF]">{item === "razorpay" ? "Existing secure checkout" : "Hosted UPI, card and net banking checkout"}</span>
-                      </button>
-                    ))}
+                  <div className="mt-3 rounded-xl border border-orange-400 bg-orange-500/15 px-4 py-3 text-left text-xs font-black text-white">
+                    {paymentGateway === "cashfree" ? "Cashfree" : "Razorpay"}
+                    <span className="mt-1 block text-[10px] font-medium text-[#9CA3AF]">{paymentGateway === "cashfree" ? "Hosted UPI, card and net banking checkout" : "Existing secure checkout"}</span>
                   </div>
                 </div>
               </motion.section>
