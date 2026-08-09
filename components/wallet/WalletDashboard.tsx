@@ -66,9 +66,13 @@ type RazorpayCheckout = {
   open: () => void;
   on: (event: "payment.failed", callback: (response: { error?: { description?: string } }) => void) => void;
 };
+type CashfreeCheckout = {
+  checkout: (options: { paymentSessionId: string; redirectTarget: "_self" }) => Promise<unknown>;
+};
 declare global {
   interface Window {
     Razorpay?: new (options: RazorpayOptions) => RazorpayCheckout;
+    Cashfree?: (options: { mode: "sandbox" | "production" }) => CashfreeCheckout;
   }
 }
 
@@ -425,6 +429,23 @@ function loadRazorpay() {
   });
 }
 
+function loadCashfree() {
+  return new Promise<boolean>((resolve) => {
+    if (window.Cashfree) return resolve(true);
+    const existing = document.querySelector<HTMLScriptElement>('script[src="https://sdk.cashfree.com/js/v3/cashfree.js"]');
+    if (existing) {
+      existing.addEventListener("load", () => resolve(true), { once: true });
+      existing.addEventListener("error", () => resolve(false), { once: true });
+      return;
+    }
+    const script = document.createElement("script");
+    script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+    script.onload = () => resolve(true);
+    script.onerror = () => resolve(false);
+    document.body.appendChild(script);
+  });
+}
+
 export default function WalletDashboard({
   initial,
 }: {
@@ -447,6 +468,7 @@ export default function WalletDashboard({
       ? requested
       : defaultPaymentMethod;
   });
+  const [gateway, setGateway] = useState<"razorpay" | "cashfree">("razorpay");
   const [amountInput, setAmountInput] = useState(() => cleanAmountInput(searchParams.get("amount") || ""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
@@ -455,6 +477,7 @@ export default function WalletDashboard({
   const [transactionFilter, setTransactionFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
   const [selectedTransaction, setSelectedTransaction] = useState<WalletTransaction | null>(null);
+  const verifiedCashfreeOrder = useRef<string | null>(null);
   const amount = useMemo(() => Number(amountInput || 0), [amountInput]);
   const series = useMemo(
     () => monthlySeries(initial.transactions, initial.orders),
@@ -493,6 +516,45 @@ export default function WalletDashboard({
     [currency, initial.orders, initial.transactions],
   );
 
+  useEffect(() => {
+    const orderId = searchParams.get("cashfree_order_id");
+    if (!orderId || verifiedCashfreeOrder.current === orderId) return;
+    verifiedCashfreeOrder.current = orderId;
+    let active = true;
+    void (async () => {
+      setLoading(true);
+      setError("");
+      const response = await fetch("/api/payments/cashfree/verify", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId }),
+      });
+      const payload = await response.json().catch(() => null) as { data?: { status?: string; balance?: number | null; paymentId?: string | null }; error?: string } | null;
+      if (!active) return;
+      setLoading(false);
+      if (!response.ok || !payload?.data) {
+        setError(payload?.error || "We could not verify this payment yet. Please check Wallet shortly before trying again.");
+        return;
+      }
+      if (payload.data.status === "success") {
+        const updatedBalance = payload.data.balance === null ? balance : Number(payload.data.balance);
+        setBalance(updatedBalance);
+        window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
+        setSuccess({ paymentId: payload.data.paymentId || orderId, transactionId: "", amount, balance: updatedBalance, completedAt: new Date().toISOString() });
+        if (returnTo) {
+          const separator = returnTo.includes("?") ? "&" : "?";
+          router.replace(`${returnTo}${separator}resume=1`);
+          return;
+        }
+        router.replace("/dashboard/add-funds");
+        router.refresh();
+      } else if (payload.data.status === "pending") {
+        setError("Payment is still being verified. Your wallet has not been credited yet; please refresh this page shortly.");
+      } else {
+        setError("Payment was not successful. Your wallet was not charged.");
+      }
+    })();
+    return () => { active = false; };
+  }, [amount, balance, returnTo, router, searchParams]);
+
   async function startPayment(event: React.FormEvent) {
     event.preventDefault();
     setError("");
@@ -502,6 +564,30 @@ export default function WalletDashboard({
       return;
     }
     setLoading(true);
+    if (gateway === "cashfree") {
+      const loaded = await loadCashfree();
+      if (!loaded || !window.Cashfree) {
+        setError("Secure Cashfree checkout could not be loaded. Please try again.");
+        setLoading(false);
+        return;
+      }
+      const response = await fetch("/api/payments/cashfree/order", {
+        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount, method: canonicalMethod, returnTo }),
+      });
+      const payload = await response.json().catch(() => null) as { data?: { paymentSessionId: string; orderId: string; environment: "sandbox" | "production" }; error?: string } | null;
+      if (!response.ok || !payload?.data) {
+        setError(payload?.error || "Unable to initialize Cashfree payment.");
+        setLoading(false);
+        return;
+      }
+      try {
+        await window.Cashfree({ mode: payload.data.environment }).checkout({ paymentSessionId: payload.data.paymentSessionId, redirectTarget: "_self" });
+      } catch {
+        setLoading(false);
+        setError("Cashfree checkout was cancelled or could not be opened. Your wallet was not credited.");
+      }
+      return;
+    }
     const loaded = await loadRazorpay();
     if (!loaded || !window.Razorpay) {
       setError("Secure checkout could not be loaded. Please try again.");
@@ -857,6 +943,17 @@ export default function WalletDashboard({
                       </motion.button>
                     );
                   })}
+                </div>
+                <div className="mt-5 border-t border-white/10 pt-4">
+                  <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#D1D5DB]">Checkout provider</p>
+                  <div className="mt-3 grid gap-3 sm:grid-cols-2">
+                    {(["razorpay", "cashfree"] as const).map((item) => (
+                      <button key={item} type="button" onClick={() => { setGateway(item); setError(""); }} className={`min-h-12 rounded-xl border px-4 text-left text-xs font-black transition ${gateway === item ? "border-orange-400 bg-orange-500/15 text-white" : "border-white/10 bg-[#0B0B0F] text-[#D1D5DB] hover:border-orange-400/45"}`}>
+                        {item === "razorpay" ? "Razorpay" : "Cashfree"}
+                        <span className="mt-1 block text-[10px] font-medium text-[#9CA3AF]">{item === "razorpay" ? "Existing secure checkout" : "Hosted UPI, card and net banking checkout"}</span>
+                      </button>
+                    ))}
+                  </div>
                 </div>
               </motion.section>
 

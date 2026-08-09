@@ -30,10 +30,10 @@ const nextConfig = {
               "camera=(), microphone=(), geolocation=(), browsing-topics=()",
           },
           {
-            // Next.js and Razorpay require inline bootstrap scripts; this still
+            // Next.js and payment SDKs require inline bootstrap scripts; this still
             // blocks plugin content, framing, and unexpected base URL changes.
             key: "Content-Security-Policy",
-            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://api.razorpay.com https://checkout.razorpay.com; frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://api.razorpay.com https://checkout.razorpay.com; upgrade-insecure-requests",
+            value: "default-src 'self'; script-src 'self' 'unsafe-inline' https://checkout.razorpay.com https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://api.razorpay.com https://checkout.razorpay.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://api.razorpay.com https://checkout.razorpay.com https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
           },
         ],
       },
