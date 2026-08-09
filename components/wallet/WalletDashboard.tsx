@@ -468,7 +468,7 @@ export default function WalletDashboard({
       ? requested
       : defaultPaymentMethod;
   });
-  const [gateway, setGateway] = useState<"razorpay" | "cashfree">("razorpay");
+  const [gateway, setGateway] = useState<"razorpay" | "cashfree">("cashfree");
   const [amountInput, setAmountInput] = useState(() => cleanAmountInput(searchParams.get("amount") || ""));
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
