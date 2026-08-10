@@ -73,6 +73,9 @@ export async function POST(request: NextRequest) {
     if (error) return NextResponse.json({ error: "Unable to create a pending wallet payment. Please try again shortly." }, { status: 400 });
     return NextResponse.json({ data: { orderId, paymentSessionId: order.payment_session_id, transactionId, environment: cashfreeMode() } }, { status: 201 });
   } catch (error) {
+    if (error instanceof Error && error.message === "Cashfree is not configured") {
+      return NextResponse.json({ error: "Cashfree wallet payments are not configured. Please try again later." }, { status: 503 });
+    }
     if (error instanceof CashfreeApiError) {
       console.error("Cashfree order creation failed", {
         status: error.status,

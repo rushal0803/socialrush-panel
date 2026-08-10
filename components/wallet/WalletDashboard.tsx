@@ -13,7 +13,6 @@ import {
   normalizePaymentMethod,
   type PaymentMethodId,
 } from "@/lib/payments/methods";
-import { paymentGateway } from "@/lib/payments/gateway";
 
 export type WalletTransaction = {
   id: string;
@@ -46,33 +45,11 @@ export type WalletInitialData = {
   orders: WalletOrder[];
 };
 
-type RazorpayResponse = {
-  razorpay_order_id: string;
-  razorpay_payment_id: string;
-  razorpay_signature: string;
-};
-type RazorpayOptions = {
-  key: string;
-  amount: number;
-  currency: string;
-  name: string;
-  description: string;
-  order_id: string;
-  prefill: { email: string };
-  theme: { color: string };
-  handler: (response: RazorpayResponse) => void | Promise<void>;
-  modal?: { ondismiss?: () => void };
-};
-type RazorpayCheckout = {
-  open: () => void;
-  on: (event: "payment.failed", callback: (response: { error?: { description?: string } }) => void) => void;
-};
 type CashfreeCheckout = {
   checkout: (options: { paymentSessionId: string; redirectTarget: "_self" }) => Promise<unknown>;
 };
 declare global {
   interface Window {
-    Razorpay?: new (options: RazorpayOptions) => RazorpayCheckout;
     Cashfree?: (options: { mode: "sandbox" | "production" }) => CashfreeCheckout;
   }
 }
@@ -419,17 +396,6 @@ function MiniChart({
   );
 }
 
-function loadRazorpay() {
-  return new Promise<boolean>((resolve) => {
-    if (window.Razorpay) return resolve(true);
-    const script = document.createElement("script");
-    script.src = "https://checkout.razorpay.com/v1/checkout.js";
-    script.onload = () => resolve(true);
-    script.onerror = () => resolve(false);
-    document.body.appendChild(script);
-  });
-}
-
 function loadCashfree() {
   return new Promise<boolean>((resolve) => {
     if (window.Cashfree) return resolve(true);
@@ -564,110 +530,28 @@ export default function WalletDashboard({
       return;
     }
     setLoading(true);
-    if (paymentGateway === "cashfree") {
-      const loaded = await loadCashfree();
-      if (!loaded || !window.Cashfree) {
-        setError("Secure Cashfree checkout could not be loaded. Please try again.");
-        setLoading(false);
-        return;
-      }
-      const response = await fetch("/api/payments/cashfree/order", {
-        method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount, method: canonicalMethod, returnTo }),
-      });
-      const payload = await response.json().catch(() => null) as { data?: { paymentSessionId: string; orderId: string; environment: "sandbox" | "production" }; error?: string } | null;
-      if (!response.ok || !payload?.data) {
-        setError(payload?.error || "Unable to initialize Cashfree payment.");
-        setLoading(false);
-        return;
-      }
-      try {
-        await window.Cashfree({ mode: payload.data.environment }).checkout({ paymentSessionId: payload.data.paymentSessionId, redirectTarget: "_self" });
-      } catch {
-        setLoading(false);
-        setError("Cashfree checkout was cancelled or could not be opened. Your wallet was not credited.");
-      }
-      return;
-    }
-    const loaded = await loadRazorpay();
-    if (!loaded || !window.Razorpay) {
-      setError("Secure checkout could not be loaded. Please try again.");
+    const loaded = await loadCashfree();
+    if (!loaded || !window.Cashfree) {
+      setError("Secure Cashfree checkout could not be loaded. Please try again.");
       setLoading(false);
       return;
     }
-    const response = await fetch("/api/razorpay/create-order", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ amount, method: canonicalMethod }),
+    const response = await fetch("/api/payments/cashfree/order", {
+      method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount, method: canonicalMethod, returnTo }),
     });
-    const payload = (await response.json()) as {
-      data?: {
-        keyId: string;
-        orderId: string;
-        amount: number;
-        currency: string;
-        email: string;
-        transactionId: string;
-      };
-      error?: string;
-    };
-    if (!response.ok || !payload.data) {
-      setError(payload.error || "Unable to initialize payment.");
+    const payload = await response.json().catch(() => null) as { data?: { paymentSessionId: string; orderId: string; environment: "sandbox" | "production" }; error?: string } | null;
+    if (!response.ok || !payload?.data) {
+      setError(payload?.error || "Unable to initialize Cashfree payment.");
       setLoading(false);
       return;
     }
-    const checkout = new window.Razorpay({
-      key: payload.data.keyId,
-      amount: payload.data.amount,
-      currency: payload.data.currency,
-      name: "SocialRUSH Wallet",
-      description: `Add ${money(amount)} to campaign wallet`,
-      order_id: payload.data.orderId,
-      prefill: { email: payload.data.email || initial.email },
-      theme: { color: "#FF9F00" },
-      modal: {
-        ondismiss: () => {
-          setLoading(false);
-          setError("Payment was cancelled. Your wallet was not charged.");
-        },
-      },
-      handler: async (result) => {
-        const verification = await fetch("/api/razorpay/verify-payment", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(result),
-        });
-        const verified = (await verification.json()) as {
-          data?: { balance: number; paymentId?: string };
-          error?: string;
-        };
-        setLoading(false);
-        if (!verification.ok || !verified.data) {
-          setError(verified.error || "Payment verification failed.");
-          return;
-        }
-        const updatedBalance = Number(verified.data.balance);
-        setBalance(updatedBalance);
-        window.dispatchEvent(
-          new CustomEvent("wallet-balance-updated", { detail: updatedBalance }),
-        );
-        setSuccess({ paymentId: verified.data.paymentId || result.razorpay_payment_id, transactionId: payload.data?.transactionId || "", amount, balance: updatedBalance, completedAt: new Date().toISOString() });
-        if (returnTo) {
-          const separator = returnTo.includes("?") ? "&" : "?";
-          router.replace(`${returnTo}${separator}resume=1`);
-          return;
-        }
-        router.refresh();
-      },
-    });
-    checkout.on("payment.failed", (result) => {
+    try {
+      await window.Cashfree({ mode: payload.data.environment }).checkout({ paymentSessionId: payload.data.paymentSessionId, redirectTarget: "_self" });
+    } catch {
       setLoading(false);
-      setError(
-        canonicalMethod === "international_card"
-          ? "International payments are currently being activated. Please contact WhatsApp support."
-          : result.error?.description || "Payment could not be completed. Please try again.",
-      );
-    });
-    checkout.open();
+      setError("Cashfree checkout was cancelled or could not be opened. Your wallet was not credited.");
+    }
+    return;
   }
 
   const stats = [
@@ -947,8 +831,8 @@ export default function WalletDashboard({
                 <div className="mt-5 border-t border-white/10 pt-4">
                   <p className="text-[10px] font-black uppercase tracking-[0.18em] text-[#D1D5DB]">Checkout provider</p>
                   <div className="mt-3 rounded-xl border border-orange-400 bg-orange-500/15 px-4 py-3 text-left text-xs font-black text-white">
-                    {paymentGateway === "cashfree" ? "Cashfree" : "Razorpay"}
-                    <span className="mt-1 block text-[10px] font-medium text-[#9CA3AF]">{paymentGateway === "cashfree" ? "Hosted UPI, card and net banking checkout" : "Existing secure checkout"}</span>
+                    Cashfree
+                    <span className="mt-1 block text-[10px] font-medium text-[#9CA3AF]">Hosted UPI, card and net banking checkout</span>
                   </div>
                 </div>
               </motion.section>
