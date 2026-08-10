@@ -3,6 +3,17 @@ import { createHmac, randomUUID, timingSafeEqual } from "crypto";
 
 const API_VERSION = "2025-01-01";
 
+export class CashfreeApiError extends Error {
+  constructor(
+    public readonly status: number,
+    public readonly requestId: string,
+    public readonly response: unknown,
+  ) {
+    super(`Cashfree request failed with status ${status}`);
+    this.name = "CashfreeApiError";
+  }
+}
+
 export type CashfreeOrder = {
   order_id: string;
   order_amount: number;
@@ -42,6 +53,7 @@ export function cashfreeConfig() {
 
 export async function cashfreeRequest<T>(path: string, init: RequestInit = {}) {
   const { clientId, clientSecret, baseUrl } = cashfreeConfig();
+  const requestId = randomUUID();
   const response = await fetch(`${baseUrl}${path}`, {
     ...init,
     headers: {
@@ -49,13 +61,13 @@ export async function cashfreeRequest<T>(path: string, init: RequestInit = {}) {
       "x-api-version": API_VERSION,
       "x-client-id": clientId,
       "x-client-secret": clientSecret,
-      "x-request-id": randomUUID(),
+      "x-request-id": requestId,
       ...init.headers,
     },
     cache: "no-store",
   });
-  const payload = await response.json().catch(() => null) as T | { message?: string; type?: string } | null;
-  if (!response.ok) throw new Error("Cashfree request failed");
+  const payload = await response.json().catch(() => null) as T | { message?: string; type?: string; code?: string } | null;
+  if (!response.ok) throw new CashfreeApiError(response.status, requestId, payload);
   return payload as T;
 }
 
