@@ -24,8 +24,9 @@ import {
  *    Site URL: https://www.getsocialrush.com
  * 6. Additional Redirect URLs should include:
  *    http://localhost:3000/**
- *    https://www.getsocialrush.com/**
- *    https://getsocialrush.com/**
+ *    https://www.getsocialrush.com/auth/callback
+ *    https://getsocialrush.com/auth/callback
+ *    https://*-<vercel-team-or-account-slug>.vercel.app/** (Preview)
  */
 
 export async function GET(request: NextRequest) {

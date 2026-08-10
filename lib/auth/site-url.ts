@@ -21,29 +21,48 @@ export function normalizeSiteUrl(value: string | null | undefined) {
   }
 }
 
-export function getSiteUrl(options: { headers?: HeaderReader; requestUrl?: string } = {}) {
-  const configured = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
-  if (configured) return configured;
-
+function getRequestOrigin(options: { headers?: HeaderReader; requestUrl?: string }) {
   if (options.requestUrl) {
     try {
       return new URL(options.requestUrl).origin;
     } catch {
-      // Continue to header-derived and environment fallbacks.
+      // Continue to the proxy headers supplied by the request.
     }
   }
 
-  const headerOrigin = normalizeSiteUrl(options.headers?.get("origin"));
-  if (headerOrigin) return headerOrigin;
-
   const forwardedHost = firstHeaderValue(options.headers?.get("x-forwarded-host") ?? null);
   const host = forwardedHost || firstHeaderValue(options.headers?.get("host") ?? null);
-  if (host) {
-    const forwardedProtocol = firstHeaderValue(options.headers?.get("x-forwarded-proto") ?? null);
-    const protocol = forwardedProtocol || (/^(localhost|127\.0\.0\.1)/i.test(host) ? "http" : "https");
-    const forwardedOrigin = normalizeSiteUrl(`${protocol}://${host}`);
-    if (forwardedOrigin) return forwardedOrigin;
+  if (!host) return null;
+
+  const forwardedProtocol = firstHeaderValue(options.headers?.get("x-forwarded-proto") ?? null);
+  const protocol = forwardedProtocol || (/^(localhost|127\.0\.0\.1)/i.test(host) ? "http" : "https");
+  return normalizeSiteUrl(`${protocol}://${host}`);
+}
+
+function isVercelPreviewOrigin(origin: string | null) {
+  if (!origin) return false;
+
+  try {
+    return new URL(origin).hostname.endsWith(".vercel.app");
+  } catch {
+    return false;
   }
+}
+
+export function getSiteUrl(options: { headers?: HeaderReader; requestUrl?: string } = {}) {
+  const requestOrigin = getRequestOrigin(options);
+
+  // Preview deployments must keep auth and password-reset links on the exact
+  // deployment host.  A production NEXT_PUBLIC_SITE_URL can be inherited by
+  // Vercel Preview, so it must not take precedence in this environment.
+  if (process.env.VERCEL_ENV === "preview" && isVercelPreviewOrigin(requestOrigin)) {
+    return requestOrigin;
+  }
+
+  const configured = normalizeSiteUrl(process.env.NEXT_PUBLIC_SITE_URL);
+  if (configured) return configured;
+
+  if (requestOrigin) return requestOrigin;
 
   return process.env.NODE_ENV === "production"
     ? "https://www.getsocialrush.com"

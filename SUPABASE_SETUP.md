@@ -7,6 +7,11 @@
    - `http://localhost:3000/auth/callback`
    - `https://www.getsocialrush.com/auth/callback`
    - `https://getsocialrush.com/auth/callback`
+   - `https://*-<vercel-team-or-account-slug>.vercel.app/**` (Vercel Preview deployments)
+
+   Keep `https://www.getsocialrush.com` as the Site URL. The Preview pattern is
+   an additional Redirect URL: Supabase requires the `redirectTo` URL to match
+   this allowlist and otherwise falls back to the Site URL.
 5. Keep email confirmation enabled in **Authentication > Providers > Email** to require email verification.
 6. Install dependencies and start the app:
 
