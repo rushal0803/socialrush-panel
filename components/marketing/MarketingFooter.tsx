@@ -8,9 +8,10 @@ import FooterSocialLinks from "@/components/marketing/FooterSocialLinks";
 type FooterGroup = { title: string; links: readonly (readonly [string, string])[] };
 
 const groups: readonly FooterGroup[] = [
-  { title: "Company", links: [["About Us", "/about"], ["Reviews", "/reviews"], ["Case Studies", "/case-studies"], ["Blog", "/blog"], ["Contact", "/contact"]] },
-  { title: "Resources", links: [["Creator Tools", "/tools"], ["FAQ", "/faq"], ["Services", "/services"], ["Pricing", "/pricing"], ["Customer Safety", "/trust"]] },
-  { title: "Legal", links: [["Privacy Policy", "/privacy-policy"], ["Terms and Conditions", "/terms-and-conditions"], ["Refund Policy", "/refund-policy"]] },
+  { title: "Services", links: [["Instagram", "/services?platform=instagram"], ["YouTube", "/services?platform=youtube"], ["Facebook", "/services?platform=facebook"], ["LinkedIn", "/services?platform=linkedin"], ["X / Twitter", "/services?platform=x"], ["TikTok", "/services?platform=tiktok"], ["Telegram", "/services?platform=telegram"]] },
+  { title: "Company", links: [["About Us", "/about"], ["Pricing", "/pricing"], ["Packages", "/packages"], ["Case Studies", "/case-studies"], ["Blog", "/blog"], ["Contact", "/contact"]] },
+  { title: "Support", links: [["FAQ", "/faq"], ["Help / Support", "/support"], ["How It Works", "/#how-it-works"], ["Refund Policy", "/refund-policy"], ["Privacy Policy", "/privacy-policy"], ["Terms of Service", "/terms-and-conditions"]] },
+  { title: "Resources", links: [["Creator Tools", "/tools"], ["Growth Guides", "/blog"], ["Customer Safety", "/trust"]] },
 ] as const;
 
 const payments = ["UPI", "Cards via Razorpay", "Net Banking", "Wallet Balance"] as const;
@@ -30,10 +31,10 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
     <footer className="relative overflow-hidden border-t border-orange-400/15 bg-[#07080D] px-4 pb-[calc(5.5rem+env(safe-area-inset-bottom))] pt-10 text-white sm:px-6 sm:pb-10 lg:px-8 lg:pt-14">
       <div className="pointer-events-none absolute left-1/2 top-0 h-56 w-[34rem] max-w-full -translate-x-1/2 bg-orange-500/[.08] blur-3xl" />
       <div className="relative mx-auto max-w-7xl">
-        <section className="grid gap-8 rounded-3xl border border-white/[.08] bg-[#101219] p-5 sm:p-7 lg:grid-cols-[1.35fr_.65fr] lg:items-start lg:p-8" aria-label="About SocialRUSH">
+        <section className="grid gap-5 rounded-2xl border border-white/[.08] bg-[#101219] p-5 lg:grid-cols-[1.35fr_.65fr] lg:items-start lg:p-6" aria-label="About SocialRUSH">
           <div className="min-w-0">
             <Logo light className="[&>img]:h-11 [&>img]:max-w-[190px] sm:[&>img]:h-12" />
-            <p className="mt-5 max-w-2xl text-sm leading-7 text-[#A8AFBD]">SocialRUSH helps creators, brands and businesses order social media growth services through transparent pricing, public-link ordering, secure checkout, dashboard tracking and customer support.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#A8AFBD]">SocialRUSH helps creators, brands and businesses order social media growth services through transparent pricing, public-link ordering, secure checkout, dashboard tracking and customer support.</p>
             <div className="mt-5 flex flex-col items-start gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-5">
               <a href="mailto:support@getsocialrush.com" className="min-h-10 break-all py-2 font-semibold text-orange-300 outline-none hover:text-orange-200 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-orange-400">support@getsocialrush.com</a>
               <a href="https://wa.me/918860330771" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center py-2 font-semibold text-emerald-300 outline-none hover:text-emerald-200 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-emerald-400">WhatsApp Support</a>
@@ -46,7 +47,7 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
           <div className="space-y-1 lg:hidden">
             {groups.map((group) => { const open = openGroup === group.title; const id = groupId(group.title); return <section key={group.title} className="border-b border-white/10"><h2><button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpenGroup(open ? "" : group.title)} className="flex min-h-14 w-full items-center justify-between gap-4 py-3 text-left text-xs font-black uppercase tracking-[.14em] text-white outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-400"><span>{group.title}</span><span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-orange-400/20 bg-orange-500/10 text-lg text-orange-300">{open ? "−" : "+"}</span></button></h2><div id={id} className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}><div className="overflow-hidden"><div className="grid grid-cols-1 gap-x-4 pb-4 min-[390px]:grid-cols-2"><FooterLinks group={group} /></div></div></div></section>; })}
           </div>
-          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-3">
+          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-4">
             {groups.map((group) => <section key={group.title} className="min-w-0"><h2 className="text-xs font-black uppercase tracking-[.14em] text-white">{group.title}</h2><FooterLinks group={group} /></section>)}
           </div>
         </nav>
