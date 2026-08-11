@@ -12,12 +12,14 @@ import { createClient } from "@/lib/supabase/client";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 const nav = [
+  ["Home", "/"],
   ["Services", "/services"],
   ["Packages", "/packages"],
   ["Pricing", "/pricing"],
   ["Blog", "/blog"],
-  ["How It Works", "/#how-it-works"],
-  ["Support", "/support"],
+  ["Case Studies", "/case-studies"],
+  ["About Us", "/about"],
+  ["Contact", "/contact"],
 ] as const;
 
 export default function MarketingHeader({ tone = "default" }: { tone?: "default" | "light3d" }) {
