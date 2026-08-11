@@ -5,6 +5,7 @@ import InstagramLikesPage from "@/app/(india-seo-services)/buy-instagram-likes-i
 import InstagramViewsPage from "@/app/(india-seo-services)/buy-instagram-views-india/page";
 import YouTubeLikesPage from "@/app/(india-seo-services)/buy-youtube-likes-india/page";
 import YouTubeSubscribersPage from "@/app/(india-seo-services)/buy-youtube-subscribers-india/page";
+import YouTubeViewsLanding from "@/components/marketing/YouTubeViewsLanding";
 import {
   canonicalIndiaServicePaths,
   getIndiaServiceMetadata,
@@ -50,6 +51,7 @@ export default function CanonicalServicePage({
   // The canonical route is /youtube-subscribers; render the dedicated visual
   // experience here rather than falling back to the generic India template.
   if (slug === "buy-youtube-subscribers-india") return <YouTubeSubscribersPage />;
+  if (slug === "buy-youtube-views-india") return <YouTubeViewsLanding />;
 
   return (
     <IndiaServiceLandingPage
