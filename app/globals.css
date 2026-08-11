@@ -1238,6 +1238,15 @@ input, select, textarea { font-size: max(16px, 1em); }
   .premium-homepage .sr-primary,
   .premium-homepage .sr-secondary { flex: 1 1 10rem; }
 
+  /* Service cards are vertical flex containers. Override the shared CTA
+     flex-basis here so the button remains content-height on mobile. */
+  .premium-homepage .product-service-card .sr-secondary {
+    flex: 0 0 52px;
+    min-height: 52px;
+    margin-top: 1rem;
+    padding-block: .75rem;
+  }
+
   /* Decorative hero cards become compact, readable status chips below the
      configurator instead of covering price, service details or the CTA. */
   .hero-visual { display: flex; min-height: 0; flex-wrap: wrap; gap: .6rem; padding: .5rem 0 0; }
