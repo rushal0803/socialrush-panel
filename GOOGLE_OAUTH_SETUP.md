@@ -15,6 +15,13 @@ Google Sign-In has been added to the login and signup pages. To enable it, follo
    - For local development: `http://localhost:3000/auth/callback`
    - For production: `https://www.getsocialrush.com/auth/callback`
    - Also allow: `https://getsocialrush.com/auth/callback`
+
+   Do not add Preview deployment URLs to Google Cloud. Google always returns to
+   Supabase at `https://<project-ref>.supabase.co/auth/v1/callback`; add this
+   Preview allowlist entry instead in **Supabase > Authentication > URL
+   Configuration > Redirect URLs**:
+
+   - `https://*-<vercel-team-or-account-slug>.vercel.app/**`
 7. Copy your **Client ID** and **Client Secret**
 
 ## 2. Configure Google Provider in Supabase

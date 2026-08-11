@@ -80,12 +80,10 @@ export function isPaymentMethod(
 }
 
 const PAYMENT_METHOD_ENABLED: Record<PaymentMethodId, boolean> = {
-  upi: process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_UPI !== "false",
-  card: process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_CARD !== "false",
-  netbanking:
-    process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_NETBANKING !== "false",
-  international_card:
-    process.env.NEXT_PUBLIC_RAZORPAY_ENABLE_INTERNATIONAL_CARD === "true",
+  upi: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_UPI !== "false",
+  card: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_CARD !== "false",
+  netbanking: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_NETBANKING !== "false",
+  international_card: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_INTERNATIONAL_CARD === "true",
 };
 
 export function isPaymentMethodEnabled(method: SupportedPaymentMethodId) {

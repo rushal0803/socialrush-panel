@@ -62,7 +62,13 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(canonicalUrl, 308);
   }
 
-  const canonicalDestination = canonicalRedirects[request.nextUrl.pathname];
+  const isProductionHost =
+  requestHost === "getsocialrush.com" ||
+  requestHost === "www.getsocialrush.com";
+
+const canonicalDestination = isProductionHost
+  ? canonicalRedirects[request.nextUrl.pathname]
+  : undefined;
   if (canonicalDestination) {
     const canonicalUrl = new URL(canonicalDestination, request.url);
     canonicalUrl.protocol = "https:";

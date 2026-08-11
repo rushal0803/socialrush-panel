@@ -6,7 +6,14 @@ import { normalizePaymentMethod } from "@/lib/payments/methods";
 type RazorpayOrder = { id: string; amount: number; currency: string; status: string };
 const allowedMethods = ["upi", "card", "netbanking", "wallet"] as const;
 
-export async function POST(request: NextRequest) {
+// Keep the former implementation available in source for an intentional,
+// reviewed rollback, but do not allow new Razorpay wallet-funding orders.
+export async function POST() {
+  return NextResponse.json({ error: "Razorpay wallet funding is no longer available. Please use Cashfree." }, { status: 410 });
+}
+
+// eslint-disable-next-line @typescript-eslint/no-unused-vars -- retained for a reviewed rollback only.
+async function createLegacyRazorpayWalletOrder(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
