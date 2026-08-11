@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import IndiaServiceLandingPage from "@/components/marketing/services/IndiaServiceLandingPage";
+import InstagramLikesPage from "@/app/(india-seo-services)/buy-instagram-likes-india/page";
 import {
   canonicalIndiaServicePaths,
   getIndiaServiceMetadata,
@@ -35,6 +36,10 @@ export default function CanonicalServicePage({
 }) {
   const slug = serviceRoutes[params.service];
   if (!slug) notFound();
+
+  // Instagram Likes has a purpose-built conversion page. Its order builder reads
+  // the exact `instagram-likes` catalog entry used by Services and New Order.
+  if (slug === "buy-instagram-likes-india") return <InstagramLikesPage />;
 
   return (
     <IndiaServiceLandingPage
