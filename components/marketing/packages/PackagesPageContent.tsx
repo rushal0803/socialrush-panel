@@ -178,6 +178,10 @@ function getStartingPrice(platform: Platform, service: Service) {
   return prices.length ? Math.min(...prices) : null;
 }
 
+function getServiceCount(platform: Platform) {
+  return new Set(bigPackages.filter((pkg) => pkg.platform === platform).map((pkg) => pkg.service)).size;
+}
+
 function getRatePerThousand(pkg: BigPackage) {
   return pkg.quantity > 0 ? pkg.basePriceINR / (pkg.quantity / 1000) : 0;
 }
@@ -796,7 +800,7 @@ export default function PackagesPageContent({
           <p className="sr-only" aria-live="polite">
             {currentStepAnnouncement}
           </p>
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-2 gap-2 rounded-2xl border border-orange-400/20 bg-[#111111] p-2.5 sm:grid-cols-4 sm:gap-3 sm:p-3">
+          <div className="mx-auto grid w-full max-w-7xl grid-cols-4 gap-1.5 rounded-2xl border border-orange-400/20 bg-[#111111] p-2 sm:gap-3 sm:p-3">
             <PackageStep number="1" title="Pick a Platform" state={hasPlatformSelection ? "complete" : "active"} />
             <PackageStep
               number="2"
@@ -846,11 +850,13 @@ export default function PackagesPageContent({
                       } ${platform.key === "X" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
                     >
                       {active ? <CheckCircle2 className="absolute right-2.5 top-2.5 h-5 w-5 text-orange-400" aria-hidden="true" /> : null}
-                      <span className={`grid h-12 w-12 place-items-center rounded-2xl border border-white/10 bg-[#151515] ${active ? platformIconColors[platform.key] : "text-orange-300"}`}>
+                      <span className={`grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-[#151515] ${active ? platformIconColors[platform.key] : "text-orange-300"}`}>
                         <PlatformIcon platform={platform.label} className="h-6 w-6" />
                       </span>
-                      <span className="mt-3 block truncate text-xs font-bold text-white">{platform.label}</span>
-                      {active ? <span className="mt-1 block text-[10px] font-black uppercase tracking-[0.12em] text-orange-300">Selected</span> : null}
+                      <span className="mt-2 block truncate text-xs font-bold text-white">{platform.label}</span>
+                      <span className={`mt-1 block text-[10px] font-semibold ${active ? "text-orange-200" : "text-[#9CA3AF]"}`}>
+                        {active ? "Selected" : `${getServiceCount(platform.key)} ${getServiceCount(platform.key) === 1 ? "category" : "categories"}`}
+                      </span>
                     </button>
                   );
                 })}
@@ -964,11 +970,20 @@ export default function PackagesPageContent({
                         </button>
                       </div>
 
-                      <div className="grid items-stretch gap-4 md:grid-cols-2 xl:grid-cols-4">
+                      {activeCategoryPackages.length > 1 ? (
+                        <div className="mb-4 grid grid-cols-4 overflow-hidden rounded-2xl border border-white/10 bg-[#111111] text-center text-[10px] sm:text-xs">
+                          <div className="border-r border-white/10 px-2 py-2.5"><span className="block text-[#9CA3AF]">From price</span><strong className="mt-0.5 block text-white">{formatCurrency(Math.min(...activeCategoryPackages.map((pkg) => pkg.basePriceINR)), currency)}</strong></div>
+                          <div className="border-r border-white/10 px-2 py-2.5"><span className="block text-[#9CA3AF]">Quantity</span><strong className="mt-0.5 block text-white">{activeCategoryPackages[0]?.quantityLabel}–{activeCategoryPackages.at(-1)?.quantityLabel}</strong></div>
+                          <div className="border-r border-white/10 px-2 py-2.5"><span className="block text-[#9CA3AF]">Best rate</span><strong className="mt-0.5 block text-white">{formatCurrency(Math.min(...activeCategoryPackages.map(getRatePerThousand)), currency)} / 1K</strong></div>
+                          <div className="px-2 py-2.5"><span className="block text-[#9CA3AF]">Delivery</span><strong className="mt-0.5 block text-white">See each package</strong></div>
+                        </div>
+                      ) : null}
+
+                      <div className="grid items-stretch gap-3 md:grid-cols-2 xl:grid-cols-4">
                         {visibleCategoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
-                            className={`flex h-full min-w-0 flex-col rounded-3xl border bg-[#111111] p-5 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-6 ${
+                            className={`flex h-full min-w-0 flex-col rounded-3xl border bg-[#111111] p-4 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-5 ${
                               selectedPackageId === pkg.packageId
                                 ? "border-orange-400 ring-2 ring-orange-500/15"
                                 : "border-orange-400/20"
@@ -985,30 +1000,30 @@ export default function PackagesPageContent({
                               ) : null}
                             </div>
 
-                            <h3 className="mt-4 text-xl font-extrabold text-white">{pkg.title}</h3>
+                            <h3 className="mt-3 text-lg font-extrabold text-white">{pkg.title}</h3>
                             <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#9CA3AF]">
                               {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
                             </p>
-                            <p className="mt-4 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{pkg.description}</p>
-                            <span className="mt-3 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[11px] font-bold text-emerald-200">
+                            <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#D1D5DB]">{pkg.description}</p>
+                            <span className="mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-200">
                               <ShieldCheck className="h-3.5 w-3.5" />
                               Refill support if eligible
                             </span>
 
-                            <dl className="mt-5 grid auto-rows-fr grid-cols-2 gap-3 text-xs">
-                              <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 p-3">
+                            <dl className="mt-3 grid auto-rows-fr grid-cols-2 gap-2 text-xs">
+                              <div className="rounded-xl border border-orange-400/20 bg-orange-500/10 p-2.5">
                                 <dt className="text-orange-200">Price</dt>
                                 <dd className="mt-1 break-words text-base font-extrabold text-white">{formatCurrency(pkg.basePriceINR, currency)}</dd>
                               </div>
-                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-2.5">
                                 <dt className="text-[#9CA3AF]">Quantity</dt>
                                 <dd className="mt-1 font-bold text-white">{pkg.quantityLabel}</dd>
                               </div>
-                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-2.5">
                                 <dt className="text-[#9CA3AF]">Delivery</dt>
                                 <dd className="mt-1 font-bold text-white">{pkg.deliveryTime}</dd>
                               </div>
-                              <div className="rounded-xl border border-white/10 bg-[#151515] p-3">
+                              <div className="rounded-xl border border-white/10 bg-[#151515] p-2.5">
                                 <dt className="text-[#9CA3AF]">Rate / 1K</dt>
                                 <dd className="mt-1 font-bold leading-5 text-white">{formatCurrency(getRatePerThousand(pkg), currency)}</dd>
                               </div>
@@ -1287,7 +1302,7 @@ function CompletedPackageStepCard({
 
 function SummaryMetric({ label, value, highlight = false }: { label: string; value: string; highlight?: boolean }) {
   return (
-    <div className={`rounded-2xl border p-3 ${highlight ? "border-orange-400/30 bg-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
+    <div className={`min-w-0 border-l-2 px-3 py-2.5 ${highlight ? "border-orange-400 bg-orange-500/10" : "border-white/15"}`}>
       <dt className={highlight ? "text-orange-200" : "text-[#9CA3AF]"}>{label}</dt>
       <dd className="mt-1 break-words text-sm font-black leading-5 text-white">{value}</dd>
     </div>
@@ -1431,7 +1446,7 @@ function PackageReviewSection({
                 </button>
               </div>
 
-              <dl className="grid gap-3 p-4 text-xs sm:grid-cols-2 sm:p-5 lg:grid-cols-4">
+              <dl className="grid gap-x-3 gap-y-1 p-3 text-xs sm:grid-cols-2 sm:p-4 lg:grid-cols-3">
                 <SummaryMetric label="Platform" value={platformLabel} />
                 <SummaryMetric label="Service" value={serviceLabels[selectedPackage.service]} />
                 <SummaryMetric label="Quantity" value={selectedPackage.quantityLabel} />
@@ -1467,6 +1482,11 @@ function PackageReviewSection({
               <p id="package-public-link-help" className="mt-2 text-xs font-semibold leading-6 text-[#D1D5DB]">
                 {linkRuleHelper} The destination must remain public during delivery. SocialRUSH never asks for passwords, recovery codes, or private access.
               </p>
+              {targetLink.trim() && !currentLinkError ? (
+                <p role="status" className="mt-2 flex items-center gap-2 text-xs font-bold text-emerald-200">
+                  <CheckCircle2 className="h-4 w-4" /> Valid public link
+                </p>
+              ) : null}
               {currentLinkError ? (
                 <p id="package-public-link-error" role="alert" className="mt-2 rounded-xl border border-red-400/30 bg-red-500/10 px-3 py-2 text-xs font-bold text-red-100">
                   {currentLinkError}
