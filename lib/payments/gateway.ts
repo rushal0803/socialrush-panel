@@ -1,4 +1,6 @@
-// Wallet funding is intentionally Cashfree-only. Razorpay routes and records
-// remain available for historical payments and an operational rollback, but
-// must never be selected for a new wallet top-up.
-export const paymentGateway = "cashfree" as const;
+// This is the single policy for every new customer payment. Historical
+// Razorpay verification, webhook, reconciliation, and refund operations are
+// deliberately separate from this policy.
+export const NEW_CUSTOMER_PAYMENT_GATEWAY = "cashfree" as const;
+export const RAZORPAY_NEW_PAYMENT_DISABLED_MESSAGE =
+  "Razorpay is disabled for new payments. Use Cashfree.";

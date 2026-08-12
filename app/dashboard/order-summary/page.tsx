@@ -31,7 +31,6 @@ import {
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import { calculateServiceTotal } from "@/lib/service-pricing";
-import { openCheckoutRazorpay } from "@/lib/payments/checkout-razorpay-client";
 
 const whatsappSupportUrl = "https://wa.me/918860330771";
 
@@ -67,7 +66,7 @@ export default function DashboardOrderSummaryPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
-  const [checkoutStage, setCheckoutStage] = useState("");
+  const checkoutStage = "";
   const inFlight = useRef(false);
   const requestId = useRef("");
   const autoResumeStarted = useRef(false);
@@ -231,105 +230,8 @@ export default function DashboardOrderSummaryPage() {
 
   async function payAndPlaceOrder() {
     if (inFlight.current || submitting || !canAddFunds) return;
-    inFlight.current = true;
-    setSubmitting(true);
-    setError("");
-    setCheckoutStage("Preparing secure checkout");
-    if (!requestId.current) requestId.current = crypto.randomUUID();
-
-    try {
-      const intentResponse = await fetch("/api/checkout/intent", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          serviceCode: selectedService.code,
-          quantity,
-          link: targetLink.trim(),
-          clientRequestId: requestId.current,
-          packageName: "Custom",
-          notes: null,
-        }),
-      });
-      const intent = (await intentResponse.json()) as { data?: { id: string }; error?: string };
-      if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
-
-      const recoveryParams = new URLSearchParams(returnParams);
-      recoveryParams.set("checkoutIntent", intent.data.id);
-      recoveryParams.set("checkoutRequest", requestId.current);
-      const recoveryUrl = `/dashboard/order-summary?${recoveryParams.toString()}`;
-      window.history.replaceState(null, "", recoveryUrl);
-
-      const paymentResponse = await fetch("/api/checkout/payment", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          intentId: intent.data.id,
-          clientRequestId: requestId.current,
-          returnUrl: recoveryUrl,
-        }),
-      });
-      const payment = (await paymentResponse.json()) as {
-        data?: {
-          id?: string; keyId?: string; orderId?: string; amount?: number;
-          currency?: string; email?: string; completed?: boolean;
-        };
-        error?: string;
-        code?: string;
-      };
-      if (payment.data?.completed && payment.data.orderId) {
-        router.replace("/dashboard/orders");
-        return;
-      }
-      if (payment.code === "WALLET_SUFFICIENT") {
-        inFlight.current = false;
-        setSubmitting(false);
-        setCheckoutStage("");
-        await placeOrder();
-        return;
-      }
-      if (!paymentResponse.ok || !payment.data?.id || !payment.data.keyId || !payment.data.orderId || !payment.data.amount || !payment.data.currency) {
-        throw new Error(payment.error || "Unable to initialize payment.");
-      }
-
-      setCheckoutStage("Opening payment");
-      const result = await openCheckoutRazorpay({
-        key: payment.data.keyId,
-        amount: payment.data.amount,
-        currency: payment.data.currency,
-        name: "SocialRUSH",
-        description: "Pay the remaining amount and place your order",
-        order_id: payment.data.orderId,
-        prefill: { email: payment.data.email },
-        theme: { color: "#FF9F00" },
-      });
-
-      setCheckoutStage("Verifying payment");
-      const verificationResponse = await fetch("/api/checkout/payment/verify", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ checkoutPaymentId: payment.data.id, ...result }),
-      });
-      const verified = (await verificationResponse.json()) as {
-        data?: { orderId?: string; balance?: number };
-        error?: string;
-      };
-      if (!verificationResponse.ok || !verified.data?.orderId) {
-        throw new Error(verified.error || "Payment verification could not complete your order.");
-      }
-
-      setCheckoutStage("Creating order");
-      const updatedBalance = Number(verified.data.balance ?? 0);
-      setWalletBalance(updatedBalance);
-      window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
-      setSuccess({ id: verified.data.orderId, charge: totalPrice, balance: updatedBalance });
-      requestId.current = "";
-      window.setTimeout(() => router.replace("/dashboard/orders"), 500);
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Unable to complete checkout.");
-      setCheckoutStage("");
-      inFlight.current = false;
-      setSubmitting(false);
-    }
+    const returnTo = `/dashboard/order-summary?${returnParams.toString()}`;
+    router.push(`/dashboard/add-funds?amount=${encodeURIComponent(String(totalPrice - (walletBalance ?? 0)))}&returnTo=${encodeURIComponent(returnTo)}`);
   }
 
   useEffect(() => {

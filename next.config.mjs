@@ -3,7 +3,6 @@ const scriptSource = [
   "'self'",
   "'unsafe-inline'",
   ...(process.env.NODE_ENV === "development" ? ["'unsafe-eval'"] : []),
-  "https://checkout.razorpay.com",
   "https://sdk.cashfree.com",
 ].join(" ");
 
@@ -41,7 +40,7 @@ const nextConfig = {
             // Next.js and payment SDKs require inline bootstrap scripts; this still
             // blocks plugin content, framing, and unexpected base URL changes.
             key: "Content-Security-Policy",
-            value: `default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://api.razorpay.com https://checkout.razorpay.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://api.razorpay.com https://checkout.razorpay.com https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://api.razorpay.com https://checkout.razorpay.com https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests`,
+            value: `default-src 'self'; script-src ${scriptSource}; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests`,
           },
         ],
       },

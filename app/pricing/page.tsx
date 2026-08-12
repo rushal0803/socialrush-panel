@@ -27,7 +27,7 @@ const walletSteps = [
   {
     icon: "wallet",
     title: "Add funds",
-    text: "Top up your protected wallet through the available Razorpay checkout options.",
+    text: "Top up your protected wallet through the available Cashfree checkout options.",
   },
   {
     icon: "search",
@@ -59,7 +59,7 @@ const trustPoints = [
   ["trend", "Transparent pricing", "See the current rate and calculated total before confirmation."],
   ["eye", "Review before confirming", "Your current campaign total is visible before you submit an order."],
   ["refresh", "Refill support", "Eligible services clearly show their available refill coverage."],
-  ["lock", "Secure Razorpay top-up", "Verified payments safely credit your protected account wallet."],
+  ["lock", "Secure Cashfree top-up", "Verified payments safely credit your protected account wallet."],
   ["message", "WhatsApp support", "Get human help when you need guidance with pricing or ordering."],
 ] as const satisfies ReadonlyArray<readonly [MarketingIconName, string, string]>;
 

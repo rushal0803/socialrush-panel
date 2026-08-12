@@ -58,13 +58,23 @@ test("unauthenticated dashboard routes redirect to login", async ({ page }) => {
   }
 });
 
-test("production CSP retains required Supabase, Razorpay, and inline-style allowances", async ({ request }) => {
+test("production CSP retains required Supabase and Cashfree allowances without Razorpay checkout", async ({ request }) => {
   const response = await request.get("/");
   expect(response.ok()).toBeTruthy();
   const csp = response.headers()["content-security-policy"];
   expect(csp).toBeTruthy();
   expect(csp).toContain("connect-src 'self' https://*.supabase.co wss://*.supabase.co");
   expect(csp).toContain("style-src 'self' 'unsafe-inline'");
-  expect(csp).toContain("https://checkout.razorpay.com");
-  expect(csp).toContain("https://api.razorpay.com");
+  expect(csp).toContain("https://sdk.cashfree.com");
+  expect(csp).not.toContain("razorpay.com");
+});
+
+test("former Razorpay order endpoints reject new customer payments", async ({ request }) => {
+  for (const path of ["/api/payments/razorpay/order", "/api/razorpay/create-order", "/api/checkout/payment"]) {
+    const response = await request.post(path, { data: {} });
+    expect(response.status(), `${path} must be permanently unavailable for new payments`).toBe(410);
+    await expect(response.json()).resolves.toMatchObject({
+      error: "Razorpay is disabled for new payments. Use Cashfree.",
+    });
+  }
 });

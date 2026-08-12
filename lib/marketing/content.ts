@@ -111,7 +111,7 @@ export const publicFaqs = [
   ["What is SocialRUSH?", "SocialRUSH is a premium social media growth platform for ordering and tracking Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X services from one secure dashboard."],
   ["Do I need to share my password?", "No. SocialRUSH never asks for your social media password. Customers provide only the public profile, post, reel, channel, or video link required for processing."],
   ["How do I place an order?", "Create an account, add funds through the wallet, open New Campaign, choose a service, paste the public profile or content link, select quantity, and confirm checkout."],
-  ["How do payments work?", "Add funds securely through supported Razorpay payment methods. Verified payments credit your wallet, and campaign charges are deducted only when an order is placed."],
+  ["How do payments work?", "Add funds securely through supported Cashfree payment methods. Verified payments credit your wallet, and campaign charges are deducted only when an order is placed."],
   ["How long does delivery take?", "Delivery varies by service and quantity. The estimated processing window is displayed before checkout and progress remains visible in Campaign History."],
   ["What is refill support?", "Eligible services include refill coverage for the displayed period. If qualifying delivery drops during that window, open a support ticket with the order ID."],
   ["Can I track my order?", "Yes. Order status, amount, destination, date, and progress are available inside your protected dashboard."],
