@@ -411,7 +411,7 @@ export default function NewOrderPage() {
       }
       const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
       const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, returnPath }) });
-      const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
+      const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; returnUrl?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
       if (payment.code === "WALLET_SUFFICIENT") {
         const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
         const walletOrder = await walletOrderResponse.json() as { data?: ApiOrderData; error?: string };
@@ -421,11 +421,12 @@ export default function NewOrderPage() {
         window.setTimeout(() => router.push("/dashboard/orders"), 900);
         return;
       }
-      if (!paymentResponse.ok || !payment.data?.paymentSessionId || !payment.data.environment) throw new Error(payment.error || "Unable to initialize secure payment.");
+      if (!paymentResponse.ok || !payment.data?.paymentSessionId || !payment.data.returnUrl || !payment.data.environment) throw new Error(payment.error || "Unable to initialize secure payment.");
       setCheckoutStage("Opening secure payment...");
       const loaded = await loadCashfree();
       if (!loaded || !window.Cashfree) throw new Error("Secure Cashfree checkout could not be loaded. Please try again.");
-      await window.Cashfree({ mode: payment.data.environment }).checkout({ paymentSessionId: payment.data.paymentSessionId, redirectTarget: "_self" });
+      const checkout = window.Cashfree({ mode: payment.data.environment }) as unknown as { checkout: (input: { paymentSessionId: string; returnUrl: string; redirectTarget: "_self" }) => Promise<unknown> };
+      await checkout.checkout({ paymentSessionId: payment.data.paymentSessionId, returnUrl: payment.data.returnUrl, redirectTarget: "_self" });
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to open secure payment.");
       setCheckoutStage(""); setSubmitting(false); inFlight.current = false;

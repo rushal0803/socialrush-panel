@@ -66,13 +66,18 @@ export async function POST(request: NextRequest) {
   const walletBalancePaise = Math.max(Math.round(Number(profile?.balance || 0) * 100), 0);
   const requiredTopUpPaise = Math.max(recalculatedTotalPaise - walletBalancePaise, 0);
   if (requiredTopUpPaise === 0) return NextResponse.json({ error: "Your wallet already covers this order.", code: "WALLET_SUFFICIENT" }, { status: 409 });
+  const appBaseUrl = cashfreeAppBaseUrl();
+  const callback = new URL("/api/checkout/cashfree/return", appBaseUrl);
+  callback.searchParams.set("order_id", "{order_id}");
+  callback.searchParams.set("return_path", returnPath || "/dashboard/new-order");
+  const returnUrl = callback.toString().replace("%7Border_id%7D", "{order_id}");
 
   const { data: existing } = await admin.from("cashfree_checkout_intent_payments")
     .select("provider_order_id,payment_session_id,status,required_top_up_paise")
     .eq("checkout_intent_id", intent.id).in("status", ["created", "pending"]).maybeSingle();
   if (existing) {
     if (existing.status === "pending" && existing.payment_session_id) {
-      return NextResponse.json({ data: { orderId: existing.provider_order_id, paymentSessionId: existing.payment_session_id, amountPaise: Number(existing.required_top_up_paise), environment: cashfreeMode(), duplicate: true } });
+      return NextResponse.json({ data: { orderId: existing.provider_order_id, paymentSessionId: existing.payment_session_id, returnUrl, amountPaise: Number(existing.required_top_up_paise), environment: cashfreeMode(), duplicate: true } });
     }
     return NextResponse.json({ error: "A payment is already being initialized for this checkout. Please wait before retrying." }, { status: 409 });
   }
@@ -94,17 +99,13 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    const appBaseUrl = cashfreeAppBaseUrl();
-    const callback = new URL(returnPath || "/dashboard/new-order", appBaseUrl);
-    callback.searchParams.set("cashfree_order_id", providerOrderId);
-    callback.searchParams.set("checkout_intent", intent.id);
     const order = await cashfreeRequest<CashfreeOrder>("/orders", {
       method: "POST",
       headers: { "x-idempotency-key": providerOrderId },
       body: JSON.stringify({
         order_id: providerOrderId, order_amount: requiredTopUpPaise / 100, order_currency: "INR",
         customer_details: { customer_id: user.id, customer_email: user.email || undefined, customer_phone: phone },
-        order_meta: { return_url: callback.toString(), notify_url: new URL("/api/payments/cashfree/webhook", appBaseUrl).toString() },
+        order_meta: { return_url: returnUrl, notify_url: new URL("/api/payments/cashfree/webhook", appBaseUrl).toString() },
         order_note: "SocialRUSH order balance payment", order_tags: { user_id: user.id, checkout_intent_id: intent.id },
       }),
     });
@@ -113,7 +114,7 @@ export async function POST(request: NextRequest) {
       .update({ payment_session_id: order.payment_session_id, status: "pending", updated_at: new Date().toISOString() })
       .eq("checkout_intent_id", intent.id).eq("status", "created");
     if (updateError) throw updateError;
-    return NextResponse.json({ data: { orderId: providerOrderId, paymentSessionId: order.payment_session_id, amountPaise: requiredTopUpPaise, environment: cashfreeMode(), duplicate: false } }, { status: 201 });
+    return NextResponse.json({ data: { orderId: providerOrderId, paymentSessionId: order.payment_session_id, returnUrl, amountPaise: requiredTopUpPaise, environment: cashfreeMode(), duplicate: false } }, { status: 201 });
   } catch (error) {
     if (error instanceof CashfreeApiError) console.error("Cashfree direct checkout creation failed", { status: error.status, requestId: error.requestId });
     else console.error("Cashfree direct checkout creation failed", error);
