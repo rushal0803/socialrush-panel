@@ -18,6 +18,25 @@ export async function POST(request: NextRequest) {
   const webhookPayment = event.data?.payment;
   if (!orderId || !webhookPayment?.cf_payment_id || webhookPayment.payment_status !== "SUCCESS") return NextResponse.json({ received: true });
   const admin = createAdminClient();
+  const { data: directPayment } = await admin.from("cashfree_checkout_intent_payments")
+    .select("required_top_up_paise,status")
+    .eq("provider_order_id", orderId)
+    .maybeSingle();
+  if (directPayment) {
+    if (directPayment.status === "completed") return NextResponse.json({ received: true });
+    try {
+      const [order, payments] = await Promise.all([
+        cashfreeRequest<CashfreeOrder>(`/orders/${encodeURIComponent(orderId)}`),
+        cashfreeRequest<CashfreePayment[]>(`/orders/${encodeURIComponent(orderId)}/payments`),
+      ]);
+      const payment = payments.find((item) => item.cf_payment_id === webhookPayment.cf_payment_id && item.payment_status === "SUCCESS" && item.is_captured !== false);
+      const expectedAmount = Number(directPayment.required_top_up_paise) / 100;
+      if (!payment || order.order_status !== "PAID" || order.order_currency !== "INR" || Number(order.order_amount) !== expectedAmount || payment.order_id !== orderId || payment.payment_currency !== "INR" || payment.order_currency !== "INR" || Number(payment.order_amount) !== expectedAmount || Number(payment.payment_amount) !== expectedAmount) return NextResponse.json({ error: "Payment details mismatch" }, { status: 409 });
+      const { error } = await admin.rpc("settle_cashfree_checkout_intent_payment_system", { p_provider_order_id: orderId, p_provider_payment_id: payment.cf_payment_id });
+      if (error) return NextResponse.json({ error: "Direct checkout settlement failed" }, { status: 500 });
+      return NextResponse.json({ received: true });
+    } catch { return NextResponse.json({ error: "Webhook verification pending" }, { status: 503 }); }
+  }
   const { data: transaction } = await admin.from("transactions").select("amount,status,payment_method").eq("provider_order_id", orderId).maybeSingle();
   if (!transaction || transaction.payment_method !== "cashfree" || transaction.status === "completed") return NextResponse.json({ received: true });
   try {
