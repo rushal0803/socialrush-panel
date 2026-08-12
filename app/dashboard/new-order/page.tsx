@@ -44,10 +44,22 @@ import { track } from "@/lib/analytics/events";
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
 type SavedProfile = { id: string; label: string; platform: string; public_url: string; last_used_at: string | null };
+type CashfreeCheckout = { checkout: (input: { paymentSessionId: string; redirectTarget: "_self" }) => Promise<unknown> };
+declare global { interface Window { Cashfree?: (options: { mode: "sandbox" | "production" }) => CashfreeCheckout; } }
 
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 function cleanQuantity(value: string) {
   return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
+}
+
+function loadCashfree() {
+  return new Promise<boolean>((resolve) => {
+    if (window.Cashfree) return resolve(true);
+    const existing = document.querySelector<HTMLScriptElement>('script[src="https://sdk.cashfree.com/js/v3/cashfree.js"]');
+    if (existing) { existing.addEventListener("load", () => resolve(true), { once: true }); existing.addEventListener("error", () => resolve(false), { once: true }); return; }
+    const script = document.createElement("script"); script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
+    script.onload = () => resolve(true); script.onerror = () => resolve(false); document.body.appendChild(script);
+  });
 }
 
 function validQuickQuantities(service: SmmService) {
@@ -150,7 +162,7 @@ export default function NewOrderPage() {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
-  const checkoutStage = "";
+  const [checkoutStage, setCheckoutStage] = useState("");
   const [checkoutStep, setCheckoutStep] = useState(initialService ? 3 : requestedPlatform ? 2 : 1);
   const inFlight = useRef(false);
   const requestId = useRef("");
@@ -382,8 +394,36 @@ export default function NewOrderPage() {
 
   async function payAndPlaceOrder() {
     if (!selectedService || !linkRule || inFlight.current || submitting || !formIsValid) return;
-    const returnTo = `/dashboard/new-order?${returnParams.toString()}`;
-    router.push(`/dashboard/add-funds?amount=${encodeURIComponent(String(totalPrice - (walletBalance ?? 0)))}&returnTo=${encodeURIComponent(returnTo)}`);
+    inFlight.current = true;
+    setSubmitting(true);
+    setCheckoutStage("Preparing secure payment...");
+    setError("");
+    if (!requestId.current) requestId.current = crypto.randomUUID();
+    try {
+      const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: null }) });
+      const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
+      if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
+      const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
+      const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId: intent.data.id, returnPath }) });
+      const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
+      if (payment.code === "WALLET_SUFFICIENT") {
+        const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId: intent.data.id, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
+        const walletOrder = await walletOrderResponse.json() as { data?: ApiOrderData; error?: string };
+        if (!walletOrderResponse.ok || !walletOrder.data) throw new Error(walletOrder.error || "Unable to place your order.");
+        setWalletBalance(Number(walletOrder.data.balance)); setSuccess(walletOrder.data); requestId.current = "";
+        window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: Number(walletOrder.data.balance) }));
+        window.setTimeout(() => router.push("/dashboard/orders"), 900);
+        return;
+      }
+      if (!paymentResponse.ok || !payment.data?.paymentSessionId || !payment.data.environment) throw new Error(payment.error || "Unable to initialize secure payment.");
+      setCheckoutStage("Opening secure payment...");
+      const loaded = await loadCashfree();
+      if (!loaded || !window.Cashfree) throw new Error("Secure Cashfree checkout could not be loaded. Please try again.");
+      await window.Cashfree({ mode: payment.data.environment }).checkout({ paymentSessionId: payment.data.paymentSessionId, redirectTarget: "_self" });
+    } catch (cause) {
+      setError(cause instanceof Error ? cause.message : "Unable to open secure payment.");
+      setCheckoutStage(""); setSubmitting(false); inFlight.current = false;
+    }
   }
 
   const returnParams = new URLSearchParams();
@@ -391,25 +431,28 @@ export default function NewOrderPage() {
   if (quantityInput) returnParams.set("quantity", quantityInput);
   if (targetLink.trim()) returnParams.set("link", targetLink.trim());
   returnParams.set("resume", "1");
-  const recoveryIntentId = searchParams.get("checkoutIntent");
-  const recoveryRequestId = searchParams.get("checkoutRequest");
-
   useEffect(() => {
-    if (!recoveryIntentId) return;
-    if (recoveryRequestId && /^[0-9a-f-]{36}$/i.test(recoveryRequestId)) {
-      requestId.current = recoveryRequestId;
-    }
-    void fetch(`/api/checkout/payment?intentId=${encodeURIComponent(recoveryIntentId)}`, { cache: "no-store" })
+    const orderId = searchParams.get("cashfree_order_id");
+    if (!orderId || !/^src_[a-f0-9]{32}$/i.test(orderId)) return;
+    let active = true;
+    void fetch("/api/checkout/cashfree/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId }) })
       .then(async (response) => {
-        const result = (await response.json()) as { data?: { status?: string; orderId?: string }; error?: string };
-        if (response.ok && result.data?.status === "completed" && result.data.orderId) {
+        const result = (await response.json()) as { data?: { status?: string; orderId?: string; balance?: number }; error?: string };
+        if (!active) return;
+        if (response.ok && result.data?.status === "success" && result.data.orderId) {
+          setSuccess({ id: result.data.orderId, charge: totalPrice, balance: Number(result.data.balance ?? walletBalance ?? 0) });
           router.replace("/dashboard/orders");
+        } else if (response.ok && result.data?.status === "pending") {
+          setError("Payment verification is pending. Your order has not been placed yet; refresh shortly to retry safely.");
         } else if (response.ok && result.data?.status === "failed") {
-          setError("The previous payment failed. Please start the payment again.");
+          setError("Payment was not completed. Your order has not been placed.");
+        } else if (!response.ok) {
+          setError(result.error || "Payment verification is pending. Please refresh shortly.");
         }
       })
       .catch(() => undefined);
-  }, [recoveryIntentId, recoveryRequestId, router]);
+    return () => { active = false; };
+  }, [searchParams, router, totalPrice, walletBalance]);
 
   const moveTo = (step: number) => {
     if (step === 2 && !platform) return;
@@ -465,7 +508,7 @@ export default function NewOrderPage() {
             {currentStep === 4 && selectedService ? <div>
               <button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to details</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 4 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Review & pay</h2>
               <div className="mt-5 rounded-2xl border border-white/10 bg-[#0B0B0F] p-4"><div className="flex items-center justify-between"><div className="flex items-center gap-3"><IconBadge size="sm" label={platformMeta[selectedService.platform].label} className={`bg-gradient-to-br ${platformAccent(selectedService.platform)}`}><PlatformIcon platform={platformMeta[selectedService.platform].label} /></IconBadge><div><h3 className="font-black">{serviceExperience[selectedService.code].name}</h3><p className="text-xs text-[#9CA3AF]">{platformMeta[selectedService.platform].label}</p></div></div><button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-orange-300">Edit details</button></div><dl className="mt-4 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">{[["Platform", platform && platformMeta[platform].label], ["Service", serviceExperience[selectedService.code].name], ["Public link", targetLink], ["Quantity", quantity.toLocaleString("en-IN")], ["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`], ["Delivery", selectedService.deliveryTime], ["Refill", selectedService.refillPolicy]].map(([label, value]) => <div key={String(label)} className="min-w-0"><dt className="text-[10px] font-black uppercase tracking-wider text-[#777]">{label}</dt><dd className="mt-1 break-words font-bold text-white">{label === "Public link" ? <span className="flex items-start gap-2"><span className="min-w-0 break-all">{value}</span><button type="button" aria-label="Copy public link" onClick={() => navigator.clipboard?.writeText(targetLink)} className="shrink-0 text-orange-300"><Copy className="h-4 w-4" /></button></span> : value}</dd></div>)}</dl></div>
-              <div className="mt-4 rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#201406,#0b0b0b)] p-5"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Payment summary</p><div className="mt-4 space-y-3 text-sm"><div className="flex justify-between"><span className="text-[#aaa]">Order total</span><strong>{formatCurrency(totalPrice, currency)}</strong></div><div className="flex justify-between"><span className="text-[#aaa]">Wallet balance</span><strong>{walletLoading ? "Checking…" : formatCurrency(walletBalance ?? 0, currency)}</strong></div><div className="flex justify-between border-t border-white/10 pt-3"><span className="text-[#aaa]">Balance after order</span><strong>{remainingBalance === null ? "—" : formatCurrency(remainingBalance, currency)}</strong></div></div>{!walletLoading && !hasEnoughWallet && <div className="mt-4 rounded-xl bg-red-500/10 p-3 text-sm text-red-100"><strong>Insufficient wallet balance.</strong><br />You need {formatCurrency(amountRequired, currency)} more to place this order.</div>}{walletError && <p className="mt-3 text-xs text-amber-200">{walletError}</p>}{error && <p className="mt-3 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}{success && <p className="mt-3 rounded-xl bg-emerald-500/15 p-3 text-sm text-emerald-100">Order placed successfully · #{success.id}. Opening Order History…</p>}<button type="button" onClick={() => { if (hasEnoughWallet) void placeOrder(); else void payAndPlaceOrder(); }} disabled={walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black shadow-[0_18px_36px_-16px_rgba(255,142,0,.55)] disabled:cursor-not-allowed disabled:bg-[#252525] disabled:bg-none disabled:text-[#777]">{submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" />{checkoutStage || "Placing order…"}</> : hasEnoughWallet ? <><ShieldCheck className="h-4 w-4" />Confirm & Place Order</> : <><Wallet className="h-4 w-4" />Add Funds & Continue</>}</button></div>
+              <div className="mt-4 rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#201406,#0b0b0b)] p-5"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Payment summary</p><div className="mt-4 space-y-3 text-sm"><div className="flex justify-between"><span className="text-[#aaa]">Order total</span><strong>{formatCurrency(totalPrice, currency)}</strong></div><div className="flex justify-between"><span className="text-[#aaa]">Wallet balance</span><strong>{walletLoading ? "Checking…" : formatCurrency(walletBalance ?? 0, currency)}</strong></div><div className="flex justify-between border-t border-white/10 pt-3"><span className="text-[#aaa]">Balance after order</span><strong>{remainingBalance === null ? "—" : formatCurrency(remainingBalance, currency)}</strong></div></div>{!walletLoading && !hasEnoughWallet && <div className="mt-4 rounded-xl bg-red-500/10 p-3 text-sm text-red-100"><strong>Insufficient wallet balance.</strong><br />You need {formatCurrency(amountRequired, currency)} more to place this order.</div>}{walletError && <p className="mt-3 text-xs text-amber-200">{walletError}</p>}{error && <p className="mt-3 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}{success && <p className="mt-3 rounded-xl bg-emerald-500/15 p-3 text-sm text-emerald-100">Order placed successfully · #{success.id}. Opening Order History…</p>}<button type="button" onClick={() => { if (hasEnoughWallet) void placeOrder(); else void payAndPlaceOrder(); }} disabled={walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black shadow-[0_18px_36px_-16px_rgba(255,142,0,.55)] disabled:cursor-not-allowed disabled:bg-[#252525] disabled:bg-none disabled:text-[#777]">{submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" />{checkoutStage || "Preparing secure payment..."}</> : hasEnoughWallet ? <><ShieldCheck className="h-4 w-4" />Confirm & Place Order</> : <><Wallet className="h-4 w-4" />Pay {formatCurrency(amountRequired, currency)} & Continue</>}</button></div>
             </div> : null}
           </section>
           <aside className="hidden h-fit rounded-3xl border border-white/10 bg-[#101010] p-5 lg:sticky lg:top-24 lg:block"><p className="text-[10px] font-black uppercase tracking-[.16em] text-[#888]">Your order</p>{platform ? <><div className="mt-4 flex items-center gap-3"><IconBadge label={platformMeta[platform].label}><PlatformIcon platform={platformMeta[platform].label} className="h-5 w-5" /></IconBadge><strong className="text-sm">{platformMeta[platform].label}</strong></div><div className="my-5 border-t border-white/10" /><p className="text-sm font-bold">{selectedService ? serviceExperience[selectedService.code].name : "Choose a service"}</p><p className="mt-2 text-xs text-[#999]">{quantity ? `${quantity.toLocaleString("en-IN")} units` : "Quantity not set"}</p><div className="mt-5 rounded-xl bg-orange-500/10 p-4"><span className="text-xs text-orange-200">Current total</span><strong className="mt-1 block text-2xl">{totalPrice ? formatCurrency(totalPrice, currency) : "—"}</strong></div><p className="mt-4 text-xs text-[#999]">Wallet: {walletLoading ? "Checking…" : formatCurrency(walletBalance ?? 0, currency)}</p></> : <p className="mt-4 text-sm leading-6 text-[#999]">Choose a platform to begin your order.</p>}</aside>
@@ -638,7 +681,7 @@ export default function NewOrderPage() {
                     </button>
                   ) : formIsValid && !walletLoading ? (
                     <button type="button" onClick={() => void payAndPlaceOrder()} disabled={submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
-                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> {checkoutStage || "Preparing secure checkout"}</> : <><Wallet className="h-4 w-4" /> Add Funds &amp; Continue</>}
+                      {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> {checkoutStage || "Preparing secure payment..."}</> : <><Wallet className="h-4 w-4" /> Pay {formatCurrency(amountRequired, currency)} &amp; Continue</>}
                     </button>
                   ) : (
                     <button type="button" disabled className="mt-5 min-h-12 w-full rounded-xl bg-white/15 px-5 py-3 text-sm font-black text-white/60">Complete details to continue</button>
@@ -656,7 +699,7 @@ export default function NewOrderPage() {
         </div>
         <div className="fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 lg:hidden">
           <div className="mx-auto max-w-md rounded-2xl border border-orange-400/30 bg-[#0B0B0F]/95 p-2 shadow-2xl backdrop-blur-xl">
-            {currentStep === 1 ? <button type="button" disabled={!platform} onClick={() => scrollTo(serviceRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Services</button> : currentStep === 2 ? <button type="button" disabled={!selectedService} onClick={() => scrollTo(detailsRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Details</button> : currentStep === 3 ? <button type="button" disabled={!formIsValid} onClick={() => scrollTo(summaryRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Review Order</button> : hasEnoughWallet ? <button type="button" disabled={submitting || Boolean(success)} onClick={() => void placeOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Confirm &amp; Place Order</button> : <button type="button" disabled={walletLoading || submitting || Boolean(success)} onClick={() => void payAndPlaceOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Add Funds &amp; Continue</button>}
+            {currentStep === 1 ? <button type="button" disabled={!platform} onClick={() => scrollTo(serviceRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Services</button> : currentStep === 2 ? <button type="button" disabled={!selectedService} onClick={() => scrollTo(detailsRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Details</button> : currentStep === 3 ? <button type="button" disabled={!formIsValid} onClick={() => scrollTo(summaryRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Review Order</button> : hasEnoughWallet ? <button type="button" disabled={submitting || Boolean(success)} onClick={() => void placeOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Confirm &amp; Place Order</button> : <button type="button" disabled={walletLoading || submitting || Boolean(success)} onClick={() => void payAndPlaceOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Pay {formatCurrency(amountRequired, currency)} &amp; Continue</button>}
           </div>
         </div>
       </div>
