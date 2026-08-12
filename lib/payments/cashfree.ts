@@ -31,6 +31,8 @@ export type CashfreePayment = {
   order_currency: string;
   payment_status: "SUCCESS" | "FAILED" | "PENDING" | string;
   is_captured?: boolean;
+  payment_time?: string;
+  payment_completion_time?: string;
 };
 
 export function cashfreeConfig() {
