@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { cashfreeRequest, type CashfreeOrder, type CashfreePayment } from "@/lib/payments/cashfree";
+import { classifyCashfreeDirectVerification } from "@/lib/payments/cashfree-direct-status";
 import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -15,7 +16,11 @@ export async function POST(request: NextRequest) {
   if(!pending||pending.user_id!==user.id)return NextResponse.json({error:"Checkout payment not found."},{status:404});
   if(pending.status==="completed")return NextResponse.json({data:{status:"success",orderId:pending.order_id,duplicate:true}});
   try { const [order,payments]=await Promise.all([cashfreeRequest<CashfreeOrder>(`/orders/${encodeURIComponent(orderId)}`),cashfreeRequest<CashfreePayment[]>(`/orders/${encodeURIComponent(orderId)}/payments`)]); const payment=payments.find(item=>item.payment_status==="SUCCESS"&&item.is_captured!==false);
-    if(!payment||order.order_status!=="PAID") { if(order.order_status!=="ACTIVE") { const terminalStatus=order.order_status==="EXPIRED"?"expired":order.order_status==="TERMINATED"?"cancelled":"failed"; await admin.from("cashfree_checkout_intent_payments").update({status:terminalStatus,updated_at:new Date().toISOString()}).eq("provider_order_id",orderId).eq("status","pending"); } return NextResponse.json({data:{status:order.order_status==="ACTIVE"?"pending":"failed"}}); }
+    const verificationStatus=classifyCashfreeDirectVerification(order.order_status,payments);
+    if(verificationStatus!=="success") {
+      if(verificationStatus!=="pending") await admin.from("cashfree_checkout_intent_payments").update({status:verificationStatus,updated_at:new Date().toISOString()}).eq("provider_order_id",orderId).eq("status","pending");
+      return NextResponse.json({data:{status:verificationStatus==="pending"?"pending":"failed"}});
+    }
     const expected=Number(pending.required_top_up_paise)/100;
     if(order.order_id!==orderId||order.order_currency!=="INR"||Number(order.order_amount)!==expected||payment.order_id!==orderId||payment.payment_currency!=="INR"||payment.order_currency!=="INR"||Number(payment.order_amount)!==expected||Number(payment.payment_amount)!==expected)return NextResponse.json({error:"Payment details did not match the checkout."},{status:409});
     const {data,error}=await admin.rpc("settle_cashfree_checkout_intent_payment_system",{p_provider_order_id:orderId,p_provider_payment_id:payment.cf_payment_id}); if(error)return NextResponse.json({error:"Payment is verified and is being finalized. Please check Orders shortly."},{status:409});

@@ -451,7 +451,10 @@ export default function NewOrderPage() {
         } else if (response.ok && result.data?.status === "pending") {
           setError("Payment verification is pending. Your order has not been placed yet; refresh shortly to retry safely.");
         } else if (response.ok && result.data?.status === "failed") {
-          setError("Payment was not completed. Your order has not been placed.");
+          setError("Payment was not completed. No amount was charged. You can try again.");
+          setSubmitting(false);
+          setCheckoutStage("");
+          inFlight.current = false;
         } else if (!response.ok) {
           setError(result.error || "Payment verification is pending. Please refresh shortly.");
         }
