@@ -1,4 +1,5 @@
 export type CashfreeDirectPaymentAttempt = {
+  cf_payment_id?: string | null;
   payment_status?: string | null;
   is_captured?: boolean | null;
   payment_time?: string | null;
@@ -21,7 +22,7 @@ function attemptTimestamp(payment: CashfreeDirectPaymentAttempt) {
   return timestamps.length ? Math.max(...timestamps) : null;
 }
 
-function latestPaymentAttempt(payments: CashfreeDirectPaymentAttempt[]) {
+export function latestCashfreeDirectPaymentAttempt(payments: CashfreeDirectPaymentAttempt[]) {
   return payments.reduce<{ payment: CashfreeDirectPaymentAttempt; timestamp: number | null; index: number } | null>((latest, payment, index) => {
     const timestamp = attemptTimestamp(payment);
     if (!latest || timestamp !== null && (latest.timestamp === null || timestamp >= latest.timestamp)) {
@@ -33,7 +34,7 @@ function latestPaymentAttempt(payments: CashfreeDirectPaymentAttempt[]) {
       return { payment, timestamp, index };
     }
     return latest;
-  }, null)?.payment;
+  }, null);
 }
 
 export function classifyCashfreeDirectVerification(
@@ -48,8 +49,8 @@ export function classifyCashfreeDirectVerification(
   if (providerOrderStatus === "TERMINATED" || providerOrderStatus === "CANCELLED") return "cancelled";
   if (providerOrderStatus !== "ACTIVE") return "failed";
 
-  const latestAttempt = latestPaymentAttempt(payments);
-  const latestStatus = normalized(latestAttempt?.payment_status);
+  const latestAttempt = latestCashfreeDirectPaymentAttempt(payments);
+  const latestStatus = normalized(latestAttempt?.payment.payment_status);
 
   // Cashfree returns every attempt for an order. Only the newest attempt may
   // keep checkout processable; an older NOT_ATTEMPTED/PENDING entry must not

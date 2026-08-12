@@ -1,6 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { cashfreeRequest, type CashfreeOrder, type CashfreePayment } from "@/lib/payments/cashfree";
-import { classifyCashfreeDirectVerification } from "@/lib/payments/cashfree-direct-status";
+import { classifyCashfreeDirectVerification, latestCashfreeDirectPaymentAttempt } from "@/lib/payments/cashfree-direct-status";
 import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -17,6 +17,34 @@ export async function POST(request: NextRequest) {
   if(pending.status==="completed")return NextResponse.json({data:{status:"success",orderId:pending.order_id,duplicate:true}});
   try { const [order,payments]=await Promise.all([cashfreeRequest<CashfreeOrder>(`/orders/${encodeURIComponent(orderId)}`),cashfreeRequest<CashfreePayment[]>(`/orders/${encodeURIComponent(orderId)}/payments`)]); const payment=payments.find(item=>item.payment_status==="SUCCESS"&&item.is_captured!==false);
     const verificationStatus=classifyCashfreeDirectVerification(order.order_status,payments);
+    if (process.env.CASHFREE_ENV === "sandbox") {
+      const selected = latestCashfreeDirectPaymentAttempt(payments);
+      console.info("[CASHFREE_PREVIEW_DIAG] " + JSON.stringify({
+        providerOrderStatus: order.order_status,
+        paymentAttemptCount: payments.length,
+      }));
+      for (const [index, attempt] of payments.entries()) {
+        console.info("[CASHFREE_PREVIEW_DIAG] " + JSON.stringify({
+          attemptIndex: index,
+          payment_status: attempt.payment_status,
+          is_captured: attempt.is_captured,
+          payment_time: attempt.payment_time,
+          payment_completion_time: attempt.payment_completion_time,
+          cf_payment_id: attempt.cf_payment_id,
+        }));
+      }
+      console.info("[CASHFREE_PREVIEW_DIAG] " + JSON.stringify({
+        selectedAttemptIndex: selected?.index ?? null,
+        selectedAttempt: selected ? {
+          payment_status: selected.payment.payment_status,
+          is_captured: selected.payment.is_captured,
+          payment_time: selected.payment.payment_time,
+          payment_completion_time: selected.payment.payment_completion_time,
+          cf_payment_id: selected.payment.cf_payment_id,
+        } : null,
+        verificationStatus,
+      }));
+    }
     if(verificationStatus!=="success") {
       if(verificationStatus!=="pending") await admin.from("cashfree_checkout_intent_payments").update({status:verificationStatus,updated_at:new Date().toISOString()}).eq("provider_order_id",orderId).eq("status","pending");
       return NextResponse.json({data:{status:verificationStatus==="pending"?"pending":"failed"}});
