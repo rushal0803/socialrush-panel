@@ -1,6 +1,7 @@
 import { randomUUID } from "crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { CashfreeApiError, cashfreeMode, cashfreeRequest, type CashfreeOrder } from "@/lib/payments/cashfree";
+import { cashfreeCustomerPhone } from "@/lib/payments/cashfree-customer";
 import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { requireJson, requireSameOrigin, isUuid, rateLimit } from "@/lib/security/request";
@@ -16,11 +17,6 @@ function cashfreeAppBaseUrl() {
     throw new Error("Cashfree production return URL must use the canonical site domain");
   }
   return url.origin;
-}
-
-function cashfreePhone(phone: string | null | undefined) {
-  const digits = String(phone || "").replace(/\D/g, "");
-  return /^\d{10}$/.test(digits) ? digits : null;
 }
 
 export async function POST(request: NextRequest) {
@@ -61,8 +57,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please choose another service." }, { status: 409 });
   }
   const { data: profile } = await admin.from("profiles").select("balance,phone").eq("id", user.id).maybeSingle();
-  const phone = cashfreePhone(profile?.phone);
-  if (!phone) return NextResponse.json({ error: "Add a valid 10-digit Indian mobile number in Account before paying." }, { status: 422 });
+  const phone = cashfreeCustomerPhone(profile?.phone);
   const walletBalancePaise = Math.max(Math.round(Number(profile?.balance || 0) * 100), 0);
   const requiredTopUpPaise = Math.max(recalculatedTotalPaise - walletBalancePaise, 0);
   if (requiredTopUpPaise === 0) return NextResponse.json({ error: "Your wallet already covers this order.", code: "WALLET_SUFFICIENT" }, { status: 409 });
