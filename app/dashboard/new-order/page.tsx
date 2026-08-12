@@ -166,6 +166,7 @@ export default function NewOrderPage() {
   const [checkoutStep, setCheckoutStep] = useState(initialService ? 3 : requestedPlatform ? 2 : 1);
   const inFlight = useRef(false);
   const requestId = useRef("");
+  const directCheckoutIntentId = useRef<string | null>(searchParams.get("checkout_intent"));
   const funnelSignals = useRef(new Set<string>());
   const advanceTimer = useRef<number | null>(null);
   const platformRef = useRef<HTMLElement>(null);
@@ -400,14 +401,19 @@ export default function NewOrderPage() {
     setError("");
     if (!requestId.current) requestId.current = crypto.randomUUID();
     try {
-      const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: null }) });
-      const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
-      if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
+      let intentId = directCheckoutIntentId.current;
+      if (!intentId) {
+        const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: null }) });
+        const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
+        if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
+        intentId = intent.data.id;
+        directCheckoutIntentId.current = intentId;
+      }
       const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
-      const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId: intent.data.id, returnPath }) });
+      const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, returnPath }) });
       const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
       if (payment.code === "WALLET_SUFFICIENT") {
-        const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId: intent.data.id, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
+        const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
         const walletOrder = await walletOrderResponse.json() as { data?: ApiOrderData; error?: string };
         if (!walletOrderResponse.ok || !walletOrder.data) throw new Error(walletOrder.error || "Unable to place your order.");
         setWalletBalance(Number(walletOrder.data.balance)); setSuccess(walletOrder.data); requestId.current = "";

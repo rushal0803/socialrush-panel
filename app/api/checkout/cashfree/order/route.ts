@@ -69,19 +69,24 @@ export async function POST(request: NextRequest) {
 
   const { data: existing } = await admin.from("cashfree_checkout_intent_payments")
     .select("provider_order_id,payment_session_id,status,required_top_up_paise")
-    .eq("checkout_intent_id", intent.id).maybeSingle();
+    .eq("checkout_intent_id", intent.id).in("status", ["created", "pending"]).maybeSingle();
   if (existing) {
     if (existing.status === "pending" && existing.payment_session_id) {
       return NextResponse.json({ data: { orderId: existing.provider_order_id, paymentSessionId: existing.payment_session_id, amountPaise: Number(existing.required_top_up_paise), environment: cashfreeMode(), duplicate: true } });
     }
-    return NextResponse.json({ error: "A payment already exists for this checkout. Please wait for its status before trying again." }, { status: 409 });
+    return NextResponse.json({ error: "A payment is already being initialized for this checkout. Please wait before retrying." }, { status: 409 });
   }
+
+  const { data: latestAttempt } = await admin.from("cashfree_checkout_intent_payments")
+    .select("attempt_number,status").eq("checkout_intent_id", intent.id)
+    .order("attempt_number", { ascending: false }).limit(1).maybeSingle();
+  if (latestAttempt?.status === "completed") return NextResponse.json({ error: "This checkout was already completed." }, { status: 409 });
 
   const providerOrderId = `src_${randomUUID().replaceAll("-", "")}`;
   const { error: reservationError } = await admin.from("cashfree_checkout_intent_payments").insert({
     checkout_intent_id: intent.id, user_id: user.id, order_total_paise: recalculatedTotalPaise,
     wallet_balance_paise: walletBalancePaise, required_top_up_paise: requiredTopUpPaise,
-    provider_order_id: providerOrderId, status: "created",
+    provider_order_id: providerOrderId, attempt_number: Number(latestAttempt?.attempt_number || 0) + 1, status: "created",
   });
   if (reservationError) {
     if (reservationError.code === "23505") return NextResponse.json({ error: "A payment is already being initialized for this checkout. Please wait before retrying." }, { status: 409 });
