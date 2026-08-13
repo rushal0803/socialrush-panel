@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { NavLinks } from "@/components/Sidebar";
@@ -13,6 +13,8 @@ export default function DashboardMobileMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  const closeRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => {
     setIsOpen(false);
@@ -28,31 +30,41 @@ export default function DashboardMobileMenu() {
     <div className="lg:hidden">
       <button
         type="button"
-        aria-label="Toggle dashboard navigation"
+        ref={triggerRef}
+        aria-label={isOpen ? "Close navigation" : "Open navigation"}
         aria-expanded={isOpen}
         onClick={(event) => {
           event.stopPropagation();
           setIsOpen((open) => !open);
         }}
-        className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-orange-400/30 bg-orange-500/10 text-orange-200 shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-500/20"
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-orange-400/30 bg-orange-500/10 text-orange-200 shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
       <MobileMenuLayer
         open={isOpen}
         onClose={() => setIsOpen(false)}
-        topClassName="top-20"
+        variant="drawer"
         showCloseButton={false}
+        initialFocusRef={closeRef}
+        returnFocusRef={triggerRef}
       >
-        <div className="mx-auto w-full max-w-xl overflow-hidden rounded-[1.5rem] border border-orange-400/30 bg-[#0B0B0F]/98 p-3.5 shadow-[0_24px_60px_-24px_rgba(255,122,0,.5)] sm:rounded-[1.75rem] sm:p-4">
-              <div className="mb-3 flex items-center justify-between gap-3 border-b border-white/10 pb-3">
-                <Logo light />
-                <div>
-                  <p className="text-right text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard</p>
-                  <p className="mt-1 text-right text-xs font-bold text-[#D1D5DB]">Quick navigation</p>
-                </div>
+        <div className="flex min-h-0 flex-1 flex-col">
+              <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(0.75rem+env(safe-area-inset-top))]">
+                <div className="min-w-0 max-w-[calc(100%-3.5rem)]"><Logo light /></div>
+                <button
+                  ref={closeRef}
+                  type="button"
+                  aria-label="Close navigation"
+                  onClick={() => setIsOpen(false)}
+                  className="inline-flex h-11 min-h-11 w-11 min-w-11 shrink-0 items-center justify-center rounded-xl border-2 border-orange-400/70 bg-[#151821] text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.85)] transition hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                >
+                  <X size={25} strokeWidth={2.75} aria-hidden="true" />
+                </button>
               </div>
 
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
+              <p className="mb-3 text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard navigation</p>
               <NavLinks mobile onNavigate={() => setIsOpen(false)} />
 
               <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
@@ -77,6 +89,7 @@ export default function DashboardMobileMenu() {
                 >
                   Log out
                 </button>
+              </div>
               </div>
         </div>
       </MobileMenuLayer>
