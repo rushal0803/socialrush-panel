@@ -78,3 +78,34 @@ test("former Razorpay order endpoints reject new customer payments", async ({ re
     });
   }
 });
+
+test("case studies links remain valid at supported mobile and desktop widths", async ({ page }) => {
+  const viewports = [
+    { width: 320, height: 800 }, { width: 360, height: 800 }, { width: 375, height: 812 },
+    { width: 390, height: 844 }, { width: 414, height: 896 }, { width: 430, height: 932 },
+    { width: 768, height: 900 }, { width: 1024, height: 900 }, { width: 1280, height: 900 },
+    { width: 1366, height: 900 }, { width: 1440, height: 900 },
+  ];
+
+  const response = await page.goto("/case-studies", { waitUntil: "domcontentloaded" });
+  expect(response?.status(), "Case Studies should render").toBeLessThan(400);
+
+  for (const viewport of viewports) {
+    await page.setViewportSize(viewport);
+    await expect(page.getByRole("link", { name: /Explore scenarios/i })).toHaveAttribute("href", "#scenarios");
+    await expect(page.getByRole("link", { name: /View services/i }).first()).toHaveAttribute("href", "/services");
+    await expect(page.locator('a.cs-service-chip')).toHaveCount(13);
+  }
+
+  const expectedDestinations = [
+    "/services", "/services?platform=instagram", "/services?platform=youtube", "/services?platform=facebook",
+    "/buy-instagram-followers-india", "/instagram-likes", "/instagram-views", "/youtube-subscribers",
+    "/youtube-views", "/youtube-likes", "/facebook-followers", "/services?platform=linkedin", "/packages",
+    "/login?next=/dashboard/new-order",
+  ];
+  const linkedDestinations = await page.locator('a[href]').evaluateAll((links) => links.map((link) => link.getAttribute("href")));
+
+  for (const destination of expectedDestinations) {
+    expect(linkedDestinations, `${destination} should be rendered by Case Studies`).toContain(destination);
+  }
+});
