@@ -89,6 +89,12 @@ export async function POST(request: NextRequest) {
     provider_order_id: providerOrderId, attempt_number: Number(latestAttempt?.attempt_number || 0) + 1, status: "created",
   });
   if (reservationError) {
+    console.error("[CASHFREE_RESERVATION_ERROR]", {
+      code: reservationError.code,
+      message: reservationError.message,
+      details: reservationError.details,
+      hint: reservationError.hint,
+    });
     if (reservationError.code === "23505") return NextResponse.json({ error: "A payment is already being initialized for this checkout. Please wait before retrying." }, { status: 409 });
     return NextResponse.json({ error: "Unable to prepare secure payment." }, { status: 503 });
   }
