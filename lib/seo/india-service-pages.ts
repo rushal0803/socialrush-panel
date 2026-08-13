@@ -515,13 +515,14 @@ export function getIndiaServiceMetadata(
 ): Metadata {
   const page = getIndiaServicePage(slug);
   const url = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
-  const title =
+  const facebookTitle =
     slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
-  const title = slug === "buy-youtube-subscribers-india"
+  const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
     : `Buy ${page.serviceName} India | SocialRUSH`;
+  const title = slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle;
   return {
     title: { absolute: title },
     description: page.metaDescription,
