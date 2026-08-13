@@ -67,12 +67,12 @@ export default function AdminSidebar() {
         <Logo light />
       </div>
 
-      <div className="mx-2 mt-6 rounded-xl border border-orange-400/20 bg-white/[.04] px-3 py-2.5 shadow-[0_10px_20px_rgba(0,0,0,.3)]">
-        <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Administration</p>
-        <p className="mt-1 text-xs font-semibold text-white">Control center</p>
+      <div className="admin-workspace-card mx-2 mt-7 px-3.5 py-3">
+        <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FFB15D]">Admin workspace</p>
+        <p className="mt-1 text-xs font-semibold text-white">SocialRUSH control center</p>
       </div>
 
-      <p className="mb-3 mt-6 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#9CA3AF]">Management</p>
+      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#737B8B]">Workspace</p>
       <AdminNav />
 
       <div className="mt-auto">

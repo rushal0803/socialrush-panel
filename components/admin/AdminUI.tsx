@@ -1,3 +1,6 @@
+import { adminStatusLabel, adminStatusTone } from "@/lib/admin/status";
+export { default as Modal } from "./AdminModal";
+
 export function AdminPageHeader({ title, description, action }: { title: string; description: string; action?: React.ReactNode }) {
   return (
     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
@@ -10,8 +13,6 @@ export function AdminPageHeader({ title, description, action }: { title: string;
   );
 }
 
-import { adminStatusLabel, adminStatusTone } from "@/lib/admin/status";
-
 export function AdminStatus({ value }: { value: string }) {
   return (
     <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold capitalize ${adminStatusTone(value)}`}>
@@ -21,22 +22,5 @@ export function AdminStatus({ value }: { value: string }) {
   );
 }
 
-export function Modal({ label, title, children }: { label: string; title: string; children: React.ReactNode }) {
-  return (
-    <details className="group">
-      <summary className="btn-dashboard-primary cursor-pointer list-none px-4 py-3 text-sm font-semibold">{label}</summary>
-      <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-3 backdrop-blur-sm sm:p-4">
-        <div className="max-h-[90dvh] w-full max-w-2xl overflow-y-auto rounded-2xl border border-orange-400/30 bg-[#111111] p-4 text-[#D1D5DB] shadow-2xl sm:p-6">
-          <div className="flex items-center justify-between">
-            <h2 className="text-lg font-black text-white">{title}</h2>
-            <span className="grid h-8 w-8 cursor-pointer place-items-center rounded-lg border border-white/10 bg-white/5 text-[#D1D5DB]">×</span>
-          </div>
-          <div className="mt-6">{children}</div>
-        </div>
-      </div>
-    </details>
-  );
-}
-
-export const inputClass = "mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3.5 py-3 text-xs text-white outline-none transition placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15";
+export const inputClass = "admin-input mt-2 w-full rounded-xl px-3.5 py-3 text-xs outline-none transition placeholder:text-[#747B89]";
 export const primaryButton = "btn-dashboard-primary rounded-xl px-4 py-3 text-xs font-bold";
