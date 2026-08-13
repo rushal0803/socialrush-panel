@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChangeEvent, useEffect, useMemo, useState } from "react";
 import { ArrowRight, BarChart3, Check, ChevronRight, Copy, Download, ExternalLink, FileImage, ImageIcon, Link2, LockKeyhole, Monitor, RotateCcw, Search, ShieldCheck, Smartphone, Sparkles, Type, Upload, Users, Video } from "lucide-react";
 import { tools, toolBySlug, type Tool } from "@/lib/tools/catalog";
+import ImageResizerWorkspace from "./ImageResizerWorkspace";
 
 const field = "mt-2 min-h-12 w-full rounded-xl border border-white/15 bg-[#090A0F] px-4 py-3 text-base text-white outline-none transition placeholder:text-[#747B89] focus:border-orange-400 focus:ring-4 focus:ring-orange-400/10";
 const names: Record<string, string> = { "instagram-engagement-rate-calculator": "Engagement rate calculator", "social-media-image-resizer": "Image resizer", "youtube-thumbnail-preview": "YouTube thumbnail preview", "instagram-caption-counter": "Instagram caption counter", "utm-link-builder": "UTM link builder" };
@@ -70,4 +71,4 @@ function HubPremium() {
   </>;
 }
 
-export default function ToolsContent({ activeSlug }: { activeSlug?: string }) { return activeSlug ? <ToolPage tool={toolBySlug[activeSlug]} /> : <HubPremium />; }
+export default function ToolsContent({ activeSlug }: { activeSlug?: string }) { return activeSlug === "social-media-image-resizer" ? <ImageResizerWorkspace /> : activeSlug ? <ToolPage tool={toolBySlug[activeSlug]} /> : <HubPremium />; }
