@@ -1,8 +1,8 @@
-import IndiaServiceLandingPage from "@/components/marketing/services/IndiaServiceLandingPage";
+import LinkedInFollowersLanding from "@/components/marketing/LinkedInFollowersLanding";
 import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
 
 export const metadata = getIndiaServiceMetadata("buy-linkedin-followers-india");
 
 export default function Page() {
-  return <IndiaServiceLandingPage slug="buy-linkedin-followers-india" />;
+  return <LinkedInFollowersLanding />;
 }
