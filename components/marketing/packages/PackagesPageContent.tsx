@@ -76,7 +76,7 @@ const serviceVisuals: Record<Service, { badge: string; Icon: LucideIcon }> = {
   views: { badge: "Content Reach", Icon: Eye },
   members: { badge: "Community Growth", Icon: Users },
 };
-const trustBadges = ["Secure Wallet Checkout", "Instant Order Sync", "Customer Support", "Delivery Tracking"] as const;
+const trustBadges = ["Transparent pricing", "Public-link ordering", "Secure checkout", "Order tracking"] as const;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
 type ApiOrderData = {
@@ -764,10 +764,10 @@ export default function PackagesPageContent({
                 Choose the package that fits your goal.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
-                Select your platform and service, compare package options, then review everything before you continue.
+                Compare SocialRUSH packages by platform, service, quantity, delivery and total price before you continue.
               </p>
               <p className="mt-3 max-w-3xl text-xs font-semibold leading-6 text-[#9CA3AF]">
-                Transparent package pricing, public-link-only ordering and clear delivery details—before you commit.
+                Every package uses the current catalog price and only requires the correct public destination link.
               </p>
               {relatedGuides[0] ? (
                 <Link
