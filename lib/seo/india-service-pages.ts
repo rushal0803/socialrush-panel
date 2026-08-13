@@ -376,7 +376,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Delivery begins after confirmation and varies by quantity and page availability. Keep the destination public throughout processing.",
     metaDescription:
-      "Buy Facebook followers in India with transparent pricing, no-password ordering, delivery tracking and refill support where eligible.",
+      "Buy Facebook followers in India with live INR package pricing, public-link ordering, delivery tracking and refill support where eligible from SocialRUSH.",
     ogDescription:
       "Support Facebook page credibility with clear follower packages, public-link ordering and tracked delivery from SocialRUSH.",
     audiences: ["Local businesses", "Community pages", "Creators", "Agencies"],
@@ -515,7 +515,10 @@ export function getIndiaServiceMetadata(
 ): Metadata {
   const page = getIndiaServicePage(slug);
   const url = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
-  const title = `Buy ${page.serviceName} India | SocialRUSH`;
+  const title =
+    slug === "buy-facebook-followers-india"
+      ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
+      : `Buy ${page.serviceName} India | SocialRUSH`;
   return {
     title: { absolute: title },
     description: page.metaDescription,

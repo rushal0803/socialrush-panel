@@ -15,6 +15,8 @@ const service = getServiceById("facebook-followers");
 const whatsapp = "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20with%20Facebook%20Followers";
 const trustStrip: Array<[typeof LockKeyhole, string]> = [[LockKeyhole, "No password required"], [Link2, "Public Facebook link"], [WalletCards, "Secure checkout"], [BarChart3, "Dashboard tracking"], [ShieldCheck, "Live service details"]];
 const faqs = [
+  ["How can I buy Facebook followers in India?", "Select a quantity in the order builder, provide the required public Facebook Page or profile URL, review the live INR total, and continue through the secure SocialRUSH order flow."],
+  ["How much do Facebook followers cost in India?", "Pricing depends on the quantity you select. The order builder shows the active INR rate and your exact live total before you continue to checkout. You can also review current service pricing on the pricing page."],
   ["Do I need my Facebook password?", "No. SocialRUSH only requires the public Facebook page or profile URL requested by the service. Never share a password or login credential."],
   ["Which Facebook link should I submit?", "Submit the public Facebook Page or profile link you want to use. Verify it opens publicly before continuing."],
   ["Can I order followers for a Facebook Page?", "Yes, provided the page is public and its URL meets the service requirements shown in the order builder."],
@@ -22,10 +24,14 @@ const faqs = [
   ["How long does delivery take?", `The active service estimate is ${service?.deliveryTime ?? "shown before checkout"}. Timing can vary with quantity and page availability.`],
   ["Is refill/support available?", `The active catalog currently lists ${service?.refillPolicy ?? "the current service terms"}. Confirm applicable coverage before ordering.`],
   ["Can I track my order?", "Yes. Continue to the secure SocialRUSH order flow, then use your dashboard to review order status and history."],
-  ["What happens if I submit the wrong link?", "Please verify the public URL before placing an order. If you need help with an existing order, contact support through your dashboard."],
+  ["Does buying followers guarantee engagement or organic reach?", "No. A follower order does not guarantee engagement, organic reach, sales, or account growth. Keep expectations realistic and continue your normal content work."],
 ] as const;
 
 function n(value: number) { return value >= 1000 ? `${value / 1000}K` : value.toLocaleString("en-IN"); }
+
+function PriceContext() {
+  return <section className="border-y border-white/10 bg-[#101218] px-4 py-12 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-5 rounded-2xl border border-[#1877f2]/25 bg-[#1877f2]/[.06] p-6 md:grid-cols-[1fr_auto] md:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Facebook Followers Price in India</p><h2 className="mt-3 text-2xl font-black">See the current INR total before you order</h2><p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">Your price depends on the quantity selected. Use the live package selector for the current rate and exact order total, then review the service details before checkout.</p></div><Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#1877f2]/35 px-5 text-sm font-black text-blue-100 transition hover:bg-[#1877f2]/10">View pricing</Link></div></section>;
+}
 
 export default function FacebookFollowersLanding() {
   const { currency } = usePreferredCurrency("INR");
@@ -36,6 +42,7 @@ export default function FacebookFollowersLanding() {
   const price = formatCurrency(service.pricePer1000, currency);
   return <PublicShell tone="light3d">
     <main className="overflow-hidden bg-[#0b0d12] text-white">
+      <nav aria-label="Breadcrumb" className="border-b border-white/10 bg-[#0b0d12] px-4 py-3 text-xs text-slate-400 sm:px-6 lg:px-8"><ol className="mx-auto flex max-w-7xl flex-wrap items-center gap-2"><li><Link href="/" className="transition hover:text-white">Home</Link></li><li aria-hidden="true">/</li><li><Link href="/services" className="transition hover:text-white">Facebook Services</Link></li><li aria-hidden="true">/</li><li className="text-slate-200" aria-current="page">Facebook Followers</li></ol></nav>
       <section className="relative border-b border-white/10 px-4 pb-14 pt-12 sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_15%,rgba(24,119,242,.18),transparent_24%),radial-gradient(circle_at_14%_8%,rgba(255,151,34,.16),transparent_24%)]" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-9 lg:grid-cols-[.98fr_1.02fr]"><div>
@@ -49,6 +56,7 @@ export default function FacebookFollowersLanding() {
       <section className="border-b border-white/10 bg-[#11141b] px-4 py-4 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold text-slate-300">{trustStrip.map(([Icon,label]) => <span className="flex items-center gap-2" key={label}><Icon className="h-4 w-4 text-orange-300" />{label}</span>)}</div></section>
       <OrderBuilder />
       <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">See how your Facebook order stays clear</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original, interface-only preview—not a customer page or performance result. Play controls animate demo activity only.</p><button type="button" onClick={() => setPlaying(x => !x)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#1877f2]/35 bg-[#1877f2]/10 px-4 text-sm font-black text-blue-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause preview" : "Play preview"}</button></div><FacebookPreview playing={playing} pulse={pulse} /></div></section>
+      <PriceContext />
       <ContentSections price={price} />
       <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><p className="text-center text-xs font-black uppercase tracking-[.16em] text-orange-300">Helpful answers</p><h2 className="mt-3 text-center text-3xl font-black">Facebook Followers FAQs</h2><div className="mt-7 space-y-3">{faqs.map(([q,a], i) => <details key={q} open={i === 0} className="group rounded-2xl border border-white/10 bg-white/[.035] p-5"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-black"><span>{q}</span><ChevronDown className="h-5 w-5 text-orange-300 transition group-open:rotate-180" /></summary><p className="mt-3 border-t border-white/10 pt-3 text-sm leading-7 text-slate-300">{a}</p></details>)}</div></div></section>
       <section className="px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20"><div className="mx-auto max-w-6xl rounded-[2rem] border border-orange-400/25 bg-[radial-gradient(circle_at_82%_30%,rgba(24,119,242,.18),transparent_21%),linear-gradient(120deg,#19140d,#10151e)] p-7 text-center sm:p-10"><p className="text-sm font-bold text-orange-200">Starting from {price} / 1K</p><h2 className="mt-2 text-3xl font-black">Ready to build your Facebook Followers order?</h2><p className="mt-3 text-sm text-slate-300">No password required · Live pricing · Dashboard tracking</p><div className="mt-6 flex flex-col justify-center gap-3 min-[420px]:flex-row"><a href="#order" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ffb000] px-6 text-sm font-black">Start Your Order</a><Link href="/packages?platform=facebook&service=followers" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#1877f2]/35 px-6 text-sm font-black text-blue-100">Explore Facebook Services</Link></div></div></section>
