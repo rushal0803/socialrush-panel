@@ -55,7 +55,7 @@ export default function DashboardMobileMenu() {
                 <button
                   ref={closeRef}
                   type="button"
-                  aria-label="Close navigation"
+                  aria-label="Close menu"
                   onClick={() => setIsOpen(false)}
                   className="inline-flex h-11 min-h-11 w-11 min-w-11 shrink-0 items-center justify-center rounded-xl border-2 border-orange-400/70 bg-[#151821] text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.85)] transition hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                 >

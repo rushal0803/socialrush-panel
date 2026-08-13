@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
@@ -27,6 +27,8 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   const router = useRouter();
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const menuTriggerRef = useRef<HTMLButtonElement>(null);
+  const menuCloseRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => setOpen(false), [pathname]);
 
@@ -90,6 +92,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </PortalCTA>
           <button
             type="button"
+            ref={menuTriggerRef}
             aria-label={open ? "Close navigation" : "Open navigation"}
             aria-expanded={open}
             onClick={(event) => { event.stopPropagation(); setOpen((value) => !value); }}
@@ -105,14 +108,30 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
       </div>
 
       <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[4.4rem]" showCloseButton>
+      <MobileMenuLayer
+        open={open}
+        onClose={() => setOpen(false)}
+        variant="drawer"
+        initialFocusRef={menuCloseRef}
+        returnFocusRef={menuTriggerRef}
+      >
         <motion.div
-          initial={{ opacity: 0, y: -12 }}
-          animate={{ opacity: 1, y: 0 }}
-          exit={{ opacity: 0, y: -10 }}
+          initial={{ opacity: 0, x: 16 }}
+          animate={{ opacity: 1, x: 0 }}
+          exit={{ opacity: 0, x: 16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
           className="relative mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 pt-16 shadow-[0_24px_60px_rgba(0,0,0,.45)] lg:hidden"
         >
           <div className="absolute left-4 top-4"><Logo light className="[&_img]:max-w-[148px]" /></div>
+          className="flex min-h-0 flex-1 flex-col"
+        >
+          <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(.75rem+env(safe-area-inset-top))]">
+            <Logo light priority className="min-w-0 [&_img]:h-10 [&_img]:max-w-[145px]" />
+            <button ref={menuCloseRef} type="button" aria-label="Close menu" onClick={() => setOpen(false)} className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-orange-400/70 bg-[#151821] text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.85)] transition hover:bg-orange-500/15 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300">
+              <X className="h-6 w-6" strokeWidth={2.75} aria-hidden="true" />
+            </button>
+          </div>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
           <nav className="grid gap-1" aria-label="Mobile navigation">
             {nav.map(([label, href]) => (
               <Link key={href} href={href} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl border border-transparent px-3 py-2.5 text-sm font-semibold text-[#D7DBE3] transition hover:border-orange-400/25 hover:bg-orange-400/[0.07] hover:text-white">
@@ -133,7 +152,8 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                 <Link href="/register" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-400/[0.08] px-4 py-3 text-sm font-bold text-orange-100">Sign Up</Link>
               </>
             )}
-            <PortalCTA className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-4 py-3 text-sm font-black text-white">Start Order</PortalCTA>
+              <PortalCTA onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-4 py-3 text-sm font-black text-white">Start Order</PortalCTA>
+          </div>
           </div>
         </motion.div>
       </MobileMenuLayer>
