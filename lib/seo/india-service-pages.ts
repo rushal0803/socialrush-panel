@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 
 export const indiaServiceSlugs = [
   "buy-instagram-followers-india",
@@ -515,6 +516,10 @@ export function getIndiaServiceMetadata(
 ): Metadata {
   const page = getIndiaServicePage(slug);
   const url = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
+  const linkedInTitle =
+    slug === "buy-linkedin-followers-india"
+      ? "Buy LinkedIn Followers India | Plans in ₹ | SocialRUSH"
+      : null;
   const facebookTitle =
     slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
@@ -522,7 +527,7 @@ export function getIndiaServiceMetadata(
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
     : `Buy ${page.serviceName} India | SocialRUSH`;
-  const title = slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle;
+  const title = linkedInTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
   return {
     title: { absolute: title },
     description: page.metaDescription,
@@ -563,6 +568,7 @@ export function getIndiaServiceMetadata(
 
 export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
   const page = getIndiaServicePage(slug);
+  if (slug === "buy-linkedin-followers-india") return [...linkedInFollowersFaqs];
   const related = getIndiaServicePage(page.related[0]);
   return [
     {
