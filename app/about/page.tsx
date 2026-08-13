@@ -1,249 +1,119 @@
 import Link from "next/link";
 import MarketingIcon, { type MarketingIconName } from "@/components/marketing/MarketingIcon";
-import PortalCTA from "@/components/marketing/PortalCTA";
+import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "About Our Social Media Growth Platform",
+  title: "About SocialRUSH | A Clearer Social Media Growth Platform",
   description:
-    "Learn how SocialRUSH helps creators, businesses and agencies in India order and track social media growth services through one secure campaign dashboard.",
+    "Learn how SocialRUSH brings social media growth service discovery, transparent pricing, public-link ordering and campaign tracking into one focused workspace.",
   path: "/about",
-  keywords: ["SocialRUSH India", "social media growth platform India"],
+  keywords: ["SocialRUSH", "social media growth platform India", "social media marketing services", "Instagram growth services", "YouTube growth services"],
 });
 
-const differences: Array<{ icon: MarketingIconName; title: string; description: string }> = [
-  { icon: "search", title: "Clear service discovery", description: "Compare supported platforms, campaign types, quantities and current pricing before you order." },
-  { icon: "wallet", title: "Connected wallet experience", description: "Fund your account securely and keep campaign spending and wallet activity organized." },
-  { icon: "trend", title: "Visible campaign progress", description: "Track order status and keep every campaign record available from one dashboard." },
-  { icon: "refresh", title: "Refill clarity", description: "Eligible refill coverage and service requirements are shown before checkout." },
-  { icon: "message", title: "Support with context", description: "Account support keeps the campaign and customer conversation connected." },
-  { icon: "shield", title: "Public-link ordering", description: "Place campaigns with public destinations—SocialRUSH never needs your social password." },
+const platforms = [
+  ["Instagram", "instagram", "/services?platform=instagram", "text-pink-300"],
+  ["YouTube", "youtube", "/services?platform=youtube", "text-red-300"],
+  ["Facebook", "facebook", "/services?platform=facebook", "text-blue-300"],
+  ["LinkedIn", "linkedin", "/services?platform=linkedin", "text-sky-300"],
+  ["Telegram", "telegram", "/services?platform=telegram", "text-cyan-300"],
+  ["TikTok", "tiktok", "/services?platform=tiktok", "text-white"],
+  ["X", "x", "/services?platform=x", "text-slate-200"],
+] as const;
+
+const workflow: Array<{ icon: MarketingIconName; number: string; title: string; text: string }> = [
+  { number: "01", icon: "search", title: "Explore services", text: "Start with a platform and service type." },
+  { number: "02", icon: "eye", title: "Compare pricing", text: "Review the current service information." },
+  { number: "03", icon: "link", title: "Place your order", text: "Add the required public destination." },
+  { number: "04", icon: "trend", title: "Track delivery", text: "Follow campaign progress in your dashboard." },
+  { number: "05", icon: "wallet", title: "Manage wallet", text: "Keep funding and charges in view." },
+  { number: "06", icon: "message", title: "Get support", text: "Keep order questions connected to context." },
 ];
 
-const audiences: Array<{ icon: MarketingIconName; title: string; description: string }> = [
-  { icon: "sparkles", title: "Creators", description: "Organize profile and content campaigns around your publishing calendar." },
-  { icon: "heart", title: "Influencers", description: "Support visible social proof while keeping campaign details easy to review." },
-  { icon: "dashboard", title: "Brands", description: "Manage multiple platform goals from one professional workspace." },
-  { icon: "users", title: "Agencies", description: "Keep client destinations, orders and support records clearly separated." },
-  { icon: "trend", title: "Resellers", description: "Use a repeatable workflow for selecting, ordering and tracking client campaigns." },
+const principles: Array<{ icon: MarketingIconName; title: string; text: string; span?: string }> = [
+  { icon: "search", title: "Clarity", text: "Make pricing and service information easier to understand before ordering.", span: "md:col-span-2" },
+  { icon: "dashboard", title: "Control", text: "Give customers access to orders and wallet activity from one dashboard." },
+  { icon: "link", title: "Simplicity", text: "Use the public destination required for an order, rather than account credentials." },
+  { icon: "eye", title: "Visibility", text: "Show service, delivery and refill information where it is available." },
+  { icon: "message", title: "Support", text: "Provide a clear place for account and order questions.", span: "md:col-span-2" },
 ];
 
-const trustCards: Array<{ icon: MarketingIconName; title: string; description: string; tone: string }> = [
-  { icon: "shield", title: "Secure checkout", description: "Review campaign details before any wallet charge is confirmed.", tone: "from-emerald-400 to-amber-500" },
-  { icon: "wallet", title: "Wallet system", description: "Keep verified funding and campaign charges visible in your account.", tone: "from-orange-500 to-amber-500" },
-  { icon: "dashboard", title: "Order tracking", description: "Monitor active and completed campaigns from your dashboard.", tone: "from-amber-500 to-orange-500" },
-  { icon: "refresh", title: "Refill support", description: "Eligible service coverage is presented with the campaign details.", tone: "from-amber-400 to-orange-500" },
-  { icon: "message", title: "WhatsApp support", description: "Get practical help when you need guidance choosing a service.", tone: "from-emerald-500 to-green-600" },
-];
+function PanelLabel({ children }: { children: React.ReactNode }) {
+  return <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">{children}</p>;
+}
+
+function TinyStatus({ children, tone = "emerald" }: { children: React.ReactNode; tone?: "emerald" | "orange" | "slate" }) {
+  const tones = { emerald: "border-emerald-400/20 bg-emerald-400/[.09] text-emerald-200", orange: "border-orange-400/25 bg-orange-400/[.1] text-orange-200", slate: "border-white/10 bg-white/[.05] text-[#B9C0CC]" };
+  return <span className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-black ${tones[tone]}`}><span className={`h-1.5 w-1.5 rounded-full ${tone === "emerald" ? "bg-emerald-400" : tone === "orange" ? "bg-orange-400" : "bg-slate-400"}`} />{children}</span>;
+}
+
+function ProductPreview({ compact = false }: { compact?: boolean }) {
+  return <div className={`relative overflow-hidden rounded-[1.75rem] border border-white/[.12] bg-[#11141D] p-4 shadow-[0_34px_80px_-35px_rgba(0,0,0,.9)] ${compact ? "" : "sm:p-5"}`}>
+    <div className="absolute inset-x-0 top-0 h-px bg-gradient-to-r from-transparent via-orange-300/70 to-transparent" />
+    <div className="flex items-center justify-between gap-3 border-b border-white/[.08] pb-3">
+      <div className="flex items-center gap-2.5"><span className="grid h-8 w-8 place-items-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 text-white"><MarketingIcon name="dashboard" className="h-4 w-4" /></span><div><p className="text-xs font-black text-white">SocialRUSH</p><p className="text-[9px] text-[#8F96A3]">UI Preview</p></div></div>
+      <TinyStatus>Workspace</TinyStatus>
+    </div>
+    <div className="mt-4 grid gap-3 sm:grid-cols-[.88fr_1.12fr]">
+      <div className="rounded-2xl border border-white/[.08] bg-[#0B0D13] p-3">
+        <PanelLabel>Discover</PanelLabel>
+        <div className="mt-3 flex items-center gap-2 rounded-xl border border-white/[.09] bg-white/[.04] px-3 py-2.5 text-[11px] text-[#A8AFBD]"><MarketingIcon name="search" className="h-3.5 w-3.5" />Search service</div>
+        <div className="mt-3 space-y-2">{["Instagram", "YouTube", "LinkedIn"].map((name, i) => <div key={name} className="flex items-center justify-between rounded-lg bg-white/[.035] px-2.5 py-2"><span className="text-[10px] font-bold text-[#D7DBE3]">{name}</span><span className={`h-1.5 rounded-full ${i === 0 ? "w-10 bg-orange-400" : "w-6 bg-white/20"}`} /></div>)}</div>
+      </div>
+      <div className="rounded-2xl border border-orange-400/18 bg-gradient-to-br from-orange-500/[.10] to-transparent p-3">
+        <div className="flex items-start justify-between"><div><PanelLabel>Selected service</PanelLabel><p className="mt-1 text-sm font-black text-white">Profile growth service</p></div><MarketingIcon name="sparkles" className="h-4 w-4 text-orange-300" /></div>
+        <div className="mt-4 grid grid-cols-2 gap-2 text-[10px]"><div className="rounded-xl bg-black/20 p-2.5 text-[#A8AFBD]">Destination<p className="mt-1 font-bold text-white">Public link</p></div><div className="rounded-xl bg-black/20 p-2.5 text-[#A8AFBD]">Pricing<p className="mt-1 font-bold text-white">Visible before order</p></div></div>
+        <div className="mt-3 flex items-center gap-2 rounded-xl border border-emerald-400/15 bg-emerald-400/[.07] px-3 py-2 text-[10px] font-bold text-emerald-100"><MarketingIcon name="check" className="h-3.5 w-3.5" />Order details ready to review</div>
+      </div>
+    </div>
+  </div>;
+}
 
 export default function AboutPage() {
-  return (
-    <PublicShell tone="light3d">
-      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
-      <section className="relative overflow-hidden px-4 pb-16 pt-12 sm:px-6 sm:pb-20 sm:pt-16 lg:px-8 lg:pb-24 lg:pt-20">
-        <div className="pointer-events-none absolute -left-24 top-10 h-80 w-80 rounded-full bg-orange-200/50 blur-3xl" />
-        <div className="pointer-events-none absolute -right-24 top-16 h-96 w-96 rounded-full bg-amber-200/50 blur-3xl" />
-        <div className="pointer-events-none absolute bottom-0 left-1/3 h-64 w-64 rounded-full bg-amber-200/35 blur-3xl" />
+  return <PublicShell>
+    <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
 
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_.95fr] lg:gap-14">
-          <div>
-            <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/75 px-4 py-2 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827] shadow-sm backdrop-blur-xl">
-              <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-orange-500 via-amber-500 to-amber-400 text-white">
-                <MarketingIcon name="sparkles" className="h-4 w-4" />
-              </span>
-              About SocialRUSH
-            </span>
-            <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.08] tracking-[-0.045em] text-[#0B0B0F] sm:text-5xl lg:text-6xl">
-              We&apos;re Making Social Growth{" "}
-              <span className="bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 bg-clip-text text-transparent">
-                Simpler and More Transparent
-              </span>
-            </h1>
-            <p className="mt-6 max-w-2xl text-base leading-8 text-[#111827] sm:text-lg">
-              SocialRUSH gives creators, brands and businesses one clear place to compare services, place orders and track campaigns—without sharing account passwords.
-            </p>
-            <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row">
-              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white bg-white/85 px-6 py-3 text-sm font-black text-[#0B0B0F] shadow-[0_14px_30px_-20px_rgba(255, 159, 0, .5)] transition hover:-translate-y-0.5 hover:border-orange-200">
-                View Packages
-              </Link>
-              <PortalCTA className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_18px_34px_-16px_rgba(255, 196, 0, .75)] transition hover:-translate-y-0.5">
-                Start Order <MarketingIcon name="arrow" className="h-4 w-4" />
-              </PortalCTA>
-            </div>
-            <div className="mt-8 flex flex-wrap gap-2">
-              {["Public link only", "Transparent checkout", "Dashboard tracking", "Customer support"].map((item) => (
-                <span key={item} className="inline-flex items-center gap-2 rounded-full border border-[#FFF8F1] bg-white/70 px-3 py-2 text-[11px] font-bold text-[#111827] shadow-sm">
-                  <MarketingIcon name="check" className="h-3.5 w-3.5 text-emerald-600" />
-                  {item}
-                </span>
-              ))}
-            </div>
-          </div>
-
-          <div className="relative mx-auto w-full max-w-xl lg:max-w-none">
-            <div className="absolute -left-5 top-14 z-10 hidden rounded-2xl border border-white/90 bg-white/80 p-3 shadow-[0_20px_45px_-24px_rgba(255, 159, 0, .55)] backdrop-blur-xl sm:block">
-              <p className="text-[9px] font-black uppercase tracking-[0.12em] text-[#111827]">Campaign status</p>
-              <p className="mt-1 flex items-center gap-2 text-xs font-black text-emerald-700"><span className="h-2 w-2 rounded-full bg-emerald-500" />Tracking active</p>
-            </div>
-            <div className="absolute -right-3 bottom-12 z-10 hidden rounded-2xl border border-white/90 bg-white/80 p-3 shadow-[0_20px_45px_-24px_rgba(255, 159, 0, .55)] backdrop-blur-xl sm:block">
-              <p className="text-[9px] font-black uppercase tracking-[0.12em] text-[#111827]">Account safety</p>
-              <p className="mt-1 flex items-center gap-2 text-xs font-black text-[#0B0B0F]"><MarketingIcon name="lock" className="h-4 w-4 text-orange-600" />No password required</p>
-            </div>
-
-            <div className="rotate-[1deg] rounded-[2rem] border border-white/90 bg-white/72 p-4 shadow-[0_35px_80px_-38px_rgba(255, 159, 0, .6)] backdrop-blur-2xl sm:p-6">
-              <div className="rounded-[1.6rem] bg-[linear-gradient(145deg,#0B0B0F,#FF9F00_55%,#FF9F00)] p-5 text-white shadow-inner sm:p-7">
-                <div className="flex items-center justify-between gap-3">
-                  <div className="flex items-center gap-3">
-                    <span className="grid h-11 w-11 place-items-center rounded-2xl bg-white/10 text-amber-200"><MarketingIcon name="dashboard" className="h-6 w-6" /></span>
-                    <div>
-                      <p className="text-[9px] font-black uppercase tracking-[0.13em] text-amber-200">SocialRUSH workspace</p>
-                      <h2 className="mt-1 text-lg font-black">Campaign command centre</h2>
-                    </div>
-                  </div>
-                  <span className="rounded-full border border-emerald-300/20 bg-emerald-300/10 px-3 py-1 text-[9px] font-black text-emerald-200">Operational</span>
-                </div>
-
-                <div className="mt-6 grid grid-cols-3 gap-2.5">
-                  {[["wallet", "Wallet"], ["trend", "Orders"], ["message", "Support"]].map(([icon, label]) => (
-                    <div key={label} className="rounded-2xl border border-white/10 bg-white/[0.07] p-3">
-                      <MarketingIcon name={icon as MarketingIconName} className="h-5 w-5 text-amber-200" />
-                      <p className="mt-3 text-xs font-black">{label}</p>
-                      <div className="mt-2 h-1.5 rounded-full bg-white/10"><div className="h-full w-2/3 rounded-full bg-gradient-to-r from-orange-400 to-amber-300" /></div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="mt-4 rounded-2xl border border-white/10 bg-white/[0.07] p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div><p className="text-[9px] uppercase tracking-[0.12em] text-orange-200">Campaign workflow</p><p className="mt-1 text-sm font-black">Everything connected</p></div>
-                    <MarketingIcon name="sparkles" className="h-5 w-5 text-orange-300" />
-                  </div>
-                  <div className="mt-4 grid gap-2">
-                    {["Choose a service", "Confirm campaign details", "Track progress"].map((item, index) => (
-                      <div key={item} className="flex items-center gap-3 rounded-xl bg-black/10 px-3 py-2.5 text-xs font-bold text-orange-50">
-                        <span className="grid h-6 w-6 place-items-center rounded-full bg-white/10 text-[9px] text-amber-200">0{index + 1}</span>
-                        {item}
-                        <MarketingIcon name="check" className="ml-auto h-3.5 w-3.5 text-emerald-300" />
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+    <section className="relative isolate overflow-hidden border-b border-white/[.07] px-4 pb-16 pt-14 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8 lg:pb-28">
+      <div className="pointer-events-none absolute left-[8%] top-[-15rem] h-[34rem] w-[34rem] rounded-full bg-orange-500/[.16] blur-[120px]" />
+      <div className="pointer-events-none absolute right-[-14rem] top-10 h-[34rem] w-[34rem] rounded-full bg-amber-300/[.08] blur-[120px]" />
+      <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.95fr_1.05fr] lg:gap-16">
+        <div>
+          <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-400/[.08] px-3.5 py-2 text-[10px] font-black uppercase tracking-[.16em] text-orange-200"><MarketingIcon name="sparkles" className="h-3.5 w-3.5" />About SocialRUSH</span>
+          <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.03] tracking-[-.06em] text-white sm:text-6xl lg:text-7xl">Social media growth,<br /><span className="bg-gradient-to-r from-orange-300 via-amber-200 to-orange-400 bg-clip-text text-transparent">made clearer.</span></h1>
+          <p className="mt-6 max-w-xl text-base leading-8 text-[#B9C0CC] sm:text-lg">SocialRUSH gives you one focused place to explore social media growth services, compare current pricing, place public-link orders and follow campaign activity across supported platforms.</p>
+          <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row"><Link href="/services" className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-5 py-3 text-sm font-black text-white shadow-[0_18px_38px_-18px_rgba(255,118,0,.8)] transition hover:-translate-y-0.5">Explore Services <MarketingIcon name="arrow" className="h-4 w-4 transition group-hover:translate-x-1" /></Link><Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/[.045] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/45 hover:bg-orange-400/[.08]">View Packages</Link></div>
+          <p className="mt-6 text-xs font-semibold text-[#8F96A3]">Transparent pricing <span className="mx-1.5 text-orange-400">•</span> Public-link ordering <span className="mx-1.5 text-orange-400">•</span> Dashboard tracking</p>
         </div>
-      </section>
-
-      <section className="border-y border-white/[0.06] bg-[#0C0E14] px-4 py-16 sm:px-6 lg:px-8 lg:py-20">
-        <div className="mx-auto grid max-w-7xl gap-4 md:grid-cols-3">
-          {[
-            ["sparkles", "What We Believe", "Clarity, responsible ordering and reliable customer support."],
-            ["dashboard", "How We Help", "Simple platform selection, transparent packages and convenient campaign tracking."],
-            ["shield", "Our Promise", "Clear information before checkout, no password requirement and support when needed."],
-          ].map(([icon, title, description]) => (
-            <article key={title} className="rounded-[1.25rem] border border-white/[0.09] bg-[#101219] p-6 shadow-[0_18px_44px_rgba(0,0,0,.2)]">
-              <span className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/20 bg-orange-500/[0.07] text-[#FF9A2E]">
-                <MarketingIcon name={icon as MarketingIconName} className="h-5 w-5" />
-              </span>
-              <h2 className="mt-5 text-xl font-black text-white">{title}</h2>
-              <p className="mt-3 text-sm leading-7 text-[#A8AFBD]">{description}</p>
-            </article>
-          ))}
+        <div className="relative mx-auto w-full max-w-2xl lg:max-w-none">
+          <div className="absolute -right-3 -top-4 hidden rounded-2xl border border-white/[.12] bg-[#11141D]/90 p-3 shadow-2xl backdrop-blur sm:block"><PanelLabel>Campaign status</PanelLabel><div className="mt-1"><TinyStatus>Tracking active</TinyStatus></div></div>
+          <ProductPreview />
+          <div className="relative mx-auto -mt-4 w-[88%] rounded-2xl border border-white/[.1] bg-[#0B0D13]/95 p-3 shadow-2xl backdrop-blur sm:-mt-6"><div className="flex items-center justify-between gap-3"><div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-xl bg-orange-400/[.1] text-orange-300"><MarketingIcon name="wallet" className="h-4 w-4" /></span><div><p className="text-xs font-black text-white">Wallet activity</p><p className="text-[10px] text-[#8F96A3]">Funding and campaign charges, together.</p></div></div><MarketingIcon name="arrow" className="h-4 w-4 text-orange-300" /></div></div>
         </div>
-      </section>
+      </div>
+    </section>
 
-      <section className="bg-white/55 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-2">
-          <article className="rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_25px_60px_-38px_rgba(255, 159, 0, .55)] backdrop-blur-xl sm:p-8">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br from-orange-500 to-amber-500 text-white shadow-lg"><MarketingIcon name="rocket" className="h-6 w-6" /></span>
-            <p className="mt-6 text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Our mission</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F]">Make campaign management simpler and more transparent.</h2>
-            <p className="mt-5 text-sm leading-7 text-[#111827]">Our mission is to give every customer a reliable workflow for reviewing services, understanding costs and managing campaign activity without scattered messages or unclear records.</p>
-          </article>
-          <article className="rounded-[2rem] border border-white/90 bg-[linear-gradient(145deg,#0B0B0F,#111827_55%,#0B0B0F)] p-6 text-white shadow-[0_30px_70px_-38px_rgba(255, 159, 0, .75)] sm:p-8">
-            <span className="grid h-12 w-12 place-items-center rounded-2xl bg-white/10 text-amber-200"><MarketingIcon name="sparkles" className="h-6 w-6" /></span>
-            <p className="mt-6 text-[10px] font-black uppercase tracking-[0.16em] text-amber-200">Why SocialRUSH exists</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight">Customers deserve clarity before they confirm a campaign.</h2>
-            <p className="mt-5 text-sm leading-7 text-orange-100/75">Rates, quantities, delivery guidance, public destinations, wallet charges and refill terms should be visible before checkout—not buried across conversations and disconnected receipts.</p>
-          </article>
-        </div>
-      </section>
+    <section className="bg-[#0C0E14] px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto grid max-w-7xl gap-9 lg:grid-cols-[.82fr_1.18fr] lg:items-center"><div><PanelLabel>Why SocialRUSH exists</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">A better ordering experience starts with fewer unknowns.</h2><p className="mt-5 text-sm leading-7 text-[#A8AFBD] sm:text-base">Social media growth services can be difficult to compare, unclear to order and hard to follow after checkout. SocialRUSH brings service discovery, order management and support into one streamlined experience.</p><div className="mt-7 space-y-3">{[["search", "Search service"], ["eye", "Compare pricing"], ["link", "Place order"], ["trend", "Track campaign"]].map(([icon, text]) => <div key={text} className="flex items-center gap-3 text-sm font-bold text-[#D7DBE3]"><span className="grid h-8 w-8 place-items-center rounded-lg border border-orange-400/20 bg-orange-400/[.08] text-orange-300"><MarketingIcon name={icon as MarketingIconName} className="h-4 w-4" /></span>{text}</div>)}</div></div><ProductPreview compact /></div></section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">The SocialRUSH difference</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-4xl">A professional workspace, not a confusing order form.</h2>
-            <p className="mt-4 text-sm leading-7 text-[#111827]">The platform connects discovery, checkout, tracking and support into one consistent customer experience.</p>
-          </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-            {differences.map((item) => (
-              <article key={item.title} className="group rounded-[1.65rem] border border-white/90 bg-white/75 p-5 shadow-[0_20px_48px_-34px_rgba(255, 159, 0, .55)] backdrop-blur-xl transition hover:-translate-y-1 hover:border-orange-200 hover:shadow-[0_28px_58px_-34px_rgba(255, 159, 0, .65)] sm:p-6">
-                <span className="grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-orange-50 to-amber-100 text-orange-600 transition group-hover:scale-105"><MarketingIcon name={item.icon} className="h-5 w-5" /></span>
-                <h3 className="mt-5 text-base font-black text-[#0B0B0F]">{item.title}</h3>
-                <p className="mt-2 text-sm leading-6 text-[#111827]">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="border-y border-white/[.07] px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="max-w-2xl"><PanelLabel>Designed around clarity</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">From scattered steps to one connected workspace.</h2></div><div className="mt-10 grid gap-4 lg:grid-cols-2"><article className="rounded-[1.75rem] border border-white/[.09] bg-[#0C0E14] p-6 sm:p-8"><p className="text-xs font-black uppercase tracking-[.14em] text-[#8F96A3]">The usual problem</p><div className="mt-7 space-y-3">{["Confusing service lists", "Unclear pricing", "Difficult order tracking", "Disconnected support", "Inconsistent ordering experience"].map(item => <div key={item} className="flex items-center gap-3 rounded-xl border border-white/[.06] bg-white/[.025] px-3 py-3 text-sm font-semibold text-[#B9C0CC]"><span className="h-2 w-2 rounded-full bg-[#5D6470]" />{item}</div>)}</div></article><article className="relative overflow-hidden rounded-[1.75rem] border border-orange-400/22 bg-gradient-to-br from-orange-500/[.12] via-[#101219] to-[#101219] p-6 sm:p-8"><div className="absolute -right-16 -top-16 h-40 w-40 rounded-full bg-orange-400/[.13] blur-3xl" /><p className="relative text-xs font-black uppercase tracking-[.14em] text-orange-200">The SocialRUSH approach</p><div className="relative mt-7 space-y-3">{["Organized service discovery", "Visible pricing", "Public-link ordering", "Dashboard tracking", "Wallet and payment visibility", "Support access"].map(item => <div key={item} className="flex items-center gap-3 rounded-xl border border-orange-300/14 bg-black/15 px-3 py-3 text-sm font-semibold text-white"><MarketingIcon name="check" className="h-4 w-4 text-emerald-300" />{item}</div>)}</div></article></div></div></section>
 
-      <section className="bg-white/55 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="max-w-3xl">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">Who we help</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-4xl">Built for individual creators and growing teams.</h2>
-          </div>
-          <div className="mt-9 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {audiences.map((item, index) => (
-              <article key={item.title} className="relative overflow-hidden rounded-[1.6rem] border border-white/90 bg-white/80 p-5 shadow-[0_20px_46px_-34px_rgba(255, 159, 0, .5)]">
-                <span className="absolute right-4 top-3 text-4xl font-black text-orange-50">0{index + 1}</span>
-                <span className="relative grid h-11 w-11 place-items-center rounded-2xl bg-gradient-to-br from-orange-100 to-orange-100 text-amber-600"><MarketingIcon name={item.icon} className="h-5 w-5" /></span>
-                <h3 className="relative mt-5 text-base font-black text-[#0B0B0F]">{item.title}</h3>
-                <p className="relative mt-2 text-xs leading-6 text-[#111827]">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div className="max-w-2xl"><PanelLabel>How the platform works</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">One workspace for your growth campaigns.</h2></div><Link href="/services" className="inline-flex min-h-11 items-center gap-2 text-sm font-black text-orange-300 hover:text-orange-200">See available services <MarketingIcon name="arrow" className="h-4 w-4" /></Link></div><ol className="mt-10 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">{workflow.map((item) => <li key={item.number} className="group relative overflow-hidden rounded-2xl border border-white/[.09] bg-[#0C0E14] p-5 transition hover:-translate-y-1 hover:border-orange-400/35"><span className="absolute right-4 top-1 text-6xl font-black tracking-[-.08em] text-white/[.035]">{item.number}</span><span className="grid h-11 w-11 place-items-center rounded-xl bg-orange-400/[.08] text-orange-300 transition group-hover:scale-105"><MarketingIcon name={item.icon} className="h-5 w-5" /></span><h3 className="mt-5 text-lg font-black text-white">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[#A8AFBD]">{item.text}</p></li>)}</ol></div></section>
 
-      <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
-        <div className="mx-auto max-w-7xl">
-          <div className="mx-auto max-w-3xl text-center">
-            <p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">Trust built into the workflow</p>
-            <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-4xl">The essentials stay visible at every step.</h2>
-          </div>
-          <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
-            {trustCards.map((item) => (
-              <article key={item.title} className="rounded-[1.6rem] border border-white/90 bg-white/78 p-5 text-center shadow-[0_22px_50px_-34px_rgba(255, 159, 0, .55)] backdrop-blur-xl">
-                <span className={`mx-auto grid h-12 w-12 place-items-center rounded-2xl bg-gradient-to-br ${item.tone} text-white shadow-lg`}><MarketingIcon name={item.icon} className="h-6 w-6" /></span>
-                <h3 className="mt-5 text-sm font-black text-[#0B0B0F]">{item.title}</h3>
-                <p className="mt-2 text-xs leading-6 text-[#111827]">{item.description}</p>
-              </article>
-            ))}
-          </div>
-        </div>
-      </section>
+    <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="text-center"><PanelLabel>Platform ecosystem</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">Built for the platforms your audience already uses.</h2><p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-[#A8AFBD]">Explore supported social media growth services by platform, then review what is currently available.</p></div><div className="mt-10 grid grid-cols-2 gap-3 sm:grid-cols-4 lg:grid-cols-7">{platforms.map(([name, icon, href, color]) => <Link key={name} href={href} className="group rounded-2xl border border-white/[.09] bg-white/[.025] p-4 text-center transition hover:-translate-y-1 hover:border-orange-400/35 hover:bg-white/[.05]"><PlatformIcon platform={icon} title={name} className={`mx-auto h-6 w-6 ${color}`} /><p className="mt-3 text-xs font-black text-[#D7DBE3]">{name}</p></Link>)}</div></div></section>
 
-      <section className="px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8 lg:pb-24">
-        <div className="relative mx-auto max-w-5xl overflow-hidden rounded-[2rem] bg-gradient-to-br from-[#0B0B0F] via-[#FF9F00] to-[#FF9F00] p-7 text-center text-white shadow-[0_35px_80px_-38px_rgba(255, 159, 0, .8)] sm:p-10 lg:p-12">
-          <div className="pointer-events-none absolute -left-12 -top-16 h-52 w-52 rounded-full bg-orange-400/20 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-20 -right-10 h-56 w-56 rounded-full bg-amber-300/20 blur-3xl" />
-          <div className="relative">
-            <p className="text-[10px] font-black uppercase tracking-[0.16em] text-amber-200">Start with confidence</p>
-            <h2 className="mx-auto mt-3 max-w-3xl text-3xl font-black tracking-tight sm:text-4xl">Choose a campaign that fits your next growth goal.</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-orange-50/75">Compare packages, review the current details and continue through the same secure SocialRUSH workflow.</p>
-            <div className="mt-7 flex flex-col justify-center gap-3 min-[420px]:flex-row">
-              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-white px-6 py-3 text-sm font-black text-[#0B0B0F] transition hover:-translate-y-0.5">View Packages</Link>
-              <PortalCTA className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-white/25 bg-white/10 px-6 py-3 text-sm font-black text-white backdrop-blur transition hover:bg-white/15">
-                Start Order <MarketingIcon name="arrow" className="h-4 w-4" />
-              </PortalCTA>
-            </div>
-          </div>
-        </div>
-      </section>
-    </PublicShell>
-  );
+    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto grid max-w-7xl gap-9 lg:grid-cols-[.8fr_1.2fr]"><div><PanelLabel>What we focus on</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">Details that make the experience easier to trust.</h2><p className="mt-5 text-sm leading-7 text-[#A8AFBD]">The product is designed to keep practical campaign information in view, before and after an order.</p></div><div className="grid gap-3 md:grid-cols-3">{principles.map(item => <article key={item.title} className={`rounded-2xl border border-white/[.09] bg-[#101219] p-5 ${item.span ?? ""}`}><span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-400/[.08] text-orange-300"><MarketingIcon name={item.icon} className="h-5 w-5" /></span><h3 className="mt-5 text-base font-black text-white">{item.title}</h3><p className="mt-2 text-sm leading-6 text-[#A8AFBD]">{item.text}</p></article>)}</div></div></section>
+
+    <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="flex flex-col justify-between gap-5 md:flex-row md:items-end"><div><PanelLabel>Product preview</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">A product tour built around the customer journey.</h2></div><span className="text-xs font-semibold text-[#8F96A3]">Illustrative UI previews</span></div><div className="mt-10 grid gap-4 lg:grid-cols-3"><article className="rounded-[1.5rem] border border-white/[.09] bg-[#101219] p-5"><PanelLabel>01 · Services</PanelLabel><h3 className="mt-2 text-lg font-black text-white">Find a starting point</h3><div className="mt-5 space-y-2">{["Platform", "Service type", "Current availability"].map((item, i) => <div key={item} className="rounded-xl border border-white/[.07] bg-white/[.035] p-3"><p className="text-[10px] text-[#8F96A3]">{item}</p><div className={`mt-2 h-2 rounded-full ${i === 0 ? "w-4/5 bg-orange-400" : "w-3/5 bg-white/20"}`} /></div>)}</div></article><article className="rounded-[1.5rem] border border-orange-400/20 bg-gradient-to-br from-orange-500/[.10] to-[#101219] p-5"><PanelLabel>02 · New order</PanelLabel><h3 className="mt-2 text-lg font-black text-white">Review before continuing</h3><div className="mt-5 space-y-2 text-[11px]"><div className="rounded-xl bg-black/20 p-3 text-[#A8AFBD]">Destination <p className="mt-1 font-bold text-white">Public profile URL</p></div><div className="grid grid-cols-2 gap-2"><div className="rounded-xl bg-black/20 p-3 text-[#A8AFBD]">Quantity <p className="mt-1 font-bold text-white">Selected</p></div><div className="rounded-xl bg-black/20 p-3 text-[#A8AFBD]">Estimate <p className="mt-1 font-bold text-white">Visible</p></div></div></div></article><article className="rounded-[1.5rem] border border-white/[.09] bg-[#101219] p-5"><PanelLabel>03 · Dashboard</PanelLabel><h3 className="mt-2 text-lg font-black text-white">Keep activity organized</h3><div className="mt-5 grid grid-cols-2 gap-2">{[["wallet", "Wallet"], ["trend", "Orders"], ["message", "Support"], ["eye", "Tracking"]].map(([icon, label]) => <div key={label} className="rounded-xl border border-white/[.07] bg-white/[.035] p-3"><MarketingIcon name={icon as MarketingIconName} className="h-4 w-4 text-orange-300" /><p className="mt-3 text-[11px] font-bold text-[#D7DBE3]">{label}</p></div>)}</div></article></div></div></section>
+
+    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-2"><article className="relative overflow-hidden rounded-[2rem] border border-orange-400/20 bg-gradient-to-br from-orange-500/[.13] via-[#101219] to-[#101219] p-6 sm:p-8"><div className="absolute -right-16 -top-16 h-48 w-48 rounded-full bg-orange-400/[.12] blur-3xl" /><div className="relative"><PanelLabel>Transparency before checkout</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white">Know what you are selecting.</h2><p className="mt-4 text-sm leading-7 text-[#B9C0CC]">Customers should be able to understand the selected service and expected charge before continuing through the order flow.</p><div className="mt-6 rounded-2xl border border-orange-300/15 bg-black/20 p-4"><div className="flex items-center justify-between"><p className="text-sm font-black text-white">Order summary</p><TinyStatus tone="orange">Preview</TinyStatus></div><dl className="mt-4 space-y-3 text-xs"><div className="flex justify-between gap-4 text-[#A8AFBD]"><dt>Current service price</dt><dd className="font-bold text-white">Shown for selection</dd></div><div className="flex justify-between gap-4 text-[#A8AFBD]"><dt>Delivery and refill</dt><dd className="font-bold text-white">Where applicable</dd></div><div className="flex justify-between gap-4 text-[#A8AFBD]"><dt>Destination requirement</dt><dd className="font-bold text-white">Public link</dd></div><div className="flex justify-between gap-4 border-t border-white/[.08] pt-3 text-[#A8AFBD]"><dt>Total estimate</dt><dd className="font-bold text-orange-200">Review before order</dd></div></dl></div></div></article><article className="rounded-[2rem] border border-white/[.09] bg-[#101219] p-6 sm:p-8"><PanelLabel>Public-link ordering</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white">Your password is not part of the order.</h2><p className="mt-4 text-sm leading-7 text-[#A8AFBD]">For applicable SocialRUSH services, you provide the public profile, post, page, channel or video destination required for delivery—not your social-account password.</p><div className="mt-6 space-y-3"><div className="rounded-xl border border-emerald-400/18 bg-emerald-400/[.06] p-3"><p className="text-[10px] font-black uppercase tracking-[.13em] text-emerald-200">Public profile URL</p><p className="mt-1 text-sm font-bold text-white">✓ Valid public link</p></div><div className="rounded-xl border border-white/[.08] bg-white/[.025] p-3"><p className="text-[10px] font-black uppercase tracking-[.13em] text-[#8F96A3]">Password</p><p className="mt-1 text-sm font-bold text-[#D7DBE3]">Not requested</p></div></div></article></div></section>
+
+    <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[1.1fr_.9fr] lg:items-center"><div className="rounded-[2rem] border border-white/[.1] bg-[#101219] p-5 shadow-[0_30px_80px_-45px_rgba(0,0,0,.9)] sm:p-7"><div className="flex items-center justify-between"><div><PanelLabel>UI Preview</PanelLabel><p className="mt-1 text-xl font-black text-white">Your campaigns stay organized</p></div><TinyStatus>Dashboard</TinyStatus></div><div className="mt-6 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/18 bg-orange-400/[.06] p-4"><MarketingIcon name="wallet" className="h-5 w-5 text-orange-300" /><p className="mt-5 text-sm font-black text-white">Wallet visibility</p><p className="mt-1 text-xs leading-5 text-[#A8AFBD]">Funding and charge activity in one view.</p></div><div className="rounded-2xl border border-white/[.08] bg-white/[.025] p-4"><MarketingIcon name="trend" className="h-5 w-5 text-orange-300" /><p className="mt-5 text-sm font-black text-white">Order tracking</p><p className="mt-1 text-xs leading-5 text-[#A8AFBD]">Active and completed campaign records.</p></div><div className="rounded-2xl border border-white/[.08] bg-white/[.025] p-4 sm:col-span-2"><div className="flex justify-between gap-4"><div><MarketingIcon name="message" className="h-5 w-5 text-orange-300" /><p className="mt-4 text-sm font-black text-white">Support with context</p></div><TinyStatus tone="slate">Open</TinyStatus></div><p className="mt-2 text-xs leading-5 text-[#A8AFBD]">Order question · View conversation · Keep support close to the account experience.</p></div></div></div><div><PanelLabel>Support experience</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">Support when you need clarity.</h2><p className="mt-5 text-sm leading-7 text-[#A8AFBD]">Use the support and contact paths when you need help with an order, account, service selection or existing campaign context.</p><Link href="/contact" className="mt-7 inline-flex min-h-12 items-center gap-2 rounded-xl border border-orange-400/35 bg-orange-400/[.08] px-5 py-3 text-sm font-black text-orange-100 transition hover:bg-orange-400/[.14]">Contact Support <MarketingIcon name="arrow" className="h-4 w-4" /></Link></div></div></section>
+
+    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="mx-auto max-w-7xl"><div className="grid gap-4 md:grid-cols-[1.2fr_.8fr]"><div><PanelLabel>Who SocialRUSH is for</PanelLabel><h2 className="mt-3 text-3xl font-black tracking-[-.045em] text-white sm:text-5xl">For people building visibility with intention.</h2></div><p className="self-end text-sm leading-7 text-[#A8AFBD]">From individual profiles to growing teams, choose services that fit the campaign you are planning.</p></div><div className="mt-9 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{[["Creators", "Organize campaigns around what you publish."], ["Brands", "Keep platform activity in a consistent workspace."], ["Local businesses", "Explore options for a visible public presence."], ["Agencies", "Keep campaign records and support context clear."], ["Professionals", "Choose a focused service for your next goal."], ["Social media teams", "Review services, orders and wallet activity together."]].map(([title, text], i) => <article key={title} className={`rounded-2xl border border-white/[.09] p-5 ${i === 0 ? "bg-orange-400/[.08]" : "bg-[#101219]"}`}><p className="text-[10px] font-black text-orange-300">0{i + 1}</p><h3 className="mt-5 text-lg font-black text-white">{title}</h3><p className="mt-2 text-sm leading-6 text-[#A8AFBD]">{text}</p></article>)}</div></div></section>
+
+    <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-[.9fr_1.1fr] md:items-center"><div><PanelLabel>Clear services. No unrealistic promises.</PanelLabel><h2 className="mt-3 text-2xl font-black tracking-[-.035em] text-white sm:text-3xl">A service does not guarantee virality, rankings, sales or revenue.</h2></div><p className="text-sm leading-7 text-[#A8AFBD]">Social growth services are one part of a wider presence. Content quality, relevance, audience fit and platform dynamics still matter. We focus on making the ordering experience and campaign details clearer—not on promising outcomes nobody can responsibly guarantee.</p></div></section>
+
+    <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-orange-400/25 bg-gradient-to-br from-[#17110C] via-[#101219] to-[#0B0D13] p-7 text-center shadow-[0_35px_90px_-42px_rgba(255,118,0,.55)] sm:p-12"><div className="pointer-events-none absolute left-1/2 top-0 h-56 w-[36rem] max-w-full -translate-x-1/2 bg-orange-500/[.18] blur-[90px]" /><div className="relative"><PanelLabel>SocialRUSH</PanelLabel><h2 className="mx-auto mt-3 max-w-3xl text-3xl font-black tracking-[-.05em] text-white sm:text-5xl">Ready to explore SocialRUSH?</h2><p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#B9C0CC]">Browse available services, compare pricing and choose the option that fits your goal.</p><div className="mt-8 flex flex-col justify-center gap-3 min-[420px]:flex-row"><Link href="/services" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-6 py-3 text-sm font-black text-white transition hover:-translate-y-0.5">Explore Services <MarketingIcon name="arrow" className="h-4 w-4" /></Link><Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/[.05] px-6 py-3 text-sm font-black text-white transition hover:bg-white/[.09]">View Packages</Link><Link href="/contact" className="inline-flex min-h-12 items-center justify-center px-5 py-3 text-sm font-black text-orange-200 hover:text-white">Contact Us</Link></div></div></div></section>
+  </PublicShell>;
 }
