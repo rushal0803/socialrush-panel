@@ -8,6 +8,7 @@ import { getCurrencyDisclaimer } from "@/lib/currency";
 import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -49,6 +50,15 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  if (params.slug === "facebook-views") {
+    return {
+      metadataBase: new URL(siteUrl),
+      title: { absolute: "Buy Facebook Views India | SocialRUSH" },
+      description: "Buy Facebook views in India with SocialRUSH. Public video-link ordering, transparent live pricing, dashboard tracking and WhatsApp support. No password required.",
+      alternates: { canonical: "/facebook-views" },
+      robots: { index: false, follow: true },
+    };
+  }
   const seo = getSeoData(params.slug);
   if (!seo) return {};
 
@@ -128,6 +138,7 @@ function getSeoData(slug: string) {
 }
 
 export default function ServiceSeoPage({ params }: { params: { slug: string } }) {
+  if (params.slug === "facebook-views") return <FacebookViewsLanding />;
   const seo = getSeoData(params.slug);
   if (!seo) notFound();
   const hasBasePrice = "pricePer1000INR" in seo && typeof seo.pricePer1000INR === "number";
