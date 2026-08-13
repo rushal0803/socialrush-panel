@@ -6,7 +6,7 @@ import Logo from "./Logo";
 import FooterSocialLinks from "./marketing/FooterSocialLinks";
 
 const columns = [
-  { title: "Platform", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["YouTube Subscribers", "/youtube-subscribers"], ["Facebook Followers", "/facebook-followers"], ["Twitter/X Followers", "/twitter-followers"], ["Dashboard", "/dashboard"]] },
+  { title: "Platform", links: [["Instagram Followers", "/buy-instagram-followers-india"], ["YouTube Subscribers", "/youtube-subscribers"], ["Facebook Followers", "/buy-facebook-followers-india"], ["Twitter/X Followers", "/twitter-followers"], ["Dashboard", "/dashboard"]] },
   { title: "Company", links: [["About SocialRUSH", "/#why"], ["Why SocialRUSH", "/#why"], ["How It Works", "/#services"], ["Pricing", "/#services"], ["Support", "/dashboard/support"]] },
   { title: "Resources", links: [["API Docs", "/dashboard/api-docs"], ["Help Center", "/dashboard/support"], ["FAQs", "/faq"], ["Blog", "/blog"], ["Contact Support", "/contact"]] },
   { title: "Legal", links: [["Terms & Conditions", "/terms-and-conditions"], ["Privacy Policy", "/privacy-policy"], ["Refund Policy", "/refund-policy"], ["Service Policy", "/terms-and-conditions"]] },

@@ -100,7 +100,7 @@ test("case studies links remain valid at supported mobile and desktop widths", a
   const expectedDestinations = [
     "/services", "/services?platform=instagram", "/services?platform=youtube", "/services?platform=facebook",
     "/buy-instagram-followers-india", "/instagram-likes", "/instagram-views", "/youtube-subscribers",
-    "/youtube-views", "/youtube-likes", "/facebook-followers", "/services?platform=linkedin", "/packages",
+    "/youtube-views", "/youtube-likes", "/buy-facebook-followers-india", "/services?platform=linkedin", "/packages",
     "/login?next=/dashboard/new-order",
   ];
   const linkedDestinations = await page.locator('a[href]').evaluateAll((links) => links.map((link) => link.getAttribute("href")));
