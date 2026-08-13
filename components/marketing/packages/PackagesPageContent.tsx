@@ -102,7 +102,7 @@ const relatedGuideMap: Partial<Record<`${Platform}:${Service}`, Array<readonly [
   "YouTube:subscribers": [["YouTube Subscribers Guide", "/youtube-subscribers"]],
   "YouTube:likes": [["YouTube Likes Guide", "/youtube-likes"]],
   "YouTube:views": [["YouTube Views Guide", "/youtube-views"]],
-  "Facebook:followers": [["Facebook Followers Guide", "/facebook-followers"]],
+  "Facebook:followers": [["Facebook Followers Guide", "/buy-facebook-followers-india"]],
   "LinkedIn:followers": [["LinkedIn Followers Guide", "/linkedin-followers"]],
   "Telegram:members": [["Telegram Members Guide", "/telegram-members"]],
   "X:followers": [["Twitter/X Followers Guide", "/twitter-followers"]],

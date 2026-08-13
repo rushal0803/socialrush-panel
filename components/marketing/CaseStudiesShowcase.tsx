@@ -20,7 +20,7 @@ const serviceHrefs: Record<string, string> = {
   "YouTube Subscribers": "/youtube-subscribers",
   "YouTube Views": "/youtube-views",
   "YouTube Likes": "/youtube-likes",
-  "Facebook Page Followers": "/facebook-followers",
+  "Facebook Page Followers": "/buy-facebook-followers-india",
   "Instagram Services": "/services?platform=instagram",
   "YouTube Services": "/services?platform=youtube",
   "Facebook Services": "/services?platform=facebook",

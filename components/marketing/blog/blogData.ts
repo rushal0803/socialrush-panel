@@ -363,7 +363,7 @@ const baseBlogArticles: BlogArticle[] = [
       { label: "Explore SocialRUSH Services", href: "/services" },
       { label: "Compare SocialRUSH Packages", href: "/packages" },
       { label: "Instagram Followers Service", href: "/buy-instagram-followers-india" },
-      { label: "Facebook Followers Service", href: "/facebook-followers" },
+      { label: "Facebook Followers Service", href: "/buy-facebook-followers-india" },
     ],
     faqs: [
       {
@@ -2821,7 +2821,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     cadence: "three practical page updates per week and one local trust post or offer every week",
     risk: "running visibility campaigns before the page answers basic customer questions",
     serviceLabel: "Facebook Followers India",
-    serviceHref: "/facebook-followers",
+    serviceHref: "/buy-facebook-followers-india",
   },
   "why-public-link-ordering-is-safer": {
     platform: "social media",
@@ -3131,13 +3131,13 @@ function serviceLinksForProfile(profile: EditorialProfile) {
   }
 
   if (platform.includes("facebook")) {
-    return [{ label: "Facebook Followers", href: "/facebook-followers" }];
+    return [{ label: "Facebook Followers", href: "/buy-facebook-followers-india" }];
   }
 
   return [
     { label: "Instagram Followers", href: "/buy-instagram-followers-india" },
     { label: "YouTube Subscribers", href: "/youtube-subscribers" },
-    { label: "Facebook Followers", href: "/facebook-followers" },
+    { label: "Facebook Followers", href: "/buy-facebook-followers-india" },
     { label: "LinkedIn Followers", href: "/linkedin-followers" },
   ];
 }

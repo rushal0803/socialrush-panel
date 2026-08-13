@@ -31,7 +31,8 @@ export const canonicalIndiaServicePaths: Record<IndiaServiceSlug, string> = {
   "buy-linkedin-followers-india": "/linkedin-followers",
   "buy-linkedin-likes-india": "/linkedin-likes",
   "buy-twitter-followers-india": "/twitter-followers",
-  "buy-facebook-followers-india": "/facebook-followers",
+  // This established Search Console landing page keeps its historical URL.
+  "buy-facebook-followers-india": "/buy-facebook-followers-india",
   "buy-facebook-likes-india": "/facebook-likes",
   "buy-facebook-views-india": "/facebook-views",
   "buy-telegram-members-india": "/telegram-members",

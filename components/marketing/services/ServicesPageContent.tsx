@@ -21,7 +21,7 @@ const platformColors: Record<SmmPlatformId, string> = {
 const servicePaths: Record<string, string> = {
   "instagram-followers": "/buy-instagram-followers-india", "instagram-likes": "/instagram-likes", "instagram-views": "/instagram-views",
   "youtube-subscribers": "/youtube-subscribers", "youtube-likes": "/youtube-likes", "youtube-views": "/youtube-views",
-  "facebook-followers": "/facebook-followers", "facebook-likes": "/facebook-likes", "linkedin-followers": "/linkedin-followers",
+  "facebook-followers": "/buy-facebook-followers-india", "facebook-likes": "/facebook-likes", "linkedin-followers": "/linkedin-followers",
   "linkedin-likes": "/linkedin-likes", "telegram-members": "/telegram-members", "tiktok-followers": "/tiktok-followers", "x-followers": "/twitter-followers",
 };
 

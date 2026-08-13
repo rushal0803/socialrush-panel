@@ -14,7 +14,7 @@ const canonicalRedirects: Record<string, string> = {
   "/buy-linkedin-followers-india": "/linkedin-followers",
   "/buy-linkedin-likes-india": "/linkedin-likes",
   "/buy-twitter-followers-india": "/twitter-followers",
-  "/buy-facebook-followers-india": "/facebook-followers",
+  "/facebook-followers": "/buy-facebook-followers-india",
   "/buy-facebook-likes-india": "/facebook-likes",
   "/buy-telegram-members-india": "/telegram-members",
   "/buy-tiktok-followers-india": "/tiktok-followers",
@@ -74,6 +74,7 @@ const canonicalDestination = isProductionHost
     canonicalUrl.protocol = "https:";
     canonicalUrl.hostname = "www.getsocialrush.com";
     canonicalUrl.port = "";
+    canonicalUrl.search = request.nextUrl.search;
     return NextResponse.redirect(canonicalUrl, 301);
   }
 
@@ -91,6 +92,9 @@ const canonicalDestination = isProductionHost
     pathname.startsWith("/auth/") ||
     pathname === "/login" ||
     pathname === "/register" ||
+    pathname === "/forgot-password" ||
+    pathname === "/reset-password" ||
+    pathname === "/verify-email" ||
     pathname.startsWith("/packages/checkout");
   const isPrivateShortcut =
     pathname === "/account" ||
@@ -98,7 +102,8 @@ const canonicalDestination = isProductionHost
     pathname === "/orders" ||
     pathname === "/billing" ||
     pathname === "/new-campaign" ||
-    pathname === "/order-summary";
+    pathname === "/order-summary" ||
+    pathname.startsWith("/packages/summary");
 
   if (isPrivateOrMachineRoute || isPrivateShortcut) {
     response.headers.set("X-Robots-Tag", "noindex, nofollow");

@@ -160,7 +160,7 @@ const keywordResourceMap: Record<string, Array<{ label: string; href: string; te
   facebook: [
     {
       label: "Facebook followers India",
-      href: "/facebook-followers",
+      href: "/buy-facebook-followers-india",
       text: "Review Facebook follower campaign options for public pages and profiles.",
     },
     {
