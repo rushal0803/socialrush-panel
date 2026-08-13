@@ -111,7 +111,7 @@ export default function MobileMenuLayer({
       aria-label="Mobile navigation"
       tabIndex={-1}
     >
-      <button type="button" tabIndex={-1} aria-label="Close navigation" onClick={onClose} className={`absolute inset-0 h-full w-full cursor-default bg-[#050505]/80 backdrop-blur-[2px] ${variant === "drawer" ? "" : "bg-[#050505]/95"}`} />
+      <button type="button" tabIndex={-1} aria-label="Close menu backdrop" onClick={onClose} className={`absolute inset-0 h-full w-full cursor-default bg-[#050505]/80 backdrop-blur-[2px] ${variant === "drawer" ? "" : "bg-[#050505]/95"}`} />
       {variant === "drawer" ? (
         <div onClick={keepOpen} className="mobile-menu-theme absolute bottom-0 right-0 top-0 z-[100000] flex w-[min(92vw,25rem)] max-w-[25rem] flex-col overflow-hidden border-l border-orange-400/30 bg-[#0B0B0F] shadow-[-24px_0_60px_-24px_rgba(0,0,0,.9)]">
           {children}
@@ -122,7 +122,7 @@ export default function MobileMenuLayer({
           {showCloseButton ? (
             <button
               type="button"
-              aria-label="Close mobile navigation"
+              aria-label="Close menu"
               onClick={onClose}
               className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-xl border border-orange-400/30 bg-[#151515] text-xl font-semibold text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)]"
             >
