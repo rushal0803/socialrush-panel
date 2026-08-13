@@ -6,11 +6,13 @@ import { usePathname } from "next/navigation";
 import Logo from "@/components/Logo";
 import { AdminNav } from "./AdminSidebar";
 import { logout } from "@/app/auth/actions";
+import { useBodyScrollLock } from "@/lib/ui/use-body-scroll-lock";
 
 export default function AdminHeader({ name, email }: { name: string; email: string }) {
   const initials = name.split(" ").map((part) => part[0]).join("").slice(0, 2).toUpperCase() || "AD";
   const pathname = usePathname();
   const [menuOpen, setMenuOpen] = useState(false);
+  useBodyScrollLock(menuOpen);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -18,14 +20,11 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
 
   useEffect(() => {
     if (!menuOpen) return;
-    const previousOverflow = document.body.style.overflow;
-    document.body.style.overflow = "hidden";
     const onKeyDown = (event: KeyboardEvent) => {
       if (event.key === "Escape") setMenuOpen(false);
     };
     window.addEventListener("keydown", onKeyDown);
     return () => {
-      document.body.style.overflow = previousOverflow;
       window.removeEventListener("keydown", onKeyDown);
     };
   }, [menuOpen]);
@@ -77,8 +76,8 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
               <button
                 type="button"
                 onClick={() => setMenuOpen(false)}
-                aria-label="Close admin menu"
-                className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 bg-white/[.06] text-xl text-white transition hover:border-orange-400/50 hover:bg-orange-500/10 active:scale-[.98]"
+                aria-label="Close menu"
+                className="grid h-11 w-11 place-items-center rounded-xl border-2 border-orange-400/70 bg-[#151821] text-xl text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.85)] transition hover:bg-orange-500/15 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
               >
                 ×
               </button>

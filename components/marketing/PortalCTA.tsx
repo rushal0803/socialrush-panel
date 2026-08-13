@@ -5,7 +5,7 @@ import { useEffect, useState, type ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
-export default function PortalCTA({ children, className = "" }: { children: ReactNode; className?: string }) {
+export default function PortalCTA({ children, className = "", onClick }: { children: ReactNode; className?: string; onClick?: () => void }) {
   const router = useRouter();
   const [href, setHref] = useState("/login?next=/dashboard/new-order");
   useEffect(() => {
@@ -16,6 +16,7 @@ export default function PortalCTA({ children, className = "" }: { children: Reac
   }, []);
   async function followSession(event: React.MouseEvent<HTMLAnchorElement>) {
     event.preventDefault();
+    onClick?.();
     const { data } = await createClient().auth.getSession();
     router.push(
       data.session ? "/dashboard/new-order" : "/login?next=/dashboard/new-order",
