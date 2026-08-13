@@ -9,6 +9,6 @@ export const metadata = createPageMetadata({ title: "Social Media Growth Case St
 export const dynamic = "force-dynamic";
 
 export default async function CaseStudies() {
-  const { data = [] } = await createAdminClient().from("case_studies").select("slug,title,platform,service_name,customer_type,challenge,outcome,delivery_timeline").eq("published", true).eq("permission_confirmed", true).order("featured", { ascending: false }).order("published_at", { ascending: false });
-  return <PublicShell><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Case Studies", path: "/case-studies" }]} /><CaseStudiesShowcase verified={data as any} /></PublicShell>;
+  const { data } = await createAdminClient().from("case_studies").select("slug,title,platform,service_name,customer_type,challenge,outcome,delivery_timeline").eq("published", true).eq("permission_confirmed", true).order("featured", { ascending: false }).order("published_at", { ascending: false });
+  return <PublicShell><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Case Studies", path: "/case-studies" }]} /><CaseStudiesShowcase verified={(data ?? []) as any} /></PublicShell>;
 }
