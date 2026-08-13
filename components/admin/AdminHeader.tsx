@@ -31,7 +31,7 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
   }, [menuOpen]);
 
   return (
-    <header className="sticky top-0 z-30 border-b border-orange-400/20 bg-[#0B0B0F]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-8 sm:py-3.5">
+    <header className="admin-header sticky top-0 z-30 px-4 py-3 sm:px-8 sm:py-3.5">
       <div className="mx-auto flex h-14 max-w-[1800px] items-center justify-between gap-2 sm:gap-4">
         <div className="lg:hidden">
           <Logo light priority />
@@ -71,7 +71,7 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
             onClick={() => setMenuOpen(false)}
             className="absolute inset-0 bg-black/72 backdrop-blur-sm"
           />
-          <aside className="absolute right-0 top-0 flex h-[100dvh] w-[min(22rem,92vw)] flex-col overflow-y-auto border-l border-orange-400/25 bg-[#0B0B0F] p-4 shadow-[0_30px_80px_rgba(0,0,0,.75)]">
+          <aside aria-label="Admin navigation" className="admin-mobile-drawer absolute right-0 top-0 flex h-[100dvh] w-[min(22rem,calc(100vw-1.25rem))] flex-col overflow-y-auto p-4 shadow-[0_30px_80px_rgba(0,0,0,.75)]">
             <div className="flex items-center justify-between gap-3">
               <Logo light priority />
               <button

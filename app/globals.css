@@ -232,6 +232,62 @@ p {
   backdrop-filter: blur(12px);
 }
 
+/* Admin operations workspace. Scoped deliberately so the public storefront and
+   customer portal retain their existing visual language. */
+.admin-shell {
+  --admin-surface: rgba(15, 17, 24, .92);
+  --admin-surface-raised: rgba(22, 25, 34, .96);
+  --admin-line: rgba(255,255,255,.085);
+  background:
+    radial-gradient(48rem 28rem at 100% -8%, rgba(255,118,0,.09), transparent 65%),
+    radial-gradient(42rem 28rem at 18% 110%, rgba(255,155,46,.045), transparent 68%),
+    #090b10;
+}
+.admin-shell .dashboard-sidebar { border-right-color: var(--admin-line); background:linear-gradient(180deg,rgba(16,18,25,.99),rgba(9,11,16,.99)); }
+.admin-workspace-card { border:1px solid rgba(255,174,91,.18); border-radius:14px; background:linear-gradient(110deg,rgba(255,118,0,.10),rgba(255,255,255,.025)); box-shadow:inset 0 1px rgba(255,255,255,.04); }
+.admin-shell nav a { min-height:42px; border:1px solid transparent; }
+.admin-shell nav a:hover { border-color:rgba(255,255,255,.07); }
+.admin-header { border-bottom:1px solid var(--admin-line); background:rgba(10,12,17,.8); box-shadow:0 12px 35px -30px #000; backdrop-filter:blur(18px); }
+.admin-mobile-drawer { padding-top:calc(1rem + env(safe-area-inset-top)); padding-bottom:calc(1rem + env(safe-area-inset-bottom)); border-left:1px solid rgba(255,255,255,.1); background:linear-gradient(180deg,#11141b,#090b10); }
+.admin-shell main { position:relative; }
+.admin-shell main > .mx-auto { padding-bottom:3rem; }
+.admin-shell h1 { font-size:clamp(1.6rem,2.8vw,2.2rem) !important; letter-spacing:-.045em; }
+.admin-shell h2 { font-size:1rem; letter-spacing:-.02em; }
+.admin-shell .panel-card,
+.admin-shell [class*="bg-[#111111]"] { border-color:var(--admin-line) !important; background:var(--admin-surface) !important; box-shadow:0 16px 42px -32px rgba(0,0,0,.85); }
+.admin-shell .panel-card { border-radius:18px; }
+.admin-shell [class*="border-slate-200"], .admin-shell [class*="border-slate-100"] { border-color:var(--admin-line) !important; }
+.admin-shell [class*="bg-slate-50"], .admin-shell [class*="bg-white"] { background-color:rgba(255,255,255,.045) !important; }
+.admin-shell [class*="text-slate-800"], .admin-shell [class*="text-slate-700"], .admin-shell [class*="text-slate-600"] { color:#e8ebf0 !important; }
+.admin-shell [class*="text-slate-500"], .admin-shell [class*="text-slate-400"] { color:#929aaa !important; }
+.admin-input, .admin-shell input:not([type="hidden"]), .admin-shell select, .admin-shell textarea {
+  border:1px solid rgba(255,255,255,.105); background:#0b0d13; color:#f6f7f9; box-shadow:inset 0 1px rgba(255,255,255,.025);
+}
+.admin-shell input:not([type="hidden"]), .admin-shell select, .admin-shell textarea { min-height:42px; }
+.admin-input:focus, .admin-shell input:focus, .admin-shell select:focus, .admin-shell textarea:focus { border-color:rgba(255,139,43,.8); box-shadow:0 0 0 3px rgba(255,118,0,.14); }
+.admin-shell option { background:#151820; color:#fff; }
+.admin-shell table thead { position:sticky; top:0; z-index:1; background:#171a22 !important; color:#8891a1 !important; }
+.admin-shell table th { font-size:10px; font-weight:800; letter-spacing:.09em; text-transform:uppercase; }
+.admin-shell table tbody { color:#cbd1da; }
+.admin-shell table tbody tr { border-color:var(--admin-line) !important; transition:background .16s ease; }
+.admin-shell table tbody tr:hover { background:rgba(255,118,0,.045) !important; }
+.admin-shell table td { vertical-align:middle; }
+.admin-shell .btn-dashboard-primary, .admin-shell .bg-orange-600 { border:1px solid rgba(255,205,130,.22); box-shadow:0 10px 22px -14px rgba(255,118,0,.75); }
+.admin-shell button:not([class*="bg-gradient"]):not([class*="bg-orange"]):not([class*="bg-emerald"]):not([class*="bg-red"]), .admin-shell summary { transition:border-color .16s ease, background .16s ease, transform .16s ease; }
+.admin-shell button:hover, .admin-shell summary:hover { border-color:rgba(255,164,58,.42); }
+.admin-modal { border:1px solid rgba(255,177,91,.26); border-radius:18px; background:linear-gradient(145deg,#1a1d26,#101217); box-shadow:0 28px 80px rgba(0,0,0,.62); }
+.admin-shell details > summary::-webkit-details-marker { display:none; }
+@media (max-width: 1023px) {
+  .admin-shell main > .mx-auto { padding:1rem 1rem calc(5.5rem + env(safe-area-inset-bottom)) !important; }
+  .admin-shell .panel-card { border-radius:15px; }
+  .admin-shell table { min-width:760px !important; }
+}
+@media (max-width: 639px) {
+  .admin-shell .grid[class*="sm:grid-cols"] > * { min-width:0; }
+  .admin-shell [class*="rounded-3xl"] { border-radius:16px !important; }
+  .admin-shell main h1 + p { font-size:.82rem; line-height:1.55; }
+}
+
 /* Customer dashboard primitives. These deliberately sit above legacy utility
    styles so dashboard routes share one compact, quiet SaaS surface language. */
 .dashboard-shell main > .mx-auto {
