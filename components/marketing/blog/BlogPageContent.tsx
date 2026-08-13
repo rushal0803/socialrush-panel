@@ -2,417 +2,77 @@
 
 import SafeImage from "@/components/SafeImage";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { ArrowRight, Search, ShieldCheck, Sparkles, X } from "lucide-react";
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
-import { blogArticles } from "@/components/marketing/blog/blogData";
-import { getReadingTime, getSearchText, sortArticles } from "@/lib/blog";
+import { blogArticles, type BlogArticle } from "@/components/marketing/blog/blogData";
+import { formatArticleDate, getReadingTime, getSearchText, sortArticles } from "@/lib/blog";
 
-const sortedArticles = sortArticles(blogArticles);
-const categories = ["All", ...Array.from(new Set(sortedArticles.map((article) => article.category)))];
-const featuredArticle = sortedArticles.find((article) => article.featured) ?? sortedArticles[0];
-const whatsappUrl =
-  "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20growing%20my%20social%20media";
-const relatedServiceLinks = [
-  ["Instagram Followers", "/buy-instagram-followers-india"],
-  ["Instagram Likes", "/instagram-likes"],
-  ["YouTube Subscribers", "/youtube-subscribers"],
-  ["Facebook Followers", "/facebook-followers"],
-  ["LinkedIn Followers", "/linkedin-followers"],
-  ["Packages", "/packages"],
+const articles = sortArticles(blogArticles);
+const featuredArticle = articles.find((article) => article.featured) ?? articles[0];
+
+const platforms = [
+  { label: "Instagram", categories: ["Instagram Growth", "Instagram Pricing"], Icon: FaInstagram, accent: "from-fuchsia-500/30 via-orange-400/20 to-amber-300/10" },
+  { label: "YouTube", categories: ["YouTube Growth"], Icon: FaYoutube, accent: "from-red-500/30 to-orange-400/10" },
+  { label: "Facebook", categories: ["Facebook Marketing"], Icon: FaFacebook, accent: "from-blue-500/30 to-sky-400/10" },
+  { label: "LinkedIn", categories: ["LinkedIn Business", "LinkedIn Marketing"], Icon: FaLinkedin, accent: "from-[#0A66C2]/35 to-sky-300/10" },
+  { label: "Growth strategy", categories: ["Brand Visibility", "Campaign Strategy", "Creator Strategy", "Small Business", "Social Media Strategy", "Social Media Tips"], Icon: Sparkles, accent: "from-amber-400/25 to-orange-600/10" },
+  { label: "Pricing & safety", categories: ["Safe Ordering", "Safety"], Icon: ShieldCheck, accent: "from-emerald-400/20 to-cyan-400/10" },
 ] as const;
 
-const fadeUp = {
-  hidden: { opacity: 0, y: 22 },
-  visible: { opacity: 1, y: 0 },
-};
+const filterOptions = [
+  { label: "All guides", categories: [] },
+  ...platforms.map(({ label, categories }) => ({ label, categories: [...categories] })),
+] as const;
 
-const normalizeCategory = (value: string) => value.trim().toLowerCase();
-const normalizeSearch = (value: string) => value.trim().toLowerCase();
+function matchesCategories(article: BlogArticle, categories: readonly string[]) {
+  return categories.length === 0 || categories.includes(article.category);
+}
+
+function ArticleArtwork({ article, priority = false }: { article: BlogArticle; priority?: boolean }) {
+  return (
+    <div className="relative aspect-[16/10] overflow-hidden bg-[#10141f]">
+      <SafeImage src={article.image} alt={article.imageAlt ?? article.title} fill priority={priority} sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.04]" />
+      <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#07080D]/70 to-transparent" />
+      <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-[#090B12]/80 px-3 py-1 text-[10px] font-black uppercase tracking-[.13em] text-white backdrop-blur">{article.category}</span>
+    </div>
+  );
+}
 
 export default function BlogPageContent() {
-  const [heroImageError, setHeroImageError] = useState(false);
-  const [imageErrors, setImageErrors] = useState<Record<string, boolean>>({});
-  const [activeCategory, setActiveCategory] = useState("All");
+  const [activeFilter, setActiveFilter] = useState("All guides");
   const [searchQuery, setSearchQuery] = useState("");
+  const selected = filterOptions.find((option) => option.label === activeFilter) ?? filterOptions[0];
+  const query = searchQuery.trim().toLowerCase();
+  const filteredArticles = useMemo(() => articles.filter((article) => article.slug !== featuredArticle.slug && matchesCategories(article, selected.categories) && (!query || getSearchText(article).includes(query))), [query, selected.categories]);
+  const clearFilters = () => { setActiveFilter("All guides"); setSearchQuery(""); };
 
-  const cardsWithFallback = useMemo(
-    () => {
-      const query = normalizeSearch(searchQuery);
-      const selectedCategory = normalizeCategory(activeCategory);
-
-      return sortedArticles
-        .filter((article) => article.slug !== featuredArticle?.slug)
-        .filter((article) => {
-          const matchesCategory =
-            selectedCategory === "all" ||
-            normalizeCategory(article.category) === selectedCategory;
-
-          const matchesSearch =
-            query === "" ||
-            getSearchText(article).includes(query);
-
-          return matchesCategory && matchesSearch;
-        })
-        .map((article) => ({
-          ...article,
-          hasImage: Boolean(article.image) && !imageErrors[article.slug],
-        }));
-    },
-    [activeCategory, imageErrors, searchQuery],
-  );
-
-  return (
-    <BlogShell>
-      <div className="blog-page relative overflow-hidden bg-[radial-gradient(circle_at_top_left,_rgba(255,122,0,.22)_0%,_#0B0B0F_42%,_#050505_100%)] text-white">
-        <div className="pointer-events-none absolute inset-0">
-          <div className="absolute -top-28 left-[-6%] h-72 w-72 rounded-full bg-orange-200/40 blur-3xl" />
-          <div className="absolute right-[-8%] top-24 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />
-          <div className="absolute bottom-20 left-[30%] h-64 w-64 rounded-full bg-amber-200/40 blur-3xl" />
+  return <BlogShell>
+    <div className="blog-page overflow-hidden bg-[#07080D] text-white">
+      <section className="relative isolate border-b border-white/[.07] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
+        <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_18%_0%,rgba(255,116,0,.22),transparent_42%),radial-gradient(ellipse_at_88%_18%,rgba(23,50,100,.34),transparent_38%)]" />
+        <div className="mx-auto max-w-7xl">
+          <p className="text-xs font-black uppercase tracking-[.18em] text-orange-300">SocialRUSH Insights</p>
+          <div className="mt-4 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
+            <div className="max-w-3xl"><h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">Practical social media growth guides</h1><p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">Actionable guides on Instagram, YouTube, Facebook, LinkedIn, TikTok, Telegram and X — including growth strategy, pricing, safety and platform tips.</p></div>
+            <div className="flex flex-wrap gap-3"><a href="#guides" className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-5 text-sm font-black shadow-[0_14px_32px_rgba(255,98,0,.22)] transition hover:-translate-y-0.5">Explore Latest Guides <ArrowRight className="ml-2 h-4 w-4" /></a><Link href="/services" className="inline-flex min-h-11 items-center rounded-xl border border-white/15 bg-white/[.04] px-5 text-sm font-bold transition hover:border-orange-400/50 hover:bg-white/[.08]">Explore Services</Link></div>
+          </div>
+          <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold text-slate-300">{["Practical guides", "Platform-specific advice", "Pricing insights", "Growth resources"].map((item) => <li key={item} className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-orange-400" />{item}</li>)}</ul>
         </div>
+      </section>
 
-        <section className="relative px-5 pb-12 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-14">
-          <div className="mx-auto grid w-full max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
-            <motion.div
-              variants={fadeUp}
-              initial={false}
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.65 }}
-            >
-              <p className="inline-flex rounded-full border border-orange-400/30 bg-[#111111]/85 px-4 py-2 text-xs font-semibold uppercase tracking-[0.12em] text-orange-200 shadow-[0_8px_25px_rgba(255, 159, 0, .18)] backdrop-blur">
-                SocialRUSH Resource Hub
-              </p>
-              <h1 className="mt-5 max-w-xl text-4xl font-black leading-tight text-white sm:text-5xl">
-                Practical Social Media Guides for Creators and Businesses
-              </h1>
-              <p className="mt-5 max-w-2xl text-base leading-8 text-[#D1D5DB] sm:text-lg">
-                Practical guidance on content planning, social proof, Instagram, YouTube, platform growth, campaign strategy, and small-business marketing.
-              </p>
-              <div className="mt-8 flex flex-wrap gap-3">
-                <a
-                  href="#articles"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_36px_rgba(255, 196, 0, .45)]"
-                >
-                  Explore Articles
-                </a>
-                <Link
-                  href="/tools"
-                  className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-orange-400/35 bg-white/[.06] px-6 py-3 text-sm font-bold text-white shadow-[0_10px_26px_rgba(255, 159, 0, .16)] backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00] hover:bg-orange-400/10"
-                >
-                  Explore Creator Tools
-                </Link>
-              </div>
-            </motion.div>
+      <section className="px-5 py-10 sm:px-6 lg:px-8 lg:py-14"><div className="mx-auto max-w-7xl"><div className="mb-5 flex items-center justify-between"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Featured guide</p><h2 className="mt-2 text-2xl font-black">Start here</h2></div><Link href={`/blog/${featuredArticle.slug}`} className="hidden text-sm font-bold text-orange-300 hover:text-orange-200 sm:inline-flex sm:items-center">Read article <ArrowRight className="ml-2 h-4 w-4" /></Link></div>
+        <article className="group grid overflow-hidden rounded-[1.75rem] border border-white/10 bg-[#0E121B] shadow-[0_25px_70px_rgba(0,0,0,.24)] lg:grid-cols-[1.1fr_.9fr]"><Link href={`/blog/${featuredArticle.slug}`} aria-label={`Read ${featuredArticle.title}`}><ArticleArtwork article={featuredArticle} priority /></Link><div className="flex flex-col p-6 sm:p-8"><p className="text-xs font-black uppercase tracking-[.13em] text-orange-300">{featuredArticle.category}</p><h2 className="mt-3 text-2xl font-black leading-tight sm:text-3xl"><Link href={`/blog/${featuredArticle.slug}`} className="transition hover:text-orange-300">{featuredArticle.title}</Link></h2><p className="mt-4 text-sm leading-7 text-slate-300">{featuredArticle.description}</p><div className="mt-auto flex flex-wrap items-center gap-3 pt-7 text-xs text-slate-400"><span>{formatArticleDate(featuredArticle.publishedAt)}</span><span aria-hidden="true">•</span><span>{getReadingTime(featuredArticle)}</span></div><Link href={`/blog/${featuredArticle.slug}`} className="mt-6 inline-flex w-fit min-h-11 items-center rounded-xl border border-orange-400/40 bg-orange-400/10 px-4 text-sm font-black text-orange-100 transition hover:bg-orange-400/20">Read Article <ArrowRight className="ml-2 h-4 w-4" /></Link></div></article></div></section>
 
-            <motion.div
-              variants={fadeUp}
-              initial={false}
-              whileInView="visible"
-              viewport={{ once: true, amount: 0.2 }}
-              transition={{ duration: 0.65, delay: 0.12 }}
-            >
-              <div className="relative mx-auto max-w-xl rounded-[30px] border border-orange-400/25 bg-[#111111]/82 p-5 shadow-[0_28px_60px_rgba(255, 122, 0, .24)] backdrop-blur">
-                <motion.div
-                  animate={{ y: [0, -10, 0] }}
-                  transition={{ duration: 6, repeat: Infinity, ease: "easeInOut" }}
-                  className="relative overflow-hidden rounded-3xl border border-orange-400/25 bg-gradient-to-br from-[#050505] via-[#111111] to-[#221607] p-3"
-                >
-                  {!heroImageError ? (
-                    <SafeImage
-                      src="/images/pages/blog-resource-hub-dark.png"
-                      alt="Social media creator planning content and reviewing growth analytics"
-                      width={900}
-                      height={675}
-                      sizes="(max-width: 1023px) 100vw, 50vw"
-                      className="h-auto w-full rounded-2xl object-contain"
-                      priority
-                      onError={() => setHeroImageError(true)}
-                    />
-                  ) : (
-                    <div className="grid h-[320px] place-items-center rounded-2xl bg-[radial-gradient(circle_at_30%_20%,_rgba(255,122,0,.22)_0%,_#111111_48%,_#050505_100%)]">
-                      <span className="rounded-2xl border border-orange-400/30 bg-[#111111]/90 px-4 py-2 text-sm font-extrabold tracking-[0.08em] text-orange-100 shadow-[0_10px_24px_rgba(255, 159, 0, .2)]">
-                        BLOG
-                      </span>
-                    </div>
-                  )}
-                </motion.div>
-                <div className="absolute -left-6 top-6 rounded-2xl border border-orange-400/30 bg-[#111111]/95 px-4 py-3 text-xs font-semibold text-white shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
-                  Practical editorial guides
-                </div>
-                <div className="absolute -bottom-6 right-5 rounded-2xl border border-orange-400/30 bg-[#111111]/95 px-4 py-3 text-xs font-semibold text-white shadow-[0_16px_28px_rgba(255, 159, 0, .18)]">
-                  Creator + Brand Playbooks
-                </div>
-              </div>
-            </motion.div>
-          </div>
-        </section>
+      <section className="border-y border-white/[.07] bg-[#0A0D15] px-5 py-9 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><div className="flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Find the right guide</p><h2 className="mt-2 text-2xl font-black">Browse by topic</h2></div><label className="relative block w-full max-w-md"><span className="sr-only">Search guides</span><Search className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-400" /><input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} type="search" placeholder="Search guides..." className="min-h-12 w-full rounded-xl border border-white/10 bg-[#121824] px-11 pr-16 text-sm text-white outline-none transition placeholder:text-slate-500 focus:border-orange-400 focus:ring-2 focus:ring-orange-400/20" />{searchQuery && <button type="button" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 -translate-y-1/2 rounded-lg p-2 text-slate-300 hover:bg-white/10 hover:text-white" aria-label="Clear search"><X className="h-4 w-4" /></button>}</label></div>
+        <div className="mt-6 flex gap-2 overflow-x-auto pb-2" role="group" aria-label="Guide topic filters">{filterOptions.map((option) => <button type="button" key={option.label} onClick={() => setActiveFilter(option.label)} aria-pressed={activeFilter === option.label} className={`min-h-10 shrink-0 rounded-full border px-4 text-sm font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${activeFilter === option.label ? "border-orange-400 bg-orange-400 text-[#090B12]" : "border-white/10 bg-white/[.03] text-slate-200 hover:border-white/30"}`}>{option.label}</button>)}</div></div></section>
 
-        <section className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10">
-          <div className="mx-auto w-full max-w-7xl rounded-[30px] border border-white/85 bg-white/85 p-6 shadow-[0_18px_42px_rgba(255,159,0,.16)] backdrop-blur sm:p-8">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-center lg:justify-between">
-              <div>
-                <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00]">
-                  Related SocialRUSH services
-                </p>
-                <h2 className="mt-2 text-2xl font-extrabold text-[#0B0B0F]">
-                  Explore services mentioned in our growth guides
-                </h2>
-              </div>
-              <Link
-                href="/services"
-                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(255,196,0,.28)]"
-              >
-                View All Services
-              </Link>
-            </div>
-            <div className="mt-5 flex flex-wrap gap-3">
-              {relatedServiceLinks.map(([label, href]) => (
-                <Link
-                  key={href}
-                  href={href}
-                  className="rounded-full border border-[#FFF3E0] bg-white px-4 py-2 text-sm font-bold text-[#0B0B0F] transition hover:border-[#FF9F00] hover:text-[#FF7A00]"
-                >
-                  {label}
-                </Link>
-              ))}
-            </div>
-          </div>
-        </section>
+      <section id="guides" className="px-5 py-11 sm:px-6 lg:px-8 lg:py-14"><div className="mx-auto max-w-7xl"><div className="flex items-baseline justify-between gap-5"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Latest guides</p><h2 className="mt-2 text-2xl font-black">Useful next reads</h2></div><p aria-live="polite" className="text-sm text-slate-400">{filteredArticles.length} guide{filteredArticles.length === 1 ? "" : "s"}</p></div>
+        {filteredArticles.length ? <div className="mt-7 grid gap-5 sm:grid-cols-2 xl:grid-cols-3">{filteredArticles.map((article) => <article key={article.slug} className="group flex overflow-hidden rounded-2xl border border-white/[.09] bg-[#0D111A] transition hover:-translate-y-1 hover:border-orange-400/40 hover:shadow-[0_18px_45px_rgba(0,0,0,.24)] sm:flex-col"><Link href={`/blog/${article.slug}`} className="block w-[42%] shrink-0 sm:w-full" aria-label={`Read ${article.title}`}><ArticleArtwork article={article} /></Link><div className="flex min-w-0 flex-1 flex-col p-4 sm:p-5"><p className="text-[10px] font-black uppercase tracking-[.13em] text-orange-300">{article.category}</p><h3 className="mt-2 text-lg font-black leading-6"><Link href={`/blog/${article.slug}`} className="transition hover:text-orange-300">{article.title}</Link></h3><p className="mt-2 line-clamp-2 text-sm leading-6 text-slate-400">{article.description}</p><div className="mt-auto flex items-center justify-between gap-2 pt-4 text-xs text-slate-500"><span>{formatArticleDate(article.publishedAt)}</span><Link href={`/blog/${article.slug}`} className="font-black text-orange-300 hover:text-orange-200">Read Article</Link></div></div></article>)}</div> : <div className="mt-7 rounded-2xl border border-dashed border-white/15 bg-white/[.025] p-9 text-center"><h3 className="text-xl font-black">No guides match your search.</h3><p className="mt-2 text-sm text-slate-400">Try a different topic, or return to the complete guide library.</p><div className="mt-5 flex justify-center gap-3"><button type="button" onClick={() => setSearchQuery("")} className="min-h-10 rounded-xl border border-white/15 px-4 text-sm font-bold hover:bg-white/[.06]">Clear Search</button><button type="button" onClick={clearFilters} className="min-h-10 rounded-xl bg-orange-400 px-4 text-sm font-black text-[#090B12]">View All Guides</button></div></div>}</div></section>
 
-        <motion.section
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.18 }}
-          transition={{ duration: 0.6 }}
-          className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10"
-        >
-          <div className="mx-auto w-full max-w-7xl rounded-[30px] border border-white/75 bg-white/80 p-7 shadow-[0_25px_55px_rgba(255, 159, 0, .18)] backdrop-blur sm:p-10">
-            <p className="text-xs font-bold uppercase tracking-[0.13em] text-[#FF9F00]">Featured Article</p>
-            <Link href={`/blog/${featuredArticle.slug}`} className="block w-fit">
-              <h2 className="mt-3 max-w-3xl text-3xl font-extrabold leading-tight text-[#0B0B0F] transition hover:text-[#FF7A00]">
-                {featuredArticle.title}
-              </h2>
-            </Link>
-            <p className="mt-4 max-w-3xl text-[15px] leading-7 text-[#111827]">
-              {featuredArticle.description}
-            </p>
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#FF9F00]">
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
-                {featuredArticle.category}
-              </span>
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">
-                {getReadingTime(featuredArticle)}
-              </span>
-            </div>
-            <Link
-              href={`/blog/${featuredArticle.slug}`}
-              className="mt-7 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_12px_25px_rgba(255, 196, 0, .35)] transition duration-300 hover:-translate-y-0.5 hover:shadow-[0_16px_32px_rgba(255, 196, 0, .42)]"
-            >
-              Read Article
-            </Link>
-          </div>
-        </motion.section>
-
-        <motion.section
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-          className="relative px-5 py-8 sm:px-6 lg:px-8 lg:py-10"
-        >
-          <div className="mx-auto w-full max-w-7xl">
-            <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
-              <div>
-                <h2 className="text-sm font-bold uppercase tracking-[0.13em] text-[#FF9F00]">Categories</h2>
-                <p className="mt-2 text-sm text-[#D1D5DB]">Filter practical guides by the topic you need.</p>
-              </div>
-              <label className="block w-full max-w-md">
-                <span className="sr-only">Search blog articles</span>
-                <div className="relative"><input
-                  type="search"
-                  value={searchQuery}
-                  onChange={(event) => setSearchQuery(event.target.value)}
-                  placeholder="Search articles"
-                  className="min-h-12 w-full rounded-2xl border border-white/90 bg-white/90 px-4 pr-24 text-sm text-[#0B0B0F] shadow-[0_10px_22px_rgba(255, 159, 0, .14)] outline-none transition placeholder:text-[#111827] focus:border-[#FF9F00] focus:ring-2 focus:ring-[#FFC400]/20"
-                />
-                {searchQuery ? <button type="button" onClick={() => setSearchQuery("")} className="absolute right-2 top-1/2 min-h-9 -translate-y-1/2 rounded-lg px-3 text-xs font-bold text-[#C75F00] hover:bg-orange-100">Clear</button> : null}</div>
-              </label>
-            </div>
-            <div className="mt-4 flex max-w-full gap-3 overflow-x-auto pb-1">
-              {categories.map((category) => (
-                <button
-                  type="button"
-                  key={category}
-                  onClick={() => setActiveCategory(category)}
-                  aria-pressed={activeCategory === category}
-                  className={`min-h-11 shrink-0 rounded-full border px-4 py-2 text-sm font-semibold shadow-[0_10px_22px_rgba(255, 159, 0, .14)] backdrop-blur transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${
-                    activeCategory === category
-                      ? "border-[#FFC400] bg-gradient-to-r from-[#FFC400] to-[#FF9F00] text-white"
-                      : "border-white/90 bg-white/85 text-[#0B0B0F] hover:border-[#FF9F00]"
-                  }`}
-                >
-                  {category} {category === "All" ? sortedArticles.length : sortedArticles.filter((article) => article.category === category).length}
-                </button>
-              ))}
-            </div>
-          </div>
-        </motion.section>
-
-        <section id="articles" className="relative px-5 pb-8 pt-6 sm:px-6 lg:px-8 lg:pb-12 lg:pt-8">
-          <div className="mx-auto w-full max-w-7xl">
-            <p aria-live="polite" className="mb-4 text-sm font-semibold text-[#D1D5DB]">{cardsWithFallback.length ? `${cardsWithFallback.length} article${cardsWithFallback.length === 1 ? "" : "s"} found` : searchQuery.trim() ? `No articles found for “${searchQuery.trim()}”` : "No articles found"}</p>
-            <motion.div
-              key={`${activeCategory}-${normalizeSearch(searchQuery) || "all"}`}
-              initial={false}
-              animate="visible"
-              variants={{
-                hidden: { opacity: 0 },
-                visible: {
-                  opacity: 1,
-                  transition: { staggerChildren: 0.1, delayChildren: 0.12 },
-                },
-              }}
-              className="grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
-            >
-              {cardsWithFallback.map((post) => (
-                <motion.article
-                  key={post.slug}
-                  variants={fadeUp}
-                  transition={{ duration: 0.55 }}
-                  whileHover={{ y: -8 }}
-                  className="flex h-full flex-col rounded-3xl border border-white/85 bg-white/90 p-4 shadow-[0_16px_36px_rgba(255, 159, 0, .18)] backdrop-blur transition-shadow duration-300 hover:shadow-[0_24px_46px_rgba(255, 159, 0, .24)]"
-                >
-                  <Link
-                    href={`/blog/${post.slug}`}
-                    aria-label={`Read ${post.title}`}
-                    className="relative block aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[#050505] via-[#15110a] to-[#2B1600]"
-                  >
-                    {post.hasImage ? (
-                      <SafeImage
-                        src={post.image as string}
-                        fallbackSrc={(post.image as string).replace(/\.(png|jpg|jpeg)$/i, ".webp")}
-                        alt={post.imageAlt ?? post.title}
-                        fill
-                        sizes="(max-width: 640px) 100vw, (max-width: 1280px) 50vw, 33vw"
-                        className="object-contain"
-                        onError={() =>
-                          setImageErrors((current) => ({
-                            ...current,
-                            [post.slug]: true,
-                          }))
-                        }
-                      />
-                    ) : (
-                      <div className="grid h-full place-items-center bg-[radial-gradient(circle_at_25%_15%,_rgba(255,159,0,0.32)_0%,_#111111_48%,_#050505_100%)] px-6 text-center text-sm font-semibold text-[#FF9F00]">
-                        <span>Article illustration</span>
-                      </div>
-                    )}
-                  </Link>
-                  <p className="mt-4 text-xs font-bold uppercase tracking-[0.11em] text-[#FF9F00]">{post.category}</p>
-                  <h3 className="mt-2 text-xl font-extrabold leading-7 text-[#0B0B0F]">
-                    <Link href={`/blog/${post.slug}`} className="transition hover:text-[#FF7A00]">
-                      {post.title}
-                    </Link>
-                  </h3>
-                  <p className="mt-2 text-sm leading-6 text-[#111827]">{post.description}</p>
-                  <div className="mt-auto flex items-center justify-between gap-3 pt-5">
-                    <div className="flex flex-wrap gap-2">
-                      <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#FF9F00]">
-                        {getReadingTime(post)}
-                      </span>
-                      {post.publishedAt ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5 text-xs font-semibold text-[#111827]">{post.publishedAt}</span> : null}
-                    </div>
-                    <Link
-                      href={`/blog/${post.slug}`}
-                      className="inline-flex min-h-10 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 text-xs font-bold text-[#0B0B0F] transition duration-300 hover:-translate-y-0.5 hover:border-[#FF9F00]"
-                    >
-                      Read More
-                    </Link>
-                  </div>
-                </motion.article>
-              ))}
-            </motion.div>
-            {cardsWithFallback.length === 0 ? (
-              <div className="rounded-3xl border border-orange-400/30 bg-[#111111] p-8 text-center shadow-[0_18px_42px_-28px_rgba(255, 122, 0, .65)]">
-                <h3 className="text-xl font-extrabold text-white">No articles found for this category.</h3>
-                <p className="mt-2 text-sm text-[#D1D5DB]">Try another topic or view all guides.</p>
-                <button
-                  type="button"
-                  onClick={() => {
-                    setActiveCategory("All");
-                    setSearchQuery("");
-                  }}
-                  className="mt-5 inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-2.5 text-sm font-bold text-white shadow-[0_14px_30px_-18px_rgba(255,122,0,.8)] transition hover:-translate-y-0.5 active:scale-[.98]"
-                >
-                  View All Articles
-                </button>
-              </div>
-            ) : null}
-          </div>
-        </section>
-
-        <motion.section
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-          className="relative px-5 py-10 sm:px-6 lg:px-8 lg:py-14"
-        >
-          <div className="mx-auto w-full max-w-5xl rounded-[30px] border border-white/85 bg-white/85 p-7 text-center shadow-[0_24px_52px_rgba(255, 159, 0, .18)] backdrop-blur sm:p-10">
-            <h2 className="text-3xl font-extrabold text-[#0B0B0F]">Need help growing your social media?</h2>
-            <p className="mx-auto mt-4 max-w-2xl text-base leading-7 text-[#111827]">
-              Compare SocialRUSH packages, start a campaign, or talk with our team on WhatsApp before ordering.
-            </p>
-            <div className="mx-auto mt-7 flex w-full max-w-3xl flex-col justify-center gap-3 sm:flex-row">
-              <a
-                href={whatsappUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-[#25D366] px-6 text-sm font-bold text-white shadow-[0_12px_25px_rgba(37,211,102,.25)] transition hover:-translate-y-0.5"
-              >
-                Chat on WhatsApp
-              </a>
-              <Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-[#FFF3E0] bg-white px-6 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5">
-                View Packages
-              </Link>
-              <Link href="/login?next=/dashboard/new-order" className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 text-sm font-bold text-white shadow-[0_12px_25px_rgba(255, 196, 0, .35)] transition hover:-translate-y-0.5">
-                Start Order
-              </Link>
-            </div>
-          </div>
-        </motion.section>
-
-        <motion.section
-          variants={fadeUp}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
-          transition={{ duration: 0.6 }}
-          className="relative px-5 pb-16 pt-4 sm:px-6 lg:px-8 lg:pb-24 lg:pt-8"
-        >
-          <div className="mx-auto w-full max-w-6xl rounded-[34px] border border-white/80 bg-gradient-to-r from-[#0B0B0F] via-[#0B0B0F] to-[#FF9F00] px-7 py-9 text-white shadow-[0_30px_58px_rgba(255, 159, 0, .38)] sm:px-10 sm:py-11">
-            <h2 className="text-3xl font-black leading-tight sm:text-4xl">Ready to start your growth campaign?</h2>
-            <div className="mt-7 flex flex-wrap gap-3">
-              <Link
-                href="/login?next=/dashboard/new-order"
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-white px-6 py-3 text-sm font-bold text-[#0B0B0F] shadow-[0_12px_26px_rgba(17,29,61,.35)] transition duration-300 hover:-translate-y-0.5"
-              >
-                Start Order
-              </Link>
-              <Link
-                href="/packages"
-                className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/45 bg-white/10 px-6 py-3 text-sm font-bold text-white backdrop-blur transition duration-300 hover:-translate-y-0.5 hover:bg-white/20"
-              >
-                View Packages
-              </Link>
-            </div>
-          </div>
-        </motion.section>
-      </div>
-    </BlogShell>
-  );
+      <section className="border-t border-white/[.07] bg-[#0A0D15] px-5 py-11 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Browse by platform</p><h2 className="mt-2 text-2xl font-black">Explore focused growth resources</h2><div className="mt-7 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">{platforms.slice(0, 4).map(({ label, categories, Icon, accent }) => { const count = articles.filter((article) => matchesCategories(article, categories)).length; return <Link href={`/blog#guides`} onClick={() => setActiveFilter(label)} key={label} className="group relative overflow-hidden rounded-2xl border border-white/10 bg-[#101520] p-5 transition hover:border-orange-400/35 hover:-translate-y-1"><div className={`absolute inset-0 bg-gradient-to-br ${accent} opacity-80`} /><div className="relative"><Icon className="h-6 w-6 text-white" /><div className="mt-6 flex items-end justify-between"><div><h3 className="font-black">{label}</h3><p className="mt-1 text-sm text-slate-300">{count} guide{count === 1 ? "" : "s"}</p></div><span className="text-sm font-black text-orange-200">Explore <ArrowRight className="ml-1 inline h-4 w-4" /></span></div></div></Link> })}</div>
+        <div className="mt-7 rounded-2xl border border-orange-400/20 bg-gradient-to-r from-[#17120c] to-[#101520] p-6 sm:flex sm:items-center sm:justify-between"><div><h3 className="text-xl font-black">Ready to put these strategies into action?</h3><p className="mt-2 text-sm text-slate-300">Compare clear service options built for your next campaign.</p></div><div className="mt-5 flex flex-wrap gap-3 sm:mt-0"><Link href="/services" className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-5 text-sm font-black">Explore Services</Link><Link href="/packages" className="inline-flex min-h-11 items-center rounded-xl border border-white/15 px-5 text-sm font-bold hover:bg-white/[.06]">View Packages</Link></div></div></div></section>
+    </div>
+  </BlogShell>;
 }
