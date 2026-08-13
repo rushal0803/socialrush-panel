@@ -304,13 +304,20 @@ function FeatureIcon({ name }: { name: string }) {
 }
 
 function statusBadgeClass(status: string) {
-  if (status === "completed") {
+  const value = status.toLowerCase();
+  if (["completed", "success", "succeeded"].includes(value)) {
     return "bg-emerald-500/10 text-emerald-300 ring-emerald-400/25";
   }
-  if (status === "pending") {
+  if (["pending", "processing", "created"].includes(value)) {
     return "bg-amber-500/10 text-amber-300 ring-amber-400/25";
   }
+  if (["refunded", "refund"].includes(value)) return "bg-sky-500/10 text-sky-300 ring-sky-400/25";
+  if (["cancelled", "canceled"].includes(value)) return "bg-red-500/10 text-red-300 ring-red-400/25";
   return "bg-red-500/10 text-red-300 ring-red-400/25";
+}
+
+function StatusBadge({ status }: { status: string }) {
+  return <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ring-1 ring-inset ${statusBadgeClass(status)}`}><i className="h-1.5 w-1.5 rounded-full bg-current" />{status}</span>;
 }
 
 function monthlySeries(
@@ -441,6 +448,8 @@ export default function WalletDashboard({
   const [success, setSuccess] = useState<{ paymentId: string; transactionId: string; amount: number; balance: number; completedAt: string } | null>(null);
   const [transactionSearch, setTransactionSearch] = useState("");
   const [transactionFilter, setTransactionFilter] = useState("all");
+  const [statusFilter, setStatusFilter] = useState("all");
+  const [methodFilter, setMethodFilter] = useState("all");
   const [dateFilter, setDateFilter] = useState("all");
   const [selectedTransaction, setSelectedTransaction] = useState<WalletTransaction | null>(null);
   const verifiedCashfreeOrder = useRef<string | null>(null);
@@ -586,14 +595,17 @@ export default function WalletDashboard({
   ].filter((stat) => stat.icon !== "pending" || stat.value > 0);
 
   const selectedMethod = methods.find((item) => item.id === method) ?? methods[0];
+  const presentStatuses = useMemo(() => Array.from(new Set(initial.transactions.map((item) => item.status).filter(Boolean))), [initial.transactions]);
+  const presentMethods = useMemo(() => Array.from(new Set(initial.transactions.map((item) => item.payment_method).filter((item): item is string => Boolean(item)))), [initial.transactions]);
+  const transactionSummary = useMemo(() => presentStatuses.map((status) => ({ status, count: initial.transactions.filter((item) => item.status === status).length })), [initial.transactions, presentStatuses]);
   const filteredTransactions = useMemo(() => initial.transactions.filter((item) => {
     const relatedOrder = String(item.metadata?.order_id || "");
     const haystack = `${item.id} ${item.provider_order_id || ""} ${item.provider_payment_id || ""} ${item.provider_refund_id || ""} ${relatedOrder} ${item.description || ""}`.toLowerCase();
     const matchesSearch = haystack.includes(transactionSearch.toLowerCase());
     const matchesType = transactionFilter === "all" || (transactionFilter === "credit" ? item.type === "credit" && item.status === "completed" : transactionFilter === "debit" ? item.type === "debit" : transactionFilter === "refund" ? item.type === "refund" : transactionFilter === "processing" ? item.status === "pending" : transactionFilter === "failed" ? item.status === "failed" : true);
     const days = dateFilter === "all" ? 0 : Number(dateFilter);
-    return matchesSearch && matchesType && (!days || new Date(item.created_at).getTime() >= Date.now() - days * 86400000);
-  }), [dateFilter, initial.transactions, transactionFilter, transactionSearch]);
+    return matchesSearch && matchesType && (statusFilter === "all" || item.status === statusFilter) && (methodFilter === "all" || item.payment_method === methodFilter) && (!days || new Date(item.created_at).getTime() >= Date.now() - days * 86400000);
+  }), [dateFilter, initial.transactions, methodFilter, statusFilter, transactionFilter, transactionSearch]);
   const selectedStatus = loading
     ? "Processing"
     : amount >= minimumAmount
@@ -622,11 +634,11 @@ export default function WalletDashboard({
                 Secure wallet
               </span>
               <h1 className="mt-4 text-3xl font-black tracking-[-0.04em] text-white sm:text-4xl">
-                Add Funds
+                Wallet
               </h1>
               <p className="mt-3 max-w-2xl text-sm leading-7 text-[#D1D5DB]">
-                Select a payment method, enter an amount, and review the total
-                before opening secure checkout.
+                Your available balance for SocialRUSH orders. Add funds securely
+                whenever you need to place an order.
               </p>
               <p className="mt-2 max-w-2xl text-xs font-semibold text-[#9CA3AF]">
                 {getCurrencyDisclaimer()}
@@ -649,7 +661,7 @@ export default function WalletDashboard({
               </div>
               <div className="mt-4 flex items-center justify-between gap-3 border-t border-white/10 pt-4">
                 <p className="text-xs leading-5 text-[#9CA3AF]">
-                  Use your wallet balance to place orders instantly.
+                  Available balance for SocialRUSH orders.
                 </p>
                 <span className="shrink-0 rounded-full border border-emerald-400/20 bg-emerald-500/10 px-2.5 py-1 text-[9px] font-bold uppercase tracking-wider text-emerald-300">
                   {currency}
@@ -659,7 +671,7 @@ export default function WalletDashboard({
             </div>
           </div>
         </motion.section>
-        <div className="mt-3 flex flex-wrap gap-2"><a href="#add-funds" className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-xs font-black text-white">Add Funds</a><a href="#transactions" className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-bold text-[#D1D5DB]">View Transactions</a><a href="/dashboard/support?category=payment_or_wallet" className="inline-flex min-h-11 items-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-xs font-bold text-orange-200">Payment Help</a></div>
+        <div className="mt-3 grid gap-2 sm:flex sm:flex-wrap"><a href="#add-funds" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-xs font-black text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.7)] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300">Add Funds</a><a href="#transactions" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-bold text-[#D1D5DB] transition hover:border-orange-400/35 hover:bg-orange-500/10">View Transactions</a><a href="/dashboard/support?category=payment_or_wallet" className="hidden min-h-11 items-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-xs font-bold text-orange-200 sm:inline-flex">Payment Help</a></div>
 
         <section className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4 xl:grid-cols-4">
           {stats.map((stat, index) => (
@@ -1137,7 +1149,8 @@ export default function WalletDashboard({
               {filteredTransactions.length} records
             </span>
           </div>
-          <div className="grid gap-3 border-b border-white/10 p-4 sm:grid-cols-3"><input value={transactionSearch} onChange={(event) => setTransactionSearch(event.target.value)} className="min-h-11 min-w-0 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white outline-none" placeholder="Search transaction, payment, order" /><select value={transactionFilter} onChange={(event) => setTransactionFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All activity</option><option value="credit">Wallet Credit</option><option value="debit">Order Payment</option><option value="refund">Refund</option><option value="processing">Payment Processing</option><option value="failed">Payment Failed</option></select><select value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All dates</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
+          <div className="grid gap-3 border-b border-white/10 p-4 sm:grid-cols-2 xl:grid-cols-5"><input aria-label="Search wallet transactions" value={transactionSearch} onChange={(event) => setTransactionSearch(event.target.value)} className="min-h-11 min-w-0 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white outline-none transition focus:border-orange-400" placeholder="Search transaction or reference" /><select aria-label="Filter transaction type" value={transactionFilter} onChange={(event) => setTransactionFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All activity</option><option value="credit">Wallet Credit</option><option value="debit">Order Payment</option><option value="refund">Refund</option><option value="processing">Payment Processing</option><option value="failed">Payment Failed</option></select>{presentStatuses.length > 1 && <select aria-label="Filter transaction status" value={statusFilter} onChange={(event) => setStatusFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All statuses</option>{presentStatuses.map((status) => <option key={status} value={status}>{status}</option>)}</select>}{presentMethods.length > 1 && <select aria-label="Filter payment method" value={methodFilter} onChange={(event) => setMethodFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All methods</option>{presentMethods.map((paymentMethod) => <option key={paymentMethod} value={paymentMethod}>{paymentMethodLabel(paymentMethod)}</option>)}</select>}<select aria-label="Filter transaction date" value={dateFilter} onChange={(event) => setDateFilter(event.target.value)} className="min-h-11 rounded-xl border border-white/10 bg-[#151515] px-3 text-xs text-white"><option value="all">All dates</option><option value="7">Last 7 days</option><option value="30">Last 30 days</option><option value="90">Last 90 days</option></select></div>
+          {initial.transactions.length > 0 && <div className="grid grid-cols-2 gap-2 border-b border-white/10 p-4 sm:flex sm:flex-wrap"> <div className="rounded-xl border border-white/10 bg-white/[.025] px-3 py-2"><p className="text-[9px] font-bold uppercase tracking-wider text-[#9CA3AF]">Total</p><p className="mt-1 text-sm font-black text-white">{initial.transactions.length}</p></div>{transactionSummary.map(({ status, count }) => <div key={status} className="rounded-xl border border-white/10 bg-white/[.025] px-3 py-2"><p className="text-[9px] font-bold uppercase tracking-wider text-[#9CA3AF]">{status}</p><p className="mt-1 text-sm font-black text-white">{count}</p></div>)}</div>}
           <div className="grid gap-4 p-4 sm:p-5 lg:hidden">
             {filteredTransactions.map((item) => (
               <motion.article
@@ -1154,10 +1167,7 @@ export default function WalletDashboard({
                       {new Date(item.created_at).toLocaleString("en-IN")}
                     </p>
                   </div>
-                  <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ring-1 ring-inset ${statusBadgeClass(item.status)}`}>
-                    <i className="h-1.5 w-1.5 rounded-full bg-current" />
-                    {item.status}
-                  </span>
+                  <StatusBadge status={item.status} />
                 </div>
 
                 <div className="mt-4 grid gap-3 sm:grid-cols-2">
@@ -1184,7 +1194,7 @@ export default function WalletDashboard({
             ))}
             {filteredTransactions.length === 0 && (
               <div className="rounded-[1.5rem] border border-white/10 bg-[#151515] p-10 text-center text-sm text-[#9CA3AF]">
-                No wallet transactions yet.
+                <p className="font-bold text-white">No wallet activity yet</p><p className="mt-2">Your deposits, payment activity and eligible refunds will appear here.</p><a href="#add-funds" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-4 text-xs font-bold text-white">Add Funds</a>
               </div>
             )}
           </div>
@@ -1223,10 +1233,7 @@ export default function WalletDashboard({
                       {money(item.amount)}
                     </td>
                     <td className="px-6 py-4">
-                      <span className={`inline-flex items-center gap-1.5 rounded-full px-3 py-1 text-[10px] font-bold uppercase tracking-[0.14em] ring-1 ring-inset ${statusBadgeClass(item.status)}`}>
-                        <i className="h-1.5 w-1.5 rounded-full bg-current" />
-                        {item.status}
-                      </span>
+                      <StatusBadge status={item.status} />
                       <button type="button" onClick={() => setSelectedTransaction(item)} className="ml-2 text-[10px] font-bold text-orange-300">Details</button>
                     </td>
                   </tr>
@@ -1234,7 +1241,7 @@ export default function WalletDashboard({
                 {filteredTransactions.length === 0 && (
                   <tr>
                     <td colSpan={5} className="p-14 text-center text-[#9CA3AF]">
-                      No wallet transactions yet.
+                      <p className="font-bold text-white">No wallet activity yet</p><p className="mt-2">Your deposits, payment activity and eligible refunds will appear here.</p>
                     </td>
                   </tr>
                 )}
@@ -1244,7 +1251,7 @@ export default function WalletDashboard({
         </section>
       </div>
       <AnimatePresence>
-        {selectedTransaction ? <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm" onClick={() => setSelectedTransaction(null)}><motion.article initial={{scale:.96,y:12}} animate={{scale:1,y:0}} onClick={(event) => event.stopPropagation()} className="max-h-[85dvh] w-full max-w-lg overflow-y-auto rounded-3xl border border-orange-400/30 bg-[#111111] p-5 shadow-2xl sm:p-6"><div className="flex items-center justify-between gap-3"><h2 className="text-xl font-black">Transaction Details</h2><button type="button" onClick={() => setSelectedTransaction(null)} className="grid h-11 w-11 place-items-center rounded-xl border border-white/10">×</button></div><dl className="mt-5 space-y-2 text-xs">{[["Transaction ID",selectedTransaction.id],["Payment reference",selectedTransaction.provider_payment_id || selectedTransaction.provider_order_id || selectedTransaction.provider_refund_id || "Not available"],["Type",selectedTransaction.type],["Amount",`${selectedTransaction.type === "debit" ? "−" : "+"}${money(selectedTransaction.amount)}`],["Application fee",money(0)],["Wallet impact",selectedTransaction.status === "completed" ? (selectedTransaction.type === "debit" ? `Debit ${money(selectedTransaction.amount)}` : `Credit ${money(selectedTransaction.amount)}`) : "No completed wallet impact"],["Status",selectedTransaction.status],["Related order",String(selectedTransaction.metadata?.order_id || "Not linked")],["Created",new Date(selectedTransaction.created_at).toLocaleString("en-IN")],["Description",selectedTransaction.description || "Not provided"]].map(([label,value]) => <div key={label} className="flex min-w-0 justify-between gap-4 rounded-xl bg-[#0B0B0F] p-3"><dt className="shrink-0 text-[#9CA3AF]">{label}</dt><dd className="min-w-0 break-all text-right font-bold text-white">{value}</dd></div>)}</dl><div className="mt-4 grid gap-2 sm:grid-cols-2"><button type="button" onClick={() => void navigator.clipboard.writeText(selectedTransaction.id)} className="min-h-11 rounded-xl border border-white/10 text-xs font-bold">Copy Transaction ID</button><a href={`/dashboard/support?category=payment_or_wallet&transaction=${encodeURIComponent(selectedTransaction.id)}&payment=${encodeURIComponent(selectedTransaction.provider_payment_id || selectedTransaction.provider_order_id || "")}&status=${encodeURIComponent(selectedTransaction.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 text-xs font-bold text-white">Get Payment Help</a></div><p className="mt-4 text-[11px] leading-5 text-amber-200">Never share your card PIN, CVV, OTP, UPI PIN, password or full banking credentials.</p></motion.article></motion.div> : null}
+        {selectedTransaction ? <motion.div initial={{opacity:0}} animate={{opacity:1}} exit={{opacity:0}} className="fixed inset-0 z-50 grid place-items-center bg-slate-950/70 p-4 backdrop-blur-sm" onClick={() => setSelectedTransaction(null)}><motion.article initial={{scale:.96,y:12}} animate={{scale:1,y:0}} onClick={(event) => event.stopPropagation()} className="max-h-[85dvh] w-full max-w-lg overflow-y-auto rounded-3xl border border-orange-400/30 bg-[#111111] p-5 shadow-2xl sm:p-6"><div className="flex items-center justify-between gap-3"><h2 className="text-xl font-black">Transaction Details</h2><button type="button" aria-label="Close transaction details" onClick={() => setSelectedTransaction(null)} className="grid h-11 w-11 place-items-center rounded-xl border border-white/10">×</button></div><dl className="mt-5 space-y-2 text-xs">{[["Transaction ID",selectedTransaction.id],["Payment reference",selectedTransaction.provider_payment_id || selectedTransaction.provider_order_id || selectedTransaction.provider_refund_id || "Not available"],["Payment method",paymentMethodLabel(selectedTransaction.payment_method || selectedTransaction.type)],["Type",selectedTransaction.type],["Amount",`${selectedTransaction.type === "debit" ? "−" : "+"}${money(selectedTransaction.amount)}`],["Wallet impact",selectedTransaction.status === "completed" ? (selectedTransaction.type === "debit" ? `Debit ${money(selectedTransaction.amount)}` : `Credit ${money(selectedTransaction.amount)}`) : "No completed wallet impact"],["Status",selectedTransaction.status],["Related order",String(selectedTransaction.metadata?.order_id || "Not linked")],["Created",new Date(selectedTransaction.created_at).toLocaleString("en-IN")],["Description",selectedTransaction.description || "Not provided"]].map(([label,value]) => <div key={label} className="flex min-w-0 justify-between gap-4 rounded-xl bg-[#0B0B0F] p-3"><dt className="shrink-0 text-[#9CA3AF]">{label}</dt><dd className="min-w-0 break-all text-right font-bold text-white">{value}</dd></div>)}</dl><div className="mt-4 grid gap-2 sm:grid-cols-2"><button type="button" onClick={() => void navigator.clipboard.writeText(selectedTransaction.id)} className="min-h-11 rounded-xl border border-white/10 text-xs font-bold">Copy Transaction ID</button><a href={`/dashboard/support?category=payment_or_wallet&transaction=${encodeURIComponent(selectedTransaction.id)}&payment=${encodeURIComponent(selectedTransaction.provider_payment_id || selectedTransaction.provider_order_id || "")}&status=${encodeURIComponent(selectedTransaction.status)}`} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 text-xs font-bold text-white">Get Payment Help</a></div><p className="mt-4 text-[11px] leading-5 text-amber-200">Never share your card PIN, CVV, OTP, UPI PIN, password or full banking credentials.</p></motion.article></motion.div> : null}
       </AnimatePresence>
       <AnimatePresence>
         {success && (
