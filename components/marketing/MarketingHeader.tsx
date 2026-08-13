@@ -107,6 +107,10 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </div>
       </div>
 
+     
+
+
+
       <MobileMenuLayer
         open={open}
         onClose={() => setOpen(false)}
@@ -119,8 +123,9 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="flex min-h-0 flex-1 flex-col"
+          className="relative mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 pt-16 shadow-[0_24px_60px_rgba(0,0,0,.45)] lg:hidden"
         >
+         
           <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(.75rem+env(safe-area-inset-top))]">
             <Logo light priority className="min-w-0 [&_img]:h-10 [&_img]:max-w-[145px]" />
             <button ref={menuCloseRef} type="button" aria-label="Close menu" onClick={() => setOpen(false)} className="inline-flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border-2 border-orange-400/70 bg-[#151821] text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.85)] transition hover:bg-orange-500/15 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300">
