@@ -8,6 +8,7 @@ import YouTubeSubscribersPage from "@/app/(india-seo-services)/buy-youtube-subsc
 import YouTubeViewsLanding from "@/components/marketing/YouTubeViewsLanding";
 import FacebookFollowersLanding from "@/components/marketing/FacebookFollowersLanding";
 import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
+import FacebookLikesLanding from "@/components/marketing/FacebookLikesLanding";
 import {
   canonicalIndiaServicePaths,
   getIndiaServiceMetadata,
@@ -56,6 +57,7 @@ export default function CanonicalServicePage({
   if (slug === "buy-youtube-views-india") return <YouTubeViewsLanding />;
   if (slug === "buy-facebook-followers-india") return <FacebookFollowersLanding />;
   if (slug === "buy-facebook-views-india") return <FacebookViewsLanding />;
+  if (slug === "buy-facebook-likes-india") return <FacebookLikesLanding />;
 
   return (
     <IndiaServiceLandingPage
