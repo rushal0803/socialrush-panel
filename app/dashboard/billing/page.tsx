@@ -4,17 +4,16 @@ import { getDashboardContext } from "@/lib/auth/dashboard-context";
 export default async function BillingPage() {
   const { supabase, profile } = await getDashboardContext();
 
-  const [{ data: invoices, error }, { data: payments }] = await Promise.all([
+  const [{ data: invoices, error: invoiceQueryError }, { data: payments, error: paymentQueryError }] = await Promise.all([
     supabase
       .from("invoices")
       .select("id,invoice_number,amount,status,created_at,order_id")
       .order("created_at", { ascending: false }),
     supabase
       .from("transactions")
-      .select("id,amount,status,payment_method,provider_payment_id,created_at")
-      .eq("type", "credit")
+      .select("id,amount,type,status,payment_method,provider_order_id,provider_payment_id,provider_refund_id,description,metadata,created_at")
       .order("created_at", { ascending: false })
-      .limit(25),
+      .limit(100),
   ]);
 
   const normalizedInvoices = (invoices ?? []).map((item) => ({
@@ -31,7 +30,8 @@ export default async function BillingPage() {
     <BillingDashboardContent
       invoices={normalizedInvoices}
       payments={normalizedPayments}
-      invoiceError={error ? "Invoice metadata requires the latest client portal migration." : undefined}
+      invoiceError={invoiceQueryError ? "Invoice records could not be loaded right now." : undefined}
+      paymentError={paymentQueryError ? "Payment activity could not be loaded right now." : undefined}
       walletBalance={Number(profile?.balance ?? 0)}
     />
   );
