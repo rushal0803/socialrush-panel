@@ -104,14 +104,15 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </div>
       </div>
 
-      <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[4.4rem]" showCloseButton={false}>
+      <MobileMenuLayer open={open} onClose={() => setOpen(false)} topClassName="top-[4.4rem]" showCloseButton>
         <motion.div
           initial={{ opacity: 0, y: -12 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 shadow-[0_24px_60px_rgba(0,0,0,.45)] lg:hidden"
+          className="relative mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 pt-16 shadow-[0_24px_60px_rgba(0,0,0,.45)] lg:hidden"
         >
+          <div className="absolute left-4 top-4"><Logo light className="[&_img]:max-w-[148px]" /></div>
           <nav className="grid gap-1" aria-label="Mobile navigation">
             {nav.map(([label, href]) => (
               <Link key={href} href={href} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl border border-transparent px-3 py-2.5 text-sm font-semibold text-[#D7DBE3] transition hover:border-orange-400/25 hover:bg-orange-400/[0.07] hover:text-white">
