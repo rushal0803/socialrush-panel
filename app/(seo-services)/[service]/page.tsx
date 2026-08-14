@@ -11,6 +11,8 @@ import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
 import FacebookLikesLanding from "@/components/marketing/FacebookLikesLanding";
 import LinkedInFollowersLanding from "@/components/marketing/LinkedInFollowersLanding";
 import LinkedInLikesLanding from "@/components/marketing/LinkedInLikesLanding";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import {
   canonicalIndiaServicePaths,
   getIndiaServiceMetadata,
@@ -60,7 +62,18 @@ export default function CanonicalServicePage({
   if (slug === "buy-facebook-followers-india") return <FacebookFollowersLanding />;
   if (slug === "buy-facebook-views-india") return <FacebookViewsLanding />;
   if (slug === "buy-facebook-likes-india") return <FacebookLikesLanding />;
-  if (slug === "buy-linkedin-followers-india") return <LinkedInFollowersLanding />;
+  if (slug === "buy-linkedin-followers-india") {
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: linkedInFollowersFaqs.map(({ question, answer }) => ({
+        "@type": "Question",
+        name: question,
+        acceptedAnswer: { "@type": "Answer", text: answer },
+      })),
+    };
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "LinkedIn Services", path: "/services" }, { name: "LinkedIn Followers", path: "/linkedin-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><LinkedInFollowersLanding /></>;
+  }
   if (slug === "buy-linkedin-likes-india") return <LinkedInLikesLanding />;
 
   return (
