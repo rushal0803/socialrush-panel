@@ -9,6 +9,7 @@ import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
+import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -251,6 +252,7 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
               ))}
             </div>
           </section>
+          {activeSmmServices.some((service) => service.code === params.slug) ? <CrossSellRecommendations serviceCode={params.slug} /> : null}
         </div>
       </main>
     </PublicShell>

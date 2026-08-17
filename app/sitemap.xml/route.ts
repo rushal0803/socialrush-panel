@@ -35,6 +35,7 @@ const publicRoutes = [
   "/tools/youtube-thumbnail-preview",
   "/tools/instagram-caption-counter",
   "/tools/utm-link-builder",
+  "/creator-growth",
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",
 ] as const;
