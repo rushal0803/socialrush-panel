@@ -38,7 +38,7 @@ export default function InstagramFollowersOrderPanel() {
       <div className="relative mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_390px]">
         <article className="rounded-[32px] border border-white/10 bg-[linear-gradient(145deg,rgba(28,28,30,.96),rgba(12,12,13,.98))] p-5 shadow-[0_32px_80px_-45px_rgba(255,122,0,.85)] sm:p-8">
           <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Build your order</p>
-          <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">Build Your Instagram Growth Order</h2>
+          <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">Build Your Instagram Followers Order</h2>
           <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Choose your quantity and see your total instantly.</p>
           <div className="mt-8 flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-xl bg-orange-500 text-xs font-black text-white">1</span><div><p className="text-sm font-black text-white">Choose Followers</p><p className="text-xs text-[#9CA3AF]">Select a quick amount or set a custom quantity.</p></div></div>
           <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
