@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
-import { articleSlugs, blogArticles, blogRedirects, getArticleBySlug } from "@/components/marketing/blog/blogData";
+import { articleSlugs, blogArticles, blogRedirects, getArticleBySlug, getBlogPlatform } from "@/components/marketing/blog/blogData";
 import BlogArticleEnhancements from "@/components/marketing/blog/BlogArticleEnhancements";
 import { formatArticleDate, getArticleWords, getReadingTime, isValidDate, sortArticles } from "@/lib/blog";
 import SafeImage from "@/components/SafeImage";
@@ -116,9 +116,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleRelatedLinks = article.relatedLinks ?? [];
   const articleComparison = article.comparison;
   const articleWordCount = getArticleWords(article);
+  const articlePlatform = getBlogPlatform(article);
   const relatedArticles = sortArticles(blogArticles
     .filter((candidate) => candidate.slug !== article.slug)
-    .sort((left, right) => (Number(right.category === article.category) - Number(left.category === article.category)) || (Number(right.title.toLowerCase().includes(article.category.toLowerCase())) - Number(left.title.toLowerCase().includes(article.category.toLowerCase())))))
+    .sort((left, right) => {
+      const platformDifference = Number(getBlogPlatform(right) === articlePlatform) - Number(getBlogPlatform(left) === articlePlatform);
+      if (platformDifference) return platformDifference;
+      return Number(right.category === article.category) - Number(left.category === article.category);
+    }))
     .slice(0, 3);
   const articleSchema = {
     "@context": "https://schema.org",
@@ -347,9 +352,9 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
 
           {articleRelatedLinks.length ? (
             <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
-              <h2 className="text-xl font-extrabold text-[#0B0B0F]">Related services and next steps</h2>
+              <h2 className="text-xl font-extrabold text-[#0B0B0F]">Related resources and next steps</h2>
               <p className="mt-2 text-sm leading-7 text-[#111827]">
-                Continue with the service or pricing information most relevant to this strategy.
+                Continue with the guide, platform option, or pricing information most relevant to this strategy.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 {articleRelatedLinks.map((item) => (

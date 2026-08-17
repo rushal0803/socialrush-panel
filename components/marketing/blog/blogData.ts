@@ -43,6 +43,42 @@ export type BlogArticle = {
   redirectTo?: string;
 };
 
+export type BlogPlatform = "instagram" | "youtube" | "facebook" | "linkedin" | "twitter" | null;
+
+const platformClusterLinks: Record<Exclude<BlogPlatform, null>, Array<{ label: string; href: string }>> = {
+  instagram: [
+    { label: "Instagram follower options in India", href: "/buy-instagram-followers-india" },
+    { label: "Instagram likes for public posts", href: "/instagram-likes" },
+    { label: "Instagram views and Reels support", href: "/instagram-views" },
+  ],
+  youtube: [
+    { label: "YouTube subscriber packages", href: "/youtube-subscribers" },
+    { label: "YouTube views for public videos", href: "/youtube-views" },
+    { label: "YouTube likes options", href: "/youtube-likes" },
+  ],
+  facebook: [
+    { label: "Facebook follower options in India", href: "/buy-facebook-followers-india" },
+    { label: "Facebook likes for public posts", href: "/facebook-likes" },
+  ],
+  linkedin: [
+    { label: "LinkedIn follower options", href: "/linkedin-followers" },
+    { label: "LinkedIn likes for public posts", href: "/linkedin-likes" },
+  ],
+  twitter: [
+    { label: "Twitter/X follower options", href: "/twitter-followers" },
+  ],
+};
+
+export function getBlogPlatform(article: Pick<BlogArticle, "category" | "title" | "description">): BlogPlatform {
+  const text = `${article.category} ${article.title} ${article.description}`.toLowerCase();
+  if (text.includes("instagram")) return "instagram";
+  if (text.includes("youtube")) return "youtube";
+  if (text.includes("facebook")) return "facebook";
+  if (text.includes("linkedin")) return "linkedin";
+  if (text.includes("twitter") || /\bx\b/.test(text)) return "twitter";
+  return null;
+}
+
 const baseBlogArticles: BlogArticle[] = [
   {
     slug: "how-small-businesses-build-social-proof-online",
@@ -3148,7 +3184,10 @@ export const blogRedirects = baseBlogArticles
 
 export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => !article.redirectTo).map((article) => {
   const profile = editorialProfiles[article.slug];
-  const relatedLinks = article.relatedLinks ?? [];
+  const clusterLinks = getBlogPlatform(article) ? platformClusterLinks[getBlogPlatform(article) as Exclude<BlogPlatform, null>] : [];
+  const relatedLinks = [...(article.relatedLinks ?? []), ...clusterLinks].filter(
+    (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index,
+  );
 
   if (!profile || article.expandWithEditorialProfile === false) {
     return {
@@ -3164,6 +3203,7 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
     sections: [...article.sections, ...buildLongFormSections(profile)],
     relatedLinks: [
       { label: profile.serviceLabel, href: profile.serviceHref },
+      ...clusterLinks,
       ...serviceLinksForProfile(profile),
       { label: "Compare Packages", href: "/packages" },
       { label: "Explore All Services", href: "/services" },
