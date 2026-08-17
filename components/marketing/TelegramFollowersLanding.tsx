@@ -3,9 +3,9 @@
 import Link from "next/link";
 import { useMemo, useState } from "react";
 import {
-  ArrowRight, BarChart3, Check, ChevronDown, CircleCheck, CirclePause,
-  CirclePlay, Clock3, Headphones, Link2, LockKeyhole, MessageCircle,
-  Minus, Plus, RefreshCw, Send, ShieldCheck, Sparkles, Users,
+  ArrowRight, Check, ChevronDown, CirclePause,
+  CirclePlay, Link2, LockKeyhole, MessageCircle,
+  Minus, Plus, Send, ShieldCheck, Sparkles,
 } from "lucide-react";
 import PublicShell from "@/components/marketing/PublicShell";
 import { formatCurrency } from "@/lib/currency";
