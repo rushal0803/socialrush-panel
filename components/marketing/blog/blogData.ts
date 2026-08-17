@@ -2093,6 +2093,7 @@ const baseBlogArticles: BlogArticle[] = [
       { label: "Explore Growth Services", href: "/services" },
       { label: "Compare Packages", href: "/packages" },
       { label: "Read Pricing Guide", href: "/pricing" },
+      { label: "Twitter follower packages", href: "/twitter-followers" },
     ],
   },
   {
@@ -2228,6 +2229,10 @@ const baseBlogArticles: BlogArticle[] = [
           "Review progress from the dashboard and keep campaign records.",
         ],
       },
+    ],
+    relatedLinks: [
+      { label: "X follower packages", href: "/twitter-followers" },
+      { label: "Compare SocialRUSH packages", href: "/packages" },
     ],
   },
   {
