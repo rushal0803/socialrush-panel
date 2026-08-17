@@ -1310,7 +1310,8 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "YouTube Subscribers Service", href: "/youtube-subscribers" },
+      { label: "View YouTube subscriber packages", href: "/youtube-subscribers" },
+      { label: "YouTube subscriber strategy for India", href: "/blog/how-to-increase-youtube-subscribers-in-india" },
       { label: "Explore SocialRUSH Services", href: "/services" },
       { label: "Compare SocialRUSH Packages", href: "/packages" },
       { label: "Organic Instagram Growth Guide", href: "/blog/how-to-grow-instagram-followers-organically-india" },
@@ -1982,8 +1983,9 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
-      { label: "YouTube Subscribers Service", href: "/youtube-subscribers" },
+      { label: "Buy YouTube subscribers in India", href: "/youtube-subscribers" },
       { label: "YouTube Views Service", href: "/youtube-views" },
+      { label: "First 1,000 YouTube subscribers guide", href: "/blog/how-to-get-1000-youtube-subscribers" },
       { label: "View YouTube Packages", href: "/packages?platform=youtube&service=subscribers" },
     ],
   },
