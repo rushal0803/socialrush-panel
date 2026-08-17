@@ -281,7 +281,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "LinkedIn follower delivery is gradual and depends on quantity and destination availability. Keep the submitted page public and stable.",
     metaDescription:
-      "Buy LinkedIn followers in India with transparent pricing, gradual delivery, no-password ordering and professional campaign tracking.",
+      "Buy LinkedIn followers in India with live INR package pricing, gradual delivery, no-password ordering and dashboard tracking from SocialRUSH.",
     ogDescription:
       "Strengthen LinkedIn profile or company-page visibility with clear follower packages and tracked SocialRUSH delivery in India.",
     audiences: ["Founders", "Consultants", "Company pages", "B2B agencies"],
@@ -518,7 +518,7 @@ export function getIndiaServiceMetadata(
   const url = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
   const linkedInTitle =
     slug === "buy-linkedin-followers-india"
-      ? "Buy LinkedIn Followers in India | Live INR Pricing | SocialRUSH"
+      ? "Buy LinkedIn Followers India | Live INR Packages | SocialRUSH"
       : null;
   const facebookTitle =
     slug === "buy-facebook-followers-india"
@@ -539,6 +539,9 @@ export function getIndiaServiceMetadata(
       `Buy ${page.serviceName} India`,
       `Buy ${page.serviceName}`,
       `${page.serviceName} India`,
+      ...(slug === "buy-linkedin-followers-india"
+        ? ["LinkedIn followers price India", "LinkedIn follower packages", "Buy followers on LinkedIn"]
+        : []),
       `${page.platform} growth service India`,
       `No password ${page.serviceName}`,
       "Social media growth service India",
