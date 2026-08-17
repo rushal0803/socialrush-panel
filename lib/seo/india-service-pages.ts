@@ -527,7 +527,11 @@ export function getIndiaServiceMetadata(
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
     : `Buy ${page.serviceName} India | SocialRUSH`;
-  const title = linkedInTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
+  const twitterTitle =
+    slug === "buy-twitter-followers-india"
+      ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
+      : null;
+  const title = linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
   return {
     title: { absolute: title },
     description: page.metaDescription,
@@ -569,6 +573,18 @@ export function getIndiaServiceMetadata(
 export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
   const page = getIndiaServicePage(slug);
   if (slug === "buy-linkedin-followers-india") return [...linkedInFollowersFaqs];
+  if (slug === "buy-twitter-followers-india") {
+    return [
+      { question: "How can I buy Twitter/X followers in India?", answer: "Choose a Twitter/X follower package, provide the correct public profile link, review the current INR total, and complete the order through your SocialRUSH account." },
+      { question: "How much do Twitter/X followers cost in India?", answer: "The current rate and exact INR total depend on the selected quantity and service availability. SocialRUSH shows the live price before you confirm the order." },
+      { question: "Should I provide a Twitter or X profile link?", answer: "Either a public twitter.com or x.com profile link can be used when it points to the correct public profile. Keep the profile public and avoid changing the handle while delivery is active." },
+      { question: "Is my Twitter/X password required?", answer: "No. SocialRUSH only needs the public profile link required for the campaign. Never share a password, recovery code, OTP, or private account access." },
+      { question: "How long does Twitter/X follower delivery take?", answer: "The current delivery estimate is shown with the selected service before confirmation. Timing can vary with quantity, profile availability, and platform conditions." },
+      { question: "Can I track my Twitter/X follower order?", answer: "Yes. Your SocialRUSH dashboard keeps the order status, quantity, charge, and campaign record together after you place an order." },
+      { question: "What if followers drop after delivery?", answer: "Review the live service details before ordering. Refill or support coverage applies only where it is listed for the selected campaign." },
+      { question: "Does buying Twitter/X followers guarantee engagement or reach?", answer: "No. A follower campaign does not guarantee engagement, organic reach, trending posts, leads, sales, or platform rankings. Continue to use useful content and responsible account management." },
+    ];
+  }
   const related = getIndiaServicePage(page.related[0]);
   return [
     {
