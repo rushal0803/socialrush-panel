@@ -11,6 +11,7 @@ import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
 import FacebookLikesLanding from "@/components/marketing/FacebookLikesLanding";
 import LinkedInFollowersLanding from "@/components/marketing/LinkedInFollowersLanding";
 import LinkedInLikesLanding from "@/components/marketing/LinkedInLikesLanding";
+import TikTokFollowersLanding from "@/components/marketing/TikTokFollowersLanding";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -91,6 +92,7 @@ export default function CanonicalServicePage({
     return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "LinkedIn Services", path: "/services" }, { name: "LinkedIn Followers", path: "/linkedin-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><LinkedInFollowersLanding /></>;
   }
   if (slug === "buy-linkedin-likes-india") return <LinkedInLikesLanding />;
+  if (slug === "buy-tiktok-followers-india") return <TikTokFollowersLanding />;
 
   return (
     <IndiaServiceLandingPage

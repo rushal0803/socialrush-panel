@@ -532,8 +532,9 @@ export function getIndiaServiceMetadata(
       ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
       : null;
   const title = linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
+  const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live Pricing | SocialRUSH" : title;
   return {
-    title: { absolute: title },
+    title: { absolute: tiktokTitle },
     description: page.metaDescription,
     keywords: [
       `Buy ${page.serviceName} India`,
@@ -542,6 +543,7 @@ export function getIndiaServiceMetadata(
       ...(slug === "buy-linkedin-followers-india"
         ? ["LinkedIn followers price India", "LinkedIn follower packages", "Buy followers on LinkedIn"]
         : []),
+      ...(slug === "buy-tiktok-followers-india" ? ["TikTok followers price India", "TikTok profile followers", "TikTok followers service"] : []),
       `${page.platform} growth service India`,
       `No password ${page.serviceName}`,
       "Social media growth service India",
@@ -552,7 +554,7 @@ export function getIndiaServiceMetadata(
       type: "website",
       locale: "en_IN",
       siteName: "SocialRUSH",
-      title,
+      title: tiktokTitle,
       description: page.ogDescription,
       url,
       images: [
@@ -566,7 +568,7 @@ export function getIndiaServiceMetadata(
     },
     twitter: {
       card: "summary_large_image",
-      title,
+      title: tiktokTitle,
       description: page.ogDescription,
       images: [`${SEO_SITE_URL}/og-image.png`],
     },
