@@ -59,6 +59,13 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // This legacy keyword URL rendered the same purchase flow. Keep one
+        // crawlable LinkedIn follower commercial page.
+        source: "/buy-linkedin-followers-india",
+        destination: "/linkedin-followers",
+        permanent: true,
+      },
+      {
         source: "/blog/linkedin-growth-tips-for-personal-brands",
         destination: "/blog/linkedin-growth-tips-personal-brands",
         permanent: true,
