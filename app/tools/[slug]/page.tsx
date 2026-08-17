@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound, redirect } from "next/navigation";
 import PublicShell from "@/components/marketing/PublicShell";
 import ToolsContent from "@/components/marketing/tools/ToolsContent";
-import { createPageMetadata } from "@/lib/seo/metadata";
+import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { tools, toolBySlug } from "@/lib/tools/catalog";
 
 export function generateStaticParams() { return tools.map(({ slug }) => ({ slug })); }
@@ -19,6 +19,6 @@ export default function ToolPage({ params }: { params: { slug: string } }) {
   if (legacySlug) redirect(`/tools/${legacySlug}`);
   const tool = toolBySlug[params.slug];
   if (!tool) notFound();
-  const schema = { "@context": "https://schema.org", "@graph": [{ "@type": "WebApplication", name: tool.title, applicationCategory: "CreatorApplication", operatingSystem: "Web", description: tool.description, url: `https://socialrush.in/tools/${tool.slug}` }, { "@type": "FAQPage", mainEntity: tool.faqs.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) }] };
+  const schema = { "@context": "https://schema.org", "@graph": [{ "@type": "WebApplication", name: tool.title, applicationCategory: "CreatorApplication", operatingSystem: "Web", description: tool.description, url: `${SEO_SITE_URL}/tools/${tool.slug}` }, { "@type": "FAQPage", mainEntity: tool.faqs.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) }] };
   return <PublicShell><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} /><ToolsContent activeSlug={params.slug} /></PublicShell>;
 }
