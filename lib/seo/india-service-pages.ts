@@ -518,7 +518,7 @@ export function getIndiaServiceMetadata(
   const url = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
   const linkedInTitle =
     slug === "buy-linkedin-followers-india"
-      ? "Buy LinkedIn Followers India | Plans in ₹ | SocialRUSH"
+      ? "Buy LinkedIn Followers in India | Live INR Pricing | SocialRUSH"
       : null;
   const facebookTitle =
     slug === "buy-facebook-followers-india"
