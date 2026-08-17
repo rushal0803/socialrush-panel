@@ -27,6 +27,7 @@ import {
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import { blogArticles } from "@/components/marketing/blog/blogData";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
+import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLanding";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -203,6 +204,10 @@ export default async function IndiaServiceLandingPage({
   canonicalPath?: string;
 }) {
   const page = getIndiaServicePage(slug);
+  if (slug === "buy-telegram-members-india") {
+    const liveTelegram = await getLiveServiceFacts("telegram", "Telegram Premium Members");
+    return <TelegramFollowersLanding live={liveTelegram} />;
+  }
   const isTwitterFollowers = slug === "buy-twitter-followers-india";
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
   const available = Boolean(live?.available);
