@@ -34,6 +34,25 @@ export default function LinkedInFollowersLanding() {
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.76fr_1.24fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">Preview the professional profile experience</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original LinkedIn-inspired interface—not a customer page or campaign result. Play controls animate demo activity only.</p><button type="button" onClick={() => setPlaying(x => !x)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#0a66c2]/40 bg-[#0a66c2]/10 px-4 text-sm font-black text-sky-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause preview" : "Play preview"}</button></div><ProfilePreview playing={playing} pulse={pulse} /></div></section>
     <LinkedInPriceSection />
     <ContentSections price={price} />
+    <section className="border-y border-white/10 bg-[#0e141f] px-4 py-14 sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-7xl">
+        <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Plan the destination first</p>
+        <h2 className="mt-3 text-3xl font-black">Useful LinkedIn growth guides</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">A follower order works best when the public profile or company page already gives professionals a clear reason to follow. Use these guides to prepare your positioning, content and measurement plan.</p>
+        <div className="mt-6 grid gap-4 md:grid-cols-2">
+          <Link href="/blog/linkedin-followers-for-business-growth" className="group rounded-2xl border border-[#0a66c2]/25 bg-[#0a66c2]/[.06] p-5 transition hover:-translate-y-1">
+            <h3 className="font-black">LinkedIn followers for business growth</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-300">A practical India guide to company-page positioning, employee participation and responsible audience measurement.</p>
+            <span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Read the guide <ArrowRight className="h-3.5 w-3.5" /></span>
+          </Link>
+          <Link href="/blog/linkedin-profile-growth-tips-for-business-owners" className="group rounded-2xl border border-[#0a66c2]/25 bg-[#0a66c2]/[.06] p-5 transition hover:-translate-y-1">
+            <h3 className="font-black">LinkedIn profile growth for business owners</h3>
+            <p className="mt-2 text-sm leading-6 text-slate-300">Use profile clarity, useful posts and relevant conversations to support a professional first impression.</p>
+            <span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Read the guide <ArrowRight className="h-3.5 w-3.5" /></span>
+          </Link>
+        </div>
+      </div>
+    </section>
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><p className="text-center text-xs font-black uppercase tracking-[.16em] text-orange-300">Helpful answers</p><h2 className="mt-3 text-center text-3xl font-black">LinkedIn Followers FAQs</h2><div className="mt-7 space-y-3">{linkedInFollowersFaqs.map(({ question, answer }, i) => <details key={question} open={i === 0} className="group rounded-2xl border border-white/10 bg-white/[.035] p-5"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-black"><span>{question}</span><ChevronDown className="h-5 w-5 text-orange-300 transition group-open:rotate-180" /></summary><p className="mt-3 border-t border-white/10 pt-3 text-sm leading-7 text-slate-300">{answer}</p></details>)}</div></div></section>
     <section className="px-4 pb-16 sm:px-6 lg:px-8 lg:pb-20"><div className="mx-auto max-w-6xl rounded-[2rem] border border-orange-400/25 bg-[radial-gradient(circle_at_82%_30%,rgba(10,102,194,.2),transparent_21%),linear-gradient(120deg,#19140d,#0c1420)] p-7 text-center sm:p-10"><p className="text-sm font-bold text-orange-200">Starting from {price} / 1K</p><h2 className="mt-2 text-3xl font-black">Ready to build your LinkedIn Followers order?</h2><p className="mt-3 text-sm text-slate-300">No password required · Live pricing · Dashboard tracking</p><div className="mt-6 flex flex-col justify-center gap-3 min-[420px]:flex-row"><a href="#order" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ffb000] px-6 text-sm font-black">Start Your Order</a><Link href="/packages?platform=linkedin&service=followers" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#0a66c2]/40 px-6 text-sm font-black text-sky-100">Explore LinkedIn Services</Link></div></div></section>
   </main></PublicShell>;

@@ -45,9 +45,16 @@ export type BlogArticle = {
 
 export type BlogPlatform = "instagram" | "youtube" | "facebook" | "linkedin" | "twitter" | null;
 
+const instagramFollowerAnchors = [
+  "Instagram follower packages",
+  "Instagram followers in India",
+  "View Instagram follower options",
+  "Instagram growth options",
+  "Instagram follower pricing",
+] as const;
+
 const platformClusterLinks: Record<Exclude<BlogPlatform, null>, Array<{ label: string; href: string }>> = {
   instagram: [
-    { label: "Instagram follower options in India", href: "/buy-instagram-followers-india" },
     { label: "Instagram likes for public posts", href: "/instagram-likes" },
     { label: "Instagram views and Reels support", href: "/instagram-views" },
   ],
@@ -2851,7 +2858,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     metrics: "profile views, followers, post impressions, qualified comments, connection requests, website visits, and enquiries",
     cadence: "two practical posts and three thoughtful comment sessions per week with monthly profile cleanup",
     risk: "posting generic advice without a clear business angle or treating followers as a substitute for expertise",
-    serviceLabel: "LinkedIn Followers India",
+    serviceLabel: "LinkedIn follower options",
     serviceHref: "/linkedin-followers",
   },
   "facebook-page-growth-tips-for-local-businesses": {
@@ -2922,7 +2929,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     metrics: "profile views, relevant connection requests, post saves, qualified comments, direct conversations, and enquiries",
     cadence: "two insight posts, one proof-led post, and focused daily participation in relevant professional conversations",
     risk: "publishing generic motivational content that does not demonstrate useful expertise",
-    serviceLabel: "LinkedIn Followers India",
+    serviceLabel: "LinkedIn growth options",
     serviceHref: "/linkedin-followers",
   },
   "consistent-engagement-builds-trust": {
@@ -3018,7 +3025,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     metrics: "follower relevance, page views, employee reach, saves, qualified comments, website visits, and enquiries",
     cadence: "two authority posts, one customer or team story, and regular employee participation every week",
     risk: "treating the company page as a noticeboard instead of a useful industry resource",
-    serviceLabel: "LinkedIn Followers India",
+    serviceLabel: "LinkedIn follower pricing",
     serviceHref: "/linkedin-followers",
   },
   "social-media-growth-strategy-indian-creators": {
@@ -3054,7 +3061,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     metrics: "follower relevance, page views, qualified comments, employee reach, website visits, conversations, and enquiries",
     cadence: "two expertise posts, one proof-led story, and regular employee participation each week",
     risk: "treating follower count as a substitute for expertise, useful publishing, or relationship building",
-    serviceLabel: "LinkedIn Followers India",
+    serviceLabel: "View LinkedIn follower packages",
     serviceHref: "/linkedin-followers",
   },
   "best-social-media-growth-services-for-indian-creators": {
@@ -3191,8 +3198,15 @@ export const blogRedirects = baseBlogArticles
 
 export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => !article.redirectTo).map((article) => {
   const profile = editorialProfiles[article.slug];
-  const clusterLinks = getBlogPlatform(article) ? platformClusterLinks[getBlogPlatform(article) as Exclude<BlogPlatform, null>] : [];
-  const relatedLinks = [...(article.relatedLinks ?? []), ...clusterLinks].filter(
+  const platform = getBlogPlatform(article);
+  const clusterLinks = platform ? platformClusterLinks[platform] : [];
+  const instagramFollowerLink = platform === "instagram"
+    ? [{
+        label: instagramFollowerAnchors[baseBlogArticles.findIndex((candidate) => candidate.slug === article.slug) % instagramFollowerAnchors.length],
+        href: "/buy-instagram-followers-india",
+      }]
+    : [];
+  const relatedLinks = [...(article.relatedLinks ?? []), ...instagramFollowerLink, ...clusterLinks].filter(
     (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index,
   );
 
@@ -3210,6 +3224,7 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
     sections: [...article.sections, ...buildLongFormSections(profile)],
     relatedLinks: [
       { label: profile.serviceLabel, href: profile.serviceHref },
+      ...instagramFollowerLink,
       ...clusterLinks,
       ...serviceLinksForProfile(profile),
       { label: "Compare Packages", href: "/packages" },

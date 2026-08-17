@@ -76,6 +76,10 @@ const nextConfig = {
       {
         source: "/buy-x-followers-india",
         destination: "/twitter-followers",
+        // This legacy keyword URL rendered the same purchase flow. Keep one
+        // crawlable LinkedIn follower commercial page.
+        source: "/buy-linkedin-followers-india",
+        destination: "/linkedin-followers",
         permanent: true,
       },
       {
