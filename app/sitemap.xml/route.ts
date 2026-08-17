@@ -37,6 +37,8 @@ const publicRoutes = [
   "/tools/utm-link-builder",
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",
+  "/tools/social-media-growth-budget-calculator",
+  "/tools/creator-growth-checklist",
 ] as const;
 
 const canonicalServiceDetailRoutes = [
