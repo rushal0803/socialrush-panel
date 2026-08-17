@@ -335,9 +335,9 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Available where listed",
     packageService: "followers",
     intro:
-      "Strengthen visible audience credibility on Twitter/X with a transparent follower campaign for Indian creators, founders, and brands.",
+      "Buy Twitter followers in India for your X (formerly Twitter) profile through a transparent, trackable follower campaign for creators, founders, and brands.",
     overview:
-      "Choose a quantity, submit your public profile URL, review the campaign details, and track delivery through your SocialRUSH dashboard.",
+      "Choose from current X follower packages, submit a public X or Twitter profile URL, review the live INR total, and track the order through your SocialRUSH dashboard.",
     value:
       "A more established visible audience can support profile presentation when people discover your commentary, launches, and public conversations.",
     safety:
@@ -345,7 +345,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Follower delivery is managed gradually and depends on package size. Current timing and refill coverage are shown before confirmation.",
     metaDescription:
-      "Buy Twitter followers in India with transparent pricing, no-password ordering, gradual delivery and SocialRUSH campaign tracking.",
+      "Buy Twitter/X followers in India with live INR package pricing, public-profile ordering, delivery details and SocialRUSH order tracking.",
     ogDescription:
       "Build visible Twitter/X profile credibility with clear follower packages and tracked delivery from SocialRUSH India.",
     audiences: ["Founders", "Creators", "Public brands", "Community builders"],

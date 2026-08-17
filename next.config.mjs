@@ -59,6 +59,26 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/buy-twitter-followers-india",
+        destination: "/twitter-followers",
+        permanent: true,
+      },
+      {
+        source: "/x-followers",
+        destination: "/twitter-followers",
+        permanent: true,
+      },
+      {
+        source: "/buy-x-followers",
+        destination: "/twitter-followers",
+        permanent: true,
+      },
+      {
+        source: "/buy-x-followers-india",
+        destination: "/twitter-followers",
+        permanent: true,
+      },
+      {
         source: "/blog/linkedin-growth-tips-for-personal-brands",
         destination: "/blog/linkedin-growth-tips-personal-brands",
         permanent: true,
