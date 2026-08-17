@@ -2858,7 +2858,7 @@ const editorialProfiles: Record<string, EditorialProfile> = {
     metrics: "followers, page visits, messages, website clicks, post reach, reactions, comments, and local enquiry quality",
     cadence: "three practical page updates per week and one local trust post or offer every week",
     risk: "running visibility campaigns before the page answers basic customer questions",
-    serviceLabel: "Facebook Followers India",
+    serviceLabel: "View Facebook follower options in India",
     serviceHref: "/buy-facebook-followers-india",
   },
   "why-public-link-ordering-is-safer": {
