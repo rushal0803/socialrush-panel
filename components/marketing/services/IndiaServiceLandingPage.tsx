@@ -96,6 +96,12 @@ const comparisonRows = [
 ] as const;
 
 const keywordResourceMap: Record<string, Array<{ label: string; href: string; text: string }>> = {
+  twitter: [
+    { label: "Twitter/X follower packages", href: "/packages?platform=twitter&service=followers", text: "Compare current follower quantities and live INR pricing before starting an order." },
+    { label: "Twitter follower pricing", href: "/pricing", text: "See how SocialRUSH presents current service pricing and package availability." },
+    { label: "Twitter/X services", href: "/services?platform=twitter", text: "Browse the available Twitter/X service options and their public-link requirements." },
+    { label: "Safe public-link ordering", href: "/blog/why-public-link-ordering-is-safer", text: "Learn why a public profile link is safer than sharing account credentials." },
+  ],
   instagram: [
     {
       label: "Buy Instagram followers India",
@@ -197,6 +203,7 @@ export default async function IndiaServiceLandingPage({
   canonicalPath?: string;
 }) {
   const page = getIndiaServicePage(slug);
+  const isTwitterFollowers = slug === "buy-twitter-followers-india";
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;
@@ -371,6 +378,11 @@ export default async function IndiaServiceLandingPage({
         <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />
         <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.14fr_.86fr]">
           <div>
+            {isTwitterFollowers ? (
+              <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-2 text-xs font-bold text-[#4B5563]">
+                <Link href="/" className="hover:text-[#FF7A00]">Home</Link><span aria-hidden="true">/</span><Link href="/services?platform=twitter" className="hover:text-[#FF7A00]">Twitter/X Services</Link><span aria-hidden="true">/</span><span aria-current="page" className="text-[#111827]">Twitter/X Followers</span>
+              </nav>
+            ) : null}
             <span className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/80 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#111827] shadow-sm">
               <span className="grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br from-orange-500 via-amber-500 to-amber-500 text-white">
                 <PlatformIcon platform={page.platform} className="h-4 w-4" />
@@ -459,6 +471,12 @@ export default async function IndiaServiceLandingPage({
           </aside>
         </div>
       </section>
+
+      {isTwitterFollowers ? (
+        <section aria-labelledby="twitter-price-heading" className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/90 bg-white/80 p-6 shadow-[0_22px_52px_-36px_rgba(255,159,0,.5)] sm:p-8"><p className="text-xs font-black uppercase tracking-[0.16em] text-orange-600">India pricing</p><h2 id="twitter-price-heading" className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F]">Twitter/X Followers Price in India</h2><p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827]">Twitter/X follower pricing varies by the quantity and currently available package. The live selector shows the current INR rate and your exact total before payment, so you can choose the package that fits your campaign.</p><div className="mt-6 flex flex-col gap-3 min-[420px]:flex-row"><Link href={packagesHref} className="inline-flex min-h-11 items-center justify-center rounded-xl bg-[#0B0B0F] px-5 py-2.5 text-sm font-black text-white">View live Twitter/X packages</Link><Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-5 py-2.5 text-sm font-black text-[#FF9F00]">Explore pricing</Link></div></div>
+        </section>
+      ) : null}
 
       <section className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8">
         <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
