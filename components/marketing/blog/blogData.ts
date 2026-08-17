@@ -45,9 +45,16 @@ export type BlogArticle = {
 
 export type BlogPlatform = "instagram" | "youtube" | "facebook" | "linkedin" | "twitter" | null;
 
+const instagramFollowerAnchors = [
+  "Instagram follower packages",
+  "Instagram followers in India",
+  "View Instagram follower options",
+  "Instagram growth options",
+  "Instagram follower pricing",
+] as const;
+
 const platformClusterLinks: Record<Exclude<BlogPlatform, null>, Array<{ label: string; href: string }>> = {
   instagram: [
-    { label: "Instagram follower options in India", href: "/buy-instagram-followers-india" },
     { label: "Instagram likes for public posts", href: "/instagram-likes" },
     { label: "Instagram views and Reels support", href: "/instagram-views" },
   ],
@@ -3186,8 +3193,15 @@ export const blogRedirects = baseBlogArticles
 
 export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => !article.redirectTo).map((article) => {
   const profile = editorialProfiles[article.slug];
-  const clusterLinks = getBlogPlatform(article) ? platformClusterLinks[getBlogPlatform(article) as Exclude<BlogPlatform, null>] : [];
-  const relatedLinks = [...(article.relatedLinks ?? []), ...clusterLinks].filter(
+  const platform = getBlogPlatform(article);
+  const clusterLinks = platform ? platformClusterLinks[platform] : [];
+  const instagramFollowerLink = platform === "instagram"
+    ? [{
+        label: instagramFollowerAnchors[baseBlogArticles.findIndex((candidate) => candidate.slug === article.slug) % instagramFollowerAnchors.length],
+        href: "/buy-instagram-followers-india",
+      }]
+    : [];
+  const relatedLinks = [...(article.relatedLinks ?? []), ...instagramFollowerLink, ...clusterLinks].filter(
     (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index,
   );
 
@@ -3205,6 +3219,7 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
     sections: [...article.sections, ...buildLongFormSections(profile)],
     relatedLinks: [
       { label: profile.serviceLabel, href: profile.serviceHref },
+      ...instagramFollowerLink,
       ...clusterLinks,
       ...serviceLinksForProfile(profile),
       { label: "Compare Packages", href: "/packages" },
