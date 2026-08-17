@@ -35,6 +35,7 @@ const publicRoutes = [
   "/tools/youtube-thumbnail-preview",
   "/tools/instagram-caption-counter",
   "/tools/utm-link-builder",
+  "/creator-growth",
 ] as const;
 
 const canonicalServiceDetailRoutes = [

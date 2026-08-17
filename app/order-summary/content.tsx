@@ -12,6 +12,7 @@ import { createClient } from "@/lib/supabase/client";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { calculateServiceTotal } from "@/lib/service-pricing";
+import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 export const dynamic = "force-dynamic";
 const quantityOptions = [1000, 5000, 10000];
 
@@ -204,6 +205,7 @@ export default function OrderSummaryPage() {
                 </p>
               </div>
             </div>
+            <div className="mt-6"><CrossSellRecommendations serviceCode={service.code} compact /></div>
           </div>
         </div>
       </section>
