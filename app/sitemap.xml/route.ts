@@ -42,13 +42,6 @@ const publicRoutes = [
   "/tools/creator-growth-checklist",
 ] as const;
 
-const canonicalServiceDetailRoutes = [
-  "/services/facebook-views",
-  "/services/facebook-shares",
-  "/services/tiktok-likes",
-  "/services/tiktok-views",
-] as const;
-
 function escapeXml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -86,7 +79,6 @@ export async function GET() {
     ...new Set([
       ...publicRoutes,
       ...serviceRoutes,
-      ...canonicalServiceDetailRoutes,
       ...blogRoutes,
       ...caseStudyRoutes,
     ]),

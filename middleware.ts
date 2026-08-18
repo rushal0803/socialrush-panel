@@ -16,6 +16,7 @@ const canonicalRedirects: Record<string, string> = {
   "/buy-twitter-followers-india": "/twitter-followers",
   "/facebook-followers": "/buy-facebook-followers-india",
   "/buy-facebook-likes-india": "/facebook-likes",
+  "/buy-facebook-views-india": "/facebook-views",
   "/buy-telegram-members-india": "/telegram-members",
   "/buy-tiktok-followers-india": "/tiktok-followers",
   "/privacy": "/privacy-policy",
