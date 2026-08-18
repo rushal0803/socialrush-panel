@@ -1,69 +1,9 @@
 "use client";
-
-import { motion } from "framer-motion";
+import Link from "next/link";
 import { ChevronDown } from "lucide-react";
 import { useState } from "react";
-
-export type FaqItem = {
-  question: string;
-  answer: string;
-};
-
+export type FaqItem = { question: string; answer: string; related?: { href: string; label: string } };
 export default function FaqAccordion3D({ items, idPrefix = "faq" }: { items: FaqItem[]; idPrefix?: string }) {
-  const [openIndex, setOpenIndex] = useState(0);
-
-  return (
-    <div className="space-y-4">
-      {items.map((item, index) => {
-        const isOpen = openIndex === index;
-        const answerId = `${idPrefix}-answer-${index}`;
-
-        return (
-          <motion.article
-            key={item.question}
-            layout
-            whileHover={{ y: -4, scale: 1.005 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="overflow-hidden rounded-2xl border border-white/80 bg-white/80 shadow-[0_18px_42px_-20px_rgba(15,23,42,.26)] backdrop-blur-xl motion-reduce:transform-none"
-          >
-            <button
-              type="button"
-              aria-expanded={isOpen}
-              aria-controls={answerId}
-              onClick={() => setOpenIndex((current) => (current === index ? -1 : index))}
-              className="flex w-full items-center gap-4 px-5 py-4 text-left outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-500 sm:px-6 sm:py-5"
-            >
-              <span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] via-[#FF9F00] to-[#FFC400] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 122, 0, .35)]">
-                {String(index + 1).padStart(2, "0")}
-              </span>
-              <h3 className="flex-1 text-sm font-bold leading-6 text-slate-900 sm:text-base">{item.question}</h3>
-              <span
-                className={`grid h-9 w-9 shrink-0 place-items-center rounded-full border border-white/80 bg-white text-slate-500 shadow-sm transition duration-300 ${
-                  isOpen ? "rotate-180 text-orange-600" : "rotate-0"
-                }`}
-              >
-                <ChevronDown className="h-4 w-4" />
-              </span>
-            </button>
-
-            <div
-              id={answerId}
-              aria-hidden={!isOpen}
-              className={`grid transition-[grid-template-rows,opacity] duration-300 motion-reduce:transition-none ${
-                isOpen
-                  ? "grid-rows-[1fr] opacity-100"
-                  : "grid-rows-[0fr] opacity-0"
-              }`}
-            >
-              <div className="overflow-hidden">
-                  <p className="border-t border-orange-100/80 px-5 pb-5 pt-4 text-sm leading-7 text-slate-600 sm:px-6 sm:pb-6 sm:text-[15px]">
-                    {item.answer}
-                  </p>
-              </div>
-            </div>
-          </motion.article>
-        );
-      })}
-    </div>
-  );
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
+  return <div className="space-y-3">{items.map((item, index) => { const open = openIndex === index; const id = `${idPrefix}-answer-${index}`; return <article key={item.question} className="overflow-hidden rounded-2xl border border-white bg-white/85 shadow-[0_14px_32px_-22px_rgba(15,23,42,.38)] transition hover:border-orange-200"><button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpenIndex(open ? null : index)} className="flex min-h-[4.5rem] w-full items-center gap-3 px-4 py-3 text-left focus-visible:outline focus-visible:outline-2 focus-visible:outline-inset focus-visible:outline-orange-500 sm:px-5"><span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-orange-50 text-xs font-black text-orange-700">{String(index + 1).padStart(2, "0")}</span><h3 className="flex-1 text-sm font-black leading-6 text-slate-900 sm:text-base">{item.question}</h3><ChevronDown className={`h-5 w-5 shrink-0 text-orange-600 transition-transform ${open ? "rotate-180" : ""}`} /></button><div id={id} className={`grid transition-[grid-template-rows,opacity] duration-200 ${open ? "grid-rows-[1fr] opacity-100" : "grid-rows-[0fr] opacity-0"}`}><div className="overflow-hidden"><div className="border-t border-slate-100 px-4 pb-5 pt-4 sm:px-5"><p className="text-sm leading-7 text-slate-600">{item.answer}</p>{item.related && <Link href={item.related.href} className="mt-4 inline-flex min-h-10 items-center rounded-lg bg-orange-50 px-3 text-xs font-black text-orange-800 hover:bg-orange-100">{item.related.label} <span aria-hidden className="ml-1">→</span></Link>}</div></div></div></article> })}</div>;
 }
