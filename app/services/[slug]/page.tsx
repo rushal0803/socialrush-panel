@@ -13,6 +13,16 @@ import CrossSellRecommendations from "@/components/marketing/CrossSellRecommenda
 
 const siteUrl = SEO_SITE_URL;
 
+// These catalog details are available to customers, but they do not yet have
+// sufficient validated demand or differentiated content to justify standalone
+// organic landing pages. Keep the purchase path available without creating
+// speculative, low-value index entries.
+const catalogOnlyServiceSlugs = new Set([
+  "facebook-shares",
+  "tiktok-likes",
+  "tiktok-views",
+]);
+
 function formatInr(value: number) {
   return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
 }
@@ -80,6 +90,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: seo.title,
       description: seo.description,
     },
+    ...(catalogOnlyServiceSlugs.has(params.slug)
+      ? { robots: { index: false, follow: true } }
+      : {}),
   };
 }
 
