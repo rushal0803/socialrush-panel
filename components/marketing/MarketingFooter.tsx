@@ -70,6 +70,19 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
     </p>
   </div>
 
+  <a
+    href="https://buildlist.io"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="inline-flex w-fit shrink-0 items-center rounded outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
+  >
+    <img
+      src="https://buildlist.io/badge.svg"
+      alt="Featured on Buildlist"
+      style={{ height: 40, width: "auto", maxWidth: "100%" }}
+    />
+  </a>
+
   <nav aria-label="Footer legal links" className="flex flex-wrap gap-x-4 gap-y-2 sm:ml-auto">
     <Link href="/privacy-policy" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Privacy</Link>
     <Link href="/terms-and-conditions" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Terms</Link>
