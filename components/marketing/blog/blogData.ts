@@ -3192,11 +3192,89 @@ function serviceLinksForProfile(profile: EditorialProfile) {
   ];
 }
 
+const topicalAuthorityArticles: BlogArticle[] = [
+  {
+    slug: "youtube-channel-readiness-checklist",
+    category: "YouTube Strategy",
+    title: "YouTube Channel Readiness Checklist Before You Promote a Video",
+    description: "A practical YouTube channel readiness checklist for creators planning content distribution, subscriber campaigns, and measurable video growth.",
+    metaTitle: "YouTube Channel Readiness Checklist Before Promotion",
+    metaDescription: "Check your YouTube channel, video, audience path and measurements before you promote a video or plan subscriber growth.",
+    breadcrumbTitle: "YouTube Channel Readiness Checklist",
+    readingTime: "8 min read",
+    image: "/images/blog/promote-new-youtube-channel-india.png",
+    imageAlt: "Creator reviewing a YouTube channel readiness checklist before a promotion",
+    author: "SocialRUSH Editorial Team",
+    publishedAt: "2026-08-19",
+    updatedAt: "2026-08-19",
+    intro: "Promotion cannot fix a confusing channel or a video with no clear reason to continue watching. Before spending time or budget on distribution, creators should make sure a new visitor can understand the channel promise, evaluate the video quickly and find a useful next step. This checklist is designed for Indian creators and small teams who want to make a campaign easier to measure without treating subscribers or views as guarantees.",
+    keyTakeaway: "Channel readiness is the bridge between discovery and durable audience growth: make the reason to watch, subscribe and return clear before trying to reach more people.",
+    sections: [
+      { heading: "Start with one campaign outcome", body: "Choose a single primary outcome for the next video: qualified views, returning viewers, subscribers, newsletter visits, enquiries or sales. Then select two supporting signals. For example, a tutorial may use average view duration and comments that show the problem was solved. This prevents a campaign from being judged only by a headline number.", tips: ["Write the outcome before changing the thumbnail or launching promotion.", "Use a date range that you can compare after the campaign.", "Do not combine unrelated goals in one short test."] },
+      { heading: "Channel and profile readiness", body: "A visitor should be able to see who the channel helps and what it covers within seconds. Review your banner, About text, channel trailer, featured sections and contact or link destination. Keep topics coherent enough that a person who enjoyed one video has a logical next video to watch. For Indian audiences, make language, regional references and the promise of the channel clear rather than relying on broad labels.", tips: ["Use a plain-language channel promise.", "Feature two or three videos that prove the promise.", "Check the experience on a mobile screen before sharing the link."] },
+      { heading: "Video readiness: the first minute and next step", body: "The title and thumbnail should set an expectation that the opening delivers. Remove a long introduction, state the problem or payoff early, and make the next step relevant: another video, playlist, resource or subscription. The aim is not clickbait; it is alignment between discovery, viewing and the value a viewer receives.", tips: ["Confirm the title, thumbnail and opening make the same promise.", "Add a relevant end screen and playlist.", "Make any external link clearly explain its destination."] },
+      { heading: "Measurement plan and safe ordering checks", body: "Record your current baseline before a campaign: views, average view duration, returning viewers, subscribers, traffic source and meaningful actions. If you decide to use a support service, confirm the current details on the public service page, provide only the required public URL, and never share a password, OTP or recovery code. Compare equal periods after the work is complete and note other publishing changes.", tips: ["Save a baseline screenshot or export.", "Use public video or channel links only when an order requires one.", "Treat unexpected activity as a signal to investigate, not to scale automatically."] },
+    ],
+    relatedLinks: [
+      { label: "Plan a creator growth goal", href: "/tools/creator-growth-goal-planner" },
+      { label: "Use the YouTube engagement calculator", href: "/tools/youtube-engagement-rate-calculator" },
+      { label: "Explore YouTube subscriber options", href: "/youtube-subscribers" },
+      { label: "How to promote a new YouTube channel in India", href: "/blog/how-to-promote-new-youtube-channel-in-india" },
+    ],
+    faqs: [{ question: "Does channel readiness guarantee more views?", answer: "No. It improves the clarity of the visitor experience, but reach and results depend on the content, audience fit, competition and platform conditions." }, { question: "Should I share channel login details with a growth provider?", answer: "No. Use only the relevant public channel or video URL and never share passwords, OTPs or recovery codes." }],
+  },
+  {
+    slug: "social-media-campaign-budget-planning-india",
+    category: "Campaign Planning",
+    title: "How to Plan a Social Media Campaign Budget in India",
+    description: "A practical framework for Indian creators and businesses to plan content, promotion, tools and measurement without treating spend as a result guarantee.",
+    metaTitle: "How to Plan a Social Media Campaign Budget in India",
+    metaDescription: "Build a realistic social media campaign budget around content, promotion, tools, measurement and review—not vanity metrics alone.",
+    breadcrumbTitle: "Social Media Campaign Budget Planning",
+    readingTime: "9 min read",
+    image: "/images/blog/social-media-growth-strategy-indian-creators.png",
+    imageAlt: "Creator planning a social media campaign budget and measurement framework",
+    author: "SocialRUSH Editorial Team",
+    publishedAt: "2026-08-19",
+    updatedAt: "2026-08-19",
+    intro: "A useful campaign budget is a decision document, not a promise that a particular spend will deliver followers, views or revenue. It shows what you are investing in, what each part is meant to support and how you will learn from the result. This framework helps Indian creators, local businesses and small marketing teams budget for one focused campaign without inventing market benchmarks or mixing every activity into one number.",
+    keyTakeaway: "Budget the work that makes discovery worthwhile—content, destination quality and measurement—then use a small, reviewable campaign scope instead of chasing a single vanity metric.",
+    sections: [
+      { heading: "Define the campaign boundary", body: "Set a timeframe, platform, audience segment and primary action before entering any amount. A campaign could focus on a product launch, a YouTube tutorial series, a local-business offer or an Instagram content pillar. Keep the boundary narrow enough that you can identify what changed and why.", tips: ["Choose one platform and one audience question for an initial test.", "Write the action a qualified visitor should take.", "Separate always-on content costs from the specific campaign."] },
+      { heading: "Use four transparent budget buckets", body: "List content production, distribution or promotion, tools, and optional support separately. Content can include filming, editing, design or writing. Tools may include analytics or creative software. Distribution can include an ad test or a suitable public-link campaign. Separating buckets makes trade-offs visible and avoids implying that every rupee should be spent on reach.", tips: ["Enter your own quotes and actual costs; do not use generic benchmark claims.", "Keep a contingency only when you can explain what it covers.", "Review current service details separately from your planning sheet."] },
+      { heading: "Set a measurement model before spending", body: "Pick one leading indicator and one quality signal for each bucket. A video campaign may track qualified views and average view duration; a B2B LinkedIn campaign may track profile visits and relevant enquiries. Write down your baseline and compare the same length of time after the campaign. Revenue, reach and engagement can move for many reasons, so explain correlation carefully.", tips: ["Use UTM links where they are appropriate.", "Record dates, creative versions and distribution changes.", "Do not call a planning ratio ROI unless revenue and attributable costs are actually known."] },
+      { heading: "Make a scale, pause or learn decision", body: "At the end of the campaign, decide whether the next step is to repeat a useful element, adjust the creative, improve the destination or pause. A campaign that reveals a weak offer or unclear profile can still be valuable learning. Scaling should follow evidence that the audience and content are aligned, not a temporary spike alone.", tips: ["Review the original goal and evidence together.", "Keep a short learning log for the next campaign.", "Protect account safety: public links only; never share passwords or OTPs."] },
+    ],
+    relatedLinks: [
+      { label: "Build your social media budget", href: "/tools/social-media-growth-budget-calculator" },
+      { label: "Create a measurable growth plan", href: "/tools/creator-growth-goal-planner" },
+      { label: "Create campaign tracking links", href: "/tools/utm-link-builder" },
+      { label: "Review current SocialRUSH pricing", href: "/pricing" },
+      { label: "Social media growth strategy for Indian creators", href: "/blog/social-media-growth-strategy-indian-creators" },
+    ],
+    faqs: [{ question: "Can a budget calculator predict campaign results?", answer: "No. A calculator can organise self-entered costs and planning assumptions, but it cannot predict platform distribution, audience response or revenue." }, { question: "Should I put all spend into promotion?", answer: "Usually no. First make sure the content, profile or destination and measurement plan give new visitors a useful experience." }],
+  },
+];
+
+const authorityEnhancements: Record<string, Pick<BlogArticle, "sections" | "relatedLinks">> = {
+  "instagram-followers-vs-engagement": {
+    sections: [
+      { heading: "A decision framework: choose the signal that matches the job", body: "Followers and engagement answer different questions. Followers can communicate the scale of a potential audience; engagement helps you understand whether people respond to individual posts. Before spending time or budget, identify the job: profile credibility for a new visitor, feedback on a content series, demand for an offer, or distribution for a public post. Then choose one primary signal and supporting evidence instead of treating every number as interchangeable.", tips: ["For profile credibility, review profile clarity and relevant audience fit alongside followers.", "For content learning, compare saves, shares, replies and reach on similar posts.", "For sales or enquiries, track the path after engagement rather than engagement alone."] },
+      { heading: "A 30-day Instagram review model", body: "Week one: record baseline followers, reach and post interactions. Weeks two and three: publish a consistent content theme and note formats, hooks and calls to action. Week four: compare equivalent periods and decide whether the account needs stronger content, clearer profile positioning, audience distribution or a different offer. This gives creators a repeatable model that does not mistake a short spike for lasting progress.", tips: ["Use the same engagement basis—followers or reach—throughout the comparison.", "Keep promotion dates next to organic publishing dates.", "Review audience relevance and conversations, not only totals."] },
+    ],
+    relatedLinks: [
+      { label: "Calculate Instagram engagement rate", href: "/tools/instagram-engagement-rate-calculator" },
+      { label: "Plan an Instagram growth goal", href: "/tools/creator-growth-goal-planner" },
+      { label: "Explore Instagram followers in India", href: "/buy-instagram-followers-india" },
+    ],
+  },
+};
+
 export const blogRedirects = baseBlogArticles
   .filter((article) => Boolean(article.redirectTo))
   .map((article) => ({ slug: article.slug, destination: article.redirectTo as string }));
 
-export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => !article.redirectTo).map((article) => {
+export const blogArticles: BlogArticle[] = [...baseBlogArticles, ...topicalAuthorityArticles].filter((article) => !article.redirectTo).map((article) => {
   const profile = editorialProfiles[article.slug];
   const platform = getBlogPlatform(article);
   const clusterLinks = platform ? platformClusterLinks[platform] : [];
@@ -3206,13 +3284,15 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
         href: "/buy-instagram-followers-india",
       }]
     : [];
-  const relatedLinks = [...(article.relatedLinks ?? []), ...instagramFollowerLink, ...clusterLinks].filter(
+  const enhancement = authorityEnhancements[article.slug];
+  const relatedLinks = [...(article.relatedLinks ?? []), ...(enhancement?.relatedLinks ?? []), ...instagramFollowerLink, ...clusterLinks].filter(
     (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index,
   );
 
   if (!profile || article.expandWithEditorialProfile === false) {
     return {
       ...article,
+      sections: [...article.sections, ...(enhancement?.sections ?? [])],
       relatedLinks,
       publishedAt: article.publishedAt,
       updatedAt: article.updatedAt,
@@ -3221,9 +3301,10 @@ export const blogArticles: BlogArticle[] = baseBlogArticles.filter((article) => 
 
   return {
     ...article,
-    sections: [...article.sections, ...buildLongFormSections(profile)],
+    sections: [...article.sections, ...(enhancement?.sections ?? []), ...buildLongFormSections(profile)],
     relatedLinks: [
       { label: profile.serviceLabel, href: profile.serviceHref },
+      ...(enhancement?.relatedLinks ?? []),
       ...instagramFollowerLink,
       ...clusterLinks,
       ...serviceLinksForProfile(profile),

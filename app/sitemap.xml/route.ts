@@ -40,6 +40,7 @@ const publicRoutes = [
   "/tools/youtube-revenue-calculator",
   "/tools/social-media-growth-budget-calculator",
   "/tools/creator-growth-checklist",
+  "/tools/creator-growth-goal-planner",
 ] as const;
 
 function escapeXml(value: string) {
