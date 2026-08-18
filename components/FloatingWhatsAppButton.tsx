@@ -10,10 +10,10 @@ export default function FloatingWhatsAppButton() {
   const pathname = usePathname();
   const [covered, setCovered] = useState(false);
   useEffect(() => {
-    if (pathname !== "/") return;
-    const targets = ["order-builder", "final-cta"]
-      .map((id) => document.getElementById(id))
-      .filter((element): element is HTMLElement => Boolean(element));
+    if (pathname !== "/" && pathname !== "/faq") return;
+    const targets = pathname === "/faq"
+      ? Array.from(document.querySelectorAll<HTMLElement>("[data-faq-accordion]"))
+      : ["order-builder", "final-cta"].map((id) => document.getElementById(id)).filter((element): element is HTMLElement => Boolean(element));
     if (!targets.length) return;
     const observer = new IntersectionObserver((entries) => setCovered(entries.some((entry) => entry.isIntersecting)), { threshold: 0.22 });
     targets.forEach((target) => observer.observe(target));
