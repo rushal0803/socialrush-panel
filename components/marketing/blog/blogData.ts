@@ -1861,7 +1861,7 @@ const baseBlogArticles: BlogArticle[] = [
       {
         heading: "Start With a Comparable Rate",
         body:
-          "Per-1,000 pricing makes different quantities easier to compare. SocialRUSH currently lists Instagram Followers at ₹599 per 1K, while the final campaign total is calculated from the quantity selected at checkout.",
+          "Per-1,000 pricing makes different quantities easier to compare. Check the live Instagram follower package selector for the current rate and final campaign total before checkout.",
         tips: [
           "Confirm whether the displayed amount is per 1K or the complete package price.",
           "Check the exact total before wallet confirmation.",
