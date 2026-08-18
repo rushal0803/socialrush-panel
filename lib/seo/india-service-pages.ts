@@ -121,7 +121,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Like delivery begins after confirmation and depends on campaign size and content availability. Keep the selected post public throughout delivery.",
     metaDescription:
-      "Buy Instagram likes in India with SocialRUSH. Get transparent INR pricing, fast delivery, no-password ordering and campaign tracking.",
+      "Buy Indian Instagram likes with live INR pricing, public-link ordering, service details before checkout and SocialRUSH order tracking.",
     ogDescription:
       "Improve visible Instagram post and reel engagement with clear pricing, public-link ordering and reliable SocialRUSH support in India.",
     audiences: ["Reel creators", "Influencers", "Product brands", "Social teams"],
@@ -520,6 +520,10 @@ export function getIndiaServiceMetadata(
     slug === "buy-linkedin-followers-india"
       ? "Buy LinkedIn Followers India | Live INR Packages | SocialRUSH"
       : null;
+  const instagramLikesTitle =
+    slug === "buy-instagram-likes-india"
+      ? "Buy Indian Instagram Likes | Live INR Plans | SocialRUSH"
+      : null;
   const facebookTitle =
     slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
@@ -531,7 +535,7 @@ export function getIndiaServiceMetadata(
     slug === "buy-twitter-followers-india"
       ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
       : null;
-  const title = linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
+  const title = instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live Pricing | SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle },
