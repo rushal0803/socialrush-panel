@@ -1,201 +1,29 @@
 "use client";
 
 import Link from "next/link";
-import { motion } from "framer-motion";
-import type { Variants } from "framer-motion";
-import { Bot, CircleHelp, Handshake, LifeBuoy, Rocket, ShieldCheck, Sparkles } from "lucide-react";
-import { useState } from "react";
+import { useMemo, useState } from "react";
+import { BadgeIndianRupee, CheckCircle2, ChevronRight, CircleHelp, CreditCard, LifeBuoy, LockKeyhole, PackageCheck, Search, ShoppingBag, Sparkles, X } from "lucide-react";
 import FaqAccordion3D, { type FaqItem } from "./FaqAccordion3D";
 
-type FaqCategory = {
-  key: string;
-  label: string;
-  items: FaqItem[];
-};
-
-export type { FaqCategory };
-
-const trustPoints = [
-  {
-    title: "Fast Support",
-    text: "Get quick guidance before, during, and after your order with human-first assistance.",
-    icon: LifeBuoy,
-    color: "from-amber-500 to-orange-600",
-  },
-  {
-    title: "Secure Payments",
-    text: "Protected wallet funding and payment processing with reliable transaction safety.",
-    icon: ShieldCheck,
-    color: "from-emerald-500 to-teal-600",
-  },
-  {
-    title: "Transparent Process",
-    text: "Clear pricing, visible timelines, and real-time order tracking at every stage.",
-    icon: Handshake,
-    color: "from-amber-500 to-orange-600",
-  },
-  {
-    title: "Business Growth Focused",
-    text: "Automation and campaign options tailored for creators, startups, and growing brands.",
-    icon: Rocket,
-    color: "from-orange-500 to-red-600",
-  },
-] as const;
-
-const sectionFade: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
-};
+export type FaqCategory = { key: string; label: string; items: FaqItem[] };
+export type { FaqItem };
+const icons = { general: CircleHelp, services: ShoppingBag, pricing: BadgeIndianRupee, payments: CreditCard, delivery: PackageCheck, support: LifeBuoy } as const;
+const descriptions: Record<string, string> = { general: "The basics before you start", services: "Links, service selection and availability", pricing: "Rates, quantities and packages", payments: "Wallet funding and payment records", delivery: "Status, delivery and eligible refill support", support: "Order help and account assistance" };
+function related(item: FaqItem, category: string) { const v = `${item.question} ${item.answer}`.toLowerCase(); if (v.includes("track") || v.includes("order status")) return { href: "/dashboard/orders", label: "View Orders" }; if (v.includes("wallet") || category === "payments") return { href: "/dashboard/wallet", label: "View Wallet" }; if (v.includes("price") || category === "pricing") return { href: "/pricing", label: "View Pricing" }; if (v.includes("service") || category === "services") return { href: "/services", label: "Explore Services" }; if (category === "support") return { href: "/contact", label: "Contact Support" }; }
 
 export default function FaqPageContent({ categories }: { categories: FaqCategory[] }) {
-  const [activeCategory, setActiveCategory] = useState(categories[0]?.key ?? "general");
-
-  return (
-    <div className="faq-page relative overflow-hidden bg-[linear-gradient(165deg,#FFF8F1_0%,#FFF8F1_30%,#FFF8F1_55%,#FFF8F1_80%,#FFF8F1_100%)] text-slate-800">
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-        <div className="absolute -left-28 top-10 h-96 w-96 rounded-full bg-amber-200/45 blur-3xl" />
-        <div className="absolute right-0 top-20 h-[30rem] w-[30rem] rounded-full bg-orange-200/40 blur-3xl" />
-        <div className="absolute bottom-24 left-1/3 h-80 w-80 rounded-full bg-amber-200/35 blur-3xl" />
-        <div className="absolute -bottom-16 right-1/4 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
-      </div>
-
-      <section className="relative px-5 pb-10 pt-14 sm:px-6 sm:pt-16 lg:px-8 lg:pt-20">
-        <motion.div
-          variants={sectionFade}
-          initial="hidden"
-          animate="show"
-          className="relative mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-white/80 bg-white/75 p-8 shadow-[0_26px_65px_-28px_rgba(15,23,42,.35)] backdrop-blur-xl sm:p-10 lg:p-14"
-        >
-          <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-gradient-to-br from-orange-300/40 to-orange-300/40 blur-3xl" />
-          <div className="pointer-events-none absolute -bottom-24 -left-12 h-56 w-56 rounded-full bg-gradient-to-br from-amber-300/40 to-amber-300/40 blur-3xl" />
-
-          <div className="relative text-center">
-            <span className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-white/90 px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-orange-600 shadow-sm">
-              <CircleHelp className="h-3.5 w-3.5" /> FAQ
-            </span>
-            <h1 className="mt-5 text-3xl font-extrabold leading-tight tracking-[-0.03em] text-slate-900 sm:text-5xl lg:text-6xl">
-              Frequently Asked Questions
-            </h1>
-            <p className="mx-auto mt-5 max-w-3xl text-sm leading-7 text-slate-600 sm:text-base sm:leading-8">
-              Everything you need to know about SocialRUSH services, pricing, payments, and support.
-            </p>
-          </div>
-
-          <div className="pointer-events-none absolute left-8 top-8 hidden h-20 w-20 rounded-2xl border border-white/80 bg-white/60 shadow-[0_16px_30px_-16px_rgba(255, 159, 0, .55)] backdrop-blur-md md:block" />
-          <div className="pointer-events-none absolute bottom-10 right-10 hidden h-16 w-16 rounded-full border border-white/80 bg-gradient-to-br from-orange-400/25 to-amber-400/25 shadow-[0_18px_32px_-18px_rgba(255, 122, 0, .6)] backdrop-blur-md md:block" />
-        </motion.div>
-      </section>
-
-      <section className="relative px-5 pb-8 sm:px-6 lg:px-8">
-        <motion.div variants={sectionFade} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.25 }} className="mx-auto max-w-6xl">
-          <div className="flex flex-wrap gap-2 rounded-2xl border border-white/80 bg-white/70 p-2 shadow-[0_16px_40px_-24px_rgba(15,23,42,.3)] backdrop-blur-xl">
-            {categories.map((category) => {
-              const active = category.key === activeCategory;
-              return (
-                <button
-                  key={category.key}
-                  type="button"
-                  onClick={() => setActiveCategory(category.key)}
-                  className={`inline-flex min-h-11 items-center justify-center rounded-xl px-4 py-2 text-xs font-bold uppercase tracking-wide transition sm:text-sm ${
-                    active
-                      ? "bg-gradient-to-r from-[#FF7A00] via-[#FF9F00] to-[#FFC400] text-white shadow-[0_12px_30px_rgba(255, 122, 0, .38)]"
-                      : "bg-white/85 text-slate-600 shadow-sm hover:-translate-y-0.5 hover:text-orange-600"
-                  }`}
-                >
-                  {category.label}
-                </button>
-              );
-            })}
-          </div>
-        </motion.div>
-      </section>
-
-      <section className="relative px-5 pb-12 sm:px-6 lg:px-8 lg:pb-16">
-        <motion.div variants={sectionFade} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mx-auto max-w-6xl">
-          {categories.map((category) => (
-            <div key={category.key} hidden={category.key !== activeCategory}>
-              <div className="mb-5 flex items-center gap-3 text-slate-700">
-                <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] via-[#FF9F00] to-[#FFC400] text-white shadow-[0_12px_24px_rgba(255, 122, 0, .3)]">
-                  <Sparkles className="h-5 w-5" />
-                </span>
-                <div>
-                  <h2 className="text-lg font-extrabold sm:text-xl">{category.label} FAQs</h2>
-                  <p className="text-xs text-slate-500 sm:text-sm">Clear answers to help you choose the right SocialRUSH service.</p>
-                </div>
-              </div>
-
-              <FaqAccordion3D items={category.items} idPrefix={`faq-${category.key}`} />
-            </div>
-          ))}
-        </motion.div>
-      </section>
-
-      <section className="relative px-5 pb-12 sm:px-6 lg:px-8 lg:pb-16">
-        <motion.div variants={sectionFade} initial="hidden" whileInView="show" viewport={{ once: true, amount: 0.2 }} className="mx-auto max-w-6xl rounded-[1.7rem] border border-white/80 bg-white/75 p-6 shadow-[0_20px_55px_-24px_rgba(15,23,42,.35)] backdrop-blur-xl sm:p-8">
-          <div className="mb-6 text-center sm:mb-8">
-            <span className="inline-flex items-center gap-2 rounded-full border border-amber-200 bg-amber-50 px-3 py-1 text-[11px] font-bold uppercase tracking-[0.16em] text-amber-700">
-              <Bot className="h-3.5 w-3.5" /> Trust Signals
-            </span>
-            <h2 className="mt-3 text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Built for reliable growth and long-term partnerships</h2>
-          </div>
-
-          <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
-            {trustPoints.map((point) => {
-              const Icon = point.icon;
-              return (
-                <motion.article
-                  key={point.title}
-                  whileHover={{ y: -6, scale: 1.02 }}
-                  transition={{ duration: 0.25, ease: "easeOut" }}
-                  className="rounded-2xl border border-white/80 bg-white/85 p-5 shadow-[0_14px_38px_-20px_rgba(15,23,42,.34)]"
-                >
-                  <span className={`inline-flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br text-white shadow-md ${point.color}`}>
-                    <Icon className="h-5 w-5" />
-                  </span>
-                  <h3 className="mt-4 text-base font-extrabold text-slate-900">{point.title}</h3>
-                  <p className="mt-1.5 text-sm leading-6 text-slate-600">{point.text}</p>
-                </motion.article>
-              );
-            })}
-          </div>
-        </motion.div>
-      </section>
-
-      <section className="relative px-5 pb-16 sm:px-6 lg:px-8 lg:pb-20">
-        <motion.div
-          variants={sectionFade}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true, amount: 0.2 }}
-          className="mx-auto max-w-6xl overflow-hidden rounded-[2rem] border border-white/80 bg-gradient-to-br from-white/82 via-white/70 to-white/82 p-7 shadow-[0_22px_60px_-24px_rgba(15,23,42,.36)] backdrop-blur-xl sm:p-10"
-        >
-          <div className="pointer-events-none absolute -right-16 top-0 h-48 w-48 rounded-full bg-amber-300/25 blur-3xl" />
-          <div className="pointer-events-none absolute -left-10 bottom-0 h-44 w-44 rounded-full bg-orange-300/25 blur-3xl" />
-          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
-            <div className="max-w-2xl">
-              <h2 className="text-2xl font-extrabold tracking-tight text-slate-900 sm:text-3xl">Still have questions?</h2>
-              <p className="mt-3 text-sm leading-7 text-slate-600 sm:text-base">
-                Talk to our team and get the right automation or marketing solution for your business.
-              </p>
-            </div>
-
-            <div className="flex flex-wrap gap-3">
-              <Link
-                href="/contact"
-                className="inline-flex min-h-12 items-center rounded-xl border border-white bg-white/90 px-5 py-3 text-sm font-bold text-slate-700 shadow-sm transition hover:border-orange-200 hover:text-orange-600"
-              >
-                Contact Us
-              </Link>
-              <Link
-                href="/services"
-                className="inline-flex min-h-12 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white shadow-[0_14px_30px_rgba(255, 122, 0, .35)] transition hover:brightness-105"
-              >
-                View Services
-              </Link>
-            </div>
-          </div>
-        </motion.div>
-      </section>
-    </div>
-  );
+  const [active, setActive] = useState("all"); const [query, setQuery] = useState(""); const q = query.trim().toLowerCase();
+  const shown = useMemo(() => categories.map(c => ({ ...c, items: c.items.filter(i => (!q || `${c.label} ${i.question} ${i.answer}`.toLowerCase().includes(q)) && (active === "all" || active === c.key)) })).filter(c => c.items.length), [active, categories, q]);
+  const results = shown.reduce((n, c) => n + c.items.length, 0); const total = categories.reduce((n, c) => n + c.items.length, 0);
+  return <div className="relative overflow-hidden bg-[#f8f5f0] text-[#182235]"><div className="pointer-events-none absolute inset-x-0 top-0 h-[42rem] bg-[radial-gradient(circle_at_13%_10%,rgba(251,146,60,.26),transparent_26%),radial-gradient(circle_at_87%_19%,rgba(250,204,21,.25),transparent_22%)]" />
+    <section className="relative px-4 pb-10 pt-10 sm:px-6 sm:pt-14 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 rounded-[2rem] border border-white/80 bg-white/70 p-6 shadow-[0_28px_70px_-35px_rgba(15,23,42,.4)] backdrop-blur-xl lg:grid-cols-[1.1fr_.9fr] lg:p-10"><div><p className="inline-flex items-center gap-2 rounded-full border border-orange-200 bg-orange-50 px-3 py-1.5 text-[11px] font-black tracking-[.16em] text-orange-700"><CircleHelp className="h-3.5 w-3.5" /> SOCIALRUSH HELP CENTER</p><h1 className="mt-5 text-4xl font-black tracking-[-.055em] text-slate-950 sm:text-5xl">How can we help?</h1><p className="mt-4 max-w-xl text-sm leading-7 text-slate-600 sm:text-base">Find clear answers about SocialRUSH services, ordering, payments, delivery, refill support and your account.</p><label className="relative mt-7 block" htmlFor="faq-search"><span className="sr-only">Search questions</span><Search className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-orange-600" /><input id="faq-search" value={query} onChange={e => { setQuery(e.target.value); setActive("all"); }} placeholder="Search questions..." className="min-h-14 w-full rounded-2xl border border-slate-200 bg-white py-3 pl-12 pr-12 text-base font-medium text-slate-900 outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-100" />{query && <button type="button" onClick={() => setQuery("")} aria-label="Clear FAQ search" className="absolute right-2 top-1/2 grid h-10 w-10 -translate-y-1/2 place-items-center rounded-xl text-slate-500 hover:bg-slate-100"><X className="h-4 w-4" /></button>}</label><div className="mt-5 flex flex-wrap gap-3"><Link href="/contact" className="inline-flex min-h-11 items-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white">Contact Support</Link><Link href="/services" className="inline-flex min-h-11 items-center rounded-xl border border-orange-200 bg-orange-50 px-4 text-sm font-bold text-orange-800">Explore Services</Link></div><p className="mt-5 text-xs font-semibold text-slate-500">Clear answers <span aria-hidden>•</span> Real service information <span aria-hidden>•</span> No password required for applicable public-link services</p></div>
+      <aside aria-label="Illustrative support search interface" className="overflow-hidden rounded-[1.5rem] bg-[#111827] p-5 text-white shadow-xl sm:p-6"><p className="text-[10px] font-black tracking-[.18em] text-orange-200">ILLUSTRATIVE SUPPORT SEARCH</p><div className="mt-5 flex items-center gap-3 rounded-xl border border-white/10 bg-white/[.08] p-3 text-sm text-slate-200"><Search className="h-4 w-4 text-orange-300" />How do I track my order?</div><div className="mt-4 flex flex-wrap gap-2">{["Order Tracking", "Wallet & Payments", "Delivery & Refill"].map(x => <span key={x} className="rounded-full bg-orange-400/15 px-2.5 py-1 text-[10px] font-bold text-orange-100">{x}</span>)}</div><div className="mt-5 rounded-xl border border-white/10 bg-white/[.06] p-4"><div className="flex items-center justify-between"><p className="font-bold">Order Tracking</p><ChevronRight className="h-4 w-4 text-orange-300" /></div><p className="mt-2 text-xs leading-5 text-slate-300">Open Dashboard → Orders to view the latest available status.</p></div><div className="mt-3 flex items-center gap-3 rounded-xl border border-emerald-300/20 bg-emerald-300/[.08] p-3"><LifeBuoy className="h-5 w-5 text-emerald-300" /><div><p className="text-xs font-bold">Support ticket</p><p className="text-[11px] text-emerald-100/80">Get help when you need it</p></div></div></aside></div></section>
+    <section className="relative px-4 pb-8 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><div className="flex items-end justify-between gap-4"><div><p className="text-xs font-black tracking-[.14em] text-orange-700">BROWSE BY TOPIC</p><h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900">Helpful starting points</h2></div>{q && <p aria-live="polite" className="text-sm font-bold text-slate-600">{results} {results === 1 ? "answer" : "answers"} found</p>}</div><div className="mt-5 grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-6"><Topic label="All topics" count={total} Icon={Sparkles} selected={active === "all"} onClick={() => setActive("all")} />{categories.map(c => <Topic key={c.key} label={c.label} count={c.items.length} Icon={icons[c.key as keyof typeof icons] || CircleHelp} selected={active === c.key} onClick={() => setActive(c.key)} />)}</div></div></section>
+    <section className="relative px-4 pb-12 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-7 lg:grid-cols-[15rem_minmax(0,1fr)]"><aside className="hidden self-start rounded-2xl border border-white bg-white/75 p-3 shadow-sm lg:sticky lg:top-24 lg:block"><p className="px-3 py-2 text-[10px] font-black tracking-[.15em] text-slate-500">FAQ SECTIONS</p>{categories.map(c => <button key={c.key} onClick={() => setActive(c.key)} className={`flex min-h-11 w-full items-center justify-between rounded-xl px-3 text-left text-sm font-bold ${active === c.key ? "bg-orange-50 text-orange-800" : "text-slate-600 hover:bg-slate-50"}`}><span>{c.label}</span><span className="text-xs text-slate-400">{c.items.length}</span></button>)}</aside><div>{shown.length ? shown.map(c => <section key={c.key} className="mb-10"><p className="text-xs font-black tracking-[.14em] text-orange-700">{c.label.toUpperCase()}</p><h2 className="mt-1 text-2xl font-black tracking-tight text-slate-900">{c.label} questions</h2><p className="mt-1 text-sm text-slate-600">{descriptions[c.key]}</p><div className="mt-4"><FaqAccordion3D items={c.items.map(i => ({ ...i, related: related(i, c.key) }))} idPrefix={`faq-${c.key}`} /></div></section>) : <Empty onClear={() => { setQuery(""); setActive("all"); }} />}</div></div></section>
+    <QuickHelp />
+    <section className="relative px-4 py-12 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2"><article className="rounded-[1.75rem] bg-[#172033] p-6 text-white sm:p-8"><p className="text-[10px] font-black tracking-[.17em] text-orange-200">ORDER HELP</p><h2 className="mt-3 text-2xl font-black">Already placed an order?</h2><p className="mt-2 text-sm leading-6 text-slate-300">Find the latest available status and the support path for a specific order in your dashboard.</p><div className="mt-6 grid grid-cols-2 gap-3 rounded-2xl border border-white/10 bg-white/[.06] p-4 text-xs">{["Order ID", "Service", "Status", "Support"].map(x => <p key={x} className="text-slate-400">{x}<br /><strong className="text-white">Dashboard view</strong></p>)}<p className="col-span-2 text-[11px] text-slate-500">Illustrative interface — no order data is shown here.</p></div><Link href="/dashboard/orders" className="mt-6 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-4 text-sm font-black text-white">View My Orders</Link></article><article className="rounded-[1.75rem] border border-emerald-100 bg-emerald-50/70 p-6 sm:p-8"><p className="text-[10px] font-black tracking-[.17em] text-emerald-700">PAYMENTS & WALLET</p><h2 className="mt-3 text-2xl font-black text-slate-900">Keep payment details in one place</h2><p className="mt-2 text-sm leading-6 text-slate-600">Use your wallet area to add funds and review available transaction and billing details.</p><div className="mt-6 grid grid-cols-2 gap-3 text-sm">{["Wallet Balance", "Add Funds", "Payment Status", "Billing History"].map(x => <div key={x} className="rounded-xl border border-emerald-100 bg-white p-3 font-bold text-slate-700">{x}<p className="mt-1 text-[11px] font-medium text-slate-400">Dashboard view</p></div>)}</div><p className="mt-4 text-[11px] text-slate-500">Interface preview only — no balance is displayed.</p><Link href="/dashboard/wallet" className="mt-5 inline-flex min-h-11 items-center rounded-xl border border-emerald-200 bg-white px-4 text-sm font-black text-emerald-800">View Wallet</Link></article></div></section>
+    <section className="relative px-4 pb-16 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2"><article className="rounded-[1.75rem] border border-orange-100 bg-white p-6 sm:p-8"><p className="text-xs font-black tracking-[.14em] text-orange-700">DELIVERY, REFILL & STATUS</p><h2 className="mt-3 text-2xl font-black text-slate-900">Know what applies to your service</h2><div className="mt-6 space-y-4">{[["Delivery", "Depends on the selected active service."], ["Refill", "Available only where the active service or package specifies refill or support."], ["Service Status", "Availability and delivery details may differ by service."]].map(([a,b]) => <div key={a} className="flex gap-3"><CheckCircle2 className="mt-0.5 h-5 w-5 shrink-0 text-orange-600" /><p className="text-sm leading-6 text-slate-600"><strong className="text-slate-900">{a} — </strong>{b}</p></div>)}</div></article><article className="rounded-[1.75rem] bg-slate-900 p-6 text-white sm:p-8"><LockKeyhole className="h-6 w-6 text-orange-300" /><h2 className="mt-4 text-2xl font-black">What information does SocialRUSH need?</h2><p className="mt-2 text-sm leading-6 text-slate-300">For applicable public-link services, provide the required public destination link and keep it public during delivery.</p><div className="mt-5 space-y-2 text-sm">{[["Public destination link", "Required where applicable", true], ["Social-media password", "Not required", false], ["OTP", "Never share", false], ["Recovery code", "Never share", false]].map(([a,b,yes]) => <div key={String(a)} className="flex items-center justify-between gap-3 rounded-xl bg-white/[.07] px-3 py-3"><span className="font-bold">{String(a)}</span><span className={yes ? "text-emerald-300" : "text-rose-300"}>{yes ? "✓" : "×"} {String(b)}</span></div>)}</div></article></div><div className="mx-auto mt-5 max-w-7xl rounded-[1.75rem] border border-orange-200 bg-orange-50 p-6 sm:p-8"><p className="text-xs font-black tracking-[.14em] text-orange-700">WRONG LINK GUIDANCE</p><h2 className="mt-2 text-2xl font-black text-slate-900">What if I submit the wrong link?</h2><p className="mt-3 max-w-3xl text-sm leading-7 text-slate-600">Changes may depend on the order stage and service type. Contact support promptly with your order details to check available options; do not assume an order can be changed, cancelled, or refunded automatically.</p><Link href="/contact" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-slate-900 px-4 text-sm font-black text-white">Contact Support</Link></div></section></div>;
 }
+function Topic({ label, count, Icon, selected, onClick }: { label: string; count: number; Icon: typeof CircleHelp; selected: boolean; onClick: () => void }) { return <button type="button" onClick={onClick} className={`min-h-24 rounded-2xl border p-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-500 ${selected ? "border-orange-400 bg-orange-500 text-white shadow-lg shadow-orange-200" : "border-white bg-white/80 hover:border-orange-200"}`}><Icon className="h-5 w-5" /><p className="mt-3 text-sm font-black">{label}</p><p className="mt-1 text-xs opacity-75">{count} questions</p></button> }
+function Empty({ onClear }: { onClear: () => void }) { return <div className="rounded-[1.5rem] border border-dashed border-orange-300 bg-white/80 p-8 text-center"><Search className="mx-auto h-7 w-7 text-orange-600" /><h2 className="mt-4 text-xl font-black text-slate-900">No answer found</h2><p className="mt-2 text-sm text-slate-600">Try another search or contact SocialRUSH Support.</p><div className="mt-5 flex justify-center gap-3"><button onClick={onClear} className="min-h-11 rounded-xl border border-slate-200 px-4 text-sm font-bold">Clear Search</button><Link href="/contact" className="inline-flex min-h-11 items-center rounded-xl bg-slate-900 px-4 text-sm font-bold text-white">Contact Support</Link></div></div> }
+function QuickHelp() { const cards = [["Track an Order", "View current order status.", "/dashboard/orders", PackageCheck], ["Check Pricing", "Compare live service rates.", "/pricing", BadgeIndianRupee], ["View Packages", "Compare ready-made package options.", "/packages", ShoppingBag], ["Contact Support", "Send a support request.", "/contact", LifeBuoy]]; return <section className="relative border-y border-orange-100 bg-white/60 px-4 py-12 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="text-xs font-black tracking-[.14em] text-orange-700">QUICK HELP</p><h2 className="mt-2 text-2xl font-black tracking-tight text-slate-900">Need help faster?</h2><div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{cards.map(([a,b,c,D]) => { const Icon = D as typeof LifeBuoy; return <Link key={String(a)} href={String(c)} className="group rounded-2xl border border-slate-100 bg-white p-5 shadow-sm transition hover:-translate-y-1 hover:border-orange-200"><Icon className="h-5 w-5 text-orange-600" /><h3 className="mt-5 font-black text-slate-900">{String(a)}</h3><p className="mt-1 text-sm text-slate-600">{String(b)}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-700">Open <ChevronRight className="h-3.5 w-3.5" /></span></Link> })}</div></div></section> }
