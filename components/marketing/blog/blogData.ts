@@ -104,7 +104,7 @@ const baseBlogArticles: BlogArticle[] = [
     image: "/images/blog/small-business-social-proof.png",
     imageAlt:
       "Small business building online trust with customer reviews, testimonials and social proof",
-    author: "Rushal Thakur",
+    author: "SocialRUSH Editorial Team",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
     expandWithEditorialProfile: false,
@@ -453,7 +453,7 @@ const baseBlogArticles: BlogArticle[] = [
     image: "/images/blog/best-time-instagram-india.png",
     imageAlt:
       "Instagram posting schedule in India with audience activity times and content planning",
-    author: "Rushal Thakur",
+    author: "SocialRUSH Editorial Team",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
     expandWithEditorialProfile: false,
@@ -757,7 +757,7 @@ const baseBlogArticles: BlogArticle[] = [
     image: "/images/blog/instagram-followers-drop.png",
     imageAlt:
       "Instagram analytics showing follower decline and recovery strategies",
-    author: "Rushal Thakur",
+    author: "SocialRUSH Editorial Team",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
     expandWithEditorialProfile: false,
@@ -1084,7 +1084,7 @@ const baseBlogArticles: BlogArticle[] = [
     image: "/images/blog/first-1000-youtube-subscribers.png",
     imageAlt:
       "YouTube channel growth dashboard for reaching the first 1000 subscribers",
-    author: "Rushal Thakur",
+    author: "SocialRUSH Editorial Team",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
     expandWithEditorialProfile: false,
@@ -1362,7 +1362,7 @@ const baseBlogArticles: BlogArticle[] = [
     image: "/images/blog/grow-instagram-organically-india.png",
     imageAlt:
       "Instagram content planning dashboard for organic follower growth in India",
-    author: "Rushal Thakur",
+    author: "SocialRUSH Editorial Team",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
     intro:
@@ -2297,7 +2297,7 @@ const baseBlogArticles: BlogArticle[] = [
     image: "/images/blog/instagram-followers-vs-engagement.png",
     imageAlt:
       "Instagram followers and engagement comparison with likes comments saves and shares",
-    author: "Rushal Thakur",
+    author: "SocialRUSH Editorial Team",
     publishedAt: "2026-07-18",
     updatedAt: "2026-07-18",
     expandWithEditorialProfile: false,
