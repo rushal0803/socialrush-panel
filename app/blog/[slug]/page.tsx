@@ -138,7 +138,9 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     articleSection: article.category,
     wordCount: articleWordCount,
     inLanguage: "en-IN",
-    ...(articleAuthor ? { author: { "@type": "Person", name: articleAuthor } } : {}),
+    ...(articleAuthor
+      ? { author: { "@type": articleAuthor === "SocialRUSH Editorial Team" ? "Organization" : "Person", name: articleAuthor } }
+      : {}),
     publisher: {
       "@type": "Organization",
       name: "SocialRUSH",
