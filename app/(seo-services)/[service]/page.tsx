@@ -12,11 +12,13 @@ import FacebookLikesLanding from "@/components/marketing/FacebookLikesLanding";
 import LinkedInFollowersLanding from "@/components/marketing/LinkedInFollowersLanding";
 import LinkedInLikesLanding from "@/components/marketing/LinkedInLikesLanding";
 import TikTokFollowersLanding from "@/components/marketing/TikTokFollowersLanding";
+import TwitterFollowersLanding from "@/components/marketing/TwitterFollowersLanding";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import {
   canonicalIndiaServicePaths,
+  getIndiaServiceFaqs,
   getIndiaServiceMetadata,
   type IndiaServiceSlug,
 } from "@/lib/seo/india-service-pages";
@@ -93,6 +95,11 @@ export default function CanonicalServicePage({
   }
   if (slug === "buy-linkedin-likes-india") return <LinkedInLikesLanding />;
   if (slug === "buy-tiktok-followers-india") return <TikTokFollowersLanding />;
+  if (slug === "buy-twitter-followers-india") {
+    const faqs = getIndiaServiceFaqs(slug);
+    const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "X / Twitter Services", path: "/services?platform=twitter" }, { name: "X / Twitter Followers", path: "/twitter-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><TwitterFollowersLanding /></>;
+  }
 
   return (
     <IndiaServiceLandingPage
