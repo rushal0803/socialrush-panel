@@ -83,6 +83,24 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
     />
   </a>
 
+  <a
+    href="https://submitforbacklinks.com/badge/hjDF9kVOdBe4bbi5kUeWHxv9?ref=badge"
+    target="_blank"
+    rel="noopener"
+    data-s4b-token="hjDF9kVOdBe4bbi5kUeWHxv9"
+    data-s4b-theme="dark"
+    className="inline-flex w-fit shrink-0 max-w-full items-center"
+  >
+    <img
+      src="https://submitforbacklinks.com/api/badge/hjDF9kVOdBe4bbi5kUeWHxv9.svg?variant=verified&theme=dark"
+      alt="SocialRUSH — Verified on SubmitForBacklinks"
+      width="220"
+      height="48"
+      loading="lazy"
+      className="h-auto max-w-full"
+    />
+  </a>
+
   <nav aria-label="Footer legal links" className="flex flex-wrap gap-x-4 gap-y-2 sm:ml-auto">
     <Link href="/privacy-policy" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Privacy</Link>
     <Link href="/terms-and-conditions" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Terms</Link>
