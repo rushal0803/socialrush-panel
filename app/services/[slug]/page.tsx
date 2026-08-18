@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { notFound } from "next/navigation";
+import { notFound, permanentRedirect } from "next/navigation";
 import CurrencyAmount from "@/components/currency/CurrencyAmount";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
@@ -139,6 +139,11 @@ function getSeoData(slug: string) {
 }
 
 export default function ServiceSeoPage({ params }: { params: { slug: string } }) {
+  // Keep all commercial authority on the dedicated, sitemap-listed Instagram
+  // follower landing page instead of maintaining a competing service detail.
+  if (params.slug === "instagram-followers") {
+    permanentRedirect("/buy-instagram-followers-india");
+  }
   if (params.slug === "facebook-views") return <FacebookViewsLanding />;
   const seo = getSeoData(params.slug);
   if (!seo) notFound();
