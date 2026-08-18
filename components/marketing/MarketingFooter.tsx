@@ -70,8 +70,10 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
     </p>
   </div>
 
-  <nav aria-label="Footer legal links">
-    ...
+  <nav aria-label="Footer legal links" className="flex flex-wrap gap-x-4 gap-y-2 sm:ml-auto">
+    <Link href="/privacy-policy" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Privacy</Link>
+    <Link href="/terms-and-conditions" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Terms</Link>
+    <Link href="/refund-policy" className="min-h-10 py-2 hover:text-orange-300 focus-visible:rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-400">Refunds</Link>
   </nav>
 </div>
 </div>

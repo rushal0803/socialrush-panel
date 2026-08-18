@@ -64,7 +64,7 @@ function CurrencySelector() {
 
       {open ? (
         <div className="absolute right-0 top-full z-[80] mt-2 w-56 overflow-hidden rounded-2xl border border-orange-400/25 bg-[#111111]/95 p-2 shadow-[0_24px_60px_-26px_rgba(0,0,0,.8)] backdrop-blur-xl">
-          <p className="px-3 pb-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#111827]">Select currency</p>
+          <p className="px-3 pb-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#A8AFBD]">Select currency</p>
           <div className="grid gap-1">
             {options.map((option) => {
               const selected = option.code === currency;
@@ -79,7 +79,7 @@ function CurrencySelector() {
                   className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white" : "text-slate-300 hover:bg-orange-400/10 hover:text-white"}`}
                 >
                   <span>{option.code}</span>
-                  <span className="text-right font-black text-[#0B0B0F]">{option.symbol}</span>
+                  <span className={`text-right font-black ${selected ? "text-[#0B0B0F]" : "text-[#D7DBE3]"}`}>{option.symbol}</span>
                 </button>
               );
             })}
@@ -121,8 +121,8 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
               {initials}
             </span>
             <span className="hidden min-w-0 flex-col text-left sm:flex">
-              <span className="truncate text-sm font-bold text-[#0B0B0F]">{name}</span>
-              <span className="truncate text-[11px] capitalize text-[#111827]">{role}</span>
+              <span className="truncate text-sm font-bold text-white">{name}</span>
+              <span className="truncate text-[11px] capitalize text-[#A8AFBD]">{role}</span>
             </span>
           </Link>
 
