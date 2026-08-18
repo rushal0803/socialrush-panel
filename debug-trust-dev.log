@@ -1,0 +1,18 @@
+
+> socialrush-panel@1.0.0 dev
+> next dev
+
+  ▲ Next.js 14.2.33
+  - Local:        http://localhost:3000
+  - Environments: .env.local
+
+ ✓ Starting...
+ ✓ Ready in 2.8s
+ ○ Compiling /middleware ...
+ ✓ Compiled /middleware in 837ms (129 modules)
+ ○ Compiling /trust ...
+ ✓ Compiled /trust in 11.9s (1399 modules)
+ GET /trust 200 in 13709ms
+ GET /trust 200 in 110ms
+ ✓ Compiled in 1881ms (1399 modules)
+ GET /trust 200 in 353ms
