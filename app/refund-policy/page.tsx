@@ -3,10 +3,11 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Refund Policy",
+  title: "Refund Policy | SocialRUSH",
   description:
-    "Review the SocialRUSH Refund Policy for wallet payments, duplicate charges, cancelled campaigns, partial delivery, refill coverage and approved refunds.",
+    "Understand SocialRUSH refunds, wallet adjustments, cancelled order review, payment issues, refill support, and how to contact support.",
   path: "/refund-policy",
+  keywords: ["SocialRUSH refund policy", "SocialRUSH refunds", "SocialRUSH wallet refund", "SocialRUSH cancelled order refund"],
 });
 
 const sections = [
