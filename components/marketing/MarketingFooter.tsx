@@ -14,7 +14,7 @@ const groups: readonly FooterGroup[] = [
   { title: "Resources", links: [["Creator Tools", "/tools"], ["Growth Guides", "/blog"], ["Customer Safety", "/trust"]] },
 ] as const;
 
-const payments = ["UPI", "Cards via Cashfree", "Net Banking", "Wallet Balance"] as const;
+const payments = ["UPI", "Secure online payments", "Net Banking", "Wallet Balance"] as const;
 const trust = ["Secure Checkout", "Wallet Support", "Public-Link Ordering", "Order Tracking", "Customer Support", "Multi-Currency Pricing"] as const;
 
 function groupId(title: string) { return `footer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`; }
