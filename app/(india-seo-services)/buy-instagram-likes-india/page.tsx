@@ -26,7 +26,7 @@ const faqs = [
   ["What happens if I submit the wrong link?", "Review the public link before continuing. If it is not a supported Instagram post or Reel URL, the builder will ask you to correct it."],
 ] as const;
 const related = [
-  { code: "instagram-followers", title: "Instagram Followers", copy: "Explore public-profile campaigns with clear delivery information.", href: "/buy-instagram-followers-india", icon: Heart },
+  { code: "instagram-followers", title: "Instagram follower packages", copy: "Explore public-profile campaigns with clear delivery information.", href: "/buy-instagram-followers-india", icon: Heart },
   { code: "instagram-views", title: "Instagram Views", copy: "Review options for public post and Reel visibility.", href: "/buy-instagram-views-india", icon: Eye },
   { code: "instagram-likes", title: "Instagram Packages", copy: "Compare active Instagram services in one place.", href: "/packages?platform=instagram", icon: Sparkles },
 ] as const;

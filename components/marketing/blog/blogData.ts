@@ -3250,6 +3250,7 @@ const topicalAuthorityArticles: BlogArticle[] = [
       { label: "Create a measurable growth plan", href: "/tools/creator-growth-goal-planner" },
       { label: "Create campaign tracking links", href: "/tools/utm-link-builder" },
       { label: "Review current SocialRUSH pricing", href: "/pricing" },
+      { label: "Instagram growth services", href: "/buy-instagram-followers-india" },
       { label: "Social media growth strategy for Indian creators", href: "/blog/social-media-growth-strategy-indian-creators" },
     ],
     faqs: [{ question: "Can a budget calculator predict campaign results?", answer: "No. A calculator can organise self-entered costs and planning assumptions, but it cannot predict platform distribution, audience response or revenue." }, { question: "Should I put all spend into promotion?", answer: "Usually no. First make sure the content, profile or destination and measurement plan give new visitors a useful experience." }],
