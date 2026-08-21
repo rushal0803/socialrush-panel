@@ -24,10 +24,12 @@ import {
 } from "@/lib/seo/india-service-pages";
 
 const serviceRoutes = Object.fromEntries(
-  Object.entries(canonicalIndiaServicePaths).map(([slug, path]) => [
-    path.slice(1),
-    slug as IndiaServiceSlug,
-  ]),
+  Object.entries(canonicalIndiaServicePaths)
+    // This URL has a dedicated route with its own metadata and order panel.
+    // Keeping it out of the catch-all prevents a second route implementation
+    // from being generated for the same crawlable URL.
+    .filter(([slug]) => slug !== "buy-instagram-followers-india")
+    .map(([slug, path]) => [path.slice(1), slug as IndiaServiceSlug]),
 ) as Record<string, IndiaServiceSlug>;
 
 export function generateStaticParams() {
