@@ -536,7 +536,7 @@ export function getIndiaServiceMetadata(
       ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
       : null;
   const title = instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
-  const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live Pricing | SocialRUSH" : title;
+  const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers India | Online Packages - SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle },
     description: page.metaDescription,

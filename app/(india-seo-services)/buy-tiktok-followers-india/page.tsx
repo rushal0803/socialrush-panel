@@ -1,8 +1,5 @@
-import TikTokFollowersLanding from "@/components/marketing/TikTokFollowersLanding";
-import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
-
-export const metadata = getIndiaServiceMetadata("buy-tiktok-followers-india");
+import { permanentRedirect } from "next/navigation";
 
 export default function Page() {
-  return <TikTokFollowersLanding />;
+  permanentRedirect("/tiktok-followers");
 }

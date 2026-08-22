@@ -3286,8 +3286,22 @@ export const blogArticles: BlogArticle[] = [...baseBlogArticles, ...topicalAutho
         href: "/buy-instagram-followers-india",
       }]
     : [];
+  const tiktokFollowersLink = ({
+    "social-media-growth-strategy-indian-creators": "TikTok growth services",
+    "best-social-media-growth-services-for-indian-creators": "TikTok followers in India",
+    "social-media-campaign-budget-planning-india": "TikTok follower packages",
+  } as Record<string, string>)[article.slug]
+    ? [{
+        label: ({
+          "social-media-growth-strategy-indian-creators": "TikTok growth services",
+          "best-social-media-growth-services-for-indian-creators": "TikTok followers in India",
+          "social-media-campaign-budget-planning-india": "TikTok follower packages",
+        } as Record<string, string>)[article.slug],
+        href: "/tiktok-followers",
+      }]
+    : [];
   const enhancement = authorityEnhancements[article.slug];
-  const relatedLinks = [...(article.relatedLinks ?? []), ...(enhancement?.relatedLinks ?? []), ...instagramFollowerLink, ...clusterLinks].filter(
+  const relatedLinks = [...(article.relatedLinks ?? []), ...(enhancement?.relatedLinks ?? []), ...instagramFollowerLink, ...tiktokFollowersLink, ...clusterLinks].filter(
     (link, index, links) => links.findIndex((candidate) => candidate.href === link.href) === index,
   );
 
@@ -3308,6 +3322,7 @@ export const blogArticles: BlogArticle[] = [...baseBlogArticles, ...topicalAutho
       { label: profile.serviceLabel, href: profile.serviceHref },
       ...(enhancement?.relatedLinks ?? []),
       ...instagramFollowerLink,
+      ...tiktokFollowersLink,
       ...clusterLinks,
       ...serviceLinksForProfile(profile),
       { label: "Compare Packages", href: "/packages" },
