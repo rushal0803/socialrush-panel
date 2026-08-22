@@ -377,7 +377,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Delivery begins after confirmation and varies by quantity and page availability. Keep the destination public throughout processing.",
     metaDescription:
-      "Buy Facebook followers in India with live INR package pricing, public-link ordering, delivery tracking and refill support where eligible from SocialRUSH.",
+      "Buy Facebook followers in India with live INR pricing, public-link ordering without a password, order tracking, and refill support where eligible.",
     ogDescription:
       "Support Facebook page credibility with clear follower packages, public-link ordering and tracked delivery from SocialRUSH.",
     audiences: ["Local businesses", "Community pages", "Creators", "Agencies"],

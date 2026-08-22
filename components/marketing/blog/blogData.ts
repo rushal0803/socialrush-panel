@@ -2232,6 +2232,7 @@ const baseBlogArticles: BlogArticle[] = [
     ],
     relatedLinks: [
       { label: "X follower packages", href: "/twitter-followers" },
+      { label: "Facebook growth services", href: "/buy-facebook-followers-india" },
       { label: "Compare SocialRUSH packages", href: "/packages" },
     ],
   },
