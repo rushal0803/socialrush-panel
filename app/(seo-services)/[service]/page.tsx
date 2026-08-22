@@ -15,6 +15,7 @@ import TikTokFollowersLanding from "@/components/marketing/TikTokFollowersLandin
 import TwitterFollowersLanding from "@/components/marketing/TwitterFollowersLanding";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
+import { tiktokFollowersFaqs } from "@/lib/seo/tiktok-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import {
   canonicalIndiaServicePaths,
@@ -96,7 +97,10 @@ export default function CanonicalServicePage({
     return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "LinkedIn Services", path: "/services" }, { name: "LinkedIn Followers", path: "/linkedin-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><LinkedInFollowersLanding /></>;
   }
   if (slug === "buy-linkedin-likes-india") return <LinkedInLikesLanding />;
-  if (slug === "buy-tiktok-followers-india") return <TikTokFollowersLanding />;
+  if (slug === "buy-tiktok-followers-india") {
+    const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: tiktokFollowersFaqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "TikTok Services", path: "/services?platform=tiktok" }, { name: "TikTok Followers", path: "/tiktok-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><TikTokFollowersLanding /></>;
+  }
   if (slug === "buy-twitter-followers-india") {
     const faqs = getIndiaServiceFaqs(slug);
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");

@@ -535,13 +535,15 @@ export function getIndiaServiceMetadata(
     slug === "buy-twitter-followers-india"
       ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
       : null;
+
+  
   const telegramTitle = slug === "buy-telegram-members-india"
     ? "Buy Telegram Members India | Online Packages - SocialRUSH"
     : null;
   const title = telegramTitle ?? instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live Pricing | SocialRUSH" : title;
   return {
-    title: { absolute: tiktokTitle },
+    title: { absolute: tiktokTitle }, 
     description: page.metaDescription,
     keywords: [
       `Buy ${page.serviceName} India`,
