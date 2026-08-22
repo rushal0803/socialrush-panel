@@ -2231,6 +2231,7 @@ const baseBlogArticles: BlogArticle[] = [
       },
     ],
     relatedLinks: [
+      { label: "Telegram member packages", href: "/telegram-members" },
       { label: "X follower packages", href: "/twitter-followers" },
       { label: "Compare SocialRUSH packages", href: "/packages" },
     ],
