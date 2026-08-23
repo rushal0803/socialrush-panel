@@ -277,6 +277,11 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               >
                 <h2 className="text-2xl font-extrabold text-[#0B0B0F]">{section.heading}</h2>
                 <p className="mt-3 text-[15px] leading-7 text-[#111827]">{section.body}</p>
+                {section.contextualLink ? (
+                  <p className="mt-3 text-[15px] leading-7 text-[#111827]">
+                    {section.contextualLink.prefix} <Link href={section.contextualLink.href} className="font-semibold text-[#FF7A00] underline decoration-[#FF9F00]/50 underline-offset-4 transition hover:text-[#D96500]">{section.contextualLink.label}</Link>{section.contextualLink.suffix ?? ""}
+                  </p>
+                ) : null}
                 <h3 className="mt-5 text-base font-extrabold text-[#0B0B0F]">Practical actions</h3>
                 <ul className="mt-4 space-y-2">
                   {(section.tips ?? []).map((tip) => (
