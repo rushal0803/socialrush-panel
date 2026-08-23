@@ -12,7 +12,10 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
-export const dynamicParams = false;
+// Keep statically generated articles fast, while allowing a newly published
+// data-backed article to resolve if it was not included in a prior prerender
+// manifest. Unknown slugs still return `notFound()` below.
+export const dynamicParams = true;
 
 function toSectionId(value: string) {
   return value
