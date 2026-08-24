@@ -154,6 +154,7 @@ export default function NewOrderPage() {
   const [platform, setPlatform] = useState<PlatformId | null>(initialService?.platform ?? requestedPlatform ?? null);
   const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
   const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
+  const [liveInstagramSaves, setLiveInstagramSaves] = useState<SmmService | null>(null);
   const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
   const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
@@ -207,8 +208,8 @@ export default function NewOrderPage() {
   }, []);
 
   const services = useMemo(
-    () => (platform ? customerOrderServices.filter((service) => service.platform === platform) : []),
-    [platform],
+    () => (platform ? customerOrderServices.filter((service) => service.platform === platform).map((service) => service.code === "instagram-saves" && liveInstagramSaves ? liveInstagramSaves : service) : []),
+    [liveInstagramSaves, platform],
   );
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
@@ -319,6 +320,41 @@ export default function NewOrderPage() {
     window.addEventListener("wallet-balance-updated", updateBalance);
     return () => window.removeEventListener("wallet-balance-updated", updateBalance);
   }, [loadWalletBalance]);
+
+  // Instagram Saves is configured in Supabase. Refresh its display facts after
+  // authentication so the New Order UI follows the current live rate and limits.
+  useEffect(() => {
+    const db = createClient();
+    void db
+      .from("services")
+      .select("rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
+      .eq("name", "Instagram Saves")
+      .eq("platform", "instagram")
+      .eq("status", "active")
+      .eq("is_active", true)
+      .eq("accepts_new_orders", true)
+      .maybeSingle()
+      .then(({ data }) => {
+        if (!data) return;
+        const liveService: SmmService = {
+          platform: "instagram",
+          code: "instagram-saves",
+          name: "Instagram Saves",
+          description: "Strengthen post and Reel engagement signals with Instagram save activity.",
+          pricePer1000: Number(data.rate),
+          minQuantity: Number(data.min),
+          maxQuantity: Number(data.max),
+          deliveryTime: data.delivery_time || "Estimate shown before checkout",
+          refillPolicy: data.refill_policy || "Check current service terms",
+          qualityType: data.quality_type || "Premium",
+          importantInstruction: data.important_instruction || "Use a public Instagram post or reel URL.",
+          isActive: true,
+        };
+        if (!Number.isFinite(liveService.pricePer1000) || liveService.pricePer1000 <= 0 || liveService.minQuantity <= 0 || liveService.maxQuantity < liveService.minQuantity) return;
+        setLiveInstagramSaves(liveService);
+        setSelectedService((current) => current?.code === "instagram-saves" ? liveService : current);
+      });
+  }, []);
 
   async function placeOrder() {
     if (!selectedService || !linkRule || inFlight.current || submitting) return;
