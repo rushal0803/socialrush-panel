@@ -3,6 +3,7 @@ import { ArrowRight, BadgeCheck, CircleHelp, CreditCard, Gift, HeartHandshake, L
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { supportStatus } from "@/lib/support/customer";
+import OrderConversionCards, { type DraftSummary, type ServiceShortcut } from "./OrderConversionCards";
 
 type Order = { id: string; serviceName: string; platform: string; quantity: number; status: string; price: number; createdAt: string; progress: number | null; refillEligible: boolean };
 type Transaction = { id: string; amount: number; type: string; status: string; paymentMethod: string; createdAt: string };
@@ -22,7 +23,7 @@ function Platform({ name, className = "" }: { name: string; className?: string }
 function Panel({ children, className = "" }: { children: React.ReactNode; className?: string }) { return <section className={`dashboard-glass min-w-0 p-4 sm:p-5 ${className}`}>{children}</section>; }
 function SectionError() { return <p role="status" className="mt-4 rounded-xl border border-white/10 bg-white/[.03] p-3 text-xs text-slate-300">This section could not be loaded. Please try again.</p>; }
 
-export default function DashboardOverviewContent({ userName, walletBalance, orders, activeOrders, completedOrders, transactions, ticket, openTickets, rewardBalance, savedProfiles, errors }: { userName: string; walletBalance: number; orders: Order[]; activeOrders: number; completedOrders: number; transactions: Transaction[]; ticket: TicketData; openTickets: number; rewardBalance: number; savedProfiles: Profile[]; errors: Record<string, boolean> }) {
+export default function DashboardOverviewContent({ userName, walletBalance, orders, activeOrders, completedOrders, transactions, ticket, openTickets, rewardBalance, savedProfiles, firstOrder, draft, shortcuts, errors }: { userName: string; walletBalance: number; orders: Order[]; activeOrders: number; completedOrders: number; transactions: Transaction[]; ticket: TicketData; openTickets: number; rewardBalance: number; savedProfiles: Profile[]; firstOrder: boolean; draft: DraftSummary | null; shortcuts: ServiceShortcut[]; errors: Record<string, boolean> }) {
   const money = (amount: number) => formatCurrency(amount, "INR");
   const pendingOrders = orders.filter((order) => ["pending", "processing", "in_progress", "partial"].includes(order.status)).length;
   const failedPayment = transactions.find((transaction) => transaction.status === "failed");
@@ -40,6 +41,8 @@ export default function DashboardOverviewContent({ userName, walletBalance, orde
       <div className="relative mt-5 flex flex-wrap gap-x-4 gap-y-2 border-t border-white/10 pt-4 text-xs text-slate-300"><span className="inline-flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-emerald-400" />Account Active</span><span>Wallet <b className="text-white">{money(walletBalance)}</b></span><span><b className="text-white">{activeOrders}</b> Active Orders</span><span>{openTickets ? <><b className="text-white">{openTickets}</b> Open {openTickets === 1 ? "Ticket" : "Tickets"}</> : <span className="text-emerald-300">Support Clear</span>}</span></div>
       <nav aria-label="Hero quick actions" className="relative mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/add-funds"><CreditCard className="h-4 w-4" />Add Funds</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/orders"><LayoutList className="h-4 w-4" />Track Orders</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/support"><CircleHelp className="h-4 w-4" />Contact Support</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/saved-profiles"><HeartHandshake className="h-4 w-4" />Saved Profiles</Link></nav>
     </header>
+
+    {(firstOrder || draft) ? <OrderConversionCards firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} /> : null}
 
     <section aria-label="Account overview" className="mt-4 grid grid-cols-2 gap-3 lg:grid-cols-4">{metrics.map(([label, value, action, Icon, href, tone]) => <Link key={label} href={href} className="dashboard-glass group min-h-32 p-4 transition duration-200 hover:-translate-y-0.5 hover:border-orange-400/35"><Icon className={`h-5 w-5 ${tone}`} /><p className="mt-4 text-[10px] font-black uppercase tracking-[.12em] text-slate-400">{label}</p><p className="mt-1 text-xl font-black tracking-tight">{value}</p><span className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-orange-300">{action}<ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" /></span></Link>)}</section>
 

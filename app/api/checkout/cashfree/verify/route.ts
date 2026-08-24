@@ -18,6 +18,9 @@ export async function POST(request: NextRequest) {
   if (result.kind === "not_found") return NextResponse.json({ error: "Checkout payment not found." }, { status: 404 });
   if (result.kind === "mismatch") return NextResponse.json({ error: "Payment details did not match the checkout." }, { status: 409 });
   if (result.kind === "finalizing") return NextResponse.json({ error: "Payment is verified and is being finalized. Please check Orders shortly." }, { status: 409 });
-  if (result.kind === "success") return NextResponse.json({ data: { status: "success", orderId: result.orderId, balance: result.balance, duplicate: result.duplicate } });
+  if (result.kind === "success") {
+    await supabase.from("order_drafts").delete().eq("user_id", user.id);
+    return NextResponse.json({ data: { status: "success", orderId: result.orderId, balance: result.balance, duplicate: result.duplicate } });
+  }
   return NextResponse.json({ data: { status: result.kind } });
 }
