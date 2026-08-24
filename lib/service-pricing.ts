@@ -3,10 +3,9 @@ export const SERVICE_PRICES = {
   "instagram-likes": 249,
   "instagram-views": 30,
   "instagram-comments": 499,
-  // This is deliberately not a sellable price. Instagram Saves remains hidden
-  // from checkout until its active Supabase service record supplies the live
-  // rate and availability.
-  "instagram-saves": 0,
+  // A client-side fallback only. Checkout reads the active Supabase row for
+  // this service so its live rate remains authoritative.
+  "instagram-saves": 199,
   "youtube-subscribers": 3999,
   "youtube-likes": 499,
   "youtube-views": 249,

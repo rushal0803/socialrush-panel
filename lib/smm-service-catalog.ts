@@ -94,15 +94,13 @@ export const smmServiceCatalog: SmmService[] = [
     name: "Instagram Saves",
     description: "Strengthen post and Reel engagement signals with Instagram save activity.",
     pricePer1000: SERVICE_PRICES["instagram-saves"],
-    minQuantity: 1,
-    maxQuantity: 1,
-    deliveryTime: "Set by the active service",
-    refillPolicy: "Set by the active service",
-    qualityType: "Set by the active service",
+    minQuantity: 100,
+    maxQuantity: 1000,
+    deliveryTime: "Shown with the active service",
+    refillPolicy: "Shown with the active service",
+    qualityType: "Premium",
     importantInstruction: "Use a public Instagram post or reel URL and keep it available while the order is processing.",
-    // No price or limits are invented: this only becomes orderable once its
-    // live catalog configuration is supplied.
-    isActive: false,
+    isActive: true,
   },
   {
     platform: "youtube",

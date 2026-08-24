@@ -91,7 +91,8 @@ export async function POST(request: NextRequest) {
   }
 
   const requestedQuantity = quantity as number;
-  const quantityError = validateQuantity(requestedQuantity, service);
+  // Instagram Saves limits are maintained by its active Supabase row.
+  const quantityError = service.code === "instagram-saves" ? null : validateQuantity(requestedQuantity, service);
   if (quantityError) return NextResponse.json({ error: quantityError }, { status: 400 });
 
   let parsedLink: URL;
@@ -104,22 +105,32 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "A valid destination link is required." }, { status: 400 });
   }
 
-  const totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
-  if (!Number.isSafeInteger(totalPaise) || totalPaise <= 0) {
-    return NextResponse.json({ error: "Calculated total is invalid for this quantity." }, { status: 400 });
-  }
-
-  const { data: matchedService } = await supabase
+  let matchedServiceQuery = supabase
     .from("services")
-    .select("id, accepts_new_orders, health_status")
+    .select("id, rate, min, max, accepts_new_orders, health_status")
     .eq("status", "active")
     .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
-    .limit(1)
-    .maybeSingle();
+    .limit(1);
+  if (service.code === "instagram-saves") matchedServiceQuery = matchedServiceQuery.eq("platform", "instagram");
+  const { data: matchedService } = await matchedServiceQuery.maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
   if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please choose another service." }, { status: 409 });
+  }
+
+  let totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
+  if (service.code === "instagram-saves") {
+    if (!matchedService) return NextResponse.json({ error: "Instagram Saves is not currently available." }, { status: 409 });
+    const liveQuantityError = validateQuantity(requestedQuantity, {
+      minQuantity: Number(matchedService.min),
+      maxQuantity: Number(matchedService.max),
+    });
+    if (liveQuantityError) return NextResponse.json({ error: liveQuantityError }, { status: 400 });
+    totalPaise = Math.round((requestedQuantity * Number(matchedService.rate) * 100) / 1000);
+  }
+  if (!Number.isSafeInteger(totalPaise) || totalPaise <= 0) {
+    return NextResponse.json({ error: "Calculated total is invalid for this quantity." }, { status: 400 });
   }
 
   const admin = createAdminClient();
