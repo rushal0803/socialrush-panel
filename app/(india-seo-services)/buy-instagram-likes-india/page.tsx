@@ -28,6 +28,7 @@ const faqs = [
 const related = [
   { code: "instagram-followers", title: "Instagram follower packages", copy: "Explore public-profile campaigns with clear delivery information.", href: "/buy-instagram-followers-india", icon: Heart },
   { code: "instagram-views", title: "Instagram Views", copy: "Review options for public post and Reel visibility.", href: "/buy-instagram-views-india", icon: Eye },
+  { code: "instagram-saves", title: "Instagram Saves", copy: "Support save activity on eligible public posts and Reels.", href: "/buy-instagram-saves-india", icon: Sparkles },
   { code: "instagram-likes", title: "Instagram Packages", copy: "Compare active Instagram services in one place.", href: "/packages?platform=instagram", icon: Sparkles },
 ] as const;
 function schema(value: object) { return JSON.stringify(value).replace(/</g, "\\u003c"); }
