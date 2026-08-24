@@ -6,6 +6,9 @@ export const SERVICE_PRICES = {
   // A client-side fallback only. Checkout reads the active Supabase row for
   // this service so its live rate remains authoritative.
   "instagram-saves": 199,
+  // UI fallback only; New Order and checkout replace this with the active
+  // Supabase service row before an Instagram Shares order is priced.
+  "instagram-shares": 199,
   "youtube-subscribers": 3999,
   "youtube-likes": 499,
   "youtube-views": 249,
