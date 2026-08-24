@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" baseProfile="tiny-ps" version="1.2" viewBox="0 0 512 512" width="512" height="512">
+  <title>SocialRUSH</title>
+  <rect width="512" height="512" fill="#000000"/>
+  <path fill="#f59a18" d="M171 151h193c8 0 12 9 7 15l-57 68c-3 4-8 6-13 6h-87c-8 0-12 10-5 15l48 37c31 24 45 53 45 87 0 47-36 82-87 82H-58l23-29h237c29 0 48-22 48-52 0-24-11-43-34-61l-51-39c-15-12-7-36 12-36h111l42-51H171c-19 0-19-42 0-42z" transform="translate(93 0) scale(.72)"/>
+  <path fill="#f59a18" d="M111 208h107c22 0 22 32 0 32H111c-22 0-22-32 0-32z"/>
+  <path fill="#f59a18" d="M95 258h137c22 0 22 32 0 32H95c-22 0-22-32 0-32z"/>
+  <path fill="#f59a18" d="M116 308h121c22 0 22 32 0 32H116c-22 0-22-32 0-32z"/>
+  <path fill="#f59a18" d="M141 358h91c22 0 22 32 0 32h-91c-22 0-22-32 0-32z"/>
+</svg>
