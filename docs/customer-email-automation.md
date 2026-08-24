@@ -32,12 +32,15 @@ domain. It is the visible sender identity. Customer replies go to the separate
 
 ## Deploy and schedule
 
-1. Apply the migration: `npx supabase db push` (or use the Supabase CLI flow
-   already configured for this project).
-2. Add the variables above in Vercel, then deploy the Next.js app. `vercel.json`
-   invokes `/api/cron/email` every hour with Vercel's `Authorization: Bearer
-   CRON_SECRET` header.
-3. Set `customer_email_automation_config.launch_at` only if you deliberately
+1. In Supabase Dashboard, open **Database → Vault** and create the secret named
+   `socialrush_email_cron_secret`. Its value must exactly match the existing
+   server-only `CRON_SECRET` configured in Vercel. The pg_cron job reads this
+   encrypted Vault value at runtime and calls the protected email route hourly.
+2. Apply the migration: `npx supabase db push` (or use the Supabase CLI flow
+   already configured for this project). The migration deliberately stops if
+   the Vault secret was not created first.
+3. Add the variables above in Vercel, then deploy the Next.js app.
+4. Set `customer_email_automation_config.launch_at` only if you deliberately
    want a later activation timestamp. It defaults to the migration time. This
    cutoff means historical accounts are never selected for signup follow-ups.
 
@@ -69,3 +72,10 @@ localhost URL with your deployed domain.
 
 To inspect operations in Supabase use `customer_email_events`; normal users
 have no RLS policy granting them access.
+
+## Supabase Cron monitoring
+
+The migration creates `socialrush-email-dispatch-hourly` with schedule
+`0 * * * *`. Inspect it in Supabase Dashboard → Integrations → Cron, or query
+`cron.job` and `cron.job_run_details` as a database administrator. The secret
+is held in Supabase Vault, not in the job SQL or any client bundle.
