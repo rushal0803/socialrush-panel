@@ -5,7 +5,7 @@ create table if not exists public.order_drafts (
   platform text not null check (char_length(platform) <= 40),
   service_code text not null check (char_length(service_code) <= 100),
   quantity integer not null check (quantity > 0),
-  target text not null check (char_length(target) <= 2048),
+  target text check (target is null or char_length(target) <= 2048),
   created_at timestamptz not null default now(),
   updated_at timestamptz not null default now(),
   unique (user_id)

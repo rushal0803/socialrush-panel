@@ -210,12 +210,12 @@ export default function NewOrderPage() {
   useEffect(() => {
     if (searchParams.get("draft") !== "1") return;
     let active = true;
-    void fetch("/api/order-draft", { credentials: "same-origin" }).then(async (response) => response.ok ? response.json() as Promise<{ data?: { platform: string; service_code: string; quantity: number; target: string } | null }> : { data: null }).then(({ data }) => {
+    void fetch("/api/order-draft", { credentials: "same-origin" }).then(async (response) => response.ok ? response.json() as Promise<{ data?: { platform: string; service_code: string; quantity: number; target: string | null } | null }> : { data: null }).then(({ data }) => {
       if (!active || !data) return;
       const draftPlatform = platformFromQuery(data.platform);
       const service = serviceFromQuery(data.service_code, draftPlatform, [liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
       if (!service) { setResumeNotice("This exact service is currently unavailable. Please choose another option from the same platform."); if (draftPlatform) setPlatform(draftPlatform); return; }
-      setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
+      setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target || ""); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
       track("order_started", { step: "draft_resumed", service_code: service.code, platform: service.platform });
     }).catch(() => undefined);
     return () => { active = false; };
@@ -245,7 +245,7 @@ export default function NewOrderPage() {
   const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
 
   useEffect(() => {
-    if (!selectedService || !targetLink.trim() || !quantityInput || quantityError || linkError || success) return;
+    if (!selectedService || !quantityInput || quantityError || linkError || success) return;
     const timer = window.setTimeout(() => {
       void fetch("/api/order-draft", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ platform: selectedService.platform, serviceCode: selectedService.code, quantity, target: targetLink.trim() }) }).then((response) => { if (response.ok) track("order_started", { step: "draft_saved", service_code: selectedService.code, platform: selectedService.platform }); }).catch(() => undefined);
     }, 850);
