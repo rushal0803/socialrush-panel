@@ -167,6 +167,7 @@ export default function NewOrderPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
   const [checkoutStage, setCheckoutStage] = useState("");
+  const [resumeNotice, setResumeNotice] = useState("");
   const [checkoutStep, setCheckoutStep] = useState(initialService ? 3 : requestedPlatform ? 2 : 1);
   const inFlight = useRef(false);
   const requestId = useRef("");
@@ -206,6 +207,20 @@ export default function NewOrderPage() {
     }
   }, [queryString, searchParams, liveInstagramShares, liveYoutubeComments]);
 
+  useEffect(() => {
+    if (searchParams.get("draft") !== "1") return;
+    let active = true;
+    void fetch("/api/order-draft", { credentials: "same-origin" }).then(async (response) => response.ok ? response.json() as Promise<{ data?: { platform: string; service_code: string; quantity: number; target: string } | null }> : { data: null }).then(({ data }) => {
+      if (!active || !data) return;
+      const draftPlatform = platformFromQuery(data.platform);
+      const service = serviceFromQuery(data.service_code, draftPlatform, [liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
+      if (!service) { setResumeNotice("This exact service is currently unavailable. Please choose another option from the same platform."); if (draftPlatform) setPlatform(draftPlatform); return; }
+      setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
+      track("order_started", { step: "draft_resumed", service_code: service.code, platform: service.platform });
+    }).catch(() => undefined);
+    return () => { active = false; };
+  }, [liveInstagramShares, liveYoutubeComments, searchParams]);
+
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
@@ -228,6 +243,16 @@ export default function NewOrderPage() {
   const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
   const currentStep = checkoutStep;
   const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
+
+  useEffect(() => {
+    if (!selectedService || !targetLink.trim() || !quantityInput || quantityError || linkError || success) return;
+    const timer = window.setTimeout(() => {
+      void fetch("/api/order-draft", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ platform: selectedService.platform, serviceCode: selectedService.code, quantity, target: targetLink.trim() }) }).then((response) => { if (response.ok) track("order_started", { step: "draft_saved", service_code: selectedService.code, platform: selectedService.platform }); }).catch(() => undefined);
+    }, 850);
+    return () => window.clearTimeout(timer);
+  }, [linkError, quantity, quantityError, quantityInput, selectedService, success, targetLink]);
+
+  const clearDraft = () => void fetch("/api/order-draft", { method: "DELETE" }).catch(() => undefined);
 
   useEffect(() => {
     const emitOnce = (key: string, event: Parameters<typeof track>[0], metadata: Record<string, string | number | boolean | null>) => {
@@ -441,6 +466,7 @@ export default function NewOrderPage() {
       const updatedBalance = Number(result.data.balance);
       setWalletBalance(updatedBalance);
       setSuccess(result.data);
+      clearDraft();
       requestId.current = "";
       window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
       window.setTimeout(() => router.push("/dashboard/orders"), 900);
@@ -474,7 +500,7 @@ export default function NewOrderPage() {
         const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
         const walletOrder = await walletOrderResponse.json() as { data?: ApiOrderData; error?: string };
         if (!walletOrderResponse.ok || !walletOrder.data) throw new Error(walletOrder.error || "Unable to place your order.");
-        setWalletBalance(Number(walletOrder.data.balance)); setSuccess(walletOrder.data); requestId.current = "";
+        setWalletBalance(Number(walletOrder.data.balance)); setSuccess(walletOrder.data); clearDraft(); requestId.current = "";
         window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: Number(walletOrder.data.balance) }));
         window.setTimeout(() => router.push("/dashboard/orders"), 900);
         return;
@@ -506,6 +532,7 @@ export default function NewOrderPage() {
         if (!active) return;
         if (response.ok && result.data?.status === "success" && result.data.orderId) {
           setSuccess({ id: result.data.orderId, charge: totalPrice, balance: Number(result.data.balance ?? walletBalance ?? 0) });
+          clearDraft();
           router.replace("/dashboard/orders");
         } else if (response.ok && result.data?.status === "pending") {
           setError("Payment verification is pending. Your order has not been placed yet; refresh shortly to retry safely.");
@@ -600,6 +627,7 @@ export default function NewOrderPage() {
           </span>
           <h1 className="mt-4 text-3xl font-black leading-tight tracking-[-0.04em] text-white sm:text-5xl">Start a Growth Campaign</h1>
           <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:text-base">Choose your platform and service, add campaign details, then review everything before confirming.</p>
+          {resumeNotice ? <p role="status" className="mt-4 rounded-xl border border-amber-400/25 bg-amber-500/10 p-3 text-xs font-semibold text-amber-100">{resumeNotice}</p> : null}
         </section>
 
         <section aria-label="Order progress" className="sticky top-[4.75rem] z-20 mt-3 rounded-xl border border-orange-400/20 bg-[#0B0B0F]/95 p-1.5 shadow-[0_16px_36px_-24px_rgba(0,0,0,.8)] backdrop-blur-xl sm:top-20 sm:mt-4 sm:rounded-2xl sm:p-3">

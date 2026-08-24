@@ -1,5 +1,6 @@
 import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
+import { customerOrderServices } from "@/lib/order-service-experience";
 
 const activeStatuses = ["pending", "processing", "in_progress", "partial", "awaiting_action"];
 type RawOrder = { id: string; service_name: string | null; platform: string | null; quantity: number | null; status: string | null; charge: number | null; created_at: string; progress_percent: number | null; refill_eligible: boolean | null };
@@ -7,6 +8,7 @@ type RawTransaction = { id: string; amount: number | null; type: string | null; 
 type RawTicket = { id: string; subject: string; status: string; updated_at: string; order_id: string | null };
 type RawReward = { id: string; amount: number; status: string; created_at: string };
 type RawProfile = { id: string; label: string; platform: string; public_url: string; last_used_at: string | null; created_at: string };
+type RawDraft = { platform: string; service_code: string; quantity: number; updated_at: string };
 
 export default async function DashboardPage() {
   const { supabase, user, profile } = await getDashboardContext();
@@ -20,6 +22,7 @@ export default async function DashboardPage() {
     supabase.from("support_tickets").select("id", { count: "exact", head: true }).eq("user_id", userId).in("status", ["open", "waiting_for_support", "waiting_for_customer", "answered"]),
     supabase.from("customer_reward_events").select("id, amount, status, created_at").eq("user_id", userId).eq("status", "credited").order("created_at", { ascending: false }).limit(1),
     supabase.from("saved_social_profiles").select("id, label, platform, public_url, last_used_at, created_at").eq("user_id", userId).order("last_used_at", { ascending: false, nullsFirst: false }).limit(3),
+    supabase.from("order_drafts").select("platform, service_code, quantity, updated_at").eq("user_id", userId).maybeSingle(),
   ]);
   const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
   const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
@@ -33,6 +36,10 @@ export default async function DashboardPage() {
   const ticket = value<RawTicket[]>(4, [])[0] ?? null;
   const reward = value<RawReward[]>(6, [])[0];
   const savedProfiles = value<RawProfile[]>(7, []).map((row) => ({ ...row, lastUsedAt: row.last_used_at || row.created_at }));
+  const rawDraft = value<RawDraft | null>(8, null);
+  const draftService = rawDraft ? customerOrderServices.find((service) => service.code === rawDraft.service_code && service.platform === rawDraft.platform) : null;
+  const draft = rawDraft && draftService ? { platform: rawDraft.platform, serviceCode: rawDraft.service_code, serviceName: draftService.name, quantity: Number(rawDraft.quantity), updatedAt: rawDraft.updated_at } : null;
+  const shortcuts = ["instagram-followers", "instagram-likes", "youtube-subscribers"].map((code) => customerOrderServices.find((service) => service.code === code)).filter((service): service is NonNullable<typeof service> => Boolean(service)).map((service) => ({ code: service.code, platform: service.platform, name: service.name, price: service.pricePer1000 }));
 
-  return <DashboardOverviewContent userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeOrders={count(1)} completedOrders={count(2)} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} errors={{ orders: failed(0) || failed(1) || failed(2), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} />;
+  return <DashboardOverviewContent userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeOrders={count(1)} completedOrders={count(2)} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} firstOrder={orders.length === 0} draft={draft} shortcuts={shortcuts} errors={{ orders: failed(0) || failed(1) || failed(2), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} />;
 }

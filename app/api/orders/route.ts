@@ -105,6 +105,7 @@ export async function POST(request: NextRequest) {
       link: body.link,
       serviceCode: body.serviceCode,
     });
+    await supabase.from("order_drafts").delete().eq("user_id", user.id);
   }
 
   revalidatePath("/dashboard");
