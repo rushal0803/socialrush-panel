@@ -8,7 +8,13 @@ alter table public.analytics_events add constraint analytics_events_event_name_c
   'package_viewed','package_selected','order_started','checkout_started','payment_started',
   'payment_completed','payment_failed','wallet_topup_completed','wallet_order_completed','order_created',
   'refill_requested','support_ticket_created','support_reply_sent','review_submitted',
-  'creator_tool_used','creator_tool_result_generated','blog_article_viewed','blog_service_cta_clicked'
+  'creator_tool_used','creator_tool_result_generated','blog_article_viewed','blog_service_cta_clicked',
+  -- Historical records already present in production before this taxonomy.
+  -- Keep them valid rather than rewriting analytics history; the RPC allowlist
+  -- below still prevents clients from creating new legacy events.
+  'homepage_view','services_page_view','packages_page_view','service_landing_page_view',
+  'new_order_started','platform_selected','campaign_details_started','valid_link_entered',
+  'quantity_entered','order_summary_viewed','payment_successful'
 ));
 create unique index if not exists analytics_events_event_id_unique
   on public.analytics_events(event_id) where event_id is not null;
