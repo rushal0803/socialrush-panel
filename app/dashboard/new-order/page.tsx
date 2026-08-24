@@ -34,7 +34,7 @@ import {
   serviceExperience,
   validateCampaignLink,
 } from "@/lib/order-service-experience";
-import { calculateServiceTotal, validateQuantity } from "@/lib/service-pricing";
+import { validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
@@ -97,9 +97,9 @@ function platformFromQuery(value: string | null): PlatformId | null {
   return platformOrder.includes(normalized as PlatformId) ? (normalized as PlatformId) : null;
 }
 
-function serviceFromQuery(value: string | null, requestedPlatform: PlatformId | null, liveInstagramShares: SmmService | null = null) {
+function serviceFromQuery(value: string | null, requestedPlatform: PlatformId | null, liveServices: SmmService[] = []) {
   const normalized = normalizeQuery(value);
-  const selectableServices = liveInstagramShares ? [...customerOrderServices, liveInstagramShares] : customerOrderServices;
+  const selectableServices = [...customerOrderServices.filter((service) => !service.requiresLiveCatalogFacts), ...liveServices];
   const service =
     selectableServices.find((candidate) => candidate.code === normalized) ??
     selectableServices.find((candidate) => {
@@ -148,7 +148,7 @@ export default function NewOrderPage() {
   const requestedPlatform = platformFromQuery(searchParams.get("platform"));
   const requestedService = serviceFromQuery(searchParams.get("service"), requestedPlatform);
   const resumedService = resumeRequested
-    ? customerOrderServices.find((service) => service.code === searchParams.get("service")) ?? null
+    ? customerOrderServices.find((service) => service.code === searchParams.get("service") && !service.requiresLiveCatalogFacts) ?? null
     : null;
   const initialService = resumedService ?? requestedService;
 
@@ -157,6 +157,7 @@ export default function NewOrderPage() {
   const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
   const [liveInstagramSaves, setLiveInstagramSaves] = useState<SmmService | null>(null);
   const [liveInstagramShares, setLiveInstagramShares] = useState<SmmService | null>(null);
+  const [liveYoutubeComments, setLiveYoutubeComments] = useState<SmmService | null>(null);
   const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
   const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
@@ -186,9 +187,9 @@ export default function NewOrderPage() {
       return;
     }
     const platformFromUrl = platformFromQuery(searchParams.get("platform"));
-    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, liveInstagramShares);
+    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, [liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
     const resumedFromUrl = searchParams.get("resume") === "1"
-      ? customerOrderServices.find((service) => service.code === searchParams.get("service")) ?? null
+      ? customerOrderServices.find((service) => service.code === searchParams.get("service") && !service.requiresLiveCatalogFacts) ?? null
       : null;
     const service = resumedFromUrl ?? serviceFromUrl;
 
@@ -203,15 +204,15 @@ export default function NewOrderPage() {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
     }
-  }, [queryString, searchParams, liveInstagramShares]);
+  }, [queryString, searchParams, liveInstagramShares, liveYoutubeComments]);
 
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
 
   const services = useMemo(
-    () => (platform ? [...customerOrderServices, ...(liveInstagramShares ? [liveInstagramShares] : [])].filter((service) => service.platform === platform).map((service) => service.code === "instagram-saves" && liveInstagramSaves ? liveInstagramSaves : service) : []),
-    [liveInstagramSaves, liveInstagramShares, platform],
+    () => (platform ? [...customerOrderServices.filter((service) => !service.requiresLiveCatalogFacts), ...(liveInstagramShares ? [liveInstagramShares] : []), ...(liveYoutubeComments ? [liveYoutubeComments] : [])].filter((service) => service.platform === platform).map((service) => service.code === "instagram-saves" && liveInstagramSaves ? liveInstagramSaves : service) : []),
+    [liveInstagramSaves, liveInstagramShares, liveYoutubeComments, platform],
   );
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
@@ -221,7 +222,7 @@ export default function NewOrderPage() {
   const linkRule = selectedService ? linkRules[selectedService.code] : null;
   const linkError = selectedService && linkRule && targetLink.trim() ? validateCampaignLink(targetLink, linkRule) : "";
   const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError);
-  const totalPrice = selectedService ? calculateServiceTotal(selectedService.code, quantity) : 0;
+  const totalPrice = selectedService ? Math.round((quantity * selectedService.pricePer1000 * 100) / 1000) / 100 : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
   const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
@@ -323,9 +324,8 @@ export default function NewOrderPage() {
     return () => window.removeEventListener("wallet-balance-updated", updateBalance);
   }, [loadWalletBalance]);
 
-  // Instagram Saves and Shares are configured in Supabase. Refresh their
-  // display facts after authentication so live pricing and limits remain the
-  // only source of truth. A missing Shares row stays absent from New Order.
+  // Live-catalog services are configured in Supabase. They stay absent from
+  // New Order until an active, orderable row supplies their facts.
   useEffect(() => {
     const db = createClient();
     const loadLiveInstagramService = (name: "Instagram Saves" | "Instagram Shares", code: "instagram-saves" | "instagram-shares", description: string) => db
@@ -360,6 +360,22 @@ export default function NewOrderPage() {
       });
     void loadLiveInstagramService("Instagram Saves", "instagram-saves", "Strengthen post and Reel engagement signals with Instagram save activity.");
     void loadLiveInstagramService("Instagram Shares", "instagram-shares", "Expand post and Reel engagement with Instagram share activity.");
+    void fetch("/api/services/live-catalog?code=youtube-comments", { credentials: "same-origin" })
+      .then(async (response) => response.ok ? response.json() as Promise<{ data?: { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; qualityType: string; importantInstruction: string } | null }> : { data: null })
+      .then(({ data }) => {
+        if (!data) return;
+        const liveService: SmmService = {
+          platform: "youtube", code: "youtube-comments", name: "YouTube Comments",
+          description: "Build visible conversation and engagement around your YouTube videos with comment activity.",
+          pricePer1000: Number(data.rate), minQuantity: Number(data.min), maxQuantity: Number(data.max),
+          deliveryTime: data.deliveryTime, refillPolicy: data.refillPolicy,
+          qualityType: data.qualityType, importantInstruction: data.importantInstruction,
+          isActive: true,
+        };
+        if (!Number.isFinite(liveService.pricePer1000) || liveService.pricePer1000 <= 0 || liveService.minQuantity <= 0 || liveService.maxQuantity < liveService.minQuantity) return;
+        setLiveYoutubeComments(liveService);
+        setSelectedService((current) => current?.code === "youtube-comments" ? liveService : current);
+      });
   }, []);
 
   async function placeOrder() {

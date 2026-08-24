@@ -19,6 +19,8 @@ export type SmmService = {
   qualityType: string;
   importantInstruction: string;
   isActive: boolean;
+  /** Service facts must be obtained from the protected live catalog before ordering. */
+  requiresLiveCatalogFacts?: boolean;
 };
 
 export const platformMeta: Record<SmmPlatformId, { label: string; short: string; icon: string; gradient: string }> = {
@@ -160,6 +162,23 @@ export const smmServiceCatalog: SmmService[] = [
     qualityType: "Premium",
     importantInstruction: "Use public video URL and keep video public.",
     isActive: true,
+  },
+  {
+    platform: "youtube",
+    code: "youtube-comments",
+    name: "YouTube Comments",
+    description: "Build visible conversation and engagement around your YouTube videos with comment activity.",
+    pricePer1000: SERVICE_PRICES["youtube-comments"],
+    minQuantity: 0,
+    maxQuantity: 0,
+    deliveryTime: "Shown with the active service",
+    refillPolicy: "Shown with the active service",
+    qualityType: "Shown with the active service",
+    importantInstruction: "Submit the correct public YouTube video URL and keep the video public while the order is processing.",
+    // Keep the service in the customer catalog, but do not expose its zero
+    // placeholder rate: New Order replaces it only with protected live facts.
+    isActive: true,
+    requiresLiveCatalogFacts: true,
   },
   {
     platform: "facebook",

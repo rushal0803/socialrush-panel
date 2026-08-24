@@ -8,6 +8,8 @@ import { requireJson, requireSameOrigin, isUuid, rateLimit } from "@/lib/securit
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares", "youtube-comments"]);
+
 function cashfreeAppBaseUrl() {
   const value = process.env.CASHFREE_APP_BASE_URL;
   if (!value) throw new Error("Cashfree application base URL is not configured");
@@ -45,16 +47,22 @@ export async function POST(request: NextRequest) {
   if (intent.currency !== "INR") return NextResponse.json({ error: "Checkout currency is invalid." }, { status: 409 });
 
   const service = getServiceById(intent.service_code);
-  const quantityError = service ? validateQuantity(Number(intent.quantity), service) : "Unknown service.";
-  const recalculatedTotalPaise = service ? calculateServiceTotalPaise(service.code as ServiceCode, Number(intent.quantity)) : 0;
-  if (!service || !service.isActive || quantityError || recalculatedTotalPaise <= 0 || recalculatedTotalPaise !== Number(intent.total_paise)) {
-    return NextResponse.json({ error: "The saved checkout details are no longer valid. Please review your order." }, { status: 409 });
-  }
+  const isLiveCatalogService = Boolean(service && liveCatalogServiceCodes.has(service.code));
+  if (!service || (!service.isActive && !isLiveCatalogService)) return NextResponse.json({ error: "The saved checkout details are no longer valid. Please review your order." }, { status: 409 });
   const { data: databaseService } = await admin.from("services")
-    .select("id,accepts_new_orders,health_status,status")
+    .select("id,rate,min,max,accepts_new_orders,health_status,status")
     .eq("id", intent.service_id).maybeSingle();
   if (!databaseService || databaseService.status !== "active" || !databaseService.accepts_new_orders || databaseService.health_status === "paused") {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please choose another service." }, { status: 409 });
+  }
+  const quantityError = isLiveCatalogService
+    ? validateQuantity(Number(intent.quantity), { minQuantity: Number(databaseService.min), maxQuantity: Number(databaseService.max) })
+    : validateQuantity(Number(intent.quantity), service);
+  const recalculatedTotalPaise = isLiveCatalogService
+    ? Math.round((Number(intent.quantity) * Number(databaseService.rate) * 100) / 1000)
+    : calculateServiceTotalPaise(service.code as ServiceCode, Number(intent.quantity));
+  if (quantityError || recalculatedTotalPaise <= 0 || recalculatedTotalPaise !== Number(intent.total_paise)) {
+    return NextResponse.json({ error: "The saved checkout details are no longer valid. Please review your order." }, { status: 409 });
   }
   const { data: profile } = await admin.from("profiles").select("balance,phone").eq("id", user.id).maybeSingle();
   const phone = cashfreeCustomerPhone(profile?.phone);

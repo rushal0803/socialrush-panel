@@ -12,6 +12,9 @@ export const SERVICE_PRICES = {
   "youtube-subscribers": 3999,
   "youtube-likes": 499,
   "youtube-views": 249,
+  // This code is intentionally not a public price. YouTube Comments is
+  // enabled and priced only from its active Supabase row.
+  "youtube-comments": 0,
   "facebook-followers": 299,
   "facebook-likes": 149,
   "facebook-views": 99,

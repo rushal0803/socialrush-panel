@@ -49,7 +49,7 @@ const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
   "x-followers": "X Followers",
 };
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares", "youtube-comments"]);
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -93,7 +93,7 @@ export async function POST(request: NextRequest) {
   }
 
   const requestedQuantity = quantity as number;
-  // These Instagram services use their active Supabase rows for limits.
+  // Live-catalog services use their active Supabase rows for limits and rate.
   const quantityError = liveCatalogServiceCodes.has(service.code) ? null : validateQuantity(requestedQuantity, service);
   if (quantityError) return NextResponse.json({ error: quantityError }, { status: 400 });
 
@@ -114,7 +114,7 @@ export async function POST(request: NextRequest) {
     .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
     .limit(1);
-  if (liveCatalogServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", "instagram").eq("is_active", true).eq("accepts_new_orders", true);
+  if (liveCatalogServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", service.platform).eq("is_active", true).eq("accepts_new_orders", true);
   const { data: matchedService } = await matchedServiceQuery.maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
   if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
