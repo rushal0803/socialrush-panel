@@ -14,6 +14,7 @@ const relatedServices = [
   { code: "instagram-likes", title: "Instagram Likes", description: "Compare options for public posts and Reels.", href: "/instagram-likes", icon: Heart },
   { code: "instagram-views", title: "Instagram Views", description: "Explore active options for public video content.", href: "/instagram-views", icon: Eye },
   { code: "instagram-comments", title: "Instagram Comments", description: "Support public post and Reel conversations.", href: "/buy-instagram-comments-india", icon: Heart },
+  { code: "instagram-saves", title: "Instagram Saves", description: "Review save activity for eligible public posts and Reels.", href: "/buy-instagram-saves-india", icon: Sparkles },
   { code: "instagram-followers", title: "Instagram Packages", description: "Review Instagram package choices in one place.", href: "/packages?platform=instagram&service=followers", icon: Sparkles },
 ] as const;
 export const metadata: Metadata = {
