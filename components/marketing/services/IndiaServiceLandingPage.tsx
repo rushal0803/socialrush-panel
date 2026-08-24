@@ -152,6 +152,11 @@ const keywordResourceMap: Record<string, Array<{ label: string; href: string; te
       text: "Compare like campaigns for public YouTube videos with dashboard tracking.",
     },
     {
+      label: "YouTube comments India",
+      href: "/buy-youtube-comments-india",
+      text: "Review live availability, public video URL requirements and dashboard tracking for YouTube comments.",
+    },
+    {
       label: "YouTube views India",
       href: "/youtube-views",
       text: "Explore YouTube view campaigns for public videos and channel growth planning.",
@@ -417,10 +422,10 @@ export default async function IndiaServiceLandingPage({
             </p>
             <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
               <Link
-                href={packagesHref}
+                href={slug === "buy-youtube-comments-india" ? (available ? orderHref : "/dashboard/new-order") : packagesHref}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5"
               >
-                {slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : "View Packages"} <ArrowRight className="h-4 w-4" />
+                {slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : slug === "buy-youtube-comments-india" ? "Buy YouTube Comments" : "View Packages"} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={available ? orderHref : "#service-status"}
@@ -856,7 +861,7 @@ export default async function IndiaServiceLandingPage({
               View {page.platform} Packages
             </Link>
             <Link
-              href={orderHref}
+              href={slug === "buy-youtube-comments-india" && !available ? "/dashboard/new-order" : orderHref}
               className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-6 py-3 text-sm font-black text-[#FF9F00]"
             >
               Start Order

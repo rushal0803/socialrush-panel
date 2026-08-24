@@ -13,6 +13,7 @@ export const indiaServiceSlugs = [
   "buy-youtube-subscribers-india",
   "buy-youtube-likes-india",
   "buy-youtube-views-india",
+  "buy-youtube-comments-india",
   "buy-linkedin-followers-india",
   "buy-linkedin-likes-india",
   "buy-twitter-followers-india",
@@ -35,6 +36,7 @@ export const canonicalIndiaServicePaths: Record<IndiaServiceSlug, string> = {
   "buy-youtube-subscribers-india": "/youtube-subscribers",
   "buy-youtube-likes-india": "/youtube-likes",
   "buy-youtube-views-india": "/youtube-views",
+  "buy-youtube-comments-india": "/buy-youtube-comments-india",
   "buy-linkedin-followers-india": "/linkedin-followers",
   "buy-linkedin-likes-india": "/linkedin-likes",
   "buy-twitter-followers-india": "/twitter-followers",
@@ -267,6 +269,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     related: [
       "buy-youtube-likes-india",
       "buy-youtube-views-india",
+      "buy-youtube-comments-india",
       "buy-instagram-followers-india",
     ],
   },
@@ -299,6 +302,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     related: [
       "buy-youtube-subscribers-india",
       "buy-youtube-views-india",
+      "buy-youtube-comments-india",
       "buy-instagram-likes-india",
     ],
   },
@@ -331,8 +335,30 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     related: [
       "buy-youtube-subscribers-india",
       "buy-youtube-likes-india",
+      "buy-youtube-comments-india",
       "buy-instagram-views-india",
     ],
+  },
+  "buy-youtube-comments-india": {
+    slug: "buy-youtube-comments-india",
+    serviceCode: "youtube-comments",
+    platform: "YouTube",
+    platformKey: "youtube",
+    serviceName: "YouTube Comments",
+    unitName: "comments",
+    destination: "public YouTube video URL",
+    delivery: "Current estimate shown with the active service",
+    refill: "Current terms shown with the active service",
+    packageService: "comments",
+    intro: "Build visible conversation and engagement around your YouTube videos with a transparent, dashboard-tracked comments service for India.",
+    overview: "Select YouTube Comments, enter the correct public video URL, choose an available quantity, then review the exact order details before payment.",
+    value: "Visible discussion can add social proof around a public video while you continue focusing on useful content and audience engagement.",
+    safety: "Submit only the correct public YouTube video URL. SocialRUSH does not require your Google password or channel access; keep the video public while the order is processing.",
+    deliveryCopy: "Delivery estimates vary with service load and the active service configuration. Current delivery and refill information is shown before checkout.",
+    metaDescription: "Buy YouTube comments in India with transparent pricing, fast delivery, and a simple secure ordering experience from SocialRUSH.",
+    ogDescription: "Compare live YouTube comments service details in India with public-video ordering and dashboard tracking.",
+    audiences: ["Video creators", "Educators", "Music channels", "Businesses"],
+    related: ["buy-youtube-subscribers-india", "buy-youtube-likes-india", "buy-youtube-views-india"],
   },
   "buy-linkedin-followers-india": {
     slug: "buy-linkedin-followers-india",
@@ -605,7 +631,9 @@ export function getIndiaServiceMetadata(
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
-    : `Buy ${page.serviceName} India | SocialRUSH`;
+    : slug === "buy-youtube-comments-india"
+      ? "Buy YouTube Comments India | SocialRUSH"
+      : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
       ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
@@ -615,7 +643,7 @@ export function getIndiaServiceMetadata(
   const telegramTitle = slug === "buy-telegram-members-india"
     ? "Buy Telegram Members India | Online Packages - SocialRUSH"
     : null;
-  const title = telegramTitle ?? instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug === "buy-youtube-subscribers-india" ? youtubeTitle : facebookTitle);
+  const title = telegramTitle ?? instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug.startsWith("buy-youtube-") ? youtubeTitle : facebookTitle);
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live Pricing | SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle }, 
