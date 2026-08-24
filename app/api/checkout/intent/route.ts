@@ -49,6 +49,8 @@ const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
   "x-followers": "X Followers",
 };
 
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares"]);
+
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -86,13 +88,13 @@ export async function POST(request: NextRequest) {
   if (!service) {
     return NextResponse.json({ error: "Unknown service code." }, { status: 400 });
   }
-  if (!service.isActive) {
+  if (!service.isActive && !liveCatalogServiceCodes.has(service.code)) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
 
   const requestedQuantity = quantity as number;
-  // Instagram Saves limits are maintained by its active Supabase row.
-  const quantityError = service.code === "instagram-saves" ? null : validateQuantity(requestedQuantity, service);
+  // These Instagram services use their active Supabase rows for limits.
+  const quantityError = liveCatalogServiceCodes.has(service.code) ? null : validateQuantity(requestedQuantity, service);
   if (quantityError) return NextResponse.json({ error: quantityError }, { status: 400 });
 
   let parsedLink: URL;
@@ -112,7 +114,7 @@ export async function POST(request: NextRequest) {
     .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
     .limit(1);
-  if (service.code === "instagram-saves") matchedServiceQuery = matchedServiceQuery.eq("platform", "instagram");
+  if (liveCatalogServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", "instagram").eq("is_active", true).eq("accepts_new_orders", true);
   const { data: matchedService } = await matchedServiceQuery.maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
   if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
@@ -120,8 +122,8 @@ export async function POST(request: NextRequest) {
   }
 
   let totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
-  if (service.code === "instagram-saves") {
-    if (!matchedService) return NextResponse.json({ error: "Instagram Saves is not currently available." }, { status: 409 });
+  if (liveCatalogServiceCodes.has(service.code)) {
+    if (!matchedService) return NextResponse.json({ error: `${service.name} is not currently available.` }, { status: 409 });
     const liveQuantityError = validateQuantity(requestedQuantity, {
       minQuantity: Number(matchedService.min),
       maxQuantity: Number(matchedService.max),

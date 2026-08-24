@@ -103,6 +103,23 @@ export const smmServiceCatalog: SmmService[] = [
     isActive: true,
   },
   {
+    platform: "instagram",
+    code: "instagram-shares",
+    name: "Instagram Shares",
+    description: "Expand post and Reel engagement with Instagram share activity.",
+    pricePer1000: SERVICE_PRICES["instagram-shares"],
+    // These are safe UI defaults matching the existing active service row.
+    // New Order immediately replaces them with the live Supabase values, and
+    // checkout independently validates and prices from that same row.
+    minQuantity: 100,
+    maxQuantity: 100000,
+    deliveryTime: "1–24 hours",
+    refillPolicy: "No refill",
+    qualityType: "Premium",
+    importantInstruction: "Use a public Instagram post or reel URL and keep it available while the order is processing.",
+    isActive: true,
+  },
+  {
     platform: "youtube",
     code: "youtube-subscribers",
     name: "YouTube Subscribers",

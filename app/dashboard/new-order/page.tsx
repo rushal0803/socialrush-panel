@@ -97,11 +97,12 @@ function platformFromQuery(value: string | null): PlatformId | null {
   return platformOrder.includes(normalized as PlatformId) ? (normalized as PlatformId) : null;
 }
 
-function serviceFromQuery(value: string | null, requestedPlatform: PlatformId | null) {
+function serviceFromQuery(value: string | null, requestedPlatform: PlatformId | null, liveInstagramShares: SmmService | null = null) {
   const normalized = normalizeQuery(value);
+  const selectableServices = liveInstagramShares ? [...customerOrderServices, liveInstagramShares] : customerOrderServices;
   const service =
-    customerOrderServices.find((candidate) => candidate.code === normalized) ??
-    customerOrderServices.find((candidate) => {
+    selectableServices.find((candidate) => candidate.code === normalized) ??
+    selectableServices.find((candidate) => {
       const type = candidate.code.split("-").pop();
       return type === normalized && (!requestedPlatform || candidate.platform === requestedPlatform);
     });
@@ -155,6 +156,7 @@ export default function NewOrderPage() {
   const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
   const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
   const [liveInstagramSaves, setLiveInstagramSaves] = useState<SmmService | null>(null);
+  const [liveInstagramShares, setLiveInstagramShares] = useState<SmmService | null>(null);
   const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
   const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
@@ -184,7 +186,7 @@ export default function NewOrderPage() {
       return;
     }
     const platformFromUrl = platformFromQuery(searchParams.get("platform"));
-    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl);
+    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, liveInstagramShares);
     const resumedFromUrl = searchParams.get("resume") === "1"
       ? customerOrderServices.find((service) => service.code === searchParams.get("service")) ?? null
       : null;
@@ -201,15 +203,15 @@ export default function NewOrderPage() {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
     }
-  }, [queryString, searchParams]);
+  }, [queryString, searchParams, liveInstagramShares]);
 
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
 
   const services = useMemo(
-    () => (platform ? customerOrderServices.filter((service) => service.platform === platform).map((service) => service.code === "instagram-saves" && liveInstagramSaves ? liveInstagramSaves : service) : []),
-    [liveInstagramSaves, platform],
+    () => (platform ? [...customerOrderServices, ...(liveInstagramShares ? [liveInstagramShares] : [])].filter((service) => service.platform === platform).map((service) => service.code === "instagram-saves" && liveInstagramSaves ? liveInstagramSaves : service) : []),
+    [liveInstagramSaves, liveInstagramShares, platform],
   );
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
@@ -321,14 +323,15 @@ export default function NewOrderPage() {
     return () => window.removeEventListener("wallet-balance-updated", updateBalance);
   }, [loadWalletBalance]);
 
-  // Instagram Saves is configured in Supabase. Refresh its display facts after
-  // authentication so the New Order UI follows the current live rate and limits.
+  // Instagram Saves and Shares are configured in Supabase. Refresh their
+  // display facts after authentication so live pricing and limits remain the
+  // only source of truth. A missing Shares row stays absent from New Order.
   useEffect(() => {
     const db = createClient();
-    void db
+    const loadLiveInstagramService = (name: "Instagram Saves" | "Instagram Shares", code: "instagram-saves" | "instagram-shares", description: string) => db
       .from("services")
       .select("rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
-      .eq("name", "Instagram Saves")
+      .eq("name", name)
       .eq("platform", "instagram")
       .eq("status", "active")
       .eq("is_active", true)
@@ -338,9 +341,9 @@ export default function NewOrderPage() {
         if (!data) return;
         const liveService: SmmService = {
           platform: "instagram",
-          code: "instagram-saves",
-          name: "Instagram Saves",
-          description: "Strengthen post and Reel engagement signals with Instagram save activity.",
+          code,
+          name,
+          description,
           pricePer1000: Number(data.rate),
           minQuantity: Number(data.min),
           maxQuantity: Number(data.max),
@@ -351,9 +354,12 @@ export default function NewOrderPage() {
           isActive: true,
         };
         if (!Number.isFinite(liveService.pricePer1000) || liveService.pricePer1000 <= 0 || liveService.minQuantity <= 0 || liveService.maxQuantity < liveService.minQuantity) return;
-        setLiveInstagramSaves(liveService);
-        setSelectedService((current) => current?.code === "instagram-saves" ? liveService : current);
+        if (code === "instagram-saves") setLiveInstagramSaves(liveService);
+        else setLiveInstagramShares(liveService);
+        setSelectedService((current) => current?.code === code ? liveService : current);
       });
+    void loadLiveInstagramService("Instagram Saves", "instagram-saves", "Strengthen post and Reel engagement signals with Instagram save activity.");
+    void loadLiveInstagramService("Instagram Shares", "instagram-shares", "Expand post and Reel engagement with Instagram share activity.");
   }, []);
 
   async function placeOrder() {

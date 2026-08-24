@@ -129,6 +129,11 @@ const keywordResourceMap: Record<string, Array<{ label: string; href: string; te
       href: "/buy-instagram-saves-india",
       text: "Review Instagram save activity for eligible public posts and Reels.",
     },
+    {
+      label: "Instagram share activity",
+      href: "/buy-instagram-shares-india",
+      text: "Explore Instagram shares for eligible public posts and Reels.",
+    },
   ],
   youtube: [
     {

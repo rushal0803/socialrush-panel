@@ -27,6 +27,9 @@ export async function getLiveServiceFacts(platform: string, serviceName: string)
       .order("id", { ascending: true }).limit(1).maybeSingle();
     if (data) return { id:data.id, rate:Number(data.rate), min:Number(data.min), max:Number(data.max), deliveryTime:data.delivery_time || "Estimate shown before checkout", refillPolicy:data.refill_policy || "Check current service terms", available:data.health_status !== "paused", healthStatus:data.health_status || "stable" };
   } catch { /* A catalog fallback keeps public pages useful during a transient DB failure. */ }
+  // Shares deliberately has no public fallback: its row is the source of
+  // truth, and a missing row must not look orderable or priced.
+  if (normalizedName === "instagram-shares") return null;
   const catalogService = activeSmmServices.find((item) =>
     item.platform === normalizedPlatform &&
     (item.code === normalizedName || item.name.toLowerCase() === serviceName.trim().toLowerCase()),
