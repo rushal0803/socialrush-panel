@@ -212,6 +212,8 @@ export default async function IndiaServiceLandingPage({
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;
+  const minQuantity = live?.min;
+  const maxQuantity = live?.max;
   const delivery = live?.deliveryTime || "Current estimate unavailable";
   const refill = live?.refillPolicy || "Current terms unavailable";
   const faqs = getIndiaServiceFaqs(slug).map((faq) => {
@@ -408,7 +410,7 @@ export default async function IndiaServiceLandingPage({
                 href={packagesHref}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5"
               >
-                View Packages <ArrowRight className="h-4 w-4" />
+                {slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : "View Packages"} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={available ? orderHref : "#service-status"}
@@ -454,6 +456,14 @@ export default async function IndiaServiceLandingPage({
                 </dd>
               </div>
               <div className="flex justify-between gap-4">
+                <dt className="text-[#111827]">Minimum</dt>
+                <dd className="text-right font-black text-[#0B0B0F]">{minQuantity ? minQuantity.toLocaleString("en-IN") : "Shown before checkout"}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-[#111827]">Maximum</dt>
+                <dd className="text-right font-black text-[#0B0B0F]">{maxQuantity ? maxQuantity.toLocaleString("en-IN") : "Shown before checkout"}</dd>
+              </div>
+              <div className="flex justify-between gap-4">
                 <dt className="text-[#111827]">Delivery</dt>
                 <dd className="text-right font-black text-[#0B0B0F]">
                   {delivery}
@@ -471,7 +481,7 @@ export default async function IndiaServiceLandingPage({
               href={available ? orderHref : "/services"}
               className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white"
             >
-              {available ? `Start ${page.serviceName} Order` : "View available alternatives"}
+              {available ? (slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : `Start ${page.serviceName} Order`) : "View available alternatives"}
             </Link>
           </aside>
         </div>

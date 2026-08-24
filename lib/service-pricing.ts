@@ -2,6 +2,7 @@ export const SERVICE_PRICES = {
   "instagram-followers": 599,
   "instagram-likes": 249,
   "instagram-views": 30,
+  "instagram-comments": 499,
   "youtube-subscribers": 3999,
   "youtube-likes": 499,
   "youtube-views": 249,

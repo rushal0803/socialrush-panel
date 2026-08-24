@@ -19,7 +19,7 @@ const platformColors: Record<SmmPlatformId, string> = {
 };
 
 const servicePaths: Record<string, string> = {
-  "instagram-followers": "/buy-instagram-followers-india", "instagram-likes": "/instagram-likes", "instagram-views": "/instagram-views",
+  "instagram-followers": "/buy-instagram-followers-india", "instagram-likes": "/instagram-likes", "instagram-views": "/instagram-views", "instagram-comments": "/buy-instagram-comments-india",
   "youtube-subscribers": "/youtube-subscribers", "youtube-likes": "/youtube-likes", "youtube-views": "/youtube-views",
   "facebook-followers": "/buy-facebook-followers-india", "facebook-likes": "/facebook-likes", "linkedin-followers": "/linkedin-followers",
   "linkedin-likes": "/linkedin-likes", "telegram-members": "/telegram-members", "tiktok-followers": "/tiktok-followers", "x-followers": "/twitter-followers",
@@ -43,6 +43,7 @@ function typeFor(code: string) {
   if (code.includes("subscribers")) return "subscribers";
   if (code.includes("likes")) return "likes";
   if (code.includes("views")) return "views";
+  if (code.includes("comments")) return "comments";
   if (code.includes("members")) return "members";
   if (code.includes("shares")) return "shares";
   return "all";
