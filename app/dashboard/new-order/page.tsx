@@ -31,6 +31,7 @@ import {
   customerOrderServices,
   growthMethod,
   linkRules,
+  mergeCustomerOrderServices,
   serviceExperience,
   validateCampaignLink,
 } from "@/lib/order-service-experience";
@@ -99,7 +100,7 @@ function platformFromQuery(value: string | null): PlatformId | null {
 
 function serviceFromQuery(value: string | null, requestedPlatform: PlatformId | null, liveServices: SmmService[] = []) {
   const normalized = normalizeQuery(value);
-  const selectableServices = [...customerOrderServices.filter((service) => !service.requiresLiveCatalogFacts), ...liveServices];
+  const selectableServices = mergeCustomerOrderServices(liveServices);
   const service =
     selectableServices.find((candidate) => candidate.code === normalized) ??
     selectableServices.find((candidate) => {
@@ -148,7 +149,7 @@ export default function NewOrderPage() {
   const requestedPlatform = platformFromQuery(searchParams.get("platform"));
   const requestedService = serviceFromQuery(searchParams.get("service"), requestedPlatform);
   const resumedService = resumeRequested
-    ? customerOrderServices.find((service) => service.code === searchParams.get("service") && !service.requiresLiveCatalogFacts) ?? null
+    ? mergeCustomerOrderServices().find((service) => service.code === searchParams.get("service")) ?? null
     : null;
   const initialService = resumedService ?? requestedService;
 
@@ -188,9 +189,9 @@ export default function NewOrderPage() {
       return;
     }
     const platformFromUrl = platformFromQuery(searchParams.get("platform"));
-    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, [liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
+    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, [liveInstagramSaves, liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
     const resumedFromUrl = searchParams.get("resume") === "1"
-      ? customerOrderServices.find((service) => service.code === searchParams.get("service") && !service.requiresLiveCatalogFacts) ?? null
+      ? mergeCustomerOrderServices().find((service) => service.code === searchParams.get("service")) ?? null
       : null;
     const service = resumedFromUrl ?? serviceFromUrl;
 
@@ -205,7 +206,7 @@ export default function NewOrderPage() {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
     }
-  }, [queryString, searchParams, liveInstagramShares, liveYoutubeComments]);
+  }, [queryString, searchParams, liveInstagramSaves, liveInstagramShares, liveYoutubeComments]);
 
   useEffect(() => {
     if (searchParams.get("draft") !== "1") return;
@@ -213,20 +214,20 @@ export default function NewOrderPage() {
     void fetch("/api/order-draft", { credentials: "same-origin" }).then(async (response) => response.ok ? response.json() as Promise<{ data?: { platform: string; service_code: string; quantity: number; target: string | null } | null }> : { data: null }).then(({ data }) => {
       if (!active || !data) return;
       const draftPlatform = platformFromQuery(data.platform);
-      const service = serviceFromQuery(data.service_code, draftPlatform, [liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
+      const service = serviceFromQuery(data.service_code, draftPlatform, [liveInstagramSaves, liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
       if (!service) { setResumeNotice("This exact service is currently unavailable. Please choose another option from the same platform."); if (draftPlatform) setPlatform(draftPlatform); return; }
       setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target || ""); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
       track("order_started", { step: "draft_resumed", service_code: service.code, platform: service.platform });
     }).catch(() => undefined);
     return () => { active = false; };
-  }, [liveInstagramShares, liveYoutubeComments, searchParams]);
+  }, [liveInstagramSaves, liveInstagramShares, liveYoutubeComments, searchParams]);
 
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
 
   const services = useMemo(
-    () => (platform ? [...customerOrderServices.filter((service) => !service.requiresLiveCatalogFacts), ...(liveInstagramShares ? [liveInstagramShares] : []), ...(liveYoutubeComments ? [liveYoutubeComments] : [])].filter((service) => service.platform === platform).map((service) => service.code === "instagram-saves" && liveInstagramSaves ? liveInstagramSaves : service) : []),
+    () => (platform ? mergeCustomerOrderServices([liveInstagramSaves, liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]).filter((service) => service.platform === platform) : []),
     [liveInstagramSaves, liveInstagramShares, liveYoutubeComments, platform],
   );
   const quantity = Number(quantityInput || 0);

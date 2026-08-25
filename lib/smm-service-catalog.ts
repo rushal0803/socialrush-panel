@@ -102,6 +102,7 @@ export const smmServiceCatalog: SmmService[] = [
     refillPolicy: "Shown with the active service",
     qualityType: "Premium",
     importantInstruction: "Use a public Instagram post or reel URL and keep it available while the order is processing.",
+    requiresLiveCatalogFacts: true,
     isActive: true,
   },
   {
@@ -119,6 +120,7 @@ export const smmServiceCatalog: SmmService[] = [
     refillPolicy: "No refill",
     qualityType: "Premium",
     importantInstruction: "Use a public Instagram post or reel URL and keep it available while the order is processing.",
+    requiresLiveCatalogFacts: true,
     isActive: true,
   },
   {

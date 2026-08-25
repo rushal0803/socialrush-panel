@@ -11,6 +11,44 @@ export type LinkRule = {
 
 export const customerOrderServices = activeSmmServices;
 
+function normalizeServiceToken(value: string) {
+  return value.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/(^-|-$)/g, "");
+}
+
+function canonicalServiceCode(service: SmmService) {
+  const normalizedCode = normalizeServiceToken(service.code);
+  const catalogCodeMatch = customerOrderServices.find((candidate) => normalizeServiceToken(candidate.code) === normalizedCode);
+  if (catalogCodeMatch) return catalogCodeMatch.code;
+
+  const normalizedPlatform = normalizeServiceToken(service.platform);
+  const normalizedName = normalizeServiceToken(service.name);
+  return customerOrderServices.find((candidate) =>
+    normalizeServiceToken(candidate.platform) === normalizedPlatform && normalizeServiceToken(candidate.name) === normalizedName,
+  )?.code ?? normalizedCode;
+}
+
+/**
+ * Combines the static customer catalog with protected live facts. Identity is
+ * normalized from both canonical code and platform/name, so a live record
+ * replaces its static counterpart even when an upstream code is an alias.
+ */
+export function mergeCustomerOrderServices(liveServices: readonly SmmService[] = []): SmmService[] {
+  const servicesByIdentity = new Map<string, SmmService>();
+
+  const add = (service: SmmService) => {
+    const code = canonicalServiceCode(service);
+    const identity = `${normalizeServiceToken(service.platform)}:${code}`;
+    servicesByIdentity.set(identity, { ...service, code: code as SmmService["code"] });
+  };
+
+  for (const service of customerOrderServices) {
+    if (!service.requiresLiveCatalogFacts) add(service);
+  }
+  for (const service of liveServices) add(service);
+
+  return [...servicesByIdentity.values()];
+}
+
 export const serviceExperience: Record<string, { name: string; outcome: string; required: string }> = {
   "instagram-followers": { name: "Instagram Followers", outcome: "Stronger profile discovery and a broader visible audience.", required: "Public Instagram profile link" },
   "instagram-likes": { name: "Instagram Likes", outcome: "More visible interaction around a selected post or reel.", required: "Public Instagram post or reel link" },
