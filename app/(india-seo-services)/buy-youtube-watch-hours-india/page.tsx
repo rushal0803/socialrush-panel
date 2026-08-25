@@ -12,7 +12,7 @@ const faqs = [
 ] as const;
 
 export const metadata: Metadata = {
-  title: "Buy YouTube Watch Hours India | Live Watch-Time Service | SocialRUSH",
+  title: "Buy YouTube Watch Hours India | SocialRUSH",
   description: "Buy YouTube watch hours in India with public-video ordering, live pricing, duration-based watch-time estimates and secure dashboard tracking from SocialRUSH.",
   alternates: { canonical: `https://www.getsocialrush.com${path}` },
   robots: { index: true, follow: true },

@@ -3476,6 +3476,16 @@ const authorityEnhancements: Record<string, Pick<BlogArticle, "sections" | "rela
       { label: "Calculate Instagram engagement rate", href: "/tools/instagram-engagement-rate-calculator" },
       { label: "Plan an Instagram growth goal", href: "/tools/creator-growth-goal-planner" },
       { label: "Explore Instagram followers in India", href: "/buy-instagram-followers-india" },
+      { label: "Instagram comments for public posts and Reels", href: "/buy-instagram-comments-india" },
+      { label: "Instagram saves for public posts and Reels", href: "/buy-instagram-saves-india" },
+      { label: "Instagram shares for public posts and Reels", href: "/buy-instagram-shares-india" },
+    ],
+  },
+  "how-to-promote-new-youtube-channel-in-india": {
+    sections: [],
+    relatedLinks: [
+      { label: "YouTube comments for public videos", href: "/buy-youtube-comments-india" },
+      { label: "YouTube Watch Hours service details", href: "/buy-youtube-watch-hours-india" },
     ],
   },
 };

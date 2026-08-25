@@ -632,7 +632,7 @@ export function getIndiaServiceMetadata(
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
     : slug === "buy-youtube-comments-india"
-      ? "Buy YouTube Comments in India | Live Pricing | SocialRUSH"
+      ? "Buy YouTube Comments India | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
