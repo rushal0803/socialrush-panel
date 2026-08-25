@@ -29,6 +29,7 @@ import { blogArticles } from "@/components/marketing/blog/blogData";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLanding";
 import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
+import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -226,6 +227,20 @@ export default async function IndiaServiceLandingPage({
   }
   const isTwitterFollowers = slug === "buy-twitter-followers-india";
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
+  if (slug === "buy-youtube-comments-india") {
+    const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
+    const faq = [
+      ["Do I need my YouTube password?", "No. Only the public YouTube video URL is needed. Never share a password, OTP, or recovery code."],
+      ["Which YouTube URL should I submit?", "Use the exact public YouTube video or Short URL. A channel URL is not accepted for this service."],
+      ["Can I track my order?", "Yes. Your SocialRUSH dashboard keeps the order record and current status after checkout."],
+    ];
+    const schemas = [
+      { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Services", item: `${SEO_SITE_URL}/services` }, { "@type": "ListItem", position: 3, name: "YouTube Comments", item: pageUrl }] },
+      { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, offers: { "@type": "Offer", priceCurrency: "INR", ...(live ? { price: live.rate } : {}), unitText: "1000 comments", availability: live?.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock" } },
+      { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
+    ];
+    return <PublicShell tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /></PublicShell>;
+  }
   if (slug === "buy-instagram-shares-india") {
     const shareUrl = `${SEO_SITE_URL}${canonicalPath}`;
     const shareFaqs = [
@@ -438,10 +453,10 @@ export default async function IndiaServiceLandingPage({
             </p>
             <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row min-[420px]:flex-wrap">
               <Link
-                href={slug === "buy-youtube-comments-india" ? (available ? orderHref : "/dashboard/new-order") : packagesHref}
+                href={packagesHref}
                 className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3 text-sm font-black text-white shadow-[0_14px_30px_-14px_rgba(255, 196, 0, .65)] transition hover:-translate-y-0.5"
               >
-                {slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : slug === "buy-youtube-comments-india" ? "Buy YouTube Comments" : "View Packages"} <ArrowRight className="h-4 w-4" />
+                {slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : "View Packages"} <ArrowRight className="h-4 w-4" />
               </Link>
               <Link
                 href={available ? orderHref : "#service-status"}
@@ -877,7 +892,7 @@ export default async function IndiaServiceLandingPage({
               View {page.platform} Packages
             </Link>
             <Link
-              href={slug === "buy-youtube-comments-india" && !available ? "/dashboard/new-order" : orderHref}
+              href={orderHref}
               className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-6 py-3 text-sm font-black text-[#FF9F00]"
             >
               Start Order

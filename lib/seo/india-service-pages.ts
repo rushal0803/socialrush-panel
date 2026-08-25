@@ -355,7 +355,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "Visible discussion can add social proof around a public video while you continue focusing on useful content and audience engagement.",
     safety: "Submit only the correct public YouTube video URL. SocialRUSH does not require your Google password or channel access; keep the video public while the order is processing.",
     deliveryCopy: "Delivery estimates vary with service load and the active service configuration. Current delivery and refill information is shown before checkout.",
-    metaDescription: "Buy YouTube comments in India with transparent pricing, fast delivery, and a simple secure ordering experience from SocialRUSH.",
+    metaDescription: "Buy YouTube Comments in India with transparent live pricing, public video ordering, delivery details and SocialRUSH dashboard tracking.",
     ogDescription: "Compare live YouTube comments service details in India with public-video ordering and dashboard tracking.",
     audiences: ["Video creators", "Educators", "Music channels", "Businesses"],
     related: ["buy-youtube-subscribers-india", "buy-youtube-likes-india", "buy-youtube-views-india"],
@@ -632,7 +632,7 @@ export function getIndiaServiceMetadata(
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
     : slug === "buy-youtube-comments-india"
-      ? "Buy YouTube Comments India | SocialRUSH"
+      ? "Buy YouTube Comments in India | Live Pricing | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
