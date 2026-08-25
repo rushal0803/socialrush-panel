@@ -16,7 +16,7 @@ test("public routes render meaningful content without application errors", async
   page.on("pageerror", (error) => clientErrors.push(error));
 
   await expectUsablePage(page, "/", /SocialRUSH/i);
-  await expect(page.locator('a[href="/services"]').first()).toBeVisible();
+  await expect(page.locator('a[href="/services"]:visible').first()).toBeVisible();
   await expectUsablePage(page, "/services", /Social Media Growth Services|Growth Services/i);
   await expectUsablePage(page, "/packages", /Social Media Growth Packages|Packages/i);
   await expectUsablePage(page, "/login", /Welcome back to SocialRUSH/i);

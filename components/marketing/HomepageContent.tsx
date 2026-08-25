@@ -10,7 +10,7 @@ export default function HomepageContent({
   return (
     <PublicShell>
       <PremiumHomepage searchParams={searchParams} />
-      <PublicReviewsSection limit={3} />
+      <PublicReviewsSection limit={4} />
     </PublicShell>
   );
 }
