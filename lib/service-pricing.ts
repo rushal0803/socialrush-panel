@@ -15,6 +15,8 @@ export const SERVICE_PRICES = {
   // This code is intentionally not a public price. YouTube Comments is
   // enabled and priced only from its active Supabase row.
   "youtube-comments": 0,
+  // Watch Hours is enabled and priced only from its active Supabase row.
+  "youtube-watch-hours": 0,
   "facebook-followers": 299,
   "facebook-likes": 149,
   "facebook-views": 99,

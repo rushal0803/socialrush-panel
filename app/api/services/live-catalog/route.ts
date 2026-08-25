@@ -9,6 +9,12 @@ const supportedServices = {
     description: "Build visible conversation and engagement around your YouTube videos with comment activity.",
     fallbackInstruction: "Submit the correct public YouTube video URL and keep the video public while the order is processing.",
   },
+  "youtube-watch-hours": {
+    name: "YouTube Watch Hours",
+    platform: "youtube",
+    description: "Build extended viewing activity around your public YouTube content with transparent watch-hour packages and dashboard tracking.",
+    fallbackInstruction: "Submit the correct public YouTube video URL and keep the video public while the order is processing.",
+  },
 } as const;
 
 export async function GET(request: NextRequest) {
