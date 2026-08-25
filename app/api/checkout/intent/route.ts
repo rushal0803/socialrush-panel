@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 type IntentRow = {
@@ -49,7 +50,7 @@ const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
   "x-followers": "X Followers",
 };
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares", "youtube-comments"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours"]);
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -91,6 +92,8 @@ export async function POST(request: NextRequest) {
   if (!service.isActive && !liveCatalogServiceCodes.has(service.code)) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
+  const linkError = linkRules[service.code] ? validateCampaignLink(link, linkRules[service.code]) : null;
+  if (linkError) return NextResponse.json({ error: linkError }, { status: 400 });
 
   const requestedQuantity = quantity as number;
   // Live-catalog services use their active Supabase rows for limits and rate.

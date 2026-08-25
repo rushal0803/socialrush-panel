@@ -158,7 +158,9 @@ export default function NewOrderPage() {
   const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
   const [liveInstagramSaves, setLiveInstagramSaves] = useState<SmmService | null>(null);
   const [liveInstagramShares, setLiveInstagramShares] = useState<SmmService | null>(null);
-  const [liveYoutubeComments, setLiveYoutubeComments] = useState<SmmService | null>(null);
+  // Keep YouTube's protected catalog as one runtime source. Each successful
+  // API result is keyed by its canonical code, then merged below.
+  const [liveYoutubeServices, setLiveYoutubeServices] = useState<SmmService[]>([]);
   const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
   const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
@@ -189,7 +191,7 @@ export default function NewOrderPage() {
       return;
     }
     const platformFromUrl = platformFromQuery(searchParams.get("platform"));
-    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, [liveInstagramSaves, liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
+    const serviceFromUrl = serviceFromQuery(searchParams.get("service"), platformFromUrl, [...[liveInstagramSaves, liveInstagramShares].filter(Boolean) as SmmService[], ...liveYoutubeServices]);
     const resumedFromUrl = searchParams.get("resume") === "1"
       ? mergeCustomerOrderServices().find((service) => service.code === searchParams.get("service")) ?? null
       : null;
@@ -206,7 +208,7 @@ export default function NewOrderPage() {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
     }
-  }, [queryString, searchParams, liveInstagramSaves, liveInstagramShares, liveYoutubeComments]);
+  }, [queryString, searchParams, liveInstagramSaves, liveInstagramShares, liveYoutubeServices]);
 
   useEffect(() => {
     if (searchParams.get("draft") !== "1") return;
@@ -214,21 +216,21 @@ export default function NewOrderPage() {
     void fetch("/api/order-draft", { credentials: "same-origin" }).then(async (response) => response.ok ? response.json() as Promise<{ data?: { platform: string; service_code: string; quantity: number; target: string | null } | null }> : { data: null }).then(({ data }) => {
       if (!active || !data) return;
       const draftPlatform = platformFromQuery(data.platform);
-      const service = serviceFromQuery(data.service_code, draftPlatform, [liveInstagramSaves, liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]);
+      const service = serviceFromQuery(data.service_code, draftPlatform, [...[liveInstagramSaves, liveInstagramShares].filter(Boolean) as SmmService[], ...liveYoutubeServices]);
       if (!service) { setResumeNotice("This exact service is currently unavailable. Please choose another option from the same platform."); if (draftPlatform) setPlatform(draftPlatform); return; }
       setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target || ""); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
       track("order_started", { step: "draft_resumed", service_code: service.code, platform: service.platform });
     }).catch(() => undefined);
     return () => { active = false; };
-  }, [liveInstagramSaves, liveInstagramShares, liveYoutubeComments, searchParams]);
+  }, [liveInstagramSaves, liveInstagramShares, liveYoutubeServices, searchParams]);
 
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
 
   const services = useMemo(
-    () => (platform ? mergeCustomerOrderServices([liveInstagramSaves, liveInstagramShares, liveYoutubeComments].filter(Boolean) as SmmService[]).filter((service) => service.platform === platform) : []),
-    [liveInstagramSaves, liveInstagramShares, liveYoutubeComments, platform],
+    () => (platform ? mergeCustomerOrderServices([...([liveInstagramSaves, liveInstagramShares].filter(Boolean) as SmmService[]), ...liveYoutubeServices]).filter((service) => service.platform === platform) : []),
+    [liveInstagramSaves, liveInstagramShares, liveYoutubeServices, platform],
   );
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
@@ -386,22 +388,24 @@ export default function NewOrderPage() {
       });
     void loadLiveInstagramService("Instagram Saves", "instagram-saves", "Strengthen post and Reel engagement signals with Instagram save activity.");
     void loadLiveInstagramService("Instagram Shares", "instagram-shares", "Expand post and Reel engagement with Instagram share activity.");
-    void fetch("/api/services/live-catalog?code=youtube-comments", { credentials: "same-origin" })
+    const loadLiveYoutubeService = (code: "youtube-comments" | "youtube-watch-hours", name: "YouTube Comments" | "YouTube Watch Hours", description: string) => fetch(`/api/services/live-catalog?code=${code}`, { credentials: "same-origin" })
       .then(async (response) => response.ok ? response.json() as Promise<{ data?: { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; qualityType: string; importantInstruction: string } | null }> : { data: null })
       .then(({ data }) => {
         if (!data) return;
         const liveService: SmmService = {
-          platform: "youtube", code: "youtube-comments", name: "YouTube Comments",
-          description: "Build visible conversation and engagement around your YouTube videos with comment activity.",
+          platform: "youtube", code, name,
+          description,
           pricePer1000: Number(data.rate), minQuantity: Number(data.min), maxQuantity: Number(data.max),
           deliveryTime: data.deliveryTime, refillPolicy: data.refillPolicy,
           qualityType: data.qualityType, importantInstruction: data.importantInstruction,
           isActive: true,
         };
         if (!Number.isFinite(liveService.pricePer1000) || liveService.pricePer1000 <= 0 || liveService.minQuantity <= 0 || liveService.maxQuantity < liveService.minQuantity) return;
-        setLiveYoutubeComments(liveService);
-        setSelectedService((current) => current?.code === "youtube-comments" ? liveService : current);
+        setLiveYoutubeServices((current) => [...current.filter((service) => service.code !== code), liveService]);
+        setSelectedService((current) => current?.code === code ? liveService : current);
       });
+    void loadLiveYoutubeService("youtube-comments", "YouTube Comments", "Build visible conversation and engagement around your YouTube videos with comment activity.");
+    void loadLiveYoutubeService("youtube-watch-hours", "YouTube Watch Hours", "Build extended viewing activity around your public YouTube content with transparent watch-hour packages and dashboard tracking.");
   }, []);
 
   async function placeOrder() {

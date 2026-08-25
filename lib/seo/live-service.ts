@@ -1,5 +1,5 @@
 import "server-only";
-import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 
 export type LiveServiceFacts = {
@@ -17,7 +17,7 @@ export async function getLiveServiceFacts(platform: string, serviceName: string)
   const normalizedPlatform = platform.trim().toLowerCase();
   const normalizedName = serviceName.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
   try {
-    const db = await createClient();
+    const db = createAdminClient();
     const { data } = await db.from("services").select("id,rate,min,max,delivery_time,refill_policy,is_active,status,health_status,accepts_new_orders")
       .ilike("platform", normalizedPlatform === "twitter" ? "%twitter%" : normalizedPlatform)
       .ilike("name", serviceName.trim())
@@ -29,7 +29,7 @@ export async function getLiveServiceFacts(platform: string, serviceName: string)
   } catch { /* A catalog fallback keeps public pages useful during a transient DB failure. */ }
   // Shares deliberately has no public fallback: its row is the source of
   // truth, and a missing row must not look orderable or priced.
-  if (normalizedName === "instagram-shares") return null;
+  if (normalizedName === "instagram-shares" || normalizedName === "youtube-watch-hours") return null;
   const catalogService = activeSmmServices.find((item) =>
     item.platform === normalizedPlatform &&
     (item.code === normalizedName || item.name.toLowerCase() === serviceName.trim().toLowerCase()),

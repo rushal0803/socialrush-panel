@@ -8,7 +8,7 @@ import PlatformIcon from "@/components/PlatformIcon";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
+import { activeSmmServices, platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 import { useServiceHealth } from "@/lib/use-service-health";
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
@@ -25,6 +25,7 @@ const servicePaths: Record<string, string> = {
   "instagram-shares": "/buy-instagram-shares-india",
   "youtube-subscribers": "/youtube-subscribers", "youtube-likes": "/youtube-likes", "youtube-views": "/youtube-views",
   "youtube-comments": "/buy-youtube-comments-india",
+  "youtube-watch-hours": "/buy-youtube-watch-hours-india",
   "facebook-followers": "/buy-facebook-followers-india", "facebook-likes": "/facebook-likes", "linkedin-followers": "/linkedin-followers",
   "linkedin-likes": "/linkedin-likes", "telegram-members": "/telegram-members", "tiktok-followers": "/tiktok-followers", "x-followers": "/twitter-followers",
 };
@@ -60,9 +61,9 @@ function TypeIcon({ type }: { type: string }) {
   return <Icon className="h-3.5 w-3.5" aria-hidden="true" />;
 }
 
-type Props = { initialPlatformParam?: string; initialTypeParam?: string; initialSearchParam?: string };
+type Props = { initialPlatformParam?: string; initialTypeParam?: string; initialSearchParam?: string; liveWatchHours?: SmmService | null };
 
-export default function ServicesPageContent({ initialPlatformParam, initialTypeParam, initialSearchParam }: Props) {
+export default function ServicesPageContent({ initialPlatformParam, initialTypeParam, initialSearchParam, liveWatchHours = null }: Props) {
   const { currency } = usePreferredCurrency("INR");
   const { health: healthByService, isLoading: isHealthLoading } = useServiceHealth();
   const [platform, setPlatform] = useState<SmmPlatformId>(() => platformFrom(initialPlatformParam || initialTypeParam?.split("-")[0]));
@@ -77,15 +78,16 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
     setShowAll(false);
   }, [initialPlatformParam, initialSearchParam, initialTypeParam]);
 
-  const types = useMemo(() => ["all", ...Array.from(new Set(publicCatalogServices.filter((item) => item.platform === platform).map((item) => typeFor(item.code))))], [platform]);
+  const catalogServices = useMemo(() => [...publicCatalogServices, ...(liveWatchHours ? [liveWatchHours] : [])], [liveWatchHours]);
+  const types = useMemo(() => ["all", ...Array.from(new Set(catalogServices.filter((item) => item.platform === platform).map((item) => typeFor(item.code))))], [catalogServices, platform]);
   const services = useMemo(() => {
     const term = query.trim().toLowerCase();
-    return publicCatalogServices.filter((item) => item.platform === platform && (type === "all" || typeFor(item.code) === type) && (!term || `${item.name} ${item.description} ${item.code} ${platformMeta[item.platform].label}`.toLowerCase().includes(term)));
-  }, [platform, query, type]);
+    return catalogServices.filter((item) => item.platform === platform && (type === "all" || typeFor(item.code) === type) && (!term || `${item.name} ${item.description} ${item.code} ${platformMeta[item.platform].label}`.toLowerCase().includes(term)));
+  }, [catalogServices, platform, query, type]);
 
   const clearFilters = () => { setQuery(""); setType("all"); setShowAll(false); };
   const visibleServices = showAll || query || type !== "all" ? services : services.slice(0, 6);
-  const platformServiceCounts = useMemo(() => Object.fromEntries(platforms.map((id) => [id, publicCatalogServices.filter((item) => item.platform === id).length])) as Record<SmmPlatformId, number>, []);
+  const platformServiceCounts = useMemo(() => Object.fromEntries(platforms.map((id) => [id, catalogServices.filter((item) => item.platform === id).length])) as Record<SmmPlatformId, number>, [catalogServices]);
 
   return <BlogShell><main className="relative overflow-x-clip pb-16 text-white sm:pb-20">
     <div className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(circle_at_12%_8%,rgba(255,122,0,.15),transparent_27rem),radial-gradient(circle_at_90%_20%,rgba(255,190,80,.08),transparent_24rem)]" />

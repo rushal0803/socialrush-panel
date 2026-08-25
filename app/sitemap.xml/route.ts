@@ -36,6 +36,7 @@ const publicRoutes = [
   "/tools/instagram-caption-counter",
   "/tools/utm-link-builder",
   "/creator-growth",
+  "/buy-youtube-watch-hours-india",
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",
   "/tools/social-media-growth-budget-calculator",

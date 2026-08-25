@@ -1,6 +1,8 @@
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import { getLiveServiceFacts } from "@/lib/seo/live-service";
+import type { SmmService } from "@/lib/smm-service-catalog";
 
 export const metadata = createPageMetadata({
   title: "Social Media Growth Services | SocialRUSH",
@@ -45,7 +47,11 @@ type ServicesPageProps = {
   };
 };
 
-export default function ServicesPage({ searchParams }: ServicesPageProps) {
+export default async function ServicesPage({ searchParams }: ServicesPageProps) {
+  const live = await getLiveServiceFacts("youtube", "YouTube Watch Hours");
+  const liveWatchHours: SmmService | null = live?.available ? {
+    platform: "youtube", code: "youtube-watch-hours", name: "YouTube Watch Hours", description: "Build extended viewing activity around your public YouTube content with transparent watch-hour packages and dashboard tracking.", pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: "Live service", importantInstruction: "Use the exact public YouTube video URL and keep the video public while processing.", isActive: true,
+  } : null;
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
@@ -67,6 +73,7 @@ export default function ServicesPage({ searchParams }: ServicesPageProps) {
         initialPlatformParam={searchParams?.platform}
         initialTypeParam={searchParams?.type ?? searchParams?.service}
         initialSearchParam={searchParams?.q ?? searchParams?.search}
+        liveWatchHours={liveWatchHours}
       />
     </>
   );
