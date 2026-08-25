@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ChevronDown, Wallet } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
 import DashboardMobileMenu from "@/components/dashboard/DashboardMobileMenu";
+import NotificationBell from "@/components/dashboard/NotificationBell";
 import Logo from "@/components/Logo";
 import { getCurrencySymbol, type Currency } from "@/lib/currency";
 import { formatCurrency } from "@/lib/currency";
@@ -99,6 +100,7 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
 
         <div className="ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3">
           <CurrencySelector />
+          <NotificationBell />
 
           <Link href="/dashboard/wallet" className="hidden min-h-11 shrink-0 items-center gap-2 rounded-xl border border-white/[.1] bg-white/[.035] px-3 text-left transition hover:border-orange-400/35 hover:bg-orange-500/[.08] md:inline-flex">
             <Wallet className="h-4 w-4 text-[#ff9a2e]" />

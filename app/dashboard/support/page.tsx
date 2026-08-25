@@ -29,7 +29,7 @@ type MessageType = {
   created_at: string;
 };
 
-const categories = [["order_pending","Order pending"],["partial_delivery","Partial delivery"],["drop_or_refill","Drop or refill"],["incorrect_public_link","Incorrect public link"],["cancellation_request","Cancellation request"],["payment_or_wallet","Payment or wallet issue"],["account_issue","Account issue"],["service_availability","Service availability"],["other","Other"]] as const;
+const categories = [["order_pending","Order Issue"],["drop_or_refill","Refill"],["payment_or_wallet","Payment"],["partial_delivery","Delivery"],["account_issue","Account"],["other","General Question"],["incorrect_public_link","Incorrect public link"],["cancellation_request","Cancellation request"],["service_availability","Service availability"]] as const;
 
 const supportCards = [
   {
@@ -481,6 +481,7 @@ export default function SupportPage() {
               <form ref={ticketFormRef} action={createTicket} onInvalidCapture={focusInvalidField} className="mt-4 space-y-3 pb-[calc(120px+env(safe-area-inset-bottom))] sm:mt-6 sm:space-y-4 sm:pb-0">
                 <label className="block text-[11px] font-bold uppercase tracking-[0.12em] text-orange-300">
                   Category
+                  <span className="mt-1 block normal-case tracking-normal text-slate-400">For order or refill issues, select your order below. Do not send card details, OTPs or passwords.</span>
                   <select name="category" required defaultValue={searchParams.get("category") || (searchParams.get("status") === "partial" ? "partial_delivery" : "other")} className="dashboard-input mt-2">
                     {categories.map(([value,label]) => (
                       <option key={value} value={value}>{label}</option>
