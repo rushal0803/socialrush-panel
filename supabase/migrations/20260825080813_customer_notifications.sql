@@ -15,7 +15,9 @@ create index if not exists customer_notifications_user_created_idx on public.cus
 create index if not exists customer_notifications_unread_idx on public.customer_notifications(user_id, created_at desc) where read_at is null;
 alter table public.customer_notifications enable row level security;
 grant select, update on public.customer_notifications to authenticated;
+drop policy if exists "notifications_select_own" on public.customer_notifications;
 create policy "notifications_select_own" on public.customer_notifications for select to authenticated using ((select auth.uid()) = user_id);
+drop policy if exists "notifications_update_own" on public.customer_notifications;
 create policy "notifications_update_own" on public.customer_notifications for update to authenticated using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);
 
 create or replace function public.notify_customer_order_event() returns trigger language plpgsql security definer set search_path = public as $$
