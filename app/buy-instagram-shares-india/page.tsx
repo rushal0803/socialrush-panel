@@ -5,7 +5,7 @@ import { SEO_SITE_URL } from "@/lib/seo/metadata";
 const path = "/buy-instagram-shares-india";
 
 export const metadata: Metadata = {
-  title: { absolute: "Buy Instagram Shares in India | SocialRUSH" },
+  title: { absolute: "Buy Instagram Shares India | SocialRUSH" },
   description: "Buy Instagram Shares in India with transparent live pricing, public post or Reel ordering, and dashboard tracking from SocialRUSH.",
   alternates: { canonical: `${SEO_SITE_URL}${path}` },
   robots: { index: true, follow: true },
