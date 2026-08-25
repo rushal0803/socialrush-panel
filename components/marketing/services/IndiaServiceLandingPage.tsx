@@ -28,6 +28,7 @@ import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import { blogArticles } from "@/components/marketing/blog/blogData";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLanding";
+import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -225,6 +226,21 @@ export default async function IndiaServiceLandingPage({
   }
   const isTwitterFollowers = slug === "buy-twitter-followers-india";
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
+  if (slug === "buy-instagram-shares-india") {
+    const shareUrl = `${SEO_SITE_URL}${canonicalPath}`;
+    const shareFaqs = [
+      ["Do I need my Instagram password?", "No. SocialRUSH only requires the public Instagram post or Reel link. Never share a password, OTP, or recovery code."],
+      ["Which Instagram URL should I use?", "Use the exact public Instagram post or Reel URL. A profile URL is not accepted for this service."],
+      ["Can I use a Reel URL?", "Yes. Public Instagram Reel and post URLs are supported by the service validation."],
+      ["Do Instagram Shares guarantee more views or reach?", "No. This service does not guarantee organic reach, recommendations, virality, or platform outcomes."],
+    ];
+    const schemas = [
+      { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Services", item: `${SEO_SITE_URL}/services` }, { "@type": "ListItem", position: 3, name: "Instagram Shares", item: shareUrl }] },
+      { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, offers: { "@type": "Offer", priceCurrency: "INR", ...(live ? { price: live.rate } : {}), unitText: "1000 shares", availability: live?.available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock" } },
+      { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
+    ];
+    return <PublicShell>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /></PublicShell>;
+  }
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;
   const minQuantity = live?.min;
