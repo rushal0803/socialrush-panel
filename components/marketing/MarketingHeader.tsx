@@ -52,7 +52,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
       <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-1.5 px-3 min-[390px]:gap-2 min-[390px]:px-4 sm:gap-4 sm:px-6 lg:px-8">
         <Logo light priority className="min-w-0 shrink [&_img]:max-w-[150px] min-[390px]:[&_img]:max-w-[174px] sm:[&_img]:max-w-[218px]" />
 
-        <nav className="hidden items-center gap-1 text-sm font-semibold text-[#A8AFBD] xl:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-1 text-sm font-semibold text-[#A8AFBD] 2xl:flex" aria-label="Primary navigation">
           {nav.map(([label, href]) => {
             const active = !href.includes("#") && pathname.startsWith(href);
             return (
@@ -68,7 +68,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 lg:flex">
+        <div className="hidden items-center gap-2 2xl:flex">
           <CurrencyDropdown compact tone={tone} />
           {isLoggedIn ? (
             <>
@@ -86,7 +86,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </PortalCTA>
         </div>
 
-        <div className="flex items-center gap-2 lg:hidden">
+        <div className="flex items-center gap-2 2xl:hidden">
           <PortalCTA className="hidden min-h-10 items-center justify-center whitespace-nowrap rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-2.5 py-2 text-xs font-black text-white min-[360px]:inline-flex min-[390px]:px-3 sm:px-4 sm:text-sm">
             Start Order
           </PortalCTA>
@@ -123,7 +123,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="relative mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 pt-16 shadow-[0_24px_60px_rgba(0,0,0,.45)] lg:hidden"
+          className="relative mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 pt-16 shadow-[0_24px_60px_rgba(0,0,0,.45)] 2xl:hidden"
         >
          
           <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(.75rem+env(safe-area-inset-top))]">
