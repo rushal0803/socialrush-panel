@@ -155,14 +155,15 @@ export default function NewOrderPage() {
 
   const [platform, setPlatform] = useState<PlatformId | null>(initialService?.platform ?? requestedPlatform ?? null);
   const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
-  const [targetLink, setTargetLink] = useState(resumeRequested ? searchParams.get("link") || "" : "");
+  const prefillRequested = resumeRequested || searchParams.get("prefill") === "1";
+  const [targetLink, setTargetLink] = useState(prefillRequested ? searchParams.get("link") || "" : "");
   const [liveInstagramSaves, setLiveInstagramSaves] = useState<SmmService | null>(null);
   const [liveInstagramShares, setLiveInstagramShares] = useState<SmmService | null>(null);
   // Keep YouTube's protected catalog as one runtime source. Each successful
   // API result is keyed by its canonical code, then merged below.
   const [liveYoutubeServices, setLiveYoutubeServices] = useState<SmmService[]>([]);
   const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
-  const [quantityInput, setQuantityInput] = useState(resumeRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
+  const [quantityInput, setQuantityInput] = useState(prefillRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [walletLoading, setWalletLoading] = useState(true);
   const [walletError, setWalletError] = useState("");
@@ -204,7 +205,7 @@ export default function NewOrderPage() {
       setPlatform(platformFromUrl);
       setSelectedService(null);
     }
-    if (searchParams.get("resume") === "1") {
+    if (searchParams.get("resume") === "1" || searchParams.get("prefill") === "1") {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
     }
