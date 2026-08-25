@@ -47,7 +47,10 @@ export default function CampaignHistoryPage() {
   useEffect(() => {
     const loadOrders = async () => {
       setLoading(true); setLoadError("");
-      const { data, error } = await createClient().from("orders").select("id, public_order_id, service_name, platform, link, quantity, charge, status, created_at, package_name, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))").order("created_at", { ascending: false });
+      const supabase = createClient();
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) { setLoadError("Orders could not be loaded right now."); setLoading(false); return; }
+      const { data, error } = await supabase.from("orders").select("id, public_order_id, service_name, platform, link, quantity, charge, status, created_at, package_name, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) { setLoadError("Orders could not be loaded right now."); setLoading(false); return; }
       setCampaigns((data ?? []).map((row) => {
         const service = row.services as unknown as { name?: string; delivery_time?: string; refill_policy?: string; categories?: { name?: string } | null } | null;

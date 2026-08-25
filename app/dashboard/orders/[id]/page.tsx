@@ -36,7 +36,10 @@ export default function CustomerOrderDetailsPage() {
   const [submittingRefill, setSubmittingRefill] = useState(false);
 
   useEffect(() => {
-    void createClient().from("orders").select("id,public_order_id,link,quantity,charge,unit_price,status,created_at,updated_at,failed_reason,refund_credit_note,service_name,platform,package_name,starting_count,current_count,delivered_count,remaining_count,progress_percent,refill_eligible,refill_requested_at,payment_status,services(name,delivery_time,refill_policy)").eq("id", id).single().then(({ data, error: queryError }) => {
+    const supabase = createClient();
+    void supabase.auth.getUser().then(async ({ data: auth }) => {
+      if (!auth.user) { setError("This order could not be loaded."); setLoading(false); return; }
+      const { data, error: queryError } = await supabase.from("orders").select("id,public_order_id,link,quantity,charge,unit_price,status,created_at,updated_at,failed_reason,refund_credit_note,service_name,platform,package_name,starting_count,current_count,delivered_count,remaining_count,progress_percent,refill_eligible,refill_requested_at,payment_status,services(name,delivery_time,refill_policy)").eq("id", id).eq("user_id", auth.user.id).single();
       setOrder(data as unknown as Order | null);
       setError(queryError ? "This order could not be loaded." : "");
       setLoading(false);
