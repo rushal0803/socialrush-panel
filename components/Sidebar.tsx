@@ -16,6 +16,7 @@ export const dashboardLinks = [
   { label: "New Order", href: "/dashboard/new-order", icon: "plus" },
   { label: "Packages", href: "/dashboard/packages", icon: "packages" },
   { label: "Orders", href: "/dashboard/orders", icon: "orders" },
+  { label: "My Reviews", href: "/dashboard/reviews", icon: "bookmark" },
   { label: "Saved Profiles", href: "/dashboard/saved-profiles", icon: "bookmark" },
   { label: "Rewards", href: "/dashboard/rewards", icon: "gift" },
   { label: "Wallet", href: "/dashboard/wallet", icon: "wallet" },
