@@ -1,4 +1,4 @@
-import { NextResponse } from "next/server";
+﻿import { NextResponse } from "next/server";
 import { blogArticles } from "@/components/marketing/blog/blogData";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import {
@@ -38,6 +38,7 @@ const publicRoutes = [
   "/creator-growth",
   "/instagram-growth-india",
   "/youtube-growth-india",
+  "/facebook-growth-india",
   "/buy-youtube-watch-hours-india",
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",
