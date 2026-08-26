@@ -37,6 +37,7 @@ const publicRoutes = [
   "/tools/utm-link-builder",
   "/creator-growth",
   "/instagram-growth-india",
+  "/youtube-growth-india",
   "/buy-youtube-watch-hours-india",
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",
