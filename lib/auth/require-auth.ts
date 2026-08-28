@@ -21,6 +21,7 @@ const PUBLIC_PATHS = [
   "/case-studies",
   "/about",
   "/faq",
+  "/support",
 ];
 
 const PROTECTED_ROOTS = [

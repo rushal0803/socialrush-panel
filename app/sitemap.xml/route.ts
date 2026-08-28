@@ -38,6 +38,8 @@ const publicRoutes = [
   "/creator-growth",
   "/instagram-growth-india",
   "/youtube-growth-india",
+  "/facebook-growth-india",
+  "/linkedin-growth-india",
 "/instagram-growth-india",
 "/youtube-growth-india",
 "/facebook-growth-india",

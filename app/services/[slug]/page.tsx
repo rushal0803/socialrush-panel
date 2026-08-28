@@ -8,7 +8,6 @@ import { getCurrencyDisclaimer } from "@/lib/currency";
 import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
-import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 
 const siteUrl = SEO_SITE_URL;
@@ -157,7 +156,11 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
   if (params.slug === "instagram-followers") {
     permanentRedirect("/buy-instagram-followers-india");
   }
-  if (params.slug === "facebook-views") return <FacebookViewsLanding />;
+  // The dedicated Facebook Views landing page is the public canonical URL.
+  // This legacy service-detail route must not remain a competing 200 page.
+  if (params.slug === "facebook-views") {
+    permanentRedirect("/facebook-views");
+  }
   const seo = getSeoData(params.slug);
   if (!seo) notFound();
   const hasBasePrice = "pricePer1000INR" in seo && typeof seo.pricePer1000INR === "number";
