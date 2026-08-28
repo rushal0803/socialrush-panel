@@ -11,7 +11,7 @@ const groups: readonly FooterGroup[] = [
   { title: "Services", links: [["Instagram", "/services?platform=instagram"], ["YouTube", "/services?platform=youtube"], ["Facebook", "/services?platform=facebook"], ["LinkedIn", "/services?platform=linkedin"], ["X / Twitter", "/services?platform=x"], ["TikTok", "/services?platform=tiktok"], ["Telegram", "/services?platform=telegram"]] },
   { title: "Company", links: [["About Us", "/about"], ["Pricing", "/pricing"], ["Packages", "/packages"], ["Case Studies", "/case-studies"], ["Blog", "/blog"], ["Contact", "/contact"]] },
   { title: "Support", links: [["FAQ", "/faq"], ["Help / Support", "/support"], ["How It Works", "/#how-it-works"], ["Refund Policy", "/refund-policy"], ["Privacy Policy", "/privacy-policy"], ["Terms of Service", "/terms-and-conditions"]] },
-  { title: "Resources", links: [["Creator Tools", "/tools"], ["Growth Guides", "/blog"], ["Customer Safety", "/trust"]] },
+  { title: "Resources", links: [["Creator Tools", "/tools"], ["Growth Guides", "/blog"], ["Customer Safety", "/trust"], ["Compare Services", "/compare"], ["Customer Reviews", "/reviews"]] },
 ] as const;
 
 const payments = ["UPI", "Secure online payments", "Net Banking", "Wallet Balance"] as const;
