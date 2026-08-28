@@ -4,6 +4,9 @@ import { updateSession } from "@/lib/supabase/middleware";
 import { DISPLAY_CURRENCY_COOKIE, getDisplayCurrencyForCountry, isCurrency } from "@/lib/currency";
 
 const canonicalRedirects: Record<string, string> = {
+  // Preserve the established legacy URL for backlinks while keeping all
+  // first-party links on the current, indexable landing page.
+  "/youtube-watch-hours": "/buy-youtube-watch-hours-india",
   "/buy-instagram-followers": "/buy-instagram-followers-india",
   "/instagram-followers": "/buy-instagram-followers-india",
   "/buy-instagram-likes-india": "/instagram-likes",

@@ -12,7 +12,7 @@ import PublicShell from "@/components/marketing/PublicShell";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Instagram Growth India | Followers, Likes, Views & Engagement",
+  title: "Instagram Growth Services in India",
   description:
     "Explore Instagram growth options in India including followers, likes, views, comments, saves and shares. Compare goals, understand engagement signals and choose the right SocialRUSH service.",
   path: "/instagram-growth-india",
@@ -29,13 +29,13 @@ const growthOptions = [
     title: "Instagram Likes",
     description:
       "Support engagement on posts and reels when your campaign goal is stronger visible interaction.",
-    href: "/buy-instagram-likes-india",
+    href: "/instagram-likes",
   },
   {
     title: "Instagram Views",
     description:
       "Increase visible reach signals on eligible Instagram video and reel content.",
-    href: "/buy-instagram-views-india",
+    href: "/instagram-views",
   },
   {
     title: "Instagram Comments",

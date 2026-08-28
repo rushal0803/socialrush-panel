@@ -3,7 +3,7 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Social Media Growth Guides | SocialRUSH Blog",
+  title: "Social Media Growth Guides",
   description:
     "Read practical social media guides for creators and brands, including campaign planning, public-link requirements, content and platform tools.",
   path: "/blog",
