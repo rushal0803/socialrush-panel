@@ -5,7 +5,7 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
-export const metadata = createPageMetadata({ title: "Social Media Growth Case Studies & Planning Examples", description: "Explore transparent SocialRUSH planning scenarios for Instagram, YouTube, local businesses and agencies. These are illustrative examples, not guaranteed results.", path: "/case-studies", keywords: ["social media growth case studies", "social media growth examples", "Instagram growth strategy examples", "YouTube growth strategy examples", "social media campaign planning"] });
+export const metadata = createPageMetadata({ title: "Social Media Growth Case Studies", description: "Explore transparent SocialRUSH planning scenarios for Instagram, YouTube, local businesses and agencies. These are illustrative examples, not guaranteed results.", path: "/case-studies", keywords: ["social media growth case studies", "social media growth examples", "Instagram growth strategy examples", "YouTube growth strategy examples", "social media campaign planning"] });
 export const dynamic = "force-dynamic";
 
 export default async function CaseStudies() {

@@ -5,9 +5,19 @@ import { ArrowLeft, ArrowRight, FileCheck2, Quote, ShieldCheck } from "lucide-re
 import { notFound } from "next/navigation";
 import PublicShell from "@/components/marketing/PublicShell";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
 async function load(slug: string) { return (await createAdminClient().from("case_studies").select("slug,title,platform,service_name,customer_type,challenge,service_selected,ordered_quantity,delivery_timeline,outcome,customer_quote,seo_title,seo_description,related_service_href,related_packages_href").eq("slug", slug).eq("published", true).eq("permission_confirmed", true).maybeSingle()).data; }
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> { const s = await load(params.slug); return s ? { title: s.seo_title || s.title, description: s.seo_description || s.outcome, alternates: { canonical: `/case-studies/${s.slug}` } } : {}; }
+export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  const s = await load(params.slug);
+  return s
+    ? createPageMetadata({
+        title: s.seo_title || s.title,
+        description: s.seo_description || s.outcome,
+        path: `/case-studies/${s.slug}`,
+      })
+    : {};
+}
 
 export default async function CaseStudy({ params }: { params: { slug: string } }) {
   const s: any = await load(params.slug); if (!s) notFound();
