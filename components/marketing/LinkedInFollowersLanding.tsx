@@ -39,7 +39,7 @@ export default function LinkedInFollowersLanding() {
         <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Plan the destination first</p>
         <h2 className="mt-3 text-3xl font-black">Useful LinkedIn growth guides</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">A follower order works best when the public profile or company page already gives professionals a clear reason to follow. Use these guides to prepare your positioning, content and measurement plan.</p>
-        <div className="mt-6 grid gap-4 md:grid-cols-2">
+      <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Link href="/blog/linkedin-followers-for-business-growth" className="group rounded-2xl border border-[#0a66c2]/25 bg-[#0a66c2]/[.06] p-5 transition hover:-translate-y-1">
             <h3 className="font-black">LinkedIn followers for business growth</h3>
             <p className="mt-2 text-sm leading-6 text-slate-300">A practical India guide to company-page positioning, employee participation and responsible audience measurement.</p>
@@ -50,6 +50,22 @@ export default function LinkedInFollowersLanding() {
             <p className="mt-2 text-sm leading-6 text-slate-300">Use profile clarity, useful posts and relevant conversations to support a professional first impression.</p>
             <span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Read the guide <ArrowRight className="h-3.5 w-3.5" /></span>
           </Link>
+          <Link
+  href="/linkedin-growth-india"
+  className="group rounded-2xl border border-[#0a66c2]/25 bg-[#0a66c2]/[.06] p-5 transition hover:-translate-y-1"
+>
+  <h3 className="font-black">LinkedIn Growth India</h3>
+
+  <p className="mt-2 text-sm leading-6 text-slate-300">
+    Explore LinkedIn followers, likes, professional positioning and a broader
+    growth strategy for India.
+  </p>
+
+  <span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">
+    Explore the growth hub
+    <ArrowRight className="h-3.5 w-3.5" />
+  </span>
+</Link>
         </div>
       </div>
     </section>
