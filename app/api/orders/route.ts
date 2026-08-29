@@ -49,7 +49,7 @@ export async function GET(request: NextRequest) {
   const limit = Math.min(Number(request.nextUrl.searchParams.get("limit")) || 50, 100);
   const { data, error } = await supabase
     .from("orders")
-    .select("id, service_name, platform, unit_price, link, quantity, package_name, charge, status, provider_order_id, created_at, services(name)")
+    .select("id, public_order_id, service_name, platform, unit_price, link, quantity, package_name, charge, status, provider_order_id, created_at, services(name)")
     .eq("user_id", user.id)
     .order("created_at", { ascending: false })
     .limit(limit);
