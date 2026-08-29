@@ -328,9 +328,9 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "YouTube view timing depends on campaign size and service conditions. The current estimate is displayed before you confirm the order.",
     metaDescription:
-      "Buy YouTube views in India with clear INR pricing, tracked delivery, public-link ordering and professional SocialRUSH support.",
+      "Buy YouTube views in India with live INR pricing, public video-link ordering, no password required, delivery details and dashboard tracking.",
     ogDescription:
-      "Increase visible YouTube video reach with transparent view campaigns and dashboard-based delivery tracking from SocialRUSH.",
+      "Compare YouTube view packages in India with live INR pricing, public video-link ordering, delivery details and SocialRUSH dashboard tracking.",
     audiences: ["New channels", "Music artists", "Educators", "Product teams"],
     related: [
       "buy-youtube-subscribers-india",
@@ -631,9 +631,11 @@ export function getIndiaServiceMetadata(
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Live INR Plans | SocialRUSH"
-    : slug === "buy-youtube-comments-india"
-      ? "Buy YouTube Comments India | SocialRUSH"
-      : `Buy ${page.serviceName} India | SocialRUSH`;
+    : slug === "buy-youtube-views-india"
+      ? "Buy YouTube Views India | Live INR Plans | SocialRUSH"
+      : slug === "buy-youtube-comments-india"
+        ? "Buy YouTube Comments India | SocialRUSH"
+        : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
       ? "Buy Twitter / X Followers India | Plans in ₹ | SocialRUSH"
