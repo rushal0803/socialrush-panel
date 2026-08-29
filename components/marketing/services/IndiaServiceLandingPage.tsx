@@ -230,9 +230,15 @@ export default async function IndiaServiceLandingPage({
   if (slug === "buy-youtube-comments-india") {
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
     const faq = [
-      ["Do I need my YouTube password?", "No. Only the public YouTube video URL is needed. Never share a password, OTP, or recovery code."],
-      ["Which YouTube URL should I submit?", "Use the exact public YouTube video or Short URL. A channel URL is not accepted for this service."],
-      ["Can I track my order?", "Yes. Your SocialRUSH dashboard keeps the order record and current status after checkout."],
+      ["How can I buy YouTube comments in India?", "Choose an available comment quantity, submit the exact public YouTube video or Short URL, review the live INR total and current service details, then continue through the SocialRUSH order flow."],
+      ["Is it safe to buy YouTube comments?", "Any third-party growth service has platform and retention considerations. SocialRUSH does not require your YouTube or Google password; only the public video URL is needed for the order."],
+      ["What should I compare before choosing a YouTube comments package?", "Compare the quantity, exact INR total, current delivery estimate, refill or support terms, and the public video URL you plan to submit before payment."],
+      ["Do YouTube comments guarantee ranking or monetization?", "No. Comments do not guarantee YouTube search ranking, recommendations, virality, watch hours, revenue, monetization approval, leads, or sales."],
+      ["Do I need my YouTube password?", "No. Only the public YouTube video URL is required. Never share a password, OTP, or recovery code."],
+      ["Which YouTube URL should I submit?", "Submit the exact public video URL. Standard watch links, youtu.be links, and Shorts links are accepted by the existing order validation."],
+      ["Can I use a channel URL?", "No. This service requires a specific public video or Short URL, not a channel URL."],
+      ["How are YouTube Comments priced?", "The live rate and calculated total are shown before you continue to secure checkout."],
+      ["Can I track my order?", "Yes. After checkout, your SocialRUSH dashboard keeps your order status and record together."],
     ];
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Services", item: `${SEO_SITE_URL}/services` }, { "@type": "ListItem", position: 3, name: "YouTube Comments", item: pageUrl }] },
