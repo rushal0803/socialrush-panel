@@ -75,6 +75,8 @@ export default function CanonicalServicePage({
       ["Is refill/support available?", `The current catalog lists ${service?.refillPolicy ?? "the service terms"}. Check the order summary for the applicable detail.`],
       ["Can I track my order?", "Yes. Continue through the secure SocialRUSH flow and track your order from the dashboard."],
       ["Can this guarantee YouTube monetization?", "No. Subscriber services do not guarantee monetization approval, watch hours, revenue, ranking, or YouTube Partner Program eligibility."],
+      ["Is it safe to buy YouTube subscribers?", "Any third-party growth service has platform and retention considerations. SocialRUSH reduces account-access risk by requiring only a public channel link and showing the current service terms before checkout. Never share your YouTube or Google password."],
+      ["What should I compare before choosing a YouTube subscriber package?", "Compare the quantity, exact INR total, current delivery estimate, refill or support terms, and the channel URL you plan to submit. Review all of these together before payment."],
       ["What if I submit the wrong channel link?", "Verify the public channel link carefully before payment. Contact support from your dashboard if you need help with an order."],
     ];
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");

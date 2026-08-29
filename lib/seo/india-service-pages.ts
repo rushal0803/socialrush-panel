@@ -262,9 +262,9 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Subscriber campaigns use gradual delivery based on package size. Keep the channel public and avoid changing its handle during processing.",
     metaDescription:
-      "Buy YouTube subscribers in India with SocialRUSH. Compare live INR packages, use public-channel ordering, and track your order from the dashboard.",
+      "Buy YouTube subscribers in India with live INR pricing, public channel-link ordering, no password required, refill details and dashboard tracking.",
     ogDescription:
-      "Build visible YouTube channel credibility with transparent subscriber packages and tracked delivery from SocialRUSH India.",
+      "Compare YouTube subscriber packages in India with live INR pricing, public channel-link ordering, delivery and refill details, and dashboard tracking.",
     audiences: ["YouTube creators", "Educators", "Podcasters", "Brand channels"],
     related: [
       "buy-youtube-likes-india",
@@ -630,7 +630,7 @@ export function getIndiaServiceMetadata(
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
-    ? "Buy YouTube Subscribers India | Plans in ₹ | SocialRUSH"
+    ? "Buy YouTube Subscribers India | Live INR Plans | SocialRUSH"
     : slug === "buy-youtube-comments-india"
       ? "Buy YouTube Comments India | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
