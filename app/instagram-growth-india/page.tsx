@@ -14,7 +14,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 export const metadata: Metadata = createPageMetadata({
   title: "Instagram Growth Services in India",
   description:
-    "Explore Instagram growth options in India including followers, likes, views, comments, saves and shares. Compare goals, understand engagement signals and choose the right SocialRUSH service.",
+    "Explore Instagram growth services in India for followers, likes, views, comments, saves and shares. Compare goals and choose the right option.",
   path: "/instagram-growth-india",
 });
 

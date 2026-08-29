@@ -104,30 +104,7 @@ export default function RootLayout({
               }),
             }}
           />
-          <script
-            type="application/ld+json"
-            dangerouslySetInnerHTML={{
-              __html: JSON.stringify({
-                "@context": "https://schema.org",
-                "@type": "LocalBusiness",
-                "@id": new URL("/#localbusiness", siteUrl).toString(),
-                name: "SocialRUSH",
-                url: siteUrl,
-                image: new URL("/og-image.png", siteUrl).toString(),
-                logo: new URL("/images/brand/socialrush-logo.png", siteUrl).toString(),
-                telephone: "+91-88603-30771",
-                priceRange: "₹₹",
-                areaServed: {
-                  "@type": "Country",
-                  name: "India",
-                },
-                sameAs: [
-                  "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
-                  "https://www.facebook.com/share/18VDDFqWzY/",
-                ],
-              }).replace(/</g, "\\u003c"),
-            }}
-          />
+          
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{

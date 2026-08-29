@@ -536,7 +536,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "A clear ordering workflow helps creators, pages, and teams coordinate public video campaigns alongside their content work.",
     safety: "SocialRUSH never asks for your Facebook password, login, or OTP. Submit only the public video or post link required by the service.",
     deliveryCopy: "Delivery follows the current service estimate shown before checkout and can vary with quantity and public-link availability.",
-    metaDescription: "Buy Facebook views in India with SocialRUSH. Public video-link ordering, transparent live pricing, dashboard tracking and WhatsApp support. No password required.",
+    metaDescription: "Buy Facebook views in India with public video-link ordering, live pricing and dashboard tracking. No password required to place your order.",
     ogDescription: "Order Facebook video views in India with transparent pricing, public-link submission, service details and dashboard tracking.",
     audiences: ["Video creators", "Facebook pages", "Local businesses", "Social media teams"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-instagram-views-india"],
