@@ -24,7 +24,7 @@ import {
 export const metadata: Metadata = createPageMetadata({
   title: "Facebook Growth India | Followers, Likes & Views",
   description:
-    "Explore Facebook growth in India across followers, likes and views. Compare campaign goals, improve your content strategy and choose the right SocialRUSH service.",
+    "Explore Facebook growth services in India for followers, likes and views. Compare campaign goals and choose the right SocialRUSH option for your page.",
   path: "/facebook-growth-india",
 });
 

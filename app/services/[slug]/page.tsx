@@ -64,7 +64,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     return {
       metadataBase: new URL(siteUrl),
       title: { absolute: "Buy Facebook Views India | SocialRUSH" },
-      description: "Buy Facebook views in India with SocialRUSH. Public video-link ordering, transparent live pricing, dashboard tracking and WhatsApp support. No password required.",
+      description: "Buy Facebook views in India with public video-link ordering, live pricing and dashboard tracking. No password required to place your order.",
       alternates: { canonical: "/facebook-views" },
       robots: { index: false, follow: true },
     };

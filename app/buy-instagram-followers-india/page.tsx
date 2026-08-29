@@ -9,6 +9,7 @@ import { getServiceById } from "@/lib/smm-service-catalog";
 
 const path = "/buy-instagram-followers-india";
 const url = `${SEO_SITE_URL}${path}`;
+const socialImage = `${SEO_SITE_URL}/og-image.png`;
 const followersService = getServiceById("instagram-followers");
 const relatedServices = [
   { code: "instagram-likes", title: "Instagram Likes", description: "Compare options for public posts and Reels.", href: "/instagram-likes", icon: Heart },
@@ -22,8 +23,8 @@ export const metadata: Metadata = {
   description: "Buy Instagram followers in India with transparent pricing, simple public-profile ordering, no password required and SocialRUSH dashboard order tracking.",
   keywords: ["buy Instagram followers India", "buy Instagram followers in India", "Indian Instagram followers", "Instagram followers price India", "Instagram follower packages India"],
   robots: { index: true, follow: true }, alternates: { canonical: url },
-  openGraph: { type: "website", locale: "en_IN", siteName: "SocialRUSH", title: "Buy Instagram Followers India - SocialRUSH", description: "Compare Instagram follower packages in India with transparent pricing, public-link ordering and dashboard tracking.", url },
-  twitter: { card: "summary_large_image", title: "Buy Instagram Followers India - SocialRUSH", description: "Transparent pricing, public-link ordering, no password required and order tracking." },
+  openGraph: { type: "website", locale: "en_IN", siteName: "SocialRUSH", title: "Buy Instagram Followers India - SocialRUSH", description: "Compare Instagram follower packages in India with transparent pricing, public-link ordering and dashboard tracking.", url, images: [{ url: socialImage, width: 1200, height: 630, alt: "SocialRUSH Instagram follower packages in India" }] },
+  twitter: { card: "summary_large_image", title: "Buy Instagram Followers India - SocialRUSH", description: "Transparent pricing, public-link ordering, no password required and order tracking.", images: [socialImage] },
 };
 const trust = ["No Password Required", "Live ₹ Pricing", "Order Tracking", "Refill Information", "Secure Checkout"];
 const steps = [["01", "Choose a package", "Select a quantity within the active service limits."], ["02", "Add your public profile", "Provide the Instagram profile URL where followers should be delivered."], ["03", "Review and pay", "Confirm the live total, delivery and refill details in the secure order flow."], ["04", "Track your order", "Follow progress from your SocialRUSH dashboard after ordering."]];
