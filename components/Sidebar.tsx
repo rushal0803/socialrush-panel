@@ -12,15 +12,14 @@ import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 export const dashboardLinks = [
-  { label: "Dashboard", href: "/dashboard", icon: "grid" },
-  { label: "New Order", href: "/dashboard/new-order", icon: "plus" },
-  { label: "Packages", href: "/dashboard/packages", icon: "packages" },
+  { label: "Overview", href: "/dashboard", icon: "grid" },
+  { label: "New Campaign", href: "/dashboard/campaigns", icon: "campaign" },
+  { label: "Quick Order", href: "/dashboard/new-order", icon: "plus" },
   { label: "Orders", href: "/dashboard/orders", icon: "orders" },
-  { label: "My Reviews", href: "/dashboard/reviews", icon: "bookmark" },
+  { label: "Clients", href: "/dashboard/clients", icon: "clients" },
   { label: "Saved Profiles", href: "/dashboard/saved-profiles", icon: "bookmark" },
-  { label: "Rewards", href: "/dashboard/rewards", icon: "gift" },
+  { label: "Favourite Services", href: "/dashboard/new-order?tab=favourites", icon: "heart" },
   { label: "Wallet", href: "/dashboard/wallet", icon: "wallet" },
-  { label: "Billing", href: "/dashboard/billing", icon: "orders" },
   { label: "Support", href: "/dashboard/support", icon: "support" },
   { label: "Account", href: "/dashboard/account", icon: "settings" },
 ] as const;
@@ -41,6 +40,9 @@ function NavIcon({ name }: { name: string }) {
         <path d="M12 8v8M8 12h8" />
       </>
     ),
+    campaign: <><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h10A2.5 2.5 0 0 1 19 6.5v11a2.5 2.5 0 0 1-2.5 2.5h-10A2.5 2.5 0 0 1 4 17.5z" /><path d="M8 9h7M8 13h7M8 17h4" /></>,
+    clients: <><circle cx="9" cy="8" r="3" /><path d="M3.5 20c.5-3.2 2.4-5 5.5-5s5 1.8 5.5 5M16 5.5a3 3 0 0 1 0 5M16 15c2.6 0 4.1 1.5 4.5 4" /></>,
+    heart: <path d="M20.8 8.6c0 5-8.8 10.4-8.8 10.4S3.2 13.6 3.2 8.6A4.6 4.6 0 0 1 12 6.8a4.6 4.6 0 0 1 8.8 1.8Z" />,
     wallet: (
       <>
         <path d="M4 7.5h15a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-11a2 2 0 0 1 2-2h12" />

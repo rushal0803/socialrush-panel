@@ -1,0 +1,8 @@
+"use server";
+import { revalidatePath } from "next/cache";
+import { redirect } from "next/navigation";
+import { createClient } from "@/lib/supabase/server";
+import { isUuid } from "@/lib/security/request";
+async function auth(){const db=await createClient();const{data:{user}}=await db.auth.getUser();if(!user)redirect("/login");return{db,user}}
+export async function saveCampaign(form:FormData){const{db,user}=await auth();const id=String(form.get("id")||"");const name=String(form.get("name")||"").trim();const clientId=String(form.get("client_id")||"").trim()||null;if(!name||name.length>160)throw new Error("Enter a campaign name.");if(id&&!isUuid(id))throw new Error("Invalid campaign.");if(clientId&&!isUuid(clientId))throw new Error("Invalid client.");const row={user_id:user.id,name,client_id:clientId,updated_at:new Date().toISOString()};const{data,error}=id?await db.from("campaigns").update(row).eq("id",id).eq("user_id",user.id).select("id").single():await db.from("campaigns").insert(row).select("id").single();if(error||!data)throw new Error("Unable to save campaign.");revalidatePath("/dashboard/campaigns");redirect(`/dashboard/campaigns/${data.id}`)}
+export async function assignOrder(form:FormData){const{db}=await auth();const campaignId=String(form.get("campaign_id")||"");const orderId=String(form.get("order_id")||"");if(!isUuid(campaignId)||!isUuid(orderId))throw new Error("Invalid campaign order.");const{error}=await db.rpc("assign_my_order_to_campaign",{p_campaign_id:campaignId,p_order_id:orderId});if(error)throw new Error("Unable to add this order to the campaign.");revalidatePath(`/dashboard/campaigns/${campaignId}`)}

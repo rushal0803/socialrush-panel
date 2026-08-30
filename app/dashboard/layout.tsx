@@ -9,6 +9,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false },
 };
 
+// Dashboard routes read the request cookie-backed Supabase session. Keep this
+// authenticated route tree request-rendered without affecting public SEO pages.
+export const dynamic = "force-dynamic";
+
 export default async function DashboardLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   let context;
   try {
