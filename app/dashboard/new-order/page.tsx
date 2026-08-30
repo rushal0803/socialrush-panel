@@ -45,7 +45,7 @@ import { track } from "@/lib/analytics/events";
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
 type SavedProfile = { id: string; label: string; platform: string; public_url: string; last_used_at: string | null };
-type ServiceRecord = { id: number; name: string; platform: string | null };
+type ServiceRecord = { id: number; code: string | null };
 type CashfreeCheckout = { checkout: (input: { paymentSessionId: string; redirectTarget: "_self" }) => Promise<unknown> };
 declare global { interface Window { Cashfree?: (options: { mode: "sandbox" | "production" }) => CashfreeCheckout; } }
 
@@ -91,10 +91,6 @@ function platformAccent(platform: PlatformId) {
 
 function normalizeQuery(value: string | null) {
   return String(value || "").trim().toLowerCase().replace(/\s+/g, "-");
-}
-
-function serviceIdentity(platform: string, name: string) {
-  return `${platform.trim().toLowerCase()}:${normalizeQuery(name)}`;
 }
 
 function platformFromQuery(value: string | null): PlatformId | null {
@@ -170,6 +166,8 @@ export default function NewOrderPage() {
   const [savedProfiles, setSavedProfiles] = useState<SavedProfile[]>([]);
   const [serviceIds, setServiceIds] = useState<Record<string, number>>({});
   const [favouriteServiceIds, setFavouriteServiceIds] = useState<Set<number>>(new Set());
+  const [favouriteUpdatingServiceIds, setFavouriteUpdatingServiceIds] = useState<Set<number>>(new Set());
+  const [favouriteNotice, setFavouriteNotice] = useState("");
   const [favouriteError, setFavouriteError] = useState("");
   const [quantityInput, setQuantityInput] = useState(prefillRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
@@ -361,14 +359,13 @@ export default function NewOrderPage() {
     const db = createClient();
     void db.from("saved_social_profiles").select("id,label,platform,public_url,last_used_at").order("last_used_at", { ascending: false, nullsFirst: false }).then(({data}) => setSavedProfiles((data || []) as SavedProfile[]));
     void Promise.all([
-      db.from("services").select("id,name,platform").eq("status", "active"),
+      db.from("services").select("id,code").eq("status", "active"),
       db.from("customer_favourites").select("service_id"),
     ]).then(([servicesResult, favouritesResult]) => {
       const byCode: Record<string, number> = {};
       const records = (servicesResult.data || []) as ServiceRecord[];
-      for (const service of mergeCustomerOrderServices()) {
-        const record = records.find((item) => serviceIdentity(item.platform || "", item.name) === serviceIdentity(service.platform, service.name));
-        if (record) byCode[service.code] = record.id;
+      for (const record of records) {
+        if (record.code) byCode[record.code] = record.id;
       }
       setServiceIds(byCode);
       setFavouriteServiceIds(new Set((favouritesResult.data || []).map((item) => Number(item.service_id))));
@@ -383,28 +380,35 @@ export default function NewOrderPage() {
 
   const toggleFavourite = async (service: SmmService) => {
     const serviceId = serviceIds[service.code];
-    if (!serviceId) return;
+    if (!serviceId || favouriteUpdatingServiceIds.has(serviceId)) return;
     setFavouriteError("");
+    setFavouriteNotice("");
     const isFavourite = favouriteServiceIds.has(serviceId);
+    const db = createClient();
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) { router.replace("/login?next=/dashboard/new-order"); return; }
+    setFavouriteUpdatingServiceIds((current) => new Set(current).add(serviceId));
+    const result = isFavourite
+      ? await db.from("customer_favourites").delete().eq("user_id", user.id).eq("service_id", serviceId)
+      : await db.from("customer_favourites").upsert(
+        { user_id: user.id, service_id: serviceId },
+        { onConflict: "user_id,service_id", ignoreDuplicates: true },
+      );
+    setFavouriteUpdatingServiceIds((current) => {
+      const next = new Set(current);
+      next.delete(serviceId);
+      return next;
+    });
+    if (result.error) {
+      setFavouriteError(`Could not ${isFavourite ? "remove" : "save"} this favourite: ${result.error.message}`);
+      return;
+    }
     setFavouriteServiceIds((current) => {
       const next = new Set(current);
       if (isFavourite) next.delete(serviceId); else next.add(serviceId);
       return next;
     });
-    const db = createClient();
-    const { data: { user } } = await db.auth.getUser();
-    if (!user) { router.replace("/login?next=/dashboard/new-order"); return; }
-    const result = isFavourite
-      ? await db.from("customer_favourites").delete().eq("user_id", user.id).eq("service_id", serviceId)
-      : await db.from("customer_favourites").insert({ user_id: user.id, service_id: serviceId });
-    if (result.error) {
-      setFavouriteServiceIds((current) => {
-        const next = new Set(current);
-        if (isFavourite) next.add(serviceId); else next.delete(serviceId);
-        return next;
-      });
-      setFavouriteError("Your favourite could not be updated. Please try again.");
-    }
+    setFavouriteNotice(isFavourite ? "Removed from favourites" : "Saved to favourites");
   };
 
   // Live-catalog services are configured in Supabase. They stay absent from
@@ -648,14 +652,26 @@ export default function NewOrderPage() {
             </div> : null}
             {currentStep === 2 ? <div>
               <button type="button" onClick={() => moveTo(1)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to platforms</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 2 of 4 · {platform && platformMeta[platform].label}</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a service</h2>
-              <div className="mt-4 flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-white/10 bg-white/[.025] p-3">
-                <div><p className="text-xs font-black text-white">Favourite services</p><p className="mt-1 text-[11px] text-[#9CA3AF]">Save an eligible service after selecting it for quicker future orders.</p></div>
-                <button type="button" disabled={!selectedService || !serviceIds[selectedService.code]} onClick={() => { if (selectedService) void toggleFavourite(selectedService); }} className="inline-flex min-h-10 items-center gap-2 rounded-xl border border-orange-400/30 bg-orange-500/10 px-3 text-xs font-bold text-orange-200 disabled:cursor-not-allowed disabled:opacity-45"><Heart className={`h-4 w-4 ${selectedService && serviceIds[selectedService.code] && favouriteServiceIds.has(serviceIds[selectedService.code]) ? "fill-current" : ""}`} />{selectedService && serviceIds[selectedService.code] && favouriteServiceIds.has(serviceIds[selectedService.code]) ? "Saved" : "Save service"}</button>
-                {favouriteError ? <p role="status" className="w-full text-xs text-red-300">{favouriteError}</p> : null}
-              </div>
-              {favouriteServices.length ? <div className="mt-3 flex flex-wrap gap-2" aria-label="Saved favourite services">{favouriteServices.map((service) => <button key={service.code} type="button" onClick={() => chooseService(service)} className="inline-flex min-h-9 items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/[.08] px-3 text-xs font-bold text-orange-100"><Heart className="h-3.5 w-3.5 fill-current" />{serviceExperience[service.code]?.name || service.name}</button>)}</div> : null}
+              {favouriteServices.length ? <section className="mt-4 rounded-2xl border border-orange-400/20 bg-orange-500/[.06] p-3" aria-label="Your favourite services"><p className="text-xs font-black text-white">Your favourite services</p><p className="mt-1 text-[11px] text-[#9CA3AF]">Start a new editable order with a saved service.</p><div className="mt-3 flex flex-wrap gap-2">{favouriteServices.map((service) => <button key={service.code} type="button" onClick={() => chooseService(service)} className="inline-flex min-h-10 items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/[.08] px-3 text-xs font-bold text-orange-100"><Heart className="h-3.5 w-3.5 fill-current" />{serviceExperience[service.code]?.name || service.name}</button>)}</div></section> : null}
+              {(favouriteNotice || favouriteError) ? <p role="status" className={`mt-3 text-xs ${favouriteError ? "text-red-300" : "text-emerald-300"}`}>{favouriteError || favouriteNotice}</p> : null}
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {services.map((service) => { const active = selectedService?.code === service.code; const health = healthByService[service.code]; const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused")); const experience = serviceExperience[service.code]; const ServiceGlyph = service.code.includes("likes") ? Heart : service.code.includes("views") ? Eye : service.code.includes("shares") ? ThumbsUp : Users; return <article key={service.code} className={`rounded-2xl border p-4 transition ${active ? "border-orange-400/80 bg-orange-500/10 shadow-[0_18px_34px_-24px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"} ${unavailable ? "opacity-55" : ""}`}><div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><IconBadge size="sm" label={platformMeta[service.platform].label} className={`bg-gradient-to-br ${platformAccent(service.platform)}`}><PlatformIcon platform={platformMeta[service.platform].label} /></IconBadge><div className="min-w-0"><h3 className="truncate text-sm font-black text-white">{experience.name}</h3><p className="mt-1 text-xs text-[#9CA3AF]">{service.description}</p></div></div>{active ? <Check className="h-5 w-5 shrink-0 text-emerald-400" /> : <ServiceGlyph className="h-5 w-5 shrink-0 text-orange-300" />}</div><div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Live rate</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div><div className="mt-3 flex flex-wrap gap-2"><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{service.refillPolicy}</span><ServiceHealthBadge health={health} /></div><details className="mt-3 rounded-xl border border-white/10 bg-white/[.025]" aria-label={`Service details for ${experience.name}`}><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-[#D6D9DF]">Service details <span className="float-right text-orange-300">+</span></summary><div className="border-t border-white/10 px-3 py-3 text-xs leading-5 text-[#9CA3AF]"><p>Min {service.minQuantity.toLocaleString("en-IN")} · Max {service.maxQuantity.toLocaleString("en-IN")}</p><p className="mt-1">{service.importantInstruction}</p></div></details><button type="button" disabled={unavailable} onClick={() => chooseService(service)} className={`mt-4 min-h-11 w-full rounded-xl text-xs font-black transition disabled:cursor-not-allowed ${active ? "bg-emerald-500/15 text-emerald-200" : "border border-white/15 bg-white/5 text-white hover:border-orange-400/70"}`}>{unavailable ? "Unavailable" : active ? "✓ Selected" : "Select Service"}</button></article>; })}
+                {services.map((service) => {
+                  const active = selectedService?.code === service.code;
+                  const serviceId = serviceIds[service.code];
+                  const isFavourite = Boolean(serviceId && favouriteServiceIds.has(serviceId));
+                  const favouriteUpdating = Boolean(serviceId && favouriteUpdatingServiceIds.has(serviceId));
+                  const health = healthByService[service.code];
+                  const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
+                  const experience = serviceExperience[service.code];
+                  const ServiceGlyph = service.code.includes("likes") ? Heart : service.code.includes("views") ? Eye : service.code.includes("shares") ? ThumbsUp : Users;
+                  return <article key={service.code} className={`rounded-2xl border p-4 transition ${active ? "border-orange-400/80 bg-orange-500/10 shadow-[0_18px_34px_-24px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"} ${unavailable ? "opacity-55" : ""}`}>
+                    <div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><IconBadge size="sm" label={platformMeta[service.platform].label} className={`bg-gradient-to-br ${platformAccent(service.platform)}`}><PlatformIcon platform={platformMeta[service.platform].label} /></IconBadge><div className="min-w-0"><h3 className="truncate text-sm font-black text-white">{experience.name}</h3><p className="mt-1 text-xs text-[#9CA3AF]">{service.description}</p></div></div><div className="flex shrink-0 items-center gap-2"><button type="button" aria-label={`${isFavourite ? "Remove" : "Save"} ${experience.name} ${isFavourite ? "from" : "to"} favourites`} aria-pressed={isFavourite} disabled={!serviceId || favouriteUpdating} onClick={(event) => { event.stopPropagation(); void toggleFavourite(service); }} onPointerDown={(event) => event.stopPropagation()} className={`grid h-10 w-10 place-items-center rounded-xl border transition disabled:cursor-not-allowed disabled:opacity-45 ${isFavourite ? "border-orange-300 bg-orange-500/20 text-orange-200" : "border-white/15 bg-white/[.04] text-[#B5B5B5] hover:border-orange-400/60 hover:text-orange-200"}`}><Heart className={`h-5 w-5 ${isFavourite ? "fill-current" : ""}`} /></button>{active ? <Check className="h-5 w-5 text-emerald-400" /> : <ServiceGlyph className="h-5 w-5 text-orange-300" />}</div></div>
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Live rate</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
+                    <div className="mt-3 flex flex-wrap gap-2"><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{service.refillPolicy}</span><ServiceHealthBadge health={health} /></div>
+                    <details className="mt-3 rounded-xl border border-white/10 bg-white/[.025]" aria-label={`Service details for ${experience.name}`}><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-[#D6D9DF]">Service details <span className="float-right text-orange-300">+</span></summary><div className="border-t border-white/10 px-3 py-3 text-xs leading-5 text-[#9CA3AF]"><p>Min {service.minQuantity.toLocaleString("en-IN")} · Max {service.maxQuantity.toLocaleString("en-IN")}</p><p className="mt-1">{service.importantInstruction}</p></div></details>
+                    <button type="button" disabled={unavailable} onClick={() => chooseService(service)} className={`mt-4 min-h-11 w-full rounded-xl text-xs font-black transition disabled:cursor-not-allowed ${active ? "bg-emerald-500/15 text-emerald-200" : "border border-white/15 bg-white/5 text-white hover:border-orange-400/70"}`}>{unavailable ? "Unavailable" : active ? "✓ Selected" : "Select Service"}</button>
+                  </article>;
+                })}
               </div>
               <p className="mt-5 text-center text-xs text-[#9CA3AF]" aria-live="polite">Select an available service to continue automatically.</p>
             </div> : null}
