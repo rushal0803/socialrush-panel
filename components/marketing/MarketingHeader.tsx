@@ -8,7 +8,6 @@ import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 import PortalCTA from "./PortalCTA";
 import CurrencyDropdown from "./CurrencyDropdown";
-import InstallSocialRush from "@/components/pwa/InstallSocialRush";
 import AndroidAppDownload from "@/components/pwa/AndroidAppDownload";
 import { createClient } from "@/lib/supabase/client";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
@@ -145,7 +144,6 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           <div className="mt-3 grid gap-2 border-t border-white/[0.08] pt-3">
             <div className="w-fit"><CurrencyDropdown tone={tone} /></div>
             <AndroidAppDownload />
-            <InstallSocialRush />
             {isLoggedIn ? (
               <>
                 <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-[#151821] px-4 py-3 text-sm font-bold text-white">Profile</Link>
