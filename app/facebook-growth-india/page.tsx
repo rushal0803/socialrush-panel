@@ -53,6 +53,12 @@ const services = [
     href: "/facebook-views",
     icon: Eye,
   },
+  {
+    title: "Facebook Group Members",
+    label: "Community Growth",
+    description: "Grow visible community size with clear live service details and dashboard tracking.",
+    href: "/buy-facebook-group-members-india",
+  },
 ];
 
 const growthFramework = [

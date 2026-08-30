@@ -18,6 +18,7 @@ export const indiaServiceSlugs = [
   "buy-linkedin-likes-india",
   "buy-twitter-followers-india",
   "buy-facebook-followers-india",
+  "buy-facebook-group-members-india",
   "buy-facebook-likes-india",
   "buy-facebook-views-india",
   "buy-telegram-members-india",
@@ -42,6 +43,7 @@ export const canonicalIndiaServicePaths: Record<IndiaServiceSlug, string> = {
   "buy-twitter-followers-india": "/twitter-followers",
   // This established Search Console landing page keeps its historical URL.
   "buy-facebook-followers-india": "/buy-facebook-followers-india",
+  "buy-facebook-group-members-india": "/buy-facebook-group-members-india",
   "buy-facebook-likes-india": "/facebook-likes",
   "buy-facebook-views-india": "/facebook-views",
   "buy-telegram-members-india": "/telegram-members",
@@ -488,6 +490,27 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
       "buy-twitter-followers-india",
     ],
   },
+  "buy-facebook-group-members-india": {
+    slug: "buy-facebook-group-members-india",
+    serviceCode: "facebook-group-members",
+    platform: "Facebook",
+    platformKey: "facebook",
+    serviceName: "Facebook Group Members",
+    unitName: "members",
+    destination: "public or accessible Facebook Group URL",
+    delivery: "Shown with the active service",
+    refill: "Shown with the active service",
+    packageService: "group-members",
+    intro: "Buy Facebook Group Members in India with transparent pricing, secure checkout, clear delivery estimates, and dashboard order tracking from SocialRUSH.",
+    overview: "Select the active Facebook Group Members service, enter the correct accessible group URL, choose a quantity, and review the live details before checkout.",
+    value: "A visible group size can support community-building campaigns and social proof alongside useful moderation and member-focused content.",
+    safety: "Facebook Group must be public or accessible as required by the service. Enter the correct Facebook Group URL and do not change privacy settings while the order is processing.",
+    deliveryCopy: "Delivery time may vary depending on service load. Keep the submitted group accessible and its privacy settings unchanged while processing.",
+    metaDescription: "Buy Facebook Group Members in India with transparent pricing, secure checkout, clear delivery estimates, and dashboard order tracking from SocialRUSH.",
+    ogDescription: "Buy Facebook Group Members in India with transparent service details and SocialRUSH dashboard tracking.",
+    audiences: ["Community builders", "Local groups", "Creators", "Brands"],
+    related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india"],
+  },
   "buy-facebook-likes-india": {
     slug: "buy-facebook-likes-india",
     serviceCode: "facebook-likes",
@@ -626,7 +649,9 @@ export function getIndiaServiceMetadata(
       ? "Buy Indian Instagram Likes | Live INR Plans | SocialRUSH"
       : null;
   const facebookTitle =
-    slug === "buy-facebook-followers-india"
+    slug === "buy-facebook-group-members-india"
+      ? "Buy Facebook Group Members India | SocialRUSH"
+      : slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const youtubeTitle = slug === "buy-youtube-subscribers-india"

@@ -21,6 +21,8 @@ export const SERVICE_PRICES = {
   "facebook-likes": 149,
   "facebook-views": 99,
   "facebook-shares": 499,
+  // This service is intentionally priced only from its active Supabase row.
+  "facebook-group-members": 0,
   "linkedin-followers": 2999,
   "linkedin-likes": 2499,
   "telegram-members": 799,
