@@ -8,6 +8,7 @@ import { createClient } from "@/lib/supabase/client";
 import { Menu, X } from "lucide-react";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 import Logo from "@/components/Logo";
+import InstallSocialRush from "@/components/pwa/InstallSocialRush";
 
 export default function DashboardMobileMenu() {
   const pathname = usePathname();
@@ -66,6 +67,7 @@ export default function DashboardMobileMenu() {
               <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
               <p className="mb-3 text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard navigation</p>
               <NavLinks mobile onNavigate={() => setIsOpen(false)} />
+              <div className="mt-3"><InstallSocialRush /></div>
 
               <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
                 <Link

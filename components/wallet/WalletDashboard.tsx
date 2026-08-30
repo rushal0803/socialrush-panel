@@ -433,8 +433,8 @@ export default function WalletDashboard({
       ? requestedReturnTo
       : null;
   const minimumAmount = returnTo ? 0.01 : 100;
-  const { currency } = usePreferredCurrency("INR");
-  const money = (value: number) => formatCurrency(value, currency);
+  const { currency, rates } = usePreferredCurrency("INR");
+  const money = (value: number) => formatCurrency(value, currency, rates);
   const [balance, setBalance] = useState(initial.balance);
   const [method, setMethod] = useState<PaymentMethodId>(() => {
     const requested = normalizePaymentMethod(searchParams.get("method"));

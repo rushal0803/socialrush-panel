@@ -1,0 +1,6 @@
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { Home, PlusCircle, ReceiptText, WalletCards, UserRound } from "lucide-react";
+const links = [{ href: "/dashboard", label: "Home", Icon: Home }, { href: "/dashboard/new-order", label: "New Order", Icon: PlusCircle }, { href: "/dashboard/orders", label: "Orders", Icon: ReceiptText }, { href: "/dashboard/wallet", label: "Wallet", Icon: WalletCards }, { href: "/dashboard/account", label: "Account", Icon: UserRound }];
+export default function MobileBottomNav() { const pathname = usePathname(); return <nav className="fixed inset-x-0 bottom-0 z-[65] border-t border-white/10 bg-[#0c0e14]/95 px-2 pb-[env(safe-area-inset-bottom)] pt-1 backdrop-blur lg:hidden" aria-label="Primary dashboard navigation"><div className="mx-auto grid max-w-lg grid-cols-5">{links.map(({ href, label, Icon }) => { const active = href === "/dashboard" ? pathname === href : pathname.startsWith(href); return <Link key={href} href={href} className={`flex min-h-14 flex-col items-center justify-center gap-1 rounded-xl text-[10px] font-bold ${active ? "text-orange-300" : "text-slate-400"}`}><Icon className="h-5 w-5" aria-hidden="true"/><span>{label}</span></Link>; })}</div></nav>; }

@@ -93,7 +93,7 @@ function CurrencySelector() {
 }
 
 export default function DashboardHeaderBar({ name, role, initials, balance }: { name: string; role: string; initials: string; balance: number }) {
-  const { currency } = usePreferredCurrency("INR");
+  const { currency, rates } = usePreferredCurrency("INR");
   return (
     <header className="sticky top-0 z-[70] border-b border-white/[.08] bg-[#0c0e14]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4">
@@ -106,7 +106,7 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
 
           <Link href="/dashboard/wallet" className="hidden min-h-11 shrink-0 items-center gap-2 rounded-xl border border-white/[.1] bg-white/[.035] px-3 text-left transition hover:border-orange-400/35 hover:bg-orange-500/[.08] md:inline-flex">
             <Wallet className="h-4 w-4 text-[#ff9a2e]" />
-            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#747b89]">Wallet</span><span className="block text-sm font-extrabold text-white">{formatCurrency(balance, currency)}</span></span>
+            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#747b89]">Wallet (INR)</span><span className="block text-sm font-extrabold text-white">{formatCurrency(balance, currency, rates)}</span></span>
           </Link>
           <Link
             href="/dashboard/add-funds"

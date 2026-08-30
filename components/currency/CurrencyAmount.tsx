@@ -12,11 +12,11 @@ export default function CurrencyAmount({
   prefix?: string;
   suffix?: string;
 }) {
-  const { currency } = usePreferredCurrency("INR");
+  const { currency, rates } = usePreferredCurrency("INR");
   return (
     <>
       {prefix || ""}
-      {formatCurrency(amountINR, currency)}
+      {formatCurrency(amountINR, currency, rates)}
       {suffix || ""}
     </>
   );

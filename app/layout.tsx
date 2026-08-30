@@ -5,7 +5,9 @@ import ClientProviders from "@/components/providers/ClientProviders";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import PageAnalytics from "@/components/analytics/PageAnalytics";
 import { cookies } from "next/headers";
-import { DISPLAY_CURRENCY_COOKIE, getServerExchangeRates, isCurrency } from "@/lib/currency";
+import { DISPLAY_CURRENCY_COOKIE, isCurrency } from "@/lib/currency";
+import { getExchangeRates } from "@/lib/fx-rates";
+import PwaClient from "@/components/pwa/PwaClient";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -68,14 +70,16 @@ export const metadata: Metadata = {
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
+  themeColor: "#07080D",
+  viewportFit: "cover",
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   const storedCurrency = cookies().get(DISPLAY_CURRENCY_COOKIE)?.value;
   const initialCurrency = isCurrency(storedCurrency) ? storedCurrency : "INR";
-  const rates = getServerExchangeRates();
+  const rates = await getExchangeRates();
   return (
     <html lang="en-IN">
       <body className="overflow-x-clip bg-[#07080D] text-white">
@@ -132,6 +136,7 @@ export default function RootLayout({
           {children}
           <PageAnalytics />
           <FloatingWhatsAppButton />
+          <PwaClient />
         </ClientProviders>
       </body>
     </html>

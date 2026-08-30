@@ -135,7 +135,7 @@ export default function Sidebar({
   initialBalance: number;
   userId: string;
 }) {
-  const { currency } = usePreferredCurrency("INR");
+  const { currency, rates } = usePreferredCurrency("INR");
   const [balance, setBalance] = useState<number>(initialBalance);
 
   useEffect(() => {
@@ -184,7 +184,8 @@ export default function Sidebar({
           <p className="text-xs font-semibold text-[#a8afbd]">Available balance</p>
           <span className="h-2 w-2 rounded-full bg-emerald-400" />
         </div>
-        <p className="mt-2 text-2xl font-black text-white">{formatCurrency(balance, currency)}</p>
+        <p className="mt-2 text-2xl font-black text-white">{formatCurrency(balance, currency, rates)}</p>
+        {currency !== "INR" ? <p className="mt-1 text-[10px] text-[#a8afbd]">Ledger balance remains INR</p> : null}
 
         <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex w-full justify-center py-2.5 text-xs">
           Add Funds

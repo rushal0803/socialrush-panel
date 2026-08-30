@@ -34,8 +34,8 @@ function LoadingCards() {
 }
 
 export default function CampaignHistoryPage() {
-  const { currency } = usePreferredCurrency("INR");
-  const money = (value: number) => formatCurrency(value, currency);
+  const { currency, rates } = usePreferredCurrency("INR");
+  const money = (value: number) => formatCurrency(value, currency, rates);
   const [campaigns, setCampaigns] = useState<Campaign[]>([]);
   const [loading, setLoading] = useState(true);
   const [search, setSearch] = useState("");

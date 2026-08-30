@@ -36,6 +36,7 @@ export default function FloatingWhatsAppButton() {
     pathname === "/dashboard/billing" ||
     pathname === "/dashboard/orders" ||
     pathname === "/dashboard/order-history";
+  const dashboardOffset = pathname.startsWith("/dashboard") ? "bottom-[calc(5.25rem+env(safe-area-inset-bottom))] sm:bottom-6" : "bottom-[calc(.75rem+env(safe-area-inset-bottom))] sm:bottom-6";
 
   if (hasInlineOrderHelp || isPackagesRoute || isServicesRoute || isWalletRoute || isCheckoutRoute || isAdminRoute || isDashboardActionRoute || covered) return null;
 
@@ -45,7 +46,7 @@ export default function FloatingWhatsAppButton() {
       target="_blank"
       rel="noopener noreferrer"
       aria-label="Open SocialRUSH WhatsApp support"
-      className="fixed bottom-[calc(.75rem+env(safe-area-inset-bottom))] right-[calc(.75rem+env(safe-area-inset-right))] z-[68] inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-500 p-0 text-xs font-bold text-white shadow-[0_16px_38px_-12px_rgba(34,197,94,.65)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-green-600 hover:shadow-xl active:scale-[.98] sm:bottom-6 sm:right-6 sm:h-auto sm:w-auto sm:min-h-12 sm:gap-2 sm:px-4 sm:py-3"
+      className={`fixed ${dashboardOffset} right-[calc(.75rem+env(safe-area-inset-right))] z-[68] inline-flex h-10 w-10 items-center justify-center rounded-full bg-green-500 p-0 text-xs font-bold text-white shadow-[0_16px_38px_-12px_rgba(34,197,94,.65)] transition-all duration-200 ease-out hover:-translate-y-0.5 hover:bg-green-600 hover:shadow-xl active:scale-[.98] sm:right-6 sm:h-auto sm:w-auto sm:min-h-12 sm:gap-2 sm:px-4 sm:py-3`}
     >
       <FaWhatsapp className="h-5 w-5 shrink-0" aria-hidden="true" />
       <span className="hidden sm:inline">
