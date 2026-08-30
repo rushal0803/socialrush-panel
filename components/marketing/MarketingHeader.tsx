@@ -9,6 +9,7 @@ import Logo from "@/components/Logo";
 import PortalCTA from "./PortalCTA";
 import CurrencyDropdown from "./CurrencyDropdown";
 import InstallSocialRush from "@/components/pwa/InstallSocialRush";
+import AndroidAppDownload from "@/components/pwa/AndroidAppDownload";
 import { createClient } from "@/lib/supabase/client";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
@@ -143,6 +144,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </nav>
           <div className="mt-3 grid gap-2 border-t border-white/[0.08] pt-3">
             <div className="w-fit"><CurrencyDropdown tone={tone} /></div>
+            <AndroidAppDownload />
             <InstallSocialRush />
             {isLoggedIn ? (
               <>

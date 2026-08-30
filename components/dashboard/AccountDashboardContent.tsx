@@ -7,6 +7,7 @@ import {
   LogOut, Mail, Pencil, Save, ShieldCheck, Smartphone, UserRound, Wallet,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
+import AndroidAppDownload from "@/components/pwa/AndroidAppDownload";
 
 type ProfileData = {
   full_name: string | null;
@@ -86,6 +87,7 @@ export default function AccountDashboardContent({ profile, email, role, firstNam
             </section>
 
             <section aria-labelledby="security-heading" className="rounded-3xl border border-white/10 bg-[#111217]/95 p-5 shadow-[0_24px_60px_-42px_rgba(0,0,0,.9)] sm:p-7"><div className="flex gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-400/10 text-orange-300"><ShieldCheck className="h-5 w-5" /></span><div><h2 id="security-heading" className="font-black text-white">Password &amp; Security</h2><p className="mt-1 text-sm text-[#aeb5c0]">Manage your password, email and account security settings.</p></div></div><div className="mt-6 grid gap-3 sm:grid-cols-2"><Link href="/dashboard/settings" className="group flex min-h-[76px] items-center justify-between rounded-2xl border border-white/10 bg-white/[.025] p-4 transition hover:border-orange-400/35 hover:bg-orange-400/[.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"><div><p className="text-sm font-bold text-white">Change password</p><p className="mt-1 text-xs text-[#aeb5c0]">Use your existing secure password flow.</p></div><ChevronRight className="h-4 w-4 text-orange-300 transition group-hover:translate-x-0.5" /></Link><Link href="/dashboard/settings" className="group flex min-h-[76px] items-center justify-between rounded-2xl border border-white/10 bg-white/[.025] p-4 transition hover:border-orange-400/35 hover:bg-orange-400/[.05] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-300"><div><p className="text-sm font-bold text-white">Notifications &amp; preferences</p><p className="mt-1 text-xs text-[#aeb5c0]">Control account update emails.</p></div><ChevronRight className="h-4 w-4 text-orange-300 transition group-hover:translate-x-0.5" /></Link></div></section>
+            <AndroidAppDownload />
           </div>
 
           <aside className="space-y-5 xl:sticky xl:top-24">
