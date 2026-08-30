@@ -23,6 +23,11 @@ yarn-error.log*
 .DS_Store
 *.pem
 
+# Android release signing material must remain local.
+android-app/keystore.properties
+android-app/*.jks
+android-app/*.keystore
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
