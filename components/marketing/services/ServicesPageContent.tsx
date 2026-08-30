@@ -8,11 +8,10 @@ import PlatformIcon from "@/components/PlatformIcon";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { activeSmmServices, platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
+import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 import { useServiceHealth } from "@/lib/use-service-health";
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
-const publicCatalogServices = activeSmmServices.filter((service) => !service.requiresLiveCatalogFacts);
 
 const platformColors: Record<SmmPlatformId, string> = {
   instagram: "text-pink-300", youtube: "text-red-400", facebook: "text-blue-300", linkedin: "text-sky-300",
@@ -26,7 +25,7 @@ const servicePaths: Record<string, string> = {
   "youtube-subscribers": "/youtube-subscribers", "youtube-likes": "/youtube-likes", "youtube-views": "/youtube-views",
   "youtube-comments": "/buy-youtube-comments-india",
   "youtube-watch-hours": "/buy-youtube-watch-hours-india",
-  "facebook-followers": "/buy-facebook-followers-india", "facebook-likes": "/facebook-likes", "facebook-views": "/facebook-views", "linkedin-followers": "/linkedin-followers",
+  "facebook-followers": "/buy-facebook-followers-india", "facebook-group-members": "/buy-facebook-group-members-india", "facebook-likes": "/facebook-likes", "facebook-views": "/facebook-views", "linkedin-followers": "/linkedin-followers",
   "linkedin-likes": "/linkedin-likes", "telegram-members": "/telegram-members", "tiktok-followers": "/tiktok-followers", "x-followers": "/twitter-followers",
 };
 
@@ -61,9 +60,12 @@ function TypeIcon({ type }: { type: string }) {
   return <Icon className="h-3.5 w-3.5" aria-hidden="true" />;
 }
 
-type Props = { initialPlatformParam?: string; initialTypeParam?: string; initialSearchParam?: string; liveWatchHours?: SmmService | null };
+type Props = { initialPlatformParam?: string; initialTypeParam?: string; initialSearchParam?: string; serviceCatalog: SmmService[] };
 
-export default function ServicesPageContent({ initialPlatformParam, initialTypeParam, initialSearchParam, liveWatchHours = null }: Props) {
+export default function ServicesPageContent({ initialPlatformParam, initialTypeParam, initialSearchParam, serviceCatalog }: Props) {
+  // Freeze the serialized RSC catalog for the hydration render. Every derived
+  // view below uses this same server-provided collection.
+  const [catalogServices] = useState<SmmService[]>(() => serviceCatalog);
   const { currency } = usePreferredCurrency("INR");
   const { health: healthByService, isLoading: isHealthLoading } = useServiceHealth();
   const [platform, setPlatform] = useState<SmmPlatformId>(() => platformFrom(initialPlatformParam || initialTypeParam?.split("-")[0]));
@@ -78,7 +80,6 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
     setShowAll(false);
   }, [initialPlatformParam, initialSearchParam, initialTypeParam]);
 
-  const catalogServices = useMemo(() => [...publicCatalogServices, ...(liveWatchHours ? [liveWatchHours] : [])], [liveWatchHours]);
   const types = useMemo(() => ["all", ...Array.from(new Set(catalogServices.filter((item) => item.platform === platform).map((item) => typeFor(item.code))))], [catalogServices, platform]);
   const services = useMemo(() => {
     const term = query.trim().toLowerCase();

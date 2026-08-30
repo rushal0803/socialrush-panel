@@ -197,6 +197,11 @@ const keywordResourceMap: Record<string, Array<{ label: string; href: string; te
       href: "/facebook-likes",
       text: "Explore Facebook likes for eligible public posts with clear order guidance.",
     },
+    {
+      label: "Facebook Group Members",
+      href: "/buy-facebook-group-members-india",
+      text: "Review accessible-group URL requirements, live service terms, and dashboard order tracking.",
+    },
   ],
 };
 
@@ -268,6 +273,7 @@ export default async function IndiaServiceLandingPage({
   const maxQuantity = live?.max;
   const delivery = live?.deliveryTime || "Current estimate unavailable";
   const refill = live?.refillPolicy || "Current terms unavailable";
+  const quality = live?.qualityType || "Current service details unavailable";
   const faqs = getIndiaServiceFaqs(slug).map((faq) => {
     if (faq.question.startsWith("What is the price")) return { ...faq, answer: currentPrice ? `The current starting rate is ₹${currentPrice.toLocaleString("en-IN")} per 1,000 ${page.unitName}. The exact total is shown before confirmation.` : "Live pricing is temporarily unavailable. Check the Services page before ordering." };
     if (faq.question === "How long does delivery take?") return { ...faq, answer: `The current estimate is ${delivery}. Actual timing can vary with quantity, destination availability, and platform conditions.` };
@@ -471,7 +477,7 @@ export default async function IndiaServiceLandingPage({
                 href={available ? orderHref : "#service-status"}
                 className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-black text-[#FF9F00]"
               >
-                {available ? "Start Order" : "Temporarily unavailable"}
+                {available ? (slug === "buy-facebook-group-members-india" ? "Buy Facebook Group Members" : "Start Order") : "Temporarily unavailable"}
               </Link>
               <a
                 href={whatsappHref}
@@ -530,13 +536,17 @@ export default async function IndiaServiceLandingPage({
                   {refill}
                 </dd>
               </div>
+              <div className="flex justify-between gap-4">
+                <dt className="text-[#111827]">Quality type</dt>
+                <dd className="max-w-[65%] text-right font-black text-[#0B0B0F]">{quality}</dd>
+              </div>
             </dl>
             <Link
               id="service-status"
               href={available ? orderHref : "/services"}
               className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white"
             >
-              {available ? (slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : `Start ${page.serviceName} Order`) : "View available alternatives"}
+              {available ? (slug === "buy-facebook-group-members-india" ? "Buy Facebook Group Members" : slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : `Start ${page.serviceName} Order`) : "View available alternatives"}
             </Link>
           </aside>
         </div>

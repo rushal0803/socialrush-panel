@@ -50,7 +50,7 @@ const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
   "x-followers": "X Followers",
 };
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members"]);
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();

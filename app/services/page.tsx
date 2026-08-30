@@ -2,7 +2,9 @@ import ServicesPageContent from "@/components/marketing/services/ServicesPageCon
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
-import type { SmmService } from "@/lib/smm-service-catalog";
+import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-service-catalog";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Social Media Growth Services | SocialRUSH",
@@ -48,10 +50,25 @@ type ServicesPageProps = {
 };
 
 export default async function ServicesPage({ searchParams }: ServicesPageProps) {
-  const live = await getLiveServiceFacts("youtube", "YouTube Watch Hours");
-  const liveWatchHours: SmmService | null = live?.available ? {
-    platform: "youtube", code: "youtube-watch-hours", name: "YouTube Watch Hours", description: "Build extended viewing activity around your public YouTube content with transparent watch-hour packages and dashboard tracking.", pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: "Live service", importantInstruction: "Use the exact public YouTube video URL and keep the video public while processing.", isActive: true,
-  } : null;
+  const liveOnlyCodes = ["instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members"] as const;
+  const resolvedLiveServices = await Promise.all(liveOnlyCodes.map(async (code) => {
+    const fallback = getServiceById(code);
+    if (!fallback) return null;
+    const live = await getLiveServiceFacts(fallback.platform, fallback.name);
+    if (!live?.available || !Number.isFinite(live.rate) || live.rate <= 0 || live.min <= 0 || live.max < live.min) return null;
+    return {
+      ...fallback,
+      pricePer1000: live.rate,
+      minQuantity: live.min,
+      maxQuantity: live.max,
+      deliveryTime: live.deliveryTime,
+      refillPolicy: live.refillPolicy,
+      qualityType: live.qualityType,
+      importantInstruction: live.importantInstruction,
+    } satisfies SmmService;
+  }));
+  const liveServices = resolvedLiveServices.filter((service): service is SmmService => service !== null);
+  const serviceCatalog = [...activeSmmServices.filter((service) => !service.requiresLiveCatalogFacts), ...liveServices];
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
@@ -73,7 +90,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialPlatformParam={searchParams?.platform}
         initialTypeParam={searchParams?.type ?? searchParams?.service}
         initialSearchParam={searchParams?.q ?? searchParams?.search}
-        liveWatchHours={liveWatchHours}
+        serviceCatalog={serviceCatalog}
       />
     </>
   );

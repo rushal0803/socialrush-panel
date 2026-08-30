@@ -15,6 +15,12 @@ const supportedServices = {
     description: "Build extended viewing activity around your public YouTube content with transparent watch-hour packages and dashboard tracking.",
     fallbackInstruction: "Submit the correct public YouTube video URL and keep the video public while the order is processing.",
   },
+  "facebook-group-members": {
+    name: "Facebook Group Members",
+    platform: "facebook",
+    description: "Grow your Facebook community with group member packages, transparent pricing, and dashboard order tracking.",
+    fallbackInstruction: "Facebook Group must be public or accessible as required by the service. Enter the correct Facebook Group URL and do not change privacy settings while the order is processing.",
+  },
 } as const;
 
 export async function GET(request: NextRequest) {
