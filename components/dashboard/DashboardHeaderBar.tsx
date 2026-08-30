@@ -7,11 +7,9 @@ import DashboardMobileMenu from "@/components/dashboard/DashboardMobileMenu";
 import NotificationBell from "@/components/dashboard/NotificationBell";
 import DashboardSearch from "@/components/dashboard/DashboardSearch";
 import Logo from "@/components/Logo";
-import { getCurrencySymbol, type Currency } from "@/lib/currency";
+import { currencies } from "@/lib/currency";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-
-const dashboardCurrencies: Currency[] = ["INR", "USD", "AED", "EUR", "GBP"];
 
 function CurrencySelector() {
   const { currency, setCurrency } = usePreferredCurrency("INR");
@@ -19,7 +17,7 @@ function CurrencySelector() {
   const rootRef = useRef<HTMLDivElement>(null);
 
   const options = useMemo(
-    () => dashboardCurrencies.map((code) => ({ code, symbol: getCurrencySymbol(code) })),
+    () => currencies.map(({ code, symbol }) => ({ code, symbol })),
     [],
   );
 
