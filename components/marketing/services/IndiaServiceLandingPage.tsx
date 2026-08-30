@@ -30,6 +30,7 @@ import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLanding";
 import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
 import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
+import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -232,6 +233,15 @@ export default async function IndiaServiceLandingPage({
   }
   const isTwitterFollowers = slug === "buy-twitter-followers-india";
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
+  if (slug === "buy-facebook-group-members-india") {
+    const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
+    const schemas = [
+      { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Facebook Services", item: `${SEO_SITE_URL}/services?platform=facebook` }, { "@type": "ListItem", position: 3, name: "Facebook Group Members", item: pageUrl }] },
+      { "@context": "https://schema.org", "@type": "Service", name: "Facebook Group Members India", serviceType: "Facebook Group Members service", url: pageUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock", url: pageUrl } } : {}) },
+      { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [["Do I need my Facebook password?", "No. Only the exact accessible Facebook Group URL is required. Never share a password, OTP, or recovery code."], ["Which Facebook Group URL should I submit?", "Submit the exact facebook.com/groups/... URL. Facebook Page, profile, and post URLs are not accepted."], ["Does the group need to be accessible?", "Keep the submitted Facebook Group accessible and do not change its privacy settings while the order is processing."], ["Do group members guarantee activity or engagement?", "No. The service does not guarantee discussions, engagement, reach, sales, retention, or other platform outcomes."]].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
+    ];
+    return <PublicShell tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} /></PublicShell>;
+  }
   if (slug === "buy-youtube-comments-india") {
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
     const faq = [
