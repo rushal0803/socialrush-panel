@@ -487,7 +487,7 @@ export default async function IndiaServiceLandingPage({
                 href={available ? orderHref : "#service-status"}
                 className="inline-flex min-h-12 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white/90 px-6 py-3 text-sm font-black text-[#FF9F00]"
               >
-                {available ? (slug === "buy-facebook-group-members-india" ? "Buy Facebook Group Members" : "Start Order") : "Temporarily unavailable"}
+                {available ? "Start Order" : "Temporarily unavailable"}
               </Link>
               <a
                 href={whatsappHref}
@@ -556,7 +556,7 @@ export default async function IndiaServiceLandingPage({
               href={available ? orderHref : "/services"}
               className="mt-7 inline-flex min-h-12 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white"
             >
-              {available ? (slug === "buy-facebook-group-members-india" ? "Buy Facebook Group Members" : slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : `Start ${page.serviceName} Order`) : "View available alternatives"}
+              {available ? (slug === "buy-instagram-comments-india" ? "Buy Instagram Comments" : `Start ${page.serviceName} Order`) : "View available alternatives"}
             </Link>
           </aside>
         </div>
