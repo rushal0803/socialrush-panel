@@ -124,7 +124,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="relative mx-auto max-h-[calc(100dvh-5.2rem)] w-full max-w-7xl overflow-y-auto rounded-2xl border border-white/10 bg-[#0C0E14] p-4 pt-16 shadow-[0_24px_60px_rgba(0,0,0,.45)] 2xl:hidden"
+          className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#0C0E14] 2xl:hidden"
         >
          
           <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(.75rem+env(safe-area-inset-top))]">
@@ -133,7 +133,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
               <X className="h-6 w-6" strokeWidth={2.75} aria-hidden="true" />
             </button>
           </div>
-          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-4 py-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
+         <div className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain px-4 py-3 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1.25rem+env(safe-area-inset-bottom))] [-webkit-overflow-scrolling:touch]">
           <nav className="grid gap-1" aria-label="Mobile navigation">
             {nav.map(([label, href]) => (
               <Link key={href} href={href} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl border border-transparent px-3 py-2.5 text-sm font-semibold text-[#D7DBE3] transition hover:border-orange-400/25 hover:bg-orange-400/[0.07] hover:text-white">
@@ -143,10 +143,10 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </nav>
           <div className="mt-3 grid gap-2 border-t border-white/[0.08] pt-3">
             <div className="w-fit"><CurrencyDropdown tone={tone} /></div>
-            <AndroidAppDownload />
+            <AndroidAppDownload compact />
             {isLoggedIn ? (
               <>
-                <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-[#151821] px-4 py-3 text-sm font-bold text-white">Profile</Link>
+                <Link href="/dashboard/account" onClick={() => setOpen(false)} className="inline-flex min-h-10 items-center justify-center rounded-xl border border-white/10 bg-[#151821] px-4 py-3 text-sm font-bold text-white">Profile</Link>
                 <button type="button" onClick={logout} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 px-4 py-3 text-sm font-bold text-[#D7DBE3]">Logout</button>
               </>
             ) : (
