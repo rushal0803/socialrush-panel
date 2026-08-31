@@ -650,7 +650,7 @@ export function getIndiaServiceMetadata(
       : null;
   const facebookTitle =
     slug === "buy-facebook-group-members-india"
-      ? "Buy Facebook Group Members India | SocialRUSH"
+      ? "Buy Facebook Group Members in India | Live Pricing | SocialRUSH"
       : slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
