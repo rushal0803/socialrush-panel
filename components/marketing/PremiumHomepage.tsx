@@ -70,6 +70,7 @@ export default function PremiumHomepage({ searchParams }: { searchParams?: { pla
           <h1 className="mt-6 max-w-xl text-[clamp(2.7rem,4.8vw,4.35rem)] font-black leading-[.96] tracking-[-.06em]">Your social growth, <span className="text-orange-400">engineered.</span></h1>
           <p className="mt-6 max-w-xl text-[15px] leading-7 text-[#B2B9C7] sm:text-base">Choose a social-growth service, launch a campaign and follow every order from one clear SocialRUSH workspace.</p>
           <div className="mt-7 flex flex-wrap gap-3"><Link href="/dashboard/new-order" className="sr-primary">Start Growing <ArrowRight className="h-4 w-4" /></Link><Link href="/services" className="sr-secondary">Explore Services</Link></div>
+          <div className="mt-4 flex flex-wrap items-center gap-3 text-sm"><span className="font-bold text-[#D7DBE3]">Not sure what your account needs?</span><Link href="/tools/social-media-growth-audit" className="font-bold text-orange-300 hover:text-orange-200">Check My Growth Score</Link><Link href="/tools/social-media-growth-planner" className="font-bold text-[#D7DBE3] hover:text-white">Build a Growth Plan</Link></div>
           <ul className="mt-8 grid max-w-xl grid-cols-2 gap-x-4 gap-y-3 text-xs font-semibold text-[#D7DBE3] sm:grid-cols-4">{["Public link only", "No password required", "Transparent pricing", "Order tracking"].map(x => <li key={x} className="flex items-center gap-2"><Check className="h-4 w-4 shrink-0 text-emerald-400" />{x}</li>)}</ul>
         </div>
         <PremiumJourney />
