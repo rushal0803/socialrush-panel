@@ -42,6 +42,7 @@ import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { isSocialRushAndroidApp } from "@/lib/is-socialrush-android-app";
+import { findSafeAlternative } from "@/lib/service-alternatives";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -250,6 +251,14 @@ export default function NewOrderPage() {
   const services = useMemo(
     () => (platform ? mergeCustomerOrderServices(liveServices).filter((service) => service.platform === platform) : []),
     [liveServices, platform],
+  );
+  const selectedServiceUnavailable = Boolean(selectedService && (() => {
+    const health = healthByService[selectedService.code];
+    return health && (!health.acceptsNewOrders || health.status === "paused" || health.status === "maintenance");
+  })());
+  const safeAlternative = useMemo(
+    () => selectedService ? findSafeAlternative(selectedService, services, healthByService.health) : null,
+    [healthByService.health, selectedService, services],
   );
   const favouriteServices = useMemo(
     () => mergeCustomerOrderServices(liveServices).filter((service) => {
@@ -842,7 +851,14 @@ export default function NewOrderPage() {
           )}
         </section>
 
-        {selectedService && linkRule ? (
+        {selectedService && selectedServiceUnavailable ? (
+          <section className="mt-6 rounded-3xl border border-red-400/30 bg-red-500/[.08] p-5 sm:p-6">
+            <p className="text-[10px] font-black uppercase tracking-[.15em] text-red-200">Service unavailable</p>
+            <h2 className="mt-2 text-xl font-black text-white">This service is temporarily unavailable.</h2>
+            <p className="mt-2 text-sm leading-6 text-red-100">Checkout is blocked until it is available again. Your saved link and quantity have not been submitted.</p>
+            {safeAlternative ? <div className="mt-5 rounded-2xl border border-white/10 bg-[#111111] p-4"><p className="text-xs font-black text-orange-200">Recommended alternative</p><p className="mt-2 text-sm font-bold text-white">{serviceExperience[safeAlternative.code]?.name || safeAlternative.name}</p><p className="mt-1 text-xs text-slate-300">Same platform and service type. Current price and limits will be loaded fresh.</p><button type="button" onClick={() => chooseService(safeAlternative)} className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black text-white">Use this service</button></div> : <p className="mt-5 rounded-2xl border border-white/10 bg-[#111111] p-4 text-sm text-slate-300">No suitable alternative is currently available.</p>}
+          </section>
+        ) : selectedService && linkRule ? (
           <>
             <section ref={detailsRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
               <div className="flex flex-wrap items-start justify-between gap-3">
