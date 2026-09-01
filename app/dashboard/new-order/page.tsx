@@ -57,8 +57,11 @@ const protectedLiveServiceDefinitions = [
   { code: "facebook-group-members", name: "Facebook Group Members", platform: "facebook", description: "Grow your Facebook community with group member packages, transparent pricing, and dashboard order tracking." },
 ] as const satisfies ReadonlyArray<Pick<SmmService, "code" | "name" | "platform" | "description">>;
 const clientLiveServiceDefinitions = [
+  { code: "instagram-followers", name: "Instagram Real Followers", platform: "instagram", description: "Compare Instagram follower campaigns with clear pricing, delivery estimates and eligible refill support.", fallbackInstruction: "Use a public Instagram profile URL." },
   { code: "instagram-saves", name: "Instagram Saves", platform: "instagram", description: "Strengthen post and Reel engagement signals with Instagram save activity.", fallbackInstruction: "Use a public Instagram post or reel URL." },
   { code: "instagram-shares", name: "Instagram Shares", platform: "instagram", description: "Expand post and Reel engagement with Instagram share activity.", fallbackInstruction: "Use a public Instagram post or reel URL." },
+  { code: "linkedin-followers", name: "LinkedIn Profile Followers", platform: "linkedin", description: "Improve professional authority and profile visibility.", fallbackInstruction: "Use a public LinkedIn profile or company URL." },
+  { code: "x-followers", name: "X Followers", platform: "x", description: "Increase profile authority and long-term social visibility.", fallbackInstruction: "Use a public X or Twitter profile URL." },
 ] as const satisfies ReadonlyArray<Pick<SmmService, "code" | "name" | "platform" | "description"> & { fallbackInstruction: string }>;
 function cleanQuantity(value: string) {
   return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");

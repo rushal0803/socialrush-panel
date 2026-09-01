@@ -1,5 +1,5 @@
 export const SERVICE_PRICES = {
-  "instagram-followers": 599,
+  "instagram-followers": 799,
   "instagram-likes": 249,
   "instagram-views": 30,
   "instagram-comments": 499,
@@ -23,13 +23,13 @@ export const SERVICE_PRICES = {
   "facebook-shares": 499,
   // This service is intentionally priced only from its active Supabase row.
   "facebook-group-members": 0,
-  "linkedin-followers": 2999,
+  "linkedin-followers": 3999,
   "linkedin-likes": 2499,
   "telegram-members": 799,
   "tiktok-followers": 499,
   "tiktok-likes": 150,
   "tiktok-views": 15,
-  "x-followers": 799,
+  "x-followers": 1499,
 } as const;
 
 export type ServiceCode = keyof typeof SERVICE_PRICES;

@@ -21,7 +21,7 @@ export async function getLiveServiceFacts(platform: string, serviceName: string)
   try {
     const db = createAdminClient();
     const { data } = await db.from("services").select("id,rate,min,max,delivery_time,refill_policy,quality_type,is_active,status,health_status,accepts_new_orders,important_instruction")
-      .ilike("platform", normalizedPlatform === "twitter" ? "%twitter%" : normalizedPlatform)
+      .ilike("platform", normalizedPlatform === "twitter" || normalizedPlatform === "x" ? "%twitter%" : normalizedPlatform)
       .ilike("name", serviceName.trim())
       .eq("status", "active")
       .eq("is_active", true)
