@@ -41,6 +41,7 @@ import IconBadge from "@/components/IconBadge";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
+import { isSocialRushAndroidApp } from "@/lib/is-socialrush-android-app";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -189,6 +190,7 @@ export default function NewOrderPage() {
   const inFlight = useRef(false);
   const requestId = useRef("");
   const directCheckoutIntentId = useRef<string | null>(searchParams.get("checkout_intent"));
+  const checkoutConfiguration = useRef<string | null>(null);
   const funnelSignals = useRef(new Set<string>());
   const advanceTimer = useRef<number | null>(null);
   const platformRef = useRef<HTMLElement>(null);
@@ -267,6 +269,45 @@ export default function NewOrderPage() {
   const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
   const currentStep = checkoutStep;
   const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
+
+  // Cashfree can retain a prior payment sheet in the Android WebView. Browser
+  // checkout intentionally keeps its existing URL-intent behaviour; only the
+  // official app clears an inherited intent when its order changes.
+  useEffect(() => {
+    if (!isSocialRushAndroidApp()) return;
+
+    const currentConfiguration = JSON.stringify({
+      platform,
+      service: selectedService?.code ?? null,
+      quantity,
+      link: targetLink.trim(),
+      total: totalPrice,
+    });
+    const previousConfiguration = checkoutConfiguration.current;
+    checkoutConfiguration.current = currentConfiguration;
+
+    const clearStaleCheckoutUrl = (clearRecoveryParams: boolean) => {
+      const url = new URL(window.location.href);
+      url.searchParams.delete("checkout_intent");
+      if (clearRecoveryParams) url.searchParams.delete("cashfree_order_id");
+      window.history.replaceState(window.history.state, "", `${url.pathname}${url.search}${url.hash}`);
+    };
+
+    // An intent supplied by WebView history has no client-side proof that it
+    // belongs to this configuration, so never use it for a new Android visit.
+    if (previousConfiguration === null && directCheckoutIntentId.current) {
+      directCheckoutIntentId.current = null;
+      requestId.current = "";
+      clearStaleCheckoutUrl(false);
+      return;
+    }
+
+    if (previousConfiguration !== null && previousConfiguration !== currentConfiguration) {
+      directCheckoutIntentId.current = null;
+      requestId.current = "";
+      clearStaleCheckoutUrl(true);
+    }
+  }, [platform, quantity, selectedService?.code, targetLink, totalPrice]);
 
   useEffect(() => {
     if (!selectedService || !quantityInput || quantityError || linkError || success) return;
@@ -579,6 +620,15 @@ export default function NewOrderPage() {
       if (!loaded || !window.Cashfree) throw new Error("Secure Cashfree checkout could not be loaded. Please try again.");
       const checkout = window.Cashfree({ mode: payment.data.environment }) as unknown as { checkout: (input: { paymentSessionId: string; returnUrl: string; redirectTarget: "_self" }) => Promise<unknown> };
       await checkout.checkout({ paymentSessionId: payment.data.paymentSessionId, returnUrl: payment.data.returnUrl, redirectTarget: "_self" });
+      if (isSocialRushAndroidApp()) {
+        // A returned Cashfree sheet is an abandoned/cancelled attempt unless
+        // its return URL navigated away for verification. Do not reuse it.
+        directCheckoutIntentId.current = null;
+        requestId.current = "";
+        setCheckoutStage("");
+        setSubmitting(false);
+        inFlight.current = false;
+      }
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to open secure payment.");
       setCheckoutStage(""); setSubmitting(false); inFlight.current = false;
