@@ -5,31 +5,31 @@ import { useMemo, useRef, useState } from "react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { calculateServiceTotal, validateQuantity } from "@/lib/service-pricing";
+import { validateQuantity } from "@/lib/service-pricing";
 import { activeSmmServices, platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 const serviceType = (service: SmmService) => service.name.replace(/^(Instagram|YouTube|Facebook|LinkedIn(?: Profile)?|Telegram Premium|TikTok|X)\s+/i, "") || service.name;
 const quantityText = (value: number) => value.toLocaleString("en-IN");
 
-export default function PricingGrid() {
+export default function PricingGrid({ serviceCatalog = activeSmmServices }: { serviceCatalog?: readonly SmmService[] }) {
   const { currency } = usePreferredCurrency("INR");
   const calculatorRef = useRef<HTMLElement>(null);
   const [platform, setPlatform] = useState<SmmPlatformId>("instagram");
   const [type, setType] = useState("All");
-  const [selectedCode, setSelectedCode] = useState(activeSmmServices.find((s) => s.platform === "instagram")?.code ?? "instagram-followers");
+  const [selectedCode, setSelectedCode] = useState(serviceCatalog.find((s) => s.platform === "instagram")?.code ?? "instagram-followers");
   const [quantityInput, setQuantityInput] = useState("1000");
-  const platformServices = useMemo(() => activeSmmServices.filter((s) => s.platform === platform), [platform]);
+  const platformServices = useMemo(() => serviceCatalog.filter((s) => s.platform === platform), [platform, serviceCatalog]);
   const types = useMemo(() => ["All", ...Array.from(new Set(platformServices.map(serviceType)))], [platformServices]);
   const visible = useMemo(() => type === "All" ? platformServices : platformServices.filter((s) => serviceType(s) === type), [platformServices, type]);
   const selected = platformServices.find((s) => s.code === selectedCode) ?? platformServices[0];
   const quantity = /^\d+$/.test(quantityInput) ? Number(quantityInput) : 0;
   const error = selected && quantityInput ? validateQuantity(quantity, selected) : "Enter a whole-number quantity.";
-  const total = selected && !error ? calculateServiceTotal(selected.code, quantity) : 0;
+  const total = selected && !error ? Math.round((quantity * selected.pricePer1000 * 100) / 1000) / 100 : 0;
   const orderHref = selected && !error ? `/dashboard/new-order?platform=${encodeURIComponent(selected.platform)}&service=${encodeURIComponent(selected.code)}&quantity=${quantity}&resume=1` : "/dashboard/new-order";
 
   function choosePlatform(next: SmmPlatformId) {
-    const first = activeSmmServices.find((s) => s.platform === next);
+    const first = serviceCatalog.find((s) => s.platform === next);
     if (!first) return;
     setPlatform(next); setType("All"); setSelectedCode(first.code); setQuantityInput(String(Math.max(1000, first.minQuantity)));
   }
@@ -49,7 +49,7 @@ export default function PricingGrid() {
         <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-200">{platformServices.length} {platformServices.length === 1 ? "service" : "services"} available</span>
       </div>
       <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
-        {platforms.map((id) => { const active = id === platform; const count = activeSmmServices.filter((s) => s.platform === id).length; return <button key={id} type="button" onClick={() => choosePlatform(id)} aria-pressed={active} className={`min-h-[84px] rounded-2xl border p-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active ? "border-orange-400/70 bg-orange-500/15 text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)]" : "border-white/10 bg-white/[.025] text-slate-300 hover:border-orange-400/40"}`}><PlatformIcon platform={platformMeta[id].label} className="h-5 w-5 text-orange-200" /><span className="mt-3 block text-xs font-black">{platformMeta[id].label.replace("Twitter / ", "")}</span><span className="mt-1 block text-[10px] text-slate-500">{count} live</span></button>; })}
+        {platforms.map((id) => { const active = id === platform; const count = serviceCatalog.filter((s) => s.platform === id).length; return <button key={id} type="button" onClick={() => choosePlatform(id)} aria-pressed={active} className={`min-h-[84px] rounded-2xl border p-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active ? "border-orange-400/70 bg-orange-500/15 text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)]" : "border-white/10 bg-white/[.025] text-slate-300 hover:border-orange-400/40"}`}><PlatformIcon platform={platformMeta[id].label} className="h-5 w-5 text-orange-200" /><span className="mt-3 block text-xs font-black">{platformMeta[id].label.replace("Twitter / ", "")}</span><span className="mt-1 block text-[10px] text-slate-500">{count} live</span></button>; })}
       </div>
       <div className="mt-5 flex flex-wrap gap-2" aria-label="Service type filters">{types.map((item) => <button key={item} type="button" onClick={() => setType(item)} aria-pressed={type === item} className={`min-h-10 rounded-full border px-4 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 ${type === item ? "border-orange-400/60 bg-orange-500/15 text-orange-100" : "border-white/10 bg-white/[.03] text-slate-300 hover:border-white/25"}`}>{item}</button>)}</div>
       <div className="mt-5 grid gap-3 md:grid-cols-2 xl:grid-cols-3">

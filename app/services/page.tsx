@@ -50,11 +50,12 @@ type ServicesPageProps = {
 };
 
 export default async function ServicesPage({ searchParams }: ServicesPageProps) {
-  const liveOnlyCodes = ["instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members"] as const;
+  const liveOnlyCodes = ["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers"] as const;
+  const databaseNames: Partial<Record<(typeof liveOnlyCodes)[number], string>> = { "instagram-followers": "Instagram Real Followers", "linkedin-followers": "LinkedIn Profile Followers" };
   const resolvedLiveServices = await Promise.all(liveOnlyCodes.map(async (code) => {
     const fallback = getServiceById(code);
     if (!fallback) return null;
-    const live = await getLiveServiceFacts(fallback.platform, fallback.name);
+    const live = await getLiveServiceFacts(fallback.platform, databaseNames[code] ?? fallback.name);
     if (!live?.available || !Number.isFinite(live.rate) || live.rate <= 0 || live.min <= 0 || live.max < live.min) return null;
     return {
       ...fallback,
@@ -68,7 +69,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
     } satisfies SmmService;
   }));
   const liveServices = resolvedLiveServices.filter((service): service is SmmService => service !== null);
-  const serviceCatalog = [...activeSmmServices.filter((service) => !service.requiresLiveCatalogFacts), ...liveServices];
+  const serviceCatalog = activeSmmServices.map((service) => liveServices.find((live) => live.code === service.code) ?? service).filter((service) => !service.requiresLiveCatalogFacts || liveServices.some((live) => live.code === service.code));
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }]} />
