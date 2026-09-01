@@ -33,8 +33,8 @@ import {
   linkRules,
   mergeCustomerOrderServices,
   serviceExperience,
-  validateCampaignLink,
 } from "@/lib/order-service-experience";
+import { validateOrderLink } from "@/lib/order-link-validator";
 import { validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
@@ -261,7 +261,8 @@ export default function NewOrderPage() {
     return validateQuantity(quantity, selectedService) || "";
   }, [quantity, quantityInput, selectedService]);
   const linkRule = selectedService ? linkRules[selectedService.code] : null;
-  const linkError = selectedService && linkRule && targetLink.trim() ? validateCampaignLink(targetLink, linkRule) : "";
+  const linkValidation = selectedService ? validateOrderLink({ platform: selectedService.platform, serviceCode: selectedService.code, serviceName: selectedService.name, destinationUrl: targetLink }) : null;
+  const linkError = linkValidation?.severity === "error" ? linkValidation.message : "";
   const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError);
   const totalPrice = selectedService ? Math.round((quantity * selectedService.pricePer1000 * 100) / 1000) / 100 : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
@@ -520,9 +521,9 @@ export default function NewOrderPage() {
       scrollTo(detailsRef);
       return;
     }
-    const validationError = validateCampaignLink(targetLink, linkRule);
-    if (validationError) {
-      setError(validationError);
+    const validation = validateOrderLink({ platform: selectedService.platform, serviceCode: selectedService.code, serviceName: selectedService.name, destinationUrl: targetLink });
+    if (!validation.valid) {
+      setError(validation.message);
       scrollTo(detailsRef);
       return;
     }
@@ -857,8 +858,9 @@ export default function NewOrderPage() {
                     className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
                   />
                   <span className={`mt-2 block text-[11px] leading-5 ${linkError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
-                    {linkError || linkRule.helper}
+                    {targetLink.trim() && linkValidation ? `${linkValidation.severity === "success" ? "✓ " : linkValidation.severity === "warning" ? "⚠ " : "✕ "}${linkValidation.message}${linkValidation.suggestion ? ` ${linkValidation.suggestion}` : ""}` : linkRule.helper}
                   </span>
+                  {targetLink.trim() && linkValidation?.valid && /(followers|subscribers|members)/.test(selectedService.code) && ["profile", "channel", "page or profile", "profile or company", "channel or group"].includes(linkValidation.detectedType || "") ? <a href="/dashboard/saved-profiles" className="mt-2 inline-flex min-h-10 items-center text-[11px] font-bold text-orange-300 hover:text-orange-200">+ Save this profile</a> : null}
                 </label>
                 <label className="block text-xs font-black text-white">
                   <span className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</span>
