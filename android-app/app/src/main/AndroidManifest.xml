@@ -1,14 +1,29 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
+
     <uses-permission android:name="android.permission.INTERNET" />
-    <application android:allowBackup="true" android:icon="@mipmap/socialrush_icon" android:roundIcon="@mipmap/socialrush_icon" android:label="SocialRUSH" android:theme="@style/AppTheme" android:usesCleartextTraffic="false">
-        <activity android:name="androidx.browser.trusted.LauncherActivity" android:exported="true">
-            <meta-data android:name="android.support.customtabs.trusted.DEFAULT_URL" android:value="https://www.getsocialrush.com/dashboard" />
-            <meta-data android:name="android.support.customtabs.trusted.STATUS_BAR_COLOR" android:resource="@color/socialrush_dark" />
-            <meta-data android:name="android.support.customtabs.trusted.NAVIGATION_BAR_COLOR" android:resource="@color/socialrush_dark" />
-            <meta-data android:name="android.support.customtabs.trusted.NAVIGATION_BAR_DIVIDER_COLOR" android:resource="@color/socialrush_dark" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/socialrush_icon"
+        android:roundIcon="@mipmap/socialrush_icon"
+        android:label="SocialRUSH"
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="false"
+        android:hardwareAccelerated="true">
+
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:screenOrientation="unspecified"
+            android:windowSoftInputMode="adjustResize">
+
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" /><category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
+
     </application>
+
 </manifest>
