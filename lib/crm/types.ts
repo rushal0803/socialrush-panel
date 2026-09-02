@@ -3,6 +3,19 @@ export type CrmPriority = "low" | "normal" | "high";
 export type FollowUpType = "general" | "sales" | "support" | "payment" | "refill" | "retention";
 export type FollowUpStatus = "pending" | "completed" | "cancelled";
 
+export type CrmAutomationSettings = {
+  id: string; enabled: boolean; new_customer_days: number; at_risk_days: number; inactive_days: number;
+  high_value_percentile: number; vip_percentile: number; vip_min_orders: number;
+  create_retention_followups: boolean; create_support_followups: boolean; create_refill_followups: boolean; updated_at: string | null;
+};
+export type AutomationRunStatus = "running" | "completed" | "failed";
+export type AutomationRunDetails = { high_value_threshold?: number; vip_threshold?: number; new_customer_days?: number; at_risk_days?: number; inactive_days?: number };
+export type CrmAutomationRun = {
+  id: string; started_at: string; completed_at: string | null; status: AutomationRunStatus;
+  customers_scanned: number; profiles_touched: number; tags_removed: number; tags_added: number;
+  followups_created: number; error_message: string | null; details: AutomationRunDetails | null;
+};
+
 export type CustomerMetric = {
   totalOrders: number; validOrders: number; totalSpend: number; averageOrderValue: number;
   firstOrderAt: string | null; lastOrderAt: string | null; topPlatform: string | null;
