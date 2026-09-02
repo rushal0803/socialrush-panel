@@ -53,9 +53,9 @@ export default function BlogPageContent() {
       <section className="relative isolate border-b border-white/[.07] px-5 py-12 sm:px-6 lg:px-8 lg:py-16">
         <div className="absolute inset-0 -z-10 bg-[radial-gradient(ellipse_at_18%_0%,rgba(255,116,0,.22),transparent_42%),radial-gradient(ellipse_at_88%_18%,rgba(23,50,100,.34),transparent_38%)]" />
         <div className="mx-auto max-w-7xl">
-          <p className="text-xs font-black uppercase tracking-[.18em] text-orange-300">SocialRUSH Insights</p>
+          <p className="text-xs font-black uppercase tracking-[.18em] text-orange-300">SocialRUSH Growth Library</p>
           <div className="mt-4 flex flex-col justify-between gap-8 lg:flex-row lg:items-end">
-            <div className="max-w-3xl"><h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">Practical social media growth guides</h1><p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">Actionable guides on Instagram, YouTube, Facebook, LinkedIn, TikTok, Telegram and X — including growth strategy, pricing, safety and platform tips.</p></div>
+            <div className="max-w-3xl"><h1 className="text-4xl font-black leading-[1.05] tracking-tight sm:text-5xl">Practical Social Media Growth Guides</h1><p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">Actionable guides for Instagram, YouTube, Facebook, LinkedIn, creator tools, SEO and social media growth.</p></div>
             <div className="flex flex-wrap gap-3"><a href="#guides" className="inline-flex min-h-11 items-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-5 text-sm font-black shadow-[0_14px_32px_rgba(255,98,0,.22)] transition hover:-translate-y-0.5">Explore Latest Guides <ArrowRight className="ml-2 h-4 w-4" /></a><Link href="/services" className="inline-flex min-h-11 items-center rounded-xl border border-white/15 bg-white/[.04] px-5 text-sm font-bold transition hover:border-orange-400/50 hover:bg-white/[.08]">Explore Services</Link></div>
           </div>
           <ul className="mt-9 flex flex-wrap gap-x-6 gap-y-3 text-sm font-semibold text-slate-300">{["Practical guides", "Platform-specific advice", "Pricing insights", "Growth resources"].map((item) => <li key={item} className="flex items-center gap-2"><span className="h-1.5 w-1.5 rounded-full bg-orange-400" />{item}</li>)}</ul>
