@@ -4,6 +4,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { articleSlugs, blogArticles, blogRedirects, getArticleBySlug, getBlogPlatform } from "@/components/marketing/blog/blogData";
 import BlogArticleEnhancements from "@/components/marketing/blog/BlogArticleEnhancements";
+import { ArticleFlowDiagram, ArticleHeroVisual, ArticleSafetyCallout } from "@/components/marketing/blog/ArticleVisuals";
 import { formatArticleDate, getArticleWords, getReadingTime, isValidDate } from "@/lib/blog";
 import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
@@ -136,6 +137,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
     .slice(0, 3)
     .map(({ candidate }) => candidate);
   const showToc = articleSections.length >= 4 || articleWordCount >= 900;
+  const isUpiGuide = article.slug === "instagram-followers-upi-payment-guide-india";
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -225,16 +227,19 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
               <h1 className="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">{article.title}</h1>
               <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300">{article.intro}</p>
             </div>
-            <div className="relative mt-7 aspect-[16/8] overflow-hidden rounded-2xl bg-[#090B12]">
-              <SafeImage
-                src={articleImage}
-                fallbackSrc={articleImage.replace(/\.(png|jpg|jpeg)$/i, ".webp")}
-                alt={article.imageAlt ?? article.title}
-                fill
-                sizes="(max-width: 768px) 100vw, 960px"
-                className="object-cover"
-                priority
-              />
+            <div className="mt-7 grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
+              <div className="relative aspect-[16/8] overflow-hidden rounded-2xl bg-[#090B12]">
+                <SafeImage
+                  src={articleImage}
+                  fallbackSrc={articleImage.replace(/\.(png|jpg|jpeg)$/i, ".webp")}
+                  alt={article.imageAlt ?? article.title}
+                  fill
+                  sizes="(max-width: 768px) 100vw, 600px"
+                  className="object-cover"
+                  priority
+                />
+              </div>
+              <ArticleHeroVisual category={article.category} title={article.title} variant="inline" />
             </div>
 
             {showToc ? <BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress desktopToc={false} /> : null}
@@ -297,6 +302,8 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                     {section.contextualLink.prefix} <Link href={section.contextualLink.href} className="font-semibold text-[#FF7A00] underline decoration-[#FF9F00]/50 underline-offset-4 transition hover:text-[#D96500]">{section.contextualLink.label}</Link>{section.contextualLink.suffix ?? ""}
                   </p>
                 ) : null}
+                {(index === 0 || (isUpiGuide && index === 3)) ? <ArticleFlowDiagram category={article.category} title={article.title} /> : null}
+                {isUpiGuide && index === 2 ? <ArticleSafetyCallout /> : null}
                 {section.tips?.length ? <h3 className="mt-6 text-base font-extrabold text-white">Practical actions</h3> : null}
                 <ul className="mt-4 space-y-2">
                   {(section.tips ?? []).map((tip) => (
