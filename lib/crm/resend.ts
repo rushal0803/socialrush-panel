@@ -17,6 +17,7 @@ const client = () => {
 };
 
 export function resendConfigured() { return Boolean(process.env.RESEND_API_KEY && process.env.RESEND_WEBHOOK_SECRET); }
+export function resendWebhookVerificationConfigured() { return Boolean(process.env.RESEND_WEBHOOK_SECRET); }
 
 export function verifyResendWebhook(payload: string, headers: Headers) {
   const secret = process.env.RESEND_WEBHOOK_SECRET;
@@ -28,21 +29,64 @@ export function verifyResendWebhook(payload: string, headers: Headers) {
 
 type ResendEvent = { type?: string; data?: Record<string, unknown> };
 const strings = (value: unknown) => Array.isArray(value) ? value.filter((entry): entry is string => typeof entry === "string") : typeof value === "string" ? [value] : [];
+const emailAddress = (value: unknown) => {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  const direct = /^[^\s@<>]+@[^\s@<>]+\.[^\s@<>]+$/.test(trimmed) ? trimmed : null;
+  const bracketed = trimmed.match(/^[^<>]*<\s*([^\s@<>]+@[^\s@<>]+\.[^\s@<>]+)\s*>\s*$/)?.[1] || null;
+  return cleanEmail(direct || bracketed || "") || null;
+};
+const safeError = (error: unknown) => error instanceof Error ? error.message.slice(0, 500) : "Unknown processing error.";
+const webhookLog = (stage: string, details: Record<string, unknown>) => console.info("[crm][resend-webhook]", { stage, ...details });
 
-async function beginEvent(eventId: string, eventType: string) {
+type EventClaim = "claimed" | "duplicate" | "in_progress";
+async function beginEvent(eventId: string, eventType: string): Promise<EventClaim> {
   const db = createAdminClient();
-  const { error } = await db.from("crm_resend_webhook_events").insert({ event_id: eventId, event_type: eventType });
-  if (!error) return true;
-  if (error.code === "23505") return false;
-  throw error;
+  const { data, error } = await db.rpc("claim_crm_resend_webhook_event", { p_event_id: eventId, p_event_type: eventType });
+  if (error) throw error;
+  if (data === "claimed" || data === "duplicate" || data === "in_progress") return data;
+  throw new Error("Could not claim Resend webhook event.");
+}
+
+async function finishEvent(eventId: string) {
+  const { error } = await createAdminClient().from("crm_resend_webhook_events").update({ status: "processed", processed_at: new Date().toISOString(), last_error: null, updated_at: new Date().toISOString() }).eq("event_id", eventId).eq("status", "processing");
+  if (error) throw error;
+}
+
+async function failEvent(eventId: string, error: unknown) {
+  const message = safeError(error);
+  const { error: updateError } = await createAdminClient().from("crm_resend_webhook_events").update({ status: "failed", last_error: message, updated_at: new Date().toISOString() }).eq("event_id", eventId).eq("status", "processing");
+  if (updateError) console.error("[crm][resend-webhook] unable to record failure", { eventId, error: safeError(updateError) });
+  return message;
+}
+
+async function storeUnmatchedReceived(message: { id?: string; message_id?: string; from?: string; to?: unknown; subject?: string; text?: string; html?: string; created_at?: string }, reason: string) {
+  const messageId = message.message_id || message.id;
+  if (!messageId) throw new Error("Resend received email has no message ID.");
+  const bodyText = (message.text || textFromHtml(message.html || "")).trim();
+  const recipient = strings(message.to).map(emailAddress).find(Boolean) || null;
+  const { error } = await createAdminClient().from("crm_unmatched_inbound_events").upsert({ provider: "resend", provider_message_id: messageId, from_email: String(message.from || "[unparseable]").slice(0, 320), to_email: recipient, subject: message.subject || null, body_text: (bodyText || "[No usable text body]").slice(0, 20000), received_at: message.created_at || new Date().toISOString(), reason }, { onConflict: "provider,provider_message_id" });
+  if (error) throw error;
+  return { unmatched: true, reason };
 }
 
 export async function handleResendWebhook(event: ResendEvent, eventId: string) {
   const eventType = String(event.type || "");
   if (!eventId || !["email.received", "email.bounced"].includes(eventType)) return { ignored: true };
-  if (!await beginEvent(eventId, eventType)) return { duplicate: true };
-  if (eventType === "email.received") return receive(event.data || {});
-  return bounce(event.data || {});
+  const claim = await beginEvent(eventId, eventType);
+  webhookLog("claim", { eventType, eventId, status: claim });
+  if (claim === "duplicate") return { duplicate: true };
+  if (claim === "in_progress") return { inProgress: true };
+  try {
+    const result = eventType === "email.received" ? await receive(event.data || {}) : await bounce(event.data || {});
+    await finishEvent(eventId);
+    webhookLog("processed", { eventType, eventId, matched: !("unmatched" in result && result.unmatched) });
+    return result;
+  } catch (error) {
+    const message = await failEvent(eventId, error);
+    webhookLog("failed", { eventType, eventId, failureStage: "application", error: message });
+    throw error;
+  }
 }
 
 async function receive(data: Record<string, unknown>) {
@@ -53,14 +97,17 @@ async function receive(data: Record<string, unknown>) {
   const message = received.data;
   const headers = message.headers || {};
   const threadId = headers["in-reply-to"] || headers["references"] || message.message_id || null;
+  const sender = emailAddress(message.from);
+  if (!sender) return storeUnmatchedReceived(message, "unparseable_sender_address");
+  const recipient = strings(message.to).map(emailAddress).find(Boolean) || null;
   const bodyText = (message.text || textFromHtml(message.html || "")).trim();
   if (!bodyText) throw new Error("Received Resend email has no usable text body.");
-  return ingestInboundReply({ provider: "resend", messageId: message.message_id || message.id, threadId, fromEmail: message.from, toEmail: message.to[0] || null, subject: message.subject, bodyText, receivedAt: message.created_at });
+  return ingestInboundReply({ provider: "resend", messageId: message.message_id || message.id, threadId, fromEmail: sender, toEmail: recipient, subject: message.subject, bodyText, receivedAt: message.created_at });
 }
 
 async function bounce(data: Record<string, unknown>) {
   const providerMessageId = String(data.email_id || data.id || "");
-  const recipient = strings(data.to)[0] || String(data.to || "");
+  const recipient = emailAddress(strings(data.to)[0] || String(data.to || ""));
   if (!providerMessageId || !recipient || strings(data.to).length > 1) return { unmatched: true };
   const db = createAdminClient();
   const { data:message } = await db.from("crm_outreach_messages").select("id,contact_id,lead_id").eq("provider", "resend").eq("provider_message_id", providerMessageId).maybeSingle();
