@@ -3,6 +3,7 @@ import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ingestInboundReply } from "./reply-ingestion";
 import { isLeadContactOutreachEligible } from "./outreach";
+import { formatOutreachEmail, renderOutreachSubject } from "./email-formatting";
 import type { CRMLead, CRMLeadContact, CRMOutreachSettings, CRMSuppressionEntry } from "./types";
 
 const OUTREACH_FROM = "SocialRUSH <growth@outreach.getsocialrush.com>";
@@ -86,7 +87,9 @@ export async function sendApprovedResendDraft(messageId: string) {
     db.from("crm_outreach_settings").select("*").limit(1).maybeSingle(), db.from("crm_suppression_list").select("email"),
   ]);
   if (!contact || !lead || !settings || settings.provider !== "resend" || !settings.enabled || settings.auto_send || !isLeadContactOutreachEligible(contact as CRMLeadContact, lead as Pick<CRMLead, "status">, settings as CRMOutreachSettings, (suppressions || []) as CRMSuppressionEntry[])) throw new Error("This draft is not eligible for Resend delivery.");
-  const response = await client().emails.send({ from: OUTREACH_FROM, replyTo: OUTREACH_REPLY_TO, to: [contact.email], subject: message.subject || "", text: message.body || "" }, { idempotencyKey: `crm-outreach-${message.id}` });
+  const personalization = { full_name: contact.full_name, business_name: lead.business_name, recommended_service: lead.recommended_service };
+  const formatted = formatOutreachEmail(message.body, personalization);
+  const response = await client().emails.send({ from: OUTREACH_FROM, replyTo: OUTREACH_REPLY_TO, to: [contact.email], subject: renderOutreachSubject(message.subject, personalization), text: formatted.text, html: formatted.html }, { idempotencyKey: `crm-outreach-${message.id}` });
   if (response.error || !response.data?.id) throw new Error(response.error?.message || "Resend could not accept the draft.");
   const now = new Date().toISOString();
   await db.from("crm_outreach_messages").update({ provider: "resend", provider_message_id: response.data.id, status: "sent", sent_at: now, updated_at: now }).eq("id", message.id).is("provider_message_id", null);
