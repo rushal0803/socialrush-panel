@@ -10,6 +10,7 @@ const links = [
   { href: "/admin/crm/automations", label: "Automations" },
   { href: "/admin/crm/leads", label: "Leads" },
   { href: "/admin/crm/outreach", label: "Outreach" },
+  { href: "/admin/crm/replies", label: "Replies" },
 ];
 
 export default function CrmSubnav() {
