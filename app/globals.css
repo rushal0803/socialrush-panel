@@ -256,6 +256,7 @@ p {
 .admin-shell .panel-card,
 .admin-shell [class*="bg-[#111111]"] { border-color:var(--admin-line) !important; background:var(--admin-surface) !important; box-shadow:0 16px 42px -32px rgba(0,0,0,.85); }
 .admin-shell .panel-card { border-radius:18px; }
+.admin-shell .btn { display:inline-flex; align-items:center; gap:.4rem; border:1px solid rgba(255,255,255,.11); border-radius:.75rem; padding:.5rem .75rem; font-size:.75rem; font-weight:700; color:#d1d5db; }
 .admin-shell [class*="border-slate-200"], .admin-shell [class*="border-slate-100"] { border-color:var(--admin-line) !important; }
 .admin-shell [class*="bg-slate-50"], .admin-shell [class*="bg-white"] { background-color:rgba(255,255,255,.045) !important; }
 .admin-shell [class*="text-slate-800"], .admin-shell [class*="text-slate-700"], .admin-shell [class*="text-slate-600"] { color:#e8ebf0 !important; }
