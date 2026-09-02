@@ -46,6 +46,7 @@ const relatedBlogMap: Record<string, string[]> = {
     "how-to-increase-instagram-followers-safely-in-india",
     "how-to-grow-instagram-followers-in-india",
     "instagram-followers-price-in-india",
+    "instagram-followers-upi-payment-guide-india",
     "is-it-safe-to-buy-instagram-followers",
     "instagram-followers-vs-engagement",
   ],
