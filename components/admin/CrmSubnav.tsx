@@ -8,6 +8,8 @@ const links = [
   { href: "/admin/crm/customers", label: "Customers" },
   { href: "/admin/crm/follow-ups", label: "Follow-ups" },
   { href: "/admin/crm/automations", label: "Automations" },
+  { href: "/admin/crm/leads", label: "Leads" },
+  { href: "/admin/crm/outreach", label: "Outreach" },
 ];
 
 export default function CrmSubnav() {
