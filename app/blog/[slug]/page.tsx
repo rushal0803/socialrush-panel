@@ -4,7 +4,7 @@ import { notFound, permanentRedirect } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { articleSlugs, blogArticles, blogRedirects, getArticleBySlug, getBlogPlatform } from "@/components/marketing/blog/blogData";
 import BlogArticleEnhancements from "@/components/marketing/blog/BlogArticleEnhancements";
-import { formatArticleDate, getArticleWords, getReadingTime, isValidDate, sortArticles } from "@/lib/blog";
+import { formatArticleDate, getArticleWords, getReadingTime, isValidDate } from "@/lib/blog";
 import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import TrackedLink from "@/components/analytics/TrackedLink";
@@ -79,8 +79,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
     },
     openGraph: {
       ...metadata.openGraph,
+      type: "article",
       title: article.openGraphTitle || metadata.openGraph?.title,
       description: article.openGraphDescription || metadata.openGraph?.description,
+      publishedTime: isValidDate(article.publishedAt) ? article.publishedAt : undefined,
+      modifiedTime: isValidDate(article.updatedAt) ? article.updatedAt : undefined,
       images: [
         {
           url: articleImageUrl,
@@ -120,14 +123,19 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleComparison = article.comparison;
   const articleWordCount = getArticleWords(article);
   const articlePlatform = getBlogPlatform(article);
-  const relatedArticles = sortArticles(blogArticles
+  const relatedArticles = blogArticles
     .filter((candidate) => candidate.slug !== article.slug)
-    .sort((left, right) => {
-      const platformDifference = Number(getBlogPlatform(right) === articlePlatform) - Number(getBlogPlatform(left) === articlePlatform);
-      if (platformDifference) return platformDifference;
-      return Number(right.category === article.category) - Number(left.category === article.category);
+    .map((candidate) => ({
+      candidate,
+      score:
+        Number(getBlogPlatform(candidate) === articlePlatform) * 4 +
+        Number(candidate.category === article.category) * 2 +
+        Number((candidate.relatedLinks ?? []).some((link) => link.href === `/blog/${article.slug}`)),
     }))
-    .slice(0, 3);
+    .sort((left, right) => right.score - left.score || Date.parse(right.candidate.publishedAt ?? "0") - Date.parse(left.candidate.publishedAt ?? "0"))
+    .slice(0, 3)
+    .map(({ candidate }) => candidate);
+  const showToc = articleSections.length >= 4 || articleWordCount >= 900;
   const articleSchema = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
@@ -171,6 +179,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
         items={[
           { name: "Home", path: "/" },
           { name: "Blog", path: "/blog" },
+          { name: article.category, path: "/blog" },
           { name: breadcrumbTitle, path: `/blog/${article.slug}` },
         ]}
       />
@@ -184,49 +193,52 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       ) : null}
-      <article className="blog-article-page relative px-5 pb-24 pt-10 sm:px-6 lg:px-8 lg:pt-12">
+      <article className="blog-article-page relative bg-[#07080D] px-5 pb-24 pt-8 text-white sm:px-6 lg:px-8 lg:pt-10">
         <div className="pointer-events-none absolute inset-0">
           <div className="absolute left-[-6%] top-0 h-64 w-64 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute bottom-10 right-[-8%] h-72 w-72 rounded-full bg-amber-200/35 blur-3xl" />
         </div>
 
-        <div className="relative mx-auto w-full max-w-5xl">
-          <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-2 text-sm font-semibold text-[#111827]">
+        <div className="relative mx-auto w-full max-w-6xl">
+          <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-2 text-sm font-semibold text-slate-300">
             <Link href="/" className="transition hover:text-[#FF7A00]">Home</Link>
             <span aria-hidden="true" className="text-[#FF9F00]">/</span>
             <Link href="/blog" className="transition hover:text-[#FF7A00]">Blog</Link>
             <span aria-hidden="true" className="text-[#FF9F00]">/</span>
-            <span className="text-[#0B0B0F]">{breadcrumbTitle}</span>
+            <span className="text-slate-400">{article.category}</span>
+            <span aria-hidden="true" className="text-[#FF9F00]">/</span>
+            <span className="text-white">{breadcrumbTitle}</span>
           </nav>
-          <Link href="/blog#articles" className="inline-flex rounded-xl border border-[#FFF3E0] bg-white/85 px-4 py-2 text-sm font-semibold text-[#0B0B0F] shadow-[0_8px_22px_rgba(255, 159, 0, .12)] transition hover:-translate-y-0.5">
+          <Link href="/blog#guides" className="inline-flex rounded-xl border border-white/15 bg-white/[.04] px-4 py-2 text-sm font-semibold text-white transition hover:-translate-y-0.5 hover:border-orange-400/50">
             Back to Blog
           </Link>
 
-          <div className="mt-6 overflow-hidden rounded-[30px] border border-white/85 bg-white/86 p-4 shadow-[0_20px_48px_rgba(255, 159, 0, .17)] backdrop-blur sm:p-6">
-            <div className="relative aspect-[3/2] overflow-hidden rounded-2xl bg-gradient-to-br from-[#050505] via-[#15110a] to-[#2B1600]">
+          <header className="mt-6 overflow-hidden rounded-[30px] border border-white/10 bg-[#0E121B] p-5 shadow-[0_20px_48px_rgba(0,0,0,.25)] sm:p-8">
+            <div className="max-w-4xl">
+              <div className="flex flex-wrap items-center gap-3 text-xs font-semibold text-orange-200">
+                <span className="rounded-full border border-orange-400/25 bg-orange-400/10 px-3 py-1.5">{article.category}</span>
+                <span>{getReadingTime(article)}</span>
+                {articleAuthor ? <span>By {articleAuthor}</span> : null}
+                {formatArticleDate(article.publishedAt) ? <span>Published {formatArticleDate(article.publishedAt)}</span> : null}
+                {formatArticleDate(article.updatedAt) ? <span>Updated {formatArticleDate(article.updatedAt)}</span> : null}
+              </div>
+              <h1 className="mt-5 text-3xl font-black leading-tight tracking-tight text-white sm:text-4xl lg:text-5xl">{article.title}</h1>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300">{article.intro}</p>
+            </div>
+            <div className="relative mt-7 aspect-[16/8] overflow-hidden rounded-2xl bg-[#090B12]">
               <SafeImage
                 src={articleImage}
                 fallbackSrc={articleImage.replace(/\.(png|jpg|jpeg)$/i, ".webp")}
                 alt={article.imageAlt ?? article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, 960px"
-                className="object-contain"
+                className="object-cover"
                 priority
               />
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-3 text-xs font-semibold text-[#FF9F00]">
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{article.category}</span>
-              <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">{getReadingTime(article)}</span>
-              {articleAuthor ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">By {articleAuthor}</span> : null}
-              {formatArticleDate(article.publishedAt) ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">Published {formatArticleDate(article.publishedAt)}</span> : null}
-              {formatArticleDate(article.updatedAt) ? <span className="rounded-full border border-[#FFF3E0] bg-[#FFF8F1] px-3 py-1.5">Updated {formatArticleDate(article.updatedAt)}</span> : null}
-            </div>
-
-            <h1 className="mt-4 text-3xl font-black leading-tight text-[#0B0B0F] sm:text-4xl">{article.title}</h1>
-            <p className="mt-4 text-base leading-8 text-[#111827]">{article.intro}</p>
-            <BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress={articleWordCount > 150} desktopToc={false} />
-          </div>
+            {showToc ? <BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress desktopToc={false} /> : null}
+          </header>
 
           {article.keyTakeaway ? (
             <aside className="mt-8 rounded-3xl border border-[#FFC400]/45 bg-gradient-to-br from-[#0B0B0F] via-[#151515] to-[#2a1600] p-6 text-white shadow-[0_18px_42px_rgba(255, 122, 0, .24)]">
@@ -235,7 +247,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </aside>
           ) : null}
 
-          <nav aria-label="Table of contents" className="mt-8 hidden rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
+          <nav aria-label="Table of contents" className="mt-8 hidden">
             <h2 className="text-xl font-extrabold text-[#0B0B0F]">Table of contents</h2>
             <ol className="mt-4 grid gap-2 sm:grid-cols-2">
               {tocSections.map((section, index) => (
@@ -270,25 +282,25 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </ol>
           </nav>
 
-          <div id="article-body" className="mt-8 grid gap-8 lg:grid-cols-[minmax(0,760px)_220px]">
-          <div className="space-y-8">
+          <div id="article-body" className="mx-auto mt-8 grid max-w-[1040px] gap-8 lg:grid-cols-[minmax(0,760px)_220px]">
+          <div className="space-y-6">
             {articleSections.map((section, index) => (
               <section
                 key={articleSectionIds[index]}
                 id={articleSectionIds[index]}
-                className="rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
+                className="scroll-mt-28 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)] sm:p-7"
               >
-                <h2 className="text-2xl font-extrabold text-[#0B0B0F]">{section.heading}</h2>
-                <p className="mt-3 text-[15px] leading-7 text-[#111827]">{section.body}</p>
+                <h2 className="text-2xl font-extrabold text-white">{section.heading}</h2>
+                <p className="mt-4 text-[16px] leading-8 text-slate-300">{section.body}</p>
                 {section.contextualLink ? (
-                  <p className="mt-3 text-[15px] leading-7 text-[#111827]">
+                  <p className="mt-4 text-[16px] leading-8 text-slate-300">
                     {section.contextualLink.prefix} <Link href={section.contextualLink.href} className="font-semibold text-[#FF7A00] underline decoration-[#FF9F00]/50 underline-offset-4 transition hover:text-[#D96500]">{section.contextualLink.label}</Link>{section.contextualLink.suffix ?? ""}
                   </p>
                 ) : null}
-                <h3 className="mt-5 text-base font-extrabold text-[#0B0B0F]">Practical actions</h3>
+                {section.tips?.length ? <h3 className="mt-6 text-base font-extrabold text-white">Practical actions</h3> : null}
                 <ul className="mt-4 space-y-2">
                   {(section.tips ?? []).map((tip) => (
-                    <li key={tip} className="flex items-start gap-2 text-sm leading-6 text-[#FF9F00]">
+                    <li key={tip} className="flex items-start gap-2 text-sm leading-6 text-slate-300">
                       <span className="mt-1 h-2 w-2 rounded-full bg-gradient-to-r from-[#FF7A00] to-[#FF9F00]" />
                       <span>{tip}</span>
                     </li>
@@ -296,18 +308,18 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                 </ul>
               </section>
             ))}
-          </div><BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress={false} mobileToc={false} showShare={false} /></div>
+          </div>{showToc ? <BlogArticleEnhancements toc={tocSections.map((section, index) => ({ id: articleSectionIds[index], label: cleanTocLabel(section.heading) }))} articleUrl={articleUrl} showProgress={false} mobileToc={false} showShare={false} /> : null}</div>
 
           {articleComparison ? (
             <section
               id="followers-vs-engagement-comparison"
-              className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
+              className="mt-8 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)]"
             >
-              <h2 className="text-2xl font-extrabold text-[#0B0B0F]">{articleComparison.heading}</h2>
-              <p className="mt-3 text-[15px] leading-7 text-[#111827]">{articleComparison.intro}</p>
+              <h2 className="text-2xl font-extrabold text-white">{articleComparison.heading}</h2>
+              <p className="mt-3 text-[15px] leading-7 text-slate-300">{articleComparison.intro}</p>
               <div className="mt-5 overflow-x-auto rounded-2xl border border-[#FFF3E0]">
-                <table className="min-w-[720px] divide-y divide-[#FFF3E0] bg-white text-left text-sm">
-                  <thead className="bg-[#FFF8F1] text-xs uppercase tracking-[0.08em] text-[#0B0B0F]">
+                <table className="min-w-[720px] divide-y divide-white/10 bg-[#101520] text-left text-sm text-slate-300">
+                  <thead className="bg-white/[.05] text-xs uppercase tracking-[0.08em] text-white">
                     <tr>
                       <th scope="col" className="px-4 py-3 font-extrabold">Factor</th>
                       <th scope="col" className="px-4 py-3 font-extrabold">
@@ -318,10 +330,10 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
                       </th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-[#FFF3E0] text-[#111827]">
+                  <tbody className="divide-y divide-white/10">
                     {articleComparison.rows.map((row) => (
                       <tr key={row.factor}>
-                        <th scope="row" className="px-4 py-4 align-top font-extrabold text-[#0B0B0F]">{row.factor}</th>
+                        <th scope="row" className="px-4 py-4 align-top font-extrabold text-white">{row.factor}</th>
                         <td className="px-4 py-4 align-top leading-6">{row.followers}</td>
                         <td className="px-4 py-4 align-top leading-6">{row.engagement}</td>
                       </tr>
@@ -335,25 +347,25 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           {articleFaqs.length ? (
             <section
               id="frequently-asked-questions"
-              className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur"
+              className="mt-8 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)]"
             >
-              <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Frequently asked questions</h2>
+              <h2 className="text-2xl font-extrabold text-white">Frequently asked questions</h2>
               <div className="mt-5 space-y-4">
                 {articleFaqs.map((faq) => (
-                  <details key={faq.question} className="group rounded-2xl border border-[#FFF3E0] bg-[#FFF8F1] p-5">
-                    <summary className="cursor-pointer list-none text-base font-bold text-[#0B0B0F]">
+                  <details key={faq.question} className="group rounded-2xl border border-white/10 bg-white/[.03] p-5">
+                    <summary className="cursor-pointer list-none text-base font-bold text-white">
                       {faq.question}
                     </summary>
-                    <p className="mt-3 text-sm leading-7 text-[#111827]">{faq.answer}</p>
+                    <p className="mt-3 text-sm leading-7 text-slate-300">{faq.answer}</p>
                   </details>
                 ))}
               </div>
             </section>
           ) : null}
 
-          {articleAuthor ? <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
-            <h2 className="text-xl font-extrabold text-[#0B0B0F]">About the author</h2>
-            <p className="mt-3 text-sm leading-7 text-[#111827]">
+          {articleAuthor ? <section className="mt-8 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)]">
+            <h2 className="text-xl font-extrabold text-white">About the author</h2>
+            <p className="mt-3 text-sm leading-7 text-slate-300">
               {articleAuthor} creates practical SocialRUSH guides about social media growth, platform strategy,
               public-link ordering, campaign planning, and online-branding decisions for creators, businesses, and
               personal brands.
@@ -361,14 +373,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
           </section> : null}
 
           {articleRelatedLinks.length ? (
-            <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
-              <h2 className="text-xl font-extrabold text-[#0B0B0F]">Related resources and next steps</h2>
-              <p className="mt-2 text-sm leading-7 text-[#111827]">
+            <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)]">
+              <h2 className="text-xl font-extrabold text-white">Related resources and next steps</h2>
+              <p className="mt-2 text-sm leading-7 text-slate-300">
                 Continue with the guide, platform option, or pricing information most relevant to this strategy.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
                 {articleRelatedLinks.map((item) => (
-                  <TrackedLink key={item.href} href={item.href} event={item.href.startsWith("/tools") ? "blog_tool_cta_clicked" : "blog_service_cta_clicked"} metadata={{ article_slug: article.slug, destination: item.href }} className="inline-flex min-h-11 items-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-4 py-2.5 text-sm font-bold text-[#0B0B0F] transition hover:-translate-y-0.5 hover:border-[#FF9F00]">
+                  <TrackedLink key={item.href} href={item.href} event={item.href.startsWith("/tools") ? "blog_tool_cta_clicked" : "blog_service_cta_clicked"} metadata={{ article_slug: article.slug, destination: item.href }} className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/[.04] px-4 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:border-orange-400/60">
                     {item.label}
                   </TrackedLink>
                 ))}
@@ -376,17 +388,17 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </nav>
           ) : null}
 
-          <section className="mt-8 rounded-3xl border border-white/85 bg-white/86 p-6 shadow-[0_14px_34px_rgba(255, 159, 0, .14)] backdrop-blur">
-            <h2 className="text-2xl font-extrabold text-[#0B0B0F]">Related blog articles</h2>
+          <section className="mt-8 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)]">
+            <h2 className="text-2xl font-extrabold text-white">Related blog articles</h2>
             <div className="mt-5 grid gap-4 md:grid-cols-3">
               {relatedArticles.map((related) => (
                 <Link
                   key={related.slug}
                   href={`/blog/${related.slug}`}
-                  className="rounded-2xl border border-[#FFF3E0] bg-[#FFF8F1] p-5 transition hover:-translate-y-1 hover:border-[#FF9F00] hover:shadow-[0_12px_26px_rgba(255, 159, 0, .12)]"
+                  className="rounded-2xl border border-white/10 bg-white/[.03] p-5 transition hover:-translate-y-1 hover:border-orange-400/60 hover:shadow-[0_12px_26px_rgba(0,0,0,.2)]"
                 >
-                  <span className="text-xs font-bold uppercase tracking-[0.08em] text-[#111827]">{related.category}</span>
-                  <h3 className="mt-2 text-base font-extrabold leading-6 text-[#0B0B0F]">{related.title}</h3>
+                  <span className="text-xs font-bold uppercase tracking-[0.08em] text-orange-200">{related.category}</span>
+                  <h3 className="mt-2 text-base font-extrabold leading-6 text-white">{related.title}</h3>
                   <span className="mt-3 inline-flex text-sm font-bold text-[#FF7A00]">Read article →</span>
                 </Link>
               ))}
