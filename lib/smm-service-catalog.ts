@@ -367,6 +367,27 @@ export const smmServiceCatalog: SmmService[] = [
     isActive: true,
   },
   {
+    platform: "x", code: "twitter-likes", name: "Twitter / X Likes",
+    description: "Increase visible engagement on a public Twitter/X post with like activity.",
+    pricePer1000: SERVICE_PRICES["twitter-likes"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Estimate shown before checkout", refillPolicy: "No Refill", qualityType: "Standard",
+    importantInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "x", code: "twitter-views", name: "Twitter / X Views",
+    description: "Increase visible reach and activity on an eligible public Twitter/X post.",
+    pricePer1000: SERVICE_PRICES["twitter-views"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Estimate shown before checkout", refillPolicy: "No Refill", qualityType: "Standard",
+    importantInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "x", code: "twitter-retweets", name: "Twitter / X Retweets",
+    description: "Increase distribution and visible sharing activity on a public Twitter/X post.",
+    pricePer1000: SERVICE_PRICES["twitter-retweets"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Estimate shown before checkout", refillPolicy: "No Refill", qualityType: "Standard",
+    importantInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
     platform: "x", code: "twitter-crypto-followers", name: "Twitter / X Crypto-Based Followers",
     description: "Grow your crypto-focused Twitter/X profile with specialized crypto-based followers. Suitable for cryptocurrency, Web3, blockchain, NFT and related profiles.",
     pricePer1000: SERVICE_PRICES["twitter-crypto-followers"], minQuantity: 0, maxQuantity: 0,

@@ -50,12 +50,12 @@ type ServicesPageProps = {
 };
 
 export default async function ServicesPage({ searchParams }: ServicesPageProps) {
-  const liveOnlyCodes = ["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"] as const;
+  const liveOnlyCodes = ["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"] as const;
   const databaseNames: Partial<Record<(typeof liveOnlyCodes)[number], string>> = { "instagram-followers": "Instagram Real Followers", "linkedin-followers": "LinkedIn Profile Followers" };
   const resolvedLiveServices = await Promise.all(liveOnlyCodes.map(async (code) => {
     const fallback = getServiceById(code);
     if (!fallback) return null;
-    const live = await getLiveServiceFacts(fallback.platform, databaseNames[code] ?? fallback.name);
+    const live = await getLiveServiceFacts(fallback.platform, databaseNames[code] ?? fallback.name, code);
     if (!live?.available || !Number.isFinite(live.rate) || live.rate <= 0 || live.min <= 0 || live.max < live.min) return null;
     return {
       ...fallback,
