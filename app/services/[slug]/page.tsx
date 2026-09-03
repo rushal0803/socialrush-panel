@@ -10,6 +10,7 @@ import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
+import LinkedInUsaGroupMembersLanding from "@/components/marketing/LinkedInUsaGroupMembersLanding";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -74,6 +75,11 @@ export async function generateMetadata({ params }: { params: { slug: string } })
     const title = "Buy LinkedIn USA Connections | SocialRUSH";
     const description = "Order LinkedIn USA Connections with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before you continue.";
     return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-connections" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-connections" }, twitter: { card: "summary_large_image", title, description } };
+  }
+  if (params.slug === "linkedin-usa-group-members") {
+    const title = "Buy LinkedIn USA Group Members | SocialRUSH";
+    const description = "Order LinkedIn USA Group Members with transparent pricing, public-group-link ordering, secure checkout and dashboard tracking. Review live service details before placing your order.";
+    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-group-members" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-group-members" }, twitter: { card: "summary_large_image", title, description } };
   }
   if (params.slug === "facebook-views") {
     return {
@@ -179,6 +185,24 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
     const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Connections", item: `${siteUrl}/services/linkedin-usa-connections` }] };
     const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Connections", description: "USA-targeted LinkedIn Connections service for eligible public personal profiles.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Connections" };
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaConnectionsLanding /></>;
+  }
+  if (params.slug === "linkedin-usa-group-members") {
+    const groupFaqs = [
+      ["What are LinkedIn USA Group Members?", "This is SocialRUSH’s USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group. Current catalog details, rate and delivery estimate are shown before you continue."],
+      ["Which LinkedIn Group URL should I provide?", "Provide the LinkedIn Group URL in the linkedin.com/groups/... format. Personal profiles, company pages, posts and unrelated URLs are not eligible for this service."],
+      ["Do I need to make my group public?", "Use the correct accessible LinkedIn Group URL and keep the group accessible as required while the order is processing. The order builder validates the group URL format, not group access settings."],
+      ["Do I need to provide my LinkedIn password?", "No. SocialRUSH only needs the required LinkedIn Group link. Never share your LinkedIn password, email password, OTP, recovery code or group admin login."],
+      ["How much do LinkedIn USA Group Members cost?", "The order builder shows the current catalog rate per 1,000 and calculates your total from the selected quantity before secure checkout."],
+      ["How long does delivery take?", "The current catalog delivery estimate is shown in the order builder before checkout. Actual timing can vary with campaign size and destination availability."],
+      ["Is refill or support included?", "The current refill/support policy is shown from the live service catalog in the order summary before you continue."],
+      ["Can I track my order?", "Yes. After checkout, order details and progress are available in the SocialRUSH dashboard."],
+      ["How are Group Members different from Followers and Connections?", "Group Members are associated with a LinkedIn Group. Followers follow eligible LinkedIn profiles or company pages, while Connections relate to personal LinkedIn profiles."],
+      ["Does this service guarantee engagement or active participation?", "No. SocialRUSH does not guarantee discussion activity, engagement, leads, sales, jobs, clients, revenue or other commercial outcomes."],
+    ];
+    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: groupFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
+    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Group Members", item: `${siteUrl}/services/linkedin-usa-group-members` }] };
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Group Members", description: "USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Group Members" };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaGroupMembersLanding /></>;
   }
   // Keep all commercial authority on the dedicated, sitemap-listed Instagram
   // follower landing page instead of maintaining a competing service detail.
