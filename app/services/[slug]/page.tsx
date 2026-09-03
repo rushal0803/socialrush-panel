@@ -20,6 +20,9 @@ const catalogOnlyServiceSlugs = new Set([
   "facebook-shares",
   "tiktok-likes",
   "tiktok-views",
+  "tiktok-custom-comments",
+  "tiktok-story-views",
+  "tiktok-saves",
 ]);
 
 function formatInr(value: number) {

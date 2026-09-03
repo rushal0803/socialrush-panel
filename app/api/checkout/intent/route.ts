@@ -43,7 +43,7 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
 
 const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at";
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
 const cryptoServiceCodes = new Set<ServiceCode>(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
 
 export async function POST(request: NextRequest) {
@@ -89,12 +89,16 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
   let notes: string | null = null;
-  if (service.code === "twitter-crypto-custom-comments") {
-    if (!requestedNotes || requestedNotes.split(/\r?\n/).some((line) => !line.trim()) || requestedNotes.length > 10000) {
+  if (service.code === "twitter-crypto-custom-comments" || service.code === "tiktok-custom-comments") {
+    const comments = requestedNotes?.split(/\r?\n/).map((line) => line.trim()).filter(Boolean) ?? [];
+    if (!requestedNotes || requestedNotes.length > 500000 || (service.code === "twitter-crypto-custom-comments" && requestedNotes.split(/\r?\n/).some((line) => !line.trim()))) {
       return NextResponse.json({ error: "Enter custom comments one per line (without blank lines)." }, { status: 422 });
     }
+    if (service.code === "tiktok-custom-comments" && comments.length !== quantity) {
+      return NextResponse.json({ error: `Enter exactly ${quantity} valid custom comment lines to match your order quantity.` }, { status: 422 });
+    }
     if (pollAnswerNumber !== undefined) return NextResponse.json({ error: "Poll answer number is only accepted for Telegram Poll Votes." }, { status: 422 });
-    notes = requestedNotes;
+    notes = comments.join("\n");
   } else if (service.code === "telegram-poll-votes") {
     if (requestedNotes) return NextResponse.json({ error: "Customer notes are not accepted for Telegram Poll Votes." }, { status: 422 });
     if (typeof pollAnswerNumber !== "string" || !/^\d+$/.test(pollAnswerNumber)) {

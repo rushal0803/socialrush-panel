@@ -13,7 +13,7 @@ const faqs = [["How is SocialRUSH pricing calculated?", "The selected quantity i
 const faqSchema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
 
 export default async function PricingPage() {
-  const liveOnlyCodes = new Set(["twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes"]);
+  const liveOnlyCodes = new Set(["twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
   const liveDefinitions = [
     ["instagram-followers", "instagram", "Instagram Real Followers"],
     ["linkedin-followers", "linkedin", "LinkedIn Profile Followers"],
@@ -28,6 +28,12 @@ export default async function PricingPage() {
     ["telegram-post-views", "telegram", "Telegram Post Views"],
     ["telegram-post-reactions", "telegram", "Telegram Post Reactions"],
     ["telegram-poll-votes", "telegram", "Telegram Poll Votes"],
+    ["tiktok-followers", "tiktok", "TikTok Followers"],
+    ["tiktok-likes", "tiktok", "TikTok Likes"],
+    ["tiktok-views", "tiktok", "TikTok Views"],
+    ["tiktok-custom-comments", "tiktok", "TikTok Custom Comments"],
+    ["tiktok-story-views", "tiktok", "TikTok Story Views"],
+    ["tiktok-saves", "tiktok", "TikTok Saves"],
   ] as const;
   const liveCatalog = await Promise.all(liveDefinitions.map(async ([code, platform, name]) => {
     const fallback = activeSmmServices.find((service) => service.code === code);
