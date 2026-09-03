@@ -18,7 +18,7 @@ function detectType(platform: string, url: URL) {
   if (platform === "facebook") return /\/groups\//.test(path) ? "group" : /\/(posts|reel|videos|watch)\//.test(path) || url.searchParams.has("v") ? "post or video" : "page or profile";
   if (platform === "linkedin") return /\/(posts|feed\/update)\//.test(path) ? "post" : /\/(in|company)\//.test(path) ? "profile or company" : "unknown";
   if (platform === "tiktok") return /\/video\//.test(path) ? "video" : /\/@[^/]+/.test(path) ? "profile" : "unknown";
-  if (platform === "telegram") return /\/[^/]+/.test(path) ? "channel or group" : "unknown";
+  if (platform === "telegram") return /^\/(?:s\/)?[^/]+\/\d+\/?$/.test(path) ? "post" : /\/[^/]+/.test(path) ? "channel or group" : "unknown";
   if (platform === "x") return /\/status\//.test(path) ? "post" : "profile";
   return "unknown";
 }
@@ -34,7 +34,7 @@ export function validateOrderLink({ platform, serviceCode, destinationUrl }: Inp
   let url: URL;
   try { url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`); } catch { return { valid: false, severity: "error", detectedType: null, message: rule.error }; }
   const detectedType = detectType(platform, url);
-  const contentService = /(likes|views|comments|saves|shares|watch-hours)/.test(serviceCode);
+  const contentService = /(likes|views|comments|saves|shares|watch-hours|reactions|votes)/.test(serviceCode);
   const accountService = /(followers|subscribers|members)/.test(serviceCode);
   if (contentService && ["profile", "channel", "page or profile", "profile or company"].includes(detectedType)) {
     return { valid: false, severity: "error", detectedType, message: `This looks like a ${detectedType}. This service requires a post, reel, or video link.`, suggestion: rule.helper };

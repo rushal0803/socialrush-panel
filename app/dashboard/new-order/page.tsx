@@ -67,6 +67,9 @@ const clientLiveServiceDefinitions = [
   { code: "twitter-likes", name: "Twitter / X Likes", platform: "x", description: "Increase visible engagement on a public Twitter/X post with like activity.", fallbackInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing." },
   { code: "twitter-views", name: "Twitter / X Views", platform: "x", description: "Increase visible reach and activity on an eligible public Twitter/X post.", fallbackInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing." },
   { code: "twitter-retweets", name: "Twitter / X Retweets", platform: "x", description: "Increase distribution and visible sharing activity on a public Twitter/X post.", fallbackInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing." },
+  { code: "telegram-post-views", name: "Telegram Post Views", platform: "telegram", description: "Increase visible viewing activity on an eligible public Telegram channel post.", fallbackInstruction: "Submit the exact public Telegram post and keep it accessible while the order is processing." },
+  { code: "telegram-post-reactions", name: "Telegram Post Reactions", platform: "telegram", description: "Increase visible engagement on an eligible public Telegram post with reaction activity.", fallbackInstruction: "Submit the exact public Telegram post that should receive reactions and keep it accessible while processing." },
+  { code: "telegram-poll-votes", name: "Telegram Poll Votes", platform: "telegram", description: "Increase voting activity on an eligible public Telegram poll.", fallbackInstruction: "Submit the exact public Telegram post containing the poll and keep it accessible while processing." },
   { code: "twitter-crypto-followers", name: "Twitter / X Crypto-Based Followers", platform: "x", description: "Grow your crypto-focused Twitter/X profile with specialized crypto-based followers.", fallbackInstruction: "Twitter/X profile must remain public during delivery." },
   { code: "twitter-crypto-likes", name: "Twitter / X Crypto-Based Likes", platform: "x", description: "Increase engagement on crypto-related Twitter/X posts with specialized crypto-based likes.", fallbackInstruction: "Post must remain public during delivery." },
   { code: "twitter-crypto-retweets", name: "Twitter / X Crypto-Based Retweets", platform: "x", description: "Expand the reach of crypto-related Twitter/X posts with specialized crypto-based retweets.", fallbackInstruction: "Post must remain public during delivery." },
@@ -181,6 +184,7 @@ export default function NewOrderPage() {
   const prefillRequested = resumeRequested || searchParams.get("prefill") === "1";
   const [targetLink, setTargetLink] = useState(prefillRequested ? searchParams.get("link") || "" : "");
   const [customComments, setCustomComments] = useState("");
+  const [pollAnswerNumber, setPollAnswerNumber] = useState("");
   // Every live-only service enters the same canonical merge path. This keeps
   // identity and de-duplication consistent as additional services are added.
   const [liveServices, setLiveServices] = useState<SmmService[]>([]);
@@ -217,6 +221,7 @@ export default function NewOrderPage() {
       setSelectedService(null);
       setTargetLink("");
       setQuantityInput("");
+      setPollAnswerNumber("");
       return;
     }
     const platformFromUrl = platformFromQuery(searchParams.get("platform"));
@@ -247,7 +252,7 @@ export default function NewOrderPage() {
       const draftPlatform = platformFromQuery(data.platform);
       const service = serviceFromQuery(data.service_code, draftPlatform, liveServices);
       if (!service) { setResumeNotice("This exact service is currently unavailable. Please choose another option from the same platform."); if (draftPlatform) setPlatform(draftPlatform); return; }
-      setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target || ""); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
+      setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target || ""); setPollAnswerNumber(""); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
       track("order_started", { step: "draft_resumed", service_code: service.code, platform: service.platform });
     }).catch(() => undefined);
     return () => { active = false; };
@@ -285,9 +290,11 @@ export default function NewOrderPage() {
   const linkValidation = selectedService ? validateOrderLink({ platform: selectedService.platform, serviceCode: selectedService.code, serviceName: selectedService.name, destinationUrl: targetLink }) : null;
   const linkError = linkValidation?.severity === "error" ? linkValidation.message : "";
   const requiresCustomComments = selectedService?.code === "twitter-crypto-custom-comments";
+  const requiresPollAnswerNumber = selectedService?.code === "telegram-poll-votes";
   const customCommentLines = customComments.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
   const customCommentsError = requiresCustomComments && customCommentLines.length === 0 ? "Enter at least one custom comment, one per line." : requiresCustomComments && customComments.split(/\r?\n/).some((line) => !line.trim()) ? "Remove blank comment lines before continuing." : "";
-  const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError && !customCommentsError);
+  const pollAnswerNumberError = requiresPollAnswerNumber && !/^\d+$/.test(pollAnswerNumber) ? "Enter a non-negative whole-number answer number." : "";
+  const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError && !customCommentsError && !pollAnswerNumberError);
   const totalPrice = selectedService ? Math.round((quantity * selectedService.pricePer1000 * 100) / 1000) / 100 : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
@@ -306,6 +313,7 @@ export default function NewOrderPage() {
       service: selectedService?.code ?? null,
       quantity,
       link: targetLink.trim(),
+      pollAnswerNumber: requiresPollAnswerNumber ? pollAnswerNumber : null,
       total: totalPrice,
     });
     const previousConfiguration = checkoutConfiguration.current;
@@ -332,7 +340,7 @@ export default function NewOrderPage() {
       requestId.current = "";
       clearStaleCheckoutUrl(true);
     }
-  }, [platform, quantity, selectedService?.code, targetLink, totalPrice]);
+ }, [platform, pollAnswerNumber, quantity, requiresPollAnswerNumber, selectedService?.code, targetLink, totalPrice]);
 
   useEffect(() => {
     if (!selectedService || !quantityInput || quantityError || linkError || success) return;
@@ -361,6 +369,7 @@ export default function NewOrderPage() {
   const resetOrderDetails = () => {
     setTargetLink("");
     setCustomComments("");
+    setPollAnswerNumber("");
     setQuantityInput("");
     setError("");
     setSuccess(null);
@@ -554,6 +563,11 @@ export default function NewOrderPage() {
       scrollTo(detailsRef);
       return;
     }
+    if (pollAnswerNumberError) {
+      setError(pollAnswerNumberError);
+      scrollTo(detailsRef);
+      return;
+    }
     const validation = validateOrderLink({ platform: selectedService.platform, serviceCode: selectedService.code, serviceName: selectedService.name, destinationUrl: targetLink });
     if (!validation.valid) {
       setError(validation.message);
@@ -584,6 +598,7 @@ export default function NewOrderPage() {
           clientRequestId: requestId.current,
           packageName: "Custom",
           notes: requiresCustomComments ? customComments.replace(/\r\n/g, "\n").trim() : null,
+          pollAnswerNumber: requiresPollAnswerNumber ? pollAnswerNumber : undefined,
         }),
       });
       const intentResult = (await intentResponse.json()) as { data?: { id: string }; error?: string };
@@ -630,7 +645,7 @@ export default function NewOrderPage() {
     try {
       let intentId = directCheckoutIntentId.current;
       if (!intentId) {
-        const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: requiresCustomComments ? customComments.replace(/\r\n/g, "\n").trim() : null }) });
+        const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: requiresCustomComments ? customComments.replace(/\r\n/g, "\n").trim() : null, pollAnswerNumber: requiresPollAnswerNumber ? pollAnswerNumber : undefined }) });
         const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
         if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
         intentId = intent.data.id;
@@ -764,15 +779,24 @@ export default function NewOrderPage() {
               <p className="mt-5 text-center text-xs text-[#9CA3AF]" aria-live="polite">Select an available service to continue automatically.</p>
             </div> : null}
             {currentStep === 3 && selectedService && linkRule ? <div>
-              <button type="button" onClick={() => moveTo(2)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to services</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 3 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Campaign details</h2><p className="mt-2 text-sm text-[#9CA3AF]">Only two things needed to get started.</p>
+              <button type="button" onClick={() => moveTo(2)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to services</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 3 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Campaign details</h2><p className="mt-2 text-sm text-[#9CA3AF]">{requiresPollAnswerNumber
+  ? "Enter the poll link, quantity, and answer number."
+  : requiresCustomComments
+    ? "Enter the post link, quantity, and custom comments."
+    : "Enter the public link and quantity to get started."}</p>
               <div className="mt-6 grid gap-5"><label className="text-xs font-black">Public Link / Username<input value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setError(""); }} placeholder={linkRule.placeholder} className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${linkError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${linkError ? "text-red-300" : "text-[#999]"}`}>{linkError || linkRule.helper}</span></label><label className="text-xs font-black">Quantity<input value={quantityInput} onChange={(e) => { setQuantityInput(cleanQuantity(e.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${quantityError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${quantityError ? "text-red-300" : "text-[#999]"}`}>{quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")}`}</span></label></div>
+              {requiresPollAnswerNumber ? <label className="mt-5 block text-xs font-black">Poll Answer Number<input value={pollAnswerNumber} onChange={(e) => { setPollAnswerNumber(e.target.value); setError(""); }} inputMode="numeric" placeholder="Enter answer number" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${pollAnswerNumberError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${pollAnswerNumberError ? "text-red-300" : "text-[#999]"}`}>{pollAnswerNumberError || "Enter the answer number for the poll option that should receive the votes."}</span></label> : null}
               {quickQuantities.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-11 rounded-xl border px-4 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/15 text-orange-200" : "border-white/10 bg-white/5 text-[#bbb]"}`}>{compactQuantity(value)}</button>)}</div>}
-              <div className="mt-5 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />No password required. Public link only.</div></div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
+  ? "No password required. Public poll link and answer number only."
+  : requiresCustomComments
+    ? "No password required. Public post link and custom comments only."
+    : "No password required. Public link only."}</div></div>
               {error && <p className="mt-4 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}<div className="mt-6">{primaryButton("Review Order", () => moveTo(4), !formIsValid)}</div>
             </div> : null}
             {currentStep === 4 && selectedService ? <div>
               <button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to details</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 4 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Review & pay</h2>
-              <div className="mt-5 rounded-2xl border border-white/10 bg-[#0B0B0F] p-4"><div className="flex items-center justify-between"><div className="flex items-center gap-3"><IconBadge size="sm" label={platformMeta[selectedService.platform].label} className={`bg-gradient-to-br ${platformAccent(selectedService.platform)}`}><PlatformIcon platform={platformMeta[selectedService.platform].label} /></IconBadge><div><h3 className="font-black">{serviceExperience[selectedService.code].name}</h3><p className="text-xs text-[#9CA3AF]">{platformMeta[selectedService.platform].label}</p></div></div><button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-orange-300">Edit details</button></div><dl className="mt-4 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">{[["Platform", platform && platformMeta[platform].label], ["Service", serviceExperience[selectedService.code].name], ["Public link", targetLink], ["Quantity", quantity.toLocaleString("en-IN")], ["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`], ["Delivery", selectedService.deliveryTime], ["Refill", selectedService.refillPolicy]].map(([label, value]) => <div key={String(label)} className="min-w-0"><dt className="text-[10px] font-black uppercase tracking-wider text-[#777]">{label}</dt><dd className="mt-1 break-words font-bold text-white">{label === "Public link" ? <span className="flex items-start gap-2"><span className="min-w-0 break-all">{value}</span><button type="button" aria-label="Copy public link" onClick={() => navigator.clipboard?.writeText(targetLink)} className="shrink-0 text-orange-300"><Copy className="h-4 w-4" /></button></span> : value}</dd></div>)}</dl></div>
+              <div className="mt-5 rounded-2xl border border-white/10 bg-[#0B0B0F] p-4"><div className="flex items-center justify-between"><div className="flex items-center gap-3"><IconBadge size="sm" label={platformMeta[selectedService.platform].label} className={`bg-gradient-to-br ${platformAccent(selectedService.platform)}`}><PlatformIcon platform={platformMeta[selectedService.platform].label} /></IconBadge><div><h3 className="font-black">{serviceExperience[selectedService.code].name}</h3><p className="text-xs text-[#9CA3AF]">{platformMeta[selectedService.platform].label}</p></div></div><button type="button" onClick={() => moveTo(3)} className="text-xs font-bold text-orange-300">Edit details</button></div><dl className="mt-4 grid gap-x-6 gap-y-4 text-sm sm:grid-cols-2">{[["Platform", platform && platformMeta[platform].label], ["Service", serviceExperience[selectedService.code].name], ["Public link", targetLink], ["Quantity", quantity.toLocaleString("en-IN")], ...(requiresPollAnswerNumber ? [["Poll Answer Number", pollAnswerNumber]] : []), ["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`], ["Delivery", selectedService.deliveryTime], ["Refill", selectedService.refillPolicy]].map(([label, value]) => <div key={String(label)} className="min-w-0"><dt className="text-[10px] font-black uppercase tracking-wider text-[#777]">{label}</dt><dd className="mt-1 break-words font-bold text-white">{label === "Public link" ? <span className="flex items-start gap-2"><span className="min-w-0 break-all">{value}</span><button type="button" aria-label="Copy public link" onClick={() => navigator.clipboard?.writeText(targetLink)} className="shrink-0 text-orange-300"><Copy className="h-4 w-4" /></button></span> : value}</dd></div>)}</dl></div>
               <div className="mt-4 rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#201406,#0b0b0b)] p-5"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Payment summary</p><div className="mt-4 space-y-3 text-sm"><div className="flex justify-between"><span className="text-[#aaa]">Order total</span><strong>{formatCurrency(totalPrice, currency)}</strong></div><div className="flex justify-between"><span className="text-[#aaa]">Wallet balance</span><strong>{walletLoading ? "Checking…" : formatCurrency(walletBalance ?? 0, currency)}</strong></div><div className="flex justify-between border-t border-white/10 pt-3"><span className="text-[#aaa]">Balance after order</span><strong>{remainingBalance === null ? "—" : formatCurrency(remainingBalance, currency)}</strong></div></div>{!walletLoading && !hasEnoughWallet && <div className="mt-4 rounded-xl bg-red-500/10 p-3 text-sm text-red-100"><strong>Insufficient wallet balance.</strong><br />You need {formatCurrency(amountRequired, currency)} more to place this order.</div>}{walletError && <p className="mt-3 text-xs text-amber-200">{walletError}</p>}{error && <p className="mt-3 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}{success && <p className="mt-3 rounded-xl bg-emerald-500/15 p-3 text-sm text-emerald-100">Order placed successfully · #{success.id}. Opening Order History…</p>}<button type="button" onClick={() => { if (hasEnoughWallet) void placeOrder(); else void payAndPlaceOrder(); }} disabled={walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black shadow-[0_18px_36px_-16px_rgba(255,142,0,.55)] disabled:cursor-not-allowed disabled:bg-[#252525] disabled:bg-none disabled:text-[#777]">{submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" />{checkoutStage || "Preparing secure payment..."}</> : hasEnoughWallet ? <><ShieldCheck className="h-4 w-4" />Confirm & Place Order</> : <><Wallet className="h-4 w-4" />Pay {formatCurrency(amountRequired, currency)} & Continue</>}</button></div>
             </div> : null}
           </section>
@@ -923,6 +947,11 @@ export default function NewOrderPage() {
                 <textarea value={customComments} onChange={(event) => { setCustomComments(event.target.value); setError(""); }} rows={6} placeholder={"Great project!\nLove this Web3 update."} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm text-white outline-none placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" />
                 <span className={`mt-2 block text-[11px] leading-5 ${customCommentsError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>{customCommentsError || `${customCommentLines.length} comment${customCommentLines.length === 1 ? "" : "s"} · one comment per line. Line breaks are preserved for delivery.`}</span>
               </label> : null}
+              {requiresPollAnswerNumber ? <label className="mt-5 block text-xs font-black text-white">
+                <span className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Poll Answer Number</span>
+                <input value={pollAnswerNumber} onChange={(event) => { setPollAnswerNumber(event.target.value); setError(""); }} inputMode="numeric" placeholder="Enter answer number" className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" />
+                <span className={`mt-2 block text-[11px] leading-5 ${pollAnswerNumberError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>{pollAnswerNumberError || "Enter the answer number for the poll option that should receive the votes."}</span>
+              </label> : null}
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div className={`rounded-2xl border bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)] ${quantityError ? "border-red-400/40" : "border-orange-400/35"}`}>
                   <p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p>
@@ -943,7 +972,7 @@ export default function NewOrderPage() {
               </div>
               {!formIsValid ? <div className="mt-5 flex items-center gap-3 rounded-2xl border border-dashed border-white/15 bg-[#0B0B0F] p-4 text-sm font-semibold text-[#D1D5DB]"><LockKeyhole className="h-5 w-5 shrink-0 text-[#9CA3AF]" />Enter your public link and quantity to review your order.</div> : <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
                 <dl className="grid gap-3 sm:grid-cols-2">
-                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim()],["Quantity", quantity.toLocaleString("en-IN")],["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`],["Delivery", selectedService.deliveryTime],["Refill / support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 text-sm font-bold text-white [overflow-wrap:anywhere]">{value}</dd></div>)}
+                  {[["Platform", platform ? platformMeta[platform].label : "—"],["Service", serviceExperience[selectedService.code].name],["Public link", targetLink.trim()],["Quantity", quantity.toLocaleString("en-IN")], ...(requiresPollAnswerNumber ? [["Poll Answer Number", pollAnswerNumber]] : []), ["Rate", `${formatCurrency(selectedService.pricePer1000, currency)} / 1K`],["Delivery", selectedService.deliveryTime],["Refill / support", selectedService.refillPolicy]].map(([label, value]) => <div key={label} className="min-w-0 rounded-2xl border border-white/10 bg-[#151515] p-4"><dt className="text-[10px] font-black uppercase tracking-wider text-[#9CA3AF]">{label}</dt><dd className="mt-2 text-sm font-bold text-white [overflow-wrap:anywhere]">{value}</dd></div>)}
                 </dl>
                 <aside className="dashboard-order-summary rounded-3xl bg-[#0B0B0F] p-5 text-white shadow-xl lg:sticky lg:top-24 lg:self-start">
                   <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-orange-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>

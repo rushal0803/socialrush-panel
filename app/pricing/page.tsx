@@ -13,7 +13,7 @@ const faqs = [["How is SocialRUSH pricing calculated?", "The selected quantity i
 const faqSchema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
 
 export default async function PricingPage() {
-  const liveOnlyCodes = new Set(["twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
+  const liveOnlyCodes = new Set(["twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes"]);
   const liveDefinitions = [
     ["instagram-followers", "instagram", "Instagram Real Followers"],
     ["linkedin-followers", "linkedin", "LinkedIn Profile Followers"],
@@ -25,11 +25,16 @@ export default async function PricingPage() {
     ["twitter-crypto-likes", "x", "Twitter / X Crypto-Based Likes"],
     ["twitter-crypto-retweets", "x", "Twitter / X Crypto-Based Retweets"],
     ["twitter-crypto-custom-comments", "x", "Twitter / X Crypto-Based Custom Comments"],
+    ["telegram-post-views", "telegram", "Telegram Post Views"],
+    ["telegram-post-reactions", "telegram", "Telegram Post Reactions"],
+    ["telegram-poll-votes", "telegram", "Telegram Poll Votes"],
   ] as const;
   const liveCatalog = await Promise.all(liveDefinitions.map(async ([code, platform, name]) => {
     const fallback = activeSmmServices.find((service) => service.code === code);
     const live = await getLiveServiceFacts(platform, name, code);
-    return fallback && live?.available && Number.isFinite(live.rate) && live.rate > 0 && live.min > 0 && live.max >= live.min ? { ...fallback, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } satisfies SmmService : fallback;
+    const validLiveFacts = fallback && live?.available && Number.isFinite(live.rate) && live.rate > 0 && live.min > 0 && live.max >= live.min;
+    if (validLiveFacts) return { ...fallback, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } satisfies SmmService;
+    return liveOnlyCodes.has(code) ? null : fallback;
   }));
   const serviceCatalog = activeSmmServices.map((service) => liveCatalog.find((live) => live?.code === service.code) ?? service).filter((service) => !liveOnlyCodes.has(service.code) || liveCatalog.some((live) => live?.code === service.code && live.pricePer1000 > 0 && live.minQuantity > 0 && live.maxQuantity >= live.minQuantity));
   return <PublicShell tone="light3d"><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
