@@ -13,17 +13,22 @@ const faqs = [["How is SocialRUSH pricing calculated?", "The selected quantity i
 const faqSchema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
 
 export default async function PricingPage() {
+  const liveOnlyCodes = new Set(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
   const liveDefinitions = [
     ["instagram-followers", "instagram", "Instagram Real Followers"],
     ["linkedin-followers", "linkedin", "LinkedIn Profile Followers"],
     ["x-followers", "x", "X Followers"],
+    ["twitter-crypto-followers", "x", "Twitter / X Crypto-Based Followers"],
+    ["twitter-crypto-likes", "x", "Twitter / X Crypto-Based Likes"],
+    ["twitter-crypto-retweets", "x", "Twitter / X Crypto-Based Retweets"],
+    ["twitter-crypto-custom-comments", "x", "Twitter / X Crypto-Based Custom Comments"],
   ] as const;
   const liveCatalog = await Promise.all(liveDefinitions.map(async ([code, platform, name]) => {
     const fallback = activeSmmServices.find((service) => service.code === code);
     const live = await getLiveServiceFacts(platform, name);
-    return fallback && live?.available ? { ...fallback, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } satisfies SmmService : fallback;
+    return fallback && live?.available && Number.isFinite(live.rate) && live.rate > 0 && live.min > 0 && live.max >= live.min ? { ...fallback, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } satisfies SmmService : fallback;
   }));
-  const serviceCatalog = activeSmmServices.map((service) => liveCatalog.find((live) => live?.code === service.code) ?? service);
+  const serviceCatalog = activeSmmServices.map((service) => liveCatalog.find((live) => live?.code === service.code) ?? service).filter((service) => !liveOnlyCodes.has(service.code) || liveCatalog.some((live) => live?.code === service.code && live.pricePer1000 > 0 && live.minQuantity > 0 && live.maxQuantity >= live.minQuantity));
   return <PublicShell tone="light3d"><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Pricing", path: "/pricing" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
   <div className="relative overflow-hidden bg-[#090a0f] text-white"><div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_4%,rgba(255,107,0,.22),transparent_25%),radial-gradient(circle_at_86%_18%,rgba(26,74,150,.22),transparent_28%)]" />
     <section className="relative mx-auto max-w-7xl px-5 pb-14 pt-14 sm:px-6 sm:pt-20 lg:px-8 lg:pb-20"><p className="text-[11px] font-black uppercase tracking-[.2em] text-orange-300">Transparent SocialRUSH Pricing</p><div className="mt-5 grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-end"><div><h1 className="max-w-4xl text-4xl font-black leading-[1.03] tracking-[-.05em] sm:text-6xl">Clear pricing before you <span className="text-orange-300">place an order.</span></h1><p className="mt-5 max-w-2xl text-base leading-7 text-slate-300">Compare live SocialRUSH service rates across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X.</p><div className="mt-7 flex flex-wrap gap-3"><Link href="#pricing-catalog" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-5 text-sm font-black text-white">Compare Prices</Link><Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/[.04] px-5 text-sm font-black text-white">View Packages</Link></div></div><div className="grid grid-cols-2 gap-2 rounded-3xl border border-white/10 bg-white/[.035] p-4 text-xs text-slate-300 sm:grid-cols-3">{["Live catalog rates","Public-link ordering","No password required","Secure checkout","Dashboard tracking"].map((item) => <span key={item} className="rounded-xl border border-white/[.07] bg-black/20 px-3 py-3 font-bold">✓ {item}</span>)}</div></div></section>
