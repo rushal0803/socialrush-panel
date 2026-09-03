@@ -73,6 +73,10 @@ export const serviceExperience: Record<string, { name: string; outcome: string; 
   "tiktok-likes": { name: "TikTok Likes", outcome: "More engagement discovery around a selected TikTok video.", required: "Public TikTok video link" },
   "tiktok-views": { name: "TikTok Views", outcome: "Wider discovery and visible reach for a selected video.", required: "Public TikTok video link" },
   "x-followers": { name: "Twitter/X Followers", outcome: "Broader profile discovery and stronger visible audience presence.", required: "Public Twitter/X profile link" },
+  "twitter-crypto-followers": { name: "Twitter / X Crypto-Based Followers", outcome: "Crypto-focused profile audience growth at a fixed delivery speed.", required: "Public Twitter/X profile link" },
+  "twitter-crypto-likes": { name: "Twitter / X Crypto-Based Likes", outcome: "Crypto-focused engagement on a selected public post.", required: "Public Twitter/X post link" },
+  "twitter-crypto-retweets": { name: "Twitter / X Crypto-Based Retweets", outcome: "Crypto-focused distribution for a selected public post.", required: "Public Twitter/X post link" },
+  "twitter-crypto-custom-comments": { name: "Twitter / X Crypto-Based Custom Comments", outcome: "Custom crypto-focused comments on a selected public post.", required: "Public Twitter/X post link and comments" },
 };
 
 export const linkRules: Record<string, LinkRule> = {
@@ -99,6 +103,10 @@ export const linkRules: Record<string, LinkRule> = {
   "tiktok-likes": { label: "TikTok video link", placeholder: "https://tiktok.com/@username/video/...", helper: "Use the exact public TikTok video that should receive engagement.", hosts: ["tiktok.com"], pathHint: /\/video\//i, error: "Enter a valid public TikTok video link." },
   "tiktok-views": { label: "TikTok video link", placeholder: "https://tiktok.com/@username/video/...", helper: "Use the exact public TikTok video you want people to discover.", hosts: ["tiktok.com"], pathHint: /\/video\//i, error: "Enter a valid public TikTok video link." },
   "x-followers": { label: "Twitter/X profile link", placeholder: "https://x.com/yourprofile", helper: "Use the public profile URL and keep the handle unchanged during delivery.", hosts: ["x.com", "twitter.com"], error: "Enter a valid public Twitter/X profile link." },
+  "twitter-crypto-followers": { label: "Twitter/X profile link", placeholder: "https://x.com/yourprofile", helper: "Use the public profile URL and keep it public during fixed-speed delivery.", hosts: ["x.com", "twitter.com"], pathHint: /^\/(?!.*\/status\/)[^/]+\/?$/i, error: "Enter a valid public Twitter/X profile link." },
+  "twitter-crypto-likes": { label: "Twitter/X post link", placeholder: "https://x.com/username/status/...", helper: "Use the exact public post and keep it public during delivery.", hosts: ["x.com", "twitter.com"], pathHint: /^\/[^/]+\/status\/\d+\/?$/i, error: "Enter a valid Twitter/X post link." },
+  "twitter-crypto-retweets": { label: "Twitter/X post link", placeholder: "https://x.com/username/status/...", helper: "Use the exact public post and keep it public during delivery.", hosts: ["x.com", "twitter.com"], pathHint: /^\/[^/]+\/status\/\d+\/?$/i, error: "Enter a valid Twitter/X post link." },
+  "twitter-crypto-custom-comments": { label: "Twitter/X post link", placeholder: "https://x.com/username/status/...", helper: "Use the exact public post and keep it public during delivery.", hosts: ["x.com", "twitter.com"], pathHint: /^\/[^/]+\/status\/\d+\/?$/i, error: "Enter a valid Twitter/X post link." },
 };
 
 export function validateCampaignLink(value: string, rule: LinkRule) {

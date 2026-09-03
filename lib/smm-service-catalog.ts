@@ -366,6 +366,34 @@ export const smmServiceCatalog: SmmService[] = [
     importantInstruction: "Use public profile URL and avoid handle changes.",
     isActive: true,
   },
+  {
+    platform: "x", code: "twitter-crypto-followers", name: "Twitter / X Crypto-Based Followers",
+    description: "Grow your crypto-focused Twitter/X profile with specialized crypto-based followers. Suitable for cryptocurrency, Web3, blockchain, NFT and related profiles.",
+    pricePer1000: SERVICE_PRICES["twitter-crypto-followers"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Up to 1K/day", refillPolicy: "No Refill", qualityType: "Crypto-Based",
+    importantInstruction: "Twitter/X profile must remain public during delivery. Fixed delivery speed.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "x", code: "twitter-crypto-likes", name: "Twitter / X Crypto-Based Likes",
+    description: "Increase engagement on crypto-related Twitter/X posts with specialized crypto-based likes. Suitable for crypto, Web3, blockchain, NFT and related content.",
+    pricePer1000: SERVICE_PRICES["twitter-crypto-likes"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Up to 1K/day", refillPolicy: "No Refill", qualityType: "Crypto-Based",
+    importantInstruction: "Post must remain public during delivery. Fixed delivery speed.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "x", code: "twitter-crypto-retweets", name: "Twitter / X Crypto-Based Retweets",
+    description: "Expand the reach of crypto-related Twitter/X posts with specialized crypto-based retweets. Ideal for cryptocurrency, Web3, blockchain, NFT and related content.",
+    pricePer1000: SERVICE_PRICES["twitter-crypto-retweets"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Up to 1K/day", refillPolicy: "No Refill", qualityType: "Crypto-Based",
+    importantInstruction: "Post must remain public during delivery. Fixed delivery speed.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "x", code: "twitter-crypto-custom-comments", name: "Twitter / X Crypto-Based Custom Comments",
+    description: "Add custom crypto-focused comments to eligible Twitter/X posts. Enter the comments you want delivered and keep the post public while the order is processing.",
+    pricePer1000: SERVICE_PRICES["twitter-crypto-custom-comments"], minQuantity: 0, maxQuantity: 0,
+    deliveryTime: "Up to 250/day", refillPolicy: "No Refill", qualityType: "Crypto-Based · Custom Comments",
+    importantInstruction: "Post must remain public during delivery. Enter one comment per line; fixed delivery speed.", requiresLiveCatalogFacts: true, isActive: true,
+  },
 ];
 
 /**

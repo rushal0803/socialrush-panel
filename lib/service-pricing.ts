@@ -30,6 +30,10 @@ export const SERVICE_PRICES = {
   "tiktok-likes": 150,
   "tiktok-views": 15,
   "x-followers": 1499,
+  "twitter-crypto-followers": 4999,
+  "twitter-crypto-likes": 5499,
+  "twitter-crypto-retweets": 5999,
+  "twitter-crypto-custom-comments": 6999,
 } as const;
 
 export type ServiceCode = keyof typeof SERVICE_PRICES;
