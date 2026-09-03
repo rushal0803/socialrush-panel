@@ -61,12 +61,14 @@ export async function POST(request: NextRequest) {
     clientRequestId?: string;
     packageName?: string | null;
     notes?: string | null;
+    pollAnswerNumber?: string;
   } | null;
 
   const serviceCode = typeof body?.serviceCode === "string" ? body.serviceCode.trim() : "";
   const link = typeof body?.link === "string" ? body.link.trim() : "";
   const clientRequestId = typeof body?.clientRequestId === "string" ? body.clientRequestId.trim() : "";
-  const notes = typeof body?.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+  const requestedNotes = typeof body?.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+  const pollAnswerNumber = body?.pollAnswerNumber;
   const quantity = body?.quantity;
 
   if (!serviceCode || !link || !clientRequestId || !Number.isInteger(quantity)) {
@@ -86,11 +88,20 @@ export async function POST(request: NextRequest) {
   if (!service.isActive && !liveCatalogServiceCodes.has(service.code)) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
+  let notes: string | null = null;
   if (service.code === "twitter-crypto-custom-comments") {
-    if (!notes || notes.split(/\r?\n/).some((line) => !line.trim()) || notes.length > 10000) {
+    if (!requestedNotes || requestedNotes.split(/\r?\n/).some((line) => !line.trim()) || requestedNotes.length > 10000) {
       return NextResponse.json({ error: "Enter custom comments one per line (without blank lines)." }, { status: 422 });
     }
-  } else if (notes) {
+    if (pollAnswerNumber !== undefined) return NextResponse.json({ error: "Poll answer number is only accepted for Telegram Poll Votes." }, { status: 422 });
+    notes = requestedNotes;
+  } else if (service.code === "telegram-poll-votes") {
+    if (requestedNotes) return NextResponse.json({ error: "Customer notes are not accepted for Telegram Poll Votes." }, { status: 422 });
+    if (typeof pollAnswerNumber !== "string" || !/^\d+$/.test(pollAnswerNumber)) {
+      return NextResponse.json({ error: "Enter a non-negative whole-number poll answer number." }, { status: 422 });
+    }
+    notes = `Poll answer number: ${pollAnswerNumber}`;
+  } else if (requestedNotes || pollAnswerNumber !== undefined) {
     return NextResponse.json({ error: "Comments are only accepted for the custom-comments service." }, { status: 422 });
   }
   const linkError = linkRules[service.code] ? validateCampaignLink(link, linkRules[service.code]) : null;

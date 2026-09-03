@@ -326,10 +326,10 @@ export const smmServiceCatalog: SmmService[] = [
   },
   {
     platform: "telegram", code: "telegram-poll-votes", name: "Telegram Poll Votes",
-    description: "Increase voting activity on an eligible public Telegram poll.",
+    description: "Increase voting activity on an eligible public Telegram poll. Provide the exact public poll post URL and answer number.",
     pricePer1000: SERVICE_PRICES["telegram-poll-votes"], minQuantity: 100, maxQuantity: 100000,
     deliveryTime: "1-2 days", refillPolicy: "No Refill", qualityType: "Standard",
-    importantInstruction: "Submit the exact public Telegram post containing the poll and keep it accessible while processing.", requiresLiveCatalogFacts: true, isActive: true,
+    importantInstruction: "Submit the exact public Telegram post containing the poll, provide the answer number for the option receiving votes, and keep it accessible while processing.", requiresLiveCatalogFacts: true, isActive: true,
   },
   {
     platform: "tiktok",

@@ -15,8 +15,8 @@ with category_row as (
       'Increase visible engagement on an eligible public Telegram post with reaction activity.',
       'Submit the exact public Telegram post that should receive reactions and keep it accessible while processing.'),
     ('telegram-poll-votes', 'Telegram Poll Votes', 699.0000::numeric,
-      'Increase voting activity on an eligible public Telegram poll.',
-      'Submit the exact public Telegram post containing the poll and keep it accessible while processing.')
+      'Increase voting activity on an eligible public Telegram poll. Provide the exact public poll post URL and answer number.',
+      'Submit the exact public Telegram post containing the poll, provide the answer number for the option receiving votes, and keep it accessible while processing.')
   ) as t(code, name, rate, description, important_instruction)
 )
 insert into public.services (
