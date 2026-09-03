@@ -23,6 +23,13 @@ const catalogOnlyServiceSlugs = new Set([
   "tiktok-custom-comments",
   "tiktok-story-views",
   "tiktok-saves",
+  "linkedin-usa-connections",
+  "linkedin-usa-post-likes",
+  "linkedin-usa-endorsements",
+  "linkedin-usa-followers",
+  "linkedin-usa-group-members",
+  "linkedin-usa-custom-comments",
+  "linkedin-usa-reposts",
 ]);
 
 function formatInr(value: number) {

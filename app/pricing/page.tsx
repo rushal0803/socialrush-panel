@@ -13,10 +13,17 @@ const faqs = [["How is SocialRUSH pricing calculated?", "The selected quantity i
 const faqSchema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
 
 export default async function PricingPage() {
-  const liveOnlyCodes = new Set(["twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
+  const liveOnlyCodes = new Set(["linkedin-usa-connections", "linkedin-usa-post-likes", "linkedin-usa-endorsements", "linkedin-usa-followers", "linkedin-usa-group-members", "linkedin-usa-custom-comments", "linkedin-usa-reposts", "twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
   const liveDefinitions = [
     ["instagram-followers", "instagram", "Instagram Real Followers"],
     ["linkedin-followers", "linkedin", "LinkedIn Profile Followers"],
+    ["linkedin-usa-connections", "linkedin", "LinkedIn USA Connections"],
+    ["linkedin-usa-post-likes", "linkedin", "LinkedIn USA Post Likes"],
+    ["linkedin-usa-endorsements", "linkedin", "LinkedIn USA Endorsements"],
+    ["linkedin-usa-followers", "linkedin", "LinkedIn USA Followers"],
+    ["linkedin-usa-group-members", "linkedin", "LinkedIn USA Group Members"],
+    ["linkedin-usa-custom-comments", "linkedin", "LinkedIn USA Custom Comments"],
+    ["linkedin-usa-reposts", "linkedin", "LinkedIn USA Reposts"],
     ["x-followers", "x", "X Followers"],
     ["twitter-likes", "x", "Twitter / X Likes"],
     ["twitter-views", "x", "Twitter / X Views"],
