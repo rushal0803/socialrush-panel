@@ -50,7 +50,7 @@ type ServicesPageProps = {
 };
 
 export default async function ServicesPage({ searchParams }: ServicesPageProps) {
-  const liveOnlyCodes = ["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"] as const;
+  const liveOnlyCodes = ["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes"] as const;
   const databaseNames: Partial<Record<(typeof liveOnlyCodes)[number], string>> = { "instagram-followers": "Instagram Real Followers", "linkedin-followers": "LinkedIn Profile Followers" };
   const resolvedLiveServices = await Promise.all(liveOnlyCodes.map(async (code) => {
     const fallback = getServiceById(code);

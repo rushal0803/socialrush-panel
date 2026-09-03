@@ -311,6 +311,27 @@ export const smmServiceCatalog: SmmService[] = [
     isActive: true,
   },
   {
+    platform: "telegram", code: "telegram-post-views", name: "Telegram Post Views",
+    description: "Increase visible viewing activity on an eligible public Telegram channel post.",
+    pricePer1000: SERVICE_PRICES["telegram-post-views"], minQuantity: 100, maxQuantity: 100000,
+    deliveryTime: "1-2 days", refillPolicy: "No Refill", qualityType: "Standard",
+    importantInstruction: "Submit the exact public Telegram post and keep it accessible while the order is processing.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "telegram", code: "telegram-post-reactions", name: "Telegram Post Reactions",
+    description: "Increase visible engagement on an eligible public Telegram post with reaction activity.",
+    pricePer1000: SERVICE_PRICES["telegram-post-reactions"], minQuantity: 100, maxQuantity: 100000,
+    deliveryTime: "1-2 days", refillPolicy: "No Refill", qualityType: "Standard",
+    importantInstruction: "Submit the exact public Telegram post that should receive reactions and keep it accessible while processing.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
+    platform: "telegram", code: "telegram-poll-votes", name: "Telegram Poll Votes",
+    description: "Increase voting activity on an eligible public Telegram poll.",
+    pricePer1000: SERVICE_PRICES["telegram-poll-votes"], minQuantity: 100, maxQuantity: 100000,
+    deliveryTime: "1-2 days", refillPolicy: "No Refill", qualityType: "Standard",
+    importantInstruction: "Submit the exact public Telegram post containing the poll and keep it accessible while processing.", requiresLiveCatalogFacts: true, isActive: true,
+  },
+  {
     platform: "tiktok",
     code: "tiktok-followers",
     name: "TikTok Followers",

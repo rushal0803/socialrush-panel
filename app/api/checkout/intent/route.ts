@@ -43,7 +43,7 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
 
 const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at";
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes"]);
 const cryptoServiceCodes = new Set<ServiceCode>(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
 
 export async function POST(request: NextRequest) {
