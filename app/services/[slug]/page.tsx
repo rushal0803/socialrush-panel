@@ -9,6 +9,7 @@ import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
+import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -23,7 +24,6 @@ const catalogOnlyServiceSlugs = new Set([
   "tiktok-custom-comments",
   "tiktok-story-views",
   "tiktok-saves",
-  "linkedin-usa-connections",
   "linkedin-usa-post-likes",
   "linkedin-usa-endorsements",
   "linkedin-usa-followers",
@@ -70,6 +70,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  if (params.slug === "linkedin-usa-connections") {
+    const title = "Buy LinkedIn USA Connections | SocialRUSH";
+    const description = "Order LinkedIn USA Connections with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before you continue.";
+    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-connections" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-connections" }, twitter: { card: "summary_large_image", title, description } };
+  }
   if (params.slug === "facebook-views") {
     return {
       metadataBase: new URL(siteUrl),
@@ -161,6 +166,20 @@ function getSeoData(slug: string) {
 }
 
 export default function ServiceSeoPage({ params }: { params: { slug: string } }) {
+  if (params.slug === "linkedin-usa-connections") {
+    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [
+      ["What are LinkedIn USA Connections?", "This is SocialRUSH’s USA-targeted LinkedIn Connections service for an eligible public personal profile. The catalog details, rate and delivery estimate are shown before you continue."],
+      ["Which LinkedIn URL should I provide?", "Provide the public personal profile URL in the linkedin.com/in/username format. Company, post and unrelated URLs are not eligible for this service."],
+      ["Do I need to provide my LinkedIn password?", "No. SocialRUSH only needs the required public profile link. Never share a LinkedIn password, email password, OTP or recovery code."],
+      ["How much do LinkedIn USA Connections cost?", "The order builder displays the current catalog rate per 1,000 and calculates the total from your selected quantity before secure checkout."],
+      ["Can I track my order?", "Yes. After checkout, order details and progress are available through the SocialRUSH dashboard."],
+      ["Are Connections the same as Followers?", "No. Connections relate to a professional network relationship, while Followers are people who follow profile or company updates. See the LinkedIn Followers service for follower-focused ordering."],
+      ["Does this service guarantee leads, jobs or sales?", "No. SocialRUSH does not guarantee commercial outcomes, reach, engagement, hiring outcomes, leads or sales."],
+    ].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
+    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Connections", item: `${siteUrl}/services/linkedin-usa-connections` }] };
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Connections", description: "USA-targeted LinkedIn Connections service for eligible public personal profiles.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Connections" };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaConnectionsLanding /></>;
+  }
   // Keep all commercial authority on the dedicated, sitemap-listed Instagram
   // follower landing page instead of maintaining a competing service detail.
   if (params.slug === "instagram-followers") {
