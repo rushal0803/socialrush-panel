@@ -492,11 +492,13 @@ export default function NewOrderPage() {
       setSelectedService((current) => current?.code === service.code ? service : current);
     };
     const db = createClient();
-    for (const definition of clientLiveServiceDefinitions) void db
+    for (const definition of clientLiveServiceDefinitions) {
+      const databasePlatform = definition.platform === "x" ? "twitter" : definition.platform;
+      void db
       .from("services")
       .select("rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
       .eq("name", definition.name)
-      .eq("platform", definition.platform)
+      .eq("platform", databasePlatform)
       .eq("status", "active")
       .eq("is_active", true)
       .eq("accepts_new_orders", true)
@@ -519,6 +521,7 @@ export default function NewOrderPage() {
         };
         storeLiveService(liveService);
       });
+    }
     for (const definition of protectedLiveServiceDefinitions) void fetch(`/api/services/live-catalog?code=${definition.code}`, { credentials: "same-origin" })
       .then(async (response) => response.ok ? response.json() as Promise<{ data?: { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; qualityType: string; importantInstruction: string } | null }> : { data: null })
       .then(({ data }) => {

@@ -118,6 +118,7 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "A valid destination link is required." }, { status: 400 });
   }
 
+  const databasePlatform = service.platform === "x" ? "twitter" : service.platform;
   let matchedServiceQuery = supabase
     .from("services")
     .select("id, rate, min, max, accepts_new_orders, health_status")
@@ -125,7 +126,7 @@ export async function POST(request: NextRequest) {
     .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
     .limit(1);
-  if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", service.platform).eq("is_active", true).eq("accepts_new_orders", true);
+  if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", databasePlatform).eq("is_active", true).eq("accepts_new_orders", true);
   const { data: matchedService } = await matchedServiceQuery.maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
   if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
