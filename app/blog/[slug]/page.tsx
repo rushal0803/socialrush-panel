@@ -5,7 +5,7 @@ import BlogShell from "@/components/marketing/blog/BlogShell";
 import { articleSlugs, blogArticles, blogRedirects, getArticleBySlug, getBlogPlatform } from "@/components/marketing/blog/blogData";
 import BlogArticleEnhancements from "@/components/marketing/blog/BlogArticleEnhancements";
 import { ArticleFlowDiagram, ArticleHeroVisual, ArticleSafetyCallout } from "@/components/marketing/blog/ArticleVisuals";
-import { formatArticleDate, getArticleWords, getReadingTime, isValidDate } from "@/lib/blog";
+import { formatArticleDate, getArticleWords, getReadingTime, isValidDate, uniqueArticlesBySlug } from "@/lib/blog";
 import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import TrackedLink from "@/components/analytics/TrackedLink";
@@ -49,7 +49,7 @@ function getArticleSections(article: ReturnType<typeof getArticleBySlug>) {
 }
 
 export function generateStaticParams() {
-  return [...articleSlugs, ...blogRedirects.map((entry) => entry.slug)].map((slug) => ({ slug }));
+  return [...new Set([...articleSlugs, ...blogRedirects.map((entry) => entry.slug)])].map((slug) => ({ slug }));
 }
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
@@ -124,7 +124,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleComparison = article.comparison;
   const articleWordCount = getArticleWords(article);
   const articlePlatform = getBlogPlatform(article);
-  const relatedArticles = blogArticles
+  const relatedArticles = uniqueArticlesBySlug(blogArticles)
     .filter((candidate) => candidate.slug !== article.slug)
     .map((candidate) => ({
       candidate,

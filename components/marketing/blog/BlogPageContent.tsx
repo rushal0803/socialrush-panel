@@ -7,9 +7,9 @@ import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
 import { useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { blogArticles, type BlogArticle } from "@/components/marketing/blog/blogData";
-import { formatArticleDate, getReadingTime, getSearchText, sortArticles } from "@/lib/blog";
+import { formatArticleDate, getReadingTime, getSearchText, sortArticles, uniqueArticlesBySlug } from "@/lib/blog";
 
-const articles = sortArticles(blogArticles);
+const articles = sortArticles(uniqueArticlesBySlug(blogArticles));
 const featuredArticle = articles.find((article) => article.featured) ?? articles[0];
 
 const platforms = [
@@ -34,8 +34,6 @@ function ArticleArtwork({ article, priority = false }: { article: BlogArticle; p
   return (
     <div className="relative aspect-[16/10] overflow-hidden bg-[#10141f]">
       <SafeImage src={article.image} alt={article.imageAlt ?? article.title} fill priority={priority} sizes="(max-width: 767px) 100vw, (max-width: 1280px) 50vw, 33vw" className="object-cover transition duration-500 group-hover:scale-[1.04]" />
-      <div className="absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-[#07080D]/70 to-transparent" />
-      <span className="absolute left-4 top-4 rounded-full border border-white/15 bg-[#090B12]/80 px-3 py-1 text-[10px] font-black uppercase tracking-[.13em] text-white backdrop-blur">{article.category}</span>
     </div>
   );
 }
