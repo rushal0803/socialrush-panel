@@ -43,14 +43,7 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
 
 const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at";
 
-const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
-  "instagram-followers": "Instagram Real Followers",
-  "linkedin-followers": "LinkedIn Profile Followers",
-  "telegram-members": "Telegram Premium Members",
-  "x-followers": "X Followers",
-};
-
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets"]);
 const cryptoServiceCodes = new Set<ServiceCode>(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
 
 export async function POST(request: NextRequest) {
@@ -123,7 +116,7 @@ export async function POST(request: NextRequest) {
     .from("services")
     .select("id, rate, min, max, accepts_new_orders, health_status")
     .eq("status", "active")
-    .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
+    .eq("code", service.code)
     .order("id", { ascending: true })
     .limit(1);
   if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", databasePlatform).eq("is_active", true).eq("accepts_new_orders", true);

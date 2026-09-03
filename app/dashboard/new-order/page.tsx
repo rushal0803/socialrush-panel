@@ -64,6 +64,9 @@ const clientLiveServiceDefinitions = [
   { code: "instagram-shares", name: "Instagram Shares", platform: "instagram", description: "Expand post and Reel engagement with Instagram share activity.", fallbackInstruction: "Use a public Instagram post or reel URL." },
   { code: "linkedin-followers", name: "LinkedIn Profile Followers", platform: "linkedin", description: "Improve professional authority and profile visibility.", fallbackInstruction: "Use a public LinkedIn profile or company URL." },
   { code: "x-followers", name: "X Followers", platform: "x", description: "Increase profile authority and long-term social visibility.", fallbackInstruction: "Use a public X or Twitter profile URL." },
+  { code: "twitter-likes", name: "Twitter / X Likes", platform: "x", description: "Increase visible engagement on a public Twitter/X post with like activity.", fallbackInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing." },
+  { code: "twitter-views", name: "Twitter / X Views", platform: "x", description: "Increase visible reach and activity on an eligible public Twitter/X post.", fallbackInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing." },
+  { code: "twitter-retweets", name: "Twitter / X Retweets", platform: "x", description: "Increase distribution and visible sharing activity on a public Twitter/X post.", fallbackInstruction: "Submit the correct public Twitter/X post URL and keep the post public while the order is processing." },
   { code: "twitter-crypto-followers", name: "Twitter / X Crypto-Based Followers", platform: "x", description: "Grow your crypto-focused Twitter/X profile with specialized crypto-based followers.", fallbackInstruction: "Twitter/X profile must remain public during delivery." },
   { code: "twitter-crypto-likes", name: "Twitter / X Crypto-Based Likes", platform: "x", description: "Increase engagement on crypto-related Twitter/X posts with specialized crypto-based likes.", fallbackInstruction: "Post must remain public during delivery." },
   { code: "twitter-crypto-retweets", name: "Twitter / X Crypto-Based Retweets", platform: "x", description: "Expand the reach of crypto-related Twitter/X posts with specialized crypto-based retweets.", fallbackInstruction: "Post must remain public during delivery." },
@@ -497,7 +500,7 @@ export default function NewOrderPage() {
       void db
       .from("services")
       .select("rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
-      .eq("name", definition.name)
+      .eq("code", definition.code)
       .eq("platform", databasePlatform)
       .eq("status", "active")
       .eq("is_active", true)
@@ -857,7 +860,7 @@ export default function NewOrderPage() {
                     <h3 className="mt-3 text-base font-black text-white sm:text-lg">{experience.name}</h3>
                     {service.qualityType.includes("Crypto-Based") ? <span className="mt-2 inline-flex w-fit rounded-full border border-amber-300/35 bg-amber-400/10 px-2.5 py-1 text-[10px] font-black text-amber-200">Crypto-Based</span> : null}
                     <div className="mt-2"><ServiceHealthBadge health={health} showMessage /></div>
-                    <div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">From</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
+                    <div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">From</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div><p className="mt-2 text-xs font-semibold text-[#D1D5DB]">Min {service.minQuantity.toLocaleString("en-IN")} · Max {service.maxQuantity.toLocaleString("en-IN")}</p>
                     <p className="mt-2 text-xs font-semibold text-emerald-300">{service.refillPolicy}</p>
                     <details className="mt-3 rounded-xl border border-white/10 bg-[#151515]"><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-orange-300"><Info className="mr-2 inline h-4 w-4" />Details &amp; how it works</summary><div className="border-t border-white/10 px-3 py-3 text-xs leading-6 text-[#D1D5DB]"><p>{service.description}</p><p className="mt-2">{growthMethod(service)}</p></div></details>
                     <button type="button" disabled={unavailable} onClick={() => chooseService(service)} className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255,196,0,.65)] disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-[#9CA3AF] disabled:shadow-none">
