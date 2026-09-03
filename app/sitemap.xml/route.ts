@@ -43,6 +43,7 @@ const publicRoutes = [
   "/linkedin-growth-india",
   "/services/linkedin-usa-connections",
   "/services/linkedin-usa-group-members",
+  "/services/linkedin-usa-followers",
 "/instagram-growth-india",
 "/youtube-growth-india",
 "/facebook-growth-india",

@@ -11,6 +11,7 @@ import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
 import LinkedInUsaGroupMembersLanding from "@/components/marketing/LinkedInUsaGroupMembersLanding";
+import LinkedInUsaFollowersLanding, { linkedInUsaFollowersFaqs } from "@/components/marketing/LinkedInUsaFollowersLanding";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -27,7 +28,6 @@ const catalogOnlyServiceSlugs = new Set([
   "tiktok-saves",
   "linkedin-usa-post-likes",
   "linkedin-usa-endorsements",
-  "linkedin-usa-followers",
   "linkedin-usa-group-members",
   "linkedin-usa-custom-comments",
   "linkedin-usa-reposts",
@@ -71,6 +71,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+  if (params.slug === "linkedin-usa-followers") {
+    const title = "Buy LinkedIn USA Followers | SocialRUSH";
+    const description = "Order LinkedIn USA Followers with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before placing your order.";
+    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-followers" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-followers" }, twitter: { card: "summary_large_image", title, description } };
+  }
   if (params.slug === "linkedin-usa-connections") {
     const title = "Buy LinkedIn USA Connections | SocialRUSH";
     const description = "Order LinkedIn USA Connections with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before you continue.";
@@ -172,6 +177,12 @@ function getSeoData(slug: string) {
 }
 
 export default function ServiceSeoPage({ params }: { params: { slug: string } }) {
+  if (params.slug === "linkedin-usa-followers") {
+    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: linkedInUsaFollowersFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
+    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Followers", item: `${siteUrl}/services/linkedin-usa-followers` }] };
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Followers", description: "USA-targeted LinkedIn follower service for eligible public personal profiles.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Followers" };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaFollowersLanding /></>;
+  }
   if (params.slug === "linkedin-usa-connections") {
     const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [
       ["What are LinkedIn USA Connections?", "This is SocialRUSH’s USA-targeted LinkedIn Connections service for an eligible public personal profile. The catalog details, rate and delivery estimate are shown before you continue."],
