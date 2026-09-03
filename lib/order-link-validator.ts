@@ -34,7 +34,7 @@ export function validateOrderLink({ platform, serviceCode, destinationUrl }: Inp
   let url: URL;
   try { url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`); } catch { return { valid: false, severity: "error", detectedType: null, message: rule.error }; }
   const detectedType = detectType(platform, url);
-  const contentService = /(likes|views|comments|saves|shares|watch-hours|reactions|votes)/.test(serviceCode);
+  const contentService = /(likes|views|comments|saves|shares|watch-hours|reactions|votes)/.test(serviceCode) && serviceCode !== "tiktok-story-views";
   const accountService = /(followers|subscribers|members)/.test(serviceCode);
   if (contentService && ["profile", "channel", "page or profile", "profile or company"].includes(detectedType)) {
     return { valid: false, severity: "error", detectedType, message: `This looks like a ${detectedType}. This service requires a post, reel, or video link.`, suggestion: rule.helper };
