@@ -313,6 +313,7 @@ export default function NewOrderPage() {
       service: selectedService?.code ?? null,
       quantity,
       link: targetLink.trim(),
+      pollAnswerNumber: requiresPollAnswerNumber ? pollAnswerNumber : null,
       total: totalPrice,
     });
     const previousConfiguration = checkoutConfiguration.current;
@@ -339,7 +340,7 @@ export default function NewOrderPage() {
       requestId.current = "";
       clearStaleCheckoutUrl(true);
     }
-  }, [platform, quantity, selectedService?.code, targetLink, totalPrice]);
+ }, [platform, pollAnswerNumber, quantity, requiresPollAnswerNumber, selectedService?.code, targetLink, totalPrice]);
 
   useEffect(() => {
     if (!selectedService || !quantityInput || quantityError || linkError || success) return;
@@ -778,11 +779,19 @@ export default function NewOrderPage() {
               <p className="mt-5 text-center text-xs text-[#9CA3AF]" aria-live="polite">Select an available service to continue automatically.</p>
             </div> : null}
             {currentStep === 3 && selectedService && linkRule ? <div>
-              <button type="button" onClick={() => moveTo(2)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to services</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 3 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Campaign details</h2><p className="mt-2 text-sm text-[#9CA3AF]">Only two things needed to get started.</p>
+              <button type="button" onClick={() => moveTo(2)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to services</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 3 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Campaign details</h2><p className="mt-2 text-sm text-[#9CA3AF]">{requiresPollAnswerNumber
+  ? "Enter the poll link, quantity, and answer number."
+  : requiresCustomComments
+    ? "Enter the post link, quantity, and custom comments."
+    : "Enter the public link and quantity to get started."}</p>
               <div className="mt-6 grid gap-5"><label className="text-xs font-black">Public Link / Username<input value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setError(""); }} placeholder={linkRule.placeholder} className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${linkError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${linkError ? "text-red-300" : "text-[#999]"}`}>{linkError || linkRule.helper}</span></label><label className="text-xs font-black">Quantity<input value={quantityInput} onChange={(e) => { setQuantityInput(cleanQuantity(e.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${quantityError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${quantityError ? "text-red-300" : "text-[#999]"}`}>{quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")}`}</span></label></div>
               {requiresPollAnswerNumber ? <label className="mt-5 block text-xs font-black">Poll Answer Number<input value={pollAnswerNumber} onChange={(e) => { setPollAnswerNumber(e.target.value); setError(""); }} inputMode="numeric" placeholder="Enter answer number" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${pollAnswerNumberError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${pollAnswerNumberError ? "text-red-300" : "text-[#999]"}`}>{pollAnswerNumberError || "Enter the answer number for the poll option that should receive the votes."}</span></label> : null}
               {quickQuantities.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-11 rounded-xl border px-4 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/15 text-orange-200" : "border-white/10 bg-white/5 text-[#bbb]"}`}>{compactQuantity(value)}</button>)}</div>}
-              <div className="mt-5 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />No password required. Public link only.</div></div>
+              <div className="mt-5 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
+  ? "No password required. Public poll link and answer number only."
+  : requiresCustomComments
+    ? "No password required. Public post link and custom comments only."
+    : "No password required. Public link only."}</div></div>
               {error && <p className="mt-4 rounded-xl bg-red-500/15 p-3 text-sm text-red-100">{error}</p>}<div className="mt-6">{primaryButton("Review Order", () => moveTo(4), !formIsValid)}</div>
             </div> : null}
             {currentStep === 4 && selectedService ? <div>
