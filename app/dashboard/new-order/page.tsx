@@ -14,6 +14,7 @@ import {
   Link as LinkIcon,
   LoaderCircle,
   LockKeyhole,
+  MessageSquare,
   RefreshCw,
   ShieldCheck,
   Sparkles,
@@ -63,6 +64,10 @@ const clientLiveServiceDefinitions = [
   { code: "instagram-shares", name: "Instagram Shares", platform: "instagram", description: "Expand post and Reel engagement with Instagram share activity.", fallbackInstruction: "Use a public Instagram post or reel URL." },
   { code: "linkedin-followers", name: "LinkedIn Profile Followers", platform: "linkedin", description: "Improve professional authority and profile visibility.", fallbackInstruction: "Use a public LinkedIn profile or company URL." },
   { code: "x-followers", name: "X Followers", platform: "x", description: "Increase profile authority and long-term social visibility.", fallbackInstruction: "Use a public X or Twitter profile URL." },
+  { code: "twitter-crypto-followers", name: "Twitter / X Crypto-Based Followers", platform: "x", description: "Grow your crypto-focused Twitter/X profile with specialized crypto-based followers.", fallbackInstruction: "Twitter/X profile must remain public during delivery." },
+  { code: "twitter-crypto-likes", name: "Twitter / X Crypto-Based Likes", platform: "x", description: "Increase engagement on crypto-related Twitter/X posts with specialized crypto-based likes.", fallbackInstruction: "Post must remain public during delivery." },
+  { code: "twitter-crypto-retweets", name: "Twitter / X Crypto-Based Retweets", platform: "x", description: "Expand the reach of crypto-related Twitter/X posts with specialized crypto-based retweets.", fallbackInstruction: "Post must remain public during delivery." },
+  { code: "twitter-crypto-custom-comments", name: "Twitter / X Crypto-Based Custom Comments", platform: "x", description: "Add custom crypto-focused comments to eligible Twitter/X posts.", fallbackInstruction: "Enter one comment per line and keep the post public during delivery." },
 ] as const satisfies ReadonlyArray<Pick<SmmService, "code" | "name" | "platform" | "description"> & { fallbackInstruction: string }>;
 function cleanQuantity(value: string) {
   return value.replace(/\D/g, "").replace(/^0+(?=\d)/, "");
@@ -172,6 +177,7 @@ export default function NewOrderPage() {
   const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
   const prefillRequested = resumeRequested || searchParams.get("prefill") === "1";
   const [targetLink, setTargetLink] = useState(prefillRequested ? searchParams.get("link") || "" : "");
+  const [customComments, setCustomComments] = useState("");
   // Every live-only service enters the same canonical merge path. This keeps
   // identity and de-duplication consistent as additional services are added.
   const [liveServices, setLiveServices] = useState<SmmService[]>([]);
@@ -275,7 +281,10 @@ export default function NewOrderPage() {
   const linkRule = selectedService ? linkRules[selectedService.code] : null;
   const linkValidation = selectedService ? validateOrderLink({ platform: selectedService.platform, serviceCode: selectedService.code, serviceName: selectedService.name, destinationUrl: targetLink }) : null;
   const linkError = linkValidation?.severity === "error" ? linkValidation.message : "";
-  const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError);
+  const requiresCustomComments = selectedService?.code === "twitter-crypto-custom-comments";
+  const customCommentLines = customComments.split(/\r?\n/).map((line) => line.trim()).filter(Boolean);
+  const customCommentsError = requiresCustomComments && customCommentLines.length === 0 ? "Enter at least one custom comment, one per line." : requiresCustomComments && customComments.split(/\r?\n/).some((line) => !line.trim()) ? "Remove blank comment lines before continuing." : "";
+  const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError && !customCommentsError);
   const totalPrice = selectedService ? Math.round((quantity * selectedService.pricePer1000 * 100) / 1000) / 100 : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
@@ -348,6 +357,7 @@ export default function NewOrderPage() {
 
   const resetOrderDetails = () => {
     setTargetLink("");
+    setCustomComments("");
     setQuantityInput("");
     setError("");
     setSuccess(null);
@@ -533,6 +543,11 @@ export default function NewOrderPage() {
       scrollTo(detailsRef);
       return;
     }
+    if (customCommentsError) {
+      setError(customCommentsError);
+      scrollTo(detailsRef);
+      return;
+    }
     const validation = validateOrderLink({ platform: selectedService.platform, serviceCode: selectedService.code, serviceName: selectedService.name, destinationUrl: targetLink });
     if (!validation.valid) {
       setError(validation.message);
@@ -562,7 +577,7 @@ export default function NewOrderPage() {
           link: targetLink.trim(),
           clientRequestId: requestId.current,
           packageName: "Custom",
-          notes: null,
+          notes: requiresCustomComments ? customComments.replace(/\r\n/g, "\n").trim() : null,
         }),
       });
       const intentResult = (await intentResponse.json()) as { data?: { id: string }; error?: string };
@@ -609,7 +624,7 @@ export default function NewOrderPage() {
     try {
       let intentId = directCheckoutIntentId.current;
       if (!intentId) {
-        const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: null }) });
+        const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: requiresCustomComments ? customComments.replace(/\r\n/g, "\n").trim() : null }) });
         const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
         if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
         intentId = intent.data.id;
@@ -824,7 +839,7 @@ export default function NewOrderPage() {
           ) : services.length === 0 ? (
             <div className="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-800">No services available for this platform right now. Please contact support.</div>
           ) : (
-            <div className="mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+            <><>{platform === "x" && services.some((service) => service.qualityType.includes("Crypto-Based")) ? <p className="mt-5 rounded-2xl border border-amber-300/25 bg-amber-500/[.07] p-4 text-sm leading-6 text-amber-100"><strong>Twitter / X – Crypto Based Services.</strong> Specialized Twitter/X engagement services designed for crypto-related profiles and content. Delivery speed is fixed and cannot be accelerated. These services do not include refill.</p> : null}</><div className="mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
               {services.map((service) => {
                 const active = selectedService?.code === service.code;
                 const experience = serviceExperience[service.code];
@@ -837,6 +852,7 @@ export default function NewOrderPage() {
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
                     </div>
                     <h3 className="mt-3 text-base font-black text-white sm:text-lg">{experience.name}</h3>
+                    {service.qualityType.includes("Crypto-Based") ? <span className="mt-2 inline-flex w-fit rounded-full border border-amber-300/35 bg-amber-400/10 px-2.5 py-1 text-[10px] font-black text-amber-200">Crypto-Based</span> : null}
                     <div className="mt-2"><ServiceHealthBadge health={health} showMessage /></div>
                     <div className="mt-3 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">From</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl border border-white/10 bg-[#151515] p-2.5"><span className="text-[#9CA3AF]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
                     <p className="mt-2 text-xs font-semibold text-emerald-300">{service.refillPolicy}</p>
@@ -847,7 +863,7 @@ export default function NewOrderPage() {
                   </motion.article>
                 );
               })}
-            </div>
+            </div></>
           )}
         </section>
 
@@ -896,6 +912,11 @@ export default function NewOrderPage() {
                   {quickQuantities.length ? <span className="mt-3 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-10 rounded-full border px-3 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/20 text-orange-200" : "border-white/15 bg-white/5 text-[#D1D5DB]"}`}>{value / 1000}K</button>)}</span> : null}
                 </label>
               </div>
+              {requiresCustomComments ? <label className="mt-5 block text-xs font-black text-white">
+                <span className="inline-flex items-center gap-2"><MessageSquare className="h-4 w-4 text-orange-400" />Custom comments</span>
+                <textarea value={customComments} onChange={(event) => { setCustomComments(event.target.value); setError(""); }} rows={6} placeholder={"Great project!\nLove this Web3 update."} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3 text-sm text-white outline-none placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15" />
+                <span className={`mt-2 block text-[11px] leading-5 ${customCommentsError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>{customCommentsError || `${customCommentLines.length} comment${customCommentLines.length === 1 ? "" : "s"} · one comment per line. Line breaks are preserved for delivery.`}</span>
+              </label> : null}
               <div className="mt-5 grid gap-3 sm:grid-cols-2">
                 <div className={`rounded-2xl border bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)] ${quantityError ? "border-red-400/40" : "border-orange-400/35"}`}>
                   <p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p>

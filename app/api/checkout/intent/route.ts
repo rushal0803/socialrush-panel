@@ -51,6 +51,7 @@ const databaseServiceNames: Partial<Record<ServiceCode, string>> = {
 };
 
 const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers"]);
+const cryptoServiceCodes = new Set<ServiceCode>(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -92,6 +93,13 @@ export async function POST(request: NextRequest) {
   if (!service.isActive && !liveCatalogServiceCodes.has(service.code)) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
+  if (service.code === "twitter-crypto-custom-comments") {
+    if (!notes || notes.split(/\r?\n/).some((line) => !line.trim()) || notes.length > 10000) {
+      return NextResponse.json({ error: "Enter custom comments one per line (without blank lines)." }, { status: 422 });
+    }
+  } else if (notes) {
+    return NextResponse.json({ error: "Comments are only accepted for the custom-comments service." }, { status: 422 });
+  }
   const linkError = linkRules[service.code] ? validateCampaignLink(link, linkRules[service.code]) : null;
   if (linkError) return NextResponse.json({ error: linkError }, { status: 400 });
 
@@ -117,7 +125,7 @@ export async function POST(request: NextRequest) {
     .eq("name", databaseServiceNames[service.code as ServiceCode] ?? service.name)
     .order("id", { ascending: true })
     .limit(1);
-  if (liveCatalogServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", service.platform).eq("is_active", true).eq("accepts_new_orders", true);
+  if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", service.platform).eq("is_active", true).eq("accepts_new_orders", true);
   const { data: matchedService } = await matchedServiceQuery.maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
   if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
@@ -125,7 +133,7 @@ export async function POST(request: NextRequest) {
   }
 
   let totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
-  if (liveCatalogServiceCodes.has(service.code)) {
+  if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) {
     if (!matchedService) return NextResponse.json({ error: `${service.name} is not currently available.` }, { status: 409 });
     const liveQuantityError = validateQuantity(requestedQuantity, {
       minQuantity: Number(matchedService.min),
