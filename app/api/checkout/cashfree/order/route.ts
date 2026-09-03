@@ -8,7 +8,7 @@ import { requireJson, requireSameOrigin, isUuid, rateLimit } from "@/lib/securit
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "linkedin-followers", "linkedin-usa-connections", "linkedin-usa-post-likes", "linkedin-usa-endorsements", "linkedin-usa-followers", "linkedin-usa-group-members", "linkedin-usa-custom-comments", "linkedin-usa-reposts", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
 
 function cashfreeAppBaseUrl() {
   const value = process.env.CASHFREE_APP_BASE_URL;

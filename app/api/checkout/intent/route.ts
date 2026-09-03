@@ -43,7 +43,7 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
 
 const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at";
 
-const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
+const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "linkedin-usa-connections", "linkedin-usa-post-likes", "linkedin-usa-endorsements", "linkedin-usa-followers", "linkedin-usa-group-members", "linkedin-usa-custom-comments", "linkedin-usa-reposts", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
 const cryptoServiceCodes = new Set<ServiceCode>(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
 
 export async function POST(request: NextRequest) {
@@ -62,6 +62,7 @@ export async function POST(request: NextRequest) {
     packageName?: string | null;
     notes?: string | null;
     pollAnswerNumber?: string;
+    endorsementSkillName?: string;
   } | null;
 
   const serviceCode = typeof body?.serviceCode === "string" ? body.serviceCode.trim() : "";
@@ -69,6 +70,7 @@ export async function POST(request: NextRequest) {
   const clientRequestId = typeof body?.clientRequestId === "string" ? body.clientRequestId.trim() : "";
   const requestedNotes = typeof body?.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
   const pollAnswerNumber = body?.pollAnswerNumber;
+  const endorsementSkillName = typeof body?.endorsementSkillName === "string" ? body.endorsementSkillName.trim() : "";
   const quantity = body?.quantity;
 
   if (!serviceCode || !link || !clientRequestId || !Number.isInteger(quantity)) {
@@ -95,20 +97,23 @@ export async function POST(request: NextRequest) {
     }
     if (pollAnswerNumber !== undefined) return NextResponse.json({ error: "Poll answer number is only accepted for Telegram Poll Votes." }, { status: 422 });
     notes = requestedNotes;
-  } else if (service.code === "tiktok-custom-comments") {
+  } else if (service.code === "tiktok-custom-comments" || service.code === "linkedin-usa-custom-comments") {
     const comments = requestedNotes?.split(/\r?\n/).map((line) => line.trim()).filter(Boolean) ?? [];
     if (!requestedNotes || comments.length !== quantity) {
       return NextResponse.json({ error: `Enter exactly ${quantity} valid custom comment lines to match your order quantity.` }, { status: 422 });
     }
     if (pollAnswerNumber !== undefined) return NextResponse.json({ error: "Poll answer number is only accepted for Telegram Poll Votes." }, { status: 422 });
     notes = comments.join("\n");
+  } else if (service.code === "linkedin-usa-endorsements") {
+    if (requestedNotes || pollAnswerNumber !== undefined || !endorsementSkillName || endorsementSkillName.length > 200) return NextResponse.json({ error: "Enter the exact LinkedIn skill that should receive endorsements." }, { status: 422 });
+    notes = `LinkedIn endorsement skill: ${endorsementSkillName}`;
   } else if (service.code === "telegram-poll-votes") {
     if (requestedNotes) return NextResponse.json({ error: "Customer notes are not accepted for Telegram Poll Votes." }, { status: 422 });
     if (typeof pollAnswerNumber !== "string" || !/^\d+$/.test(pollAnswerNumber)) {
       return NextResponse.json({ error: "Enter a non-negative whole-number poll answer number." }, { status: 422 });
     }
     notes = `Poll answer number: ${pollAnswerNumber}`;
-  } else if (requestedNotes || pollAnswerNumber !== undefined) {
+  } else if (requestedNotes || pollAnswerNumber !== undefined || endorsementSkillName) {
     return NextResponse.json({ error: "Comments are only accepted for the custom-comments service." }, { status: 422 });
   }
   const linkError = linkRules[service.code] ? validateCampaignLink(link, linkRules[service.code]) : null;
