@@ -1,5 +1,6 @@
 ﻿import { NextResponse } from "next/server";
 import { blogArticles } from "@/components/marketing/blog/blogData";
+import { uniqueArticlesBySlug } from "@/lib/blog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import {
   canonicalIndiaServicePaths,
@@ -77,7 +78,8 @@ type CaseStudySitemapEntry = { slug: string; published_at: string | null };
 
 export async function GET() {
   const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
-  const blogRoutes = blogArticles.map((article) => `/blog/${article.slug}`);
+  const uniqueBlogArticles = uniqueArticlesBySlug(blogArticles);
+  const blogRoutes = uniqueBlogArticles.map((article) => `/blog/${article.slug}`);
   const { data: caseStudies } = await createAdminClient()
     .from("case_studies")
     .select("slug,published_at")
@@ -94,7 +96,7 @@ export async function GET() {
     ]),
   ];
   const lastModified = new Map<string, string>();
-  blogArticles.forEach((article) => {
+  uniqueBlogArticles.forEach((article) => {
     if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt);
   });
   approvedCaseStudies.forEach((study) => {

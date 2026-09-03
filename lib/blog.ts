@@ -35,6 +35,11 @@ export function sortArticles<T extends Pick<BlogArticle, "publishedAt" | "update
   });
 }
 
+/** A canonical article slug represents one public article and one list card. */
+export function uniqueArticlesBySlug<T extends Pick<BlogArticle, "slug">>(articles: T[]) {
+  return articles.filter((article, index) => articles.findIndex((candidate) => candidate.slug === article.slug) === index);
+}
+
 export function getSearchText(article: BlogArticle) {
   return [article.title, article.description, article.category, article.intro, ...article.sections.flatMap((section) => [section.heading, section.body, ...section.tips]), ...(article.faqs?.flatMap((faq) => [faq.question, faq.answer]) ?? [])].join(" ").toLowerCase();
 }
