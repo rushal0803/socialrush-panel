@@ -89,12 +89,15 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
   let notes: string | null = null;
-  if (service.code === "twitter-crypto-custom-comments" || service.code === "tiktok-custom-comments") {
-    const comments = requestedNotes?.split(/\r?\n/).map((line) => line.trim()).filter(Boolean) ?? [];
-    if (!requestedNotes || requestedNotes.length > 500000 || (service.code === "twitter-crypto-custom-comments" && requestedNotes.split(/\r?\n/).some((line) => !line.trim()))) {
+  if (service.code === "twitter-crypto-custom-comments") {
+    if (!requestedNotes || requestedNotes.split(/\r?\n/).some((line) => !line.trim()) || requestedNotes.length > 10000) {
       return NextResponse.json({ error: "Enter custom comments one per line (without blank lines)." }, { status: 422 });
     }
-    if (service.code === "tiktok-custom-comments" && comments.length !== quantity) {
+    if (pollAnswerNumber !== undefined) return NextResponse.json({ error: "Poll answer number is only accepted for Telegram Poll Votes." }, { status: 422 });
+    notes = requestedNotes;
+  } else if (service.code === "tiktok-custom-comments") {
+    const comments = requestedNotes?.split(/\r?\n/).map((line) => line.trim()).filter(Boolean) ?? [];
+    if (!requestedNotes || comments.length !== quantity) {
       return NextResponse.json({ error: `Enter exactly ${quantity} valid custom comment lines to match your order quantity.` }, { status: 422 });
     }
     if (pollAnswerNumber !== undefined) return NextResponse.json({ error: "Poll answer number is only accepted for Telegram Poll Votes." }, { status: 422 });
