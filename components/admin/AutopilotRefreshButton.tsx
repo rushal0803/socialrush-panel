@@ -1,0 +1,4 @@
+"use client";
+import { useState } from "react";
+import { RefreshCw } from "lucide-react";
+export default function AutopilotRefreshButton(){const [state,setState]=useState<"idle"|"loading"|"error">("idle");const refresh=async()=>{setState("loading");const response=await fetch("/api/admin/crm/autopilot/refresh",{method:"POST"});if(!response.ok){setState("error");return;}window.location.reload();};return <div><button onClick={refresh} disabled={state==="loading"} className="inline-flex items-center gap-2 rounded-xl border border-orange-400/35 bg-orange-500/10 px-4 py-2.5 text-xs font-bold text-orange-100 disabled:opacity-60"><RefreshCw size={15} className={state==="loading"?"animate-spin":""}/>{state==="loading"?"Refreshing…":"Refresh Autopilot"}</button>{state==="error"&&<p className="mt-2 text-xs text-red-300">Refresh failed. Please try again.</p>}</div>}
