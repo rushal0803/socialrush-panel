@@ -10,8 +10,11 @@ import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
+import { linkedInUsaFollowersFaqs } from "@/lib/linkedin-usa-followers-content";
 import LinkedInUsaGroupMembersLanding from "@/components/marketing/LinkedInUsaGroupMembersLanding";
-import LinkedInUsaFollowersLanding, { linkedInUsaFollowersFaqs } from "@/components/marketing/LinkedInUsaFollowersLanding";
+import LinkedInUsaFollowersLanding, {
+ 
+} from "@/components/marketing/LinkedInUsaFollowersLanding";
 
 const siteUrl = SEO_SITE_URL;
 
@@ -34,31 +37,58 @@ const catalogOnlyServiceSlugs = new Set([
 ]);
 
 function formatInr(value: number) {
-  return new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 0,
+  }).format(value);
 }
 
 function routeTitle(slug: string) {
   switch (slug) {
-    case "instagram-followers": return "Instagram Followers India";
-    case "instagram-likes": return "Instagram Likes India";
-    case "instagram-views": return "Instagram Views India";
-    case "youtube-subscribers": return "YouTube Subscribers Service India";
-    case "youtube-likes": return "YouTube Likes India";
-    case "youtube-views": return "YouTube Views India";
-    case "linkedin-followers": return "LinkedIn Followers India";
-    case "telegram-members": return "Telegram Members India";
-    case "facebook-followers": return "Facebook Followers India";
-    case "smm-panel-india": return "SMM Panel India";
-    default: return slug.replace(/-/g, " ");
+    case "instagram-followers":
+      return "Instagram Followers India";
+    case "instagram-likes":
+      return "Instagram Likes India";
+    case "instagram-views":
+      return "Instagram Views India";
+    case "youtube-subscribers":
+      return "YouTube Subscribers Service India";
+    case "youtube-likes":
+      return "YouTube Likes India";
+    case "youtube-views":
+      return "YouTube Views India";
+    case "linkedin-followers":
+      return "LinkedIn Followers India";
+    case "telegram-members":
+      return "Telegram Members India";
+    case "facebook-followers":
+      return "Facebook Followers India";
+    case "smm-panel-india":
+      return "SMM Panel India";
+    default:
+      return slug.replace(/-/g, " ");
   }
 }
 
 function getFaqs(slug: string, title: string, price: string, delivery: string) {
   return [
-    { question: `How do I buy ${title}?`, answer: `Open Packages or New Order, choose ${title}, add your public link, and confirm the checkout flow.` },
-    { question: "Is this page suitable for India?", answer: `Yes. This page targets buyers searching for ${routeTitle(slug).toLowerCase()} and related SMM panel services in India.` },
-    { question: "Can I track the order?", answer: "Yes. You can track status from the dashboard after checkout." },
-    { question: "What is the starting price?", answer: `Starting price is ${price} with delivery around ${delivery}.` },
+    {
+      question: `How do I buy ${title}?`,
+      answer: `Open Packages or New Order, choose ${title}, add your public link, and confirm the checkout flow.`,
+    },
+    {
+      question: "Is this page suitable for India?",
+      answer: `Yes. This page targets buyers searching for ${routeTitle(slug).toLowerCase()} and related SMM panel services in India.`,
+    },
+    {
+      question: "Can I track the order?",
+      answer: "Yes. You can track status from the dashboard after checkout.",
+    },
+    {
+      question: "What is the starting price?",
+      answer: `Starting price is ${price} with delivery around ${delivery}.`,
+    },
   ];
 }
 
@@ -70,27 +100,74 @@ export async function generateStaticParams() {
   ];
 }
 
-export async function generateMetadata({ params }: { params: { slug: string } }): Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: {
+  params: { slug: string };
+}): Promise<Metadata> {
   if (params.slug === "linkedin-usa-followers") {
     const title = "Buy LinkedIn USA Followers | SocialRUSH";
-    const description = "Order LinkedIn USA Followers with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before placing your order.";
-    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-followers" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-followers" }, twitter: { card: "summary_large_image", title, description } };
+    const description =
+      "Order LinkedIn USA Followers with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before placing your order.";
+    return {
+      metadataBase: new URL(siteUrl),
+      title: { absolute: title },
+      description,
+      alternates: { canonical: "/services/linkedin-usa-followers" },
+      openGraph: {
+        type: "website",
+        siteName: "SocialRUSH",
+        title,
+        description,
+        url: "/services/linkedin-usa-followers",
+      },
+      twitter: { card: "summary_large_image", title, description },
+    };
   }
   if (params.slug === "linkedin-usa-connections") {
     const title = "Buy LinkedIn USA Connections | SocialRUSH";
-    const description = "Order LinkedIn USA Connections with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before you continue.";
-    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-connections" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-connections" }, twitter: { card: "summary_large_image", title, description } };
+    const description =
+      "Order LinkedIn USA Connections with transparent pricing, public-link ordering, secure checkout and dashboard tracking. Review live service details before you continue.";
+    return {
+      metadataBase: new URL(siteUrl),
+      title: { absolute: title },
+      description,
+      alternates: { canonical: "/services/linkedin-usa-connections" },
+      openGraph: {
+        type: "website",
+        siteName: "SocialRUSH",
+        title,
+        description,
+        url: "/services/linkedin-usa-connections",
+      },
+      twitter: { card: "summary_large_image", title, description },
+    };
   }
   if (params.slug === "linkedin-usa-group-members") {
     const title = "Buy LinkedIn USA Group Members | SocialRUSH";
-    const description = "Order LinkedIn USA Group Members with transparent pricing, public-group-link ordering, secure checkout and dashboard tracking. Review live service details before placing your order.";
-    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-group-members" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-group-members" }, twitter: { card: "summary_large_image", title, description } };
+    const description =
+      "Order LinkedIn USA Group Members with transparent pricing, public-group-link ordering, secure checkout and dashboard tracking. Review live service details before placing your order.";
+    return {
+      metadataBase: new URL(siteUrl),
+      title: { absolute: title },
+      description,
+      alternates: { canonical: "/services/linkedin-usa-group-members" },
+      openGraph: {
+        type: "website",
+        siteName: "SocialRUSH",
+        title,
+        description,
+        url: "/services/linkedin-usa-group-members",
+      },
+      twitter: { card: "summary_large_image", title, description },
+    };
   }
   if (params.slug === "facebook-views") {
     return {
       metadataBase: new URL(siteUrl),
       title: { absolute: "Buy Facebook Views India | SocialRUSH" },
-      description: "Buy Facebook views in India with public video-link ordering, live pricing and dashboard tracking. No password required to place your order.",
+      description:
+        "Buy Facebook views in India with public video-link ordering, live pricing and dashboard tracking. No password required to place your order.",
       alternates: { canonical: "/facebook-views" },
       robots: { index: false, follow: true },
     };
@@ -152,7 +229,12 @@ function getSeoData(slug: string) {
       pricePer1000INR: smmService.pricePer1000,
       delivery: smmService.deliveryTime,
       audience: ["Creators", "Agencies", "Brands", "Marketing teams"],
-      benefits: ["Transparent starting price", `Delivery: ${smmService.deliveryTime}`, `Refill: ${smmService.refillPolicy}`, `Quality: ${smmService.qualityType}`],
+      benefits: [
+        "Transparent starting price",
+        `Delivery: ${smmService.deliveryTime}`,
+        `Refill: ${smmService.refillPolicy}`,
+        `Quality: ${smmService.qualityType}`,
+      ],
       faqs: getFaqs(slug, smmService.name, price, smmService.deliveryTime),
       platform: platform.label,
     };
@@ -161,14 +243,26 @@ function getSeoData(slug: string) {
   if (slug === "smm-panel-india") {
     return {
       title: "SMM Panel India | SocialRUSH",
-      description: "SocialRUSH is a production-ready SMM panel India platform for Instagram followers, YouTube subscribers, LinkedIn followers, Telegram members, and more.",
+      description:
+        "SocialRUSH is a production-ready SMM panel India platform for Instagram followers, YouTube subscribers, LinkedIn followers, Telegram members, and more.",
       headline: "SMM Panel India",
-      intro: "SocialRUSH gives Indian buyers a modern SMM panel with secure checkout, transparent starting rates, and clean dashboard tracking for social growth services.",
+      intro:
+        "SocialRUSH gives Indian buyers a modern SMM panel with secure checkout, transparent starting rates, and clean dashboard tracking for social growth services.",
       price: "Live pricing in dashboard",
       delivery: "Platform dependent",
       audience: ["Agencies", "Creators", "Resellers", "Brands"],
-      benefits: ["Instagram followers India", "YouTube subscribers India", "LinkedIn followers India", "Telegram members India"],
-      faqs: getFaqs(slug, "SMM Panel India", "Live pricing", "platform dependent"),
+      benefits: [
+        "Instagram followers India",
+        "YouTube subscribers India",
+        "LinkedIn followers India",
+        "Telegram members India",
+      ],
+      faqs: getFaqs(
+        slug,
+        "SMM Panel India",
+        "Live pricing",
+        "platform dependent",
+      ),
       platform: "India-wide SMM panel",
     };
   }
@@ -176,44 +270,267 @@ function getSeoData(slug: string) {
   return null;
 }
 
-export default function ServiceSeoPage({ params }: { params: { slug: string } }) {
+export default function ServiceSeoPage({
+  params,
+}: {
+  params: { slug: string };
+}) {
   if (params.slug === "linkedin-usa-followers") {
-    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: linkedInUsaFollowersFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
-    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Followers", item: `${siteUrl}/services/linkedin-usa-followers` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Followers", description: "USA-targeted LinkedIn follower service for eligible public personal profiles.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Followers" };
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaFollowersLanding /></>;
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: linkedInUsaFollowersFaqs.map(([name, text]) => ({
+        "@type": "Question",
+        name,
+        acceptedAnswer: { "@type": "Answer", text },
+      })),
+    };
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Services",
+          item: `${siteUrl}/services`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "LinkedIn USA Followers",
+          item: `${siteUrl}/services/linkedin-usa-followers`,
+        },
+      ],
+    };
+    const serviceSchema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "LinkedIn USA Followers",
+      description:
+        "USA-targeted LinkedIn follower service for eligible public personal profiles.",
+      provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
+      serviceType: "LinkedIn USA Followers",
+    };
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <LinkedInUsaFollowersLanding />
+      </>
+    );
   }
   if (params.slug === "linkedin-usa-connections") {
-    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [
-      ["What are LinkedIn USA Connections?", "This is SocialRUSH’s USA-targeted LinkedIn Connections service for an eligible public personal profile. The catalog details, rate and delivery estimate are shown before you continue."],
-      ["Which LinkedIn URL should I provide?", "Provide the public personal profile URL in the linkedin.com/in/username format. Company, post and unrelated URLs are not eligible for this service."],
-      ["Do I need to provide my LinkedIn password?", "No. SocialRUSH only needs the required public profile link. Never share a LinkedIn password, email password, OTP or recovery code."],
-      ["How much do LinkedIn USA Connections cost?", "The order builder displays the current catalog rate per 1,000 and calculates the total from your selected quantity before secure checkout."],
-      ["Can I track my order?", "Yes. After checkout, order details and progress are available through the SocialRUSH dashboard."],
-      ["Are Connections the same as Followers?", "No. Connections relate to a professional network relationship, while Followers are people who follow profile or company updates. See the LinkedIn Followers service for follower-focused ordering."],
-      ["Does this service guarantee leads, jobs or sales?", "No. SocialRUSH does not guarantee commercial outcomes, reach, engagement, hiring outcomes, leads or sales."],
-    ].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
-    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Connections", item: `${siteUrl}/services/linkedin-usa-connections` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Connections", description: "USA-targeted LinkedIn Connections service for eligible public personal profiles.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Connections" };
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaConnectionsLanding /></>;
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: [
+        [
+          "What are LinkedIn USA Connections?",
+          "This is SocialRUSH’s USA-targeted LinkedIn Connections service for an eligible public personal profile. The catalog details, rate and delivery estimate are shown before you continue.",
+        ],
+        [
+          "Which LinkedIn URL should I provide?",
+          "Provide the public personal profile URL in the linkedin.com/in/username format. Company, post and unrelated URLs are not eligible for this service.",
+        ],
+        [
+          "Do I need to provide my LinkedIn password?",
+          "No. SocialRUSH only needs the required public profile link. Never share a LinkedIn password, email password, OTP or recovery code.",
+        ],
+        [
+          "How much do LinkedIn USA Connections cost?",
+          "The order builder displays the current catalog rate per 1,000 and calculates the total from your selected quantity before secure checkout.",
+        ],
+        [
+          "Can I track my order?",
+          "Yes. After checkout, order details and progress are available through the SocialRUSH dashboard.",
+        ],
+        [
+          "Are Connections the same as Followers?",
+          "No. Connections relate to a professional network relationship, while Followers are people who follow profile or company updates. See the LinkedIn Followers service for follower-focused ordering.",
+        ],
+        [
+          "Does this service guarantee leads, jobs or sales?",
+          "No. SocialRUSH does not guarantee commercial outcomes, reach, engagement, hiring outcomes, leads or sales.",
+        ],
+      ].map(([name, text]) => ({
+        "@type": "Question",
+        name,
+        acceptedAnswer: { "@type": "Answer", text },
+      })),
+    };
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Services",
+          item: `${siteUrl}/services`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "LinkedIn USA Connections",
+          item: `${siteUrl}/services/linkedin-usa-connections`,
+        },
+      ],
+    };
+    const serviceSchema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "LinkedIn USA Connections",
+      description:
+        "USA-targeted LinkedIn Connections service for eligible public personal profiles.",
+      provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
+      serviceType: "LinkedIn USA Connections",
+    };
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <LinkedInUsaConnectionsLanding />
+      </>
+    );
   }
   if (params.slug === "linkedin-usa-group-members") {
     const groupFaqs = [
-      ["What are LinkedIn USA Group Members?", "This is SocialRUSH’s USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group. Current catalog details, rate and delivery estimate are shown before you continue."],
-      ["Which LinkedIn Group URL should I provide?", "Provide the LinkedIn Group URL in the linkedin.com/groups/... format. Personal profiles, company pages, posts and unrelated URLs are not eligible for this service."],
-      ["Do I need to make my group public?", "Use the correct accessible LinkedIn Group URL and keep the group accessible as required while the order is processing. The order builder validates the group URL format, not group access settings."],
-      ["Do I need to provide my LinkedIn password?", "No. SocialRUSH only needs the required LinkedIn Group link. Never share your LinkedIn password, email password, OTP, recovery code or group admin login."],
-      ["How much do LinkedIn USA Group Members cost?", "The order builder shows the current catalog rate per 1,000 and calculates your total from the selected quantity before secure checkout."],
-      ["How long does delivery take?", "The current catalog delivery estimate is shown in the order builder before checkout. Actual timing can vary with campaign size and destination availability."],
-      ["Is refill or support included?", "The current refill/support policy is shown from the live service catalog in the order summary before you continue."],
-      ["Can I track my order?", "Yes. After checkout, order details and progress are available in the SocialRUSH dashboard."],
-      ["How are Group Members different from Followers and Connections?", "Group Members are associated with a LinkedIn Group. Followers follow eligible LinkedIn profiles or company pages, while Connections relate to personal LinkedIn profiles."],
-      ["Does this service guarantee engagement or active participation?", "No. SocialRUSH does not guarantee discussion activity, engagement, leads, sales, jobs, clients, revenue or other commercial outcomes."],
+      [
+        "What are LinkedIn USA Group Members?",
+        "This is SocialRUSH’s USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group. Current catalog details, rate and delivery estimate are shown before you continue.",
+      ],
+      [
+        "Which LinkedIn Group URL should I provide?",
+        "Provide the LinkedIn Group URL in the linkedin.com/groups/... format. Personal profiles, company pages, posts and unrelated URLs are not eligible for this service.",
+      ],
+      [
+        "Do I need to make my group public?",
+        "Use the correct accessible LinkedIn Group URL and keep the group accessible as required while the order is processing. The order builder validates the group URL format, not group access settings.",
+      ],
+      [
+        "Do I need to provide my LinkedIn password?",
+        "No. SocialRUSH only needs the required LinkedIn Group link. Never share your LinkedIn password, email password, OTP, recovery code or group admin login.",
+      ],
+      [
+        "How much do LinkedIn USA Group Members cost?",
+        "The order builder shows the current catalog rate per 1,000 and calculates your total from the selected quantity before secure checkout.",
+      ],
+      [
+        "How long does delivery take?",
+        "The current catalog delivery estimate is shown in the order builder before checkout. Actual timing can vary with campaign size and destination availability.",
+      ],
+      [
+        "Is refill or support included?",
+        "The current refill/support policy is shown from the live service catalog in the order summary before you continue.",
+      ],
+      [
+        "Can I track my order?",
+        "Yes. After checkout, order details and progress are available in the SocialRUSH dashboard.",
+      ],
+      [
+        "How are Group Members different from Followers and Connections?",
+        "Group Members are associated with a LinkedIn Group. Followers follow eligible LinkedIn profiles or company pages, while Connections relate to personal LinkedIn profiles.",
+      ],
+      [
+        "Does this service guarantee engagement or active participation?",
+        "No. SocialRUSH does not guarantee discussion activity, engagement, leads, sales, jobs, clients, revenue or other commercial outcomes.",
+      ],
     ];
-    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: groupFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
-    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: "LinkedIn USA Group Members", item: `${siteUrl}/services/linkedin-usa-group-members` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: "LinkedIn USA Group Members", description: "USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group.", provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: "LinkedIn USA Group Members" };
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c") }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c") }} /><LinkedInUsaGroupMembersLanding /></>;
+    const faqSchema = {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: groupFaqs.map(([name, text]) => ({
+        "@type": "Question",
+        name,
+        acceptedAnswer: { "@type": "Answer", text },
+      })),
+    };
+    const breadcrumbSchema = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
+        {
+          "@type": "ListItem",
+          position: 2,
+          name: "Services",
+          item: `${siteUrl}/services`,
+        },
+        {
+          "@type": "ListItem",
+          position: 3,
+          name: "LinkedIn USA Group Members",
+          item: `${siteUrl}/services/linkedin-usa-group-members`,
+        },
+      ],
+    };
+    const serviceSchema = {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      name: "LinkedIn USA Group Members",
+      description:
+        "USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group.",
+      provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
+      serviceType: "LinkedIn USA Group Members",
+    };
+    return (
+      <>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(breadcrumbSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify(serviceSchema).replace(/</g, "\\u003c"),
+          }}
+        />
+        <LinkedInUsaGroupMembersLanding />
+      </>
+    );
   }
   // Keep all commercial authority on the dedicated, sitemap-listed Instagram
   // follower landing page instead of maintaining a competing service detail.
@@ -227,7 +544,8 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
   }
   const seo = getSeoData(params.slug);
   if (!seo) notFound();
-  const hasBasePrice = "pricePer1000INR" in seo && typeof seo.pricePer1000INR === "number";
+  const hasBasePrice =
+    "pricePer1000INR" in seo && typeof seo.pricePer1000INR === "number";
 
   const faqSchema = {
     "@context": "https://schema.org",
@@ -254,16 +572,35 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
     "@type": "BreadcrumbList",
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` },
-      { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` },
-      { "@type": "ListItem", position: 3, name: seo.headline, item: `${siteUrl}/services/${params.slug}` },
+      {
+        "@type": "ListItem",
+        position: 2,
+        name: "Services",
+        item: `${siteUrl}/services`,
+      },
+      {
+        "@type": "ListItem",
+        position: 3,
+        name: seo.headline,
+        item: `${siteUrl}/services/${params.slug}`,
+      },
     ],
   };
 
   return (
     <PublicShell tone="light3d">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }} />
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }} />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <main className="service-detail-page px-5 pb-20 pt-8 sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl space-y-8">
@@ -271,26 +608,64 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
             <p className="inline-flex rounded-full border border-[#FFF8F1] bg-white px-4 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-[#FF9F00]">
               {routeTitle(params.slug)}
             </p>
-            <h1 className="mt-4 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-5xl">{seo.headline}</h1>
-            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base">{seo.intro}</p>
+            <h1 className="mt-4 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-5xl">
+              {seo.headline}
+            </h1>
+            <p className="mt-4 max-w-3xl text-sm leading-7 text-[#111827] sm:text-base">
+              {seo.intro}
+            </p>
             <div className="mt-6 flex flex-wrap gap-2">
               <span className="rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]">
-                {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}
+                {hasBasePrice ? (
+                  <CurrencyAmount
+                    amountINR={seo.pricePer1000INR}
+                    suffix=" / 1000"
+                  />
+                ) : (
+                  seo.price
+                )}
               </span>
-              <span className="inline-flex items-center gap-2 rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]"><PlatformIcon platform={seo.platform} className="h-4 w-4" />{seo.platform}</span>
-              <span className="rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]">{seo.delivery}</span>
+              <span className="inline-flex items-center gap-2 rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]">
+                <PlatformIcon platform={seo.platform} className="h-4 w-4" />
+                {seo.platform}
+              </span>
+              <span className="rounded-full border border-[#FFF8F1] bg-white px-3 py-1.5 text-xs font-bold text-[#FF9F00]">
+                {seo.delivery}
+              </span>
             </div>
-            {hasBasePrice ? <p className="mt-3 text-xs font-semibold text-[#111827]">{getCurrencyDisclaimer()}</p> : null}
+            {hasBasePrice ? (
+              <p className="mt-3 text-xs font-semibold text-[#111827]">
+                {getCurrencyDisclaimer()}
+              </p>
+            ) : null}
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="/packages" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white">View Packages</Link>
-              <Link href="/pricing" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-5 py-3 text-sm font-bold text-[#0B0B0F]">Pricing</Link>
-              <Link href="/contact" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-5 py-3 text-sm font-bold text-[#FF9F00]">Contact Support</Link>
+              <Link
+                href="/packages"
+                className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white"
+              >
+                View Packages
+              </Link>
+              <Link
+                href="/pricing"
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-white px-5 py-3 text-sm font-bold text-[#0B0B0F]"
+              >
+                Pricing
+              </Link>
+              <Link
+                href="/contact"
+                className="inline-flex min-h-11 items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-5 py-3 text-sm font-bold text-[#FF9F00]"
+              >
+                Contact Support
+              </Link>
             </div>
           </section>
 
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {seo.benefits.map((item) => (
-              <article key={item} className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-[0_16px_34px_-26px_rgba(15,23,42,.35)]">
+              <article
+                key={item}
+                className="rounded-2xl border border-white/80 bg-white/85 p-4 shadow-[0_16px_34px_-26px_rgba(15,23,42,.35)]"
+              >
                 <p className="text-sm font-bold text-[#0B0B0F]">{item}</p>
               </article>
             ))}
@@ -298,30 +673,72 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
 
           <section className="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
             <article className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
-              <h2 className="text-2xl font-black text-[#0B0B0F]">Why this page matters</h2>
-              <p className="mt-4 text-sm leading-7 text-[#111827]">This landing page is built to rank for buyer intent terms, explain the service quickly, and link people into the right conversion path without extra friction.</p>
+              <h2 className="text-2xl font-black text-[#0B0B0F]">
+                Why this page matters
+              </h2>
+              <p className="mt-4 text-sm leading-7 text-[#111827]">
+                This landing page is built to rank for buyer intent terms,
+                explain the service quickly, and link people into the right
+                conversion path without extra friction.
+              </p>
               <div className="mt-6 space-y-3 text-sm leading-7 text-[#111827]">
                 <p>Ideal for: {seo.audience.join(", ")}</p>
-                <p>Internal links: Home, Services, Packages, Pricing, Blog, FAQ, and Contact.</p>
+                <p>
+                  Internal links: Home, Services, Packages, Pricing, Blog, FAQ,
+                  and Contact.
+                </p>
               </div>
             </article>
             <aside className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
-              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#111827]">Service snapshot</p>
+              <p className="text-xs font-black uppercase tracking-[0.16em] text-[#111827]">
+                Service snapshot
+              </p>
               <div className="mt-4 space-y-3 text-sm text-[#111827]">
-                <p><span className="font-bold text-[#0B0B0F]">Price:</span> {hasBasePrice ? <CurrencyAmount amountINR={seo.pricePer1000INR} suffix=" / 1000" /> : seo.price}</p>
-                <p><span className="font-bold text-[#0B0B0F]">Delivery:</span> {seo.delivery}</p>
-                <p className="flex items-center gap-2"><PlatformIcon platform={seo.platform} className="h-4 w-4 text-[#111827]" /><span><span className="font-bold text-[#0B0B0F]">Platform:</span> {seo.platform}</span></p>
+                <p>
+                  <span className="font-bold text-[#0B0B0F]">Price:</span>{" "}
+                  {hasBasePrice ? (
+                    <CurrencyAmount
+                      amountINR={seo.pricePer1000INR}
+                      suffix=" / 1000"
+                    />
+                  ) : (
+                    seo.price
+                  )}
+                </p>
+                <p>
+                  <span className="font-bold text-[#0B0B0F]">Delivery:</span>{" "}
+                  {seo.delivery}
+                </p>
+                <p className="flex items-center gap-2">
+                  <PlatformIcon
+                    platform={seo.platform}
+                    className="h-4 w-4 text-[#111827]"
+                  />
+                  <span>
+                    <span className="font-bold text-[#0B0B0F]">Platform:</span>{" "}
+                    {seo.platform}
+                  </span>
+                </p>
               </div>
             </aside>
           </section>
 
           <section className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
-            <h2 className="text-2xl font-black text-[#0B0B0F]">Frequently Asked Questions</h2>
+            <h2 className="text-2xl font-black text-[#0B0B0F]">
+              Frequently Asked Questions
+            </h2>
             <div className="mt-5 grid gap-3">
               {seo.faqs.map((faq) => (
-                <details key={faq.question} className="group rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4">
-                  <summary className="cursor-pointer list-none text-sm font-bold text-[#0B0B0F]">{faq.question}</summary>
-                  <p className="mt-3 text-sm leading-7 text-[#111827]">{faq.answer}</p>
+                <details
+                  key={faq.question}
+                  className="group rounded-2xl border border-[#FFF8F1] bg-[#FFF8F1] p-4"
+                >
+                  <summary className="cursor-pointer list-none text-sm font-bold text-[#0B0B0F]">
+                    {faq.question}
+                  </summary>
+                  <p className="mt-3 text-sm leading-7 text-[#111827]">
+                    {faq.answer}
+                  </p>
                 </details>
               ))}
             </div>
@@ -330,14 +747,28 @@ export default function ServiceSeoPage({ params }: { params: { slug: string } })
           <section className="rounded-[28px] border border-[#FFF8F1] bg-[#FFF8F1] p-6 sm:p-8">
             <h2 className="text-2xl font-black text-[#0B0B0F]">Explore more</h2>
             <div className="mt-4 flex flex-wrap gap-3 text-sm font-bold text-[#0B0B0F]">
-              {[["Home", "/"], ["Services", "/services"], ["Packages", "/packages"], ["Pricing", "/pricing"], ["Blog", "/blog"], ["FAQ", "/faq"], ["Contact", "/contact"]].map(([label, href]) => (
-                <Link key={href} href={href} className="rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 transition hover:bg-[#FFF8F1]">
+              {[
+                ["Home", "/"],
+                ["Services", "/services"],
+                ["Packages", "/packages"],
+                ["Pricing", "/pricing"],
+                ["Blog", "/blog"],
+                ["FAQ", "/faq"],
+                ["Contact", "/contact"],
+              ].map(([label, href]) => (
+                <Link
+                  key={href}
+                  href={href}
+                  className="rounded-xl border border-[#FFF3E0] bg-white px-4 py-2 transition hover:bg-[#FFF8F1]"
+                >
                   {label}
                 </Link>
               ))}
             </div>
           </section>
-          {activeSmmServices.some((service) => service.code === params.slug) ? <CrossSellRecommendations serviceCode={params.slug} /> : null}
+          {activeSmmServices.some((service) => service.code === params.slug) ? (
+            <CrossSellRecommendations serviceCode={params.slug} />
+          ) : null}
         </div>
       </main>
     </PublicShell>

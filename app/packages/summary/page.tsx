@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import PackageSummaryContent from "./content";
 
@@ -7,10 +6,10 @@ export const metadata: Metadata = {
   robots: { index: false, follow: false, nocache: true },
 };
 
+// This screen depends on request-specific package query data and the signed-in
+// wallet session, so it must render on demand rather than during SSG.
+export const dynamic = "force-dynamic";
+
 export default function PackageSummaryPage() {
-  return (
-    <Suspense fallback={null}>
-      <PackageSummaryContent />
-    </Suspense>
-  );
+  return <PackageSummaryContent />;
 }
