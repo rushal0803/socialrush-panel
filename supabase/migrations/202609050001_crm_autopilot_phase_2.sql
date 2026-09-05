@@ -1,0 +1,66 @@
+-- SocialRUSH Autopilot Phase 2. Candidate staging only: never sends outreach.
+create table if not exists public.crm_icp_config (
+  id boolean primary key default true check (id), target_countries text[] not null default array['United States','United Kingdom','United Arab Emirates','Australia'],
+  employee_ranges text[] not null default array['1-10','11-50','51-200'], company_types text[] not null default array['small business','startup','digital agency','marketing agency','creator business','e-commerce business','professional services business'],
+  decision_roles text[] not null default array['founder','co-founder','owner','ceo','marketing head','marketing manager','growth lead','social media manager','digital marketing manager'], updated_at timestamptz not null default now()
+);
+insert into public.crm_icp_config(id) values(true) on conflict(id) do nothing;
+
+create table if not exists public.crm_lead_candidates (
+  id uuid primary key default gen_random_uuid(), business_name text not null, domain text, website_url text, country text, city text, industry text, company_type text, employee_range text,
+  instagram_url text, linkedin_url text, youtube_url text, tiktok_url text, contact_name text, contact_role text, business_email text, email_type text not null default 'unknown' check(email_type in ('business','role','unknown')),
+  email_verification_status text not null default 'unverified' check(email_verification_status in ('unverified','valid','risky','invalid','bounced')),
+  source text not null default 'manual', source_name text, source_external_id text, source_url text, discovered_at timestamptz not null default now(), research_status text not null default 'new' check(research_status in ('new','researching','complete','needed')),
+  qualification_status text not null default 'new' check(qualification_status in ('new','researching','qualified','ready','rejected','duplicate','blocked','promoted')),
+  compliance_status text not null default 'review' check(compliance_status in ('eligible','review','blocked')), recommended_service text, recommendation_reason text, recommendation_confidence integer not null default 0 check(recommendation_confidence between 0 and 100),
+  fit_score integer not null default 0 check(fit_score between 0 and 100), fit_grade text not null default 'research' check(fit_grade in ('high_fit','good_fit','research','low_fit','do_not_contact')), fit_reasons jsonb not null default '[]'::jsonb,
+  duplicate_lead_id uuid references public.crm_leads(id) on delete set null, duplicate_kind text check(duplicate_kind in ('possible','exact')), blocked_reason text, research_notes text, promoted_lead_id uuid references public.crm_leads(id) on delete set null, promoted_at timestamptz, created_by uuid references public.profiles(id) on delete set null, created_at timestamptz not null default now(), updated_at timestamptz not null default now()
+);
+create unique index if not exists crm_lead_candidates_source_external_uidx on public.crm_lead_candidates(source, source_external_id) where source_external_id is not null;
+create index if not exists crm_candidates_status_idx on public.crm_lead_candidates(qualification_status, created_at desc);
+create index if not exists crm_candidates_grade_idx on public.crm_lead_candidates(fit_grade, fit_score desc);
+create index if not exists crm_candidates_email_idx on public.crm_lead_candidates(lower(trim(business_email)));
+create index if not exists crm_candidates_domain_idx on public.crm_lead_candidates(lower(domain));
+create index if not exists crm_candidates_created_idx on public.crm_lead_candidates(created_at desc);
+
+create table if not exists public.crm_candidate_activities (id uuid primary key default gen_random_uuid(), candidate_id uuid not null references public.crm_lead_candidates(id) on delete cascade, activity_type text not null check(activity_type in ('imported','rescored','duplicate_detected','suppression_detected','qualified','rejected','promoted','note')), details jsonb not null default '{}'::jsonb, created_by uuid references public.profiles(id) on delete set null, created_at timestamptz not null default now());
+create index if not exists crm_candidate_activities_candidate_idx on public.crm_candidate_activities(candidate_id, created_at desc);
+
+create table if not exists public.crm_lead_intelligence (lead_id uuid primary key references public.crm_leads(id) on delete cascade, next_best_action text not null, action_reason text not null, action_priority text not null check(action_priority in ('low','normal','high','urgent')), recommended_at timestamptz not null default now(), stale boolean not null default false, days_inactive integer not null default 0, updated_at timestamptz not null default now());
+
+alter table public.crm_icp_config enable row level security; alter table public.crm_lead_candidates enable row level security; alter table public.crm_candidate_activities enable row level security; alter table public.crm_lead_intelligence enable row level security;
+create policy "admins manage icp" on public.crm_icp_config for all to authenticated using(public.is_admin()) with check(public.is_admin());
+create policy "admins manage candidates" on public.crm_lead_candidates for all to authenticated using(public.is_admin()) with check(public.is_admin());
+create policy "admins manage candidate activities" on public.crm_candidate_activities for all to authenticated using(public.is_admin()) with check(public.is_admin());
+create policy "admins read lead intelligence" on public.crm_lead_intelligence for select to authenticated using(public.is_admin());
+
+create or replace function public.refresh_crm_prospecting_intelligence() returns void language plpgsql set search_path=public as $$
+declare cfg public.crm_icp_config%rowtype;
+begin
+ select * into cfg from crm_icp_config where id=true;
+ update crm_lead_candidates c set
+  domain=nullif(lower(regexp_replace(regexp_replace(coalesce(c.domain, c.website_url, ''), '^https?://', ''), '^www\\.', '')), ''),
+  business_email=nullif(lower(trim(c.business_email)), ''), updated_at=now();
+ update crm_lead_candidates c set
+  duplicate_lead_id=d.lead_id, duplicate_kind=d.kind,
+  qualification_status=case when d.lead_id is not null then 'duplicate' else c.qualification_status end
+ from lateral (select l.id lead_id, case when lower(coalesce(l.domain,''))=lower(coalesce(c.domain,'')) or lower(trim(coalesce(x.email,'')))=lower(trim(coalesce(c.business_email,''))) then 'exact' else 'possible' end kind from crm_leads l left join crm_lead_contacts x on x.lead_id=l.id where (c.domain is not null and lower(l.domain)=lower(c.domain)) or (c.business_email is not null and lower(trim(x.email))=lower(trim(c.business_email))) limit 1) d;
+ update crm_lead_candidates c set
+  blocked_reason=b.reason, compliance_status=case when b.reason is null then c.compliance_status else 'blocked' end,
+  qualification_status=case when b.reason is null then c.qualification_status else 'blocked' end,
+  fit_score=case when b.reason is null then c.fit_score else 0 end, fit_grade=case when b.reason is null then c.fit_grade else 'do_not_contact' end, updated_at=now()
+ from lateral (select coalesce((select 'Suppressed: '||coalesce(nullif(trim(s.reason),''),'suppression list') from crm_suppression_list s where lower(trim(s.email))=lower(trim(c.business_email)) limit 1), case when c.email_verification_status in ('invalid','bounced') then 'Invalid or bounced email' when c.compliance_status='blocked' then 'Compliance blocked' end) reason) b;
+ update crm_lead_candidates c set
+  recommended_service=case when c.youtube_url is not null then 'YouTube growth' when c.linkedin_url is not null and lower(coalesce(c.company_type,'')||' '||coalesce(c.industry,'')) similar to '%(b2b|agency|professional)%' then 'LinkedIn growth' when c.tiktok_url is not null then 'TikTok growth' when c.instagram_url is not null then 'Instagram growth' when c.linkedin_url is not null then 'LinkedIn growth' else null end,
+  recommendation_reason=case when c.youtube_url is not null then 'Active YouTube channel detected' when c.linkedin_url is not null and lower(coalesce(c.company_type,'')||' '||coalesce(c.industry,'')) similar to '%(b2b|agency|professional)%' then 'LinkedIn-heavy business signal' when c.tiktok_url is not null then 'TikTok presence detected' when c.instagram_url is not null then 'Instagram presence detected' when c.linkedin_url is not null then 'LinkedIn presence detected' else 'More research required' end,
+  recommendation_confidence=case when c.youtube_url is not null or c.instagram_url is not null or c.linkedin_url is not null or c.tiktok_url is not null then 70 else 0 end;
+ update crm_lead_candidates c set fit_score=s.score, fit_grade=s.grade, fit_reasons=s.reasons, research_status=case when s.grade='research' then 'needed' else c.research_status end, updated_at=now()
+ from lateral (select case when c.compliance_status='blocked' or c.email_verification_status in ('invalid','bounced') then 0 else least(100, greatest(0,
+ (case when lower(coalesce(c.country,''))=any(select lower(unnest(cfg.target_countries))) then 20 else -20 end)+(case when c.employee_range=any(cfg.employee_ranges) then 15 else 0 end)+(case when lower(coalesce(c.contact_role,''))=any(select lower(unnest(cfg.decision_roles))) then 15 else 0 end)+(case when c.email_type in ('business','role') and c.email_verification_status='valid' then 15 else 0 end)+(case when c.website_url is not null then 10 else -20 end)+(case when c.instagram_url is not null or c.linkedin_url is not null or c.youtube_url is not null or c.tiktok_url is not null then 10 else 0 end)+(case when c.recommended_service is not null then 10 else 0 end)+(case when (case when c.instagram_url is not null then 1 else 0 end+case when c.linkedin_url is not null then 1 else 0 end+case when c.youtube_url is not null then 1 else 0 end+case when c.tiktok_url is not null then 1 else 0 end)>=2 then 5 else 0 end))) end score,
+ case when c.compliance_status='blocked' or c.email_verification_status in ('invalid','bounced') then 'do_not_contact' when (case when lower(coalesce(c.country,''))=any(select lower(unnest(cfg.target_countries))) then 20 else -20 end)+(case when c.employee_range=any(cfg.employee_ranges) then 15 else 0 end)+(case when lower(coalesce(c.contact_role,''))=any(select lower(unnest(cfg.decision_roles))) then 15 else 0 end)+(case when c.email_type in ('business','role') and c.email_verification_status='valid' then 15 else 0 end)+(case when c.website_url is not null then 10 else -20 end)+(case when c.instagram_url is not null or c.linkedin_url is not null or c.youtube_url is not null or c.tiktok_url is not null then 10 else 0 end)+(case when c.recommended_service is not null then 10 else 0 end) >=80 then 'high_fit' when c.fit_score>=60 then 'good_fit' when c.fit_score>=40 then 'research' else 'low_fit' end grade,
+ jsonb_build_array(jsonb_build_object('reason','Target country','points',case when lower(coalesce(c.country,''))=any(select lower(unnest(cfg.target_countries))) then 20 else -20 end),jsonb_build_object('reason','Verified public business email','points',case when c.email_type in ('business','role') and c.email_verification_status='valid' then 15 else 0 end),jsonb_build_object('reason','Business website','points',case when c.website_url is not null then 10 else -20 end),jsonb_build_object('reason','Service fit','points',case when c.recommended_service is not null then 10 else 0 end)) reasons) s where c.qualification_status <> 'promoted';
+ insert into crm_lead_intelligence(lead_id,next_best_action,action_reason,action_priority,stale,days_inactive,updated_at)
+ select l.id, case when exists(select 1 from crm_lead_contacts c where c.lead_id=l.id and (c.opted_out_at is not null or c.verification_status='invalid' or c.compliance_status='blocked')) then 'Do not contact' when l.status in ('qualified','replied') and coalesce(l.updated_at,l.created_at)<now()-interval '3 days' then 'Review qualified opportunity' when not exists(select 1 from crm_lead_contacts c where c.lead_id=l.id and c.verification_status='valid' and c.email_type='business') then 'Verify business email' when l.recommended_service is null then 'Review service recommendation' else 'Schedule follow-up' end, case when l.status in ('qualified','replied') and coalesce(l.updated_at,l.created_at)<now()-interval '3 days' then 'Qualified or replied lead is stale' else 'Deterministic operational review' end, case when l.status in ('qualified','replied') and coalesce(l.updated_at,l.created_at)<now()-interval '3 days' then 'high' else 'normal' end, coalesce(l.updated_at,l.created_at)<now()-interval '3 days', floor(extract(epoch from now()-coalesce(l.updated_at,l.created_at))/86400)::int,now() from crm_leads l where not public.crm_is_internal_operational_test_lead(l.source_name,l.business_name)
+ on conflict(lead_id) do update set next_best_action=excluded.next_best_action,action_reason=excluded.action_reason,action_priority=excluded.action_priority,stale=excluded.stale,days_inactive=excluded.days_inactive,updated_at=excluded.updated_at;
+end $$;
+select cron.schedule('socialrush-crm-prospecting-daily', '45 2 * * *', 'select public.refresh_crm_prospecting_intelligence();') where not exists(select 1 from cron.job where jobname='socialrush-crm-prospecting-daily');

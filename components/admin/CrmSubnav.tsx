@@ -9,6 +9,7 @@ const links = [
   { href: "/admin/crm/follow-ups", label: "Follow-ups" },
   { href: "/admin/crm/automations", label: "Automations" },
   { href: "/admin/crm/leads", label: "Leads" },
+  { href: "/admin/crm/prospecting", label: "Prospecting" },
   { href: "/admin/crm/outreach", label: "Outreach" },
   { href: "/admin/crm/replies", label: "Replies" },
 ];

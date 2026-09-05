@@ -1,0 +1,12 @@
+import assert from "node:assert/strict";
+import test from "node:test";
+import { canPromoteCandidate, normalizeDomain, normalizeEmail, parseProspectingCsv } from "../../lib/crm/prospecting.ts";
+
+test("normalizes domains and emails for duplicate lookup",()=>{assert.equal(normalizeDomain(" https://WWW.Acme.com/path "),"acme.com");assert.equal(normalizeEmail(" SALES@Acme.COM "),"sales@acme.com")});
+test("CSV aliases, blanks and invalid required rows are deterministic",()=>{const rows=parseProspectingCsv("company,website,email,country\nAcme,www.acme.com, SALES@ACME.COM ,US\n,,,");assert.equal(rows[0].data.business_name,"Acme");assert.equal(rows[0].data.domain,"acme.com");assert.equal(rows[0].data.business_email,"sales@acme.com");assert.equal(rows[1].data.country,null);assert.ok(rows[1].errors.length)});
+test("CSV rejects more than 500 rows",()=>assert.throws(()=>parseProspectingCsv(`business_name\n${Array(501).fill("Acme").join("\n")}`)));
+test("clean public-business candidate is promotion eligible",()=>assert.equal(canPromoteCandidate({business_email:"hi@acme.com",email_verification_status:"valid",compliance_status:"eligible"}).allowed,true));
+test("suppressed and compliance blocked candidates cannot promote",()=>{assert.equal(canPromoteCandidate({fit_grade:"do_not_contact"}).allowed,false);assert.equal(canPromoteCandidate({compliance_status:"blocked"}).allowed,false)});
+test("invalid, promoted, rejected and internal candidates cannot promote",()=>{for(const c of [{business_email:"x@a.com",email_verification_status:"invalid"},{promoted_lead_id:"id"},{qualification_status:"rejected"},{source_name:"Internal Resend E2E Test"}])assert.equal(canPromoteCandidate(c).allowed,false)});
+test("unresolved duplicate blocks but approved separate permits promotion",()=>{assert.equal(canPromoteCandidate({duplicate_lead_id:"id"}).allowed,false);assert.equal(canPromoteCandidate({duplicate_lead_id:"id",duplicate_override:true}).allowed,true)});
+test("CSV never produces a guessed email",()=>{const row=parseProspectingCsv("business_name,website\nAcme,acme.com")[0];assert.equal(row.data.business_email,null)});
