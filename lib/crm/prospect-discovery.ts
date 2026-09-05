@@ -3,6 +3,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizeDomain } from "@/lib/crm/prospecting";
+import { isLowQualityDiscoveryResult } from "@/lib/crm/prospect-discovery-filters";
 
 type DiscoveryTrigger = "cron" | "manual";
 
@@ -46,6 +47,20 @@ const BLOCKED_DOMAINS = [
   "apollo.io",
   "rocketreach.co",
   "signalhire.com",
+  "companydatabase.in",
+  "scribd.com",
+  "golden.com",
+  "ibef.org",
+  "builtin.com",
+  "vcsdata.com",
+  "justdial.com",
+  "indiamart.com",
+  "sulekha.com",
+  "tradeindia.com",
+  "zaubacorp.com",
+  "thecompanycheck.com",
+  "kompass.com",
+  "dnb.com",
 
   // Jobs.
   "indeed.com",
@@ -172,7 +187,11 @@ function getWebsite(url: string) {
     if (
       domain.endsWith(".gov") ||
       domain.endsWith(".gov.au") ||
-      domain.endsWith(".edu")
+      domain.endsWith(".edu") ||
+      domain.endsWith(".gov.in") ||
+      domain.endsWith(".nic.in") ||
+      domain.endsWith(".ac.in") ||
+      domain.endsWith(".edu.in")
     ) {
       return null;
     }
@@ -263,7 +282,13 @@ function buildSearchPlan(
       country,
       countryName,
       segment,
-      query: `${segment} ${countryName} company official website`,
+      query: ({
+        "marketing agency": `"digital marketing agency" ${countryName} "contact us" official website`,
+        "e-commerce brand": `"D2C brand" ${countryName} "official store"`,
+        startup: `"${countryName} startup" founder "official website"`,
+        "creator business": `"creator agency" ${countryName} "official website"`,
+        "professional services": `"consulting firm" ${countryName} "official website"`,
+      }[segment.toLowerCase()] || `${segment} ${countryName} company official website`),
     });
   }
 
@@ -571,7 +596,7 @@ export async function runProspectDiscovery({
 
         const website = getWebsite(result.url);
 
-        if (!website) {
+        if (!website || isLowQualityDiscoveryResult(result)) {
           invalidCount += 1;
           continue;
         }

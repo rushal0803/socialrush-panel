@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { canPromoteCandidate, normalizeDomain, normalizeEmail, parseProspectingCsv } from "../../lib/crm/prospecting.ts";
+import { getDiscoveryWebsite, isLowQualityDiscoveryResult } from "../../lib/crm/prospect-discovery-filters.ts";
 
 test("normalizes domains and emails for duplicate lookup",()=>{assert.equal(normalizeDomain(" https://WWW.Acme.com/path "),"acme.com");assert.equal(normalizeEmail(" SALES@Acme.COM "),"sales@acme.com")});
 test("CSV aliases, blanks and invalid required rows are deterministic",()=>{const rows=parseProspectingCsv("company,website,email,country\nAcme,www.acme.com, SALES@ACME.COM ,US\n,,,");assert.equal(rows[0].data.business_name,"Acme");assert.equal(rows[0].data.domain,"acme.com");assert.equal(rows[0].data.business_email,"sales@acme.com");assert.equal(rows[1].data.country,null);assert.ok(rows[1].errors.length)});
@@ -14,3 +15,7 @@ test("CSV never produces a guessed email",()=>{const row=parseProspectingCsv("bu
 test("duplicate override never bypasses safety blockers",()=>{assert.equal(canPromoteCandidate({duplicate_lead_id:"id",duplicate_override:true,fit_grade:"do_not_contact"}).allowed,false);assert.equal(canPromoteCandidate({duplicate_lead_id:"id",duplicate_override:true,qualification_status:"rejected"}).allowed,false);});
 
 test("internal test business name is blocked even without source marker",()=>assert.equal(canPromoteCandidate({business_name:"SocialRUSH Internal Test"}).allowed,false));
+test("discovery rejects known low-quality source domains",()=>{for(const url of ["https://companydatabase.in/acme","https://cpcb.nic.in/industry","https://ibef.org/industry"])assert.equal(getDiscoveryWebsite(url),null)});
+test("discovery allows a normal business website",()=>assert.deepEqual(getDiscoveryWebsite("https://www.acme-agency.in/contact"),{domain:"acme-agency.in",websiteUrl:"https://www.acme-agency.in"}));
+test("discovery rejects obvious company-list result",()=>assert.equal(isLowQualityDiscoveryResult({url:"https://example.com/top-ecommerce-companies",title:"Top 20 E-commerce Companies in India",description:"A ranking of the best companies"}),true));
+test("discovery staging never supplies a guessed email",()=>{const discovered={business_email:null,email_verification_status:"unverified"};assert.equal(discovered.business_email,null);assert.equal(discovered.email_verification_status,"unverified")});
