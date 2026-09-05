@@ -7,7 +7,7 @@ function normalizeDiscoveryDomain(value: string) {
 const BLOCKED_DOMAINS = [
   "linkedin.com", "facebook.com", "instagram.com", "youtube.com", "youtu.be", "tiktok.com", "twitter.com", "x.com", "pinterest.com",
   "clutch.co", "designrush.com", "goodfirms.co", "yelp.com", "yellowpages.com", "crunchbase.com", "zoominfo.com", "apollo.io", "rocketreach.co", "signalhire.com",
-  "companydatabase.in", "scribd.com", "golden.com", "ibef.org", "builtin.com", "vcsdata.com", "justdial.com", "indiamart.com", "sulekha.com", "tradeindia.com", "zaubacorp.com", "thecompanycheck.com", "kompass.com", "dnb.com",
+  "companydatabase.in", "scribd.com", "golden.com", "ibef.org", "builtin.com", "vcsdata.com", "discoveringbrands.com", "inc42.com", "d2csale.com", "justdial.com", "indiamart.com", "sulekha.com", "tradeindia.com", "zaubacorp.com", "thecompanycheck.com", "kompass.com", "dnb.com",
   "indeed.com", "glassdoor.com", "ziprecruiter.com", "wikipedia.org", "reddit.com", "medium.com", "substack.com", "github.com", "quora.com", "google.com", "bing.com", "yahoo.com", "brave.com",
 ];
 const DOCUMENT_PATH = /\.(pdf|doc|docx|xls|xlsx|ppt|pptx)$/i;
