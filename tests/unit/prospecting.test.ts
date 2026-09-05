@@ -10,3 +10,7 @@ test("suppressed and compliance blocked candidates cannot promote",()=>{assert.e
 test("invalid, promoted, rejected and internal candidates cannot promote",()=>{for(const c of [{business_email:"x@a.com",email_verification_status:"invalid"},{promoted_lead_id:"id"},{qualification_status:"rejected"},{source_name:"Internal Resend E2E Test"}])assert.equal(canPromoteCandidate(c).allowed,false)});
 test("unresolved duplicate blocks but approved separate permits promotion",()=>{assert.equal(canPromoteCandidate({duplicate_lead_id:"id"}).allowed,false);assert.equal(canPromoteCandidate({duplicate_lead_id:"id",duplicate_override:true}).allowed,true)});
 test("CSV never produces a guessed email",()=>{const row=parseProspectingCsv("business_name,website\nAcme,acme.com")[0];assert.equal(row.data.business_email,null)});
+
+test("duplicate override never bypasses safety blockers",()=>{assert.equal(canPromoteCandidate({duplicate_lead_id:"id",duplicate_override:true,fit_grade:"do_not_contact"}).allowed,false);assert.equal(canPromoteCandidate({duplicate_lead_id:"id",duplicate_override:true,qualification_status:"rejected"}).allowed,false);});
+
+test("internal test business name is blocked even without source marker",()=>assert.equal(canPromoteCandidate({business_name:"SocialRUSH Internal Test"}).allowed,false));
