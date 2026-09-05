@@ -3,10 +3,10 @@ import Link from "next/link";
 
 import { createClient } from "@/lib/supabase/server";
 import CsvProspectImport from "@/components/admin/CsvProspectImport";
+import ProspectingCandidateStatusForm from "@/components/admin/ProspectingCandidateStatusForm";
 import {
   addCandidate,
   runDiscoveryNow,
-  setCandidateStatus,
 } from "./actions";
 
 function formatRunTime(value?: string | null) {
@@ -248,31 +248,10 @@ export default async function ProspectingPage() {
               </div>
 
               <div className="flex gap-3">
-                <form action={setCandidateStatus}>
-                  <input
-                    type="hidden"
-                    name="candidate_id"
-                    value={c.id}
-                  />
-
-                  <select
-                    name="status"
-                    defaultValue={c.qualification_status}
-                    onChange={(e) =>
-                      e.currentTarget.form?.requestSubmit()
-                    }
-                    className="rounded bg-black/20 p-2 text-xs text-white"
-                  >
-                    <option value="researching">
-                      Research
-                    </option>
-                    <option value="qualified">
-                      Qualify
-                    </option>
-                    <option value="ready">Ready</option>
-                    <option value="rejected">Reject</option>
-                  </select>
-                </form>
+                <ProspectingCandidateStatusForm
+                  candidateId={c.id}
+                  status={c.qualification_status}
+                />
 
                 <Link
                   href={`/admin/crm/prospecting/${c.id}`}
