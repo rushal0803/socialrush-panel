@@ -45,6 +45,13 @@ export default async function ProspectingPage() {
 
   const n = (f: (x: any) => boolean) => rows.filter(f).length;
 
+  const activeCandidates = rows.filter(
+    (candidate: any) =>
+      !["rejected", "promoted", "blocked"].includes(
+        candidate.qualification_status,
+      ),
+  );
+
   const apiConfigured = Boolean(
     process.env.BRAVE_SEARCH_API_KEY?.trim(),
   );
@@ -158,7 +165,7 @@ export default async function ProspectingPage() {
 
       <section className="grid gap-3 sm:grid-cols-3 xl:grid-cols-7">
         {[
-          ["Candidates", rows.length],
+          ["Candidates", activeCandidates.length],
           [
             "Qualified",
             n((x) =>
@@ -231,7 +238,7 @@ export default async function ProspectingPage() {
             </h2>
           </div>
 
-          {rows.map((c: any) => (
+          {activeCandidates.map((c: any) => (
             <article
               key={c.id}
               className="flex flex-wrap items-center justify-between gap-3 border-b border-white/10 p-4"

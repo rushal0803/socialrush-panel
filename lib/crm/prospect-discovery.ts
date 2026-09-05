@@ -284,7 +284,7 @@ function buildSearchPlan(
       segment,
       query: ({
         "marketing agency": `"digital marketing agency" ${countryName} "contact us" official website`,
-        "e-commerce brand": `"D2C brand" ${countryName} "official store"`,
+        "e-commerce brand": `D2C brand ${countryName} official website`,
         startup: `"${countryName} startup" founder "official website"`,
         "creator business": `"creator agency" ${countryName} "official website"`,
         "professional services": `"consulting firm" ${countryName} "official website"`,
