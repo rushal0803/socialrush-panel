@@ -10,6 +10,7 @@ import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 import { useServiceHealth } from "@/lib/use-service-health";
+import PersonalizationShelf from "@/components/marketing/cro/PersonalizationShelf";
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 
@@ -106,6 +107,8 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
     </section>
 
     <section aria-label="SocialRUSH service benefits" className="relative px-4 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl grid-cols-1 gap-2 rounded-2xl border border-white/10 bg-[#0d0d10] p-2 min-[430px]:grid-cols-2 sm:grid-cols-3 lg:grid-cols-5">{trustItems.map((item) => <div key={item} className="flex min-h-10 items-center gap-2 rounded-xl px-2.5 text-xs font-bold text-[#D7DAE0]"><CheckCircle2 className="h-4 w-4 shrink-0 text-orange-300" />{item}</div>)}</div></section>
+
+    <PersonalizationShelf catalog={catalogServices} />
 
     <section aria-labelledby="discovery-heading" className="relative px-4 pt-1 sm:px-6 sm:pt-2 lg:px-8"><div className="mx-auto max-w-7xl">
       <div className="flex items-end justify-between gap-4"><div><p className="text-[10px] font-black tracking-[.16em] text-orange-300">DISCOVER</p><h2 id="discovery-heading" className="mt-2 text-2xl font-black tracking-tight sm:text-3xl">Choose a platform</h2></div><p className="hidden text-sm text-[#9DA4B0] sm:block">Select a network to see its live catalog.</p></div>

@@ -1,0 +1,11 @@
+export type RecentService = { code: string; viewedAt: number };
+export type ContinueOrder = { serviceCode: string; quantity: number; updatedAt: number };
+export const RECENT_SERVICES_KEY = "sr_recent_services_v1";
+export const CONTINUE_ORDER_KEY = "sr_continue_order_v1";
+const MAX_RECENT = 4, MAX_DRAFT_AGE = 1000 * 60 * 60 * 24 * 7;
+function isRecord(value: unknown): value is Record<string, unknown> { return Boolean(value) && typeof value === "object" && !Array.isArray(value); }
+function code(value: unknown) { return typeof value === "string" && /^[a-z0-9-]{2,100}$/i.test(value) ? value : null; }
+export function parseRecentServices(raw: string | null, allowedCodes: ReadonlySet<string>, now = Date.now()): RecentService[] { try { const items = JSON.parse(raw || "[]"); if (!Array.isArray(items)) return []; const seen = new Set<string>(); return items.filter(isRecord).map((item) => ({ code: code(item.code), viewedAt: Number(item.viewedAt) })).filter((item): item is RecentService => Boolean(item.code) && allowedCodes.has(item.code) && Number.isFinite(item.viewedAt) && item.viewedAt <= now + 60_000 && !seen.has(item.code) && (seen.add(item.code), true)).sort((a, b) => b.viewedAt - a.viewedAt).slice(0, MAX_RECENT); } catch { return []; } }
+export function addRecentService(previous: RecentService[], serviceCode: string, now = Date.now()): RecentService[] { const valid = code(serviceCode); if (!valid) return previous.slice(0, MAX_RECENT); return [{ code: valid, viewedAt: now }, ...previous.filter((item) => item.code !== valid)].slice(0, MAX_RECENT); }
+export function parseContinueOrder(raw: string | null, allowedCodes: ReadonlySet<string>, now = Date.now()): ContinueOrder | null { try { const item = JSON.parse(raw || "null"); if (!isRecord(item)) return null; const serviceCode = code(item.serviceCode), quantity = Number(item.quantity), updatedAt = Number(item.updatedAt); return serviceCode && allowedCodes.has(serviceCode) && Number.isInteger(quantity) && quantity > 0 && Number.isFinite(updatedAt) && now - updatedAt >= 0 && now - updatedAt <= MAX_DRAFT_AGE ? { serviceCode, quantity, updatedAt } : null; } catch { return null; } }
+export function serializeContinueOrder(draft: ContinueOrder) { return JSON.stringify({ serviceCode: draft.serviceCode, quantity: draft.quantity, updatedAt: draft.updatedAt }); }

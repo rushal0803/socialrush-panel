@@ -14,6 +14,7 @@
     "test:topical-authority": "node --experimental-strip-types --test tests/unit/topical-authority.test.ts",
     "test:trust": "node --experimental-strip-types --test tests/unit/trust-content.test.ts"
     ,"test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts"
+    ,"test:cro": "node --experimental-strip-types --test tests/unit/cro-personalization.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
