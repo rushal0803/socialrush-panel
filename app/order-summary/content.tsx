@@ -74,15 +74,17 @@ export default function OrderSummaryPage() {
       return;
     }
 
-    if (!isAuthenticated) {
-      const nextUrl = window.location.pathname + window.location.search;
-      router.push(`/login?next=${encodeURIComponent(nextUrl)}`);
-      return;
-    }
-
     setError("");
     setIsSubmitting(true);
-    router.push(`/dashboard/new-order?service=${service.code}&quantity=${quantity}&link=${encodeURIComponent(link)}`);
+    // Keep the exact configuration in the existing dashboard handoff. This is
+    // also the `next` destination for authentication, so a sign-in interruption
+    // never makes the customer type their destination or quantity again.
+    const orderPath = `/dashboard/new-order?service=${encodeURIComponent(service.code)}&platform=${encodeURIComponent(service.platform)}&quantity=${quantity}&link=${encodeURIComponent(link.trim())}&resume=1`;
+    if (!isAuthenticated) {
+      router.push(`/login?next=${encodeURIComponent(orderPath)}`);
+      return;
+    }
+    router.push(orderPath);
   };
 
   return (
@@ -200,8 +202,8 @@ export default function OrderSummaryPage() {
                   {isAuthenticated === false ? "Sign in to continue" : isSubmitting ? "Continuing…" : "Continue to checkout"}
                 </button>
 
-                <p className="mt-4 text-xs text-slate-500">
-                  After login, you will return here to continue to the dashboard checkout flow.
+                  <p className="mt-4 text-xs text-slate-500">
+                  If you sign in, your service, quantity, and public link will be carried securely into checkout.
                 </p>
               </div>
             </div>
