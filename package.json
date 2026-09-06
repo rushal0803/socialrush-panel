@@ -11,7 +11,8 @@
     "test:unit": "node --experimental-strip-types --test tests/unit/prospecting.test.ts",
     "test:currency": "node --experimental-strip-types --test tests/unit/currency-localization.test.ts",
     "test:international-seo": "node --experimental-strip-types --test tests/unit/international-seo.test.ts",
-    "test:topical-authority": "node --experimental-strip-types --test tests/unit/topical-authority.test.ts"
+    "test:topical-authority": "node --experimental-strip-types --test tests/unit/topical-authority.test.ts",
+    "test:trust": "node --experimental-strip-types --test tests/unit/trust-content.test.ts"
     ,"test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts"
   },
   "dependencies": {
