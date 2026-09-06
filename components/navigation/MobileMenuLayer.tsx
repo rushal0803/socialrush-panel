@@ -11,6 +11,7 @@ export default function MobileMenuLayer({
   topClassName = "top-[5.5rem]",
   showCloseButton = true,
   variant = "popover",
+  hiddenFrom = "lg",
   initialFocusRef,
   returnFocusRef,
 }: {
@@ -20,6 +21,7 @@ export default function MobileMenuLayer({
   topClassName?: string;
   showCloseButton?: boolean;
   variant?: "popover" | "drawer";
+  hiddenFrom?: "lg" | "xl";
   initialFocusRef?: RefObject<HTMLElement>;
   returnFocusRef?: RefObject<HTMLElement>;
 }) {
@@ -101,11 +103,13 @@ export default function MobileMenuLayer({
     }
   };
 
+  const visibilityClass = hiddenFrom === "xl" ? "xl:hidden" : "lg:hidden";
+
   return createPortal(
     <div
       ref={dialogRef}
       onKeyDown={trapFocus}
-      className={variant === "drawer" ? "fixed inset-0 z-[99999] lg:hidden" : `fixed inset-x-0 bottom-0 ${topClassName} z-[99999] lg:hidden`}
+      className={variant === "drawer" ? `fixed inset-0 z-[99999] ${visibilityClass}` : `fixed inset-x-0 bottom-0 ${topClassName} z-[99999] ${visibilityClass}`}
       aria-modal="true"
       role="dialog"
       aria-label="Mobile navigation"

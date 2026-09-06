@@ -135,6 +135,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         open={open}
         onClose={() => setOpen(false)}
         variant="drawer"
+        hiddenFrom="xl"
         initialFocusRef={menuCloseRef}
         returnFocusRef={menuTriggerRef}
       >
