@@ -15,6 +15,7 @@
     "test:trust": "node --experimental-strip-types --test tests/unit/trust-content.test.ts"
     ,"test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts"
     ,"test:cro": "node --experimental-strip-types --test tests/unit/cro-personalization.test.ts"
+    ,"test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

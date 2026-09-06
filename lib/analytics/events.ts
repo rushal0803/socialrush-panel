@@ -25,7 +25,8 @@ export function track(event: ClientAnalyticsEvent, metadata: AnalyticsProperties
   const key = `${event}:${safePath()}:${JSON.stringify(metadata)}`;
   if (sent.has(key)) return;
   sent.add(key);
-  const body = JSON.stringify({ event, pagePath: safePath(), metadata });
+  const { service_code, platform, ...safeMetadata } = metadata;
+  const body = JSON.stringify({ event, pagePath: safePath(), serviceCode: typeof service_code === "string" ? service_code : undefined, platform: typeof platform === "string" ? platform : undefined, metadata: safeMetadata });
   if (body.length > 4096) return;
   try {
     if (navigator.sendBeacon) {
