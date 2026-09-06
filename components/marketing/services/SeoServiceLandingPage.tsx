@@ -19,6 +19,8 @@ import {
 import Link from "next/link";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
+import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
 import {
   getSeoServiceFaqs,
   getSeoServicePage,
@@ -244,6 +246,8 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
           </aside>
         </div>
       </section>
+
+      {!page.service.requiresLiveCatalogFacts ? <ServiceLandingOrderBuilder service={page.service} /> : null}
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
@@ -504,6 +508,11 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
           </div>
         </div>
       </section>
+      <ServiceOrderStickyCta
+        href={packagesHref}
+        serviceName={page.displayName}
+        startingPrice={page.confirmedPrice}
+      />
     </PublicShell>
   );
 }

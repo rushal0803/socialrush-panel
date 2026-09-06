@@ -31,6 +31,10 @@ import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLa
 import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
 import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
+import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
+import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
+import { getServiceById } from "@/lib/smm-service-catalog";
+import { linkRules } from "@/lib/order-service-experience";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -234,6 +238,7 @@ export default async function IndiaServiceLandingPage({
   }
   const isTwitterFollowers = slug === "buy-twitter-followers-india";
   const live = await getLiveServiceFacts(page.platformKey, page.serviceName);
+  const catalogService = getServiceById(page.serviceCode);
   if (slug === "buy-facebook-group-members-india") {
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
     const schemas = [
@@ -562,6 +567,8 @@ export default async function IndiaServiceLandingPage({
           </aside>
         </div>
       </section>
+
+      {catalogService && !catalogService.requiresLiveCatalogFacts && linkRules[catalogService.code] ? <ServiceLandingOrderBuilder service={catalogService} /> : null}
 
       {isTwitterFollowers ? (
         <section aria-labelledby="twitter-price-heading" className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8">
@@ -938,6 +945,12 @@ export default async function IndiaServiceLandingPage({
           </div>
         </div>
       </section>
+      <ServiceOrderStickyCta
+        href={orderHref}
+        serviceName={page.serviceName}
+        startingPrice={currentPrice}
+        available={available}
+      />
     </PublicShell>
   );
 }
