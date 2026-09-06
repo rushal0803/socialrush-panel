@@ -16,3 +16,4 @@ export function lifecycleEligibility(event:LifecycleEvent, profile:LifecycleProf
 export const lifecycleKey=(event:LifecycleEvent,userId:string,anchor:string)=>`${event}:${userId}:${anchor.slice(0,10)}`;
 export const promotionalEvent=(event:string)=>event==="first_order_reminder"||event==="inactive_7d";
 export const canSendPromotional=()=>Boolean(process.env.EMAIL_UNSUBSCRIBE_SECRET);
+export const recipientMatchesProfile=(recipient:string, profileEmail:string|null|undefined)=>recipient.trim().toLowerCase()===String(profileEmail||"").trim().toLowerCase();
