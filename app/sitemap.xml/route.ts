@@ -46,6 +46,7 @@ const publicRoutes = [
   "/tiktok-growth-india",
   "/services/linkedin-usa-connections",
   "/services/linkedin-usa-post-likes",
+  "/services/linkedin-usa-endorsements",
   "/services/linkedin-usa-group-members",
   "/services/linkedin-usa-followers",
   "/buy-youtube-watch-hours-india",

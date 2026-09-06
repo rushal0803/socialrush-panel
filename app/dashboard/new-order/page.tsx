@@ -199,7 +199,7 @@ export default function NewOrderPage() {
   const [targetLink, setTargetLink] = useState(prefillRequested ? searchParams.get("link") || "" : "");
   const [customComments, setCustomComments] = useState("");
   const [pollAnswerNumber, setPollAnswerNumber] = useState("");
-  const [endorsementSkillName, setEndorsementSkillName] = useState("");
+  const [endorsementSkillName, setEndorsementSkillName] = useState(prefillRequested ? searchParams.get("endorsementSkillName") || "" : "");
   // Every live-only service enters the same canonical merge path. This keeps
   // identity and de-duplication consistent as additional services are added.
   const [liveServices, setLiveServices] = useState<SmmService[]>([]);
@@ -257,6 +257,7 @@ export default function NewOrderPage() {
     if (searchParams.get("resume") === "1" || searchParams.get("prefill") === "1") {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
+      setEndorsementSkillName(searchParams.get("endorsementSkillName") || "");
     }
   }, [queryString, searchParams, liveServices]);
 
