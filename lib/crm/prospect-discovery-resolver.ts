@@ -51,6 +51,11 @@ export function normalizeCompanyName(value: string) {
   return tokens(value).join(" ");
 }
 
+/** Comparison form for brands where punctuation is meaningful in prose but not domains. */
+export function normalizeCompanyComparison(value: string) {
+  return normalizeCompanyName(value).replace(/\s+/g, "");
+}
+
 export function isLinkedInCompanyUrl(value: string | undefined) {
   try {
     const parsed = new URL(value || "");
@@ -75,19 +80,25 @@ export function resolveOfficialWebsite(companyName: string, result: DiscoveryRes
   const website = result.url ? getDiscoveryWebsite(result.url) : null;
   if (!website || isLowQualityDiscoveryResult(result)) return null;
   const companyTokens = tokens(companyName);
-  const domainTokens = tokens(website.domain.split(".")[0] || website.domain);
+  const domainLabels = website.domain.split(".").filter(Boolean);
+  const domainTokens = tokens(domainLabels[0] || website.domain);
+  const companyComparison = normalizeCompanyComparison(companyName);
+  const domainComparison = domainLabels.join("").replace(/[^a-z0-9]/gi, "").toLowerCase();
+  const labelComparison = (domainLabels[0] || "").replace(/[^a-z0-9]/gi, "").toLowerCase();
   const titleAndSnippet = `${result.title || ""} ${result.description || ""}`.toLowerCase();
   const overlap = companyTokens.filter((token) => domainTokens.includes(token));
   const textOverlap = companyTokens.filter((token) => titleAndSnippet.includes(token));
   const reasons: string[] = [];
   let score = 0;
-  if (overlap.length) { score += overlap.length >= Math.min(2, companyTokens.length) ? 55 : 38; reasons.push(`domain matches ${overlap.join(", ")}`); }
+  const exactDomainBrandMatch = Boolean(companyComparison) && (companyComparison === labelComparison || companyComparison === domainComparison);
+  if (exactDomainBrandMatch) { score += 65; reasons.push("normalized brand exactly matches domain"); }
+  else if (overlap.length) { score += overlap.length >= Math.min(2, companyTokens.length) ? 55 : 38; reasons.push(`domain matches ${overlap.join(", ")}`); }
   if (textOverlap.length) { score += textOverlap.length >= Math.min(2, companyTokens.length) ? 20 : 10; reasons.push("title or snippet matches company name"); }
   try {
     const path = new URL(result.url || "").pathname;
     if (path === "/" || path.split("/").filter(Boolean).length <= 1) { score += 10; reasons.push("homepage or near-root result"); }
   } catch { return null; }
-  if (companyTokens.length > 0 && overlap.length === 0) return null;
+  if (companyTokens.length > 0 && overlap.length === 0 && !exactDomainBrandMatch) return null;
   if (score < 70) return null;
   return { website, score: Math.min(score, 100), reasons };
 }

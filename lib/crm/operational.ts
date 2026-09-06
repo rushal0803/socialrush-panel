@@ -28,6 +28,15 @@ export const istDayBounds = (reference = new Date()) => {
   return { start: start.toISOString(), end: end.toISOString() };
 };
 
+/** datetime-local inputs from the admin UI represent India time, not server time. */
+export const istDateTimeInputToIso = (value: string) => {
+  const normalized = value.trim();
+  if (!normalized) return null;
+  const hasOffset = /(?:Z|[+-]\d{2}:?\d{2})$/i.test(normalized);
+  const parsed = new Date(hasOffset ? normalized : `${normalized.length === 16 ? `${normalized}:00` : normalized}+05:30`);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+};
+
 export const formatIstDateTime = (value?: string | null) => {
   if (!value) return "—";
   const date = new Date(value);
