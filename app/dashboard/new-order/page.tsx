@@ -216,6 +216,7 @@ export default function NewOrderPage() {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<ApiOrderData | null>(null);
   const [checkoutStage, setCheckoutStage] = useState("");
+  const [pendingPaymentId, setPendingPaymentId] = useState("");
   const [resumeNotice, setResumeNotice] = useState("");
   const [checkoutStep, setCheckoutStep] = useState(initialService ? 3 : requestedPlatform ? 2 : 1);
   const inFlight = useRef(false);
@@ -713,31 +714,59 @@ export default function NewOrderPage() {
   if (quantityInput) returnParams.set("quantity", quantityInput);
   if (targetLink.trim()) returnParams.set("link", targetLink.trim());
   returnParams.set("resume", "1");
+
+  async function verifyReturnedCashfreePayment(orderId: string) {
+    setCheckoutStage("Verifying your payment...");
+    setError("");
+    try {
+      const response = await fetch("/api/checkout/cashfree/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId }) });
+      const result = (await response.json()) as { data?: { status?: string; orderId?: string; balance?: number }; error?: string };
+      if (response.ok && result.data?.status === "success" && result.data.orderId) {
+        setSuccess({ id: result.data.orderId, charge: totalPrice, balance: Number(result.data.balance ?? walletBalance ?? 0) });
+        setPendingPaymentId("");
+        clearDraft();
+        router.replace(`/dashboard/orders/${encodeURIComponent(result.data.orderId)}`);
+        return;
+      }
+      if (response.ok && result.data?.status === "pending") {
+        setPendingPaymentId(orderId);
+        setSubmitting(false);
+        setCheckoutStage("");
+        inFlight.current = false;
+        setError("We’re still verifying your payment. Please do not pay again while this check is pending.");
+        return;
+      }
+      if (response.ok && result.data?.status === "failed") {
+        setPendingPaymentId("");
+        setError("Payment was not completed. No order was created. You can safely try again.");
+        setSubmitting(false);
+        setCheckoutStage("");
+        inFlight.current = false;
+        return;
+      }
+      setPendingPaymentId(orderId);
+      setSubmitting(false);
+      setCheckoutStage("");
+      inFlight.current = false;
+      setError(result.error || "We’re still verifying your payment. Please refresh its status shortly.");
+    } catch {
+      setPendingPaymentId(orderId);
+      setSubmitting(false);
+      setCheckoutStage("");
+      inFlight.current = false;
+      setError("We’re still verifying your payment. Please refresh its status shortly.");
+    }
+  }
+
+  // The query string is the recovery trigger. Including the recreated helper
+  // would re-run provider verification on unrelated form renders.
   useEffect(() => {
     const orderId = searchParams.get("cashfree_order_id");
     if (!orderId || !/^src_[a-f0-9]{32}$/i.test(orderId)) return;
     let active = true;
-    void fetch("/api/checkout/cashfree/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId }) })
-      .then(async (response) => {
-        const result = (await response.json()) as { data?: { status?: string; orderId?: string; balance?: number }; error?: string };
-        if (!active) return;
-        if (response.ok && result.data?.status === "success" && result.data.orderId) {
-          setSuccess({ id: result.data.orderId, charge: totalPrice, balance: Number(result.data.balance ?? walletBalance ?? 0) });
-          clearDraft();
-          router.replace("/dashboard/orders");
-        } else if (response.ok && result.data?.status === "pending") {
-          setError("Payment verification is pending. Your order has not been placed yet; refresh shortly to retry safely.");
-        } else if (response.ok && result.data?.status === "failed") {
-          setError("Payment was not completed. No amount was charged. You can try again.");
-          setSubmitting(false);
-          setCheckoutStage("");
-          inFlight.current = false;
-        } else if (!response.ok) {
-          setError(result.error || "Payment verification is pending. Please refresh shortly.");
-        }
-      })
-      .catch(() => undefined);
+    void verifyReturnedCashfreePayment(orderId).then(() => { if (!active) return; });
     return () => { active = false; };
+  // eslint-disable-next-line react-hooks/exhaustive-deps -- verification is intentionally triggered only by a payment-return URL.
   }, [searchParams, router, totalPrice, walletBalance]);
 
   const moveTo = (step: number) => {
@@ -1004,18 +1033,21 @@ export default function NewOrderPage() {
                   <div className="flex items-center justify-between"><span className="inline-flex items-center gap-2 text-xs font-bold text-orange-100"><Wallet className="h-4 w-4" />Wallet balance</span>{walletLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : null}</div>
                   <p className="mt-2 text-2xl font-black">{walletBalance === null ? "Checking..." : formatCurrency(walletBalance, currency)}</p>
                   <div className="my-5 border-t border-white/15" />
+                  {formIsValid && walletBalance !== null ? <div className="mb-3 flex items-center justify-between gap-3 text-xs"><span className="text-[#D1D5DB]">Wallet applied</span><strong>{formatCurrency(Math.min(walletBalance, totalPrice), currency)}</strong></div> : null}
                   {remainingBalance !== null ? <div className="mb-3 flex items-center justify-between gap-3 text-xs"><span className="text-[#D1D5DB]">Wallet after order</span><strong>{formatCurrency(remainingBalance, currency)}</strong></div> : null}
                   <div className="flex items-end justify-between gap-3"><span className="text-xs text-orange-100">Order total</span><strong className="text-2xl">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</strong></div>
                   {formIsValid && walletBalance !== null && !hasEnoughWallet ? <div className="mt-4 rounded-xl bg-amber-400/15 p-3 text-xs leading-6 text-amber-100">Pay now: <strong>{formatCurrency(amountRequired, currency)}</strong></div> : null}
                   {walletError ? <p className="mt-4 text-xs leading-5 text-amber-200">{walletError}</p> : null}
-                  {error ? <p className="mt-4 rounded-xl bg-red-500/15 p-3 text-xs font-semibold text-red-100">{error}</p> : null}
+                  {checkoutStage ? <p role="status" aria-live="polite" className="mt-4 rounded-xl bg-sky-500/15 p-3 text-xs font-semibold text-sky-100">{checkoutStage}</p> : null}
+                  {error ? <p role="alert" aria-live="assertive" className="mt-4 rounded-xl bg-red-500/15 p-3 text-xs font-semibold text-red-100">{error}</p> : null}
+                  {pendingPaymentId ? <button type="button" onClick={() => void verifyReturnedCashfreePayment(pendingPaymentId)} disabled={submitting} className="mt-3 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-amber-300/35 bg-amber-400/10 px-4 text-xs font-bold text-amber-100 disabled:opacity-50"><RefreshCw className="h-4 w-4" />Refresh payment status</button> : null}
                   {success ? <p className="mt-4 rounded-xl bg-emerald-500/15 p-3 text-xs font-semibold text-emerald-100">Order placed successfully. Opening Order History…</p> : null}
                   {hasEnoughWallet ? (
                     <button type="button" onClick={() => void placeOrder()} disabled={!formIsValid || walletLoading || submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
                       {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Placing order…</> : <><ShieldCheck className="h-4 w-4" /> Confirm &amp; Place Order</>}
                     </button>
                   ) : formIsValid && !walletLoading ? (
-                    <button type="button" onClick={() => void payAndPlaceOrder()} disabled={submitting || Boolean(success)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
+                    <button type="button" onClick={() => void payAndPlaceOrder()} disabled={submitting || Boolean(success) || Boolean(pendingPaymentId)} className="mt-5 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 via-amber-500 to-orange-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:cursor-not-allowed disabled:opacity-50">
                       {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> {checkoutStage || "Preparing secure payment..."}</> : <><Wallet className="h-4 w-4" /> Pay {formatCurrency(amountRequired, currency)} &amp; Continue</>}
                     </button>
                   ) : (
@@ -1034,7 +1066,7 @@ export default function NewOrderPage() {
         </div>
         <div className="fixed inset-x-3 bottom-[calc(4.5rem+env(safe-area-inset-bottom))] z-40 lg:hidden">
           <div className="mx-auto max-w-md rounded-2xl border border-orange-400/30 bg-[#0B0B0F]/95 p-2 shadow-2xl backdrop-blur-xl">
-            {currentStep === 1 ? <button type="button" disabled={!platform} onClick={() => scrollTo(serviceRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Services</button> : currentStep === 2 ? <button type="button" disabled={!selectedService} onClick={() => scrollTo(detailsRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Details</button> : currentStep === 3 ? <button type="button" disabled={!formIsValid} onClick={() => scrollTo(summaryRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Review Order</button> : hasEnoughWallet ? <button type="button" disabled={submitting || Boolean(success)} onClick={() => void placeOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Confirm &amp; Place Order</button> : <button type="button" disabled={walletLoading || submitting || Boolean(success)} onClick={() => void payAndPlaceOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Pay {formatCurrency(amountRequired, currency)} &amp; Continue</button>}
+            {currentStep === 1 ? <button type="button" disabled={!platform} onClick={() => scrollTo(serviceRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Services</button> : currentStep === 2 ? <button type="button" disabled={!selectedService} onClick={() => scrollTo(detailsRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Continue to Details</button> : currentStep === 3 ? <button type="button" disabled={!formIsValid} onClick={() => scrollTo(summaryRef)} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Review Order</button> : hasEnoughWallet ? <button type="button" disabled={submitting || Boolean(success)} onClick={() => void placeOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Confirm &amp; Place Order</button> : <button type="button" disabled={walletLoading || submitting || Boolean(success) || Boolean(pendingPaymentId)} onClick={() => void payAndPlaceOrder()} className="min-h-12 w-full rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black disabled:opacity-45">Pay {formatCurrency(amountRequired, currency)} &amp; Continue</button>}
           </div>
         </div>
       </div>
