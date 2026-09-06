@@ -49,6 +49,7 @@ const publicRoutes = [
   "/services/linkedin-usa-endorsements",
   "/services/linkedin-usa-group-members",
   "/services/linkedin-usa-followers",
+  "/services/linkedin-usa-custom-comments",
   "/buy-youtube-watch-hours-india",
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",

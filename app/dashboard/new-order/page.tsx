@@ -258,6 +258,7 @@ export default function NewOrderPage() {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
       setEndorsementSkillName(searchParams.get("endorsementSkillName") || "");
+      setCustomComments(searchParams.get("comments") || "");
     }
   }, [queryString, searchParams, liveServices]);
 
