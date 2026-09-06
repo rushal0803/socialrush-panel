@@ -11,9 +11,11 @@ import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
 import LinkedInUsaPostLikesLanding from "@/components/marketing/LinkedInUsaPostLikesLanding";
+import LinkedInUsaCustomCommentsLanding from "@/components/marketing/LinkedInUsaCustomCommentsLanding";
 import LinkedInUsaEndorsementsLanding from "@/components/marketing/LinkedInUsaEndorsementsLanding";
 import { linkedInUsaFollowersFaqs } from "@/lib/linkedin-usa-followers-content";
 import { linkedInUsaPostLikesFaqs } from "@/lib/linkedin-usa-post-likes-content";
+import { linkedInUsaCustomCommentsFaqs } from "@/lib/linkedin-usa-custom-comments-content";
 import { linkedInUsaEndorsementsFaqs } from "@/lib/linkedin-usa-endorsements-content";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import LinkedInUsaGroupMembersLanding from "@/components/marketing/LinkedInUsaGroupMembersLanding";
@@ -36,7 +38,6 @@ const catalogOnlyServiceSlugs = new Set([
   "tiktok-saves",
   "linkedin-usa-post-likes",
   "linkedin-usa-group-members",
-  "linkedin-usa-custom-comments",
   "linkedin-usa-reposts",
 ]);
 
@@ -151,6 +152,11 @@ export async function generateMetadata({
     const title = "Buy LinkedIn USA Post Likes | SocialRUSH";
     const description = "Buy LinkedIn USA Post Likes for an eligible public post. Review live pricing, quantity limits, delivery details and secure ordering before checkout.";
     return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-post-likes" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-post-likes" }, twitter: { card: "summary_large_image", title, description } };
+  }
+  if (params.slug === "linkedin-usa-custom-comments") {
+    const title = "Buy LinkedIn USA Custom Comments | SocialRUSH";
+    const description = "Buy LinkedIn USA Custom Comments for an eligible public post. Add one customer-provided comment per line, then review live pricing, limits, delivery details and secure ordering.";
+    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-custom-comments" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-custom-comments" }, twitter: { card: "summary_large_image", title, description } };
   }
   if (params.slug === "linkedin-usa-endorsements") {
     const title = "Buy LinkedIn USA Endorsements | SocialRUSH";
@@ -314,6 +320,19 @@ export default async function ServiceSeoPage({
     const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
     const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
     return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaPostLikesLanding service={service} /></>;
+  }
+  if (params.slug === "linkedin-usa-custom-comments") {
+    const catalogService = activeSmmServices.find((service) => service.code === params.slug);
+    if (!catalogService) notFound();
+    const live = await getLiveServiceFacts(catalogService.platform, catalogService.name, catalogService.code);
+    if (!live?.available) notFound();
+    const service = { ...catalogService, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction };
+    const faqs = linkedInUsaCustomCommentsFaqs(service);
+    const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
+    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
+    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: service.name, item: `${siteUrl}/services/linkedin-usa-custom-comments` }] };
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaCustomCommentsLanding service={service} /></>;
   }
   if (params.slug === "linkedin-usa-followers") {
     const faqSchema = {
