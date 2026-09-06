@@ -1,4 +1,4 @@
-import { SERVICE_PRICES, type ServiceCode } from "./service-pricing";
+import { SERVICE_PRICES, type ServiceCode } from "./service-pricing.ts";
 
 export type SmmPlatformId = "instagram" | "youtube" | "facebook" | "linkedin" | "telegram" | "tiktok" | "x";
 
