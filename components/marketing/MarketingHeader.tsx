@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Menu, X } from "lucide-react";
+import { ChevronDown, Menu, X } from "lucide-react";
 import { usePathname, useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 import PortalCTA from "./PortalCTA";
@@ -14,13 +14,22 @@ import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 
 const nav = [
   ["Home", "/"],
-  ["Services", "/services"],
   ["Packages", "/packages"],
   ["Pricing", "/pricing"],
   ["Blog", "/blog"],
   ["Case Studies", "/case-studies"],
   ["About Us", "/about"],
   ["Contact", "/contact"],
+] as const;
+
+const platforms = [
+  ["Instagram", "/services?platform=instagram"],
+  ["YouTube", "/services?platform=youtube"],
+  ["Facebook", "/services?platform=facebook"],
+  ["LinkedIn", "/services?platform=linkedin"],
+  ["TikTok", "/services?platform=tiktok"],
+  ["Telegram", "/services?platform=telegram"],
+  ["X / Twitter", "/services?platform=x"],
 ] as const;
 
 export default function MarketingHeader({ tone = "default" }: { tone?: "default" | "light3d" }) {
@@ -53,15 +62,25 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
       <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-1.5 px-3 min-[390px]:gap-2 min-[390px]:px-4 sm:gap-4 sm:px-6 lg:px-8">
         <Logo light priority className="min-w-0 shrink [&_img]:max-w-[150px] min-[390px]:[&_img]:max-w-[174px] sm:[&_img]:max-w-[218px]" />
 
-        <nav className="hidden items-center gap-1 text-sm font-semibold text-[#A8AFBD] 2xl:flex" aria-label="Primary navigation">
+        <nav className="hidden items-center gap-0.5 text-[13px] font-semibold text-[#A8AFBD] xl:flex" aria-label="Primary navigation">
+          <details className="group relative">
+            <summary className={`flex min-h-10 cursor-pointer list-none items-center gap-1 rounded-xl px-2.5 py-2 transition hover:bg-white/[0.05] hover:text-white [&::-webkit-details-marker]:hidden ${pathname.startsWith("/services") ? "bg-white/[0.05] text-white" : ""}`}>
+              Services <ChevronDown className="h-3.5 w-3.5 transition group-open:rotate-180" aria-hidden="true" />
+            </summary>
+            <div className="absolute left-0 top-[calc(100%+.55rem)] z-20 w-64 rounded-2xl border border-white/10 bg-[#11131a] p-2 shadow-[0_24px_55px_rgba(0,0,0,.42)]">
+              <Link href="/services" className="flex min-h-10 items-center rounded-xl px-3 text-sm font-black text-white transition hover:bg-orange-500/10 hover:text-orange-200">Browse all services</Link>
+              <div className="my-1 border-t border-white/[.08]" />
+              <div className="grid grid-cols-2 gap-1">{platforms.map(([label, href]) => <Link key={href} href={href} className="flex min-h-10 items-center rounded-xl px-3 text-xs font-semibold text-[#C9D0DB] transition hover:bg-white/[.06] hover:text-white">{label}</Link>)}</div>
+            </div>
+          </details>
           {nav.map(([label, href]) => {
-            const active = !href.includes("#") && pathname.startsWith(href);
+            const active = !href.includes("#") && (href === "/" ? pathname === "/" : pathname.startsWith(href));
             return (
               <Link
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`rounded-xl px-3 py-2 transition hover:bg-white/[0.05] hover:text-white ${active ? "bg-white/[0.05] text-white" : ""}`}
+                className={`rounded-xl px-2.5 py-2 transition hover:bg-white/[0.05] hover:text-white ${active ? "bg-white/[0.05] text-white" : ""}`}
               >
                 {label}
               </Link>
@@ -69,7 +88,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           })}
         </nav>
 
-        <div className="hidden items-center gap-2 2xl:flex">
+        <div className="hidden items-center gap-1.5 xl:flex">
           <CurrencyDropdown compact tone={tone} />
           {isLoggedIn ? (
             <>
@@ -87,7 +106,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </PortalCTA>
         </div>
 
-        <div className="flex items-center gap-2 2xl:hidden">
+        <div className="flex items-center gap-2 xl:hidden">
           <PortalCTA className="hidden min-h-10 items-center justify-center whitespace-nowrap rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-2.5 py-2 text-xs font-black text-white min-[360px]:inline-flex min-[390px]:px-3 sm:px-4 sm:text-sm">
             Start Order
           </PortalCTA>
@@ -124,7 +143,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           animate={{ opacity: 1, x: 0 }}
           exit={{ opacity: 0, x: 16 }}
           transition={{ duration: 0.2, ease: "easeOut" }}
-          className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#0C0E14] 2xl:hidden"
+          className="relative flex h-full min-h-0 w-full flex-col overflow-hidden bg-[#0C0E14] xl:hidden"
         >
          
           <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(.75rem+env(safe-area-inset-top))]">
@@ -135,12 +154,19 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </div>
          <div className="min-h-0 flex-1 touch-pan-y overflow-y-auto overscroll-contain px-4 py-3 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1.25rem+env(safe-area-inset-bottom))] [-webkit-overflow-scrolling:touch]">
           <nav className="grid gap-1" aria-label="Mobile navigation">
+            <Link href="/services" onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl border border-transparent px-3 py-2.5 text-sm font-semibold text-[#D7DBE3] transition hover:border-orange-400/25 hover:bg-orange-400/[0.07] hover:text-white">
+              Services
+            </Link>
             {nav.map(([label, href]) => (
               <Link key={href} href={href} onClick={() => setOpen(false)} className="flex min-h-11 items-center rounded-xl border border-transparent px-3 py-2.5 text-sm font-semibold text-[#D7DBE3] transition hover:border-orange-400/25 hover:bg-orange-400/[0.07] hover:text-white">
                 {label}
               </Link>
             ))}
           </nav>
+          <section className="mt-3 border-t border-white/[0.08] pt-3" aria-labelledby="mobile-platforms">
+            <h2 id="mobile-platforms" className="px-3 text-[10px] font-black uppercase tracking-[.16em] text-orange-200">Explore platforms</h2>
+            <div className="mt-2 grid grid-cols-2 gap-1">{platforms.map(([label, href]) => <Link key={href} href={href} onClick={() => setOpen(false)} className="flex min-h-10 items-center rounded-xl px-3 text-xs font-semibold text-[#C9D0DB] transition hover:bg-white/[.06] hover:text-white">{label}</Link>)}</div>
+          </section>
           <div className="mt-3 grid gap-2 border-t border-white/[0.08] pt-3">
             <div className="w-fit"><CurrencyDropdown tone={tone} /></div>
             <AndroidAppDownload compact />

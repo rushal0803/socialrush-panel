@@ -71,34 +71,6 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
   </div>
 
   <a
-    href="https://buildlist.io"
-    target="_blank"
-    rel="noopener noreferrer"
-    className="inline-flex w-fit shrink-0 items-center rounded outline-none focus-visible:ring-2 focus-visible:ring-orange-400"
-  >
-    <img
-      src="https://buildlist.io/badge.svg"
-      alt="Featured on Buildlist"
-      style={{ height: 40, width: "auto", maxWidth: "100%" }}
-    />
-  </a>
-
-  <a
-    href="https://marketingdb.live"
-    target="_blank"
-    rel="noopener noreferrer nofollow sponsored"
-    className="inline-flex w-fit shrink-0 max-w-full items-center"
-  >
-    <img
-      src="https://marketingdb.live/badge.svg"
-      alt="Listed on MarketingDB"
-      width="190"
-      height="44"
-      className="h-auto max-w-full"
-    />
-  </a>
-
-  <a
     href="https://submitforbacklinks.com/badge/hjDF9kVOdBe4bbi5kUeWHxv9?ref=badge"
     target="_blank"
     rel="noopener"
