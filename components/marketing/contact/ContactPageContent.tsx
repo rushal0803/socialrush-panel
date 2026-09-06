@@ -3,11 +3,12 @@
 import Link from "next/link";
 import { AnimatePresence, motion } from "framer-motion";
 import { type FormEvent, useId, useState } from "react";
-import { ArrowRight, Check, ChevronDown, CircleHelp, CreditCard, ExternalLink, Mail, MessageCircle, Package, ShieldCheck, Sparkles, UserRound } from "lucide-react";
+import { track } from "@/lib/analytics/events";
+import { ArrowRight, Check, ChevronDown, CircleHelp, CreditCard, ExternalLink, Mail, MessageCircle, Package, ShieldCheck, Sparkles, UserRound, UsersRound } from "lucide-react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { agencyServices } from "@/lib/marketing/content";
 
-type Category = "order" | "payment" | "guidance" | "account" | "general";
+type Category = "order" | "payment" | "guidance" | "account" | "general" | "bulk";
 type FormStatus = "idle" | "loading" | "success" | "error";
 
 const whatsappUrl = "https://wa.me/918860330771";
@@ -19,6 +20,7 @@ const paths: { key: Category; title: string; text: string; icon: typeof Package;
   { key: "guidance", title: "Service guidance", text: "Help choosing a service before you place an order.", icon: Sparkles },
   { key: "account", title: "Account help", text: "Assistance with your SocialRUSH account.", icon: UserRound },
   { key: "general", title: "General enquiry", text: "Other questions for the SocialRUSH team.", icon: CircleHelp },
+  { key: "bulk", title: "Bulk / agency enquiry", text: "Discuss a larger or recurring service requirement with support.", icon: UsersRound },
 ];
 
 const faqs = [
@@ -42,6 +44,7 @@ export default function ContactPageContent() {
 
   function choosePath(next: Category) {
     setCategory(next);
+    if (next === "bulk") track("bulk_inquiry_clicked", { surface: "contact" });
     document.getElementById("support-form")?.scrollIntoView({ behavior: "smooth", block: "center" });
   }
 

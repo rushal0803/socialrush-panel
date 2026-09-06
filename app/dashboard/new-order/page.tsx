@@ -42,6 +42,7 @@ import IconBadge from "@/components/IconBadge";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
+import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
 import { isSocialRushAndroidApp } from "@/lib/is-socialrush-android-app";
 import { findSafeAlternative } from "@/lib/service-alternatives";
 
@@ -367,6 +368,21 @@ export default function NewOrderPage() {
     }, 850);
     return () => window.clearTimeout(timer);
   }, [linkError, quantity, quantityError, quantityInput, selectedService, success, targetLink]);
+
+  // Anonymous convenience state deliberately excludes the destination link,
+  // price, payment state and all account data. The canonical order flow still
+  // validates every fact when this configuration is reopened.
+  useEffect(() => {
+    if (!selectedService || !quantityInput || quantityError || success) return;
+    localStorage.setItem(CONTINUE_ORDER_KEY, serializeContinueOrder({ serviceCode: selectedService.code, quantity, updatedAt: Date.now() }));
+  }, [quantity, quantityError, quantityInput, selectedService, success]);
+
+  useEffect(() => {
+    if (!selectedService) return;
+    const catalogCodes = new Set(mergeCustomerOrderServices(liveServices).map((service) => service.code));
+    localStorage.setItem(RECENT_SERVICES_KEY, JSON.stringify(addRecentService(parseRecentServices(localStorage.getItem(RECENT_SERVICES_KEY), catalogCodes), selectedService.code)));
+    track("service_viewed", { step: "order_builder", service_code: selectedService.code, platform: selectedService.platform });
+  }, [liveServices, selectedService]);
 
   const clearDraft = () => void fetch("/api/order-draft", { method: "DELETE" }).catch(() => undefined);
 
