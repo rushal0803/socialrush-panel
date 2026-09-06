@@ -85,4 +85,25 @@ export const publishedCountryServicePages = [
 export const countryServicePaths = publishedCountryServicePages.filter(canPublishCountryServicePage).map((config) => `/${config.market.slug}/${config.serviceSlug}`);
 export function getPublishedCountryServicePage(marketSlug: string, serviceSlug: string) { return publishedCountryServicePages.find((config) => config.market.slug === marketSlug && config.serviceSlug === serviceSlug && canPublishCountryServicePage(config)); }
 export function countryServiceAlternates(config: PublishedCountryServicePage) { return Object.fromEntries(publishedCountryServicePages.filter((candidate) => candidate.catalogServiceCode === config.catalogServiceCode && canPublishCountryServicePage(candidate)).map((candidate) => [candidate.market.hreflang, absoluteSeoUrl(`/${candidate.market.slug}/${candidate.serviceSlug}`)])); }
-export function createCountryServiceMetadata(config: PublishedCountryServicePage): Metadata { const path = `/${config.market.slug}/${config.serviceSlug}`; return { title: config.title, description: config.description, alternates: { canonical: absoluteSeoUrl(path), languages: countryServiceAlternates(config) }, robots: { index: true, follow: true } }; }
+export function createCountryServiceMetadata(config: PublishedCountryServicePage): Metadata {
+  const path = `/${config.market.slug}/${config.serviceSlug}`;
+  const url = absoluteSeoUrl(path);
+  const imageUrl = absoluteSeoUrl("/og-image.png");
+
+  return {
+    title: { absolute: config.title },
+    description: config.description,
+    alternates: { canonical: url, languages: countryServiceAlternates(config) },
+    openGraph: {
+      type: "website",
+      locale: config.market.hreflang.replace("-", "_"),
+      siteName: "SocialRUSH",
+      title: config.title,
+      description: config.description,
+      url,
+      images: [{ url: imageUrl, width: 1200, height: 630, alt: `SocialRUSH ${config.h1}` }],
+    },
+    twitter: { card: "summary_large_image", title: config.title, description: config.description, images: [imageUrl] },
+    robots: { index: true, follow: true },
+  };
+}
