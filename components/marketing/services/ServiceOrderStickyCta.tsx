@@ -1,5 +1,9 @@
+"use client";
+
 import Link from "next/link";
 import { ArrowRight, LockKeyhole } from "lucide-react";
+import { formatCurrency } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
 type ServiceOrderStickyCtaProps = {
   href: string;
@@ -19,10 +23,11 @@ export default function ServiceOrderStickyCta({
   startingPrice,
   available = true,
 }: ServiceOrderStickyCtaProps) {
+  const { currency, rates } = usePreferredCurrency("INR");
   if (!available) return null;
 
   const price = typeof startingPrice === "number" && Number.isFinite(startingPrice)
-    ? `From ₹${startingPrice.toLocaleString("en-IN")}`
+    ? `From ${formatCurrency(startingPrice, currency, rates)}`
     : "View live price";
 
   return (
@@ -37,6 +42,7 @@ export default function ServiceOrderStickyCta({
             <LockKeyhole className="h-3 w-3 shrink-0 text-emerald-300" />
             {price}
           </span>
+          {currency !== "INR" && typeof startingPrice === "number" ? <span className="mt-0.5 block text-[9px] text-slate-300">Checkout charged in INR</span> : null}
         </span>
         <span className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 text-xs font-black">
           Start order <ArrowRight className="h-3.5 w-3.5" />
