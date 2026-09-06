@@ -10,19 +10,7 @@ import { logout } from "@/app/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-
-export const dashboardLinks = [
-  { label: "Overview", href: "/dashboard", icon: "grid" },
-  { label: "New Campaign", href: "/dashboard/campaigns", icon: "campaign" },
-  { label: "Quick Order", href: "/dashboard/new-order", icon: "plus" },
-  { label: "Orders", href: "/dashboard/orders", icon: "orders" },
-  { label: "Clients", href: "/dashboard/clients", icon: "clients" },
-  { label: "Saved Profiles", href: "/dashboard/saved-profiles", icon: "bookmark" },
-  { label: "Favourite Services", href: "/dashboard/new-order?tab=favourites", icon: "heart" },
-  { label: "Wallet", href: "/dashboard/wallet", icon: "wallet" },
-  { label: "Support", href: "/dashboard/support", icon: "support" },
-  { label: "Account", href: "/dashboard/account", icon: "settings" },
-] as const;
+import { groupDashboardLinks } from "@/lib/dashboard/navigation";
 
 function NavIcon({ name }: { name: string }) {
   const paths: Record<string, ReactNode> = {
@@ -55,6 +43,8 @@ function NavIcon({ name }: { name: string }) {
         <path d="M9 8h6M9 12h6M9 16h4" />
       </>
     ),
+    receipt: <><path d="M6 3h12v18l-3-2-3 2-3-2-3 2V3Z" /><path d="M9 8h6M9 12h6" /></>,
+    bell: <><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4" /></>,
     packages: (
       <>
         <rect x="4" y="4" width="16" height="6" rx="2" />
@@ -96,34 +86,20 @@ function NavIcon({ name }: { name: string }) {
 
 export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const groups = groupDashboardLinks();
 
   return (
-    <nav className={mobile ? "grid gap-2" : "min-h-0 flex-1 space-y-1 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
-      {dashboardLinks.map((item) => {
-        const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
-        return (
-          <Link
-            key={item.href}
-            href={item.href}
-            onClick={onNavigate}
-            className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${
-              active ? "text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"
-            }`}
-          >
-            {active && (
-              <motion.span
-                layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"}
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">
-              <NavIcon name={item.icon} />
-            </span>
-            <span className="relative z-10">{item.label}</span>
-          </Link>
-        );
-      })}
+    <nav className={mobile ? "grid gap-4" : "min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
+      {Object.entries(groups).map(([group, items]) => <section key={group} aria-label={group}>
+        <p className="mb-1 px-3 text-[9px] font-black uppercase tracking-[.16em] text-[#6b7280]">{group}</p>
+        <div className="space-y-1">{items.map((item) => {
+          const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
+          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${active ? "text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"}`}>
+            {active && <motion.span layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"} className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]" transition={{ type: "spring", stiffness: 380, damping: 30 }} />}
+            <span className="relative z-10"><NavIcon name={item.icon} /></span><span className="relative z-10">{item.label}</span>
+          </Link>;
+        })}</div>
+      </section>)}
     </nav>
   );
 }
@@ -176,7 +152,7 @@ export default function Sidebar({
         <p className="mt-1 text-xs font-semibold text-[#a8afbd]">Growth control center</p>
       </div>
 
-      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Main menu</p>
+      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Customer navigation</p>
       <NavLinks />
 
       <div className="mt-4 rounded-2xl border border-white/[.09] bg-white/[.035] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.22)]">
