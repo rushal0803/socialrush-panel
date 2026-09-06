@@ -36,7 +36,7 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
         <section className="grid gap-5 rounded-2xl border border-white/[.08] bg-[#101219] p-5 lg:grid-cols-[1.35fr_.65fr] lg:items-start lg:p-6" aria-label="About SocialRUSH">
           <div className="min-w-0">
             <Logo light className="[&>img]:h-11 [&>img]:max-w-[190px] sm:[&>img]:h-12" />
-            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#A8AFBD]">SocialRUSH helps creators, brands and businesses explore social media growth services, review current pricing, place public-link orders, track orders in a dashboard, and reach customer support.</p>
+            <p className="mt-4 max-w-2xl text-sm leading-6 text-[#A8AFBD]">SocialRUSH gives creators, brands and businesses one clear place to explore services, review current pricing, place public-link orders, track campaigns, and reach customer support.</p>
             <div className="mt-5 flex flex-col items-start gap-2 text-sm sm:flex-row sm:flex-wrap sm:gap-x-5">
               <a href="mailto:support@getsocialrush.com" className="min-h-10 break-all py-2 font-semibold text-orange-300 outline-none hover:text-orange-200 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-orange-400">support@getsocialrush.com</a>
               <a href="https://wa.me/918860330771" target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center py-2 font-semibold text-emerald-300 outline-none hover:text-emerald-200 focus-visible:rounded focus-visible:ring-2 focus-visible:ring-emerald-400">WhatsApp Support</a>

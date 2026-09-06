@@ -60,11 +60,11 @@ export default function PremiumHomepage({ searchParams }: { searchParams?: { pla
   const choosePlatform = (next: SmmPlatformId) => { setPlatform(next); setServiceCode(""); setQuantity(1000); };
   const goOrder = () => router.push(destination);
 
-  return <div className="premium-homepage overflow-hidden bg-[#07080D] text-white">
+  return <div className="premium-homepage sr-page overflow-hidden bg-[#07080D] text-white">
     <section className="relative px-4 pb-10 pt-10 sm:px-6 lg:px-8 lg:pb-16 lg:pt-16">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(ellipse_at_25%_15%,rgba(255,106,0,.18),transparent_53%),radial-gradient(ellipse_at_78%_30%,rgba(255,157,43,.11),transparent_45%)]" />
       <div className="premium-grid pointer-events-none absolute inset-x-0 top-0 h-[38rem] opacity-60" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.92fr_1.08fr] lg:gap-8">
+      <div className="relative mx-auto grid max-w-7xl items-center gap-9 lg:grid-cols-[.92fr_1.08fr] lg:gap-8">
         <div className="max-w-2xl">
           <p className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-400/[.09] px-3 py-2 text-[10px] font-black uppercase tracking-[.17em] text-orange-200"><Sparkles className="h-3.5 w-3.5" /> Social media growth platform</p>
           <h1 className="mt-6 max-w-xl text-[clamp(2.7rem,4.8vw,4.35rem)] font-black leading-[.96] tracking-[-.06em]">Your social growth, <span className="text-orange-400">engineered.</span></h1>

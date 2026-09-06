@@ -748,7 +748,7 @@ export default function PackagesPageContent({
   return (
     <BlogShell>
       <div className="packages-page premium-packages relative scroll-pt-24 overflow-x-clip pb-36 lg:pb-24">
-        <div className="pointer-events-none absolute inset-0">
+        <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-16 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-8%] top-44 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
           <div className="absolute left-[34%] top-[55%] h-64 w-64 rounded-full bg-amber-200/35 blur-3xl" />
