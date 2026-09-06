@@ -88,11 +88,11 @@ export default function OrderSummaryPage() {
   };
 
   return (
-    <main className="min-h-screen bg-[#0B0B0F] text-white">
+    <main className="sr-page min-h-screen bg-[#0B0B0F] text-white">
       <MarketingHeader />
       <section className="px-5 py-10 pb-36 sm:px-6 lg:px-8 lg:py-16">
         <div className="mx-auto max-w-6xl">
-          <div className="rounded-[28px] border border-slate-800 bg-slate-950/90 p-5 shadow-2xl shadow-amber-500/10 sm:rounded-[32px] sm:p-10">
+          <div className="sr-surface rounded-[28px] border-slate-800 p-5 sm:rounded-[32px] sm:p-10">
             <div className="grid gap-8 lg:grid-cols-[1.3fr_0.9fr] lg:items-start">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-[0.24em] text-amber-300">Order summary</p>
@@ -131,18 +131,21 @@ export default function OrderSummaryPage() {
             <div className="mt-10 grid gap-6 lg:grid-cols-[1.05fr_0.95fr]">
               <div className="rounded-3xl border border-slate-800 bg-slate-950/90 p-5 sm:p-6">
                 <div className="grid gap-4">
-                  <label className="text-sm font-semibold text-white">Destination profile or content link</label>
+                  <label htmlFor="order-summary-destination" className="text-sm font-semibold text-white">Destination profile or content link</label>
                   <input
                     type="url"
+                    id="order-summary-destination"
                     value={link}
                     onChange={(event) => {
                       setLink(event.target.value);
                       setError("");
                     }}
                     placeholder="https://instagram.com/yourprofile"
-                    className="w-full rounded-2xl border border-slate-800 bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                    aria-invalid={Boolean(error)}
+                    aria-describedby="order-summary-link-help"
+                    className={`w-full rounded-2xl border bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:ring-2 focus:ring-amber-400/20 ${error ? "border-red-400/70" : "border-slate-800 focus:border-amber-400"}`}
                   />
-                  <p className="text-sm text-slate-400">
+                  <p id="order-summary-link-help" className="text-sm text-slate-400">
                     Use the exact public destination required by the service: profile for followers, content link for likes and views.
                   </p>
 
@@ -191,7 +194,7 @@ export default function OrderSummaryPage() {
                   </div>
                 </div>
 
-                {error ? <p className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100">{error}</p> : null}
+                {error ? <p role="alert" className="mt-4 rounded-2xl border border-red-500/20 bg-red-500/10 p-4 text-sm text-red-100">{error}</p> : null}
 
                 <button
                   type="button"
