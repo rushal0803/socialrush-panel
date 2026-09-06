@@ -9,7 +9,8 @@
     "lint": "next lint",
     "test:smoke": "playwright test",
     "test:unit": "node --experimental-strip-types --test tests/unit/prospecting.test.ts",
-    "test:currency": "node --experimental-strip-types --test tests/unit/currency-localization.test.ts"
+    "test:currency": "node --experimental-strip-types --test tests/unit/currency-localization.test.ts",
+    "test:international-seo": "node --experimental-strip-types --test tests/unit/international-seo.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",

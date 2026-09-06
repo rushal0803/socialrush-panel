@@ -3,7 +3,7 @@ export const clientAnalyticsEvents = [
   "sign_up_started", "service_viewed", "service_selected", "package_viewed", "package_selected",
   "order_started", "checkout_started", "payment_started",
   "creator_tool_used", "creator_tool_result_generated", "blog_article_viewed", "blog_service_cta_clicked", "blog_tool_cta_clicked", "creator_tool_service_cta_clicked", "organic_landing_view",
-  "cross_sell_view", "cross_sell_click", "bundle_view", "bundle_click", "repeat_order_click", "order_success_recommendation_click",
+  "cross_sell_view", "cross_sell_click", "bundle_view", "bundle_click", "repeat_order_click", "order_success_recommendation_click", "market_hub_viewed",
 ] as const;
 
 export const trustedAnalyticsEvents = [

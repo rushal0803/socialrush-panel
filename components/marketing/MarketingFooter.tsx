@@ -12,6 +12,7 @@ const groups: readonly FooterGroup[] = [
   { title: "Company", links: [["About Us", "/about"], ["Pricing", "/pricing"], ["Packages", "/packages"], ["Case Studies", "/case-studies"], ["Blog", "/blog"], ["Contact", "/contact"]] },
   { title: "Support", links: [["FAQ", "/faq"], ["Help / Support", "/support"], ["How It Works", "/#how-it-works"], ["Refund Policy", "/refund-policy"], ["Privacy Policy", "/privacy-policy"], ["Terms of Service", "/terms-and-conditions"]] },
   { title: "Resources", links: [["Creator Tools", "/tools"], ["Growth Guides", "/blog"], ["Customer Safety", "/trust"], ["Compare Services", "/compare"], ["Customer Reviews", "/reviews"]] },
+  { title: "Markets", links: [["United States", "/us"], ["United Kingdom", "/uk"], ["Canada", "/ca"], ["Australia", "/au"], ["United Arab Emirates", "/ae"], ["Singapore", "/sg"]] },
 ] as const;
 
 const payments = ["UPI", "Secure online payments", "Net Banking", "Wallet Balance"] as const;
@@ -47,7 +48,7 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
           <div className="space-y-1 lg:hidden">
             {groups.map((group) => { const open = openGroup === group.title; const id = groupId(group.title); return <section key={group.title} className="border-b border-white/10"><h2><button type="button" aria-expanded={open} aria-controls={id} onClick={() => setOpenGroup(open ? "" : group.title)} className="flex min-h-14 w-full items-center justify-between gap-4 py-3 text-left text-xs font-black uppercase tracking-[.14em] text-white outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-400"><span>{group.title}</span><span aria-hidden="true" className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-orange-400/20 bg-orange-500/10 text-lg text-orange-300">{open ? "−" : "+"}</span></button></h2><div id={id} className={`grid transition-[grid-template-rows] duration-200 ease-out ${open ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}`}><div className="overflow-hidden"><div className="grid grid-cols-1 gap-x-4 pb-4 min-[390px]:grid-cols-2"><FooterLinks group={group} /></div></div></div></section>; })}
           </div>
-          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-4">
+          <div className="hidden gap-x-7 gap-y-10 lg:grid lg:grid-cols-5">
             {groups.map((group) => <section key={group.title} className="min-w-0"><h2 className="text-xs font-black uppercase tracking-[.14em] text-white">{group.title}</h2><FooterLinks group={group} /></section>)}
           </div>
         </nav>

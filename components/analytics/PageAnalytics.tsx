@@ -10,6 +10,8 @@ export default function PageAnalytics() {
   useEffect(() => {
     let event: ClientAnalyticsEvent | null = null;
     if (path.startsWith("/blog/")) event = "blog_article_viewed";
+    const market = path.match(/^\/(us|uk|ca|au|ae|sg)$/)?.[1];
+    if (market) track("market_hub_viewed", { market, country_page_type: "hub" });
     if (event) track(event);
     // Record the landing type only. Referrer URLs and search terms are never sent.
     const referrerHost = (() => {
