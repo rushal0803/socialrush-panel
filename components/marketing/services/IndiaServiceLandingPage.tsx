@@ -31,6 +31,7 @@ import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLa
 import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
 import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
+import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -938,6 +939,12 @@ export default async function IndiaServiceLandingPage({
           </div>
         </div>
       </section>
+      <ServiceOrderStickyCta
+        href={orderHref}
+        serviceName={page.serviceName}
+        startingPrice={currentPrice}
+        available={available}
+      />
     </PublicShell>
   );
 }

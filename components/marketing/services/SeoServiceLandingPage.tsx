@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import {
   getSeoServiceFaqs,
   getSeoServicePage,
@@ -504,6 +505,11 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
           </div>
         </div>
       </section>
+      <ServiceOrderStickyCta
+        href={packagesHref}
+        serviceName={page.displayName}
+        startingPrice={page.confirmedPrice}
+      />
     </PublicShell>
   );
 }
