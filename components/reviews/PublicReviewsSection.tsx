@@ -11,9 +11,9 @@ export default async function PublicReviewsSection({ limit = 3 }: { limit?: numb
       <div className="mx-auto max-w-7xl">
         <div className="flex flex-wrap items-end justify-between gap-4">
           <div className="max-w-xl">
-            <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Verified customer feedback</p>
+            <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Permissioned customer feedback</p>
             <h2 id="reviews-heading" className="mt-3 text-3xl font-black tracking-[-.04em] text-white sm:text-4xl">Reviews from completed orders</h2>
-            <p className="mt-3 text-sm leading-6 text-[#A8AFBD]">Published only with customer permission and after moderation.</p>
+            <p className="mt-3 text-sm leading-6 text-[#A8AFBD]">Submitted for completed orders, then published only with customer permission and after moderation.</p>
           </div>
           <Link href="/reviews" className="inline-flex min-h-11 items-center gap-2 text-sm font-black text-orange-200 transition hover:text-orange-100 focus-visible:rounded-lg">
             View all reviews <ArrowRight className="h-4 w-4" aria-hidden="true" />
@@ -29,7 +29,7 @@ export default async function PublicReviewsSection({ limit = 3 }: { limit?: numb
                 <h3 className="mt-4 text-base font-black text-white">{review.title}</h3>
                 <p className="mt-3 text-sm leading-6 text-slate-300">{review.message}</p>
                 <div className="mt-auto border-t border-white/[.08] pt-4">
-                  <p className="text-xs font-bold text-orange-200">{review.display_name} <span aria-hidden="true">&middot;</span> Verified purchase</p>
+                  <p className="text-xs font-bold text-orange-200">{review.display_name} <span aria-hidden="true">&middot;</span> Completed-order review</p>
                   {(review.platform || review.service_name) && <p className="mt-1 text-xs text-slate-500">{[review.platform, review.service_name].filter(Boolean).join(" \u00b7 ")}</p>}
                 </div>
               </article>
