@@ -42,13 +42,13 @@ export default function PricingGrid({ serviceCatalog = activeSmmServices }: { se
     calculatorRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  return <div className="mt-8 space-y-12">
+  return <div className="mt-8 space-y-10 sm:space-y-12">
     <section aria-label="Platform pricing catalog" className="rounded-[30px] border border-white/10 bg-[#101116] p-4 shadow-[0_32px_90px_-50px_rgba(255,122,0,.75)] sm:p-6">
       <div className="flex flex-wrap items-end justify-between gap-4 border-b border-white/10 pb-5">
         <div><p className="text-[10px] font-black uppercase tracking-[.2em] text-orange-300">Live service catalog</p><h2 className="mt-2 text-2xl font-black tracking-tight text-white">{platformMeta[platform].label} pricing</h2><p className="mt-1 text-sm text-slate-400">Compare live rates, delivery and refill/support details for available services.</p></div>
         <span className="rounded-full border border-emerald-400/20 bg-emerald-400/10 px-3 py-2 text-xs font-bold text-emerald-200">{platformServices.length} {platformServices.length === 1 ? "service" : "services"} available</span>
       </div>
-      <div className="mt-5 grid grid-cols-2 gap-2 sm:grid-cols-4 lg:grid-cols-7">
+      <div className="mt-5 grid grid-cols-2 gap-2 min-[375px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7">
         {platforms.map((id) => { const active = id === platform; const count = serviceCatalog.filter((s) => s.platform === id).length; return <button key={id} type="button" onClick={() => choosePlatform(id)} aria-pressed={active} className={`min-h-[84px] rounded-2xl border p-3 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active ? "border-orange-400/70 bg-orange-500/15 text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)]" : "border-white/10 bg-white/[.025] text-slate-300 hover:border-orange-400/40"}`}><PlatformIcon platform={platformMeta[id].label} className="h-5 w-5 text-orange-200" /><span className="mt-3 block text-xs font-black">{platformMeta[id].label.replace("Twitter / ", "")}</span><span className="mt-1 block text-[10px] text-slate-500">{count} live</span></button>; })}
       </div>
       <div className="mt-5 flex flex-wrap gap-2" aria-label="Service type filters">{types.map((item) => <button key={item} type="button" onClick={() => setType(item)} aria-pressed={type === item} className={`min-h-10 rounded-full border px-4 text-xs font-bold transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 ${type === item ? "border-orange-400/60 bg-orange-500/15 text-orange-100" : "border-white/10 bg-white/[.03] text-slate-300 hover:border-white/25"}`}>{item}</button>)}</div>

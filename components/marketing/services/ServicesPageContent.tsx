@@ -91,7 +91,7 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
   const visibleServices = showAll || query || type !== "all" ? services : services.slice(0, 6);
   const platformServiceCounts = useMemo(() => Object.fromEntries(platforms.map((id) => [id, catalogServices.filter((item) => item.platform === id).length])) as Record<SmmPlatformId, number>, [catalogServices]);
 
-  return <BlogShell><main className="relative overflow-x-clip pb-16 text-white sm:pb-20">
+  return <BlogShell><main className="sr-page relative overflow-x-clip pb-16 text-white sm:pb-20">
     <div className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(circle_at_12%_8%,rgba(255,122,0,.15),transparent_27rem),radial-gradient(circle_at_90%_20%,rgba(255,190,80,.08),transparent_24rem)]" />
 
     <section className="relative px-4 pb-6 pt-5 sm:px-6 sm:pb-8 sm:pt-8 lg:px-8">

@@ -26,6 +26,7 @@
   --sr-focus-ring: 0 0 0 4px rgba(255, 122, 0, 0.18);
   --sr-shadow-card: 0 18px 46px rgba(0, 0, 0, 0.24);
   --sr-shadow-button: 0 12px 26px rgba(255, 118, 0, 0.18);
+  --sr-content-width: 80rem;
   --brand-orange: var(--sr-orange);
   --brand-orange-bright: var(--sr-orange-bright);
   --brand-gold: var(--sr-gold);
@@ -56,6 +57,39 @@ body {
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+/* Shared storefront foundations.  These deliberately sit beneath route-level
+   styling so established SEO pages can retain their content and composition
+   while still reading as one product. */
+.sr-page {
+  background:
+    radial-gradient(52rem 26rem at 4% -10%, rgba(255, 118, 0, 0.09), transparent 64%),
+    radial-gradient(44rem 28rem at 100% 12%, rgba(255, 154, 46, 0.055), transparent 68%),
+    var(--sr-bg);
+}
+
+.sr-container {
+  width: min(100% - 2rem, var(--sr-content-width));
+  margin-inline: auto;
+}
+
+.sr-section {
+  padding-block: clamp(3.5rem, 7vw, 6.5rem);
+}
+
+.sr-eyebrow {
+  color: var(--sr-orange-bright);
+  font-size: 0.6875rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+}
+
+.sr-surface {
+  border: 1px solid var(--sr-border);
+  background: linear-gradient(145deg, rgba(21, 24, 33, 0.96), rgba(12, 14, 20, 0.96));
+  box-shadow: var(--sr-shadow-card);
 }
 
 ::selection {
@@ -168,6 +202,11 @@ p {
     box-shadow: var(--sr-shadow-button);
   }
 
+  .btn-primary:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 16px 34px rgba(255, 118, 0, 0.28);
+  }
+
   .btn-secondary {
     @apply inline-flex min-h-11 items-center justify-center rounded-xl border px-5 py-3 text-sm font-semibold text-white transition disabled:pointer-events-none;
     border-color: var(--sr-border);
@@ -184,6 +223,14 @@ p {
     border-color: var(--sr-border);
     background: var(--sr-bg-elevated);
     color: var(--sr-text-primary);
+  }
+
+  .field:focus,
+  .field-dark:focus,
+  .dashboard-input:focus,
+  .auth-field:focus {
+    border-color: rgba(255, 154, 46, 0.72);
+    box-shadow: var(--sr-focus-ring);
   }
 
   .panel-card {
@@ -216,6 +263,19 @@ p {
     @apply mt-2 min-h-12 w-full rounded-xl border px-4 py-3 text-base text-white outline-none transition backdrop-blur sm:text-sm;
     border-color: var(--sr-border);
     background: rgba(255, 255, 255, 0.06);
+  }
+}
+
+@media (max-width: 374px) {
+  .sr-container { width: min(100% - 1.25rem, var(--sr-content-width)); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
   }
 }
 

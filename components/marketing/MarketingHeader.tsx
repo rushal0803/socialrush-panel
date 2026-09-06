@@ -58,7 +58,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   }
 
   return (
-    <header className="sticky top-0 z-[9999] border-b border-orange-400/25 bg-[#07080D]/90 backdrop-blur-2xl after:absolute after:inset-x-0 after:bottom-[-1px] after:h-px after:bg-gradient-to-r after:from-transparent after:via-[#FF7600]/70 after:to-transparent">
+    <header className="sticky top-0 z-[9999] border-b border-orange-400/25 bg-[#07080D]/90 shadow-[0_10px_30px_rgba(0,0,0,.16)] backdrop-blur-2xl after:absolute after:inset-x-0 after:bottom-[-1px] after:h-px after:bg-gradient-to-r after:from-transparent after:via-[#FF7600]/70 after:to-transparent">
       <div className="mx-auto flex h-[70px] max-w-7xl items-center justify-between gap-1.5 px-3 min-[390px]:gap-2 min-[390px]:px-4 sm:gap-4 sm:px-6 lg:px-8">
         <Logo light priority className="min-w-0 shrink [&_img]:max-w-[150px] min-[390px]:[&_img]:max-w-[174px] sm:[&_img]:max-w-[218px]" />
 
