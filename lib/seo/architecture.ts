@@ -1,4 +1,5 @@
 import { countryServicePaths, internationalHubPaths, publishedCountryServicePages } from "./international.ts";
+import { canonicalIndiaServicePaths, indiaServiceSlugs, type IndiaServiceSlug } from "./india-service-pages.ts";
 
 export type SeoIntentKind = "transactional" | "commercial-comparison" | "informational" | "platform-growth" | "country-transactional";
 
@@ -10,13 +11,21 @@ export type SeoIntent = {
   protected?: true;
 };
 
-const protectedIndiaIntentTargets = [
-  ["instagram-followers", "instagram", "/buy-instagram-followers-india"], ["instagram-likes", "instagram", "/instagram-likes"], ["instagram-views", "instagram", "/instagram-views"], ["instagram-comments", "instagram", "/buy-instagram-comments-india"], ["instagram-saves", "instagram", "/buy-instagram-saves-india"], ["instagram-shares", "instagram", "/buy-instagram-shares-india"],
-  ["youtube-subscribers", "youtube", "/youtube-subscribers"], ["youtube-likes", "youtube", "/youtube-likes"], ["youtube-views", "youtube", "/youtube-views"], ["youtube-comments", "youtube", "/buy-youtube-comments-india"],
-  ["linkedin-followers", "linkedin", "/linkedin-followers"], ["linkedin-likes", "linkedin", "/linkedin-likes"], ["twitter-followers", "twitter", "/twitter-followers"],
-  ["facebook-followers", "facebook", "/buy-facebook-followers-india"], ["facebook-group-members", "facebook", "/buy-facebook-group-members-india"], ["facebook-likes", "facebook", "/facebook-likes"], ["facebook-views", "facebook", "/facebook-views"],
-  ["telegram-members", "telegram", "/telegram-members"], ["tiktok-followers", "tiktok", "/tiktok-followers"],
-] as const satisfies readonly (readonly [string, SeoIntent["platform"], string])[];
+function indiaPlatform(slug: IndiaServiceSlug): SeoIntent["platform"] {
+  if (slug.includes("instagram")) return "instagram";
+  if (slug.includes("youtube")) return "youtube";
+  if (slug.includes("linkedin")) return "linkedin";
+  if (slug.includes("twitter")) return "twitter";
+  if (slug.includes("facebook")) return "facebook";
+  if (slug.includes("tiktok")) return "tiktok";
+  return "telegram";
+}
+
+const protectedIndiaIntentTargets = indiaServiceSlugs.map((slug) => ({
+  id: slug,
+  platform: indiaPlatform(slug),
+  primaryTarget: canonicalIndiaServicePaths[slug],
+}));
 
 /**
  * One primary target per deliberately-targeted search intent. This is a
@@ -31,7 +40,7 @@ export const seoIntentMap: readonly SeoIntent[] = [
   { id: "facebook-growth-india", platform: "facebook", kind: "platform-growth", primaryTarget: "/facebook-growth-india" },
   { id: "tiktok-growth-india", platform: "tiktok", kind: "platform-growth", primaryTarget: "/tiktok-growth-india" },
   { id: "social-media-service-comparison", platform: "cross-platform", kind: "commercial-comparison", primaryTarget: "/services" },
-  ...protectedIndiaIntentTargets.map(([id, platform, primaryTarget]) => ({
+  ...protectedIndiaIntentTargets.map(({ id, platform, primaryTarget }) => ({
     id: `india-${id}`,
     platform,
     kind: "transactional" as const,
@@ -50,7 +59,7 @@ function toIntentPlatform(platform: "instagram" | "youtube" | "facebook" | "link
   return platform === "x" ? "twitter" : platform;
 }
 
-export const protectedIndiaSeoPaths = protectedIndiaIntentTargets.map(([, , path]) => path) as readonly string[];
+export const protectedIndiaSeoPaths = indiaServiceSlugs.map((slug) => canonicalIndiaServicePaths[slug]) as readonly string[];
 export const indexableInternationalPaths = [...internationalHubPaths, ...countryServicePaths] as readonly string[];
 
 export function hasUniquePrimaryTargets(intents = seoIntentMap) {

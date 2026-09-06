@@ -1,8 +1,10 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { activeSmmServices } from "../../lib/smm-service-catalog.ts";
+import { canonicalIndiaServicePaths, indiaServiceSlugs } from "../../lib/seo/india-service-pages.ts";
 import { countryServicePaths, getPublishedCountryServicePage, publishedCountryServicePages } from "../../lib/seo/international.ts";
 import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedInternationalPath, protectedIndiaSeoPaths, seoIntentMap } from "../../lib/seo/architecture.ts";
+import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
 
 test("every deliberate SEO intent has exactly one preferred canonical target", () => {
   assert.equal(hasUniquePrimaryTargets(), true);
@@ -10,8 +12,10 @@ test("every deliberate SEO intent has exactly one preferred canonical target", (
 });
 
 test("protected India service targets remain present and canonical", () => {
-  assert.equal(protectedIndiaSeoPaths.length, 19);
-  for (const path of protectedIndiaSeoPaths) {
+  assert.equal(protectedIndiaSeoPaths.length, indiaServiceSlugs.length);
+  for (const slug of indiaServiceSlugs) {
+    const path = canonicalIndiaServicePaths[slug];
+    assert.ok(protectedIndiaSeoPaths.includes(path));
     assert.ok(seoIntentMap.some((intent) => intent.primaryTarget === path && intent.protected));
   }
 });
@@ -30,7 +34,12 @@ test("international routes are allowlisted, catalog-backed, and have no unpublis
 
 test("country service schema remains INR-authoritative", () => {
   for (const page of publishedCountryServicePages) {
+    const service = activeSmmServices.find((candidate) => candidate.code === page.catalogServiceCode);
+    assert.ok(service);
+    const schema = createCountryServiceSchema(page, service);
+    const offer = schema["@graph"].find((item) => item["@type"] === "Service")?.offers;
+    assert.equal(offer?.priceCurrency, "INR");
     assert.notEqual(page.market.currency, "INR");
-    assert.ok(page.catalogServiceCode);
+    assert.notEqual(offer?.priceCurrency, page.market.currency);
   }
 });

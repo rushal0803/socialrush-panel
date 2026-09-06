@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
-import { SERVICE_PRICES, type ServiceCode } from "@/lib/service-pricing";
-import { SEO_SITE_URL } from "@/lib/seo/metadata";
-import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
+import { SERVICE_PRICES, type ServiceCode } from "../service-pricing.ts";
+import { SEO_SITE_URL } from "./metadata.ts";
+import { linkedInFollowersFaqs } from "./linkedin-followers.ts";
 
 export const indiaServiceSlugs = [
   "buy-instagram-followers-india",
