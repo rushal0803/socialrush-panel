@@ -10,6 +10,7 @@ import SafeImage from "@/components/SafeImage";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import TrackedLink from "@/components/analytics/TrackedLink";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
+import { getContentCluster } from "@/lib/seo/content-clusters";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
@@ -124,6 +125,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
   const articleComparison = article.comparison;
   const articleWordCount = getArticleWords(article);
   const articlePlatform = getBlogPlatform(article);
+  const contentCluster = getContentCluster(articlePlatform);
   const relatedArticles = uniqueArticlesBySlug(blogArticles)
     .filter((candidate) => candidate.slug !== article.slug)
     .map((candidate) => ({
@@ -181,7 +183,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
         items={[
           { name: "Home", path: "/" },
           { name: "Blog", path: "/blog" },
-          { name: article.category, path: "/blog" },
+          { name: article.category, path: contentCluster?.hubPath ?? "/blog" },
           { name: breadcrumbTitle, path: `/blog/${article.slug}` },
         ]}
       />
@@ -207,7 +209,7 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             <span aria-hidden="true" className="text-[#FF9F00]">/</span>
             <Link href="/blog" className="transition hover:text-[#FF7A00]">Blog</Link>
             <span aria-hidden="true" className="text-[#FF9F00]">/</span>
-            <span className="text-slate-400">{article.category}</span>
+            {contentCluster ? <Link href={contentCluster.hubPath} className="transition hover:text-[#FF7A00]">{contentCluster.label}</Link> : <span className="text-slate-400">{article.category}</span>}
             <span aria-hidden="true" className="text-[#FF9F00]">/</span>
             <span className="text-white">{breadcrumbTitle}</span>
           </nav>
@@ -379,13 +381,14 @@ export default function BlogDetailPage({ params }: { params: { slug: string } })
             </p>
           </section> : null}
 
-          {articleRelatedLinks.length ? (
+          {(articleRelatedLinks.length || contentCluster) ? (
             <nav aria-label="Related SocialRUSH services" className="mt-8 rounded-3xl border border-white/10 bg-[#0E121B] p-6 shadow-[0_14px_34px_rgba(0,0,0,.2)]">
               <h2 className="text-xl font-extrabold text-white">Related resources and next steps</h2>
               <p className="mt-2 text-sm leading-7 text-slate-300">
                 Continue with the guide, platform option, or pricing information most relevant to this strategy.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
+                {contentCluster ? <TrackedLink href={contentCluster.hubPath} event="blog_service_cta_clicked" metadata={{ article_slug: article.slug, destination: contentCluster.hubPath }} className="inline-flex min-h-11 items-center rounded-xl border border-orange-400/40 bg-orange-400/10 px-4 py-2.5 text-sm font-bold text-orange-100 transition hover:-translate-y-0.5 hover:border-orange-400/70">Explore the {contentCluster.label} growth hub</TrackedLink> : null}
                 {articleRelatedLinks.map((item) => (
                   <TrackedLink key={item.href} href={item.href} event={item.href.startsWith("/tools") ? "blog_tool_cta_clicked" : "blog_service_cta_clicked"} metadata={{ article_slug: article.slug, destination: item.href }} className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/[.04] px-4 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:border-orange-400/60">
                     {item.label}
