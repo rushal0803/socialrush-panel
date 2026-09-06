@@ -24,7 +24,7 @@ export default function AuthShell({
   imageAlt = "SocialRUSH visual",
 }: AuthShellProps) {
   return (
-    <main className="auth-shell relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_32%),linear-gradient(165deg,#050505_0%,#0B0B0F_55%,#050505_100%)] text-slate-100">
+    <main className="auth-shell sr-page relative min-h-screen overflow-x-hidden bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_32%),linear-gradient(165deg,#050505_0%,#0B0B0F_55%,#050505_100%)] text-slate-100">
       {/* ambient blobs */}
       <div className="pointer-events-none fixed inset-0 overflow-hidden">
         <div className="absolute -left-32 -top-16 h-96 w-96 rounded-full bg-orange-500/10 blur-3xl" />
@@ -49,7 +49,7 @@ export default function AuthShell({
 
           {/* card */}
           <div className="my-auto animate-auth-fade-up pt-8 pb-6 lg:pb-0">
-            <div className="rounded-3xl border border-orange-400/20 bg-[#111111]/90 p-5 shadow-[0_24px_70px_-18px_rgba(0,0,0,.8)] backdrop-blur sm:p-9">
+            <div className="sr-surface rounded-3xl border-orange-400/20 p-5 sm:p-9">
               <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-400/10 px-3 py-1 text-[10px] font-bold uppercase tracking-widest text-orange-300">
                 <span className="h-1.5 w-1.5 animate-pulse rounded-full bg-orange-500" />
                 SocialRUSH Platform
@@ -63,7 +63,7 @@ export default function AuthShell({
 
               <p className="mt-7 text-center text-sm text-slate-400">
                 {footerText}{" "}
-                <Link href={footerLink} className="font-bold text-orange-600 transition hover:text-orange-500">
+                <Link href={footerLink} className="font-bold text-orange-300 transition hover:text-orange-200">
                   {footerLabel}
                 </Link>
               </p>
