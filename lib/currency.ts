@@ -30,6 +30,8 @@ export function convertDisplayAmount(amountPaise: number, currency: Currency, ra
 }
 export function formatDisplayCurrency(amount: number, currency: Currency) { return new Intl.NumberFormat(meta[currency].locale, { style: "currency", currency, minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(amount); }
 export function formatCurrency(amountINR: number, currency: Currency, rates?: CurrencyRates) { const amount = convertDisplayAmount(Math.round(amountINR * 100), currency, rates ?? clientRates); return amount === null ? formatDisplayCurrency(amountINR, "INR") : formatDisplayCurrency(amount, currency); }
+/** Financial records, wallets and Cashfree checkout always remain INR-denominated. */
+export function formatAuthoritativeInr(amountINR: number) { return formatDisplayCurrency(amountINR, "INR"); }
 /** Compatibility helpers for non-payment presentation only. */
 export function convertCurrency(amountINR: number, currency: Currency) { return convertDisplayAmount(Math.round(amountINR * 100), currency, { INR: 1 }) ?? amountINR; }
 export const formatPrice = formatDisplayCurrency;

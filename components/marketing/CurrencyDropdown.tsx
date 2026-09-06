@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useId, useRef, useState } from "react";
 import { currencies, type Currency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
@@ -14,6 +14,7 @@ export default function CurrencyDropdown({
   const { currency, setCurrency } = usePreferredCurrency();
   const [open, setOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement>(null);
+  const labelId = useId();
 
   useEffect(() => {
     const onClickOutside = (event: MouseEvent) => {
@@ -21,13 +22,15 @@ export default function CurrencyDropdown({
       if (!rootRef.current.contains(event.target as Node)) setOpen(false);
     };
 
+    const onKeyDown = (event: KeyboardEvent) => { if (event.key === "Escape") setOpen(false); };
     window.addEventListener("mousedown", onClickOutside);
-    return () => window.removeEventListener("mousedown", onClickOutside);
+    window.addEventListener("keydown", onKeyDown);
+    return () => { window.removeEventListener("mousedown", onClickOutside); window.removeEventListener("keydown", onKeyDown); };
   }, []);
 
   return (
     <div ref={rootRef} className="relative">
-      <span className="sr-only" id="display-currency-label">Display currency</span>
+      <span className="sr-only" id={labelId}>Display currency</span>
       <button
         type="button"
         onClick={() => setOpen((value) => !value)}
@@ -38,7 +41,7 @@ export default function CurrencyDropdown({
         } ${compact ? "min-h-10" : "min-h-11"}`}
         aria-haspopup="listbox"
         aria-expanded={open}
-        aria-labelledby="display-currency-label"
+        aria-labelledby={labelId}
       >
         <span>{currency}</span>
         <span className="text-[10px]">▾</span>
@@ -54,7 +57,7 @@ export default function CurrencyDropdown({
         >
           <ul role="listbox" className="py-1">
             {currencies.map((item) => (
-              <li key={item.code}>
+              <li key={item.code} role="option" aria-selected={currency === item.code}>
                 <button
                   type="button"
                   onClick={() => {
@@ -67,7 +70,7 @@ export default function CurrencyDropdown({
                       : `hover:bg-white/10 ${currency === item.code ? "text-amber-200" : "text-slate-200"}`
                   }`}
                 >
-                  <span>{item.code}</span>
+                  <span>{item.code} <span className="sr-only">{item.name}</span></span>
                   <span className={`text-[11px] ${tone === "light3d" ? "text-[#FF9F00]" : "text-slate-400"}`}>{item.symbol}</span>
                 </button>
               </li>
