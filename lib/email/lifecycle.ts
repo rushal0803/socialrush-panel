@@ -6,8 +6,9 @@ export const qualifyingOrder = (order: Pick<LifecycleOrder,"status"|"payment_sta
   !["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase()) &&
   !["failed","refunded","cancelled"].includes(String(order.payment_status||"").toLowerCase());
 
-export function lifecycleEligibility(event:LifecycleEvent, profile:LifecycleProfile, orders:LifecycleOrder[], now=new Date(), delayHours=24, inactiveDays=7, activationAt:string|null=null) {
+export function lifecycleEligibility(event:LifecycleEvent, profile:LifecycleProfile, orders:LifecycleOrder[], now=new Date(), delayHours=24, inactiveDays=7, activationAt:string|null|undefined=undefined) {
   if (!profile.email || profile.role === "admin" || /(^|[+.])(?:test|internal)(?:[+.@]|$)/i.test(profile.email) || profile.notification_preferences?.marketing !== true) return false;
+  if (activationAt === null) return false;
   const activationTime=activationAt ? Date.parse(activationAt) : Number.NEGATIVE_INFINITY;
   if (activationAt && !Number.isFinite(activationTime)) return false;
   const qualifying=orders.filter(qualifyingOrder).sort((a,b)=>Date.parse(b.created_at)-Date.parse(a.created_at));
