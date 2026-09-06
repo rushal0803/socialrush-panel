@@ -7,7 +7,7 @@ import {
   indiaServiceSlugs,
 } from "@/lib/seo/india-service-pages";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { internationalHubPaths } from "@/lib/seo/international";
+import { countryServicePaths, internationalHubPaths } from "@/lib/seo/international";
 
 export const dynamic = "force-dynamic";
 
@@ -95,6 +95,7 @@ export async function GET() {
     ...new Set([
       ...publicRoutes,
       ...internationalHubPaths,
+      ...countryServicePaths,
       ...serviceRoutes,
       ...blogRoutes,
       ...caseStudyRoutes,
