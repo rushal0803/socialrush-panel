@@ -1,8 +1,10 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { firstOrderReminder, inactive7d, orderCompleted, orderCreated, type EmailTemplate } from "@/lib/email/templates";
-import { canSendPromotional, lifecycleEligibility, promotionalEvent, recipientMatchesProfile } from "@/lib/email/lifecycle";
+import { firstOrderReminder, inactive7d, inactivePlatform, inactivePremium, orderCompleted, orderCreated, type EmailTemplate } from "@/lib/email/templates";
+import { canSendPromotional, hasActiveRefill, hasUnresolvedSupport, inactiveEmailKind, lifecycleEligibility, promotionalEvent, recipientMatchesProfile } from "@/lib/email/lifecycle";
 type Event={id:string;user_id:string;order_id:string|null;event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"inactive_7d";recipient:string};
+type LifecycleOrderContext={user_id:string;created_at:string;status:string|null;payment_status:string|null;platform:string|null;charge:number|string|null};
+type CrmTagRow={crm_tags:{name:string|null}[]|null};
 type AdminClient=ReturnType<typeof createAdminClient>;
 const safeError=(e:unknown)=>e instanceof Error?e.message.slice(0,500):"Email provider request failed";
 async function deliver(recipient:string,message:EmailTemplate,key?:string){const api=process.env.RESEND_API_KEY,from=process.env.EMAIL_FROM,reply=process.env.REPLY_TO_EMAIL;if(!api||!from||!reply)throw new Error("Email delivery is not configured");const r=await fetch("https://api.resend.com/emails",{method:"POST",headers:{Authorization:`Bearer ${api}`,"Content-Type":"application/json",...(key?{"Idempotency-Key":key}:{})},body:JSON.stringify({from,to:[recipient],reply_to:reply,subject:message.subject,html:message.html,text:message.text})}),body=await r.json().catch(()=>null) as {id?:string;message?:string}|null;if(!r.ok)throw new Error(`Resend request failed (${r.status}): ${body?.message||"unknown"}`);return body?.id||null;}
@@ -16,20 +18,27 @@ export async function processCustomerEmailEvents(limit=20){
    const promotional=promotionalEvent(event.event_type);
    const {data:profile,error:profileError}=await db.from("profiles").select("id,full_name,notification_preferences,role,email,created_at").eq("id",event.user_id).single();
    if(promotional&&profileError)throw new Error("Lifecycle profile eligibility lookup failed");
+   let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[];
    if(promotional){
-    const [{data:suppression,error:suppressionError},{data:orders,error:ordersError},{data:config,error:configError}]=await Promise.all([
+    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError}]=await Promise.all([
      db.from("crm_suppression_list").select("email").eq("email",event.recipient.trim().toLowerCase()).maybeSingle(),
-     db.from("orders").select("user_id,created_at,status,payment_status").eq("user_id",event.user_id),
-     db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at").eq("id",true).single()
+     db.from("orders").select("user_id,created_at,status,payment_status,platform,charge").eq("user_id",event.user_id),
+     db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at").eq("id",true).single(),
+     db.from("support_tickets").select("status").eq("user_id",event.user_id).not("status","in","(resolved,closed)"),
+     db.from("order_refill_requests").select("status").eq("customer_id",event.user_id).not("status","in","(completed,rejected,cancelled)"),
+     db.from("crm_customer_profiles").select("lifecycle_stage").eq("customer_id",event.user_id).maybeSingle(),
+     db.from("crm_customer_tags").select("crm_tags(name)").eq("customer_id",event.user_id)
     ]);
-    if(suppressionError||ordersError||configError||!config)throw new Error("Lifecycle eligibility lookup failed");
+    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||!config)throw new Error("Lifecycle eligibility lookup failed");
+    orders=orderRows||[];crm=crmRow;tagRows=crmTagRows||[];
     if(!config.lifecycle_enabled){await db.from("customer_email_events").update({status:"queued",processing_started_at:null,error_message:"Deferred: lifecycle disabled"}).eq("id",event.id);break;}
     if(!recipientMatchesProfile(event.recipient,profile?.email)){await terminal(db,event.id,"Skipped: recipient changed");continue;}
+    if(hasUnresolvedSupport(tickets||[])||hasActiveRefill(refills||[])){await terminal(db,event.id,"Skipped: unresolved customer service issue");continue;}
     const eligible=profile&&lifecycleEligibility(event.event_type as "first_order_reminder"|"inactive_7d",profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,config.lifecycle_activation_at);
     if(!eligible||suppression||!canSendPromotional()){await terminal(db,event.id,!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible");continue;}
    }
    let template:EmailTemplate;
-   if(event.event_type==="first_order_reminder")template=firstOrderReminder(profile?.full_name,event.user_id);else if(event.event_type==="inactive_7d")template=inactive7d(profile?.full_name,event.user_id);else{const {data:order,error:orderError}=await db.from("orders").select("id,public_order_id,platform,service_name,quantity,charge,status,created_at").eq("id",event.order_id!).single();if(orderError||!order)throw new Error("Order details are unavailable");template=event.event_type==="order_created"?orderCreated(profile?.full_name,order):orderCompleted(profile?.full_name,order);}
+   if(event.event_type==="first_order_reminder")template=firstOrderReminder(profile?.full_name,event.user_id);else if(event.event_type==="inactive_7d"){const kind=inactiveEmailKind({lifecycle_stage:crm?.lifecycle_stage,tags:tagRows.flatMap(row=>row.crm_tags?.map(tag=>tag.name)||[])},orders);template=kind==="vip"||kind==="high_value"?inactivePremium(profile?.full_name,event.user_id,kind):kind==="generic"?inactive7d(profile?.full_name,event.user_id):inactivePlatform(profile?.full_name,event.user_id,kind);}else{const {data:order,error:orderError}=await db.from("orders").select("id,public_order_id,platform,service_name,quantity,charge,status,created_at").eq("id",event.order_id!).single();if(orderError||!order)throw new Error("Order details are unavailable");template=event.event_type==="order_created"?orderCreated(profile?.full_name,order):orderCompleted(profile?.full_name,order);}
    const id=await deliver(event.recipient,template,`customer-email-${event.id}`);await db.from("customer_email_events").update({status:"sent",provider_message_id:id,sent_at:new Date().toISOString(),processing_started_at:null}).eq("id",event.id);
   }catch(e){const message=safeError(e),permanent=promotionalEvent(event.event_type)&&/Resend request failed \(4\d\d\)/.test(message);await db.from("customer_email_events").update({status:permanent?"sent":"failed",sent_at:permanent?new Date().toISOString():null,error_message:permanent?`Skipped: permanent provider rejection: ${message}`:message,processing_started_at:null}).eq("id",event.id);console.error("[email] provider failure",{eventId:event.id,eventType:event.event_type,error:message});}
  }
