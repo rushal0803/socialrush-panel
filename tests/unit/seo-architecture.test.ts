@@ -5,6 +5,16 @@ import { canonicalIndiaServicePaths, indiaServiceSlugs } from "../../lib/seo/ind
 import { countryServicePaths, getPublishedCountryServicePage, publishedCountryServicePages } from "../../lib/seo/international.ts";
 import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedInternationalPath, protectedIndiaSeoPaths, seoIntentMap } from "../../lib/seo/architecture.ts";
 import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
+import { contentClusters } from "../../lib/seo/content-clusters.ts";
+
+const redirectedServicePaths = new Set([
+  "/services/instagram-followers",
+  "/services/instagram-likes",
+  "/services/instagram-views",
+  "/services/youtube-subscribers",
+  "/services/youtube-likes",
+  "/services/youtube-views",
+]);
 
 test("every deliberate SEO intent has exactly one preferred canonical target", () => {
   assert.equal(hasUniquePrimaryTargets(), true);
@@ -17,6 +27,13 @@ test("protected India service targets remain present and canonical", () => {
     const path = canonicalIndiaServicePaths[slug];
     assert.ok(protectedIndiaSeoPaths.includes(path));
     assert.ok(seoIntentMap.some((intent) => intent.primaryTarget === path && intent.protected));
+  }
+});
+
+test("platform hubs link directly to canonical service pages", () => {
+  const hubLinks = Object.values(contentClusters).flatMap((cluster) => cluster.serviceLinks.map((link) => link.href));
+  for (const href of hubLinks) {
+    assert.equal(redirectedServicePaths.has(href), false, `${href} should not require an internal redirect`);
   }
 });
 
