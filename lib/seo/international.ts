@@ -46,8 +46,10 @@ export function countryHubAlternates() {
 export function createCountryHubMetadata(market: InternationalMarket): Metadata {
   const path = `/${market.slug}`;
   const url = absoluteSeoUrl(path);
-  const title = `Social Media Growth Services in the ${market.name}`;
-  const description = `Explore SocialRUSH social media growth services for ${market.audience}. Compare supported platforms, transparent service details and local-currency display estimates.`;
+  const title = market.slug === "us" ? "Social Media Growth Services in the United States" : `Social Media Growth Services in the ${market.name}`;
+  const description = market.slug === "us"
+    ? "Explore SocialRUSH social media growth services for US-facing campaigns. Browse supported platforms, US service pages, USD display estimates and clear INR checkout details."
+    : `Explore SocialRUSH social media growth services for ${market.audience}. Compare supported platforms, transparent service details and local-currency display estimates.`;
   return {
     title,
     description,
