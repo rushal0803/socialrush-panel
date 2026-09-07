@@ -13,10 +13,12 @@ import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaCon
 import LinkedInUsaPostLikesLanding from "@/components/marketing/LinkedInUsaPostLikesLanding";
 import LinkedInUsaCustomCommentsLanding from "@/components/marketing/LinkedInUsaCustomCommentsLanding";
 import LinkedInUsaEndorsementsLanding from "@/components/marketing/LinkedInUsaEndorsementsLanding";
+import LinkedInUsaRepostsLanding from "@/components/marketing/LinkedInUsaRepostsLanding";
 import { linkedInUsaFollowersFaqs } from "@/lib/linkedin-usa-followers-content";
 import { linkedInUsaPostLikesFaqs } from "@/lib/linkedin-usa-post-likes-content";
 import { linkedInUsaCustomCommentsFaqs } from "@/lib/linkedin-usa-custom-comments-content";
 import { linkedInUsaEndorsementsFaqs } from "@/lib/linkedin-usa-endorsements-content";
+import { linkedInUsaRepostsFaqs } from "@/lib/linkedin-usa-reposts-content";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import LinkedInUsaGroupMembersLanding from "@/components/marketing/LinkedInUsaGroupMembersLanding";
 import LinkedInUsaFollowersLanding, {
@@ -38,7 +40,6 @@ const catalogOnlyServiceSlugs = new Set([
   "tiktok-saves",
   "linkedin-usa-post-likes",
   "linkedin-usa-group-members",
-  "linkedin-usa-reposts",
 ]);
 
 function formatInr(value: number) {
@@ -152,6 +153,11 @@ export async function generateMetadata({
     const title = "Buy LinkedIn USA Post Likes | SocialRUSH";
     const description = "Buy LinkedIn USA Post Likes for an eligible public post. Review live pricing, quantity limits, delivery details and secure ordering before checkout.";
     return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-post-likes" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-post-likes" }, twitter: { card: "summary_large_image", title, description } };
+  }
+  if (params.slug === "linkedin-usa-reposts") {
+    const title = "Buy LinkedIn USA Reposts | SocialRUSH";
+    const description = "Buy LinkedIn USA Reposts for an eligible public post. Review live pricing, quantity limits, delivery details and secure ordering before checkout.";
+    return { metadataBase: new URL(siteUrl), title: { absolute: title }, description, alternates: { canonical: "/services/linkedin-usa-reposts" }, openGraph: { type: "website", siteName: "SocialRUSH", title, description, url: "/services/linkedin-usa-reposts" }, twitter: { card: "summary_large_image", title, description } };
   }
   if (params.slug === "linkedin-usa-custom-comments") {
     const title = "Buy LinkedIn USA Custom Comments | SocialRUSH";
@@ -295,6 +301,19 @@ export default async function ServiceSeoPage({
 }: {
   params: { slug: string };
 }) {
+  if (params.slug === "linkedin-usa-reposts") {
+    const catalogService = activeSmmServices.find((service) => service.code === params.slug);
+    if (!catalogService) notFound();
+    const live = await getLiveServiceFacts(catalogService.platform, catalogService.name, catalogService.code);
+    if (!live?.available) notFound();
+    const service = { ...catalogService, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction };
+    const faqs = linkedInUsaRepostsFaqs(service);
+    const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
+    const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
+    const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: service.name, item: `${siteUrl}/services/linkedin-usa-reposts` }] };
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaRepostsLanding service={service} /></>;
+  }
   if (params.slug === "linkedin-usa-endorsements") {
     const catalogService = activeSmmServices.find((service) => service.code === params.slug);
     if (!catalogService) notFound();
