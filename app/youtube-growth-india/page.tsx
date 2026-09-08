@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 
 import PublicShell from "@/components/marketing/PublicShell";
+import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
@@ -332,6 +333,8 @@ export default function YouTubeGrowthIndiaPage() {
 
         <section className="px-5 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
+            <PlatformAuthorityLinks platform="youtube" />
+
             <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">
               YouTube Growth FAQ
             </p>
