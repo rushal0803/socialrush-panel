@@ -27,7 +27,7 @@ const servicePaths: Record<string, string> = {
   "youtube-subscribers": "/youtube-subscribers", "youtube-likes": "/youtube-likes", "youtube-views": "/youtube-views",
   "youtube-comments": "/buy-youtube-comments-india",
   "youtube-watch-hours": "/buy-youtube-watch-hours-india",
-  "facebook-followers": "/buy-facebook-followers-india", "facebook-group-members": "/buy-facebook-group-members-india", "facebook-likes": "/facebook-likes", "facebook-views": "/facebook-views", "linkedin-followers": "/linkedin-followers",
+  "facebook-followers": "/buy-facebook-followers-india", "facebook-group-members": "/buy-facebook-group-members-india", "facebook-likes": "/facebook-likes", "facebook-views": "/facebook-views", "facebook-shares": "/buy-facebook-shares-india", "linkedin-followers": "/linkedin-followers",
   "linkedin-likes": "/linkedin-likes", "telegram-members": "/telegram-members", "tiktok-followers": "/tiktok-followers", "x-followers": "/twitter-followers",
 };
 
