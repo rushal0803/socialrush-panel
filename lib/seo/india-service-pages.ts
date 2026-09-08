@@ -618,7 +618,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Follower delivery begins after confirmation and varies by quantity and profile availability. Review current refill terms before ordering.",
     metaDescription:
-      "Buy TikTok followers in India with transparent INR pricing, public-link ordering, tracked delivery and refill support where eligible.",
+      "Buy TikTok followers in India with live INR pricing, public-profile ordering, no password required, tracked delivery and eligible refill support.",
     ogDescription:
       "Build visible TikTok profile credibility with clear follower packages and no-password SocialRUSH ordering in India.",
     audiences: ["Short-form creators", "Artists", "Product brands", "Agencies"],
@@ -673,7 +673,7 @@ export function getIndiaServiceMetadata(
     ? "Buy Telegram Members India | Online Packages - SocialRUSH"
     : null;
   const title = telegramTitle ?? instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug.startsWith("buy-youtube-") ? youtubeTitle : facebookTitle);
-  const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live Pricing | SocialRUSH" : title;
+  const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live ₹ Plans | SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle }, 
     description: page.metaDescription,
