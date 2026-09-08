@@ -17,11 +17,11 @@ const redirectedServicePaths = new Set([
   "/services/youtube-views",
 ]);
 
-function metadataTitle(metadata: ReturnType<typeof getIndiaServiceMetadata>) {
+function metadataTitle(metadata: ReturnType<typeof getIndiaServiceMetadata>): string {
   const title = metadata.title;
-  if (!title || typeof title === "string") return title ?? "";
-  if ("absolute" in title) return title.absolute;
-  if ("default" in title) return title.default;
+  if (!title || typeof title === "string") return String(title ?? "");
+  if ("absolute" in title) return String(title.absolute);
+  if ("default" in title) return String(title.default);
   return "";
 }
 
