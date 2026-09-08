@@ -62,10 +62,17 @@ test("priority India pages keep Search Console query language in metadata", () =
   const facebookViews = getIndiaServiceMetadata("buy-facebook-views-india", "/facebook-views");
   const facebookShares = getIndiaServiceMetadata("buy-facebook-shares-india", "/buy-facebook-shares-india");
   const facebookGroupMembers = getIndiaServiceMetadata("buy-facebook-group-members-india", "/buy-facebook-group-members-india");
+  const youtubeViews = getIndiaServiceMetadata("buy-youtube-views-india", "/youtube-views");
+  const youtubeLikes = getIndiaServiceMetadata("buy-youtube-likes-india", "/youtube-likes");
+  const youtubeComments = getIndiaServiceMetadata("buy-youtube-comments-india", "/buy-youtube-comments-india");
   const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
   const instagramViewsSource = readFileSync(new URL("../../app/(india-seo-services)/buy-instagram-views-india/page.tsx", import.meta.url), "utf8");
   const middlewareSource = readFileSync(new URL("../../middleware.ts", import.meta.url), "utf8");
   const watchHoursSource = readFileSync(new URL("../../app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx", import.meta.url), "utf8");
+  const canonicalServiceSource = readFileSync(new URL("../../app/(seo-services)/[service]/page.tsx", import.meta.url), "utf8");
+  const youtubeLikesSource = readFileSync(new URL("../../app/(india-seo-services)/buy-youtube-likes-india/page.tsx", import.meta.url), "utf8");
+  const youtubeEngagementSchemaSource = readFileSync(new URL("../../components/seo/YouTubeEngagementJsonLd.tsx", import.meta.url), "utf8");
+  const indiaServiceSource = readFileSync(new URL("../../components/marketing/services/IndiaServiceLandingPage.tsx", import.meta.url), "utf8");
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
@@ -96,6 +103,22 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
   assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| Live INR Plans \| SocialRUSH/);
   assert.match(watchHoursSource, /"@type": "FAQPage"/);
+  for (const [metadata, canonical, service] of [
+    [youtubeViews, "/youtube-views", "Views"],
+    [youtubeLikes, "/youtube-likes", "Likes"],
+    [youtubeComments, "/buy-youtube-comments-india", "Comments"],
+  ] as const) {
+    assert.match(metadataTitle(metadata), new RegExp(`Buy YouTube ${service} India \\| Live INR Plans`));
+    assert.match(metadata.description ?? "", /live INR pricing/i);
+    assert.match(String(metadata.alternates?.canonical), new RegExp(`${canonical}$`));
+  }
+  assert.match(canonicalServiceSource, /YouTubeEngagementJsonLd code="youtube-views"/);
+  assert.match(youtubeLikesSource, /YouTubeEngagementJsonLd code="youtube-likes"/);
+  assert.match(youtubeEngagementSchemaSource, /"@type": "Service"/);
+  assert.match(youtubeEngagementSchemaSource, /priceCurrency: "INR"/);
+  assert.match(youtubeEngagementSchemaSource, /areaServed: "IN"/);
+  assert.match(youtubeEngagementSchemaSource, /<BreadcrumbJsonLd/);
+  assert.match(indiaServiceSource, /name: "YouTube Comments India"/);
   assert.match(String(youtube.alternates?.canonical), /\/youtube-subscribers$/);
   assert.match(String(twitter.alternates?.canonical), /\/twitter-followers$/);
   assert.match(String(facebook.alternates?.canonical), /\/buy-facebook-followers-india$/);
