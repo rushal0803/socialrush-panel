@@ -11,7 +11,7 @@ import { countryServicePaths, internationalHubPaths } from "@/lib/seo/internatio
 
 export const dynamic = "force-dynamic";
 
-export const publicRoutes = [
+const publicRoutes = [
   "/",
   "/about",
   "/services",
