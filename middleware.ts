@@ -38,6 +38,8 @@ const canonicalRedirects: Record<string, string> = {
   "/services/smm-panel-india": "/services",
   "/services/facebook-followers": "/buy-facebook-followers-india",
   "/services/facebook-likes": "/facebook-likes",
+  "/services/facebook-shares": "/buy-facebook-shares-india",
+  "/services/facebook-views": "/facebook-views",
   "/services/telegram-members": "/telegram-members",
   "/services/tiktok-followers": "/tiktok-followers",
   "/services/x-authority-growth": "/twitter-followers",
