@@ -586,7 +586,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Member delivery depends on package size and invite availability. Eligible refill details are displayed before you place the order.",
     metaDescription:
-      "Buy Telegram members in India with transparent INR pricing, simple online ordering, public-link submission and dashboard tracking. No password required.",
+      "Buy Telegram members in India with live INR pricing, public channel or group-link ordering, dashboard tracking and no password required.",
     ogDescription:
       "Grow visible Telegram channel or group membership with clear packages and tracked SocialRUSH delivery in India.",
     audiences: ["Channel owners", "Educators", "Communities", "Digital brands"],
@@ -670,7 +670,7 @@ export function getIndiaServiceMetadata(
 
   
   const telegramTitle = slug === "buy-telegram-members-india"
-    ? "Buy Telegram Members India | Online Packages - SocialRUSH"
+    ? "Buy Telegram Members India | Live INR Plans | SocialRUSH"
     : null;
   const title = telegramTitle ?? instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug.startsWith("buy-youtube-") ? youtubeTitle : facebookTitle);
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live ₹ Plans | SocialRUSH" : title;
