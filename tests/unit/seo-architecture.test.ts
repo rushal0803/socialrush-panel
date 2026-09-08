@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { activeSmmServices } from "../../lib/smm-service-catalog.ts";
 import { canonicalIndiaServicePaths, getIndiaServiceMetadata, indiaServiceSlugs } from "../../lib/seo/india-service-pages.ts";
 import { countryServicePaths, getPublishedCountryServicePage, publishedCountryServicePages } from "../../lib/seo/international.ts";
@@ -40,13 +41,20 @@ test("platform hubs link directly to canonical service pages", () => {
 test("priority India pages keep Search Console query language in metadata", () => {
   const youtube = getIndiaServiceMetadata("buy-youtube-subscribers-india", "/youtube-subscribers");
   const twitter = getIndiaServiceMetadata("buy-twitter-followers-india", "/twitter-followers");
+  const facebook = getIndiaServiceMetadata("buy-facebook-followers-india", "/buy-facebook-followers-india");
+  const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
 
   assert.match(String(youtube.title && typeof youtube.title === "object" ? youtube.title.absolute : youtube.title), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
   assert.match(String(twitter.title && typeof twitter.title === "object" ? twitter.title.absolute : twitter.title), /Buy Twitter \(X\) Followers India/);
   assert.match(twitter.description ?? "", /Buy Twitter\/X followers in India/i);
+  assert.match(String(facebook.title && typeof facebook.title === "object" ? facebook.title.absolute : facebook.title), /Buy Facebook Followers India/);
+  assert.match(facebook.description ?? "", /live INR pricing/i);
+  assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
+  assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
   assert.match(String(youtube.alternates?.canonical), /\/youtube-subscribers$/);
   assert.match(String(twitter.alternates?.canonical), /\/twitter-followers$/);
+  assert.match(String(facebook.alternates?.canonical), /\/buy-facebook-followers-india$/);
 });
 
 test("international routes are allowlisted, catalog-backed, and have no unpublished variants", () => {
