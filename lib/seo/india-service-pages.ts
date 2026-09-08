@@ -665,7 +665,7 @@ export function getIndiaServiceMetadata(
           : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
-      ? "Buy X Followers India | Twitter/X Plans in ₹ | SocialRUSH"
+      ? "Buy Twitter (X) Followers India | Live ₹ Plans | SocialRUSH"
       : null;
 
   

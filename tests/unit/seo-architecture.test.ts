@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { activeSmmServices } from "../../lib/smm-service-catalog.ts";
-import { canonicalIndiaServicePaths, indiaServiceSlugs } from "../../lib/seo/india-service-pages.ts";
+import { canonicalIndiaServicePaths, getIndiaServiceMetadata, indiaServiceSlugs } from "../../lib/seo/india-service-pages.ts";
 import { countryServicePaths, getPublishedCountryServicePage, publishedCountryServicePages } from "../../lib/seo/international.ts";
 import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedInternationalPath, protectedIndiaSeoPaths, seoIntentMap } from "../../lib/seo/architecture.ts";
 import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
@@ -35,6 +35,18 @@ test("platform hubs link directly to canonical service pages", () => {
   for (const href of hubLinks) {
     assert.equal(redirectedServicePaths.has(href), false, `${href} should not require an internal redirect`);
   }
+});
+
+test("priority India pages keep Search Console query language in metadata", () => {
+  const youtube = getIndiaServiceMetadata("buy-youtube-subscribers-india", "/youtube-subscribers");
+  const twitter = getIndiaServiceMetadata("buy-twitter-followers-india", "/twitter-followers");
+
+  assert.match(String(youtube.title && typeof youtube.title === "object" ? youtube.title.absolute : youtube.title), /Buy YouTube Subscribers India/);
+  assert.match(youtube.description ?? "", /live INR pricing/i);
+  assert.match(String(twitter.title && typeof twitter.title === "object" ? twitter.title.absolute : twitter.title), /Buy Twitter \(X\) Followers India/);
+  assert.match(twitter.description ?? "", /Buy Twitter\/X followers in India/i);
+  assert.match(String(youtube.alternates?.canonical), /\/youtube-subscribers$/);
+  assert.match(String(twitter.alternates?.canonical), /\/twitter-followers$/);
 });
 
 test("international routes are allowlisted, catalog-backed, and have no unpublished variants", () => {
