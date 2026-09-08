@@ -418,7 +418,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Delivery timing varies by quantity and post availability. Keep the post public and avoid deleting or restricting it during processing.",
     metaDescription:
-      "Buy LinkedIn likes in India with transparent INR pricing, public-post ordering, professional delivery and SocialRUSH tracking.",
+      "Buy LinkedIn likes in India with live INR pricing, public post-link ordering, no password required, delivery details and dashboard tracking.",
     ogDescription:
       "Support LinkedIn post engagement with clear pricing, no-password ordering and tracked delivery for Indian professionals.",
     audiences: ["Founders", "Thought leaders", "Recruiters", "B2B brands"],
@@ -666,6 +666,8 @@ export function getIndiaServiceMetadata(
   const linkedInTitle =
     slug === "buy-linkedin-followers-india"
       ? "Buy LinkedIn Followers India | Live INR Packages | SocialRUSH"
+      : slug === "buy-linkedin-likes-india"
+        ? "Buy LinkedIn Likes India | Live INR Plans | SocialRUSH"
       : null;
   const instagramLikesTitle =
     slug === "buy-instagram-likes-india"
