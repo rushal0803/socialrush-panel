@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import PublicShell from "@/components/marketing/PublicShell";
+import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
@@ -284,6 +285,8 @@ export default function InstagramGrowthIndiaPage() {
 
         <section className="px-5 pb-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
+            <PlatformAuthorityLinks platform="instagram" />
+
             <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">
               Instagram Growth FAQ
             </p>

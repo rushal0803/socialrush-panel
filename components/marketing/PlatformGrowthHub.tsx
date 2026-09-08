@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
+
 import PublicShell from "@/components/marketing/PublicShell";
+import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import type { ContentPlatform } from "@/lib/seo/content-clusters";
 import { contentClusters } from "@/lib/seo/content-clusters";
 
@@ -15,5 +17,75 @@ const guidance: Record<ContentPlatform, readonly string[]> = {
 
 export default function PlatformGrowthHub({ platform }: { platform: ContentPlatform }) {
   const cluster = contentClusters[platform];
-  return <PublicShell><main className="relative overflow-hidden bg-[#050505] px-5 py-14 text-white sm:px-6 lg:px-8 lg:py-20"><div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(ellipse_at_18%_0%,rgba(255,118,0,.17),transparent_62%)]"/><div className="relative mx-auto max-w-6xl"><div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1.15fr_.85fr] lg:items-end"><div><p className="sr-eyebrow">{cluster.label} growth hub</p><h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight sm:text-6xl">Build a clearer {cluster.label} growth plan.</h1><p className="mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">Explore relevant services and practical guidance from one focused platform hub. Start with the outcome you want to improve, then choose the next useful action.</p></div><div className="rounded-2xl border border-orange-400/20 bg-orange-500/[.07] p-5"><p className="text-xs font-black uppercase tracking-[.14em] text-orange-200">Start with a service</p><p className="mt-2 text-sm leading-6 text-slate-300">Review current details, public-link requirements, delivery and refill information before ordering.</p><Link href="/services" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-black text-[#0B0B0F]">Browse all services <ArrowRight className="h-4 w-4"/></Link></div></div><section className="mt-10"><div className="flex items-end justify-between gap-4"><div><p className="sr-eyebrow">Service discovery</p><h2 className="mt-2 text-2xl font-black">Explore {cluster.label} services</h2></div><Link href="/pricing" className="text-sm font-bold text-orange-200">Review pricing</Link></div><div className="mt-5 grid gap-3 md:grid-cols-3">{cluster.serviceLinks.map((service) => <Link key={service.href} href={service.href} className="group rounded-2xl border border-white/10 bg-white/[.035] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/45 hover:bg-white/[.06]"><h3 className="font-black">{service.label}</h3><span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-orange-200">Explore service <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" /></span></Link>)}</div></section><section className="mt-12 grid gap-5 lg:grid-cols-[1.2fr_.8fr]"><div className="sr-surface rounded-3xl p-6 sm:p-7"><p className="sr-eyebrow">Practical guidance</p><h2 className="mt-2 text-2xl font-black">{cluster.label} fundamentals</h2><ul className="mt-6 grid gap-4">{guidance[platform].map((item,index) => <li key={item} className="flex gap-3 text-sm leading-6 text-slate-300"><span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-orange-500/15 text-xs font-black text-orange-200">{index+1}</span>{item}</li>)}</ul></div><section className="rounded-3xl border border-orange-400/25 bg-orange-500/[.06] p-6 sm:p-7"><p className="sr-eyebrow">Plan deliberately</p><h2 className="mt-2 text-2xl font-black">Plan before you promote</h2><p className="mt-3 text-sm leading-7 text-slate-300">Services can support a campaign, but they do not guarantee reach, sales or platform distribution. Keep content quality, audience relevance and a clear objective at the centre of the plan.</p><Link href="/tools/creator-growth-goal-planner" className="mt-6 inline-flex min-h-11 items-center rounded-xl border border-orange-300/30 px-4 text-sm font-black text-orange-100">Use the growth goal planner</Link></section></section></div></main></PublicShell>;
+
+  return (
+    <PublicShell>
+      <main className="relative overflow-hidden bg-[#050505] px-5 py-14 text-white sm:px-6 lg:px-8 lg:py-20">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-80 bg-[radial-gradient(ellipse_at_18%_0%,rgba(255,118,0,.17),transparent_62%)]" />
+        <div className="relative mx-auto max-w-6xl">
+          <div className="grid gap-8 border-b border-white/10 pb-10 lg:grid-cols-[1.15fr_.85fr] lg:items-end">
+            <div>
+              <p className="sr-eyebrow">{cluster.label} growth hub</p>
+              <h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight sm:text-6xl">
+                Build a clearer {cluster.label} growth plan.
+              </h1>
+              <p className="mt-5 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
+                Explore relevant services and practical guidance from one focused platform hub. Start with the outcome you want to improve, then choose the next useful action.
+              </p>
+            </div>
+            <div className="rounded-2xl border border-orange-400/20 bg-orange-500/[.07] p-5">
+              <p className="text-xs font-black uppercase tracking-[.14em] text-orange-200">Start with a service</p>
+              <p className="mt-2 text-sm leading-6 text-slate-300">Review current details, public-link requirements, delivery and refill information before ordering.</p>
+              <Link href="/services" className="mt-4 inline-flex min-h-11 items-center gap-2 rounded-xl bg-white px-4 text-sm font-black text-[#0B0B0F]">
+                Browse all services <ArrowRight className="h-4 w-4" />
+              </Link>
+            </div>
+          </div>
+
+          <section className="mt-10">
+            <div className="flex items-end justify-between gap-4">
+              <div>
+                <p className="sr-eyebrow">Service discovery</p>
+                <h2 className="mt-2 text-2xl font-black">Explore {cluster.label} services</h2>
+              </div>
+              <Link href="/pricing" className="text-sm font-bold text-orange-200">Review pricing</Link>
+            </div>
+            <div className="mt-5 grid gap-3 md:grid-cols-3">
+              {cluster.serviceLinks.map((service) => (
+                <Link key={service.href} href={service.href} className="group rounded-2xl border border-white/10 bg-white/[.035] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/45 hover:bg-white/[.06]">
+                  <h3 className="font-black">{service.label}</h3>
+                  <span className="mt-5 inline-flex items-center gap-2 text-sm font-bold text-orange-200">
+                    Explore service <ArrowRight className="h-4 w-4 transition group-hover:translate-x-1" />
+                  </span>
+                </Link>
+              ))}
+            </div>
+          </section>
+
+          <section className="mt-12 grid gap-5 lg:grid-cols-[1.2fr_.8fr]">
+            <div className="sr-surface rounded-3xl p-6 sm:p-7">
+              <p className="sr-eyebrow">Practical guidance</p>
+              <h2 className="mt-2 text-2xl font-black">{cluster.label} fundamentals</h2>
+              <ul className="mt-6 grid gap-4">
+                {guidance[platform].map((item, index) => (
+                  <li key={item} className="flex gap-3 text-sm leading-6 text-slate-300">
+                    <span className="grid h-6 w-6 shrink-0 place-items-center rounded-full bg-orange-500/15 text-xs font-black text-orange-200">{index + 1}</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <section className="rounded-3xl border border-orange-400/25 bg-orange-500/[.06] p-6 sm:p-7">
+              <p className="sr-eyebrow">Plan deliberately</p>
+              <h2 className="mt-2 text-2xl font-black">Plan before you promote</h2>
+              <p className="mt-3 text-sm leading-7 text-slate-300">Services can support a campaign, but they do not guarantee reach, sales or platform distribution. Keep content quality, audience relevance and a clear objective at the centre of the plan.</p>
+              <Link href="/tools/creator-growth-goal-planner" className="mt-6 inline-flex min-h-11 items-center rounded-xl border border-orange-300/30 px-4 text-sm font-black text-orange-100">Use the growth goal planner</Link>
+            </section>
+          </section>
+
+          <PlatformAuthorityLinks platform={platform} />
+        </div>
+      </main>
+    </PublicShell>
+  );
 }

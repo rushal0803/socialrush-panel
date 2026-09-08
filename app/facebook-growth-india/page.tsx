@@ -16,6 +16,7 @@ import {
 
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import {
   createPageMetadata,
   SEO_SITE_URL,
@@ -633,6 +634,8 @@ export default function FacebookGrowthIndiaPage() {
         {/* FAQ */}
         <section className="px-5 pb-20 pt-8 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
+            <PlatformAuthorityLinks platform="facebook" />
+
             <div className="text-center">
               <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">
                 Facebook Growth FAQ
