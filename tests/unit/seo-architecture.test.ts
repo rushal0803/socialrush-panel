@@ -52,7 +52,9 @@ test("priority India pages keep Search Console query language in metadata", () =
   const facebook = getIndiaServiceMetadata("buy-facebook-followers-india", "/buy-facebook-followers-india");
   const linkedin = getIndiaServiceMetadata("buy-linkedin-followers-india", "/linkedin-followers");
   const tiktok = getIndiaServiceMetadata("buy-tiktok-followers-india", "/tiktok-followers");
+  const telegram = getIndiaServiceMetadata("buy-telegram-members-india", "/telegram-members");
   const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
+  const watchHoursSource = readFileSync(new URL("../../app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx", import.meta.url), "utf8");
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
@@ -64,13 +66,18 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(linkedin.description ?? "", /LinkedIn followers in India/i);
   assert.match(metadataTitle(tiktok), /Buy TikTok Followers in India/);
   assert.match(tiktok.description ?? "", /TikTok followers in India/i);
+  assert.match(metadataTitle(telegram), /Buy Telegram Members India \| Live INR Plans/);
+  assert.match(telegram.description ?? "", /live INR pricing/i);
   assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
+  assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| Live INR Plans \| SocialRUSH/);
+  assert.match(watchHoursSource, /"@type": "FAQPage"/);
   assert.match(String(youtube.alternates?.canonical), /\/youtube-subscribers$/);
   assert.match(String(twitter.alternates?.canonical), /\/twitter-followers$/);
   assert.match(String(facebook.alternates?.canonical), /\/buy-facebook-followers-india$/);
   assert.match(String(linkedin.alternates?.canonical), /\/linkedin-followers$/);
   assert.match(String(tiktok.alternates?.canonical), /\/tiktok-followers$/);
+  assert.match(String(telegram.alternates?.canonical), /\/telegram-members$/);
 });
 
 test("international routes are allowlisted, catalog-backed, and have no unpublished variants", () => {
