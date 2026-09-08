@@ -14,8 +14,8 @@ const faqs = [
 
 export const metadata: Metadata = {
   ...createPageMetadata({
-    title: "Buy YouTube Watch Hours in India | SocialRUSH",
-    description: "Buy YouTube watch hours in India with public-video ordering, live pricing, watch-time estimates and secure SocialRUSH dashboard tracking.",
+    title: "Buy YouTube Watch Hours India | Live INR Plans | SocialRUSH",
+    description: "Buy YouTube watch hours in India with live INR pricing, public-video ordering, watch-time estimates, delivery details and dashboard tracking.",
     path,
     keywords: ["buy YouTube watch hours India", "YouTube watch hours service India"],
   }),
