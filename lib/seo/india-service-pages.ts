@@ -21,6 +21,7 @@ export const indiaServiceSlugs = [
   "buy-facebook-group-members-india",
   "buy-facebook-likes-india",
   "buy-facebook-views-india",
+  "buy-facebook-shares-india",
   "buy-telegram-members-india",
   "buy-tiktok-followers-india",
 ] as const;
@@ -46,6 +47,7 @@ export const canonicalIndiaServicePaths: Record<IndiaServiceSlug, string> = {
   "buy-facebook-group-members-india": "/buy-facebook-group-members-india",
   "buy-facebook-likes-india": "/facebook-likes",
   "buy-facebook-views-india": "/facebook-views",
+  "buy-facebook-shares-india": "/buy-facebook-shares-india",
   "buy-telegram-members-india": "/telegram-members",
   "buy-tiktok-followers-india": "/tiktok-followers",
 };
@@ -506,7 +508,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "A visible group size can support community-building campaigns and social proof alongside useful moderation and member-focused content.",
     safety: "Facebook Group must be public or accessible as required by the service. Enter the correct Facebook Group URL and do not change privacy settings while the order is processing.",
     deliveryCopy: "Delivery time may vary depending on service load. Keep the submitted group accessible and its privacy settings unchanged while processing.",
-    metaDescription: "Buy Facebook Group Members in India with transparent pricing, secure checkout, clear delivery estimates, and dashboard order tracking from SocialRUSH.",
+    metaDescription: "Buy Facebook Group Members in India with live INR pricing, an accessible group-link workflow, secure checkout and dashboard tracking.",
     ogDescription: "Buy Facebook Group Members in India with transparent service details and SocialRUSH dashboard tracking.",
     audiences: ["Community builders", "Local groups", "Creators", "Brands"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india"],
@@ -533,7 +535,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Like delivery generally starts after confirmation. Timing depends on order size, post visibility, and current service conditions.",
     metaDescription:
-      "Buy Facebook likes in India with affordable pricing, public-post ordering, fast delivery and SocialRUSH order tracking.",
+      "Buy Facebook likes in India with live INR pricing, public post-link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription:
       "Support Facebook post engagement with transparent like packages and no-password SocialRUSH ordering in India.",
     audiences: ["Business pages", "Event teams", "Creators", "Communities"],
@@ -559,10 +561,31 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "A clear ordering workflow helps creators, pages, and teams coordinate public video campaigns alongside their content work.",
     safety: "SocialRUSH never asks for your Facebook password, login, or OTP. Submit only the public video or post link required by the service.",
     deliveryCopy: "Delivery follows the current service estimate shown before checkout and can vary with quantity and public-link availability.",
-    metaDescription: "Buy Facebook views in India with public video-link ordering, live pricing and dashboard tracking. No password required to place your order.",
+    metaDescription: "Buy Facebook views in India with live INR pricing, public video-link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription: "Order Facebook video views in India with transparent pricing, public-link submission, service details and dashboard tracking.",
     audiences: ["Video creators", "Facebook pages", "Local businesses", "Social media teams"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-instagram-views-india"],
+  },
+  "buy-facebook-shares-india": {
+    slug: "buy-facebook-shares-india",
+    serviceCode: "facebook-shares",
+    platform: "Facebook",
+    platformKey: "facebook",
+    serviceName: "Facebook Shares",
+    unitName: "shares",
+    destination: "public Facebook post URL",
+    delivery: "1–5 days",
+    refill: "Refill eligible",
+    packageService: "shares",
+    intro: "Support the visible distribution of an eligible public Facebook post with a clear, trackable shares campaign for India.",
+    overview: "Choose a quantity, submit the exact public Facebook post URL, review the live INR total and service details, then track the order from your dashboard.",
+    value: "Visible share activity can complement useful public content while creators, businesses and community teams continue building genuine audience relationships.",
+    safety: "Only the public Facebook post URL is required. SocialRUSH never asks for your Facebook password, login, OTP or private account access.",
+    deliveryCopy: "Delivery follows the current service estimate and depends on order size and post availability. Keep the submitted post public while processing.",
+    metaDescription: "Buy Facebook shares in India with live INR pricing, public post-link ordering, no password required, refill details and dashboard tracking.",
+    ogDescription: "Order Facebook shares in India with live INR pricing, public post-link ordering, delivery details and SocialRUSH dashboard tracking.",
+    audiences: ["Creators", "Facebook pages", "Local businesses", "Social media teams"],
+    related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india", "buy-facebook-group-members-india"],
   },
   "buy-telegram-members-india": {
     slug: "buy-telegram-members-india",
@@ -660,9 +683,15 @@ export function getIndiaServiceMetadata(
             : null;
   const facebookTitle =
     slug === "buy-facebook-group-members-india"
-      ? "Buy Facebook Group Members in India | Live Pricing | SocialRUSH"
+      ? "Buy Facebook Group Members India | Live INR Plans | SocialRUSH"
       : slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
+      : slug === "buy-facebook-likes-india"
+        ? "Buy Facebook Likes India | Live INR Plans | SocialRUSH"
+        : slug === "buy-facebook-views-india"
+          ? "Buy Facebook Views India | Live INR Plans | SocialRUSH"
+          : slug === "buy-facebook-shares-india"
+            ? "Buy Facebook Shares India | Live INR Plans | SocialRUSH"
       : `Buy ${page.serviceName} India | SocialRUSH`;
   const youtubeTitle = slug === "buy-youtube-subscribers-india"
     ? "Buy YouTube Subscribers India | Live INR Plans | SocialRUSH"

@@ -22,9 +22,9 @@ import {
 } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Facebook Growth India | Followers, Likes & Views",
+  title: "Facebook Growth India | Followers, Likes, Views & Shares",
   description:
-    "Explore Facebook growth services in India for followers, likes and views. Compare campaign goals and choose the right SocialRUSH option for your page.",
+    "Explore Facebook growth services in India for followers, likes, views, shares and group members. Compare goals and choose the right SocialRUSH option.",
   path: "/facebook-growth-india",
 });
 
@@ -58,6 +58,13 @@ const services = [
     label: "Community Growth",
     description: "Grow visible community size with clear live service details and dashboard tracking.",
     href: "/buy-facebook-group-members-india",
+  },
+  {
+    title: "Facebook Shares",
+    label: "Post Distribution",
+    description: "Support visible sharing activity on an eligible public Facebook post with live service details.",
+    href: "/buy-facebook-shares-india",
+    icon: Sparkles,
   },
 ];
 
