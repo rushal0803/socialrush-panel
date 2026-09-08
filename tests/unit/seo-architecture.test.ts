@@ -65,6 +65,7 @@ test("priority India pages keep Search Console query language in metadata", () =
   const youtubeViews = getIndiaServiceMetadata("buy-youtube-views-india", "/youtube-views");
   const youtubeLikes = getIndiaServiceMetadata("buy-youtube-likes-india", "/youtube-likes");
   const youtubeComments = getIndiaServiceMetadata("buy-youtube-comments-india", "/buy-youtube-comments-india");
+  const linkedinLikes = getIndiaServiceMetadata("buy-linkedin-likes-india", "/linkedin-likes");
   const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
   const instagramViewsSource = readFileSync(new URL("../../app/(india-seo-services)/buy-instagram-views-india/page.tsx", import.meta.url), "utf8");
   const middlewareSource = readFileSync(new URL("../../middleware.ts", import.meta.url), "utf8");
@@ -99,6 +100,9 @@ test("priority India pages keep Search Console query language in metadata", () =
   }
   assert.match(String(facebookShares.alternates?.canonical), /\/buy-facebook-shares-india$/);
   assert.match(middlewareSource, /"\/services\/facebook-shares": "\/buy-facebook-shares-india"/);
+  assert.match(metadataTitle(linkedinLikes), /Buy LinkedIn Likes India \| Live INR Plans/);
+  assert.match(linkedinLikes.description ?? "", /live INR pricing/i);
+  assert.match(String(linkedinLikes.alternates?.canonical), /\/linkedin-likes$/);
   assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
   assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| Live INR Plans \| SocialRUSH/);
