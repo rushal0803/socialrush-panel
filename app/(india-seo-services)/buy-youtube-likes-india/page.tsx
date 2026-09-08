@@ -1,4 +1,5 @@
 import YouTubeLikesLanding from "@/components/marketing/YouTubeLikesLanding";
+import YouTubeEngagementJsonLd from "@/components/seo/YouTubeEngagementJsonLd";
 import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
 import { getServiceById } from "@/lib/smm-service-catalog";
 
@@ -19,5 +20,5 @@ export default function Page() {
     ["Can likes guarantee YouTube ranking or monetization?", "No. Likes do not guarantee ranking, reach, virality, monetization, revenue, or any platform outcome."],
   ];
   const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeLikesLanding /></>;
+  return <><YouTubeEngagementJsonLd code="youtube-likes" name="YouTube Likes" path="/youtube-likes" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeLikesLanding /></>;
 }
