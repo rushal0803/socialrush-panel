@@ -7,6 +7,7 @@ import { countryServicePaths, getPublishedCountryServicePage, publishedCountrySe
 import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedInternationalPath, protectedIndiaSeoPaths, seoIntentMap } from "../../lib/seo/architecture.ts";
 import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
 import { contentClusters } from "../../lib/seo/content-clusters.ts";
+import { articleSlugs } from "../../components/marketing/blog/blogData.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -44,6 +45,56 @@ test("platform hubs link directly to canonical service pages", () => {
   for (const href of hubLinks) {
     assert.equal(redirectedServicePaths.has(href), false, `${href} should not require an internal redirect`);
   }
+});
+
+test("platform hubs link to published, unique authority guides", () => {
+  const publishedArticles = new Set(articleSlugs);
+
+  for (const cluster of Object.values(contentClusters)) {
+    assert.ok(cluster.guideLinks.length >= 3, `${cluster.platform} needs a useful guide cluster`);
+    assert.equal(
+      new Set(cluster.guideLinks.map((link) => link.href)).size,
+      cluster.guideLinks.length,
+      `${cluster.platform} guide links should be unique`,
+    );
+
+    for (const guide of cluster.guideLinks) {
+      assert.match(guide.href, /^\/blog\//);
+      assert.ok(
+        publishedArticles.has(guide.href.replace("/blog/", "")),
+        `${guide.href} must resolve to a published article`,
+      );
+    }
+  }
+});
+
+test("growth hubs expose crawlable authority-guide links", () => {
+  const sharedHubSource = readFileSync(
+    new URL("../../components/marketing/PlatformGrowthHub.tsx", import.meta.url),
+    "utf8",
+  );
+  const authorityLinksSource = readFileSync(
+    new URL("../../components/marketing/PlatformAuthorityLinks.tsx", import.meta.url),
+    "utf8",
+  );
+
+  assert.match(sharedHubSource, /<PlatformAuthorityLinks platform=\{platform\}/);
+  assert.match(authorityLinksSource, /cluster\.guideLinks\.map/);
+
+  for (const [path, platform] of [
+    ["../../app/instagram-growth-india/page.tsx", "instagram"],
+    ["../../app/youtube-growth-india/page.tsx", "youtube"],
+    ["../../app/facebook-growth-india/page.tsx", "facebook"],
+  ] as const) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, new RegExp(`<PlatformAuthorityLinks platform="${platform}"`));
+  }
+
+  const linkedinHubSource = readFileSync(
+    new URL("../../app/linkedin-growth-india/page.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(linkedinHubSource, /\/blog\/linkedin-followers-vs-engagement-india/);
 });
 
 test("priority India pages keep Search Console query language in metadata", () => {
