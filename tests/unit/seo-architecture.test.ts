@@ -17,6 +17,14 @@ const redirectedServicePaths = new Set([
   "/services/youtube-views",
 ]);
 
+function metadataTitle(metadata: ReturnType<typeof getIndiaServiceMetadata>): string {
+  const title = metadata.title;
+  if (!title || typeof title === "string") return String(title ?? "");
+  if ("absolute" in title) return String(title.absolute);
+  if ("default" in title) return String(title.default);
+  return "";
+}
+
 test("every deliberate SEO intent has exactly one preferred canonical target", () => {
   assert.equal(hasUniquePrimaryTargets(), true);
   assert.equal(seoIntentMap.every((intent) => intent.primaryTarget.startsWith("/") && !intent.primaryTarget.includes("?")), true);
@@ -46,15 +54,15 @@ test("priority India pages keep Search Console query language in metadata", () =
   const tiktok = getIndiaServiceMetadata("buy-tiktok-followers-india", "/tiktok-followers");
   const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
 
-  assert.match(String(youtube.title && typeof youtube.title === "object" ? youtube.title.absolute : youtube.title), /Buy YouTube Subscribers India/);
+  assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
-  assert.match(String(twitter.title && typeof twitter.title === "object" ? twitter.title.absolute : twitter.title), /Buy Twitter \(X\) Followers India/);
+  assert.match(metadataTitle(twitter), /Buy Twitter \(X\) Followers India/);
   assert.match(twitter.description ?? "", /Buy Twitter\/X followers in India/i);
-  assert.match(String(facebook.title && typeof facebook.title === "object" ? facebook.title.absolute : facebook.title), /Buy Facebook Followers India/);
+  assert.match(metadataTitle(facebook), /Buy Facebook Followers India/);
   assert.match(facebook.description ?? "", /live INR pricing/i);
-  assert.match(String(linkedin.title && typeof linkedin.title === "object" ? linkedin.title.absolute : linkedin.title), /Buy LinkedIn Followers India/);
+  assert.match(metadataTitle(linkedin), /Buy LinkedIn Followers India/);
   assert.match(linkedin.description ?? "", /LinkedIn followers in India/i);
-  assert.match(String(tiktok.title && typeof tiktok.title === "object" ? tiktok.title.absolute : tiktok.title), /Buy TikTok Followers in India/);
+  assert.match(metadataTitle(tiktok), /Buy TikTok Followers in India/);
   assert.match(tiktok.description ?? "", /TikTok followers in India/i);
   assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
