@@ -133,7 +133,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Like delivery begins after confirmation and depends on campaign size and content availability. Keep the selected post public throughout delivery.",
     metaDescription:
-      "Buy Indian Instagram likes with live INR pricing, public-link ordering, service details before checkout and SocialRUSH order tracking.",
+      "Buy Instagram likes in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription:
       "Improve visible Instagram post and reel engagement with clear pricing, public-link ordering and reliable SocialRUSH support in India.",
     audiences: ["Reel creators", "Influencers", "Product brands", "Social teams"],
@@ -167,7 +167,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "View campaigns generally begin quickly after confirmation. Actual completion depends on quantity, content availability, and platform conditions.",
     metaDescription:
-      "Buy Instagram views in India with affordable pricing, fast campaign delivery, no-password ordering and SocialRUSH order tracking.",
+      "Buy Instagram views in India with live INR pricing, public Reel or video link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription:
       "Support Instagram reel and video visibility with transparent view packages, public-link ordering and fast SocialRUSH delivery in India.",
     audiences: ["Reel creators", "Artists", "Small businesses", "Campaign teams"],
@@ -195,7 +195,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "Visible comments can support the presentation of public posts and Reels while you continue publishing relevant content for your audience.",
     safety: "Only a public Instagram post or Reel URL is required. SocialRUSH never asks for your password, login, or OTP.",
     deliveryCopy: "Delivery is typically estimated at 1–24 hours and can vary with order size, public-link availability, and current service load.",
-    metaDescription: "Buy Instagram comments in India with transparent live pricing, public post or Reel link ordering, and SocialRUSH dashboard tracking.",
+    metaDescription: "Buy Instagram comments in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription: "Order Instagram comments in India with live INR pricing, public post or Reel link ordering, and SocialRUSH dashboard tracking.",
     audiences: ["Creators", "Reel publishers", "Brands", "Social media teams"],
     related: ["buy-instagram-followers-india", "buy-instagram-likes-india", "buy-instagram-views-india", "buy-instagram-saves-india", "buy-instagram-shares-india"],
@@ -216,7 +216,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "Save activity can complement the presentation of public content while you continue publishing useful, audience-focused posts and Reels.",
     safety: "Only a public Instagram post or Reel URL is required. SocialRUSH never asks for your password, login, or OTP.",
     deliveryCopy: "The active service shows its current delivery estimate and any eligible refill terms before you place an order.",
-    metaDescription: "Buy Instagram saves in India with transparent pricing, fast delivery, and a simple secure ordering experience from SocialRUSH.",
+    metaDescription: "Buy Instagram saves in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription: "Order Instagram saves in India with transparent pricing, public-link ordering, and SocialRUSH dashboard tracking.",
     audiences: ["Creators", "Reel publishers", "Brands", "Social media teams"],
     related: ["buy-instagram-followers-india", "buy-instagram-likes-india", "buy-instagram-views-india", "buy-instagram-comments-india", "buy-instagram-shares-india"],
@@ -237,7 +237,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "Share activity can complement the presentation of public content while you continue publishing useful, audience-focused posts and Reels.",
     safety: "Only a public Instagram post or Reel URL is required. SocialRUSH never asks for your password, login, or OTP.",
     deliveryCopy: "The active service shows its current delivery estimate and any eligible refill terms before you place an order.",
-    metaDescription: "Buy Instagram shares in India with transparent pricing, fast delivery, and a simple secure ordering experience from SocialRUSH.",
+    metaDescription: "Buy Instagram shares in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription: "Order Instagram shares in India with transparent pricing, public-link ordering, and SocialRUSH dashboard tracking.",
     audiences: ["Creators", "Reel publishers", "Brands", "Social media teams"],
     related: ["buy-instagram-followers-india", "buy-instagram-likes-india", "buy-instagram-views-india", "buy-instagram-comments-india", "buy-instagram-saves-india"],
@@ -646,8 +646,18 @@ export function getIndiaServiceMetadata(
       : null;
   const instagramLikesTitle =
     slug === "buy-instagram-likes-india"
-      ? "Buy Indian Instagram Likes | Live INR Plans | SocialRUSH"
+      ? "Buy Instagram Likes India | Live INR Plans | SocialRUSH"
       : null;
+  const instagramEngagementTitle =
+    slug === "buy-instagram-views-india"
+      ? "Buy Instagram Views India | Live INR Plans | SocialRUSH"
+      : slug === "buy-instagram-comments-india"
+        ? "Buy Instagram Comments India | Live INR Plans | SocialRUSH"
+        : slug === "buy-instagram-saves-india"
+          ? "Buy Instagram Saves India | Live INR Plans | SocialRUSH"
+          : slug === "buy-instagram-shares-india"
+            ? "Buy Instagram Shares India | Live INR Plans | SocialRUSH"
+            : null;
   const facebookTitle =
     slug === "buy-facebook-group-members-india"
       ? "Buy Facebook Group Members in India | Live Pricing | SocialRUSH"
@@ -672,7 +682,7 @@ export function getIndiaServiceMetadata(
   const telegramTitle = slug === "buy-telegram-members-india"
     ? "Buy Telegram Members India | Live INR Plans | SocialRUSH"
     : null;
-  const title = telegramTitle ?? instagramLikesTitle ?? linkedInTitle ?? twitterTitle ?? (slug.startsWith("buy-youtube-") ? youtubeTitle : facebookTitle);
+  const title = telegramTitle ?? instagramLikesTitle ?? instagramEngagementTitle ?? linkedInTitle ?? twitterTitle ?? (slug.startsWith("buy-youtube-") ? youtubeTitle : facebookTitle);
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live ₹ Plans | SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle }, 
