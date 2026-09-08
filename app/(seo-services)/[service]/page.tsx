@@ -14,6 +14,7 @@ import LinkedInLikesLanding from "@/components/marketing/LinkedInLikesLanding";
 import TikTokFollowersLanding from "@/components/marketing/TikTokFollowersLanding";
 import TwitterFollowersLanding from "@/components/marketing/TwitterFollowersLanding";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import YouTubeEngagementJsonLd from "@/components/seo/YouTubeEngagementJsonLd";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { tiktokFollowersFaqs } from "@/lib/seo/tiktok-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -82,7 +83,9 @@ export default function CanonicalServicePage({
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
     return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "YouTube Services", path: "/services?platform=youtube" }, { name: "YouTube Subscribers", path: "/youtube-subscribers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeSubscribersLanding /></>;
   }
-  if (slug === "buy-youtube-views-india") return <YouTubeViewsLanding />;
+  if (slug === "buy-youtube-views-india") {
+    return <><YouTubeEngagementJsonLd code="youtube-views" name="YouTube Views" path="/youtube-views" /><YouTubeViewsLanding /></>;
+  }
   if (slug === "buy-facebook-followers-india") return <FacebookFollowersLanding />;
   if (slug === "buy-facebook-views-india") return <FacebookViewsLanding />;
   if (slug === "buy-facebook-likes-india") return <FacebookLikesLanding />;
