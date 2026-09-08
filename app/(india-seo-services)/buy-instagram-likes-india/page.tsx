@@ -34,12 +34,12 @@ const related = [
 function schema(value: object) { return JSON.stringify(value).replace(/</g, "\\u003c"); }
 
 export const metadata: Metadata = {
-  title: { absolute: "Buy Instagram Likes India | SocialRUSH" },
+  title: { absolute: "Buy Instagram Likes India | Live INR Plans | SocialRUSH" },
   description: "Buy Instagram likes in India with live INR pricing, simple online ordering by public post or Reel link, no password required, and dashboard order tracking.",
   keywords: ["buy Indian Instagram likes", "Indian Instagram likes", "buy Instagram likes India", "buy Instagram likes in rupees", "Instagram likes service India"],
   alternates: { canonical: url },
-  openGraph: { type: "website", locale: "en_IN", title: "Buy Instagram Likes India | SocialRUSH", description: "Build an Instagram likes order with live INR pricing, public-link ordering and dashboard tracking.", url },
-  twitter: { card: "summary_large_image", title: "Buy Instagram Likes India | SocialRUSH", description: "Live INR pricing, public-link ordering and dashboard tracking." },
+  openGraph: { type: "website", locale: "en_IN", title: "Buy Instagram Likes India | Live INR Plans | SocialRUSH", description: "Build an Instagram likes order with live INR pricing, public-link ordering and dashboard tracking.", url },
+  twitter: { card: "summary_large_image", title: "Buy Instagram Likes India | Live INR Plans | SocialRUSH", description: "Live INR pricing, public-link ordering and dashboard tracking." },
 };
 
 export default function Page() {
