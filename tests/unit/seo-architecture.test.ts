@@ -58,8 +58,13 @@ test("priority India pages keep Search Console query language in metadata", () =
   const instagramComments = getIndiaServiceMetadata("buy-instagram-comments-india", "/buy-instagram-comments-india");
   const instagramSaves = getIndiaServiceMetadata("buy-instagram-saves-india", "/buy-instagram-saves-india");
   const instagramShares = getIndiaServiceMetadata("buy-instagram-shares-india", "/buy-instagram-shares-india");
+  const facebookLikes = getIndiaServiceMetadata("buy-facebook-likes-india", "/facebook-likes");
+  const facebookViews = getIndiaServiceMetadata("buy-facebook-views-india", "/facebook-views");
+  const facebookShares = getIndiaServiceMetadata("buy-facebook-shares-india", "/buy-facebook-shares-india");
+  const facebookGroupMembers = getIndiaServiceMetadata("buy-facebook-group-members-india", "/buy-facebook-group-members-india");
   const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
   const instagramViewsSource = readFileSync(new URL("../../app/(india-seo-services)/buy-instagram-views-india/page.tsx", import.meta.url), "utf8");
+  const middlewareSource = readFileSync(new URL("../../middleware.ts", import.meta.url), "utf8");
   const watchHoursSource = readFileSync(new URL("../../app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx", import.meta.url), "utf8");
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
@@ -81,6 +86,12 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(String(instagramLikes.alternates?.canonical), /\/instagram-likes$/);
   assert.match(String(instagramViews.alternates?.canonical), /\/instagram-views$/);
   assert.match(instagramViewsSource, /const path="\/instagram-views"/);
+  for (const metadata of [facebookLikes, facebookViews, facebookShares, facebookGroupMembers]) {
+    assert.match(metadataTitle(metadata), /Buy Facebook (Likes|Views|Shares|Group Members) India \| Live INR Plans/);
+    assert.match(metadata.description ?? "", /live INR pricing/i);
+  }
+  assert.match(String(facebookShares.alternates?.canonical), /\/buy-facebook-shares-india$/);
+  assert.match(middlewareSource, /"\/services\/facebook-shares": "\/buy-facebook-shares-india"/);
   assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
   assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| Live INR Plans \| SocialRUSH/);
