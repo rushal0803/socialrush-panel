@@ -53,7 +53,13 @@ test("priority India pages keep Search Console query language in metadata", () =
   const linkedin = getIndiaServiceMetadata("buy-linkedin-followers-india", "/linkedin-followers");
   const tiktok = getIndiaServiceMetadata("buy-tiktok-followers-india", "/tiktok-followers");
   const telegram = getIndiaServiceMetadata("buy-telegram-members-india", "/telegram-members");
+  const instagramLikes = getIndiaServiceMetadata("buy-instagram-likes-india", "/instagram-likes");
+  const instagramViews = getIndiaServiceMetadata("buy-instagram-views-india", "/instagram-views");
+  const instagramComments = getIndiaServiceMetadata("buy-instagram-comments-india", "/buy-instagram-comments-india");
+  const instagramSaves = getIndiaServiceMetadata("buy-instagram-saves-india", "/buy-instagram-saves-india");
+  const instagramShares = getIndiaServiceMetadata("buy-instagram-shares-india", "/buy-instagram-shares-india");
   const instagramSource = readFileSync(new URL("../../app/buy-instagram-followers-india/page.tsx", import.meta.url), "utf8");
+  const instagramViewsSource = readFileSync(new URL("../../app/(india-seo-services)/buy-instagram-views-india/page.tsx", import.meta.url), "utf8");
   const watchHoursSource = readFileSync(new URL("../../app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx", import.meta.url), "utf8");
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
@@ -68,6 +74,13 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(tiktok.description ?? "", /TikTok followers in India/i);
   assert.match(metadataTitle(telegram), /Buy Telegram Members India \| Live INR Plans/);
   assert.match(telegram.description ?? "", /live INR pricing/i);
+  for (const metadata of [instagramLikes, instagramViews, instagramComments, instagramSaves, instagramShares]) {
+    assert.match(metadataTitle(metadata), /Buy Instagram (Likes|Views|Comments|Saves|Shares) India \| Live INR Plans/);
+    assert.match(metadata.description ?? "", /live INR pricing/i);
+  }
+  assert.match(String(instagramLikes.alternates?.canonical), /\/instagram-likes$/);
+  assert.match(String(instagramViews.alternates?.canonical), /\/instagram-views$/);
+  assert.match(instagramViewsSource, /const path="\/instagram-views"/);
   assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
   assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| Live INR Plans \| SocialRUSH/);
