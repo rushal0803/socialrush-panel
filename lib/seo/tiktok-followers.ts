@@ -4,6 +4,10 @@ export const tiktokFollowersFaqs = [
     answer: "Choose a follower quantity, provide the correct public TikTok profile link, review the live INR total, and continue through the SocialRUSH checkout flow. You can track the order from your dashboard after checkout.",
   },
   {
+    question: "How much do TikTok followers cost in India?",
+    answer: "Pricing depends on the quantity selected. The live order builder shows the current INR rate and calculates your exact total before checkout, so you do not need to rely on an old price list.",
+  },
+  {
     question: "Do I need to share my TikTok password?",
     answer: "No. SocialRUSH only requires the correct public TikTok profile link. Never share a password, login email, OTP, phone verification, or recovery code.",
   },
