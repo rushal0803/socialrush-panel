@@ -14,7 +14,7 @@ import PublicShell from "@/components/marketing/PublicShell";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "YouTube Growth Services in India",
+  title: "YouTube Growth India | Subscribers, Views, Likes & Comments",
   description:
     "Explore YouTube growth in India across subscribers, views, likes, comments and watch hours. Compare goals and choose the right SocialRUSH service.",
   path: "/youtube-growth-india",
