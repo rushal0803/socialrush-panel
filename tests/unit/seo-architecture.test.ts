@@ -137,6 +137,26 @@ test("thin operational pages explicitly stay out of search results", () => {
   }
 });
 
+test("free production SEO monitoring covers every canonical India service page", () => {
+  const monitorSource = readFileSync(
+    new URL("../../scripts/seo-health-check.mjs", import.meta.url),
+    "utf8",
+  );
+  const workflowSource = readFileSync(
+    new URL("../../.github/workflows/seo-health-monitor.yml", import.meta.url),
+    "utf8",
+  );
+
+  for (const path of Object.values(canonicalIndiaServicePaths)) {
+    assert.match(monitorSource, new RegExp(`\"${path}\"`));
+  }
+  assert.match(monitorSource, /canonical link is missing/);
+  assert.match(monitorSource, /page is marked noindex/);
+  assert.match(monitorSource, /sitemap\.xml contains/);
+  assert.match(workflowSource, /cron: "35 3 \* \* 1"/);
+  assert.match(workflowSource, /node scripts\/seo-health-check\.mjs/);
+});
+
 test("priority India pages keep Search Console query language in metadata", () => {
   const youtube = getIndiaServiceMetadata("buy-youtube-subscribers-india", "/youtube-subscribers");
   const twitter = getIndiaServiceMetadata("buy-twitter-followers-india", "/twitter-followers");
