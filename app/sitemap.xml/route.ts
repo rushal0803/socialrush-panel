@@ -1,4 +1,4 @@
-﻿import { NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { blogArticles } from "@/components/marketing/blog/blogData";
 import { uniqueArticlesBySlug } from "@/lib/blog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
@@ -60,6 +60,8 @@ const publicRoutes = [
   "/tools/social-media-growth-budget-calculator",
   "/tools/creator-growth-checklist",
   "/tools/creator-growth-goal-planner",
+  "/tools/social-media-growth-audit",
+  "/tools/social-media-growth-planner",
 ] as const;
 
 function escapeXml(value: string) {
@@ -85,16 +87,27 @@ function sitemapServicePath(slug: (typeof indiaServiceSlugs)[number]) {
 
 type CaseStudySitemapEntry = { slug: string; published_at: string | null };
 
+async function getApprovedCaseStudies(): Promise<CaseStudySitemapEntry[]> {
+  try {
+    const { data } = await createAdminClient()
+      .from("case_studies")
+      .select("slug,published_at")
+      .eq("published", true)
+      .eq("permission_confirmed", true);
+
+    return (data ?? []) as CaseStudySitemapEntry[];
+  } catch {
+    // Static public URLs should remain discoverable during a temporary
+    // database or environment outage; dynamic case studies can return later.
+    return [];
+  }
+}
+
 export async function GET() {
   const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
   const uniqueBlogArticles = uniqueArticlesBySlug(blogArticles);
   const blogRoutes = uniqueBlogArticles.map((article) => `/blog/${article.slug}`);
-  const { data: caseStudies } = await createAdminClient()
-    .from("case_studies")
-    .select("slug,published_at")
-    .eq("published", true)
-    .eq("permission_confirmed", true);
-  const approvedCaseStudies = (caseStudies ?? []) as CaseStudySitemapEntry[];
+  const approvedCaseStudies = await getApprovedCaseStudies();
   const caseStudyRoutes = approvedCaseStudies.map((study) => `/case-studies/${study.slug}`);
   const routes = [
     ...new Set([

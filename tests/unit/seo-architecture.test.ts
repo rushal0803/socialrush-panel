@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { activeSmmServices } from "../../lib/smm-service-catalog.ts";
 import { canonicalIndiaServicePaths, getIndiaServiceMetadata, indiaServiceSlugs } from "../../lib/seo/india-service-pages.ts";
 import { countryServicePaths, getPublishedCountryServicePage, publishedCountryServicePages } from "../../lib/seo/international.ts";
@@ -95,6 +95,46 @@ test("growth hubs expose crawlable authority-guide links", () => {
     "utf8",
   );
   assert.match(linkedinHubSource, /\/blog\/linkedin-followers-vs-engagement-india/);
+});
+
+test("technical SEO routes avoid redirect loops and sitemap omissions", () => {
+  const nextConfigSource = readFileSync(
+    new URL("../../next.config.mjs", import.meta.url),
+    "utf8",
+  );
+  const sitemapSource = readFileSync(
+    new URL("../../app/sitemap.xml/route.ts", import.meta.url),
+    "utf8",
+  );
+  const legacyLinkedinRoute = new URL(
+    "../../app/blog/linkedin-growth-tips-for-personal-brands/page.tsx",
+    import.meta.url,
+  );
+
+  assert.equal(existsSync(legacyLinkedinRoute), false);
+  assert.ok(articleSlugs.includes("linkedin-growth-tips-personal-brands"));
+  assert.match(
+    nextConfigSource,
+    /source:\s*"\/blog\/linkedin-growth-tips-for-personal-brands"[\s\S]{0,160}destination:\s*"\/blog\/linkedin-growth-tips-personal-brands"/,
+  );
+  assert.doesNotMatch(
+    nextConfigSource,
+    /source:\s*"([^"]+)"[\s\S]{0,160}destination:\s*"\1"/,
+  );
+  assert.match(sitemapSource, /"\/tools\/social-media-growth-audit"/);
+  assert.match(sitemapSource, /"\/tools\/social-media-growth-planner"/);
+  assert.match(sitemapSource, /async function getApprovedCaseStudies/);
+  assert.match(sitemapSource, /catch \{/);
+});
+
+test("thin operational pages explicitly stay out of search results", () => {
+  for (const path of [
+    "../../app/status/page.tsx",
+    "../../app/offline/page.tsx",
+  ]) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, /robots:\s*\{\s*index:\s*false/);
+  }
 });
 
 test("priority India pages keep Search Console query language in metadata", () => {
