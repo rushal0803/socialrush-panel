@@ -1,0 +1,23 @@
+name: Weekly SEO health monitor
+
+on:
+  schedule:
+    # Monday at 09:05 India Standard Time.
+    - cron: "35 3 * * 1"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  seo-health:
+    name: Check production indexing signals
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Check production SEO health
+        run: node scripts/seo-health-check.mjs
