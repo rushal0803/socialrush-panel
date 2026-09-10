@@ -5,6 +5,7 @@ import { usePathname } from "next/navigation";
 
 const DEFAULT_WHATSAPP_URL = "https://wa.me/918860330771";
 const ACTIVE_ROUTES = new Set(["/dashboard/new-order", "/dashboard/order-summary"]);
+const WHATSAPP_BUTTON_LABEL = "Place Order on WhatsApp";
 const CASHFREE_ERROR_PATTERNS = [
   /unable to initialize secure payment/i,
   /preparing secure payment/i,
@@ -146,10 +147,18 @@ function prepareTemporaryCheckout() {
   for (const control of controls) {
     const match = checkoutButton(control);
     if (!match) continue;
-    match.dataset.whatsappCheckout = "true";
-    match.setAttribute("aria-label", "Place Order on WhatsApp");
-    if (!(match instanceof HTMLButtonElement && match.disabled)) {
-      match.textContent = "Place Order on WhatsApp";
+
+    if (match.dataset.whatsappCheckout !== "true") {
+      match.dataset.whatsappCheckout = "true";
+    }
+    if (match.getAttribute("aria-label") !== WHATSAPP_BUTTON_LABEL) {
+      match.setAttribute("aria-label", WHATSAPP_BUTTON_LABEL);
+    }
+    if (
+      !(match instanceof HTMLButtonElement && match.disabled) &&
+      (match.textContent || "").replace(/\s+/g, " ").trim() !== WHATSAPP_BUTTON_LABEL
+    ) {
+      match.textContent = WHATSAPP_BUTTON_LABEL;
     }
   }
 
@@ -158,8 +167,10 @@ function prepareTemporaryCheckout() {
     const text = (element.textContent || "").replace(/\s+/g, " ").trim();
     if (text.length > 180) continue;
     if (!CASHFREE_ERROR_PATTERNS.some((pattern) => pattern.test(text))) continue;
-    element.style.display = "none";
-    element.dataset.temporaryWhatsappHidden = "true";
+    if (element.dataset.temporaryWhatsappHidden !== "true") {
+      element.style.display = "none";
+      element.dataset.temporaryWhatsappHidden = "true";
+    }
   }
 }
 
@@ -170,8 +181,18 @@ export default function TemporaryWhatsAppCheckout() {
   useEffect(() => {
     if (!active) return;
 
+    let scheduled = false;
+    const schedulePrepare = () => {
+      if (scheduled) return;
+      scheduled = true;
+      window.requestAnimationFrame(() => {
+        scheduled = false;
+        prepareTemporaryCheckout();
+      });
+    };
+
     prepareTemporaryCheckout();
-    const observer = new MutationObserver(() => prepareTemporaryCheckout());
+    const observer = new MutationObserver(schedulePrepare);
     observer.observe(document.body, { childList: true, subtree: true, characterData: true });
 
     const onClick = (event: MouseEvent) => {
