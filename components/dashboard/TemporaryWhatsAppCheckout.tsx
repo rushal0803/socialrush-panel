@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 const DEFAULT_WHATSAPP_URL = "https://wa.me/918860330771";
 const ACTIVE_ROUTES = new Set(["/dashboard/new-order", "/dashboard/order-summary"]);
 const WHATSAPP_BUTTON_LABEL = "Place Order on WhatsApp";
+const ORDER_REFERENCE_STORAGE_KEY = "socialrush-whatsapp-order-reference";
 const CASHFREE_ERROR_PATTERNS = [
   /unable to initialize secure payment/i,
   /preparing secure payment/i,
@@ -95,6 +96,44 @@ function checkoutButton(element: Element) {
   return matches ? control : null;
 }
 
+function generateOrderReference() {
+  const now = new Date();
+  const date = [
+    now.getFullYear(),
+    String(now.getMonth() + 1).padStart(2, "0"),
+    String(now.getDate()).padStart(2, "0"),
+  ].join("");
+  const timePart = Date.now().toString(36).slice(-5).toUpperCase();
+  let randomPart = Math.random().toString(36).slice(2, 5).toUpperCase();
+
+  if (typeof crypto !== "undefined" && "getRandomValues" in crypto) {
+    const values = new Uint32Array(1);
+    crypto.getRandomValues(values);
+    randomPart = values[0].toString(36).slice(-3).toUpperCase().padStart(3, "0");
+  }
+
+  return `SR-${date}-${timePart}${randomPart}`;
+}
+
+function getOrderReference(signature: string) {
+  try {
+    const existingRaw = window.sessionStorage.getItem(ORDER_REFERENCE_STORAGE_KEY);
+    if (existingRaw) {
+      const existing = JSON.parse(existingRaw) as { signature?: string; reference?: string };
+      if (existing.signature === signature && existing.reference) return existing.reference;
+    }
+
+    const reference = generateOrderReference();
+    window.sessionStorage.setItem(
+      ORDER_REFERENCE_STORAGE_KEY,
+      JSON.stringify({ signature, reference }),
+    );
+    return reference;
+  } catch {
+    return generateOrderReference();
+  }
+}
+
 function buildWhatsAppHref() {
   const root = document.querySelector("main") || document.body;
   const params = new URLSearchParams(window.location.search);
@@ -120,18 +159,23 @@ function buildWhatsAppHref() {
 
   const platform = rawPlatform ? platformLabel(rawPlatform) : "Not specified";
   const service = serviceCode ? titleCaseService(serviceCode) : summaryService || "Not specified";
+  const signature = [platform, service, quantity, link, total].join("|");
+  const orderReference = getOrderReference(signature);
 
   const message = [
     "Hi SocialRUSH 👋",
     "I want to place an order.",
     "",
+    `Order Request: ${orderReference}`,
     `Platform: ${platform}`,
     `Service: ${service}`,
     `Quantity: ${quantity || "Not specified"}`,
     `Link: ${link || "Not specified"}`,
     `Total: ${total || "Please confirm"}`,
     "",
-    "Please share the payment details to complete my order.",
+    "Payment options: UPI QR / PhonePe Payment Link / Bank Transfer",
+    "Please send me the available payment option for this order request.",
+    "After payment, I will share the UTR / transaction ID for verification.",
   ].join("\n");
 
   const configured = process.env.NEXT_PUBLIC_WHATSAPP_URL?.trim();
