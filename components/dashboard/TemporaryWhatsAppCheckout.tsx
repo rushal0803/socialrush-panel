@@ -5,6 +5,11 @@ import { usePathname } from "next/navigation";
 
 const DEFAULT_WHATSAPP_URL = "https://wa.me/918860330771";
 const ACTIVE_ROUTES = new Set(["/dashboard/new-order", "/dashboard/order-summary"]);
+const CASHFREE_ERROR_PATTERNS = [
+  /unable to initialize secure payment/i,
+  /preparing secure payment/i,
+  /preparing secure checkout/i,
+];
 
 function titleCaseService(code: string) {
   return code
@@ -44,6 +49,26 @@ function findInputValue(root: ParentNode, labelPattern: RegExp) {
   return label?.querySelector<HTMLInputElement>("input, textarea")?.value?.trim() || "";
 }
 
+function findSummaryValue(root: ParentNode, labelPattern: RegExp) {
+  const nodes = Array.from(root.querySelectorAll("span, p, dt, div"));
+  const label = nodes.find((node) => {
+    const text = (node.textContent || "").replace(/\s+/g, " ").trim();
+    return text.length < 80 && labelPattern.test(text);
+  });
+  if (!label) return "";
+
+  const parent = label.parentElement;
+  if (!parent) return "";
+
+  const directChildren = Array.from(parent.children);
+  const sibling = directChildren.find((child) => child !== label && (child.textContent || "").trim());
+  if (sibling) return (sibling.textContent || "").replace(/\s+/g, " ").trim();
+
+  const text = (parent.textContent || "").replace(/\s+/g, " ").trim();
+  const labelText = (label.textContent || "").replace(/\s+/g, " ").trim();
+  return text.replace(labelText, "").trim();
+}
+
 function findOrderTotal(root: ParentNode) {
   const nodes = Array.from(root.querySelectorAll("span, p, dt, div"));
   const label = nodes.find((node) => /^order total$/i.test((node.textContent || "").trim()));
@@ -53,14 +78,18 @@ function findOrderTotal(root: ParentNode) {
 }
 
 function checkoutButton(element: Element) {
-  const control = element.closest("button, a");
+  const control = element.closest<HTMLElement>("button, a");
   if (!control) return null;
+  if (control.dataset.whatsappCheckout === "true") return control;
+
   const text = (control.textContent || "").replace(/\s+/g, " ").trim();
   const matches =
     /^place order$/i.test(text) ||
     /^place order securely$/i.test(text) ||
     /^pay .+ and place order$/i.test(text) ||
     /^pay .+ & place order$/i.test(text) ||
+    /^pay .+ and continue$/i.test(text) ||
+    /^pay .+ & continue$/i.test(text) ||
     /^continue to payment$/i.test(text);
   return matches ? control : null;
 }
@@ -70,19 +99,26 @@ function buildWhatsAppHref() {
   const params = new URLSearchParams(window.location.search);
 
   const serviceCode = params.get("service") || "";
-  const rawPlatform = params.get("platform") || serviceCode.split("-")[0] || "";
+  const rawPlatform =
+    params.get("platform") ||
+    serviceCode.split("-")[0] ||
+    findSummaryValue(root, /^platform$/i) ||
+    "";
   const quantity =
     params.get("quantity") ||
     root.querySelector<HTMLInputElement>('input[inputmode="numeric"]')?.value?.trim() ||
+    findSummaryValue(root, /^quantity$/i) ||
     "";
   const link =
     params.get("link") ||
     findInputValue(root, /public link|campaign link|username/i) ||
+    findSummaryValue(root, /^public link$/i) ||
     "";
   const total = findOrderTotal(root);
+  const summaryService = findSummaryValue(root, /^service$/i);
 
   const platform = rawPlatform ? platformLabel(rawPlatform) : "Not specified";
-  const service = serviceCode ? titleCaseService(serviceCode) : "Not specified";
+  const service = serviceCode ? titleCaseService(serviceCode) : summaryService || "Not specified";
 
   const message = [
     "Hi SocialRUSH 👋",
@@ -105,12 +141,38 @@ function buildWhatsAppHref() {
   return `${base}?text=${encodeURIComponent(message)}`;
 }
 
+function prepareTemporaryCheckout() {
+  const controls = Array.from(document.querySelectorAll<HTMLElement>("button, a"));
+  for (const control of controls) {
+    const match = checkoutButton(control);
+    if (!match) continue;
+    match.dataset.whatsappCheckout = "true";
+    match.setAttribute("aria-label", "Place Order on WhatsApp");
+    if (!(match instanceof HTMLButtonElement && match.disabled)) {
+      match.textContent = "Place Order on WhatsApp";
+    }
+  }
+
+  const possibleErrors = Array.from(document.querySelectorAll<HTMLElement>("p, div"));
+  for (const element of possibleErrors) {
+    const text = (element.textContent || "").replace(/\s+/g, " ").trim();
+    if (text.length > 180) continue;
+    if (!CASHFREE_ERROR_PATTERNS.some((pattern) => pattern.test(text))) continue;
+    element.style.display = "none";
+    element.dataset.temporaryWhatsappHidden = "true";
+  }
+}
+
 export default function TemporaryWhatsAppCheckout() {
   const pathname = usePathname();
   const active = ACTIVE_ROUTES.has(pathname);
 
   useEffect(() => {
     if (!active) return;
+
+    prepareTemporaryCheckout();
+    const observer = new MutationObserver(() => prepareTemporaryCheckout());
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
 
     const onClick = (event: MouseEvent) => {
       const target = event.target;
@@ -126,7 +188,10 @@ export default function TemporaryWhatsAppCheckout() {
     };
 
     document.addEventListener("click", onClick, true);
-    return () => document.removeEventListener("click", onClick, true);
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("click", onClick, true);
+    };
   }, [active]);
 
   if (!active) return null;
