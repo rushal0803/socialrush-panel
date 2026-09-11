@@ -5,7 +5,7 @@ import { ProfileSetupError } from "@/lib/auth/ensure-profile";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { redirect } from "next/navigation";
 import MobileBottomNav from "@/components/dashboard/MobileBottomNav";
-import TemporaryWhatsAppCheckout from "@/components/dashboard/TemporaryWhatsAppCheckout";
+import ProfessionalUpiCheckout from "@/components/dashboard/ProfessionalUpiCheckout";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -48,7 +48,7 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
           role={context.profile.role}
           balance={Number(context.profile.balance ?? 0)}
         />
-        <TemporaryWhatsAppCheckout />
+        <ProfessionalUpiCheckout />
         {children}
         <MobileBottomNav />
       </div>
