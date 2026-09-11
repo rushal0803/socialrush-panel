@@ -17,14 +17,28 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
   const { data: currentOrder, error: currentOrderError } = await auth.supabase
     .from("orders")
-    .select("id,user_id,charge,status")
+    .select("id,user_id,charge,status,payment_status,admin_note")
     .eq("id", params.id)
     .maybeSingle();
   if (currentOrderError) return NextResponse.json({ error: currentOrderError.message }, { status: 400 });
   if (!currentOrder) return NextResponse.json({ error: "Order not found" }, { status: 404 });
 
+  const awaitingUpiVerification = currentOrder.payment_status === "verification_pending";
+  if (awaitingUpiVerification && !["processing", "cancelled", "failed"].includes(status)) {
+    return NextResponse.json({ error: "Verify the UPI payment before moving this order beyond Pending." }, { status: 409 });
+  }
+
   const update: Record<string, string | null> = { status };
-  if (body?.note !== undefined) update.admin_note = String(body.note).trim().slice(0, 2000) || null;
+  if (awaitingUpiVerification && status === "processing") {
+    update.payment_status = "paid";
+    const verifiedNote = `UPI payment verified by admin on ${new Date().toISOString()}.`;
+    update.admin_note = body?.note !== undefined
+      ? `${verifiedNote} ${String(body.note).trim().slice(0, 1800)}`.trim()
+      : `${verifiedNote}${currentOrder.admin_note ? ` ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
+  } else if (body?.note !== undefined) {
+    update.admin_note = String(body.note).trim().slice(0, 2000) || null;
+  }
+
   const { data, error } = await auth.supabase.from("orders").update(update).eq("id", params.id).select("*").maybeSingle();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   if (!data) return NextResponse.json({ error: "Order not found" }, { status: 404 });
@@ -32,6 +46,7 @@ export async function POST(request: Request, { params }: { params: { id: string 
   let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;
   if (
     (status === "cancelled" || status === "refunded") &&
+    currentOrder.payment_status === "paid" &&
     currentOrder.status !== "cancelled" &&
     currentOrder.status !== "refunded"
   ) {
@@ -54,5 +69,5 @@ export async function POST(request: Request, { params }: { params: { id: string 
   revalidatePath(`/admin/orders/${params.id}`);
   revalidatePath("/dashboard/orders");
   revalidatePath("/dashboard/wallet");
-  return NextResponse.json({ data, refund });
+  return NextResponse.json({ data, refund, paymentVerified: awaitingUpiVerification && status === "processing" });
 }
