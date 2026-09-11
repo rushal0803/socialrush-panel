@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { AdminPageHeader, AdminStatus } from "@/components/admin/AdminUI";
 import AdminOrderControls from "@/components/admin/AdminOrderControls";
+import AdminPendingPaymentVerification from "@/components/admin/AdminPendingPaymentVerification";
 import { formatPublicOrderId } from "@/lib/orders/public-reference";
 
 const money = (value: unknown) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(Number(value ?? 0));
@@ -30,7 +31,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
 
   return (
     <main className="mx-auto max-w-[1500px] p-4 sm:p-8">
-      <AdminPageHeader title={`Order ${formatPublicOrderId(order.public_order_id)}`} description="Customer, fulfillment, wallet, count, refill, and status history in one operational view." action={<Link href="/admin/orders" className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-bold text-slate-600">Back to orders</Link>} />
+      <AdminPageHeader title={`Order ${formatPublicOrderId(order.public_order_id)}`} description="Customer, fulfillment, payment verification, wallet, count, refill, and status history in one operational view." action={<Link href="/admin/orders" className="rounded-xl border border-slate-200 bg-white px-4 py-3 text-xs font-bold text-slate-600">Back to orders</Link>} />
 
       <div className="mt-7 grid gap-6 xl:grid-cols-[1.2fr_.8fr]">
         <div className="space-y-6">
@@ -39,6 +40,13 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
             <a href={order.link} target="_blank" rel="noopener noreferrer" className="mt-5 block break-all rounded-2xl bg-orange-50 p-4 text-sm font-semibold text-orange-700 hover:underline">{order.link}</a>
             <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">{[["Quantity",count(order.quantity)],["Price",money(order.charge)],["Delivery",service?.delivery_time || "Not specified"],["Refill",order.refill_eligible ? "Eligible" : "Not eligible"]].map(([label,value]) => <div key={label} className="rounded-2xl border border-slate-100 bg-slate-50 p-4"><p className="text-[9px] font-bold uppercase text-slate-400">{label}</p><p className="mt-2 text-sm font-black text-slate-800">{value}</p></div>)}</div>
           </section>
+
+          <AdminPendingPaymentVerification
+            orderId={order.id}
+            paymentStatus={order.payment_status}
+            customerNote={order.customer_note}
+            amount={Number(order.charge)}
+          />
 
           <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm sm:p-7">
             <h2 className="text-lg font-black text-[#0B0B0F]">Fulfillment progress</h2>
@@ -72,7 +80,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
               Wallet Refund{" "}
               <AdminStatus value={walletRefunded ? "refunded" : "pending"} />
             </p>
-            <div className="mt-4 space-y-3">{(transactions ?? []).map((item) => <div key={item.id} className="rounded-xl bg-slate-50 p-3"><div className="flex justify-between gap-3 text-xs"><strong className="capitalize">{item.type}</strong><strong>{money(item.amount)}</strong></div><p className="mt-1 text-[10px] text-slate-500">{item.description || item.payment_method} · {new Date(item.created_at).toLocaleString("en-IN")}</p></div>)}{!transactions?.length ? <p className="text-xs text-slate-400">No linked ledger entry found.</p> : null}</div>
+            <div className="mt-4 space-y-3">{(transactions ?? []).map((item) => <div key={item.id} className="rounded-xl bg-slate-50 p-3"><div className="flex justify-between gap-3 text-xs"><strong className="capitalize">{item.type}</strong><strong>{money(item.amount)}</strong></div><p className="mt-1 text-[10px] text-slate-500">{item.description || item.payment_method} · {new Date(item.created_at).toLocaleString("en-IN")}</p></div>)}{!transactions?.length ? <p className="text-xs text-slate-400">No linked wallet ledger entry found. Manual UPI orders are verified against the submitted transaction details.</p> : null}</div>
           </section>
           <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm">
             <h2 className="text-base font-black text-[#0B0B0F]">Status timeline</h2>
@@ -80,7 +88,7 @@ export default async function AdminOrderDetailsPage({ params }: { params: { id: 
           </section>
           <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm">
             <h2 className="text-base font-black text-[#0B0B0F]">Operational details</h2>
-            <dl className="mt-4 space-y-3 text-xs">{[["Provider order ID",order.provider_order_id || "—"],["Customer note",order.customer_note || "—"],["Refill requested",order.refill_requested_at ? new Date(order.refill_requested_at).toLocaleString("en-IN") : "No"],["Completed",order.completed_at ? new Date(order.completed_at).toLocaleString("en-IN") : "—"],["Created",new Date(order.created_at).toLocaleString("en-IN")],["Last updated",new Date(order.updated_at || order.created_at).toLocaleString("en-IN")]].map(([label,value]) => <div key={label} className="flex justify-between gap-4"><dt className="text-slate-400">{label}</dt><dd className="text-right font-semibold text-slate-700">{value}</dd></div>)}</dl>
+            <dl className="mt-4 space-y-3 text-xs">{[["Provider order ID",order.provider_order_id || "—"],["Customer payment note",order.customer_note || "—"],["Refill requested",order.refill_requested_at ? new Date(order.refill_requested_at).toLocaleString("en-IN") : "No"],["Completed",order.completed_at ? new Date(order.completed_at).toLocaleString("en-IN") : "—"],["Created",new Date(order.created_at).toLocaleString("en-IN")],["Last updated",new Date(order.updated_at || order.created_at).toLocaleString("en-IN")]].map(([label,value]) => <div key={label} className="flex justify-between gap-4"><dt className="text-slate-400">{label}</dt><dd className="max-w-[65%] break-words text-right font-semibold text-slate-700">{value}</dd></div>)}</dl>
           </section>
         </aside>
       </div>
