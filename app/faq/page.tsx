@@ -7,7 +7,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 export const metadata = createPageMetadata({
   title: "Social Media Growth Services FAQ",
   description:
-    "Find answers about SocialRUSH service pricing, delivery, refill support, wallet payments, order tracking and social media growth services in India.",
+    "Find answers about SocialRUSH service pricing, delivery, refill support, UPI payments, order tracking and social media growth services in India.",
   path: "/faq",
   keywords: ["social media growth FAQ", "SocialRUSH service support"],
 });
@@ -35,7 +35,7 @@ const faqCategories: FaqCategory[] = [
       {
         question: "Is SocialRUSH safe?",
         answer:
-          "SocialRUSH uses public-link ordering, secure wallet payments, visible order tracking, and clearly stated delivery and refill terms. You never need to share a social media password.",
+          "SocialRUSH uses public-link ordering, clear payment instructions, visible order tracking, and clearly stated delivery and refill terms. You never need to share a social media password.",
       },
     ],
   },
@@ -67,12 +67,12 @@ const faqCategories: FaqCategory[] = [
       {
         question: "Do you have fixed pricing?",
         answer:
-          "Every active service displays a current rate. Entering a valid quantity calculates the exact campaign total before confirmation, so you can review the charge before your wallet is used.",
+          "Every active service displays a current rate. Entering a valid quantity calculates the exact campaign total before confirmation, so you can review the charge before placing your order.",
       },
       {
         question: "Are there hidden campaign charges?",
         answer:
-          "No hidden campaign charge is added after confirmation. Review the service rate, quantity, total, wallet balance, delivery estimate, and refill information before placing the order.",
+          "No hidden campaign charge is added after confirmation. Review the service rate, quantity, total, delivery estimate, and refill information before placing the order.",
       },
       {
         question: "Where can I compare the latest prices?",
@@ -88,17 +88,17 @@ const faqCategories: FaqCategory[] = [
       {
         question: "How do payments work?",
         answer:
-          "We support secure online payment options via integrated gateways including UPI, cards, net banking, and other supported digital payment modes.",
+          "For direct orders in India, SocialRUSH currently uses UPI checkout. Review the exact INR amount, open your preferred UPI app, complete the payment, then submit the UTR or transaction ID so the order can be verified.",
       },
       {
         question: "Is online payment secure?",
         answer:
-          "Yes. Payments are processed through secure channels with industry-standard safeguards, and wallet transactions are reflected in your account for transparency.",
+          "Use only the payment details shown inside SocialRUSH checkout. Never share your UPI PIN, OTP, banking password, recovery code, or social media password with anyone.",
       },
       {
         question: "Can I add funds to my wallet?",
         answer:
-          "Yes. You can add funds to your wallet and use that balance for faster checkout on campaigns and services whenever you place new orders.",
+          "Wallet top-ups are temporarily unavailable while the payment gateway is being restored. Existing wallet balance can still be used where supported, and new orders can be paid directly by UPI at checkout.",
       },
     ],
   },

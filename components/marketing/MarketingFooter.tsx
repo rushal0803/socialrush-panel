@@ -16,7 +16,7 @@ const groups: readonly FooterGroup[] = [
   { title: "Markets", links: [["United States", "/us"], ["United Kingdom", "/uk"], ["Canada", "/ca"], ["Australia", "/au"], ["United Arab Emirates", "/ae"], ["Singapore", "/sg"]] },
 ] as const;
 
-const payments = ["UPI", "Online payment checkout", "Net Banking", "Wallet Balance"] as const;
+const payments = ["UPI at checkout", "Wallet Balance"] as const;
 const trust = ["Review price before checkout", "Public-link ordering", "Order tracking", "Customer support", "Service-specific delivery details", "Service-specific refill details"] as const;
 
 function groupId(title: string) { return `footer-${title.toLowerCase().replace(/[^a-z0-9]+/g, "-")}`; }

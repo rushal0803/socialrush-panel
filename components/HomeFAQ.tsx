@@ -10,7 +10,7 @@ const faqs = [
   ["Do you offer refill support?", "Yes. Eligible services include refill protection during the mentioned refill period."],
   ["Can I track my order?", "Yes. Every order can be tracked directly from your SocialRUSH dashboard."],
   ["Which platforms do you support?", "We support Instagram, YouTube, Facebook, and Twitter/X growth services."],
-  ["How do payments work?", "Users can add funds securely through supported payment methods and use their wallet balance to place orders."],
+  ["How do payments work?", "For direct orders in India, review the exact amount at checkout, pay by UPI, then submit your UTR or transaction ID so the payment can be verified. Existing wallet balance can still be used where supported."],
   ["Can agencies use SocialRUSH?", "Yes. SocialRUSH is designed for creators, businesses, resellers, agencies, and social media managers."],
 ];
 
