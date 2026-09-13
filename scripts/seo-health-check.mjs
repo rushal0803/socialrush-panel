@@ -27,10 +27,38 @@ const canonicalServicePaths = [
   "/tiktok-followers",
 ];
 
-const requiredSitemapPaths = [
+const priorityCommercialPaths = [
+  "/",
+  "/services",
+  "/pricing",
+  "/packages",
+  "/instagram-growth-india",
+  "/youtube-growth-india",
+  "/facebook-growth-india",
+  "/linkedin-growth-india",
+  "/x-growth-india",
+  "/tiktok-growth-india",
+];
+
+const priorityIndexablePaths = [
+  ...priorityCommercialPaths,
   ...canonicalServicePaths,
+];
+
+const requiredSitemapPaths = [
+  ...priorityIndexablePaths,
   "/tools/social-media-growth-audit",
   "/tools/social-media-growth-planner",
+];
+
+const privateRobotsPaths = [
+  "/dashboard",
+  "/admin",
+  "/api/",
+  "/login",
+  "/register",
+  "/order-summary",
+  "/packages/checkout",
 ];
 
 const legacyRedirects = [
@@ -68,7 +96,7 @@ async function fetchWithTimeout(path, redirect = "follow") {
       redirect,
       signal: controller.signal,
       headers: {
-        "user-agent": "SocialRUSH-SEO-Health-Monitor/1.0",
+        "user-agent": "SocialRUSH-SEO-Health-Monitor/1.1",
         accept: "text/html,application/xml,text/plain;q=0.9,*/*;q=0.8",
       },
     });
@@ -82,6 +110,17 @@ function canonicalHref(html) {
     ?? html.match(/<link\b[^>]*\bhref=["'][^"']+["'][^>]*\brel=["']canonical["'][^>]*>/i)?.[0];
 
   return tag?.match(/\bhref=["']([^"']+)["']/i)?.[1];
+}
+
+function metaDescription(html) {
+  const tag = html.match(/<meta\b[^>]*\bname=["']description["'][^>]*>/i)?.[0]
+    ?? html.match(/<meta\b[^>]*\bcontent=["'][^"']+["'][^>]*\bname=["']description["'][^>]*>/i)?.[0];
+
+  return tag?.match(/\bcontent=["']([^"']+)["']/i)?.[1]?.trim();
+}
+
+function pageTitle(html) {
+  return html.match(/<title>([^<]+)<\/title>/i)?.[1]?.trim();
 }
 
 async function checkPage(path) {
@@ -101,6 +140,18 @@ async function checkPage(path) {
       || /<meta\b[^>]*\bcontent=["'][^"']*noindex[^"']*["'][^>]*\bname=["']robots["']/i.test(html);
     if (hasNoindex) {
       fail(label, "page is marked noindex");
+      return;
+    }
+
+    const title = pageTitle(html);
+    if (!title) {
+      fail(label, "title tag is missing");
+      return;
+    }
+
+    const description = metaDescription(html);
+    if (!description) {
+      fail(label, "meta description is missing");
       return;
     }
 
@@ -125,10 +176,19 @@ async function checkRobotsAndSitemap() {
   try {
     const robotsResponse = await fetchWithTimeout("/robots.txt");
     const robots = await robotsResponse.text();
-    if (robotsResponse.status === 200 && /Sitemap:\s*https:\/\/www\.getsocialrush\.com\/sitemap\.xml/i.test(robots)) {
-      pass("robots.txt advertises the canonical sitemap");
+    if (robotsResponse.status !== 200) {
+      fail("robots.txt", `expected HTTP 200, received ${robotsResponse.status}`);
+    } else if (!/Sitemap:\s*https:\/\/www\.getsocialrush\.com\/sitemap\.xml/i.test(robots)) {
+      fail("robots.txt", "canonical sitemap declaration missing");
     } else {
-      fail("robots.txt", `HTTP ${robotsResponse.status} or canonical sitemap declaration missing`);
+      const missingPrivateRules = privateRobotsPaths.filter(
+        (path) => !robots.includes(`Disallow: ${path}`),
+      );
+      if (missingPrivateRules.length > 0) {
+        fail("robots.txt", `missing private-route rules for ${missingPrivateRules.join(", ")}`);
+      } else {
+        pass("robots.txt advertises the canonical sitemap and protects private routes");
+      }
     }
   } catch (error) {
     fail("robots.txt", error instanceof Error ? error.message : String(error));
@@ -181,7 +241,7 @@ async function runInBatches(items, task) {
 
 console.log(`SocialRUSH SEO health check: ${baseUrl.origin}`);
 await checkRobotsAndSitemap();
-await runInBatches(canonicalServicePaths, checkPage);
+await runInBatches(priorityIndexablePaths, checkPage);
 await runInBatches(legacyRedirects, checkRedirect);
 
 console.log(`\n${checks - failures.length}/${checks} checks passed.`);
