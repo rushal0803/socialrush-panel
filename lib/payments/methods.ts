@@ -2,22 +2,22 @@ export const PAYMENT_METHODS = [
   {
     id: "upi",
     label: "UPI",
-    description: "PhonePe, Google Pay, Paytm, BHIM",
+    description: "Pay directly by UPI when placing an order",
   },
   {
     id: "card",
     label: "Debit Card / Credit Card",
-    description: "Visa, Mastercard, RuPay",
+    description: "Temporarily unavailable",
   },
   {
     id: "netbanking",
     label: "Net Banking",
-    description: "Pay directly from your bank account",
+    description: "Temporarily unavailable",
   },
   {
     id: "international_card",
     label: "International Card",
-    description: "Pay using international Visa, Mastercard, Amex, or supported cards",
+    description: "Temporarily unavailable",
   },
 ] as const;
 
@@ -79,11 +79,15 @@ export function isPaymentMethod(
   );
 }
 
+// Cashfree transactions are currently disabled for the merchant account.
+// Keep wallet balance usable, but prevent customer-facing wallet top-ups from
+// attempting the unavailable gateway. Direct orders use the temporary UPI
+// checkout flow until a verified payment gateway is restored.
 const PAYMENT_METHOD_ENABLED: Record<PaymentMethodId, boolean> = {
-  upi: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_UPI !== "false",
-  card: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_CARD !== "false",
-  netbanking: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_NETBANKING !== "false",
-  international_card: process.env.NEXT_PUBLIC_CASHFREE_ENABLE_INTERNATIONAL_CARD === "true",
+  upi: false,
+  card: false,
+  netbanking: false,
+  international_card: false,
 };
 
 export function isPaymentMethodEnabled(method: SupportedPaymentMethodId) {
@@ -95,9 +99,12 @@ export function paymentMethodUnavailableMessage(
   method: SupportedPaymentMethodId,
 ) {
   if (method === "international_card") {
-    return "International payments are currently being activated. Please contact WhatsApp support.";
+    return "International card payments are temporarily unavailable. Please contact WhatsApp support for assistance.";
   }
-  return "This payment method is currently under activation. Please use UPI for now.";
+  if (method === "upi") {
+    return "Wallet top-ups are temporarily unavailable. Please place your order directly and pay by UPI at checkout.";
+  }
+  return "This payment method is temporarily unavailable. Please place your order directly and use UPI at checkout.";
 }
 
 export function paymentMethodLabel(value: string | null | undefined) {
