@@ -38,49 +38,29 @@ export default function CheckoutFunnelTracker() {
     const onClick = (event: MouseEvent) => {
       const target = event.target;
       if (!(target instanceof Element)) return;
-
-      const upiLink = target.closest<HTMLAnchorElement>('a[href^="upi://"]');
-      if (upiLink) {
-        const current = currentOrderContext();
-        track("payment_started", { service_code: current.serviceCode, platform: current.platform, method: "upi", surface: "upi_checkout" });
-        return;
-      }
-
-      const confirmButton = target.closest<HTMLButtonElement>("button");
-      if (confirmButton && /confirm.*order|submit.*utr|verify.*payment/i.test(confirmButton.textContent || "")) {
-        const current = currentOrderContext();
-        const utrInput = document.querySelector<HTMLInputElement>("#manual-upi-utr");
-        const valid = /^[A-Za-z0-9-]{8,40}$/.test((utrInput?.value || "").trim().replace(/\s+/g, ""));
-        track("utr_submitted", { service_code: current.serviceCode, platform: current.platform, method: "upi", validation_passed: valid, surface: "upi_checkout" });
-        if (!valid) track("checkout_error", { service_code: current.serviceCode, platform: current.platform, error_category: "invalid_utr", surface: "upi_checkout" });
-        return;
-      }
-
       const checkout = isCheckoutControl(target);
       if (!checkout) return;
+
       const current = currentOrderContext();
       const valid = Boolean(current.serviceCode && Number.isInteger(current.quantity) && current.quantity > 0 && current.hasLink);
-      track("order_details_completed", { service_code: current.serviceCode, platform: current.platform, validation_passed: valid, surface: "dashboard_order" });
-      if (!valid) track("checkout_error", { service_code: current.serviceCode, platform: current.platform, error_category: "incomplete_order_details", surface: "dashboard_order" });
-    };
-
-    let checkoutOpenTracked = false;
-    const observer = new MutationObserver(() => {
-      if (checkoutOpenTracked) return;
-      const text = document.body.textContent || "";
-      if (/Secure UPI Checkout/i.test(text)) {
-        const current = currentOrderContext();
-        track("checkout_started", { service_code: current.serviceCode, platform: current.platform, method: "upi", currency: "INR", surface: "upi_checkout" });
-        checkoutOpenTracked = true;
+      track("order_details_completed", {
+        service_code: current.serviceCode,
+        platform: current.platform,
+        validation_passed: valid,
+        surface: "dashboard_order",
+      });
+      if (!valid) {
+        track("checkout_error", {
+          service_code: current.serviceCode,
+          platform: current.platform,
+          error_category: "incomplete_order_details",
+          surface: "dashboard_order",
+        });
       }
-    });
+    };
 
     document.addEventListener("click", onClick, true);
-    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
-    return () => {
-      document.removeEventListener("click", onClick, true);
-      observer.disconnect();
-    };
+    return () => document.removeEventListener("click", onClick, true);
   }, [pathname]);
 
   return null;
