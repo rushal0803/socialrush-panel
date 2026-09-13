@@ -9,7 +9,7 @@ type ServiceCopy = {
 const serviceCopy: Record<string, ServiceCopy> = {
   "instagram-followers": {
     summary: "Build social proof and strengthen your Instagram presence with premium follower growth services.",
-    deliverables: ["Gradual processing", "30-day refill support", "Live order tracking", "Secure wallet checkout"],
+    deliverables: ["Gradual processing", "30-day refill support", "Live order tracking", "Secure checkout"],
     ideal: "Creators, influencers, brands, and businesses",
   },
   "instagram-likes": {
@@ -110,14 +110,14 @@ export const agencyServices = activeSmmServices.map((service) => {
 export const publicFaqs = [
   ["What is SocialRUSH?", "SocialRUSH is a premium social media growth platform for ordering and tracking Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X services from one secure dashboard."],
   ["Do I need to share my password?", "No. SocialRUSH never asks for your social media password. Customers provide only the public profile, post, reel, channel, or video link required for processing."],
-  ["How do I place an order?", "Create an account, add funds through the wallet, open New Campaign, choose a service, paste the public profile or content link, select quantity, and confirm checkout."],
-  ["How do payments work?", "Add funds securely through supported Cashfree payment methods. Verified payments credit your wallet, and campaign charges are deducted only when an order is placed."],
+  ["How do I place an order?", "Create an account, open New Campaign, choose a service, paste the required public link, select quantity, review the exact INR total, and complete checkout. If your wallet balance is sufficient, it can be used automatically; otherwise direct UPI checkout is available."],
+  ["How do payments work?", "For direct orders in India, review the exact INR amount at checkout and pay through UPI. After payment, submit the UTR or Transaction ID so the order can be verified. Existing wallet balance can still be used where available."],
   ["How long does delivery take?", "Delivery varies by service and quantity. The estimated processing window is displayed before checkout and progress remains visible in Campaign History."],
   ["What is refill support?", "Eligible services include refill coverage for the displayed period. If qualifying delivery drops during that window, open a support ticket with the order ID."],
   ["Can I track my order?", "Yes. Order status, amount, destination, date, and progress are available inside your protected dashboard."],
   ["Which platforms do you support?", "The public catalog covers Instagram, YouTube, Facebook, LinkedIn, TikTok, and Twitter/X. Live availability is shown inside the campaign dashboard."],
   ["What if my order is delayed?", "Check the delivery estimate first. If processing exceeds that window, create a support ticket and the team will review the order."],
-  ["Can agencies use SocialRUSH?", "Yes. The wallet, order history, service catalog, and support workflow are suitable for agencies and social media managers handling multiple campaigns."],
+  ["Can agencies use SocialRUSH?", "Yes. The order history, service catalog, wallet balance, and support workflow are suitable for agencies and social media managers handling multiple campaigns."],
   ["Which link should I submit?", "Submit the exact public destination required by the service: a profile for followers, a post or video for likes and views, or a public channel for subscribers. Review it carefully before checkout."],
   ["Can I order multiple services?", "Yes. You can place separate campaigns for different services or platforms and track every order independently from Campaign History."],
 ];
@@ -126,6 +126,5 @@ export const caseStudies = [
   {type:"Independent creator",category:"Instagram Growth",goal:"Strengthen profile presentation before a product collaboration.",strategy:"A gradual follower campaign supported by selected reel visibility orders and clear delivery tracking.",result:"A more established profile presentation and a simpler repeat-order workflow through the dashboard."},
   {type:"Education channel",category:"YouTube Growth",goal:"Improve channel authority around a new content series.",strategy:"Subscriber growth and selected video reach campaigns scheduled across the launch period.",result:"Stronger channel social proof with every campaign and transaction visible in one workspace."},
   {type:"Local retail brand",category:"Facebook Growth",goal:"Increase visible activity around promotional video content.",strategy:"Page follower, post engagement, and video view services selected according to campaign priorities.",result:"More consistent public presentation and easier campaign management for the internal marketing team."},
-  {type:"Boutique agency",category:"Multi-platform",goal:"Manage repeat client requests without scattered payment and status records.",strategy:"Centralized wallet funding, structured orders, campaign history, and support tickets.",result:"A cleaner operational workflow with transparent pricing and searchable order records."},
+  {type:"Boutique agency",category:"Multi-platform",goal:"Manage repeat client requests without scattered payment and status records.",strategy:"Centralized order management, structured campaign history, wallet balance where available, and support tickets.",result:"A cleaner operational workflow with transparent pricing and searchable order records."},
 ];
-
