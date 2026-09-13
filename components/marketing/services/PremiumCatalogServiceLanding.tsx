@@ -83,7 +83,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
   };
 
   return (
-    <PublicShell tone="dark">
+    <PublicShell tone="default">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(faqSchema) }} />
