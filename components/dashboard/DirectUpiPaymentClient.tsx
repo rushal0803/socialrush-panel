@@ -2,10 +2,19 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Building2, Copy, ExternalLink, LoaderCircle, ShieldCheck, Smartphone } from "lucide-react";
+import {
+  ArrowRight,
+  Building2,
+  CheckCircle2,
+  Clock3,
+  Copy,
+  ExternalLink,
+  LoaderCircle,
+  LockKeyhole,
+  ShieldCheck,
+  Smartphone,
+} from "lucide-react";
 import { track } from "@/lib/analytics/events";
-
-type PaymentMethod = "upi" | "bank_transfer";
 
 type BankTransferDetails = {
   enabled: boolean;
@@ -43,17 +52,15 @@ export default function DirectUpiPaymentClient({
   total,
   upiId,
   payeeName,
-  bankTransfer,
 }: Props) {
   const router = useRouter();
   const [reference] = useState(paymentReference);
-  const [method, setMethod] = useState<PaymentMethod>("upi");
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [utr, setUtr] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{ public_order_id: string } | null>(null);
-  const [copied, setCopied] = useState("");
+  const [copied, setCopied] = useState(false);
 
   const amountLabel = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -73,35 +80,17 @@ export default function DirectUpiPaymentClient({
     return `upi://pay?${params.toString()}`;
   }, [payeeName, reference, total, upiId]);
 
-  async function copyValue(label: string, value: string) {
-    if (!value) return;
-    await navigator.clipboard.writeText(value).catch(() => undefined);
-    setCopied(label);
-    window.setTimeout(() => setCopied(""), 1400);
-  }
-
-  function chooseMethod(nextMethod: PaymentMethod) {
-    setMethod(nextMethod);
-    setPaymentStarted(false);
-    setUtr("");
-    setError("");
-  }
-
-  function markBankTransferStarted() {
-    setPaymentStarted(true);
-    track("payment_started", {
-      service_code: serviceCode,
-      method: "bank_transfer",
-      currency: "INR",
-      value: total,
-      step: "bank_transfer_instructions_viewed",
-    });
+  async function copyUpiId() {
+    if (!upiId) return;
+    await navigator.clipboard.writeText(upiId).catch(() => undefined);
+    setCopied(true);
+    window.setTimeout(() => setCopied(false), 1400);
   }
 
   async function submitUtr() {
     const cleanUtr = utr.trim().replace(/\s+/g, "");
     if (!/^[A-Za-z0-9-]{8,40}$/.test(cleanUtr)) {
-      setError("Enter the UTR / Transaction ID from your successful payment.");
+      setError("Enter the UTR / Transaction ID from your successful UPI payment.");
       return;
     }
 
@@ -109,7 +98,7 @@ export default function DirectUpiPaymentClient({
     setError("");
     track("utr_submitted", {
       service_code: serviceCode,
-      method,
+      method: "upi",
       step: "verification",
     });
 
@@ -121,7 +110,7 @@ export default function DirectUpiPaymentClient({
           intentId,
           clientRequestId,
           paymentReference: reference,
-          paymentMethod: method,
+          paymentMethod: "upi",
           utr: cleanUtr,
         }),
       });
@@ -139,7 +128,7 @@ export default function DirectUpiPaymentClient({
       setError(cause instanceof Error ? cause.message : "Unable to confirm your order.");
       track("checkout_error", {
         service_code: serviceCode,
-        method,
+        method: "upi",
         step: "verification",
         error_category: "manual_payment_confirmation_failed",
       });
@@ -150,151 +139,211 @@ export default function DirectUpiPaymentClient({
 
   if (success) {
     return (
-      <section className="mx-auto max-w-xl rounded-3xl border border-emerald-400/20 bg-[#111318] p-6 text-center text-white shadow-2xl sm:p-8">
-        <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-500/15 text-3xl">✓</div>
-        <h1 className="mt-4 text-2xl font-black">Order received successfully</h1>
-        <p className="mt-2 text-sm leading-6 text-zinc-300">Your payment has been submitted for verification. Do not pay again.</p>
-        <p className="mt-3 text-sm font-black text-orange-300">Order ID: {success.public_order_id}</p>
-        <button type="button" onClick={() => router.push("/dashboard/orders")} className="mt-6 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 font-black text-black">View My Orders</button>
+      <section className="mx-auto max-w-2xl overflow-hidden rounded-[28px] border border-emerald-400/20 bg-[#0d1118] text-white shadow-[0_24px_80px_rgba(0,0,0,.45)]">
+        <div className="border-b border-white/10 bg-gradient-to-r from-emerald-500/10 via-transparent to-orange-500/10 p-6 text-center sm:p-8">
+          <div className="mx-auto grid h-16 w-16 place-items-center rounded-2xl border border-emerald-400/20 bg-emerald-500/10">
+            <CheckCircle2 className="h-8 w-8 text-emerald-300" />
+          </div>
+          <p className="mt-4 text-[11px] font-black uppercase tracking-[0.22em] text-emerald-300">Payment submitted</p>
+          <h1 className="mt-2 text-2xl font-black sm:text-3xl">Your order has been received</h1>
+          <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-zinc-300">We will verify the payment before processing. Please do not make another payment for this order.</p>
+          <div className="mx-auto mt-5 max-w-sm rounded-2xl border border-white/10 bg-black/20 px-4 py-3 text-sm">
+            <span className="text-zinc-500">Order ID</span>
+            <p className="mt-1 font-black text-orange-300">{success.public_order_id}</p>
+          </div>
+          <button type="button" onClick={() => router.push("/dashboard/orders")} className="mt-6 inline-flex min-h-12 w-full max-w-sm items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-3 font-black text-black shadow-[0_12px_34px_rgba(249,115,22,.22)]">
+            View My Orders <ArrowRight className="h-4 w-4" />
+          </button>
+        </div>
       </section>
     );
   }
 
   return (
-    <section className="mx-auto max-w-2xl rounded-3xl border border-orange-400/20 bg-[#111318] p-5 text-white shadow-2xl sm:p-8">
-      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-orange-300">Secure manual checkout</p>
-      <h1 className="mt-2 text-3xl font-black tracking-tight">Pay {amountLabel}</h1>
-      <p className="mt-2 text-sm leading-6 text-zinc-300">Choose Direct UPI or Bank Transfer. Pay the exact total, then submit the UTR for verification.</p>
-
-      <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm">
-        <div className="grid gap-3 sm:grid-cols-2">
-          <p><span className="text-zinc-500">Service:</span> <strong>{serviceName}</strong></p>
-          <p><span className="text-zinc-500">Quantity:</span> <strong>{quantity.toLocaleString("en-IN")}</strong></p>
-          <p className="break-all sm:col-span-2"><span className="text-zinc-500">Public link:</span> {link}</p>
-        </div>
-      </div>
-
-      <div className="mt-5 grid grid-cols-2 gap-2 rounded-2xl border border-white/10 bg-black/20 p-2">
-        <button type="button" onClick={() => chooseMethod("upi")} className={`flex min-h-12 items-center justify-center gap-2 rounded-xl px-3 text-sm font-black ${method === "upi" ? "bg-white text-black" : "text-zinc-300"}`}>
-          <Smartphone className="h-4 w-4" /> Direct UPI
-        </button>
-        <button type="button" disabled={!bankTransfer.enabled} onClick={() => chooseMethod("bank_transfer")} className={`flex min-h-12 items-center justify-center gap-2 rounded-xl px-3 text-sm font-black disabled:cursor-not-allowed disabled:opacity-40 ${method === "bank_transfer" ? "bg-white text-black" : "text-zinc-300"}`}>
-          <Building2 className="h-4 w-4" /> Bank Transfer
-        </button>
-      </div>
-
-      {method === "upi" ? (
-        !upiId ? (
-          <div className="mt-5 rounded-2xl border border-red-400/20 bg-red-500/10 p-4 text-sm font-semibold text-red-200">UPI is not configured right now. Please contact support before paying.</div>
-        ) : !paymentStarted ? (
-          <>
-            <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4">
-              <p className="text-xs font-bold uppercase tracking-[0.14em] text-zinc-500">UPI ID</p>
-              <div className="mt-2 flex items-center justify-between gap-3">
-                <p className="min-w-0 break-all text-base font-black">{upiId}</p>
-                <button type="button" onClick={() => void copyValue("upi", upiId)} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-orange-200"><Copy className="h-4 w-4" />{copied === "upi" ? "Copied" : "Copy"}</button>
-              </div>
-            </div>
-
-            <a
-              href={upiHref}
-              onClick={() => {
-                setPaymentStarted(true);
-                track("payment_started", {
-                  service_code: serviceCode,
-                  method: "upi",
-                  currency: "INR",
-                  value: total,
-                  step: "upi_app_opened",
-                });
-              }}
-              className="mt-5 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-base font-black text-black shadow-lg"
-            >
-              Pay {amountLabel} with UPI <ExternalLink className="h-4 w-4" />
-            </a>
-            <p className="mt-3 text-center text-xs text-zinc-500">Works with Paytm, PhonePe, Google Pay and other UPI apps. Never share your UPI PIN or OTP.</p>
-          </>
-        ) : null
-      ) : !bankTransfer.enabled ? (
-        <div className="mt-5 rounded-2xl border border-red-400/20 bg-red-500/10 p-4 text-sm font-semibold text-red-200">Bank Transfer is not configured right now. Please use Direct UPI.</div>
-      ) : !paymentStarted ? (
-        <>
-          <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
-            <div className="flex items-center justify-between gap-3">
-              <div>
-                <p className="text-xs font-black uppercase tracking-[0.14em] text-zinc-500">IMPS / NEFT / Bank Transfer</p>
-                <p className="mt-1 text-sm text-zinc-300">Transfer exactly <strong className="text-white">{amountLabel}</strong></p>
-              </div>
-              <Building2 className="h-6 w-6 text-orange-300" />
-            </div>
-            <div className="mt-4 grid gap-3 text-sm">
-              <BankRow label="Account holder" value={bankTransfer.accountName} copyKey="account-name" copied={copied} onCopy={copyValue} />
-              <BankRow label="Bank" value={bankTransfer.bankName} />
-              <BankRow label="Account number" value={bankTransfer.accountNumber} copyKey="account-number" copied={copied} onCopy={copyValue} />
-              <BankRow label="IFSC" value={bankTransfer.ifsc} copyKey="ifsc" copied={copied} onCopy={copyValue} />
-              <BankRow label="Payment reference" value={reference} copyKey="reference" copied={copied} onCopy={copyValue} />
-            </div>
+    <section className="mx-auto max-w-3xl overflow-hidden rounded-[28px] border border-orange-400/20 bg-[#0b0f15] text-white shadow-[0_24px_80px_rgba(0,0,0,.48)]">
+      <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,.16),transparent_36%)] p-5 sm:p-8">
+        <div className="flex flex-wrap items-center justify-between gap-3">
+          <div>
+            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-300">Complete your payment</p>
+            <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Pay {amountLabel}</h1>
           </div>
-          <button type="button" onClick={markBankTransferStarted} className="mt-5 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-base font-black text-black shadow-lg">I&apos;ve Completed the Bank Transfer</button>
-          <p className="mt-3 text-center text-xs leading-5 text-zinc-500">Use only the account details shown above. Keep the bank transaction receipt until your payment is verified.</p>
-        </>
-      ) : null}
+          <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-500/10 px-3 py-2 text-xs font-bold text-emerald-200">
+            <LockKeyhole className="h-4 w-4" /> Secure checkout
+          </div>
+        </div>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">Pay the exact amount using Direct UPI, then submit the UTR for verification. Your order moves forward after payment confirmation.</p>
+      </div>
 
-      {paymentStarted ? (
-        <div className="mt-5 rounded-2xl border border-white/10 bg-black/20 p-4 sm:p-5">
-          <div className="flex items-start gap-3">
-            <ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" />
+      <div className="space-y-5 p-4 sm:p-6 lg:p-8">
+        <div className="rounded-2xl border border-white/10 bg-white/[0.035] p-4 sm:p-5">
+          <div className="flex items-center justify-between gap-3 border-b border-white/10 pb-4">
             <div>
-              <h2 className="text-lg font-black">Payment completed?</h2>
-              <p className="mt-1 text-sm leading-6 text-zinc-300">Enter the UTR / Transaction ID from your successful {method === "upi" ? "UPI payment" : "bank transfer"}. We will verify it before processing the order.</p>
+              <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Order summary</p>
+              <h2 className="mt-1 text-lg font-black">{serviceName}</h2>
+            </div>
+            <span className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">{amountLabel}</span>
+          </div>
+          <div className="mt-4 grid gap-4 text-sm sm:grid-cols-2">
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Quantity</p>
+              <p className="mt-1 font-black text-zinc-100">{quantity.toLocaleString("en-IN")}</p>
+            </div>
+            <div>
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Payment reference</p>
+              <p className="mt-1 font-black text-zinc-100">{reference}</p>
+            </div>
+            <div className="sm:col-span-2">
+              <p className="text-xs font-bold uppercase tracking-wider text-zinc-500">Public link</p>
+              <p className="mt-1 break-all leading-6 text-zinc-300">{link}</p>
             </div>
           </div>
-
-          <label htmlFor="manual-payment-utr" className="mt-5 block text-sm font-black">UTR / Transaction ID</label>
-          <input
-            id="manual-payment-utr"
-            value={utr}
-            onChange={(event) => setUtr(event.target.value.slice(0, 40))}
-            placeholder="Enter transaction ID"
-            autoComplete="off"
-            className="mt-2 w-full rounded-xl border border-white/10 bg-[#0b0d12] px-4 py-3 text-base outline-none focus:border-orange-400"
-          />
-          <details className="mt-3 text-xs text-zinc-400">
-            <summary className="cursor-pointer font-semibold text-orange-300">Where can I find the UTR?</summary>
-            <p className="mt-2 leading-5">Open your payment or banking app, go to transaction history, open this successful payment, then copy the UTR / Transaction ID.</p>
-          </details>
-          {error ? <p className="mt-3 rounded-xl bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
-          <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 font-black text-black disabled:opacity-60">
-            {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Confirming...</> : "Submit Payment & Place Order"}
-          </button>
-          <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 px-4 text-sm font-bold text-zinc-300">Back to payment details</button>
-          <p className="mt-3 text-center text-xs text-zinc-500">Do not submit the same UTR for more than one order.</p>
         </div>
-      ) : null}
+
+        <div className="grid grid-cols-2 gap-3">
+          <div className="relative rounded-2xl border border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5 p-4 shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)]">
+            <div className="flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/15 text-orange-300"><Smartphone className="h-5 w-5" /></div>
+              <div>
+                <p className="text-sm font-black">Direct UPI</p>
+                <p className="mt-0.5 text-[11px] text-zinc-400">Instant & easy</p>
+              </div>
+            </div>
+            <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" />
+          </div>
+
+          <div aria-disabled="true" className="cursor-not-allowed rounded-2xl border border-white/8 bg-white/[0.025] p-4 opacity-45">
+            <div className="flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-zinc-500"><Building2 className="h-5 w-5" /></div>
+              <div className="min-w-0">
+                <p className="text-sm font-black text-zinc-400">Bank Transfer</p>
+                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-600">Coming soon</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {!upiId ? (
+          <div className="rounded-2xl border border-red-400/20 bg-red-500/10 p-4 text-sm font-semibold text-red-200">UPI is not configured right now. Please contact support before paying.</div>
+        ) : !paymentStarted ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
+            <div className="flex items-start gap-4">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-orange-500 to-amber-400 text-sm font-black text-black">1</div>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-black">Pay using UPI</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">Open your preferred UPI app. The exact order amount is pre-filled for you.</p>
+                  </div>
+                  <span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount: {amountLabel}</span>
+                </div>
+
+                <div className="mt-5 rounded-2xl border border-white/10 bg-black/25 p-4">
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="min-w-0">
+                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Pay to UPI ID</p>
+                      <p className="mt-1 break-all text-base font-black text-white">{upiId}</p>
+                    </div>
+                    <button type="button" onClick={() => void copyUpiId()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-orange-200">
+                      <Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy"}
+                    </button>
+                  </div>
+                </div>
+
+                <a
+                  href={upiHref}
+                  onClick={() => {
+                    setPaymentStarted(true);
+                    track("payment_started", {
+                      service_code: serviceCode,
+                      method: "upi",
+                      currency: "INR",
+                      value: total,
+                      step: "upi_app_opened",
+                    });
+                  }}
+                  className="mt-4 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-4 text-base font-black text-black shadow-[0_14px_38px_rgba(249,115,22,.24)] transition hover:brightness-105"
+                >
+                  Open UPI App & Pay {amountLabel} <ExternalLink className="h-4 w-4" />
+                </a>
+
+                <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] p-3 text-xs leading-5 text-emerald-100/80">
+                  <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
+                  Pay only the amount shown above. Never share your UPI PIN, OTP or banking password with anyone.
+                </div>
+              </div>
+            </div>
+          </div>
+        ) : (
+          <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
+            <div className="flex items-start gap-4">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-orange-500 to-amber-400 text-sm font-black text-black">2</div>
+              <div className="min-w-0 flex-1">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div>
+                    <h2 className="text-xl font-black">Enter UTR / Transaction ID</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">After successful payment, enter the UTR below. We verify it before processing your order.</p>
+                  </div>
+                  <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/15 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-200">
+                    <Clock3 className="h-3.5 w-3.5" /> Verification pending
+                  </div>
+                </div>
+
+                <div className="mt-5 rounded-2xl border border-white/10 bg-black/25 p-4 text-sm">
+                  <div className="flex items-center justify-between gap-4">
+                    <span className="text-zinc-500">Amount paid</span>
+                    <strong className="text-orange-300">{amountLabel}</strong>
+                  </div>
+                  <div className="mt-2 flex items-center justify-between gap-4">
+                    <span className="text-zinc-500">Reference</span>
+                    <strong className="text-xs text-zinc-200">{reference}</strong>
+                  </div>
+                </div>
+
+                <label htmlFor="manual-payment-utr" className="mt-5 block text-sm font-black">UTR / Transaction ID</label>
+                <input
+                  id="manual-payment-utr"
+                  value={utr}
+                  onChange={(event) => setUtr(event.target.value.slice(0, 40))}
+                  placeholder="Enter transaction ID"
+                  autoComplete="off"
+                  inputMode="text"
+                  className="mt-2 w-full rounded-2xl border border-white/10 bg-[#080b10] px-4 py-4 text-base font-semibold outline-none transition placeholder:text-zinc-600 focus:border-orange-400/70 focus:ring-2 focus:ring-orange-400/10"
+                />
+
+                <details className="mt-3 rounded-xl border border-white/5 bg-white/[0.025] px-3 py-2 text-xs text-zinc-400">
+                  <summary className="cursor-pointer font-bold text-orange-300">Where can I find the UTR?</summary>
+                  <p className="mt-2 leading-5">Open your UPI app, go to transaction history, open this successful payment, then copy the UTR / Transaction ID.</p>
+                </details>
+
+                {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
+
+                <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-4 font-black text-black shadow-[0_14px_38px_rgba(249,115,22,.24)] disabled:opacity-60">
+                  {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Confirming...</> : <>Submit Payment & Place Order <ArrowRight className="h-4 w-4" /></>}
+                </button>
+                <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 bg-white/[0.025] px-4 text-sm font-bold text-zinc-300 transition hover:bg-white/[0.05]">Back to payment details</button>
+                <p className="mt-3 text-center text-xs leading-5 text-zinc-500">Do not submit the same UTR for more than one order. Incorrect details may delay verification.</p>
+              </div>
+            </div>
+          </div>
+        )}
+
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
+          <TrustItem icon={<ShieldCheck className="h-4 w-4" />} title="Secure payment" subtitle="Protected flow" />
+          <TrustItem icon={<Clock3 className="h-4 w-4" />} title="Manual verification" subtitle="Before processing" />
+          <TrustItem icon={<Smartphone className="h-4 w-4" />} title="Direct UPI" subtitle="No gateway" />
+          <TrustItem icon={<LockKeyhole className="h-4 w-4" />} title="Privacy first" subtitle="No PIN or OTP" />
+        </div>
+      </div>
     </section>
   );
 }
 
-type BankRowProps = {
-  label: string;
-  value: string;
-  copyKey?: string;
-  copied?: string;
-  onCopy?: (label: string, value: string) => Promise<void>;
-};
-
-function BankRow({ label, value, copyKey, copied, onCopy }: BankRowProps) {
+function TrustItem({ icon, title, subtitle }: { icon: React.ReactNode; title: string; subtitle: string }) {
   return (
-    <div className="flex items-center justify-between gap-3 rounded-xl border border-white/5 bg-white/[0.03] p-3">
-      <div className="min-w-0">
-        <p className="text-[10px] font-black uppercase tracking-wider text-zinc-500">{label}</p>
-        <p className="mt-1 break-all font-bold text-white">{value}</p>
-      </div>
-      {copyKey && onCopy ? (
-        <button type="button" onClick={() => void onCopy(copyKey, value)} className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-lg border border-white/10 px-2.5 text-[11px] font-black text-orange-200">
-          <Copy className="h-3.5 w-3.5" />{copied === copyKey ? "Copied" : "Copy"}
-        </button>
-      ) : null}
+    <div className="rounded-xl border border-white/8 bg-white/[0.025] p-3">
+      <div className="text-orange-300">{icon}</div>
+      <p className="mt-2 text-xs font-black text-zinc-200">{title}</p>
+      <p className="mt-0.5 text-[10px] text-zinc-500">{subtitle}</p>
     </div>
   );
 }
