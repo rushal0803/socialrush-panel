@@ -1,6 +1,7 @@
 import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { customerOrderServices } from "@/lib/order-service-experience";
+import { redirect } from "next/navigation";
 
 const activeStatuses = ["pending", "processing", "in_progress", "partial", "awaiting_action"];
 type RawOrder = { id: string; service_name: string | null; platform: string | null; quantity: number | null; status: string | null; charge: number | null; created_at: string; progress_percent: number | null; refill_eligible: boolean | null };
@@ -13,7 +14,8 @@ type RawFavourite = { service_id: number; services: { code: string | null; statu
 
 export default async function DashboardPage() {
   const { supabase, user, profile } = await getDashboardContext();
-  const userId = user!.id;
+  if (!user) redirect("/login?next=%2Fdashboard");
+  const userId = user.id;
   const results = await Promise.allSettled([
     supabase.from("orders").select("id, service_name, platform, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).order("created_at", { ascending: false }).limit(5),
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).in("status", activeStatuses),
