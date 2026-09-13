@@ -6,6 +6,7 @@ import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { redirect } from "next/navigation";
 import MobileBottomNav from "@/components/dashboard/MobileBottomNav";
 import ProfessionalUpiCheckout from "@/components/dashboard/ProfessionalUpiCheckout";
+import CheckoutFunnelTracker from "@/components/analytics/CheckoutFunnelTracker";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -49,6 +50,7 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
           balance={Number(context.profile.balance ?? 0)}
         />
         <ProfessionalUpiCheckout />
+        <CheckoutFunnelTracker />
         {children}
         <MobileBottomNav />
       </div>
