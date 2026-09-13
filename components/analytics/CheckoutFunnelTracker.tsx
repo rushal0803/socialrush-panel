@@ -1,0 +1,87 @@
+"use client";
+
+import { useEffect } from "react";
+import { usePathname } from "next/navigation";
+import { track } from "@/lib/analytics/events";
+
+const ACTIVE_ROUTES = new Set(["/dashboard/new-order", "/dashboard/order-summary"]);
+
+function currentOrderContext() {
+  const params = new URLSearchParams(window.location.search);
+  const serviceCode = params.get("service") || "";
+  const platform = params.get("platform") || serviceCode.split("-")[0] || "";
+  const quantityRaw = params.get("quantity") || document.querySelector<HTMLInputElement>('input[inputmode="numeric"]')?.value || "";
+  const quantity = Number(String(quantityRaw).replace(/,/g, ""));
+  const link = params.get("link") || Array.from(document.querySelectorAll<HTMLInputElement>("input, textarea")).find((input) => /instagram|youtube|facebook|linkedin|twitter|tiktok|telegram|https?:\/\//i.test(input.value))?.value?.trim() || "";
+  return { serviceCode, platform, quantity, hasLink: Boolean(link) };
+}
+
+function isCheckoutControl(element: Element) {
+  const control = element.closest<HTMLElement>("button, a");
+  if (!control) return null;
+  const text = (control.textContent || "").replace(/\s+/g, " ").trim();
+  return /^(place order|place order securely|continue to payment|pay securely with upi|pay via upi|place order on whatsapp)/i.test(text) ? control : null;
+}
+
+export default function CheckoutFunnelTracker() {
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!ACTIVE_ROUTES.has(pathname)) return;
+
+    const initial = currentOrderContext();
+    if (initial.serviceCode) {
+      track("service_viewed", { service_code: initial.serviceCode, platform: initial.platform, surface: "dashboard_order" });
+      track("order_started", { service_code: initial.serviceCode, platform: initial.platform, surface: "dashboard_order" });
+    }
+
+    const onClick = (event: MouseEvent) => {
+      const target = event.target;
+      if (!(target instanceof Element)) return;
+
+      const upiLink = target.closest<HTMLAnchorElement>('a[href^="upi://"]');
+      if (upiLink) {
+        const current = currentOrderContext();
+        track("payment_started", { service_code: current.serviceCode, platform: current.platform, method: "upi", surface: "upi_checkout" });
+        return;
+      }
+
+      const confirmButton = target.closest<HTMLButtonElement>("button");
+      if (confirmButton && /confirm.*order|submit.*utr|verify.*payment/i.test(confirmButton.textContent || "")) {
+        const current = currentOrderContext();
+        const utrInput = document.querySelector<HTMLInputElement>("#manual-upi-utr");
+        const valid = /^[A-Za-z0-9-]{8,40}$/.test((utrInput?.value || "").trim().replace(/\s+/g, ""));
+        track("utr_submitted", { service_code: current.serviceCode, platform: current.platform, method: "upi", validation_passed: valid, surface: "upi_checkout" });
+        if (!valid) track("checkout_error", { service_code: current.serviceCode, platform: current.platform, error_category: "invalid_utr", surface: "upi_checkout" });
+        return;
+      }
+
+      const checkout = isCheckoutControl(target);
+      if (!checkout) return;
+      const current = currentOrderContext();
+      const valid = Boolean(current.serviceCode && Number.isInteger(current.quantity) && current.quantity > 0 && current.hasLink);
+      track("order_details_completed", { service_code: current.serviceCode, platform: current.platform, validation_passed: valid, surface: "dashboard_order" });
+      if (!valid) track("checkout_error", { service_code: current.serviceCode, platform: current.platform, error_category: "incomplete_order_details", surface: "dashboard_order" });
+    };
+
+    let checkoutOpenTracked = false;
+    const observer = new MutationObserver(() => {
+      if (checkoutOpenTracked) return;
+      const text = document.body.textContent || "";
+      if (/Secure UPI Checkout/i.test(text)) {
+        const current = currentOrderContext();
+        track("checkout_started", { service_code: current.serviceCode, platform: current.platform, method: "upi", currency: "INR", surface: "upi_checkout" });
+        checkoutOpenTracked = true;
+      }
+    });
+
+    document.addEventListener("click", onClick, true);
+    observer.observe(document.body, { childList: true, subtree: true, characterData: true });
+    return () => {
+      document.removeEventListener("click", onClick, true);
+      observer.disconnect();
+    };
+  }, [pathname]);
+
+  return null;
+}

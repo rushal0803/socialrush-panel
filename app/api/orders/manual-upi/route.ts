@@ -3,6 +3,7 @@ import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 const UTR_PATTERN = /^[A-Za-z0-9-]{8,40}$/;
 const PAYMENT_REF_PATTERN = /^SR-[A-Z0-9-]{8,40}$/;
@@ -136,6 +137,21 @@ export async function POST(request: NextRequest) {
   revalidatePath("/dashboard/orders");
   revalidatePath(`/dashboard/orders/${order.id}`);
   revalidatePath("/admin/orders");
+
+  await recordTrustedEvent({
+    eventName: "order_created",
+    customerId: user.id,
+    pagePath: "/dashboard/order-summary",
+    eventId: `manual-upi-order:${order.id}`,
+    metadata: {
+      method: "upi",
+      currency: "INR",
+      service_code: intent.service_code,
+      platform: service.platform,
+      value: charge,
+      payment_status: "verification_pending",
+    },
+  });
 
   return NextResponse.json({ data: order, duplicate: false }, { status: 201, headers: { "Cache-Control": "no-store" } });
 }
