@@ -7,6 +7,7 @@ import { recordTrustedEvent } from "@/lib/analytics/server";
 
 const UTR_PATTERN = /^[A-Za-z0-9-]{8,40}$/;
 const PAYMENT_REF_PATTERN = /^SR-[A-Z0-9-]{8,40}$/;
+const PAYMENT_METHODS = new Set(["upi", "bank_transfer"]);
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -15,18 +16,20 @@ export async function POST(request: NextRequest) {
 
   const originError = requireSameOrigin(request); if (originError) return originError;
   const jsonError = requireJson(request); if (jsonError) return jsonError;
-  const limited = rateLimit(request, "manual-upi-order", 8, 60_000, user.id); if (limited) return limited;
+  const limited = rateLimit(request, "manual-payment-order", 8, 60_000, user.id); if (limited) return limited;
 
   const body = await request.json().catch(() => null) as {
     intentId?: string;
     clientRequestId?: string;
     paymentReference?: string;
+    paymentMethod?: string;
     utr?: string;
   } | null;
 
   const intentId = String(body?.intentId || "").trim();
   const clientRequestId = String(body?.clientRequestId || "").trim();
   const paymentReference = String(body?.paymentReference || "").trim().toUpperCase();
+  const paymentMethod = String(body?.paymentMethod || "upi").trim().toLowerCase();
   const utr = String(body?.utr || "").trim().replace(/\s+/g, "");
 
   if (!isUuid(intentId) || !isUuid(clientRequestId)) {
@@ -35,8 +38,11 @@ export async function POST(request: NextRequest) {
   if (!PAYMENT_REF_PATTERN.test(paymentReference)) {
     return NextResponse.json({ error: "Payment reference is invalid." }, { status: 422 });
   }
+  if (!PAYMENT_METHODS.has(paymentMethod)) {
+    return NextResponse.json({ error: "Unsupported payment method." }, { status: 422 });
+  }
   if (!UTR_PATTERN.test(utr)) {
-    return NextResponse.json({ error: "Enter a valid UTR / transaction ID from your successful UPI payment." }, { status: 422 });
+    return NextResponse.json({ error: "Enter a valid UTR / transaction ID from your successful payment." }, { status: 422 });
   }
 
   const admin = createAdminClient();
@@ -77,10 +83,25 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please contact support before paying again." }, { status: 409 });
   }
 
+  const { data: existingUtr, error: duplicateUtrError } = await admin
+    .from("orders")
+    .select("id,user_id,public_order_id")
+    .ilike("customer_note", `%UTR: ${utr}.%`)
+    .limit(1)
+    .maybeSingle();
+  if (duplicateUtrError) {
+    console.error("[MANUAL_PAYMENT_DUPLICATE_UTR_CHECK_ERROR]", duplicateUtrError);
+    return NextResponse.json({ error: "Unable to verify this transaction ID right now. Please try again." }, { status: 503 });
+  }
+  if (existingUtr) {
+    return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for another order." }, { status: 409 });
+  }
+
   const quantity = Number(intent.quantity);
   const charge = Number(intent.total_paise) / 100;
   const unitPrice = Math.round((charge * 1000 / quantity) * 10000) / 10000;
-  const customerNote = `UPI payment submitted for verification. Payment Ref: ${paymentReference}. UTR: ${utr}.`;
+  const methodLabel = paymentMethod === "bank_transfer" ? "Bank transfer (IMPS/NEFT)" : "UPI";
+  const customerNote = `${methodLabel} payment submitted for verification. Payment Ref: ${paymentReference}. UTR: ${utr}.`;
 
   const { data: existingByRequest } = await admin
     .from("orders")
@@ -131,7 +152,7 @@ export async function POST(request: NextRequest) {
     .eq("status", "created");
 
   if (completeError) {
-    console.error("[MANUAL_UPI_INTENT_COMPLETE_ERROR]", completeError);
+    console.error("[MANUAL_PAYMENT_INTENT_COMPLETE_ERROR]", completeError);
   }
 
   revalidatePath("/dashboard/orders");
@@ -141,10 +162,10 @@ export async function POST(request: NextRequest) {
   await recordTrustedEvent({
     eventName: "order_created",
     customerId: user.id,
-    pagePath: "/dashboard/order-summary",
-    eventId: `manual-upi-order:${order.id}`,
+    pagePath: "/dashboard/direct-upi",
+    eventId: `manual-payment-order:${order.id}`,
     metadata: {
-      method: "upi",
+      method: paymentMethod,
       currency: "INR",
       service_code: intent.service_code,
       platform: service.platform,
