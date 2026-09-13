@@ -59,6 +59,7 @@ const services = [
     label: "Community Growth",
     description: "Grow visible community size with clear live service details and dashboard tracking.",
     href: "/buy-facebook-group-members-india",
+    icon: Layers3,
   },
   {
     title: "Facebook Shares",
