@@ -8,6 +8,8 @@ test("every priority platform has one broad, crawlable content hub", () => {
     assert.match(cluster.hubPath, /^\/[a-z-]+$/);
     assert.ok(cluster.serviceLinks.length > 0);
     assert.equal(new Set(cluster.serviceLinks.map((link) => link.href)).size, cluster.serviceLinks.length);
+    assert.equal(new Set(cluster.guideLinks.map((link) => link.href)).size, cluster.guideLinks.length);
+    assert.ok(cluster.serviceLinks.every((link) => link.label.toLowerCase().includes("buy")));
     assert.equal(isContentClusterPath(cluster.hubPath), true);
   }
 });
