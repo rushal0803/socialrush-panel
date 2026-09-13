@@ -2,7 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock3, Search, ShieldCheck } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
-import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
+import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 
 const canonicalServicePaths: Record<string, string> = {
   "linkedin-followers": "/linkedin-followers",
@@ -52,7 +52,7 @@ export default function PlatformServicesLanding({ platform }: { platform: "linke
   const pageCopy = copy[platform];
 
   return (
-    <PublicShell tone="dark">
+    <PublicShell>
       <main className="relative overflow-hidden bg-[#08090c] text-white">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-[34rem] bg-[radial-gradient(circle_at_18%_12%,rgba(255,122,0,.18),transparent_30rem),radial-gradient(circle_at_88%_15%,rgba(255,185,70,.10),transparent_25rem)]" />
 
