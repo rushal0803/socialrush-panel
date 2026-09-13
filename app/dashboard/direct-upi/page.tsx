@@ -53,6 +53,17 @@ export default async function DirectUpiPage({ searchParams }: PageProps) {
   const upiId = process.env.NEXT_PUBLIC_UPI_ID?.trim() || "";
   const payeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME?.trim() || "SocialRUSH";
 
+  const bankTransfer = {
+    enabled: process.env.BANK_TRANSFER_ENABLED === "true",
+    accountName: process.env.BANK_TRANSFER_ACCOUNT_NAME?.trim() || "",
+    bankName: process.env.BANK_TRANSFER_BANK_NAME?.trim() || "",
+    accountNumber: process.env.BANK_TRANSFER_ACCOUNT_NUMBER?.trim() || "",
+    ifsc: process.env.BANK_TRANSFER_IFSC?.trim().toUpperCase() || "",
+  };
+  bankTransfer.enabled = bankTransfer.enabled && Boolean(
+    bankTransfer.accountName && bankTransfer.bankName && bankTransfer.accountNumber && bankTransfer.ifsc,
+  );
+
   return (
     <main className="min-h-[calc(100vh-5rem)] bg-[#050505] px-4 pb-28 pt-7 sm:px-6 sm:pb-12 lg:px-8">
       <div className="mx-auto mb-5 max-w-2xl">
@@ -68,6 +79,7 @@ export default async function DirectUpiPage({ searchParams }: PageProps) {
         total={Number(intent.total_paise) / 100}
         upiId={upiId}
         payeeName={payeeName}
+        bankTransfer={bankTransfer}
       />
     </main>
   );
