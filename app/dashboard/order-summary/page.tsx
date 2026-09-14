@@ -4,10 +4,12 @@ import { CheckCircle2, LoaderCircle, LockKeyhole, ShieldCheck, Wallet } from "lu
 import Link from "next/link";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
 import { platformMeta } from "@/lib/smm-service-catalog";
+import { track } from "@/lib/analytics/events";
 import {
   customerOrderServices,
   linkRules,
@@ -87,6 +89,11 @@ export default function DashboardOrderSummaryPage() {
     void loadWalletBalance();
   }, [loadWalletBalance]);
 
+  useEffect(() => {
+    if (!success) return;
+    track("order_success_recommendation_view", { order_id: success.id, service_code: selectedService.code, platform: selectedService.platform });
+  }, [success, selectedService.code, selectedService.platform]);
+
   async function placeWalletOrder() {
     if (inFlight.current || submitting) return;
     setError("");
@@ -136,7 +143,6 @@ export default function DashboardOrderSummaryPage() {
       setWalletBalance(Number(result.data.balance));
       setSuccess(result.data);
       requestId.current = "";
-      window.setTimeout(() => router.push("/dashboard/orders"), 900);
     } catch (caught) {
       setError(caught instanceof Error ? caught.message : "Unable to place your order right now.");
     } finally {
@@ -233,11 +239,11 @@ export default function DashboardOrderSummaryPage() {
               <button
                 type="button"
                 onClick={() => void placeWalletOrder()}
-                disabled={!formIsValid || submitting}
+                disabled={!formIsValid || submitting || Boolean(success)}
                 className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Wallet className="h-4 w-4" />}
-                {submitting ? "Processing..." : "Place Order with Wallet"}
+                {success ? "Order Placed" : submitting ? "Processing..." : "Place Order with Wallet"}
               </button>
             ) : directUpiRequired ? (
               <div className="mt-5 rounded-2xl border border-orange-200 bg-orange-50 p-4">
@@ -255,10 +261,18 @@ export default function DashboardOrderSummaryPage() {
 
         {error ? <p role="alert" className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">{error}</p> : null}
         {success ? (
-          <div className="mt-5 flex items-center gap-3 rounded-2xl border border-emerald-200 bg-emerald-50 p-4 text-emerald-800">
-            <CheckCircle2 className="h-5 w-5" />
-            <div><p className="font-black">Order placed successfully</p><p className="text-sm">Redirecting to your orders...</p></div>
-          </div>
+          <section className="mt-6 space-y-4">
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-900 sm:p-6">
+              <div className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0" /><div><p className="text-lg font-black">Order placed successfully</p><p className="mt-1 text-sm leading-6">Your order is saved. You can track it now, or add a complementary service while your campaign details are fresh.</p></div></div>
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <Link href="/dashboard/orders" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-emerald-700 px-4 text-sm font-black text-white">View my orders</Link>
+                <Link href="/dashboard/campaign-stacks" onClick={() => track("order_success_recommendation_click", { source: "campaign_stacks", order_id: success.id, service_code: selectedService.code, platform: selectedService.platform })} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-300 bg-white px-4 text-sm font-black text-emerald-800">Explore campaign stacks</Link>
+              </div>
+            </div>
+            <div className="rounded-3xl bg-[#0B0B0F] p-1 sm:p-2">
+              <CrossSellRecommendations serviceCode={selectedService.code} source="order_success" />
+            </div>
+          </section>
         ) : null}
       </div>
     </main>

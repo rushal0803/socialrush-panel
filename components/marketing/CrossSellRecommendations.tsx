@@ -9,7 +9,7 @@ import { relatedLabel, relatedServices } from "@/lib/cro/related-services";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
-export default function CrossSellRecommendations({ serviceCode, compact = false }: { serviceCode: string; compact?: boolean }) {
+export default function CrossSellRecommendations({ serviceCode, compact = false, source = "related_services" }: { serviceCode: string; compact?: boolean; source?: string }) {
   const { currency } = usePreferredCurrency();
   const service = activeSmmServices.find((item) => item.code === serviceCode);
   const recommendations = relatedServices(serviceCode, activeSmmServices, 3);
@@ -18,9 +18,9 @@ export default function CrossSellRecommendations({ serviceCode, compact = false 
 
   useEffect(() => {
     if (serviceCodeForEvent && platformForEvent && recommendations.length) {
-      track("cross_sell_view", { service_code: serviceCodeForEvent, platform: platformForEvent });
+      track("cross_sell_view", { service_code: serviceCodeForEvent, platform: platformForEvent, source });
     }
-  }, [serviceCodeForEvent, platformForEvent, recommendations.length]);
+  }, [serviceCodeForEvent, platformForEvent, recommendations.length, source]);
 
   if (!service || !recommendations.length) return null;
 
@@ -41,8 +41,8 @@ export default function CrossSellRecommendations({ serviceCode, compact = false 
         {recommendations.map((item) => (
           <Link
             key={item.code}
-            href={`/order-summary?service=${item.code}`}
-            onClick={() => track("related_service_clicked", { surface: "related_services", service_code: item.code, platform: item.platform })}
+            href={`/dashboard/order-summary?service=${encodeURIComponent(item.code)}`}
+            onClick={() => track("related_service_clicked", { surface: source, service_code: item.code, platform: item.platform })}
             aria-label={`Explore ${item.name}`}
             className="group flex min-h-[138px] flex-col rounded-2xl border border-white/10 bg-black/20 p-4 text-left transition hover:-translate-y-0.5 hover:border-orange-400/50 hover:bg-orange-500/10"
           >
