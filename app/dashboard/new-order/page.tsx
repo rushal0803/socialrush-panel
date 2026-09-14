@@ -43,6 +43,7 @@ import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
+import { buildQuantityMerchandising } from "@/lib/cro/quantity-merchandising";
 import { isSocialRushAndroidApp } from "@/lib/is-socialrush-android-app";
 import { findSafeAlternative } from "@/lib/service-alternatives";
 
@@ -101,15 +102,6 @@ function loadCashfree() {
     const script = document.createElement("script"); script.src = "https://sdk.cashfree.com/js/v3/cashfree.js";
     script.onload = () => resolve(true); script.onerror = () => resolve(false); document.body.appendChild(script);
   });
-}
-
-function validQuickQuantities(service: SmmService) {
-  const min = service.minQuantity;
-  const max = service.maxQuantity;
-  // Derive useful choices from the configured limits instead of assuming every
-  // service supports the same 1K/5K/10K quantities.
-  const sensible = [min, 500, 1000, 5000, 10000, 25000, 50000, 100000, max];
-  return [...new Set(sensible.filter((value) => value >= min && value <= max && (value - min) % (service.quantityStep ?? 1) === 0))].slice(0, 5);
 }
 
 function compactQuantity(value: number) {
@@ -320,7 +312,8 @@ export default function NewOrderPage() {
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
   const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
   const currentStep = checkoutStep;
-  const quickQuantities = selectedService ? validQuickQuantities(selectedService) : [];
+  const quantityOptions = selectedService ? buildQuantityMerchandising(selectedService) : [];
+  const quickQuantities = quantityOptions.map((option) => option.value);
 
   // Cashfree can retain a prior payment sheet in the Android WebView. Browser
   // checkout intentionally keeps its existing URL-intent behaviour; only the
@@ -858,7 +851,19 @@ export default function NewOrderPage() {
               <div className="mt-6 grid gap-5"><label className="text-xs font-black">Public Link / Username<input value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setError(""); }} placeholder={linkRule.placeholder} className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${linkError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${linkError ? "text-red-300" : "text-[#999]"}`}>{linkError || linkRule.helper}</span></label><label className="text-xs font-black">Quantity<input value={quantityInput} onChange={(e) => { setQuantityInput(cleanQuantity(e.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${quantityError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${quantityError ? "text-red-300" : "text-[#999]"}`}>{quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")}`}</span></label></div>
               {requiresPollAnswerNumber ? <label className="mt-5 block text-xs font-black">Poll Answer Number<input value={pollAnswerNumber} onChange={(e) => { setPollAnswerNumber(e.target.value); setError(""); }} inputMode="numeric" placeholder="Enter answer number" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${pollAnswerNumberError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${pollAnswerNumberError ? "text-red-300" : "text-[#999]"}`}>{pollAnswerNumberError || "Enter the answer number for the poll option that should receive the votes."}</span></label> : null}
               {requiresEndorsementSkill ? <label className="mt-5 block text-xs font-black">Skill Name<input value={endorsementSkillName} onChange={(e) => { setEndorsementSkillName(e.target.value); setError(""); }} placeholder="e.g. Digital Marketing" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${endorsementSkillError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${endorsementSkillError ? "text-red-300" : "text-[#999]"}`}>{endorsementSkillError || "Enter the exact LinkedIn skill that should receive endorsements."}</span></label> : null}
-              {quickQuantities.length > 0 && <div className="mt-4 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-11 rounded-xl border px-4 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/15 text-orange-200" : "border-white/10 bg-white/5 text-[#bbb]"}`}>{compactQuantity(value)}</button>)}</div>}
+              {quantityOptions.length > 0 && <section className="mt-5" aria-label="Recommended quantity options">
+      <div className="flex items-end justify-between gap-3"><div><p className="text-xs font-black text-white">Choose a quantity</p><p className="mt-1 text-[11px] text-[#8F949D]">Quick options based on this service’s live limits.</p></div><span className="hidden text-[10px] font-bold uppercase tracking-wider text-[#777] sm:inline">Same live rate</span></div>
+      <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{quantityOptions.map((option) => {
+        const selected = quantity === option.value;
+        const emphasis = option.emphasis === "popular" ? "border-orange-400/50 bg-orange-500/[.08]" : option.emphasis === "scale" ? "border-emerald-400/35 bg-emerald-500/[.06]" : "border-white/10 bg-white/[.035]";
+        const optionPrice = Math.round((option.value * selectedService.pricePer1000 * 100) / 1000) / 100;
+        return <button key={option.value} type="button" aria-pressed={selected} onClick={() => { setQuantityInput(String(option.value)); setError(""); }} className={`relative min-h-20 rounded-xl border px-3 py-3 text-left transition hover:border-orange-300/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${selected ? "border-orange-400 bg-orange-500/15 ring-2 ring-orange-500/10" : emphasis}`}>
+          <span className="flex items-start justify-between gap-2"><strong className="text-sm font-black text-white">{compactQuantity(option.value)}</strong>{option.label ? <span className={`rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-wide ${option.emphasis === "popular" ? "bg-orange-500/20 text-orange-200" : option.emphasis === "scale" ? "bg-emerald-500/15 text-emerald-200" : "bg-white/10 text-[#C7CBD1]"}`}>{option.label}</span> : null}</span>
+          <span className="mt-2 block text-xs font-bold text-[#B8BDC6]">{formatCurrency(optionPrice, currency)}</span>
+        </button>;
+      })}</div>
+      <p className="mt-2 text-[10px] leading-4 text-[#777]">These labels guide quantity selection only. Your live rate, service limits and checkout validation stay unchanged.</p>
+    </section>}
               <div className="mt-5 grid gap-3 sm:grid-cols-2"><div className="rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
   ? "No password required. Public poll link and answer number only."
   : requiresCustomComments
