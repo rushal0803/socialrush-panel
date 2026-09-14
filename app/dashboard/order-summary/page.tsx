@@ -188,6 +188,30 @@ export default function DashboardOrderSummaryPage() {
               <Info label="Delivery" value={selectedService.deliveryTime} />
               <Info label="Refill" value={selectedService.refillPolicy} />
             </div>
+
+            <div className="mt-6 rounded-3xl border border-orange-100 bg-orange-50/70 p-5 sm:p-6">
+              <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">What happens next</p>
+              <h2 className="mt-2 text-lg font-black text-slate-950">A clear checkout path before fulfillment starts</h2>
+              <div className="mt-4 grid gap-3 sm:grid-cols-3">
+                {hasEnoughWallet ? (
+                  <>
+                    <CheckoutStep number="1" title="Place order" detail="Your wallet is charged only when the order is created successfully." />
+                    <CheckoutStep number="2" title="Track status" detail="The order appears in My Orders with its current fulfillment status." />
+                    <CheckoutStep number="3" title="Delivery" detail="Keep the destination public while the service is being delivered." />
+                  </>
+                ) : (
+                  <>
+                    <CheckoutStep number="1" title="Pay exact amount" detail="Open your UPI app from the direct checkout and pay the amount prepared for this order." />
+                    <CheckoutStep number="2" title="Submit UTR" detail="Return to SocialRUSH and enter the UTR / Transaction ID from the successful payment." />
+                    <CheckoutStep number="3" title="Payment verification" detail="Fulfillment starts only after the payment is verified against the submitted details." />
+                  </>
+                )}
+              </div>
+              <p className="mt-4 flex items-start gap-2 text-xs font-semibold leading-5 text-slate-600">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+                Never pay twice for the same checkout. If you already paid, return to the UTR confirmation step instead of starting a new payment.
+              </p>
+            </div>
           </section>
 
           <aside className="h-fit rounded-3xl border border-orange-100 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-24">
@@ -243,6 +267,16 @@ export default function DashboardOrderSummaryPage() {
 
 function Info({ label, value }: { label: string; value: string }) {
   return <div className="rounded-2xl bg-orange-50 p-4"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-black text-slate-900">{value}</p></div>;
+}
+
+function CheckoutStep({ number, title, detail }: { number: string; title: string; detail: string }) {
+  return (
+    <div className="rounded-2xl border border-orange-100 bg-white p-4">
+      <div className="grid h-8 w-8 place-items-center rounded-full bg-orange-100 text-xs font-black text-orange-700">{number}</div>
+      <p className="mt-3 text-sm font-black text-slate-900">{title}</p>
+      <p className="mt-1 text-xs font-medium leading-5 text-slate-600">{detail}</p>
+    </div>
+  );
 }
 
 function Row({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
