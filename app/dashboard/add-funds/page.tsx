@@ -1,4 +1,5 @@
 import WalletDashboard, { type WalletInitialData, type WalletOrder, type WalletTransaction } from "@/components/wallet/WalletDashboard";
+import WalletPaymentUpgradeNotice from "@/components/wallet/WalletPaymentUpgradeNotice";
 import { redirect } from "next/navigation";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
@@ -27,5 +28,10 @@ export default async function AddFundsPage() {
     transactions,
     orders,
   };
-  return <WalletDashboard initial={initial}/>;
+  return (
+    <>
+      <WalletPaymentUpgradeNotice />
+      <WalletDashboard initial={initial}/>
+    </>
+  );
 }
