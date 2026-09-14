@@ -11,6 +11,7 @@ const links = [
   ["Orders", "/admin/orders", "cart"], ["Refills", "/admin/refills", "layers"], ["Users", "/admin/users", "users"], ["Payments", "/admin/payments", "wallet"],
   ["CRM", "/admin/crm", "users"],
   ["Command Center", "/admin/command-center", "grid"],
+  ["Profitability", "/admin/profitability", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
   ["Incidents", "/admin/incidents", "support"],
   ["Case Studies", "/admin/case-studies", "layers"], ["Rewards", "/admin/rewards", "wallet"], ["Settings", "/admin/settings", "settings"],
