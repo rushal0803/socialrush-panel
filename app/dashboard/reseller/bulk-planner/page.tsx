@@ -6,10 +6,11 @@ import { ArrowRight, Plus, Trash2 } from "lucide-react";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 
- type Row = { id: string; client: string; serviceCode: string; quantity: string; link: string };
+type ServiceCode = typeof activeSmmServices[number]["code"];
+type Row = { id: string; client: string; serviceCode: ServiceCode; quantity: string; link: string };
 
 function newRow(): Row {
-  return { id: crypto.randomUUID(), client: "", serviceCode: activeSmmServices[0]?.code || "", quantity: "", link: "" };
+  return { id: crypto.randomUUID(), client: "", serviceCode: activeSmmServices[0].code, quantity: "", link: "" };
 }
 
 export default function BulkPlannerPage() {
@@ -17,7 +18,7 @@ export default function BulkPlannerPage() {
 
   const total = useMemo(() => rows.reduce((sum, row) => {
     const quantity = Number(row.quantity || 0);
-    return sum + (row.serviceCode && quantity > 0 ? calculateServiceTotal(row.serviceCode, quantity) : 0);
+    return sum + (quantity > 0 ? calculateServiceTotal(row.serviceCode, quantity) : 0);
   }, 0), [rows]);
 
   const update = (id: string, patch: Partial<Row>) => setRows((current) => current.map((row) => row.id === id ? { ...row, ...patch } : row));
@@ -50,7 +51,7 @@ export default function BulkPlannerPage() {
             <div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.13em] text-orange-300">Job {index + 1}</p><p className="mt-1 text-sm font-black">{row.client || "Unlabelled client job"}</p></div>{rows.length > 1 ? <button type="button" onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))} className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-slate-400 hover:text-red-300" aria-label={`Remove job ${index + 1}`}><Trash2 className="h-4 w-4" /></button> : null}</div>
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1.2fr_.6fr_1.5fr_auto]">
               <input value={row.client} onChange={(event) => update(row.id, { client: event.target.value })} className="dashboard-input" placeholder="Client / brand label" />
-              <select value={row.serviceCode} onChange={(event) => update(row.id, { serviceCode: event.target.value, quantity: "" })} className="dashboard-input">{activeSmmServices.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select>
+              <select value={row.serviceCode} onChange={(event) => update(row.id, { serviceCode: event.target.value as ServiceCode, quantity: "" })} className="dashboard-input">{activeSmmServices.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select>
               <input value={row.quantity} onChange={(event) => update(row.id, { quantity: event.target.value.replace(/\D/g, "") })} inputMode="numeric" className="dashboard-input" placeholder="Quantity" />
               <input value={row.link} onChange={(event) => update(row.id, { link: event.target.value })} className="dashboard-input" placeholder="Public profile / post / video link" />
               {href ? <Link href={href} className="btn-dashboard-primary inline-flex min-h-11 items-center justify-center gap-2 px-4 text-xs">Open order <ArrowRight className="h-3.5 w-3.5" /></Link> : <span className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 px-4 text-xs font-bold text-slate-500">Complete row</span>}
