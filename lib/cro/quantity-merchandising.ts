@@ -2,8 +2,8 @@ import type { SmmService } from "@/lib/smm-service-catalog";
 
 export type QuantityMerchandisingOption = {
   value: number;
-  label: "Starter" | "Popular" | "Best Value" | null;
-  emphasis: "standard" | "popular" | "best-value";
+  label: "Starter" | "Popular" | "Scale" | null;
+  emphasis: "standard" | "popular" | "scale";
 };
 
 function validForService(service: SmmService, value: number) {
@@ -37,11 +37,11 @@ export function buildQuantityMerchandising(service: SmmService): QuantityMerchan
   if (!values.length) return [];
 
   const popularIndex = values.length >= 3 ? Math.min(values.length - 2, Math.max(1, Math.floor(values.length / 2))) : values.length - 1;
-  const bestValueIndex = values.length >= 2 ? values.length - 1 : -1;
+  const scaleIndex = values.length >= 2 ? values.length - 1 : -1;
 
   return values.map((value, index) => {
-    if (index === bestValueIndex && index !== 0) {
-      return { value, label: "Best Value", emphasis: "best-value" };
+    if (index === scaleIndex && index !== 0) {
+      return { value, label: "Scale", emphasis: "scale" };
     }
     if (index === popularIndex && index !== 0) {
       return { value, label: "Popular", emphasis: "popular" };
