@@ -76,7 +76,7 @@ export default async function ResellerHubPage() {
         <article className="dashboard-glass p-5 sm:p-6">
           <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><WalletCards className="h-5 w-5" /></span><div><p className="text-[10px] font-black uppercase tracking-[.14em] text-orange-300">Margin protection</p><h2 className="mt-1 text-xl font-black">Before you quote a client</h2></div></div>
           <ul className="mt-5 space-y-3 text-sm leading-6 text-slate-300"><li>Use the current live SocialRUSH price as fulfillment cost input.</li><li>Keep your own client strategy, service fee and margin separate.</li><li>Do not promise fixed discounts, delivery or refill terms unless the active service shows them.</li></ul>
-          <Link href="/admin/profitability" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-orange-300">Review profitability tools <ArrowRight className="h-4 w-4" /></Link>
+          <Link href="/dashboard/packages" className="mt-5 inline-flex items-center gap-2 text-sm font-black text-orange-300">Review current packages <ArrowRight className="h-4 w-4" /></Link>
         </article>
       </section>
     </main>
