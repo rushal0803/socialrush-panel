@@ -1,10 +1,11 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { track } from "@/lib/analytics/events";
 
 const DEFAULT_WHATSAPP_URL = "https://wa.me/918860330771";
+const RECOVERY_TTL_MS = 30 * 60 * 1000;
 
 type OrderSnapshot = {
   serviceCode: string;
@@ -18,6 +19,14 @@ type CheckoutIntent = {
   id: string;
   total: number;
   currency: string;
+};
+
+type CheckoutRecovery = {
+  intent: CheckoutIntent;
+  clientRequestId: string;
+  paymentReference: string;
+  paymentStarted: boolean;
+  savedAt: number;
 };
 
 function titleCaseService(code: string) {
@@ -48,6 +57,18 @@ function getSessionValue(key: string, factory: () => string) {
   const created = factory();
   sessionStorage.setItem(key, created);
   return created;
+}
+
+function recoveryKey(snapshot: OrderSnapshot) {
+  return `socialrush-upi-recovery:${snapshot.serviceCode}:${snapshot.quantity}:${snapshot.link}`;
+}
+
+function saveRecovery(snapshot: OrderSnapshot, recovery: Omit<CheckoutRecovery, "savedAt">) {
+  sessionStorage.setItem(recoveryKey(snapshot), JSON.stringify({ ...recovery, savedAt: Date.now() }));
+}
+
+function clearRecovery(snapshot: OrderSnapshot) {
+  sessionStorage.removeItem(recoveryKey(snapshot));
 }
 
 function whatsappBase() {
@@ -92,6 +113,29 @@ export default function ProfessionalUpiCheckout() {
   const [error, setError] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [successOrder, setSuccessOrder] = useState<{ id: string; public_order_id: string } | null>(null);
+
+  useEffect(() => {
+    if (!snapshot) return;
+
+    const raw = sessionStorage.getItem(recoveryKey(snapshot));
+    if (!raw) return;
+
+    try {
+      const recovery = JSON.parse(raw) as CheckoutRecovery;
+      if (!recovery.intent?.id || !recovery.clientRequestId || !recovery.paymentReference || Date.now() - recovery.savedAt > RECOVERY_TTL_MS) {
+        clearRecovery(snapshot);
+        return;
+      }
+
+      setIntent(recovery.intent);
+      setClientRequestId(recovery.clientRequestId);
+      setPaymentReference(recovery.paymentReference);
+      setPaymentStarted(Boolean(recovery.paymentStarted));
+      setOpen(true);
+    } catch {
+      clearRecovery(snapshot);
+    }
+  }, [snapshot]);
 
   const amountLabel = intent
     ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(intent.total)
@@ -161,6 +205,12 @@ export default function ProfessionalUpiCheckout() {
       setIntent(payload.data);
       setUtr("");
       setOpen(true);
+      saveRecovery(snapshot, {
+        intent: payload.data,
+        clientRequestId: requestId,
+        paymentReference: reference,
+        paymentStarted: false,
+      });
     } catch (cause) {
       const message = cause instanceof Error ? cause.message : "Unable to prepare payment.";
       setError(message);
@@ -210,6 +260,7 @@ export default function ProfessionalUpiCheckout() {
       };
       if (!response.ok || !payload.data) throw new Error(payload.error || "Unable to confirm your order.");
 
+      clearRecovery(snapshot);
       setSuccessOrder(payload.data);
       window.setTimeout(() => router.push("/dashboard/orders"), 2200);
     } catch (cause) {
@@ -291,6 +342,12 @@ export default function ProfessionalUpiCheckout() {
                     href={upiHref}
                     onClick={() => {
                       setPaymentStarted(true);
+                      saveRecovery(snapshot, {
+                        intent,
+                        clientRequestId,
+                        paymentReference,
+                        paymentStarted: true,
+                      });
                       track("payment_started", {
                         service_code: snapshot.serviceCode,
                         platform: snapshot.platform,
