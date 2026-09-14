@@ -1,0 +1,87 @@
+"use client";
+
+import Link from "next/link";
+import { ArrowRight, CheckCircle2, Layers3, ShieldCheck, Sparkles } from "lucide-react";
+import { useEffect, useMemo } from "react";
+import PlatformIcon from "@/components/PlatformIcon";
+import { track } from "@/lib/analytics/events";
+import { formatCurrency } from "@/lib/currency";
+import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { revenueBundlesForPlatform, resolveRevenueBundle } from "@/lib/cro/revenue-bundles";
+import { platformMeta, smmServiceCatalog, type SmmPlatformId } from "@/lib/smm-service-catalog";
+
+const platforms: SmmPlatformId[] = ["instagram", "youtube", "linkedin", "x", "tiktok", "telegram"];
+
+function orderHref(platform: SmmPlatformId, service: string, quantity: number) {
+  const params = new URLSearchParams({ platform, service, quantity: String(quantity), resume: "1" });
+  return `/dashboard/new-order?${params.toString()}`;
+}
+
+export default function CampaignStacksPage() {
+  const { currency, rates } = usePreferredCurrency("INR");
+  const money = (value: number) => formatCurrency(value, currency, rates);
+  const stacks = useMemo(() => platforms.flatMap((platform) => revenueBundlesForPlatform(platform)).map((bundle) => resolveRevenueBundle(bundle, smmServiceCatalog)).filter((bundle) => bundle.items.length >= 2), []);
+
+  useEffect(() => {
+    for (const stack of stacks) {
+      track("bundle_view", { bundle_id: stack.id, platform: stack.platform, services: stack.items.length, source: "campaign_stacks" });
+    }
+  }, [stacks]);
+
+  return (
+    <main className="dashboard-premium-page min-h-[calc(100vh-5rem)] bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.14),transparent_28%),#050505] px-4 pb-12 pt-5 text-white sm:px-6 lg:px-8">
+      <div className="mx-auto max-w-[1500px]">
+        <header className="rounded-[1.6rem] border border-orange-400/20 bg-[linear-gradient(125deg,#19150f,#101218_62%)] p-5 sm:p-7">
+          <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Campaign stacks</p>
+          <div className="mt-2 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between">
+            <div className="max-w-3xl">
+              <h1 className="text-3xl font-black tracking-tight sm:text-4xl">Build a broader campaign, one service at a time.</h1>
+              <p className="mt-3 text-sm leading-6 text-slate-300">These stacks combine related services using current catalog pricing. There is no fake bundle discount and no hidden multi-service checkout: each service remains its own order so you can review the live price, target link and eligibility before paying.</p>
+            </div>
+            <div className="grid min-w-[250px] gap-2 text-xs text-slate-300">
+              <span className="inline-flex items-center gap-2"><ShieldCheck className="h-4 w-4 text-emerald-300"/>Current live catalog pricing</span>
+              <span className="inline-flex items-center gap-2"><CheckCircle2 className="h-4 w-4 text-orange-300"/>Review every order before payment</span>
+            </div>
+          </div>
+        </header>
+
+        <section className="mt-5 grid gap-4 lg:grid-cols-2">
+          {stacks.map((stack) => {
+            const first = stack.items[0];
+            return (
+              <article key={stack.id} className="overflow-hidden rounded-[1.45rem] border border-white/10 bg-[#101116] shadow-[0_26px_70px_-48px_rgba(0,0,0,.95)]">
+                <div className="border-b border-white/10 bg-white/[.025] p-5 sm:p-6">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex min-w-0 gap-3">
+                      <span className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border border-orange-400/20 bg-orange-500/10 text-orange-200"><PlatformIcon platform={platformMeta[stack.platform].label} className="h-5 w-5"/></span>
+                      <div className="min-w-0"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">{stack.eyebrow}</p><h2 className="mt-1 text-xl font-black">{stack.name}</h2><p className="mt-2 text-xs leading-5 text-slate-400">{stack.description}</p></div>
+                    </div>
+                    <Layers3 className="h-5 w-5 shrink-0 text-slate-500"/>
+                  </div>
+                  <div className="mt-5 flex items-end justify-between gap-3 rounded-2xl border border-white/[.07] bg-black/20 p-4">
+                    <div><p className="text-[9px] font-black uppercase tracking-[.13em] text-slate-500">Combined current estimate</p><p className="mt-1 text-2xl font-black">{money(stack.total)}</p></div>
+                    <p className="text-right text-[10px] leading-4 text-slate-500">{stack.items.length} separate orders<br/>at recommended quantities</p>
+                  </div>
+                </div>
+
+                <div className="p-5 sm:p-6">
+                  <div className="grid gap-2">
+                    {stack.items.map((item, index) => (
+                      <div key={item.service.code} className="flex flex-col gap-3 rounded-2xl border border-white/[.07] bg-white/[.025] p-4 sm:flex-row sm:items-center sm:justify-between">
+                        <div className="min-w-0"><p className="text-[9px] font-black uppercase tracking-[.12em] text-slate-500">Step {index + 1}</p><p className="mt-1 font-black">{item.service.name}</p><p className="mt-1 text-[11px] text-slate-400">{item.quantity.toLocaleString("en-IN")} · {item.service.deliveryTime} · {money(item.total)}</p></div>
+                        <Link href={orderHref(stack.platform, item.service.code, item.quantity)} onClick={() => track("bundle_click", { bundle_id: stack.id, platform: stack.platform, service_code: item.service.code, source: "campaign_stack_item" })} className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-black text-orange-100 transition hover:bg-orange-500/15">Order this service<ArrowRight className="h-3.5 w-3.5"/></Link>
+                      </div>
+                    ))}
+                  </div>
+
+                  <Link href={orderHref(stack.platform, first.service.code, first.quantity)} onClick={() => track("bundle_click", { bundle_id: stack.id, platform: stack.platform, service_code: first.service.code, source: "campaign_stack_primary" })} className="mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black shadow-[0_18px_38px_-18px_rgba(255,122,0,.75)]"><Sparkles className="h-4 w-4"/>Start this campaign stack<ArrowRight className="h-4 w-4"/></Link>
+                  <p className="mt-3 text-center text-[10px] leading-4 text-slate-500">Starts with the first service. Return here for the remaining steps after each order.</p>
+                </div>
+              </article>
+            );
+          })}
+        </section>
+      </div>
+    </main>
+  );
+}
