@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
 import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
+import { recordTrustedEvent } from "@/lib/analytics/server";
 
 const statuses = new Set([
   "pending", "processing", "in_progress", "partial", "completed", "cancelled",
@@ -43,6 +44,28 @@ export async function POST(request: Request, { params }: { params: { id: string 
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   if (!data) return NextResponse.json({ error: "Order not found" }, { status: 404 });
 
+  const paymentVerified = awaitingPaymentVerification && status === "processing";
+  if (paymentVerified) {
+    try {
+      await recordTrustedEvent({
+        eventName: "payment_completed",
+        customerId: currentOrder.user_id,
+        pagePath: `/admin/orders/${params.id}`,
+        eventId: `manual-upi-payment-completed:${params.id}`,
+        metadata: {
+          method: "manual_upi",
+          currency: "INR",
+          value: Number(currentOrder.charge),
+          order_id: params.id,
+          payment_status: "paid",
+          source: "admin_verification",
+        },
+      });
+    } catch (analyticsError) {
+      console.error("[MANUAL_UPI_PAYMENT_COMPLETED_ANALYTICS_ERROR]", analyticsError);
+    }
+  }
+
   let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;
   if (
     (status === "cancelled" || status === "refunded") &&
@@ -67,7 +90,8 @@ export async function POST(request: Request, { params }: { params: { id: string 
 
   revalidatePath("/admin/orders");
   revalidatePath(`/admin/orders/${params.id}`);
+  revalidatePath("/admin/analytics");
   revalidatePath("/dashboard/orders");
   revalidatePath("/dashboard/wallet");
-  return NextResponse.json({ data, refund, paymentVerified: awaitingPaymentVerification && status === "processing" });
+  return NextResponse.json({ data, refund, paymentVerified });
 }
