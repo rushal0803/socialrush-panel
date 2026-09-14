@@ -42,6 +42,15 @@ const commercialPaths = [
   ["X / Twitter followers", "For eligible public X / Twitter profiles using the current service terms.", "/twitter-followers"],
 ] as const;
 
+const authorityGuides = [
+  ["Instagram growth in India", "Organic profile and content foundations that help new visitors understand why they should follow.", "/blog/how-to-grow-instagram-followers-organically-india"],
+  ["Instagram followers vs engagement", "A practical framework for balancing visible audience scale with saves, shares, comments and profile actions.", "/blog/instagram-followers-vs-engagement"],
+  ["YouTube subscribers in India", "Channel positioning, search, playlists, retention and audience-building guidance for creators.", "/blog/how-to-increase-youtube-subscribers-in-india"],
+  ["YouTube subscribers vs views", "Use the metric that matches the real channel bottleneck instead of chasing both at once.", "/blog/youtube-subscribers-vs-views-india"],
+  ["LinkedIn business growth", "Build a useful professional audience through expertise, company clarity and consistent publishing.", "/blog/linkedin-followers-for-business-growth"],
+  ["LinkedIn followers vs engagement", "Compare company-page credibility with meaningful professional interaction and business actions.", "/blog/linkedin-followers-vs-engagement-india"],
+] as const;
+
 const safeguards: { icon: LucideIcon; title: string; text: string }[] = [
   { icon: ShieldCheck, title: "Public-link ordering", text: "Never share a social media password, OTP or recovery code." },
   { icon: BarChart3, title: "Current service facts", text: "Review the active price, delivery estimate, quantity rules and refill information before checkout." },
@@ -73,6 +82,17 @@ export default function SocialMediaGrowthIndiaPage() {
       url: `${SEO_SITE_URL}${path}`,
     })),
   };
+  const guideList = {
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    name: "Social media growth guides for India",
+    itemListElement: authorityGuides.map(([name, , path], index) => ({
+      "@type": "ListItem",
+      position: index + 1,
+      name,
+      url: `${SEO_SITE_URL}${path}`,
+    })),
+  };
   const faqSchema = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
@@ -84,6 +104,7 @@ export default function SocialMediaGrowthIndiaPage() {
       <div className="bg-[#050505] text-white">
         <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Social Media Growth India", path: "/social-media-growth-india" }]} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(itemList) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(guideList) }} />
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema) }} />
 
         <section className="relative overflow-hidden border-b border-white/10 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
@@ -116,6 +137,15 @@ export default function SocialMediaGrowthIndiaPage() {
         </section>
 
         <section className="border-y border-white/10 bg-[#090a0d] px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Topical authority guides</p><h2 className="mt-2 text-3xl font-black">Connect the service to a stronger content strategy.</h2><p className="mt-3 text-sm leading-6 text-slate-400">These existing guides answer the informational questions around the same commercial topics, creating a clearer path from research to service comparison.</p></div>
+            <div className="mt-7 grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+              {authorityGuides.map(([name, text, href]) => <Link key={href} href={href} className="group rounded-2xl border border-orange-400/15 bg-orange-500/[.045] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/35"><BookOpenCheck className="h-5 w-5 text-orange-300" /><h3 className="mt-4 text-base font-black">{name}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{text}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Read guide <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" /></span></Link>)}
+            </div>
+          </div>
+        </section>
+
+        <section className="px-4 py-12 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-7xl">
             <div className="max-w-3xl"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Explore by platform</p><h2 className="mt-2 text-3xl font-black">Seven supported platform directories.</h2><p className="mt-3 text-sm leading-6 text-slate-400">Use a platform directory when you want to compare several service types before choosing one.</p></div>
             <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
