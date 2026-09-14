@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BarChart3, BookOpenCheck, CheckCircle2, Layers3, ShieldCheck, Users2 } from "lucide-react";
+import { ArrowRight, BarChart3, BookOpenCheck, CheckCircle2, Layers3, ShieldCheck, Users2, type LucideIcon } from "lucide-react";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import { createPageMetadata } from "@/lib/seo/metadata";
@@ -28,12 +28,18 @@ const platforms = [
   ["X / Twitter", "Profile and post engagement options for eligible public links.", "/services?platform=x"],
 ] as const;
 
+const safeguards: { icon: LucideIcon; title: string; text: string }[] = [
+  { icon: ShieldCheck, title: "Public-link ordering", text: "Never share a social media password, OTP or recovery code." },
+  { icon: BarChart3, title: "Live service facts", text: "Review current INR pricing, delivery and refill information before checkout." },
+  { icon: BookOpenCheck, title: "Use a wider strategy", text: "Treat paid campaign signals as support for useful content, not a guarantee of business results." },
+];
+
 const faq = [
   ["Which social media growth services does SocialRUSH offer in India?", "The live SocialRUSH catalog covers eligible services across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X/Twitter. Availability, pricing, delivery and refill information can vary by service and should be reviewed before checkout."],
   ["Do I need to share my social media password?", "No. SocialRUSH ordering uses the relevant public profile, page, post, channel or video link. Never share a password, OTP or recovery code."],
   ["Are prices fixed?", "Use the live service or package page for the current INR rate and exact total. Avoid relying on old screenshots or quoted prices because active service details can change."],
   ["Do these services guarantee reach, leads or sales?", "No. Followers, subscribers, views or engagement services do not guarantee organic reach, platform ranking, monetization, leads or sales. They should be considered alongside useful content and a broader marketing strategy."],
-];
+] as const;
 
 export default function SocialMediaGrowthIndiaPage() {
   const itemList = {
@@ -74,11 +80,7 @@ export default function SocialMediaGrowthIndiaPage() {
           <aside className="rounded-3xl border border-orange-400/20 bg-[#101116]/90 p-6 shadow-2xl">
             <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Before you order</p>
             <div className="mt-5 space-y-4">
-              {[
-                [ShieldCheck, "Public-link ordering", "Never share a social media password, OTP or recovery code."],
-                [BarChart3, "Live service facts", "Review current INR pricing, delivery and refill information before checkout."],
-                [BookOpenCheck, "Use a wider strategy", "Treat paid campaign signals as support for useful content, not a guarantee of business results."],
-              ].map(([Icon, title, text]) => <div key={String(title)} className="flex gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><Icon className="h-5 w-5" /></span><div><h2 className="text-sm font-black">{String(title)}</h2><p className="mt-1 text-xs leading-5 text-slate-400">{String(text)}</p></div></div>)}
+              {safeguards.map(({ icon: Icon, title, text }) => <div key={title} className="flex gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><Icon className="h-5 w-5" /></span><div><h2 className="text-sm font-black">{title}</h2><p className="mt-1 text-xs leading-5 text-slate-400">{text}</p></div></div>)}
             </div>
           </aside>
         </div>
