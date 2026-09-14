@@ -11,11 +11,23 @@ type Event={
  recipient:string;
  provider_message_id:string|null;
  attempt_count:number;
+ created_at:string;
 };
 type LifecycleOrderContext={user_id:string;created_at:string;status:string|null;payment_status:string|null;platform:string|null;charge:number|string|null};
 type CrmTagRow={crm_tags:{name:string|null}[]|null};
 type AdminClient=ReturnType<typeof createAdminClient>;
+type EventPatch=Partial<{status:string;provider_message_id:string|null;sent_at:string|null;processing_started_at:string|null;error_message:string|null;updated_at:string}>;
+export type CustomerEmailProcessOutcome={id:string;eventType:Event["event_type"];outcome:"sent"|"recovered"|"skipped"|"failed";detail?:string};
+export type CustomerEmailProcessResult={processed:number;outcomes:CustomerEmailProcessOutcome[]};
+
 const safeError=(e:unknown)=>e instanceof Error?e.message.slice(0,500):"Email provider request failed";
+const transactional=(type:Event["event_type"])=>type==="order_created"||type==="order_completed";
+const staleTransactional=(event:Event)=>transactional(event.event_type)&&Date.now()-new Date(event.created_at).getTime()>48*60*60*1000;
+
+async function patchEvent(db:AdminClient,id:string,patch:EventPatch){
+ const {error}=await db.from("customer_email_events").update(patch).eq("id",id);
+ if(error)throw new Error(`Email event update failed: ${error.message}`);
+}
 
 async function deliver(recipient:string,message:EmailTemplate,key?:string){
  const api=process.env.RESEND_API_KEY,from=process.env.EMAIL_FROM,reply=process.env.REPLY_TO_EMAIL;
@@ -35,26 +47,47 @@ async function deliver(recipient:string,message:EmailTemplate,key?:string){
  }finally{clearTimeout(timeout);}
 }
 
-const terminal=async(db:AdminClient,id:string,reason:string)=>db.from("customer_email_events").update({status:"sent",sent_at:new Date().toISOString(),processing_started_at:null,error_message:reason,updated_at:new Date().toISOString()}).eq("id",id);
+const terminal=async(db:AdminClient,id:string,reason:string)=>patchEvent(db,id,{status:"sent",sent_at:new Date().toISOString(),processing_started_at:null,error_message:reason,updated_at:new Date().toISOString()});
 
-export async function processCustomerEmailEvents(limit=5){
+export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailProcessResult>{
  const db=createAdminClient();
  const {error:enqueueError}=await db.rpc("enqueue_customer_lifecycle_email_events");
  if(enqueueError)throw enqueueError;
+ const outcomes:CustomerEmailProcessOutcome[]=[];
  let processed=0;
+
  for(let i=0;i<limit;i++){
   const {data,error}=await db.rpc("claim_next_customer_email_event");
   if(error)throw error;
   const event=(data?.[0]||null) as Event|null;
   if(!event)break;
   processed++;
+
   try{
-   // If Resend already returned a provider id on an earlier attempt, never send the same event again.
-   if(event.provider_message_id){await terminal(db,event.id,"Recovered: provider had already accepted this email");continue;}
-   if(event.event_type==="signup_no_order"){await terminal(db,event.id,"Skipped: superseded by first_order_reminder");continue;}
+   if(event.provider_message_id){
+    await terminal(db,event.id,"Recovered: provider had already accepted this email");
+    outcomes.push({id:event.id,eventType:event.event_type,outcome:"recovered",detail:"provider_already_accepted"});
+    continue;
+   }
+
+   if(event.event_type==="signup_no_order"){
+    await terminal(db,event.id,"Skipped: superseded by first_order_reminder");
+    outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"superseded"});
+    continue;
+   }
+
+   // Do not surprise customers with transactional notifications that were stuck in the historical outage backlog.
+   // New transactional events continue to send normally; only events older than 48 hours are retired as stale.
+   if(staleTransactional(event)){
+    await terminal(db,event.id,"Skipped: stale backlog event older than 48 hours");
+    outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"stale_backlog"});
+    continue;
+   }
+
    const promotional=promotionalEvent(event.event_type);
    const {data:profile,error:profileError}=await db.from("profiles").select("id,full_name,notification_preferences,role,email,created_at").eq("id",event.user_id).single();
-   if(promotional&&profileError)throw new Error("Lifecycle profile eligibility lookup failed");
+   if(profileError)throw new Error(promotional?"Lifecycle profile eligibility lookup failed":"Customer profile lookup failed");
+
    let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[];
    if(promotional){
     const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError}]=await Promise.all([
@@ -68,15 +101,34 @@ export async function processCustomerEmailEvents(limit=5){
     ]);
     if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||!config)throw new Error("Lifecycle eligibility lookup failed");
     orders=orderRows||[];crm=crmRow;tagRows=crmTagRows||[];
-    if(!config.lifecycle_enabled){await db.from("customer_email_events").update({status:"queued",processing_started_at:null,error_message:"Deferred: lifecycle disabled",updated_at:new Date().toISOString()}).eq("id",event.id);break;}
-    if(!recipientMatchesProfile(event.recipient,profile?.email)){await terminal(db,event.id,"Skipped: recipient changed");continue;}
-    if(hasUnresolvedSupport(tickets||[])||hasActiveRefill(refills||[])){await terminal(db,event.id,"Skipped: unresolved customer service issue");continue;}
+    if(!config.lifecycle_enabled){
+     await patchEvent(db,event.id,{status:"queued",processing_started_at:null,error_message:"Deferred: lifecycle disabled",updated_at:new Date().toISOString()});
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"lifecycle_disabled"});
+     break;
+    }
+    if(!recipientMatchesProfile(event.recipient,profile?.email)){
+     await terminal(db,event.id,"Skipped: recipient changed");
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"recipient_changed"});
+     continue;
+    }
+    if(hasUnresolvedSupport(tickets||[])||hasActiveRefill(refills||[])){
+     await terminal(db,event.id,"Skipped: unresolved customer service issue");
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"customer_service_issue"});
+     continue;
+    }
     const eligible=profile&&lifecycleEligibility(event.event_type as "first_order_reminder"|"inactive_7d",profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,config.lifecycle_activation_at);
-    if(!eligible||suppression||!canSendPromotional()){await terminal(db,event.id,!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible");continue;}
+    if(!eligible||suppression||!canSendPromotional()){
+     const reason=!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible";
+     await terminal(db,event.id,reason);
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:!canSendPromotional()?"unsubscribe_secret_missing":"lifecycle_ineligible"});
+     continue;
+    }
    }
+
    let template:EmailTemplate;
-   if(event.event_type==="first_order_reminder")template=firstOrderReminder(profile?.full_name,event.user_id);
-   else if(event.event_type==="inactive_7d"){
+   if(event.event_type==="first_order_reminder"){
+    template=firstOrderReminder(profile?.full_name,event.user_id);
+   }else if(event.event_type==="inactive_7d"){
     const kind=inactiveEmailKind({lifecycle_stage:crm?.lifecycle_stage,tags:tagRows.flatMap(row=>row.crm_tags?.map(tag=>tag.name)||[])},orders);
     template=kind==="vip"||kind==="high_value"?inactivePremium(profile?.full_name,event.user_id,kind):kind==="generic"?inactive7d(profile?.full_name,event.user_id):inactivePlatform(profile?.full_name,event.user_id,kind);
    }else{
@@ -84,23 +136,33 @@ export async function processCustomerEmailEvents(limit=5){
     if(orderError||!order)throw new Error("Order details are unavailable");
     template=event.event_type==="order_created"?orderCreated(profile?.full_name,order):orderCompleted(profile?.full_name,order);
    }
+
    const id=await deliver(event.recipient,template,`customer-email-${event.id}`);
-   await db.from("customer_email_events").update({status:"sent",provider_message_id:id,sent_at:new Date().toISOString(),processing_started_at:null,error_message:null,updated_at:new Date().toISOString()}).eq("id",event.id);
+   await patchEvent(db,event.id,{status:"sent",provider_message_id:id,sent_at:new Date().toISOString(),processing_started_at:null,error_message:null,updated_at:new Date().toISOString()});
+   outcomes.push({id:event.id,eventType:event.event_type,outcome:"sent"});
   }catch(e){
    const message=safeError(e);
    const idempotencyConflict=/Resend request failed \(409\):.*idempotency/i.test(message);
    const permanentPromotional=promotionalEvent(event.event_type)&&/Resend request failed \(4\d\d\)/.test(message)&&!/Resend request failed \(429\)/.test(message);
-   if(idempotencyConflict){
-    await terminal(db,event.id,"Recovered: Resend idempotency key was already used; duplicate suppressed");
-   }else if(permanentPromotional){
-    await terminal(db,event.id,`Skipped: permanent provider rejection: ${message}`);
-   }else{
-    await db.from("customer_email_events").update({status:"failed",sent_at:null,error_message:message,processing_started_at:null,updated_at:new Date().toISOString()}).eq("id",event.id);
+   try{
+    if(idempotencyConflict){
+     await terminal(db,event.id,"Recovered: Resend idempotency key was already used; duplicate suppressed");
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"recovered",detail:"idempotency_conflict"});
+    }else if(permanentPromotional){
+     await terminal(db,event.id,`Skipped: permanent provider rejection: ${message}`);
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"permanent_provider_rejection"});
+    }else{
+     await patchEvent(db,event.id,{status:"failed",sent_at:null,error_message:message,processing_started_at:null,updated_at:new Date().toISOString()});
+     outcomes.push({id:event.id,eventType:event.event_type,outcome:"failed",detail:message});
+    }
+   }catch(updateError){
+    console.error("[email] event persistence failure",{eventId:event.id,eventType:event.event_type,error:safeError(updateError),originalError:message});
+    throw updateError;
    }
    console.error("[email] provider failure",{eventId:event.id,eventType:event.event_type,error:message});
   }
  }
- return processed;
+ return {processed,outcomes};
 }
 
 export async function sendEmailTest(){
