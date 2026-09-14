@@ -1,0 +1,104 @@
+name: Day 4 Conversion Revenue Upgrade
+
+on:
+  push:
+    branches:
+      - growth/day4-conversion-revenue-upgrade
+
+permissions:
+  contents: write
+
+jobs:
+  upgrade:
+    if: github.actor != 'github-actions[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: growth/day4-conversion-revenue-upgrade
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Apply bundled upgrade
+        run: |
+          python3 <<'PY'
+          from pathlib import Path
+
+          def replace_once(path, old, new):
+              p = Path(path)
+              text = p.read_text()
+              if old not in text:
+                  raise SystemExit(f"Expected block not found in {path}: {old[:120]!r}")
+              p.write_text(text.replace(old, new, 1))
+
+          # 1) Admin: dedicated manual-UPI payment verification queue.
+          path = "app/admin/orders/page.tsx"
+          replace_once(path,
+              '  const needsAttention = searchParams.filter === "needs-attention";\n',
+              '  const needsAttention = searchParams.filter === "needs-attention";\n  const paymentVerification = searchParams.filter === "payment-verification";\n')
+          replace_once(path,
+              '  if (needsAttention) query = query.in("status", ["failed", "cancelled", "partial"]);\n  else if (filter !== "all") query = query.eq("status", filter);\n',
+              '  if (paymentVerification) query = query.eq("payment_status", "verification_pending");\n  else if (needsAttention) query = query.in("status", ["failed", "cancelled", "partial"]);\n  else if (filter !== "all") query = query.eq("status", filter);\n')
+          replace_once(path,
+              '        description="Manage fulfillment, count tracking, refill work, provider references, and customer-visible progress."\n      />\n',
+              '        description="Manage fulfillment, payment verification, count tracking, refill work, provider references, and customer-visible progress."\n      />\n\n      <section className="mt-5 grid gap-3 sm:grid-cols-2">\n        <Link href="/admin/orders?filter=payment-verification" className={`rounded-2xl border p-4 transition ${paymentVerification ? "border-orange-400/60 bg-orange-500/15" : "border-orange-400/20 bg-[#111111] hover:border-orange-400/40"}`}>\n          <p className="text-[10px] font-black uppercase tracking-[.14em] text-orange-300">Revenue queue</p>\n          <p className="mt-1 text-sm font-black text-white">Payment verification pending</p>\n          <p className="mt-1 text-xs leading-5 text-[#9CA3AF]">Review manual UPI orders before customers wait for fulfillment.</p>\n        </Link>\n        <Link href="/admin/orders?filter=needs-attention" className={`rounded-2xl border p-4 transition ${needsAttention ? "border-amber-400/60 bg-amber-500/10" : "border-white/10 bg-[#111111] hover:border-amber-400/35"}`}>\n          <p className="text-[10px] font-black uppercase tracking-[.14em] text-amber-300">Operations queue</p>\n          <p className="mt-1 text-sm font-black text-white">Needs attention</p>\n          <p className="mt-1 text-xs leading-5 text-[#9CA3AF]">Failed, cancelled, and partial orders that need a decision.</p>\n        </Link>\n      </section>\n')
+          replace_once(path,
+              '          defaultValue={needsAttention ? "all" : filter}\n',
+              '          defaultValue={needsAttention || paymentVerification ? "all" : filter}\n')
+          replace_once(path,
+              '      {needsAttention ? <p className="mt-3 text-xs font-semibold text-amber-200">Showing orders in a trusted attention state: failed, cancelled, or partial. <Link href="/admin/orders" className="underline">Reset</Link></p> : null}\n',
+              '      {needsAttention ? <p className="mt-3 text-xs font-semibold text-amber-200">Showing orders in a trusted attention state: failed, cancelled, or partial. <Link href="/admin/orders" className="underline">Reset</Link></p> : null}\n      {paymentVerification ? <p className="mt-3 text-xs font-semibold text-orange-200">Showing manual payments waiting for admin verification. Verify the incoming payment/UTR before starting fulfillment. <Link href="/admin/orders" className="underline">Reset</Link></p> : null}\n')
+
+          # 2) Customer orders: expose payment verification instead of a vague Pending-only experience.
+          path = "app/dashboard/order-history/page.tsx"
+          replace_once(path,
+              '  id: string; publicOrderId: string; service: string; platform: string; link: string; quantity: number; amount: number; status: string; createdAt: string;\n',
+              '  id: string; publicOrderId: string; service: string; platform: string; link: string; quantity: number; amount: number; status: string; paymentStatus: string; createdAt: string;\n')
+          replace_once(path,
+              'function StatusBadge({ status }: { status: string }) {\n  const Icon = statusIcons[status] || Clock3;\n  return <span className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold ${customerStatusClass(status)}`}><Icon aria-hidden="true" className="h-3 w-3 shrink-0" /><span className="truncate">{customerOrderStatus(status).label}</span></span>;\n}\n',
+              'function StatusBadge({ status }: { status: string }) {\n  const Icon = statusIcons[status] || Clock3;\n  return <span className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold ${customerStatusClass(status)}`}><Icon aria-hidden="true" className="h-3 w-3 shrink-0" /><span className="truncate">{customerOrderStatus(status).label}</span></span>;\n}\n\nfunction PaymentVerificationBadge({ paymentStatus }: { paymentStatus: string }) {\n  if (paymentStatus !== "verification_pending") return null;\n  return <span className="ml-1 inline-flex items-center gap-1 rounded-full border border-orange-400/30 bg-orange-500/10 px-2.5 py-1 text-[10px] font-bold text-orange-200"><Clock3 className="h-3 w-3" />Payment verification</span>;\n}\n')
+          replace_once(path,
+              'select("id, public_order_id, service_name, platform, link, quantity, charge, status, created_at, package_name, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))")',
+              'select("id, public_order_id, service_name, platform, link, quantity, charge, status, payment_status, created_at, package_name, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))")')
+          replace_once(path,
+              'status: row.status || "pending", createdAt: row.created_at,',
+              'status: row.status || "pending", paymentStatus: row.payment_status || "paid", createdAt: row.created_at,')
+          replace_once(path,
+              'const summary = useMemo(() => ({ total: campaigns.length, active: campaigns.filter((item) => activeStatuses.includes(item.status)).length, completed: campaigns.filter((item) => item.status === "completed").length, pending: campaigns.filter((item) => item.status === "pending").length }), [campaigns]);',
+              'const summary = useMemo(() => ({ total: campaigns.length, active: campaigns.filter((item) => activeStatuses.includes(item.status)).length, completed: campaigns.filter((item) => item.status === "completed").length, pending: campaigns.filter((item) => item.status === "pending").length, verificationPending: campaigns.filter((item) => item.paymentStatus === "verification_pending").length }), [campaigns]);')
+          replace_once(path,
+              'className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4"',
+              'className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5"')
+          replace_once(path,
+              '[["Total Orders", summary.total, CircleDashed, "text-white"], ["Active / Processing", summary.active, RefreshCw, "text-amber-200"], ["Completed", summary.completed, CheckCircle2, "text-emerald-300"], ["Pending", summary.pending, Clock3, "text-slate-200"]]',
+              '[["Total Orders", summary.total, CircleDashed, "text-white"], ["Active / Processing", summary.active, RefreshCw, "text-amber-200"], ["Completed", summary.completed, CheckCircle2, "text-emerald-300"], ["Pending", summary.pending, Clock3, "text-slate-200"], ["Payment Check", summary.verificationPending, Clock3, "text-orange-200"]]')
+          p = Path(path)
+          text = p.read_text()
+          text = text.replace('<StatusBadge status={item.status} />', '<StatusBadge status={item.status} /><PaymentVerificationBadge paymentStatus={item.paymentStatus} />')
+          p.write_text(text)
+
+          # 3) Analytics + state integrity when an admin rejects an unverified manual UPI payment.
+          path = "app/api/admin/orders/[id]/status/route.ts"
+          replace_once(path,
+              '  } else if (body?.note !== undefined) {\n    update.admin_note = String(body.note).trim().slice(0, 2000) || null;\n  }\n',
+              '  } else if (awaitingPaymentVerification && status === "failed") {\n    update.payment_status = "failed";\n    const failedNote = `Manual payment verification failed by admin on ${new Date().toISOString()}.`;\n    update.admin_note = body?.note !== undefined\n      ? `${failedNote} ${String(body.note).trim().slice(0, 1800)}`.trim()\n      : `${failedNote}${currentOrder.admin_note ? ` ${currentOrder.admin_note}` : ""}`.slice(0, 2000);\n  } else if (body?.note !== undefined) {\n    update.admin_note = String(body.note).trim().slice(0, 2000) || null;\n  }\n')
+          replace_once(path,
+              '  let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;\n',
+              '  const paymentFailed = awaitingPaymentVerification && status === "failed";\n  if (paymentFailed) {\n    try {\n      await recordTrustedEvent({\n        eventName: "payment_failed",\n        customerId: currentOrder.user_id,\n        pagePath: `/admin/orders/${params.id}`,\n        eventId: `manual-upi-payment-failed:${params.id}`,\n        metadata: {\n          method: "manual_upi",\n          currency: "INR",\n          value: Number(currentOrder.charge),\n          order_id: params.id,\n          payment_status: "failed",\n          source: "admin_verification",\n        },\n      });\n    } catch (analyticsError) {\n      console.error("[MANUAL_UPI_PAYMENT_FAILED_ANALYTICS_ERROR]", analyticsError);\n    }\n  }\n\n  let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;\n')
+          replace_once(path,
+              '  return NextResponse.json({ data, refund, paymentVerified });\n',
+              '  return NextResponse.json({ data, refund, paymentVerified, paymentFailed });\n')
+          PY
+      - name: Validate
+        run: |
+          npm ci
+          npm run build
+      - name: Commit bundled upgrade and remove temporary workflow
+        run: |
+          rm .github/workflows/day4-conversion-revenue-upgrade.yml
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "feat: bundle conversion and revenue operations upgrade"
+          git push origin HEAD:growth/day4-conversion-revenue-upgrade
