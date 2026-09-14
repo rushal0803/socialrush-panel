@@ -36,6 +36,12 @@ export async function POST(request: Request, { params }: { params: { id: string 
     update.admin_note = body?.note !== undefined
       ? `${verifiedNote} ${String(body.note).trim().slice(0, 1800)}`.trim()
       : `${verifiedNote}${currentOrder.admin_note ? ` ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
+  } else if (awaitingPaymentVerification && status === "failed") {
+    update.payment_status = "failed";
+    const failedNote = `Manual payment verification failed by admin on ${new Date().toISOString()}.`;
+    update.admin_note = body?.note !== undefined
+      ? `${failedNote} ${String(body.note).trim().slice(0, 1800)}`.trim()
+      : `${failedNote}${currentOrder.admin_note ? ` ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
   } else if (body?.note !== undefined) {
     update.admin_note = String(body.note).trim().slice(0, 2000) || null;
   }
@@ -66,6 +72,28 @@ export async function POST(request: Request, { params }: { params: { id: string 
     }
   }
 
+  const paymentFailed = awaitingPaymentVerification && status === "failed";
+  if (paymentFailed) {
+    try {
+      await recordTrustedEvent({
+        eventName: "payment_failed",
+        customerId: currentOrder.user_id,
+        pagePath: `/admin/orders/${params.id}`,
+        eventId: `manual-upi-payment-failed:${params.id}`,
+        metadata: {
+          method: "manual_upi",
+          currency: "INR",
+          value: Number(currentOrder.charge),
+          order_id: params.id,
+          payment_status: "failed",
+          source: "admin_verification",
+        },
+      });
+    } catch (analyticsError) {
+      console.error("[MANUAL_UPI_PAYMENT_FAILED_ANALYTICS_ERROR]", analyticsError);
+    }
+  }
+
   let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;
   if (
     (status === "cancelled" || status === "refunded") &&
@@ -93,5 +121,5 @@ export async function POST(request: Request, { params }: { params: { id: string 
   revalidatePath("/admin/analytics");
   revalidatePath("/dashboard/orders");
   revalidatePath("/dashboard/wallet");
-  return NextResponse.json({ data, refund, paymentVerified });
+  return NextResponse.json({ data, refund, paymentVerified, paymentFailed });
 }

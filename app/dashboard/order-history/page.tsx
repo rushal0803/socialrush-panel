@@ -12,7 +12,7 @@ import { formatPublicOrderId } from "@/lib/orders/public-reference";
 import { createClient } from "@/lib/supabase/client";
 
 type Campaign = {
-  id: string; publicOrderId: string; service: string; platform: string; link: string; quantity: number; amount: number; status: string; createdAt: string;
+  id: string; publicOrderId: string; service: string; platform: string; link: string; quantity: number; amount: number; status: string; paymentStatus: string; createdAt: string;
   packageName: string | null; deliveredCount: number | null; remains: number | null; progress: number | null; deliveryTime: string | null; refillPolicy: string | null; refillEligible: boolean; refillRequestedAt: string | null;
 };
 
@@ -22,6 +22,11 @@ const statusIcons: Record<string, typeof Clock3> = { completed: CheckCircle2, ca
 function StatusBadge({ status }: { status: string }) {
   const Icon = statusIcons[status] || Clock3;
   return <span className={`inline-flex max-w-full items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold ${customerStatusClass(status)}`}><Icon aria-hidden="true" className="h-3 w-3 shrink-0" /><span className="truncate">{customerOrderStatus(status).label}</span></span>;
+}
+
+function PaymentVerificationBadge({ paymentStatus }: { paymentStatus: string }) {
+  if (paymentStatus !== "verification_pending") return null;
+  return <span className="ml-1 inline-flex items-center gap-1 rounded-full border border-orange-400/30 bg-orange-500/10 px-2.5 py-1 text-[10px] font-bold text-orange-200"><Clock3 className="h-3 w-3" />Payment verification</span>;
 }
 
 function reorderHref(item: Campaign) {
@@ -50,11 +55,11 @@ export default function CampaignHistoryPage() {
       const supabase = createClient();
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) { setLoadError("Orders could not be loaded right now."); setLoading(false); return; }
-      const { data, error } = await supabase.from("orders").select("id, public_order_id, service_name, platform, link, quantity, charge, status, created_at, package_name, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))").eq("user_id", user.id).order("created_at", { ascending: false });
+      const { data, error } = await supabase.from("orders").select("id, public_order_id, service_name, platform, link, quantity, charge, status, payment_status, created_at, package_name, delivered_count, remaining_count, progress_percent, refill_eligible, refill_requested_at, services(name, delivery_time, refill_policy, categories(name))").eq("user_id", user.id).order("created_at", { ascending: false });
       if (error) { setLoadError("Orders could not be loaded right now."); setLoading(false); return; }
       setCampaigns((data ?? []).map((row) => {
         const service = row.services as unknown as { name?: string; delivery_time?: string; refill_policy?: string; categories?: { name?: string } | null } | null;
-        return { id: row.id, publicOrderId: formatPublicOrderId(row.public_order_id), service: row.service_name || service?.name || "Growth service", platform: row.platform || service?.categories?.name?.split(" ")[0] || "Other", link: row.link || "", quantity: Number(row.quantity ?? 0), amount: Number(row.charge ?? 0), status: row.status || "pending", createdAt: row.created_at, packageName: row.package_name, deliveredCount: row.delivered_count === null ? null : Number(row.delivered_count), remains: row.remaining_count === null ? null : Number(row.remaining_count), progress: row.progress_percent === null ? null : Number(row.progress_percent), deliveryTime: service?.delivery_time || null, refillPolicy: service?.refill_policy || null, refillEligible: Boolean(row.refill_eligible), refillRequestedAt: row.refill_requested_at || null };
+        return { id: row.id, publicOrderId: formatPublicOrderId(row.public_order_id), service: row.service_name || service?.name || "Growth service", platform: row.platform || service?.categories?.name?.split(" ")[0] || "Other", link: row.link || "", quantity: Number(row.quantity ?? 0), amount: Number(row.charge ?? 0), status: row.status || "pending", paymentStatus: row.payment_status || "paid", createdAt: row.created_at, packageName: row.package_name, deliveredCount: row.delivered_count === null ? null : Number(row.delivered_count), remains: row.remaining_count === null ? null : Number(row.remaining_count), progress: row.progress_percent === null ? null : Number(row.progress_percent), deliveryTime: service?.delivery_time || null, refillPolicy: service?.refill_policy || null, refillEligible: Boolean(row.refill_eligible), refillRequestedAt: row.refill_requested_at || null };
       }));
       setLoading(false);
     };
@@ -64,7 +69,7 @@ export default function CampaignHistoryPage() {
   const platforms = useMemo(() => Array.from(new Set(campaigns.map((item) => item.platform))).sort(), [campaigns]);
   const availableStatuses = useMemo(() => Array.from(new Set(campaigns.map((item) => item.status))).sort(), [campaigns]);
   const filtered = useMemo(() => campaigns.filter((item) => `${item.publicOrderId} ${item.platform} ${item.service}`.toLowerCase().includes(search.toLowerCase()) && (status === "all" || item.status === status) && (platform === "all" || item.platform === platform)), [campaigns, platform, search, status]);
-  const summary = useMemo(() => ({ total: campaigns.length, active: campaigns.filter((item) => activeStatuses.includes(item.status)).length, completed: campaigns.filter((item) => item.status === "completed").length, pending: campaigns.filter((item) => item.status === "pending").length }), [campaigns]);
+  const summary = useMemo(() => ({ total: campaigns.length, active: campaigns.filter((item) => activeStatuses.includes(item.status)).length, completed: campaigns.filter((item) => item.status === "completed").length, pending: campaigns.filter((item) => item.status === "pending").length, verificationPending: campaigns.filter((item) => item.paymentStatus === "verification_pending").length }), [campaigns]);
   const resetFilters = () => { setSearch(""); setStatus("all"); setPlatform("all"); };
   const hasFilters = Boolean(search || status !== "all" || platform !== "all");
 
@@ -75,8 +80,8 @@ export default function CampaignHistoryPage() {
         <Link href="/dashboard/new-order" className="inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white shadow-[0_16px_35px_-18px_rgba(255,122,0,.9)] transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-orange-400/25 active:translate-y-0 active:scale-[.98] sm:w-auto"><Plus className="h-4 w-4" />Place New Order</Link>
       </header>
 
-      <section aria-label="Order summary" className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-4">
-        {[["Total Orders", summary.total, CircleDashed, "text-white"], ["Active / Processing", summary.active, RefreshCw, "text-amber-200"], ["Completed", summary.completed, CheckCircle2, "text-emerald-300"], ["Pending", summary.pending, Clock3, "text-slate-200"]].map(([label, value, Icon, tone]) => { const SummaryIcon = Icon as typeof CircleDashed; return <article key={String(label)} className="rounded-2xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018))] p-4 shadow-[0_18px_36px_-30px_rgba(0,0,0,.9)]"><div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[.13em] text-slate-400"><SummaryIcon className={`h-4 w-4 ${tone}`} />{String(label)}</div><p className="mt-2 text-2xl font-black text-white sm:text-3xl">{String(value)}</p></article>; })}
+      <section aria-label="Order summary" className="mt-5 grid grid-cols-2 gap-3 lg:grid-cols-5">
+        {[["Total Orders", summary.total, CircleDashed, "text-white"], ["Active / Processing", summary.active, RefreshCw, "text-amber-200"], ["Completed", summary.completed, CheckCircle2, "text-emerald-300"], ["Pending", summary.pending, Clock3, "text-slate-200"], ["Payment Check", summary.verificationPending, Clock3, "text-orange-200"]].map(([label, value, Icon, tone]) => { const SummaryIcon = Icon as typeof CircleDashed; return <article key={String(label)} className="rounded-2xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018))] p-4 shadow-[0_18px_36px_-30px_rgba(0,0,0,.9)]"><div className="flex items-center gap-2 text-[9px] font-black uppercase tracking-[.13em] text-slate-400"><SummaryIcon className={`h-4 w-4 ${tone}`} />{String(label)}</div><p className="mt-2 text-2xl font-black text-white sm:text-3xl">{String(value)}</p></article>; })}
       </section>
 
       <section aria-label="Order filters" className="mt-5 rounded-2xl border border-white/10 bg-[#101116]/95 p-3 shadow-[0_20px_50px_-35px_rgba(0,0,0,.9)] sm:p-4">
@@ -104,14 +109,14 @@ function DesktopRow({ item, money }: { item: Campaign; money: (value: number) =>
     <div className="min-w-0"><p className="truncate font-mono text-xs font-bold text-orange-300">{item.publicOrderId}</p><p className="mt-1 text-[10px] text-slate-500">{new Date(item.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })}</p></div>
     <div><p className="text-sm font-bold text-white">{item.quantity.toLocaleString("en-IN")}</p><p className="mt-1 text-[10px] text-slate-500">{item.deliveredCount === null ? (item.deliveryTime || "Awaiting delivery") : `${item.deliveredCount.toLocaleString("en-IN")} delivered`}</p></div>
     <p className="text-sm font-black text-orange-100">{money(item.amount)}</p>
-    <div><StatusBadge status={item.status} />{item.refillEligible ? <p className="mt-1.5 text-[10px] font-semibold text-emerald-300">{item.refillRequestedAt ? "Refill requested" : "Refill eligible"}</p> : null}</div>
+    <div><StatusBadge status={item.status} /><PaymentVerificationBadge paymentStatus={item.paymentStatus} />{item.refillEligible ? <p className="mt-1.5 text-[10px] font-semibold text-emerald-300">{item.refillRequestedAt ? "Refill requested" : "Refill eligible"}</p> : null}</div>
     <Link href={`/dashboard/orders/${item.id}`} className="inline-flex min-h-10 items-center justify-center gap-1 rounded-lg border border-orange-400/25 bg-orange-500/10 px-3 text-[11px] font-bold text-orange-100 transition hover:border-orange-400/60 hover:bg-orange-500/20 focus:outline-none focus:ring-4 focus:ring-orange-400/10">Details <Eye className="h-3.5 w-3.5" /></Link>
   </article>;
 }
 
 function MobileCard({ item, money }: { item: Campaign; money: (value: number) => string }) {
   const reorder = reorderHref(item);
-  return <article className="min-w-0 rounded-2xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018))] p-4 shadow-[0_18px_42px_-32px_rgba(0,0,0,.9)]"><div className="flex min-w-0 items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.05]"><PlatformIcon platform={item.platform} className="h-5 w-5" /></span><div className="min-w-0"><h2 className="truncate text-sm font-black text-white">{item.service}</h2><p className="mt-1 truncate text-[11px] capitalize text-slate-400">{item.platform}{item.packageName ? ` · ${item.packageName}` : ""}</p></div></div><StatusBadge status={item.status} /></div>
+  return <article className="min-w-0 rounded-2xl border border-white/10 bg-[linear-gradient(135deg,rgba(255,255,255,.055),rgba(255,255,255,.018))] p-4 shadow-[0_18px_42px_-32px_rgba(0,0,0,.9)]"><div className="flex min-w-0 items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-white/10 bg-white/[.05]"><PlatformIcon platform={item.platform} className="h-5 w-5" /></span><div className="min-w-0"><h2 className="truncate text-sm font-black text-white">{item.service}</h2><p className="mt-1 truncate text-[11px] capitalize text-slate-400">{item.platform}{item.packageName ? ` · ${item.packageName}` : ""}</p></div></div><StatusBadge status={item.status} /><PaymentVerificationBadge paymentStatus={item.paymentStatus} /></div>
     <dl className="mt-4 grid grid-cols-2 gap-2"><Metric label="Order ID" value={item.publicOrderId} accent /><Metric label="Date" value={new Date(item.createdAt).toLocaleDateString("en-IN", { day: "2-digit", month: "short", year: "numeric" })} /><Metric label="Quantity" value={item.quantity.toLocaleString("en-IN")} /><Metric label="Amount" value={money(item.amount)} accent /></dl>
     {item.link ? <a href={item.link} target="_blank" rel="noopener noreferrer" className="mt-2 flex min-w-0 items-center gap-2 rounded-xl border border-white/10 bg-black/20 px-3 py-2.5 text-xs text-slate-300 transition hover:border-orange-400/35"><ArrowUpRight className="h-3.5 w-3.5 shrink-0 text-orange-300" /><span className="truncate">{item.link}</span></a> : null}
     {(item.deliveryTime || item.refillEligible) ? <div className="mt-3 flex flex-wrap gap-x-4 gap-y-1 text-[10px] font-semibold text-slate-400"><span>{item.deliveryTime || "Delivery details available in order"}</span>{item.refillEligible ? <span className="text-emerald-300">{item.refillRequestedAt ? "Refill requested" : "Refill eligible"}</span> : null}</div> : null}

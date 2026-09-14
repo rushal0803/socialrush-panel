@@ -48,6 +48,7 @@ export default async function AdminOrdersPage({
 }) {
   const supabase = await createClient();
   const needsAttention = searchParams.filter === "needs-attention";
+  const paymentVerification = searchParams.filter === "payment-verification";
   const filter = statuses.includes(searchParams.status || "")
     ? searchParams.status!
     : "all";
@@ -71,7 +72,8 @@ export default async function AdminOrdersPage({
     )
     .order("created_at", { ascending: false });
 
-  if (needsAttention) query = query.in("status", ["failed", "cancelled", "partial"]);
+  if (paymentVerification) query = query.eq("payment_status", "verification_pending");
+  else if (needsAttention) query = query.in("status", ["failed", "cancelled", "partial"]);
   else if (filter !== "all") query = query.eq("status", filter);
   if (platform) query = query.ilike("platform", platform);
   if (serviceFilter) {
@@ -112,8 +114,21 @@ export default async function AdminOrdersPage({
     <main className="mx-auto max-w-[1900px] p-4 sm:p-8">
       <AdminPageHeader
         title="Order operations"
-        description="Manage fulfillment, count tracking, refill work, provider references, and customer-visible progress."
+        description="Manage fulfillment, payment verification, count tracking, refill work, provider references, and customer-visible progress."
       />
+
+      <section className="mt-5 grid gap-3 sm:grid-cols-2">
+        <Link href="/admin/orders?filter=payment-verification" className={`rounded-2xl border p-4 transition ${paymentVerification ? "border-orange-400/60 bg-orange-500/15" : "border-orange-400/20 bg-[#111111] hover:border-orange-400/40"}`}>
+          <p className="text-[10px] font-black uppercase tracking-[.14em] text-orange-300">Revenue queue</p>
+          <p className="mt-1 text-sm font-black text-white">Payment verification pending</p>
+          <p className="mt-1 text-xs leading-5 text-[#9CA3AF]">Review manual UPI orders before customers wait for fulfillment.</p>
+        </Link>
+        <Link href="/admin/orders?filter=needs-attention" className={`rounded-2xl border p-4 transition ${needsAttention ? "border-amber-400/60 bg-amber-500/10" : "border-white/10 bg-[#111111] hover:border-amber-400/35"}`}>
+          <p className="text-[10px] font-black uppercase tracking-[.14em] text-amber-300">Operations queue</p>
+          <p className="mt-1 text-sm font-black text-white">Needs attention</p>
+          <p className="mt-1 text-xs leading-5 text-[#9CA3AF]">Failed, cancelled, and partial orders that need a decision.</p>
+        </Link>
+      </section>
 
       {error ? (
         <p className="mt-6 rounded-2xl border border-amber-400/30 bg-amber-500/10 p-4 text-sm leading-6 text-amber-200">
@@ -137,7 +152,7 @@ export default async function AdminOrdersPage({
         />
         <select
           name="status"
-          defaultValue={needsAttention ? "all" : filter}
+          defaultValue={needsAttention || paymentVerification ? "all" : filter}
           className={`${filterField} capitalize`}
         >
           {statuses.map((item) => (
@@ -192,6 +207,7 @@ export default async function AdminOrdersPage({
       </form>
 
       {needsAttention ? <p className="mt-3 text-xs font-semibold text-amber-200">Showing orders in a trusted attention state: failed, cancelled, or partial. <Link href="/admin/orders" className="underline">Reset</Link></p> : null}
+      {paymentVerification ? <p className="mt-3 text-xs font-semibold text-orange-200">Showing manual payments waiting for admin verification. Verify the incoming payment/UTR before starting fulfillment. <Link href="/admin/orders" className="underline">Reset</Link></p> : null}
 
       <section className="mt-5 grid gap-4 lg:hidden">
         {orders.map((order) => {
