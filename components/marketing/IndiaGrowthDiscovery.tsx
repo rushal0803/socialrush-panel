@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BookOpen, Layers3, PackageSearch, TrendingUp } from "lucide-react";
+import { ArrowRight, BookOpen, BriefcaseBusiness, Layers3, PackageSearch, TrendingUp } from "lucide-react";
 
 const moneyPages = [
   {
@@ -17,11 +17,27 @@ const moneyPages = [
     text: "Review current LinkedIn follower pricing and the public-link order flow for profiles or company pages.",
     href: "/linkedin-followers",
   },
+  {
+    title: "Facebook Followers India",
+    text: "Explore the current Facebook follower path for supported public pages and profiles.",
+    href: "/buy-facebook-followers-india",
+  },
+  {
+    title: "TikTok Followers India",
+    text: "Review the active TikTok follower service, quantity rules and public-profile requirements.",
+    href: "/tiktok-followers",
+  },
+  {
+    title: "X / Twitter Followers India",
+    text: "Compare current follower options for an eligible public X / Twitter profile.",
+    href: "/twitter-followers",
+  },
 ];
 
 const discoveryLinks = [
   { title: "All growth services", text: "Compare the live catalog across seven supported platforms.", href: "/services", icon: PackageSearch },
   { title: "Compare packages", text: "Choose a platform, goal and quantity before starting an order.", href: "/packages", icon: Layers3 },
+  { title: "For agencies", text: "Use a clearer path for repeat client campaigns and larger requirements.", href: "/for-agencies", icon: BriefcaseBusiness },
   { title: "Growth guides", text: "Use practical India-focused guides alongside any paid campaign.", href: "/blog", icon: BookOpen },
 ];
 
@@ -38,7 +54,7 @@ export default function IndiaGrowthDiscovery({ compact = false }: { compact?: bo
           <Link href="/social-media-growth-india" className="inline-flex min-h-11 items-center gap-2 self-start rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 text-sm font-black text-orange-200 transition hover:border-orange-300/50 hover:bg-orange-500/15">Explore India growth hub <ArrowRight className="h-4 w-4" /></Link>
         </div>
 
-        <div className={`mt-6 grid gap-3 ${compact ? "lg:grid-cols-3" : "md:grid-cols-3"}`}>
+        <div className={`mt-6 grid gap-3 ${compact ? "lg:grid-cols-3" : "sm:grid-cols-2 lg:grid-cols-3"}`}>
           {moneyPages.map((item) => (
             <Link key={item.href} href={item.href} className="group rounded-2xl border border-white/10 bg-[#111216] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/30">
               <span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><TrendingUp className="h-5 w-5" /></span>
@@ -49,7 +65,7 @@ export default function IndiaGrowthDiscovery({ compact = false }: { compact?: bo
           ))}
         </div>
 
-        {!compact ? <div className="mt-3 grid gap-3 md:grid-cols-3">
+        {!compact ? <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {discoveryLinks.map(({ title, text, href, icon: Icon }) => (
             <Link key={href} href={href} className="rounded-2xl border border-white/[.07] bg-black/20 p-4 transition hover:border-white/20">
               <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-lg bg-white/[.05] text-slate-300"><Icon className="h-4 w-4" /></span><div><h3 className="text-sm font-black">{title}</h3><p className="mt-1 text-xs leading-5 text-slate-500">{text}</p></div></div>
