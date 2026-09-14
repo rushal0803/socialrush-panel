@@ -13,6 +13,7 @@ export const dashboardLinks: readonly DashboardNavigationItem[] = [
   { label: "Orders", href: "/dashboard/orders", icon: "orders", group: "Main" },
   { label: "Packages", href: "/dashboard/packages", icon: "packages", group: "Main" },
   { label: "Campaign Stacks", href: "/dashboard/campaign-stacks", icon: "campaign", group: "Workspace" },
+  { label: "Recurring Revenue", href: "/dashboard/retainers", icon: "campaign", group: "Workspace" },
   { label: "Reseller Hub", href: "/dashboard/reseller", icon: "clients", group: "Workspace" },
   { label: "Campaigns", href: "/dashboard/campaigns", icon: "campaign", group: "Workspace" },
   { label: "Clients", href: "/dashboard/clients", icon: "clients", group: "Workspace" },
