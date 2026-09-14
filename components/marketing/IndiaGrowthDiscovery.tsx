@@ -34,6 +34,24 @@ const moneyPages = [
   },
 ];
 
+const authorityGuides = [
+  {
+    title: "Instagram growth in India",
+    text: "Build profile clarity, content consistency and genuine engagement before or alongside a follower campaign.",
+    href: "/blog/how-to-grow-instagram-followers-organically-india",
+  },
+  {
+    title: "YouTube subscriber strategy",
+    text: "Use channel positioning, searchable topics, playlists and retention to make subscriber growth more meaningful.",
+    href: "/blog/how-to-increase-youtube-subscribers-in-india",
+  },
+  {
+    title: "LinkedIn followers vs engagement",
+    text: "Compare visible audience scale with useful professional interaction before choosing the next LinkedIn goal.",
+    href: "/blog/linkedin-followers-vs-engagement-india",
+  },
+];
+
 const discoveryLinks = [
   { title: "All growth services", text: "Compare the live catalog across seven supported platforms.", href: "/services", icon: PackageSearch },
   { title: "Compare packages", text: "Choose a platform, goal and quantity before starting an order.", href: "/packages", icon: Layers3 },
@@ -65,13 +83,19 @@ export default function IndiaGrowthDiscovery({ compact = false }: { compact?: bo
           ))}
         </div>
 
-        {!compact ? <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          {discoveryLinks.map(({ title, text, href, icon: Icon }) => (
-            <Link key={href} href={href} className="rounded-2xl border border-white/[.07] bg-black/20 p-4 transition hover:border-white/20">
-              <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-lg bg-white/[.05] text-slate-300"><Icon className="h-4 w-4" /></span><div><h3 className="text-sm font-black">{title}</h3><p className="mt-1 text-xs leading-5 text-slate-500">{text}</p></div></div>
-            </Link>
-          ))}
-        </div> : null}
+        {!compact ? <>
+          <div className="mt-6 flex items-end justify-between gap-4"><div><p className="text-[10px] font-black uppercase tracking-[.15em] text-orange-300">Authority guides</p><h3 className="mt-1 text-xl font-black">Learn the strategy behind the service.</h3></div><Link href="/blog" className="hidden text-xs font-black text-orange-300 sm:inline-flex sm:items-center sm:gap-1">Browse all guides <ArrowRight className="h-3.5 w-3.5" /></Link></div>
+          <div className="mt-3 grid gap-3 md:grid-cols-3">
+            {authorityGuides.map((item) => <Link key={item.href} href={item.href} className="group rounded-2xl border border-orange-400/15 bg-orange-500/[.045] p-4 transition hover:border-orange-400/35"><BookOpen className="h-5 w-5 text-orange-300" /><h3 className="mt-3 text-sm font-black">{item.title}</h3><p className="mt-2 text-xs leading-5 text-slate-400">{item.text}</p><span className="mt-3 inline-flex items-center gap-1 text-xs font-black text-orange-300">Read guide <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" /></span></Link>)}
+          </div>
+          <div className="mt-3 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+            {discoveryLinks.map(({ title, text, href, icon: Icon }) => (
+              <Link key={href} href={href} className="rounded-2xl border border-white/[.07] bg-black/20 p-4 transition hover:border-white/20">
+                <div className="flex items-center gap-3"><span className="grid h-9 w-9 place-items-center rounded-lg bg-white/[.05] text-slate-300"><Icon className="h-4 w-4" /></span><div><h3 className="text-sm font-black">{title}</h3><p className="mt-1 text-xs leading-5 text-slate-500">{text}</p></div></div>
+              </Link>
+            ))}
+          </div>
+        </> : null}
       </div>
     </section>
   );
