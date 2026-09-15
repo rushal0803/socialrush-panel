@@ -15,8 +15,8 @@ const socialLinks = [
 
 export default function FooterSocialLinks() {
   return (
-    <div className="mt-6">
-      <p className="text-xs font-bold uppercase tracking-[0.14em] text-white">
+    <div>
+      <p className="text-xs font-black uppercase tracking-[0.14em] text-content-primary">
         Follow SocialRUSH
       </p>
       <div className="mt-3 flex flex-wrap gap-2">
@@ -27,12 +27,9 @@ export default function FooterSocialLinks() {
             target="_blank"
             rel="noopener noreferrer"
             aria-label={`Follow SocialRUSH on ${social.label}`}
-            className="inline-flex min-h-11 items-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2 text-xs font-bold text-orange-100 transition hover:-translate-y-0.5 hover:border-orange-400/60 hover:bg-orange-500/20 hover:text-white"
+            className="inline-flex min-h-11 items-center gap-2 rounded-sr-control border border-sr-border bg-white/[.03] px-3.5 py-2 text-xs font-bold text-content-secondary outline-none transition duration-normal ease-sr-out hover:-translate-y-0.5 hover:border-action/30 hover:bg-action/[.08] hover:text-white focus-visible:shadow-sr-focus motion-reduce:transform-none"
           >
-            <PlatformIcon
-              platform={social.platform}
-              className="h-4 w-4 text-orange-400"
-            />
+            <PlatformIcon platform={social.platform} className="h-4 w-4 text-orange-300" />
             {social.label}
           </a>
         ))}
