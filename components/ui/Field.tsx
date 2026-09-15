@@ -32,9 +32,9 @@ export function Field({
   return (
     <label className="block text-sm font-semibold text-content-primary" htmlFor={inputId}>
       {label ? <span className="mb-2 block">{label}</span> : null}
-      <span className="relative block">
+      <span className="group relative block">
         {leading ? (
-          <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-content-muted">
+          <span className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5 text-content-muted transition-colors duration-fast ease-sr-out group-focus-within:text-action-bright motion-reduce:transition-none">
             {leading}
           </span>
         ) : null}
@@ -46,8 +46,8 @@ export function Field({
           aria-describedby={describedBy}
           className={[
             "min-h-12 w-full rounded-sr-control border bg-surface-elevated px-4 py-3 text-sm font-normal text-content-primary outline-none",
-            "placeholder:text-content-muted transition-[border-color,box-shadow,background-color] duration-fast ease-sr-out",
-            "focus:border-action-bright/70 focus:shadow-sr-focus disabled:cursor-not-allowed disabled:opacity-55",
+            "placeholder:text-content-muted transition-[border-color,box-shadow,background-color] duration-fast ease-sr-out motion-reduce:transition-none",
+            "focus:border-action-bright/70 focus:bg-surface-secondary focus:shadow-sr-focus disabled:cursor-not-allowed disabled:opacity-55",
             error ? "border-state-danger/70" : "border-sr-border hover:border-white/15",
             leading ? "pl-10" : "",
             trailing ? "pr-10" : "",
@@ -58,7 +58,7 @@ export function Field({
           {...props}
         />
         {trailing ? (
-          <span className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-content-muted">
+          <span className="absolute inset-y-0 right-0 flex items-center pr-3.5 text-content-muted transition-colors duration-fast ease-sr-out group-focus-within:text-action-bright motion-reduce:transition-none">
             {trailing}
           </span>
         ) : null}
