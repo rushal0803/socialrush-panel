@@ -37,6 +37,12 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
 
   return (
     <div className="dashboard-shell relative flex min-h-screen">
+      <a
+        href="#dashboard-main-content"
+        className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to dashboard content
+      </a>
       <Sidebar initialBalance={context.profile.balance} userId={context.user.id} />
       <div className="min-w-0 flex-1">
         <Header email={context.user.email || ""} fullName={context.profile.full_name} role={context.profile.role} balance={Number(context.profile.balance ?? 0)} />
@@ -44,7 +50,9 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
         <ProfessionalUpiCheckout />
         <AbandonedCheckoutRecovery />
         <CheckoutFunnelTracker />
-        {children}
+        <div id="dashboard-main-content" tabIndex={-1} className="outline-none">
+          {children}
+        </div>
         <MobileBottomNav />
       </div>
     </div>

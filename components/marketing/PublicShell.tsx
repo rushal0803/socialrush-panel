@@ -26,7 +26,9 @@ export default function PublicShell({
       <main id="main-content" className="relative min-h-[55vh]">
         {children}
       </main>
-      <MarketingFooter tone={tone} />
+      <div className="content-auto">
+        <MarketingFooter tone={tone} />
+      </div>
     </div>
   );
 }
