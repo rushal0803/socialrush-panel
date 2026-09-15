@@ -67,8 +67,6 @@ export default function MobileMenuLayer({
   useEffect(() => {
     if (!open) return;
 
-    // Safari can restore a page from the back-forward cache without changing
-    // the pathname. Close the portal before it can remain above the dashboard.
     const closeForNavigation = () => onClose();
     window.addEventListener("popstate", closeForNavigation);
     window.addEventListener("pagehide", closeForNavigation);
@@ -115,25 +113,31 @@ export default function MobileMenuLayer({
       aria-label="Mobile navigation"
       tabIndex={-1}
     >
-      <button type="button" tabIndex={-1} aria-label="Close menu backdrop" onClick={onClose} className={`absolute inset-0 h-full w-full cursor-default bg-[#050505]/80 backdrop-blur-[2px] ${variant === "drawer" ? "" : "bg-[#050505]/95"}`} />
+      <button
+        type="button"
+        tabIndex={-1}
+        aria-label="Close menu backdrop"
+        onClick={onClose}
+        className={`absolute inset-0 h-full w-full cursor-default bg-black/72 backdrop-blur-sm ${variant === "drawer" ? "" : "bg-black/88"}`}
+      />
       {variant === "drawer" ? (
-        <div onClick={keepOpen} className="mobile-menu-theme absolute bottom-0 right-0 top-0 z-[100000] flex w-[min(92vw,25rem)] max-w-[25rem] flex-col overflow-hidden border-l border-orange-400/30 bg-[#0B0B0F] shadow-[-24px_0_60px_-24px_rgba(0,0,0,.9)]">
+        <div onClick={keepOpen} className="mobile-menu-theme absolute bottom-0 right-0 top-0 z-[100000] flex w-[min(94vw,27rem)] max-w-[27rem] flex-col overflow-hidden border-l border-sr-border-strong bg-surface-page shadow-[-30px_0_80px_-32px_rgba(0,0,0,.95)]">
           {children}
         </div>
       ) : (
         <div className="absolute inset-0 z-[100000] overflow-y-auto overscroll-contain px-3 pb-[calc(1rem+env(safe-area-inset-bottom))] pt-3 sm:px-5">
           <div onClick={keepOpen} className="mobile-menu-theme relative">
-          {showCloseButton ? (
-            <button
-              type="button"
-              aria-label="Close menu"
-              onClick={onClose}
-              className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-xl border border-orange-400/30 bg-[#151515] text-xl font-semibold text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)]"
-            >
-              ×
-            </button>
-          ) : null}
-          {children}
+            {showCloseButton ? (
+              <button
+                type="button"
+                aria-label="Close menu"
+                onClick={onClose}
+                className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-sr-control border border-action/30 bg-surface-secondary text-xl font-semibold text-white shadow-sr-button outline-none focus-visible:shadow-sr-focus"
+              >
+                ×
+              </button>
+            ) : null}
+            {children}
           </div>
         </div>
       )}
