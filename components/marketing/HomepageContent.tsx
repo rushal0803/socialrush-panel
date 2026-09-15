@@ -1,4 +1,5 @@
 import PublicReviewsSection from "@/components/reviews/PublicReviewsSection";
+import HomepageExperienceFrame from "./HomepageExperienceFrame";
 import PremiumHomepage from "./PremiumHomepage";
 import PublicShell from "./PublicShell";
 import PersonalizationShelf from "./cro/PersonalizationShelf";
@@ -11,9 +12,11 @@ export default function HomepageContent({
 }) {
   return (
     <PublicShell>
-      <PremiumHomepage searchParams={searchParams} />
-      <PersonalizationShelf catalog={activeSmmServices} />
-      <PublicReviewsSection limit={4} />
+      <HomepageExperienceFrame>
+        <PremiumHomepage searchParams={searchParams} />
+        <PersonalizationShelf catalog={activeSmmServices} />
+        <PublicReviewsSection limit={4} />
+      </HomepageExperienceFrame>
     </PublicShell>
   );
 }
