@@ -105,7 +105,7 @@ export default function MarketingFooter({ tone = "default" }: { tone?: "default"
                       className="flex min-h-14 w-full items-center justify-between gap-4 py-3 text-left text-xs font-black uppercase tracking-[.14em] text-content-primary outline-none focus-visible:shadow-sr-focus"
                     >
                       <span>{group.title}</span>
-                      <span aria-hidden="true" className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border transition ${open ? "border-action/30 bg-action/12 text-orange-200" : "border-sr-border bg-white/[.03] text-content-muted"}`}>
+                      <span aria-hidden="true" className={`grid h-8 w-8 shrink-0 place-items-center rounded-lg border transition ${open ? "border-action/30 bg-action/[.12] text-orange-200" : "border-sr-border bg-white/[.03] text-content-muted"}`}>
                         {open ? <Minus className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
                       </span>
                     </button>
