@@ -1,0 +1,199 @@
+.commandCenter {
+  --phase7-panel: rgba(16, 16, 18, 0.92);
+  --phase7-panel-soft: rgba(20, 20, 23, 0.78);
+  --phase7-border: rgba(255, 255, 255, 0.09);
+  --phase7-orange: #ff8a00;
+  --phase7-amber: #ffb000;
+  position: relative;
+  isolation: isolate;
+}
+
+.commandCenter::before {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  content: "";
+  background:
+    radial-gradient(circle at 10% 4%, rgba(255, 122, 0, 0.09), transparent 25rem),
+    radial-gradient(circle at 92% 16%, rgba(255, 176, 0, 0.055), transparent 22rem);
+}
+
+.commandCenter :global(.dashboard-home-page) {
+  padding-bottom: 7rem;
+}
+
+.commandCenter :global(.dashboard-home-page > header) {
+  border-color: rgba(255, 166, 66, 0.24);
+  background:
+    radial-gradient(circle at 88% 0%, rgba(255, 137, 20, 0.22), transparent 35%),
+    linear-gradient(128deg, rgba(25, 21, 14, 0.98), rgba(13, 14, 18, 0.98) 56%, rgba(12, 13, 17, 0.98));
+  box-shadow:
+    0 34px 80px -52px rgba(255, 122, 0, 0.9),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+}
+
+.commandCenter :global(.dashboard-home-page > header h1) {
+  letter-spacing: -0.045em;
+  text-wrap: balance;
+}
+
+.commandCenter :global(.dashboard-home-page > header nav a) {
+  border-color: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.035);
+  transition: transform 180ms ease, border-color 180ms ease, background 180ms ease;
+}
+
+.commandCenter :global(.dashboard-home-page > header nav a:hover) {
+  transform: translateY(-1px);
+  border-color: rgba(255, 153, 35, 0.36);
+  background: rgba(255, 133, 20, 0.08);
+}
+
+.commandCenter :global(section[aria-label="Account overview"]) {
+  gap: 0.7rem;
+}
+
+.commandCenter :global(section[aria-label="Account overview"] > a) {
+  position: relative;
+  overflow: hidden;
+  min-height: 8.7rem;
+  border-color: var(--phase7-border);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.035), transparent 48%),
+    var(--phase7-panel);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.035);
+}
+
+.commandCenter :global(section[aria-label="Account overview"] > a)::after {
+  position: absolute;
+  right: -2.2rem;
+  bottom: -3.1rem;
+  width: 7.5rem;
+  height: 7.5rem;
+  border-radius: 999px;
+  content: "";
+  background: rgba(255, 137, 20, 0.055);
+  filter: blur(2px);
+}
+
+.commandCenter :global(section[aria-label="Account overview"] > a:hover) {
+  transform: translateY(-2px);
+  border-color: rgba(255, 151, 36, 0.34);
+  box-shadow: 0 20px 46px -34px rgba(255, 122, 0, 0.7);
+}
+
+.commandCenter :global(.dashboard-glass) {
+  border-color: var(--phase7-border);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.024), transparent 38%),
+    var(--phase7-panel);
+  box-shadow:
+    0 24px 58px -48px rgba(0, 0, 0, 0.95),
+    inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.commandCenter :global(.dashboard-home-page section h2) {
+  letter-spacing: -0.025em;
+}
+
+.commandCenter :global(.dashboard-home-page article) {
+  transition: border-color 180ms ease, background 180ms ease, transform 180ms ease;
+}
+
+.commandCenter :global(.dashboard-home-page article:hover) {
+  border-color: rgba(255, 146, 28, 0.18);
+}
+
+.commandCenter :global(.dashboard-home-page [class*="divide-y"] > article:hover) {
+  transform: translateX(2px);
+  background: linear-gradient(90deg, rgba(255, 122, 0, 0.035), transparent 64%);
+}
+
+.commandCenter :global(.dashboard-home-page [role="status"]),
+.commandCenter :global(.dashboard-home-page [role="alert"]) {
+  backdrop-filter: blur(12px);
+}
+
+.commandCenter :global(.dashboard-home-page a:focus-visible),
+.commandCenter :global(.dashboard-home-page button:focus-visible) {
+  outline: 2px solid rgba(255, 174, 76, 0.92);
+  outline-offset: 3px;
+}
+
+.commandCenter :global(.dashboard-home-page .btn-dashboard-primary) {
+  min-height: 3rem;
+  box-shadow: 0 16px 34px -18px rgba(255, 122, 0, 0.72);
+}
+
+.commandCenter :global(.dashboard-home-page .btn-dashboard-primary:hover) {
+  filter: brightness(1.06);
+}
+
+.commandCenter :global(.dashboard-home-page .btn-dashboard-secondary) {
+  min-height: 2.65rem;
+}
+
+@media (min-width: 1280px) {
+  .commandCenter :global(.dashboard-home-page) {
+    padding-top: 2rem;
+  }
+
+  .commandCenter :global(.dashboard-home-page > header) {
+    padding: 1.75rem 2rem;
+  }
+
+  .commandCenter :global(.dashboard-home-page > section.grid) {
+    align-items: start;
+  }
+}
+
+@media (max-width: 767px) {
+  .commandCenter :global(.dashboard-home-page) {
+    padding-inline: 0.85rem;
+    padding-top: 0.85rem;
+    padding-bottom: 8.5rem;
+  }
+
+  .commandCenter :global(.dashboard-home-page > header) {
+    border-radius: 1.2rem;
+    padding: 1.1rem;
+  }
+
+  .commandCenter :global(.dashboard-home-page > header h1) {
+    font-size: clamp(1.65rem, 8vw, 2.1rem);
+  }
+
+  .commandCenter :global(.dashboard-home-page > header nav) {
+    gap: 0.45rem;
+  }
+
+  .commandCenter :global(.dashboard-home-page > header nav a) {
+    min-height: 2.85rem;
+    justify-content: center;
+  }
+
+  .commandCenter :global(section[aria-label="Account overview"] > a) {
+    min-height: 8.2rem;
+    padding: 0.9rem;
+  }
+
+  .commandCenter :global(section[aria-label="Account overview"] > a p:nth-of-type(2)) {
+    font-size: 1.1rem;
+  }
+
+  .commandCenter :global(.dashboard-glass) {
+    border-radius: 1.15rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .commandCenter *,
+  .commandCenter *::before,
+  .commandCenter *::after {
+    scroll-behavior: auto !important;
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
