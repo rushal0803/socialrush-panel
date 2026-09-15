@@ -28,20 +28,44 @@ export default function CurrencyDropdown({
       if (event.key === "Escape") setOpen(false);
     };
 
+    const onHeaderDetailsToggle = (event: Event) => {
+      const target = event.target;
+      if (!(target instanceof HTMLDetailsElement)) return;
+      if (!target.open || !target.closest("header")) return;
+      setOpen(false);
+    };
+
     window.addEventListener("mousedown", onClickOutside);
     window.addEventListener("keydown", onKeyDown);
+    document.addEventListener("toggle", onHeaderDetailsToggle, true);
+
     return () => {
       window.removeEventListener("mousedown", onClickOutside);
       window.removeEventListener("keydown", onKeyDown);
+      document.removeEventListener("toggle", onHeaderDetailsToggle, true);
     };
   }, []);
 
+  const toggleCurrencyMenu = () => {
+    setOpen((value) => {
+      const next = !value;
+
+      if (next) {
+        document.querySelectorAll<HTMLDetailsElement>("header details[open]").forEach((details) => {
+          details.removeAttribute("open");
+        });
+      }
+
+      return next;
+    });
+  };
+
   return (
-    <div ref={rootRef} className="relative">
+    <div ref={rootRef} className="relative z-[80]">
       <span className="sr-only" id={labelId}>Display currency</span>
       <button
         type="button"
-        onClick={() => setOpen((value) => !value)}
+        onClick={toggleCurrencyMenu}
         className={`inline-flex items-center gap-2 rounded-sr-control border border-sr-border bg-surface-secondary px-3 py-2 text-xs font-bold text-content-primary outline-none transition duration-fast ease-sr-out hover:border-sr-border-strong hover:bg-white/[.05] focus-visible:shadow-sr-focus ${compact ? "min-h-10" : "min-h-11"}`}
         aria-haspopup="listbox"
         aria-expanded={open}
@@ -53,7 +77,7 @@ export default function CurrencyDropdown({
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-50 min-w-[190px] overflow-hidden rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-1.5 shadow-[0_24px_60px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl">
+        <div className="absolute right-0 top-[calc(100%+8px)] z-[120] max-h-[min(25rem,calc(100vh-6rem))] min-w-[176px] overflow-y-auto rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-1 shadow-[0_24px_60px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl">
           <ul role="listbox" className="grid gap-0.5">
             {currencies.map((item) => {
               const selected = currency === item.code;
@@ -65,7 +89,7 @@ export default function CurrencyDropdown({
                       setCurrency(item.code as Currency);
                       setOpen(false);
                     }}
-                    className={`flex min-h-10 w-full items-center justify-between gap-4 rounded-xl px-3 py-2 text-left text-xs outline-none transition hover:bg-white/[.05] focus-visible:shadow-sr-focus ${selected ? "bg-action/10 text-orange-100" : "text-content-secondary"}`}
+                    className={`flex min-h-9 w-full items-center justify-between gap-4 rounded-xl px-3 py-2 text-left text-xs outline-none transition hover:bg-white/[.05] focus-visible:shadow-sr-focus ${selected ? "bg-action/10 text-orange-100" : "text-content-secondary"}`}
                   >
                     <span className="font-bold">{item.code} <span className="font-medium text-content-muted">{item.symbol}</span><span className="sr-only"> {item.name}</span></span>
                     {selected ? <Check className="h-3.5 w-3.5 text-orange-300" aria-hidden="true" /> : null}
