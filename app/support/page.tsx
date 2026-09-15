@@ -2,6 +2,7 @@ import Link from "next/link";
 import MarketingIcon, { type MarketingIconName } from "@/components/marketing/MarketingIcon";
 import PortalCTA from "@/components/marketing/PortalCTA";
 import PublicShell from "@/components/marketing/PublicShell";
+import SupportJourney from "@/components/support/SupportJourney";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
@@ -34,13 +35,15 @@ export default function SupportPage() {
         </div>
       </section>
 
+      <SupportJourney variant="public" />
+
       <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-7xl"><div className="max-w-2xl"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Find your answer</p><h2 className="mt-3 text-3xl font-black text-white">Support built around the customer journey.</h2></div>
           <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{topics.map((topic) => <Link key={topic.title} href={topic.href} className="group rounded-2xl border border-white/[.09] bg-[#101219] p-5 transition hover:-translate-y-1 hover:border-orange-400/45"><span className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/20 bg-orange-500/[.08] text-orange-300"><MarketingIcon name={topic.icon} className="h-5 w-5" /></span><h3 className="mt-5 text-lg font-black text-white">{topic.title}</h3><p className="mt-2 text-sm leading-6 text-[#A8AFBD]">{topic.text}</p><span className="mt-5 inline-flex text-sm font-bold text-orange-300 transition group-hover:translate-x-1">Explore help →</span></Link>)}</div>
         </div>
       </section>
 
-      <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20"><div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1.15fr_.85fr]"><article className="rounded-3xl border border-orange-400/25 bg-[radial-gradient(circle_at_top_right,rgba(255,118,0,.18),transparent_48%),#101219] p-6 sm:p-8"><MarketingIcon name="shield" className="h-7 w-7 text-orange-300" /><h2 className="mt-5 text-2xl font-black text-white">Keep your account safe.</h2><p className="mt-3 max-w-xl text-sm leading-7 text-[#A8AFBD]">We only need the public destination relevant to your service. Never share a password, OTP or recovery code with anyone.</p><Link href="/trust" className="mt-6 inline-flex min-h-11 items-center font-bold text-orange-300">Read customer safety guidance →</Link></article><article className="rounded-3xl border border-white/[.09] bg-[#101219] p-6 sm:p-8"><MarketingIcon name="message" className="h-7 w-7 text-emerald-300" /><h2 className="mt-5 text-2xl font-black text-white">Need personal help?</h2><p className="mt-3 text-sm leading-7 text-[#A8AFBD]">For an existing order, include your order ID so our team can review the correct details quickly.</p><Link href="/contact" className="btn-primary mt-6">Contact support</Link></article></div></section>
+      <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-20"><div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1.15fr_.85fr]"><article className="rounded-3xl border border-orange-400/25 bg-[radial-gradient(circle_at_top_right,rgba(255,118,0,.18),transparent_48%),#101219] p-6 sm:p-8"><MarketingIcon name="shield" className="h-7 w-7 text-orange-300" /><h2 className="mt-5 text-2xl font-black text-white">Keep your account safe.</h2><p className="mt-3 max-w-xl text-sm leading-7 text-[#A8AFBD]">We only need the public destination relevant to your service. Never share a password, OTP or recovery code with anyone.</p><Link href="/trust" className="mt-6 inline-flex min-h-11 items-center font-bold text-orange-300">Read customer safety guidance →</Link></article><article className="rounded-3xl border border-white/[.09] bg-[#101219] p-6 sm:p-8"><MarketingIcon name="message" className="h-7 w-7 text-emerald-300" /><h2 className="mt-5 text-2xl font-black text-white">Need personal help?</h2><p className="mt-3 text-sm leading-7 text-[#A8AFBD]">For an existing order, include your order ID so our team can review the correct details quickly.</p><Link href="/dashboard/support" className="btn-primary mt-6">Open dashboard support</Link></article></div></section>
     </PublicShell>
   );
 }
