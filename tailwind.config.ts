@@ -37,14 +37,14 @@ const config: Config = {
           muted: "var(--sr-text-muted)",
         },
         action: {
-          DEFAULT: "var(--sr-orange)",
-          bright: "var(--sr-orange-bright)",
-          gold: "var(--sr-gold)",
+          DEFAULT: "#FF7600",
+          bright: "#FF9A2E",
+          gold: "#FFC857",
         },
         state: {
-          success: "var(--sr-success)",
-          warning: "var(--sr-warning)",
-          danger: "var(--sr-error)",
+          success: "#20C997",
+          warning: "#F59E0B",
+          danger: "#EF4444",
         },
         "sr-border": {
           DEFAULT: "var(--sr-border)",
