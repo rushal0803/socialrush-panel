@@ -6,6 +6,7 @@ import { ArrowRight, Compass, LayoutDashboard, Search, Sparkles } from "lucide-r
 import type { ReactNode } from "react";
 import styles from "./HomepageExperienceFrame.module.css";
 import mobileStyles from "./HomepageMobilePolish.module.css";
+import laptopStyles from "./HomepageLaptopPolish.module.css";
 
 const quickLinks = [
   { href: "#services", label: "Popular services", icon: Search },
@@ -24,7 +25,7 @@ export default function HomepageExperienceFrame({ children }: { children: ReactN
   };
 
   return (
-    <div className={`${styles.experience} ${mobileStyles.mobilePolish}`}>
+    <div className={`${styles.experience} ${mobileStyles.mobilePolish} ${laptopStyles.laptopPolish}`}>
       <div className={`${styles.navigator} ${mobileStyles.mobileNavigator}`} aria-label="Homepage quick navigation">
         <motion.div
           aria-hidden="true"
