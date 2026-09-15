@@ -15,11 +15,11 @@ const variantClasses: Record<ButtonVariant, string> = {
   primary:
     "border border-action-gold/20 bg-sr-brand text-white shadow-sr-button hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(255,118,0,0.28)]",
   secondary:
-    "border border-sr-border bg-surface-secondary text-content-primary hover:border-sr-border-strong hover:bg-action/10",
+    "border border-sr-border bg-surface-secondary text-content-primary hover:-translate-y-0.5 hover:border-sr-border-strong hover:bg-action/10",
   ghost:
     "border border-transparent bg-transparent text-content-secondary hover:border-sr-border hover:bg-white/[0.04] hover:text-content-primary",
   danger:
-    "border border-state-danger/30 bg-state-danger/10 text-red-200 hover:border-state-danger/50 hover:bg-state-danger/15",
+    "border border-state-danger/30 bg-state-danger/10 text-red-200 hover:-translate-y-0.5 hover:border-state-danger/50 hover:bg-state-danger/15",
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
@@ -48,10 +48,12 @@ export function Button({
       disabled={isDisabled}
       aria-busy={loading || undefined}
       className={[
-        "inline-flex items-center justify-center gap-2 font-bold transition-all duration-normal ease-sr-out",
+        "inline-flex items-center justify-center gap-2 font-bold",
+        "transition-[transform,box-shadow,border-color,background-color,color,opacity] duration-normal ease-sr-out",
+        "active:translate-y-0 active:scale-[0.985]",
         "focus-visible:outline-none focus-visible:shadow-sr-focus",
         "disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-55",
-        "motion-reduce:transform-none motion-reduce:transition-none",
+        "motion-reduce:transform-none motion-reduce:transition-none motion-reduce:active:transform-none",
         variantClasses[variant],
         sizeClasses[size],
         className,
