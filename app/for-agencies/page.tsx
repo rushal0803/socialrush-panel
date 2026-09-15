@@ -7,7 +7,7 @@ const config = audiencePages.agencies;
 
 export const metadata = createPageMetadata({
   title: "Social Media Services for Agencies India | SocialRUSH",
-  description: "Explore SocialRUSH social media services for agencies in India with multi-platform service discovery, public pricing, campaign packages and support for repeat client requirements.",
+  description: "Explore SocialRUSH social media services for agencies and resellers in India with an agency workspace, bulk job planning, campaign stacks and support for larger repeat client requirements.",
   path: "/for-agencies",
   keywords: [
     "social media services for agencies India",
@@ -15,6 +15,7 @@ export const metadata = createPageMetadata({
     "agency social media campaign services",
     "bulk social media service enquiry",
     "social media packages for agencies",
+    "social media reseller panel India",
   ],
 });
 
@@ -35,11 +36,11 @@ export default function ForAgenciesPage() {
   const discoverySchema = {
     "@context": "https://schema.org",
     "@type": "ItemList",
-    name: "SocialRUSH agency campaign paths",
+    name: "SocialRUSH agency and reseller workflow",
     itemListElement: [
-      ["India growth services", "/social-media-growth-india"],
-      ["All services", "/services"],
-      ["Packages", "/packages"],
+      ["Agency / Reseller Hub", "/dashboard/reseller"],
+      ["Bulk Job Planner", "/dashboard/reseller/bulk-planner"],
+      ["Campaign Stacks", "/dashboard/campaign-stacks"],
       ["Bulk and agency support", "/contact#support-form"],
     ].map(([name, path], index) => ({
       "@type": "ListItem",
