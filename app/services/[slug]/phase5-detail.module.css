@@ -1,0 +1,78 @@
+.phase5Detail :global(.service-detail-page) {
+  position: relative;
+  background:
+    radial-gradient(circle at 12% 0%, rgba(255, 122, 0, 0.09), transparent 32rem),
+    radial-gradient(circle at 92% 18%, rgba(255, 176, 0, 0.07), transparent 28rem);
+}
+
+.phase5Detail :global(.service-detail-page > div > section) {
+  transition:
+    transform 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+}
+
+.phase5Detail :global(.service-detail-page > div > section:first-of-type) {
+  position: relative;
+  overflow: hidden;
+  border-color: rgba(255, 159, 0, 0.2) !important;
+  box-shadow: 0 30px 70px -42px rgba(255, 122, 0, 0.42) !important;
+}
+
+.phase5Detail :global(.service-detail-page > div > section:first-of-type::before) {
+  content: "";
+  position: absolute;
+  width: 18rem;
+  height: 18rem;
+  right: -8rem;
+  top: -10rem;
+  border-radius: 999px;
+  background: rgba(255, 159, 0, 0.08);
+  filter: blur(12px);
+  pointer-events: none;
+}
+
+.phase5Detail :global(.service-detail-page h1) {
+  text-wrap: balance;
+}
+
+.phase5Detail :global(.service-detail-page details) {
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.phase5Detail :global(.service-detail-page details:hover) {
+  border-color: rgba(255, 159, 0, 0.25) !important;
+  transform: translateY(-1px);
+}
+
+.phase5Detail :global(.service-detail-page a) {
+  -webkit-tap-highlight-color: transparent;
+}
+
+@media (max-width: 640px) {
+  .phase5Detail :global(.service-detail-page) {
+    padding-bottom: 8rem;
+  }
+
+  .phase5Detail :global(.service-detail-page > div) {
+    gap: 1.25rem;
+  }
+
+  .phase5Detail :global(.service-detail-page > div > section:first-of-type) {
+    border-radius: 1.5rem !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .phase5Detail :global(.service-detail-page > div > section),
+  .phase5Detail :global(.service-detail-page details) {
+    transition: none;
+  }
+
+  .phase5Detail :global(.service-detail-page details:hover) {
+    transform: none;
+  }
+}
