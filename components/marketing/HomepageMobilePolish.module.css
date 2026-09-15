@@ -1,0 +1,166 @@
+.mobilePolish {}
+
+.mobileNavigator {}
+
+@media (max-width: 760px) {
+  .mobileNavigator {
+    display: none;
+  }
+
+  .mobilePolish :global(.premium-homepage) {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .mobilePolish :global(.premium-homepage > section) {
+    order: 2;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child) {
+    order: 0;
+    padding-top: 1.35rem;
+    padding-bottom: 1.15rem;
+  }
+
+  .mobilePolish :global(.premium-homepage > #services) {
+    order: 1;
+    padding-top: 1.6rem;
+    padding-bottom: 1.8rem;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative) {
+    gap: 1.25rem;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > p:first-child) {
+    padding: 0.42rem 0.7rem;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > h1) {
+    margin-top: 1rem;
+    font-size: clamp(2.35rem, 11vw, 3rem);
+    line-height: 0.98;
+    letter-spacing: -0.05em;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > p:nth-of-type(2)) {
+    margin-top: 1rem;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:first-of-type) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.65rem;
+    margin-top: 1.15rem;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:first-of-type > a) {
+    min-height: 46px;
+    width: 100%;
+    padding-inline: 0.9rem;
+    font-size: 12px;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:nth-of-type(2)) {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0.55rem;
+    margin-top: 0.8rem;
+    padding: 0.7rem;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 14px;
+    background: rgba(255, 255, 255, 0.025);
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:nth-of-type(2) > span) {
+    grid-column: 1 / -1;
+    font-size: 10px;
+    color: #9fa8b6;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:nth-of-type(2) > a) {
+    display: inline-flex;
+    min-height: 34px;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    background: rgba(255, 255, 255, 0.035);
+    padding-inline: 0.65rem;
+    font-size: 10px;
+    line-height: 1.25;
+    text-align: center;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:nth-of-type(2) > a:first-of-type) {
+    border-color: rgba(255, 118, 0, 0.28);
+    background: rgba(255, 118, 0, 0.08);
+    color: #ffb16f;
+  }
+
+  .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > ul) {
+    margin-top: 1rem;
+    gap: 0.55rem 0.8rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.07);
+    font-size: 10px;
+  }
+
+  .mobilePolish :global(.journey-experience) {
+    margin-top: 0.1rem;
+    padding: 1rem !important;
+    border-radius: 1.35rem;
+    box-shadow: 0 18px 40px -30px rgba(255, 118, 0, 0.45);
+  }
+
+  .mobilePolish :global(.journey-heading h2) {
+    margin-top: 0.35rem;
+    font-size: 1.45rem;
+    line-height: 1.05;
+  }
+
+  .mobilePolish :global(.journey-heading p:last-child) {
+    margin-top: 0.55rem;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+
+  .mobilePolish :global(.journey-platforms) {
+    margin-top: 0.8rem;
+  }
+
+  .mobilePolish :global(.order-preview-card),
+  .mobilePolish :global(.journey-actions) {
+    display: none;
+  }
+
+  .mobilePolish :global(#services .product-service-card:nth-child(n + 4)) {
+    display: none;
+  }
+
+  .mobilePolish :global(#services .product-service-card) {
+    min-height: auto;
+  }
+
+  .mobilePolish :global(#services .product-service-card h3) {
+    font-size: 1rem;
+  }
+
+  .mobilePolish :global(#services .service-price) {
+    font-size: 1.35rem;
+  }
+
+  .mobilePolish :global(.upper-trust-strip) {
+    margin-top: 0;
+  }
+}
+
+@media (min-width: 761px) and (max-width: 980px) {
+  .mobilePolish :global(.premium-homepage > section:first-child) {
+    min-height: auto;
+  }
+}
