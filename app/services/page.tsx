@@ -1,5 +1,6 @@
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
+import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
@@ -94,6 +95,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialSearchParam={searchParams?.q ?? searchParams?.search}
         serviceCatalog={serviceCatalog}
       />
+      <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
     </>
   );
