@@ -1,4 +1,6 @@
+import type { Metadata } from "next";
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
+import ServiceCompareStudio from "@/components/marketing/services/ServiceCompareStudio";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
@@ -8,7 +10,7 @@ import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-se
 
 export const dynamic = "force-dynamic";
 
-export const metadata = createPageMetadata({
+export const metadata: Metadata = createPageMetadata({
   title: "Social Media Growth Services | SocialRUSH",
   description:
     "Browse SocialRUSH services by platform, compare transparent pricing and delivery information, and choose an option that fits your campaign.",
@@ -95,6 +97,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialSearchParam={searchParams?.q ?? searchParams?.search}
         serviceCatalog={serviceCatalog}
       />
+      <ServiceCompareStudio serviceCatalog={serviceCatalog} />
       <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
     </>
