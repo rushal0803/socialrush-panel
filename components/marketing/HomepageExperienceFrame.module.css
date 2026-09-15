@@ -1,0 +1,402 @@
+.experience {
+  position: relative;
+  isolation: isolate;
+  background:
+    radial-gradient(circle at 18% 8%, rgba(255, 118, 0, 0.08), transparent 28rem),
+    radial-gradient(circle at 88% 32%, rgba(255, 200, 87, 0.05), transparent 24rem),
+    var(--sr-bg);
+}
+
+.navigator {
+  position: sticky;
+  top: 72px;
+  z-index: 70;
+  border-bottom: 1px solid var(--sr-border);
+  background: rgba(7, 8, 13, 0.86);
+  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(20px);
+}
+
+.progress {
+  position: absolute;
+  inset: auto 0 0;
+  height: 2px;
+  transform-origin: 0 50%;
+  background: var(--sr-gradient);
+  box-shadow: 0 0 18px rgba(255, 118, 0, 0.35);
+}
+
+.navigatorInner {
+  width: min(100% - 2rem, var(--sr-content-width));
+  min-height: 58px;
+  margin-inline: auto;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.navigatorLabel {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: max-content;
+}
+
+.navigatorLabel strong,
+.navigatorLabel small {
+  display: block;
+}
+
+.navigatorLabel strong {
+  color: var(--sr-text-primary);
+  font-size: 12px;
+  line-height: 1.1;
+  font-weight: 900;
+}
+
+.navigatorLabel small {
+  margin-top: 3px;
+  color: var(--sr-text-muted);
+  font-size: 9px;
+  line-height: 1.1;
+}
+
+.navigatorIcon {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  border: 1px solid rgba(255, 118, 0, 0.24);
+  border-radius: 10px;
+  background: rgba(255, 118, 0, 0.08);
+  color: #ffb06c;
+}
+
+.navigatorIcon svg {
+  width: 14px;
+  height: 14px;
+}
+
+.quickLinks {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  margin-left: auto;
+}
+
+.quickLink,
+.dashboardLink,
+.primaryAction {
+  min-height: 38px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 7px;
+  border-radius: 11px;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1;
+  white-space: nowrap;
+  transition: transform 180ms cubic-bezier(0.22, 1, 0.36, 1), border-color 180ms ease, background-color 180ms ease, color 180ms ease;
+}
+
+.quickLink {
+  border: 1px solid transparent;
+  background: transparent;
+  padding: 0 10px;
+  color: var(--sr-text-secondary);
+}
+
+.quickLink:hover {
+  border-color: var(--sr-border);
+  background: rgba(255, 255, 255, 0.04);
+  color: var(--sr-text-primary);
+}
+
+.quickLink svg,
+.dashboardLink svg,
+.primaryAction svg {
+  width: 13px;
+  height: 13px;
+  flex: 0 0 auto;
+}
+
+.navigatorActions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.dashboardLink {
+  border: 1px solid var(--sr-border);
+  padding: 0 11px;
+  color: var(--sr-text-primary);
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.dashboardLink:hover {
+  border-color: rgba(255, 118, 0, 0.28);
+  background: rgba(255, 118, 0, 0.06);
+}
+
+.primaryAction {
+  border: 0;
+  padding: 0 13px;
+  color: white;
+  background: var(--sr-gradient);
+  box-shadow: var(--sr-shadow-button);
+}
+
+.primaryAction:hover {
+  transform: translateY(-1px);
+}
+
+.quickLink:focus-visible,
+.dashboardLink:focus-visible,
+.primaryAction:focus-visible {
+  outline: none;
+  box-shadow: var(--sr-focus-ring);
+}
+
+.experience :global(.premium-homepage) {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.008), transparent 22rem),
+    transparent;
+}
+
+.experience :global(.premium-homepage > section:first-child) {
+  position: relative;
+  min-height: min(780px, calc(100vh - 130px));
+  display: flex;
+  align-items: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.055);
+}
+
+.experience :global(.premium-homepage > section:first-child::after) {
+  content: "";
+  position: absolute;
+  inset: auto 8% 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 118, 0, 0.4), transparent);
+}
+
+.experience :global(.premium-homepage h1) {
+  text-wrap: balance;
+  text-shadow: 0 18px 70px rgba(0, 0, 0, 0.34);
+}
+
+.experience :global(.premium-homepage h2) {
+  text-wrap: balance;
+}
+
+.experience :global(.journey-experience),
+.experience :global(.growth-engine),
+.experience :global(.demo-card),
+.experience :global(.dashboard-preview),
+.experience :global(.confidence-card) {
+  position: relative;
+  border-color: rgba(255, 255, 255, 0.10);
+  box-shadow: 0 26px 80px -46px rgba(255, 118, 0, 0.38), 0 24px 60px -34px rgba(0, 0, 0, 0.78);
+}
+
+.experience :global(.journey-experience::before),
+.experience :global(.growth-engine::before),
+.experience :global(.demo-card::before),
+.experience :global(.dashboard-preview::before),
+.experience :global(.confidence-card::before) {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.035), transparent 34%, rgba(255, 118, 0, 0.018));
+}
+
+.experience :global(.upper-trust-strip) {
+  gap: 8px;
+  padding: 8px;
+  border: 1px solid var(--sr-border);
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.018);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.025);
+}
+
+.experience :global(.upper-trust-strip > span) {
+  min-height: 42px;
+  border-radius: 11px;
+  background: rgba(255, 255, 255, 0.025);
+}
+
+.experience :global(.growth-engine-node),
+.experience :global(.feature-card),
+.experience :global(.product-service-card),
+.experience :global(.trust-card) {
+  transition: transform 190ms cubic-bezier(0.22, 1, 0.36, 1), border-color 190ms ease, background-color 190ms ease, box-shadow 190ms ease;
+}
+
+.experience :global(.growth-engine-node:hover),
+.experience :global(.feature-card:hover),
+.experience :global(.product-service-card:hover),
+.experience :global(.trust-card:hover) {
+  transform: translateY(-3px);
+  border-color: rgba(255, 118, 0, 0.26);
+  box-shadow: 0 22px 50px -34px rgba(255, 118, 0, 0.36);
+}
+
+.experience :global(.product-service-card) {
+  overflow: hidden;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.016));
+}
+
+.experience :global(.product-service-card::after) {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(255, 118, 0, 0.6), transparent);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.experience :global(.product-service-card:hover::after) {
+  opacity: 1;
+}
+
+.experience :global(.workflow > li) {
+  position: relative;
+  overflow: hidden;
+}
+
+.experience :global(.workflow > li::before) {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(145deg, rgba(255, 118, 0, 0.055), transparent 48%);
+  opacity: 0;
+  transition: opacity 180ms ease;
+}
+
+.experience :global(.workflow > li:hover::before) {
+  opacity: 1;
+}
+
+.experience :global(.demo-card) {
+  overflow: hidden;
+  background:
+    radial-gradient(circle at 88% 8%, rgba(255, 118, 0, 0.13), transparent 13rem),
+    #10131a;
+}
+
+.experience :global(.trust-card-featured) {
+  background:
+    radial-gradient(circle at 90% 8%, rgba(255, 118, 0, 0.10), transparent 12rem),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035), rgba(255, 255, 255, 0.018));
+}
+
+.experience :global(.status-bar) {
+  border-radius: 16px;
+  background: linear-gradient(90deg, rgba(255, 118, 0, 0.055), rgba(255, 255, 255, 0.02));
+}
+
+.experience :global(.eyebrow) {
+  letter-spacing: 0.17em;
+}
+
+.experience :global(.sr-primary),
+.experience :global(.sr-secondary) {
+  transition-duration: 180ms;
+}
+
+.experience :global(.sr-primary:hover),
+.experience :global(.sr-secondary:hover) {
+  transform: translateY(-1px);
+}
+
+@media (max-width: 1180px) {
+  .navigatorLabel small,
+  .quickLink span,
+  .dashboardLink span {
+    display: none;
+  }
+
+  .quickLink,
+  .dashboardLink {
+    width: 38px;
+    padding-inline: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .navigator {
+    top: 70px;
+  }
+
+  .navigatorInner {
+    width: 100%;
+    min-height: 52px;
+    gap: 8px;
+    padding-inline: 12px;
+  }
+
+  .navigatorLabel {
+    display: none;
+  }
+
+  .quickLinks {
+    margin-left: 0;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .quickLinks::-webkit-scrollbar {
+    display: none;
+  }
+
+  .quickLink {
+    width: auto;
+    padding-inline: 9px;
+  }
+
+  .quickLink span {
+    display: inline;
+  }
+
+  .dashboardLink {
+    display: none;
+  }
+
+  .primaryAction {
+    min-width: max-content;
+    padding-inline: 11px;
+  }
+
+  .experience :global(.premium-homepage > section:first-child) {
+    min-height: auto;
+  }
+
+  .experience :global(.growth-engine-node:hover),
+  .experience :global(.feature-card:hover),
+  .experience :global(.product-service-card:hover),
+  .experience :global(.trust-card:hover),
+  .experience :global(.sr-primary:hover),
+  .experience :global(.sr-secondary:hover),
+  .primaryAction:hover {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .quickLink,
+  .dashboardLink,
+  .primaryAction,
+  .experience :global(.growth-engine-node),
+  .experience :global(.feature-card),
+  .experience :global(.product-service-card),
+  .experience :global(.trust-card),
+  .experience :global(.sr-primary),
+  .experience :global(.sr-secondary) {
+    transition: none;
+  }
+}
