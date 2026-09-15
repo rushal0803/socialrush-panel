@@ -21,7 +21,7 @@ export default function IconBadge({
 }: IconBadgeProps) {
   return (
     <span
-      className={`inline-grid shrink-0 place-items-center bg-gradient-to-br from-[#FF6A00] to-[#FF9F00] text-white shadow-[0_12px_28px_rgba(255,106,0,.3)] ${sizes[size]} ${className}`}
+      className={`inline-grid shrink-0 place-items-center bg-sr-brand text-white shadow-sr-button ${sizes[size]} ${className}`}
       role={label ? "img" : undefined}
       aria-label={label}
       aria-hidden={label ? undefined : true}
