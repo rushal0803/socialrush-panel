@@ -29,7 +29,7 @@ export function Surface({
         "rounded-sr-card border shadow-sr-card",
         toneClasses[tone],
         interactive
-          ? "transition-all duration-normal ease-sr-out hover:-translate-y-0.5 hover:border-sr-border-strong motion-reduce:transform-none motion-reduce:transition-none"
+          ? "transition-[transform,box-shadow,border-color,background-color] duration-normal ease-sr-out hover:-translate-y-0.5 hover:border-sr-border-strong hover:shadow-[0_24px_60px_-34px_rgba(255,118,0,0.28)] focus-within:border-sr-border-strong motion-reduce:transform-none motion-reduce:transition-none"
           : "",
         className,
       ]
