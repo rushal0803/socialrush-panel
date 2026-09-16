@@ -61,7 +61,7 @@ export default function CurrencyDropdown({
   };
 
   return (
-    <div ref={rootRef} className="relative z-[80]">
+    <div ref={rootRef} className="relative z-[100] isolate">
       <span className="sr-only" id={labelId}>Display currency</span>
       <button
         type="button"
@@ -77,7 +77,7 @@ export default function CurrencyDropdown({
       </button>
 
       {open ? (
-        <div className="absolute right-0 top-[calc(100%+8px)] z-[120] max-h-[min(25rem,calc(100vh-6rem))] min-w-[176px] overflow-y-auto rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-1 shadow-[0_24px_60px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl">
+        <div className="absolute right-0 top-[calc(100%+8px)] z-[140] max-h-[min(25rem,calc(100vh-6rem))] min-w-[176px] overflow-y-auto rounded-2xl border border-sr-border-strong bg-[#0B0D12] p-1 shadow-[0_30px_90px_rgba(0,0,0,.78)] ring-1 ring-black/40">
           <ul role="listbox" className="grid gap-0.5">
             {currencies.map((item) => {
               const selected = currency === item.code;
@@ -100,6 +100,21 @@ export default function CurrencyDropdown({
           </ul>
         </div>
       ) : null}
+
+      <style jsx global>{`
+        header details[open] {
+          z-index: 120 !important;
+          isolation: isolate;
+        }
+
+        header details > div {
+          background: #0b0d12 !important;
+          -webkit-backdrop-filter: none !important;
+          backdrop-filter: none !important;
+          box-shadow: 0 30px 90px rgba(0, 0, 0, 0.78) !important;
+          isolation: isolate;
+        }
+      `}</style>
     </div>
   );
 }
