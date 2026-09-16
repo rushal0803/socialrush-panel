@@ -1,4 +1,5 @@
 import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
+import RepeatScaleModule from "@/components/dashboard/RepeatScaleModule";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { customerOrderServices } from "@/lib/order-service-experience";
 import { redirect } from "next/navigation";
@@ -33,10 +34,7 @@ export default async function DashboardPage() {
   ]);
   const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
   const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
-  const failed = (index: number) => {
-    const result = results[index];
-    return result.status === "rejected" || Boolean((result.value as { error?: unknown }).error);
-  };
+  const failed = (index: number) => { const result = results[index]; return result.status === "rejected" || Boolean((result.value as { error?: unknown }).error); };
 
   const orders = value<RawOrder[]>(0, []).map((row) => ({ id: row.id, serviceName: row.service_name || "Growth service", platform: row.platform || "other", quantity: Number(row.quantity || 0), status: row.status || "pending", price: Number(row.charge || 0), createdAt: row.created_at, progress: row.progress_percent == null ? null : Number(row.progress_percent), refillEligible: Boolean(row.refill_eligible) }));
   const transactions = value<RawTransaction[]>(3, []).map((row) => ({ id: row.id, amount: Number(row.amount || 0), type: row.type || "credit", status: row.status || "pending", paymentMethod: row.payment_method || "wallet", createdAt: row.created_at }));
@@ -45,16 +43,13 @@ export default async function DashboardPage() {
   const savedProfiles = value<RawProfile[]>(7, []).map((row) => ({ ...row, lastUsedAt: row.last_used_at || row.created_at }));
   const rawDraft = value<RawDraft | null>(8, null);
   const activeCampaigns = value<RawOrder[]>(10, []).map((row) => ({ id: row.id, serviceName: row.service_name || "Growth service", platform: row.platform || "other", quantity: Number(row.quantity || 0), status: row.status || "pending", price: Number(row.charge || 0), createdAt: row.created_at, progress: row.progress_percent == null ? null : Number(row.progress_percent), refillEligible: Boolean(row.refill_eligible) }));
-  const favourites = value<RawFavourite[]>(11, []).flatMap((row) => {
-    const code = row.services?.code;
-    const service = code ? customerOrderServices.find((item) => item.code === code) : null;
-    return service ? [{ code: service.code, name: service.name, platform: service.platform, available: row.services?.status === "active" }] : [];
-  });
+  const favourites = value<RawFavourite[]>(11, []).flatMap((row) => { const code = row.services?.code; const service = code ? customerOrderServices.find((item) => item.code === code) : null; return service ? [{ code: service.code, name: service.name, platform: service.platform, available: row.services?.status === "active" }] : []; });
   const draftService = rawDraft ? customerOrderServices.find((service) => service.code === rawDraft.service_code && service.platform === rawDraft.platform) : null;
   const draft = rawDraft && draftService ? { platform: rawDraft.platform, serviceCode: rawDraft.service_code, serviceName: draftService.name, quantity: Number(rawDraft.quantity), updatedAt: rawDraft.updated_at } : null;
   const shortcuts = ["instagram-followers", "instagram-likes", "youtube-subscribers"].map((code) => customerOrderServices.find((service) => service.code === code)).filter((service): service is NonNullable<typeof service> => Boolean(service)).map((service) => ({ code: service.code, platform: service.platform, name: service.name, price: service.pricePer1000 }));
+  const completedOrders = count(2);
 
   const hour = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Kolkata" }).format(new Date()));
   const greeting = hour < 5 ? "Welcome back" : hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  return <div className={styles.commandCenter}><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={count(9)} activeOrders={count(1)} completedOrders={count(2)} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={orders.length === 0} draft={draft} shortcuts={shortcuts} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /></div>;
+  return <div className={styles.commandCenter}><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={count(9)} activeOrders={count(1)} completedOrders={completedOrders} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={orders.length === 0} draft={draft} shortcuts={shortcuts} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RepeatScaleModule completedOrders={completedOrders} /></div></div>;
 }
