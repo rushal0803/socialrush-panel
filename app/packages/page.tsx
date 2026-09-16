@@ -1,4 +1,5 @@
 import PackagesPageContent from "@/components/marketing/packages/PackagesPageContent";
+import PackageRevenuePaths from "@/components/marketing/packages/PackageRevenuePaths";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
@@ -65,6 +66,7 @@ export default function PackagesPage({ searchParams }: PackagesPageProps) {
         initialServiceParam={searchParams?.service}
         initialPackageIdParam={searchParams?.package ?? searchParams?.packageId}
       />
+      <PackageRevenuePaths />
     </>
   );
 }
