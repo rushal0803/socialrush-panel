@@ -9,7 +9,7 @@ import {
 import { createAdminClient } from "@/lib/supabase/admin";
 import { countryServicePaths, internationalHubPaths } from "@/lib/seo/international";
 
-export const dynamic = "force-dynamic";
+export const revalidate = 21600;
 
 const publicRoutes = [
   "/",

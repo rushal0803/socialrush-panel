@@ -1,13 +1,15 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
-import FloatingWhatsAppButton from "@/components/FloatingWhatsAppButton";
 import ClientProviders from "@/components/providers/ClientProviders";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import PageAnalytics from "@/components/analytics/PageAnalytics";
 import { cookies } from "next/headers";
 import { DISPLAY_CURRENCY_COOKIE, isCurrency } from "@/lib/currency";
 import { getExchangeRates } from "@/lib/fx-rates";
-import PwaClient from "@/components/pwa/PwaClient";
+import dynamic from "next/dynamic";
+
+const PwaClient = dynamic(() => import("@/components/pwa/PwaClient"));
+const FloatingWhatsAppButtonLazy = dynamic(() => import("@/components/FloatingWhatsAppButton"));
 
 const siteUrl = SEO_SITE_URL;
 
@@ -19,6 +21,20 @@ export const metadata: Metadata = {
   },
   description:
     "Explore transparent social media growth services, secure ordering, refill information and clear order tracking through the SocialRUSH dashboard.",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
     other: {
   "google-adsense-account": "ca-pub-5748505888279439",
 },
@@ -135,7 +151,7 @@ export default async function RootLayout({
           />
           {children}
           <PageAnalytics />
-          <FloatingWhatsAppButton />
+          <FloatingWhatsAppButtonLazy />
           <PwaClient />
         </ClientProviders>
       </body>
