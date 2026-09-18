@@ -2351,3 +2351,27 @@ input, select, textarea { font-size: max(16px, 1em); }
   .sr-dashboard-hero::after,.sr-dashboard-hero-content,.sr-dashboard-metric,.sr-dashboard-panel { animation:none !important; }
   .sr-dashboard-metric,.sr-dashboard-panel,.sr-dashboard-order-row,.sr-dashboard-campaign-card { transition:none !important; transform:none !important; }
 }
+
+
+/* Dashboard 2.0 — account operations */
+.sr-dashboard-transaction,.sr-dashboard-mini-card {
+  transition:background 200ms ease,transform 220ms var(--sr-ease-out),border-color 200ms ease;
+}
+.sr-dashboard-bottom-actions { scrollbar-width:none; -ms-overflow-style:none; }
+.sr-dashboard-bottom-actions::-webkit-scrollbar { display:none; }
+.sr-dashboard-bottom-actions > * { flex:0 0 auto; }
+.sr-dashboard-finance-support .sr-dashboard-panel,
+.sr-dashboard-utility-grid .sr-dashboard-panel { min-height:100%; }
+@media (hover:hover) and (pointer:fine) {
+  .sr-dashboard-transaction:hover { background:rgba(255,122,0,.025); transform:translateX(3px); }
+  .sr-dashboard-mini-card:hover { background:rgba(255,122,0,.045); transform:translateY(-2px); }
+  .sr-dashboard-bottom-actions a:hover { border-color:rgba(251,146,60,.38); }
+}
+@media (max-width:639px) {
+  .sr-dashboard-bottom-actions { margin-inline:-.25rem; padding:.75rem; scroll-padding-inline:.75rem; }
+  .sr-dashboard-bottom-actions a { min-height:44px; }
+  .sr-dashboard-utility-grid { gap:.75rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+ .sr-dashboard-transaction,.sr-dashboard-mini-card { transition:none !important; transform:none !important; }
+}
