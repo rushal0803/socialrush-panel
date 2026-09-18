@@ -48,7 +48,7 @@ export function Button({
       disabled={isDisabled}
       aria-busy={loading || undefined}
       className={[
-        "inline-flex items-center justify-center gap-2 font-bold",
+        "inline-flex items-center justify-center gap-2 font-bold sr-motion-press",
         "transition-[transform,box-shadow,border-color,background-color,color,opacity] duration-normal ease-sr-out",
         "active:translate-y-0 active:scale-[0.985]",
         "focus-visible:outline-none focus-visible:shadow-sr-focus",
