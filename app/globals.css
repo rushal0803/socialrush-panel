@@ -1929,3 +1929,72 @@ input, select, textarea { font-size: max(16px, 1em); }
     filter:none !important;
   }
 }
+
+
+/* Visible Motion — hero/order experience and platform interaction */
+@keyframes sr-order-bob {
+  0%,100% { transform:translate3d(0,0,0) rotateX(0deg); }
+  50% { transform:translate3d(0,-7px,0) rotateX(.6deg); }
+}
+@keyframes sr-float-card-a {
+  0%,100% { transform:translate3d(0,0,0) rotate(-1deg); }
+  50% { transform:translate3d(0,-9px,0) rotate(1deg); }
+}
+@keyframes sr-float-card-b {
+  0%,100% { transform:translate3d(0,0,0) rotate(1deg); }
+  50% { transform:translate3d(0,7px,0) rotate(-1deg); }
+}
+@keyframes sr-platform-ring {
+  0%,100% { box-shadow:0 0 0 0 rgba(255,122,0,.06); }
+  50% { box-shadow:0 0 0 6px rgba(255,122,0,.09); }
+}
+.premium-homepage .order-window {
+  transform-origin:center;
+  animation:sr-order-bob 6.5s var(--sr-ease-out) infinite;
+  box-shadow:0 30px 75px rgba(0,0,0,.42),0 0 58px rgba(255,118,0,.10);
+}
+.premium-homepage .wallet-card {
+  animation:sr-float-card-a 4.8s ease-in-out infinite;
+}
+.premium-homepage .track-card {
+  animation:sr-float-card-b 5.4s ease-in-out .45s infinite;
+}
+.premium-homepage .operational-card {
+  animation:sr-float-card-a 5.9s ease-in-out .8s infinite;
+}
+.premium-homepage .platform-pill {
+  transition:transform 260ms var(--sr-ease-spring),border-color 260ms ease,box-shadow 260ms ease,background-color 260ms ease;
+}
+.premium-homepage .platform-pill svg,
+.premium-homepage .platform-pill [class*="rounded"] {
+  transition:transform 260ms var(--sr-ease-spring);
+}
+@media (hover:hover) and (pointer:fine) {
+  .premium-homepage .order-window:hover {
+    animation-play-state:paused;
+    transform:translate3d(0,-5px,0) scale(1.012);
+  }
+  .premium-homepage .platform-pill:hover {
+    transform:translate3d(0,-6px,0) scale(1.025);
+    border-color:rgba(255,154,46,.48);
+    box-shadow:0 22px 48px -28px rgba(255,122,0,.58);
+  }
+  .premium-homepage .platform-pill:hover svg,
+  .premium-homepage .platform-pill:hover [class*="rounded"] {
+    transform:scale(1.08) rotate(-3deg);
+  }
+}
+@media (max-width:767px) {
+  .premium-homepage .order-window { animation-duration:7.5s; }
+  .premium-homepage .wallet-card { animation-duration:5.8s; }
+  .premium-homepage .track-card { animation-duration:6.2s; }
+  .premium-homepage .operational-card { animation-duration:6.6s; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .premium-homepage .order-window,
+  .premium-homepage .wallet-card,
+  .premium-homepage .track-card,
+  .premium-homepage .operational-card {
+    animation:none !important;
+  }
+}
