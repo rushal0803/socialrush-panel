@@ -111,6 +111,15 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
     router.refresh();
   }
 
+  useEffect(() => {
+    if (!searchOpen) return;
+    const closeSearch = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSearchOpen(false);
+    };
+    document.addEventListener("keydown", closeSearch);
+    return () => document.removeEventListener("keydown", closeSearch);
+  }, [searchOpen]);
+
   const servicesActive = pathname.startsWith("/services");
   const resourcesActive = resourceNav.some(([, href]) => isActive(pathname, href));
   const companyActive = companyNav.some(([, href]) => isActive(pathname, href));
@@ -120,6 +129,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
     const query = searchQuery.trim();
     if (!query) return;
     setSearchOpen(false);
+    setOpen(false);
     router.push(`/services?q=${encodeURIComponent(query)}`);
   }
 
