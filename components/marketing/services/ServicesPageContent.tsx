@@ -57,6 +57,10 @@ function typeFor(code: string) {
 
 function labelFor(type: string) { return type === "all" ? "All" : type[0].toUpperCase() + type.slice(1); }
 function platformFrom(value?: string): SmmPlatformId { return aliases[String(value ?? "").toLowerCase().trim()] ?? "instagram"; }
+function platformFromServiceType(value?: string): SmmPlatformId | undefined {
+  const prefix = String(value ?? "").toLowerCase().trim().split("-")[0];
+  return aliases[prefix];
+}
 function TypeIcon({ type }: { type: string }) {
   const Icon = type === "likes" ? Heart : type === "views" ? Eye : type === "subscribers" ? Play : type === "members" ? UsersRound : Users;
   return <Icon className="h-3.5 w-3.5" aria-hidden="true" />;
@@ -79,13 +83,13 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
       return term.includes(id) || term.includes(label);
     });
   }, [initialPlatformParam, initialSearchParam]);
-  const [platform, setPlatform] = useState<SmmPlatformId>(() => inferredSearchPlatform ?? platformFrom(initialTypeParam?.split("-")[0]));
+  const [platform, setPlatform] = useState<SmmPlatformId>(() => inferredSearchPlatform ?? platformFromServiceType(initialTypeParam) ?? "instagram");
   const [type, setType] = useState("all");
   const [query, setQuery] = useState(initialSearchParam?.trim() ?? "");
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    setPlatform(inferredSearchPlatform ?? platformFrom(initialTypeParam?.split("-")[0]));
+    setPlatform(inferredSearchPlatform ?? platformFromServiceType(initialTypeParam) ?? "instagram");
     setQuery(initialSearchParam?.trim() ?? "");
     setType("all");
     setShowAll(false);
