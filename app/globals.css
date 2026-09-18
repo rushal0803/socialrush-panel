@@ -2107,3 +2107,40 @@ input, select, textarea { font-size: max(16px, 1em); }
 @media (prefers-reduced-motion:reduce) {
   .sr-platform-rail { scroll-behavior:auto; }
 }
+
+
+/* SocialRUSH 2.0 — Order Experience */
+.sr-order-platform-rail { scrollbar-width:none; -ms-overflow-style:none; }
+.sr-order-platform-rail::-webkit-scrollbar { display:none; }
+.sr-order-platform-tile { flex:0 0 auto; }
+.sr-order-step-card {
+  position:relative;
+  overflow:hidden;
+  transition:border-color 240ms ease,box-shadow 300ms ease,transform 300ms var(--sr-ease-out);
+}
+.sr-order-step-card::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 12% 0%,rgba(255,122,0,.09),transparent 28%);
+}
+.sr-order-progress > * { transition:transform 220ms var(--sr-ease-out),border-color 220ms ease; }
+@media (max-width:639px) {
+  .sr-order-platform-rail {
+    margin-inline:-1.25rem;
+    padding-inline:1.25rem;
+    scroll-padding-inline:1.25rem;
+  }
+  .sr-order-platform-rail::after { content:""; flex:0 0 .25rem; }
+}
+@media (hover:hover) and (pointer:fine) {
+  .sr-order-platform-tile:hover { transform:translateY(-5px); }
+  .sr-order-step-card:hover {
+    border-color:rgba(251,146,60,.34);
+    box-shadow:0 30px 64px -42px rgba(255,122,0,.65);
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sr-order-platform-tile,.sr-order-step-card,.sr-order-progress > * { transition:none !important; transform:none !important; }
+}
