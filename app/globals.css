@@ -1532,3 +1532,93 @@ input, select, textarea { font-size: max(16px, 1em); }
     transform: none !important;
   }
 }
+
+
+/* SocialRUSH 2.0 — mobile homepage refinement */
+@media (max-width: 767px) {
+  .premium-homepage .hero-visual {
+    min-height: 430px;
+    padding: 1rem 0 .5rem;
+  }
+  .premium-homepage .order-window {
+    margin-top: 1rem;
+    border-radius: 1.15rem;
+    box-shadow: 0 24px 48px rgba(0,0,0,.42), 0 0 44px rgba(255,111,0,.09);
+  }
+  .premium-homepage .float-card {
+    backdrop-filter: blur(9px);
+  }
+  .premium-homepage .wallet-card {
+    top: -.35rem;
+    right: -.2rem;
+    min-width: 118px;
+    padding: .65rem .75rem;
+  }
+  .premium-homepage .track-card {
+    left: -.15rem;
+    bottom: .25rem;
+    padding: .65rem .75rem;
+  }
+  .premium-homepage .operational-card {
+    right: -.15rem;
+    bottom: 3.4rem;
+    padding: .6rem .7rem;
+  }
+  .premium-homepage .upper-trust-strip {
+    display: flex;
+    gap: .45rem;
+    overflow-x: auto;
+    padding: .55rem;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+  }
+  .premium-homepage .upper-trust-strip::-webkit-scrollbar {
+    display: none;
+  }
+  .premium-homepage .upper-trust-strip span {
+    flex: 0 0 auto;
+    min-height: 2.5rem;
+    padding: .5rem .65rem;
+    scroll-snap-align: start;
+    background: rgba(255,255,255,.025);
+  }
+  .premium-homepage .platform-rail {
+    margin-inline: -1rem;
+    padding-inline: 1rem;
+    scroll-padding-inline: 1rem;
+  }
+  .premium-homepage .platform-pill {
+    min-width: 168px;
+  }
+  .premium-homepage .journey-experience {
+    border-radius: 1.15rem;
+    padding: 1rem;
+  }
+  .premium-homepage .journey-steps li {
+    grid-template-columns: 1.75rem 2.25rem 1fr;
+    gap: .55rem;
+    min-height: 3.7rem;
+    padding: .5rem;
+  }
+  .premium-homepage .demo-card,
+  .premium-homepage .dashboard-preview,
+  .premium-homepage .confidence-card {
+    border-radius: 1.15rem;
+    padding: 1rem;
+  }
+}
+@media (max-width: 420px) {
+  .premium-homepage .hero-visual {
+    min-height: 400px;
+  }
+  .premium-homepage .float-card {
+    transform: scale(.92);
+  }
+  .premium-homepage .wallet-card,
+  .premium-homepage .operational-card {
+    transform-origin: right center;
+  }
+  .premium-homepage .track-card {
+    transform-origin: left center;
+  }
+}
