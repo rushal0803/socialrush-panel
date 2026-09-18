@@ -1681,3 +1681,22 @@ input, select, textarea { font-size: max(16px, 1em); }
     transform: none !important;
   }
 }
+
+
+/* Navigation 2.0 — adaptive premium header */
+.nav-2-header::before {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(70% 140% at 50% -80%, rgba(255,118,0,.10), transparent 70%);
+  opacity: .75;
+}
+.nav-2-header > * {
+  position: relative;
+}
+@media (hover:hover) {
+  .nav-2-dropdown[open] .nav-2-panel {
+    box-shadow: 0 30px 80px -28px rgba(0,0,0,.95), 0 0 0 1px rgba(255,154,46,.04);
+  }
+}
