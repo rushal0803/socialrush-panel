@@ -50,8 +50,8 @@ export default async function DirectUpiPage({ searchParams }: PageProps) {
 
   const service = getServiceById(intent.service_code);
   const serviceName = service?.name || intent.service_code.split("-").map((part: string) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  const upiId = process.env.NEXT_PUBLIC_UPI_ID?.trim() || "";
-  const payeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME?.trim() || "SocialRUSH";
+  const upiId = "8860330771@pthdfc";
+  const payeeName = "Rushal";
 
   const bankTransfer = {
     enabled: process.env.BANK_TRANSFER_ENABLED === "true",
