@@ -68,7 +68,7 @@ function DesktopDropdown({
   children: React.ReactNode;
 }) {
   return (
-    <details className="group relative">
+    <details className="group relative nav-2-dropdown">
       <summary
         className={`flex min-h-10 cursor-pointer list-none items-center gap-1 rounded-sr-control px-3 py-2 outline-none transition duration-fast ease-sr-out hover:bg-white/[0.05] hover:text-content-primary focus-visible:shadow-sr-focus [&::-webkit-details-marker]:hidden ${
           active ? "bg-white/[0.06] text-content-primary" : "text-content-secondary"
@@ -113,7 +113,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   const companyActive = companyNav.some(([, href]) => isActive(pathname, href));
 
   return (
-    <header className="sticky top-0 z-[9999] border-b border-sr-border bg-surface-page/85 shadow-[0_14px_45px_-30px_rgba(0,0,0,0.95)] backdrop-blur-2xl supports-[backdrop-filter]:bg-surface-page/72">
+    <header className="nav-2-header sticky top-0 z-[9999] border-b border-sr-border bg-surface-page/85 shadow-[0_14px_45px_-30px_rgba(0,0,0,0.95)] backdrop-blur-2xl supports-[backdrop-filter]:bg-surface-page/72">
       <div aria-hidden="true" className="absolute inset-x-0 bottom-[-1px] h-px bg-gradient-to-r from-transparent via-action/70 to-transparent" />
 
       <div className="mx-auto flex h-[72px] max-w-sr-content items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
@@ -130,7 +130,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
 
         <nav className="hidden items-center gap-0.5 text-[13px] font-semibold xl:flex" aria-label="Primary navigation">
           <DesktopDropdown label="Services" active={servicesActive}>
-            <div className="absolute left-0 top-[calc(100%+.65rem)] z-30 w-[28rem] overflow-hidden rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2.5 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
+            <div className="nav-2-panel absolute left-0 top-[calc(100%+.65rem)] z-30 w-[28rem] overflow-hidden rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2.5 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               <Link
                 href="/services"
                 className="group/all flex items-center justify-between gap-4 rounded-xl border border-action/15 bg-action/[0.07] p-4 outline-none transition hover:border-action/30 hover:bg-action/[0.11] focus-visible:shadow-sr-focus"
@@ -174,7 +174,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           })}
 
           <DesktopDropdown label="Resources" active={resourcesActive}>
-            <div className="absolute left-1/2 top-[calc(100%+.65rem)] z-30 w-72 -translate-x-1/2 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
+            <div className="nav-2-panel absolute left-1/2 top-[calc(100%+.65rem)] z-30 w-72 -translate-x-1/2 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               {resourceNav.map(([label, href, Icon]) => (
                 <Link key={href} href={href} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus">
                   <span className="grid h-8 w-8 place-items-center rounded-lg border border-sr-border bg-white/[.03] text-orange-300"><Icon className="h-4 w-4" aria-hidden="true" /></span>
@@ -185,7 +185,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </DesktopDropdown>
 
           <DesktopDropdown label="Company" active={companyActive}>
-            <div className="absolute right-0 top-[calc(100%+.65rem)] z-30 w-60 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
+            <div className="nav-2-panel absolute right-0 top-[calc(100%+.65rem)] z-30 w-60 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               {companyNav.map(([label, href, Icon]) => (
                 <Link key={href} href={href} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus">
                   <Icon className="h-4 w-4 text-orange-300" aria-hidden="true" />
