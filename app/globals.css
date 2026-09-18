@@ -2392,5 +2392,5 @@ input, select, textarea { font-size: max(16px, 1em); }
 .sr-smart-action-dock{position:sticky;bottom:max(.75rem,env(safe-area-inset-bottom));z-index:20;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 22px 60px -35px rgba(0,0,0,.9)}
 @media(hover:hover) and (pointer:fine){.sr-smart-context-card:hover::after{opacity:1}}
 @media(min-width:1024px){.sr-smart-action-dock{position:relative;bottom:auto}}
-@media(max-width:639px){.sr-smart-action-dock{border-color:rgba(251,146,60,.18);background:rgba(16,17,22,.88)}}
+@media(max-width:639px){.sr-smart-action-dock{bottom:max(4.75rem,calc(env(safe-area-inset-bottom) + 4rem));border-color:rgba(251,146,60,.18);background:rgba(16,17,22,.88);scroll-padding-inline:.75rem}.sr-smart-action-dock>a{flex:0 0 auto;min-height:44px}}
 @media(prefers-reduced-motion:reduce){.sr-smart-context-card::after{transition:none!important}}
