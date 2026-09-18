@@ -107,7 +107,7 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
     setType("all");
     setQuery("");
     setShowAll(false);
-    window.requestAnimationFrame(() => document.getElementById("service-catalog")?.scrollIntoView({ behavior: "smooth", block: "start" }));
+    window.requestAnimationFrame(() => document.getElementById("service-catalog")?.scrollIntoView({ behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" }));
   };
   const matchingPlatforms = useMemo(() => {
     const term = query.trim().toLowerCase();
