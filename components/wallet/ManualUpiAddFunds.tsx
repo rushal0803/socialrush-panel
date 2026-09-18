@@ -2,9 +2,10 @@
 
 import { useMemo, useState } from "react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 
-const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || "";
-const PAYEE = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME || "SocialRUSH";
+const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || "8860330771@pthdfc";
+const PAYEE = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME || "Rushal";
 const quickAmounts = [100, 500, 1000, 2000, 5000];
 
 function makeReference() {
@@ -15,7 +16,11 @@ function makeReference() {
 }
 
 export default function ManualUpiAddFunds() {
-  const [amountText, setAmountText] = useState("1000");
+  const searchParams = useSearchParams();
+  const requestedAmount = Number(searchParams.get("amount") || 0);
+  const requestedReturnTo = searchParams.get("returnTo");
+  const returnTo = requestedReturnTo?.startsWith("/") && !requestedReturnTo.startsWith("//") ? requestedReturnTo : null;
+  const [amountText, setAmountText] = useState(() => requestedAmount >= 100 && requestedAmount <= 500000 ? requestedAmount.toFixed(2) : "1000");
   const [reference] = useState(makeReference);
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [utr, setUtr] = useState("");
@@ -53,7 +58,7 @@ export default function ManualUpiAddFunds() {
       <h1 className="mt-2 text-2xl font-black text-white">₹{success.amount.toLocaleString("en-IN")} is being verified</h1>
       <p className="mx-auto mt-3 max-w-md text-sm leading-6 text-slate-400">You do not need to pay again. Your wallet will be credited after the payment is verified.</p>
       <div className="mt-6 rounded-2xl border border-white/10 bg-black/20 p-4 text-left text-xs text-slate-400"><span className="block text-[10px] font-bold uppercase tracking-wider">Payment reference</span><span className="mt-1 block font-mono text-white">{reference}</span></div>
-      <Link href="/dashboard/wallet" className="mt-6 inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-3.5 text-sm font-black text-black">Back to Wallet</Link>
+      <Link href={returnTo || "/dashboard/wallet"} className="mt-6 inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-3.5 text-sm font-black text-black">{returnTo ? "Return to Order" : "Back to Wallet"}</Link>
     </div>
   </section>;
 
