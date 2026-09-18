@@ -75,7 +75,8 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
     const term = (initialSearchParam ?? "").toLowerCase();
     return platforms.find((id) => {
       const label = platformMeta[id].label.toLowerCase();
-      return term.includes(id) || term.includes(label) || (id === "x" && term.includes("twitter"));
+      if (id === "x") return /(^|\\s|[-_/])x($|\\s|[-_/])/.test(term) || term.includes("twitter") || term.includes(label);
+      return term.includes(id) || term.includes(label);
     });
   }, [initialPlatformParam, initialSearchParam]);
   const [platform, setPlatform] = useState<SmmPlatformId>(() => inferredSearchPlatform ?? platformFrom(initialTypeParam?.split("-")[0]));
