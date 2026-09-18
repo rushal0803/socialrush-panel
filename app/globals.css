@@ -2375,3 +2375,13 @@ input, select, textarea { font-size: max(16px, 1em); }
 @media (prefers-reduced-motion:reduce) {
  .sr-dashboard-transaction,.sr-dashboard-mini-card { transition:none !important; transform:none !important; }
 }
+
+/* SocialRUSH 2.0 — useful smart surfaces */
+.sr-smart-card,.sr-smart-repeat,.sr-smart-recovery{position:relative;isolation:isolate;overflow:hidden}
+.sr-smart-card::after,.sr-smart-repeat::after,.sr-smart-recovery::after{content:"";position:absolute;inset:0;z-index:-1;pointer-events:none;background:radial-gradient(circle at 88% 5%,rgba(255,122,0,.11),transparent 30%)}
+.sr-smart-service,.sr-smart-repeat-card,.sr-smart-recovery-card{position:relative;transition:transform 240ms var(--sr-ease-out),border-color 220ms ease,background 220ms ease,box-shadow 260ms ease}
+@media (hover:hover) and (pointer:fine){
+.sr-smart-service:hover,.sr-smart-repeat-card:hover,.sr-smart-recovery-card:hover{transform:translateY(-4px);border-color:rgba(251,146,60,.42);box-shadow:0 24px 48px -38px rgba(255,122,0,.75)}
+}
+@media(max-width:639px){.sr-smart-conversion{gap:.75rem}.sr-smart-repeat-card,.sr-smart-recovery-card{min-height:150px}}
+@media(prefers-reduced-motion:reduce){.sr-smart-service,.sr-smart-repeat-card,.sr-smart-recovery-card{transition:none!important;transform:none!important}}
