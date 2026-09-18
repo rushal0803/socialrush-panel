@@ -1622,3 +1622,62 @@ input, select, textarea { font-size: max(16px, 1em); }
     transform-origin: left center;
   }
 }
+
+
+/* SocialRUSH 2.0 — Navigation 2.0 interaction polish (brand palette preserved) */
+.nav-2-header {
+  transition: background-color 180ms ease, border-color 180ms ease, box-shadow 180ms ease;
+}
+.nav-2-dropdown > summary {
+  position: relative;
+}
+.nav-2-dropdown > summary::after {
+  content: "";
+  position: absolute;
+  left: .75rem;
+  right: .75rem;
+  bottom: .2rem;
+  height: 1px;
+  transform: scaleX(0);
+  transform-origin: center;
+  background: linear-gradient(90deg, transparent, rgba(255,154,46,.9), transparent);
+  transition: transform 180ms ease;
+}
+.nav-2-dropdown[open] > summary::after {
+  transform: scaleX(1);
+}
+.nav-2-panel {
+  transform-origin: top center;
+  animation: sr-nav-panel-in 160ms cubic-bezier(.2,.8,.2,1);
+}
+@keyframes sr-nav-panel-in {
+  from { opacity: 0; transform: translateY(-5px) scale(.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+@media (hover:hover) {
+  .nav-2-panel a:hover {
+    transform: translateX(2px);
+  }
+}
+@media (max-width:1279px) {
+  .mobile-menu-theme a,
+  .mobile-menu-theme button {
+    -webkit-tap-highlight-color: transparent;
+  }
+  .mobile-menu-theme nav a:active,
+  .mobile-menu-theme section a:active {
+    transform: scale(.985);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .nav-2-header,
+  .nav-2-dropdown > summary::after,
+  .nav-2-panel,
+  .nav-2-panel a,
+  .mobile-menu-theme a,
+  .mobile-menu-theme button {
+    animation: none !important;
+    transition: none !important;
+    transform: none !important;
+  }
+}
