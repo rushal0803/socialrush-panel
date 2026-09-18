@@ -1700,3 +1700,79 @@ input, select, textarea { font-size: max(16px, 1em); }
     box-shadow: 0 30px 80px -28px rgba(0,0,0,.95), 0 0 0 1px rgba(255,154,46,.04);
   }
 }
+
+
+/* SocialRUSH Motion System 2.0 */
+:root {
+  --sr-motion-fast: 140ms;
+  --sr-motion-base: 220ms;
+  --sr-motion-slow: 420ms;
+  --sr-ease-out: cubic-bezier(.22,1,.36,1);
+  --sr-ease-spring: cubic-bezier(.16,1,.3,1);
+}
+
+@keyframes sr-reveal-up {
+  from { opacity: 0; transform: translate3d(0,14px,0); }
+  to { opacity: 1; transform: translate3d(0,0,0); }
+}
+@keyframes sr-soft-pop {
+  0% { opacity: 0; transform: scale(.985); }
+  100% { opacity: 1; transform: scale(1); }
+}
+@keyframes sr-shimmer-sweep {
+  0% { transform: translateX(-130%); }
+  100% { transform: translateX(230%); }
+}
+
+.sr-motion-reveal {
+  animation: sr-reveal-up var(--sr-motion-slow) var(--sr-ease-out) both;
+}
+.sr-motion-pop {
+  animation: sr-soft-pop var(--sr-motion-base) var(--sr-ease-out) both;
+}
+.sr-motion-lift {
+  transition: transform var(--sr-motion-base) var(--sr-ease-spring),
+              box-shadow var(--sr-motion-base) ease,
+              border-color var(--sr-motion-base) ease;
+}
+.sr-motion-press {
+  transition: transform var(--sr-motion-fast) var(--sr-ease-out);
+}
+.sr-motion-shimmer {
+  position: relative;
+  overflow: hidden;
+}
+.sr-motion-shimmer::after {
+  content: "";
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  width: 38%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.09), transparent);
+  transform: translateX(-130%);
+  transition: none;
+}
+
+@media (hover:hover) and (pointer:fine) {
+  .sr-motion-lift:hover {
+    transform: translate3d(0,-4px,0);
+    box-shadow: 0 22px 55px -34px rgba(255,122,0,.45);
+  }
+  .sr-motion-shimmer:hover::after {
+    animation: sr-shimmer-sweep 850ms var(--sr-ease-out) 1;
+  }
+}
+.sr-motion-press:active { transform: scale(.975); }
+
+@media (prefers-reduced-motion: reduce) {
+  .sr-motion-reveal,
+  .sr-motion-pop,
+  .sr-motion-shimmer::after {
+    animation: none !important;
+  }
+  .sr-motion-lift,
+  .sr-motion-press {
+    transition: none !important;
+    transform: none !important;
+  }
+}
