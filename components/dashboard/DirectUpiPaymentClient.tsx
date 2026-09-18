@@ -164,14 +164,14 @@ export default function DirectUpiPaymentClient({
       <div className="border-b border-white/10 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,.16),transparent_36%)] p-5 sm:p-8">
         <div className="flex flex-wrap items-center justify-between gap-3">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-300">Complete your payment</p>
+            <p className="text-[10px] font-black uppercase tracking-[0.24em] text-orange-300">Final step · Payment</p>
             <h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">Pay {amountLabel}</h1>
           </div>
           <div className="inline-flex items-center gap-2 rounded-full border border-emerald-400/15 bg-emerald-500/10 px-3 py-2 text-xs font-bold text-emerald-200">
             <LockKeyhole className="h-4 w-4" /> Secure checkout
           </div>
         </div>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">Pay the exact amount using Direct UPI, then submit the UTR for verification. Your order moves forward after payment confirmation.</p>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">Pay the exact amount with your UPI app, then enter the UTR / Transaction ID. We verify the payment before processing your order.</p>
       </div>
 
       <div className="space-y-5 p-4 sm:p-6 lg:p-8">
@@ -231,8 +231,8 @@ export default function DirectUpiPaymentClient({
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-black">Pay using UPI</h2>
-                    <p className="mt-1 text-sm leading-6 text-zinc-400">Open your preferred UPI app. The exact order amount is pre-filled for you.</p>
+                    <h2 className="text-xl font-black">Pay with any UPI app</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">Tap the button below to open your UPI app with the exact amount pre-filled.</p>
                   </div>
                   <span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount: {amountLabel}</span>
                 </div>
@@ -263,7 +263,7 @@ export default function DirectUpiPaymentClient({
                   }}
                   className="mt-4 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-4 text-base font-black text-black shadow-[0_14px_38px_rgba(249,115,22,.24)] transition hover:brightness-105"
                 >
-                  Open UPI App & Pay {amountLabel} <ExternalLink className="h-4 w-4" />
+                  Pay {amountLabel} with UPI <ExternalLink className="h-4 w-4" />
                 </a>
 
                 <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] p-3 text-xs leading-5 text-emerald-100/80">
@@ -280,8 +280,8 @@ export default function DirectUpiPaymentClient({
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-black">Enter UTR / Transaction ID</h2>
-                    <p className="mt-1 text-sm leading-6 text-zinc-400">After successful payment, enter the UTR below. We verify it before processing your order.</p>
+                    <h2 className="text-xl font-black">Payment done? Enter your UTR</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">Copy the UTR / Transaction ID from your successful payment and paste it below. Do not pay again.</p>
                   </div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/15 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-200">
                     <Clock3 className="h-3.5 w-3.5" /> Verification pending
