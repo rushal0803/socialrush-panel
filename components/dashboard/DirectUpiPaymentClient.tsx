@@ -252,7 +252,7 @@ export default function DirectUpiPaymentClient({
               <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 text-sm font-bold text-zinc-300">Back to USDT details</button></>}
             </div></div>
           </div>
-        ) :         {!upiId ? (
+        ) : !upiId ? (
           <div className="rounded-2xl border border-red-400/20 bg-red-500/10 p-4 text-sm font-semibold text-red-200">UPI is not configured right now. Please contact support before paying.</div>
         ) : !paymentStarted ? (
           <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
@@ -356,7 +356,6 @@ export default function DirectUpiPaymentClient({
             </div>
           </div>
         )}
-        }
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <TrustItem icon={<ShieldCheck className="h-4 w-4" />} title="Secure payment" subtitle="Protected flow" />
