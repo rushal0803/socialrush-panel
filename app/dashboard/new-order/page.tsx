@@ -672,123 +672,15 @@ export default function NewOrderPage() {
   }
 
   async function payAndPlaceOrder() {
-    if (!selectedService || !linkRule || inFlight.current || submitting || !formIsValid) return;
-    inFlight.current = true;
-    setSubmitting(true);
-    setCheckoutStage("Preparing secure payment...");
+    if (!selectedService || !linkRule || submitting || !formIsValid) return;
     setError("");
-    if (!requestId.current) requestId.current = crypto.randomUUID();
-    try {
-      let intentId = directCheckoutIntentId.current;
-      if (!intentId) {
-        const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: selectedService.code, quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageName: "Custom", notes: requiresCustomComments ? customComments.replace(/\r\n/g, "\n").trim() : null, pollAnswerNumber: requiresPollAnswerNumber ? pollAnswerNumber : undefined, endorsementSkillName: requiresEndorsementSkill ? endorsementSkillName.trim() : undefined }) });
-        const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
-        if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare your checkout.");
-        intentId = intent.data.id;
-        directCheckoutIntentId.current = intentId;
-      }
-      const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
-      const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, returnPath }) });
-      const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; returnUrl?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
-      if (payment.code === "WALLET_SUFFICIENT") {
-        const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
-        const walletOrder = await walletOrderResponse.json() as { data?: ApiOrderData; error?: string };
-        if (!walletOrderResponse.ok || !walletOrder.data) throw new Error(walletOrder.error || "Unable to place your order.");
-        setWalletBalance(Number(walletOrder.data.balance)); setSuccess(walletOrder.data); clearDraft(); requestId.current = "";
-        window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: Number(walletOrder.data.balance) }));
-        window.setTimeout(() => router.push("/dashboard/orders"), 900);
-        return;
-      }
-      if (!paymentResponse.ok || !payment.data?.paymentSessionId || !payment.data.returnUrl || !payment.data.environment) throw new Error(payment.error || "Unable to initialize secure payment.");
-      setCheckoutStage("Opening secure payment...");
-      const loaded = await loadCashfree();
-      if (!loaded || !window.Cashfree) throw new Error("Secure Cashfree checkout could not be loaded. Please try again.");
-      const checkout = window.Cashfree({ mode: payment.data.environment }) as unknown as { checkout: (input: { paymentSessionId: string; returnUrl: string; redirectTarget: "_self" }) => Promise<unknown> };
-      await checkout.checkout({ paymentSessionId: payment.data.paymentSessionId, returnUrl: payment.data.returnUrl, redirectTarget: "_self" });
-      if (isSocialRushAndroidApp()) {
-        // A returned Cashfree sheet is an abandoned/cancelled attempt unless
-        // its return URL navigated away for verification. Do not reuse it.
-        directCheckoutIntentId.current = null;
-        requestId.current = "";
-        setCheckoutStage("");
-        setSubmitting(false);
-        inFlight.current = false;
-      }
-    } catch (cause) {
-      setError(cause instanceof Error ? cause.message : "Unable to open secure payment.");
-      setCheckoutStage(""); setSubmitting(false); inFlight.current = false;
-    }
+    setCheckoutStage("Opening UPI payment...");
+    const params = new URLSearchParams({
+      amount: amountRequired.toFixed(2),
+      returnTo: `/dashboard/new-order?${returnParams.toString()}`,
+    });
+    router.push(`/dashboard/add-funds?${params.toString()}`);
   }
-
-  const returnParams = new URLSearchParams();
-  if (selectedService) returnParams.set("service", selectedService.code);
-  if (quantityInput) returnParams.set("quantity", quantityInput);
-  if (targetLink.trim()) returnParams.set("link", targetLink.trim());
-  returnParams.set("resume", "1");
-
-  async function verifyReturnedCashfreePayment(orderId: string) {
-    setCheckoutStage("Verifying your payment...");
-    setError("");
-    try {
-      const response = await fetch("/api/checkout/cashfree/verify", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ orderId }) });
-      const result = (await response.json()) as { data?: { status?: string; orderId?: string; balance?: number }; error?: string };
-      if (response.ok && result.data?.status === "success" && result.data.orderId) {
-        setSuccess({ id: result.data.orderId, charge: totalPrice, balance: Number(result.data.balance ?? walletBalance ?? 0) });
-        setPendingPaymentId("");
-        clearDraft();
-        router.replace(`/dashboard/orders/${encodeURIComponent(result.data.orderId)}`);
-        return;
-      }
-      if (response.ok && result.data?.status === "pending") {
-        setPendingPaymentId(orderId);
-        setSubmitting(false);
-        setCheckoutStage("");
-        inFlight.current = false;
-        setError("We’re still verifying your payment. Please do not pay again while this check is pending.");
-        return;
-      }
-      if (response.ok && result.data?.status === "failed") {
-        setPendingPaymentId("");
-        setError("Payment was not completed. No order was created. You can safely try again.");
-        setSubmitting(false);
-        setCheckoutStage("");
-        inFlight.current = false;
-        return;
-      }
-      setPendingPaymentId(orderId);
-      setSubmitting(false);
-      setCheckoutStage("");
-      inFlight.current = false;
-      setError(result.error || "We’re still verifying your payment. Please refresh its status shortly.");
-    } catch {
-      setPendingPaymentId(orderId);
-      setSubmitting(false);
-      setCheckoutStage("");
-      inFlight.current = false;
-      setError("We’re still verifying your payment. Please refresh its status shortly.");
-    }
-  }
-
-  // The query string is the recovery trigger. Including the recreated helper
-  // would re-run provider verification on unrelated form renders.
-  useEffect(() => {
-    const orderId = searchParams.get("cashfree_order_id");
-    if (!orderId || !/^src_[a-f0-9]{32}$/i.test(orderId)) return;
-    let active = true;
-    void verifyReturnedCashfreePayment(orderId).then(() => { if (!active) return; });
-    return () => { active = false; };
-  // eslint-disable-next-line react-hooks/exhaustive-deps -- verification is intentionally triggered only by a payment-return URL.
-  }, [searchParams, router, totalPrice, walletBalance]);
-
-  const moveTo = (step: number) => {
-    if (step === 2 && !platform) return;
-    if (step === 3 && !selectedService) return;
-    if (step === 4 && !formIsValid) return;
-    setError("");
-    setCheckoutStep(step);
-    const target = step === 1 ? platformRef : step === 2 ? serviceRef : step === 3 ? detailsRef : summaryRef;
-    scrollTo(target);
-  };
 
   const primaryButton = (label: string, onClick: () => void, disabled = false) => (
     <button type="button" onClick={onClick} disabled={disabled} className="sr-motion-press inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-16px_rgba(255,142,0,.55)] transition hover:brightness-110 disabled:cursor-not-allowed disabled:bg-[#252525] disabled:bg-none disabled:text-[#777] disabled:shadow-none">
