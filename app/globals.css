@@ -2144,3 +2144,41 @@ input, select, textarea { font-size: max(16px, 1em); }
 @media (prefers-reduced-motion:reduce) {
   .sr-order-platform-tile,.sr-order-step-card,.sr-order-progress > * { transition:none !important; transform:none !important; }
 }
+
+
+/* Order Experience 2.0 — service selection */
+@keyframes sr-order-service-enter {
+  from { opacity:0; transform:translate3d(0,18px,0) scale(.985); }
+  to { opacity:1; transform:translate3d(0,0,0) scale(1); }
+}
+.sr-order-service-grid > article { animation:sr-order-service-enter 520ms var(--sr-ease-out) both; }
+.sr-order-service-grid > article:nth-child(2){animation-delay:55ms}
+.sr-order-service-grid > article:nth-child(3){animation-delay:110ms}
+.sr-order-service-grid > article:nth-child(4){animation-delay:165ms}
+.sr-order-service-grid > article:nth-child(5){animation-delay:220ms}
+.sr-order-service-grid > article:nth-child(6){animation-delay:275ms}
+.sr-order-service-card {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.sr-order-service-card::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:-1px;
+  background:radial-gradient(circle at 12% 0%,rgba(255,122,0,.12),transparent 34%);
+  opacity:0;
+  transition:opacity 260ms ease;
+  pointer-events:none;
+}
+@media (hover:hover) and (pointer:fine) {
+  .sr-order-service-card:hover {
+    border-color:rgba(251,146,60,.48);
+    box-shadow:0 28px 58px -38px rgba(255,122,0,.62);
+  }
+  .sr-order-service-card:hover::before { opacity:1; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sr-order-service-grid > article { animation:none !important; }
+}
