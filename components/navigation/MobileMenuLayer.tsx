@@ -132,7 +132,7 @@ export default function MobileMenuLayer({
                 type="button"
                 aria-label="Close menu"
                 onClick={onClose}
-                className="absolute right-3 top-3 z-10 grid h-10 w-10 place-items-center rounded-sr-control border border-action/30 bg-surface-secondary text-xl font-semibold text-white shadow-sr-button outline-none focus-visible:shadow-sr-focus"
+                className="absolute right-3 top-3 z-10 grid h-11 w-11 place-items-center rounded-sr-control border border-action/30 bg-surface-secondary text-xl font-semibold text-white shadow-sr-button outline-none focus-visible:shadow-sr-focus"
               >
                 ×
               </button>
