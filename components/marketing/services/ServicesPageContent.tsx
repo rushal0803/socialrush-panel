@@ -70,17 +70,25 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
   const [catalogServices] = useState<SmmService[]>(() => serviceCatalog);
   const { currency } = usePreferredCurrency("INR");
   const { health: healthByService, isLoading: isHealthLoading } = useServiceHealth();
-  const [platform, setPlatform] = useState<SmmPlatformId>(() => platformFrom(initialPlatformParam || initialTypeParam?.split("-")[0]));
+  const inferredSearchPlatform = useMemo(() => {
+    if (initialPlatformParam) return platformFrom(initialPlatformParam);
+    const term = (initialSearchParam ?? "").toLowerCase();
+    return platforms.find((id) => {
+      const label = platformMeta[id].label.toLowerCase();
+      return term.includes(id) || term.includes(label) || (id === "x" && term.includes("twitter"));
+    });
+  }, [initialPlatformParam, initialSearchParam]);
+  const [platform, setPlatform] = useState<SmmPlatformId>(() => inferredSearchPlatform ?? platformFrom(initialTypeParam?.split("-")[0]));
   const [type, setType] = useState("all");
   const [query, setQuery] = useState(initialSearchParam?.trim() ?? "");
   const [showAll, setShowAll] = useState(false);
 
   useEffect(() => {
-    setPlatform(platformFrom(initialPlatformParam || initialTypeParam?.split("-")[0]));
+    setPlatform(inferredSearchPlatform ?? platformFrom(initialTypeParam?.split("-")[0]));
     setQuery(initialSearchParam?.trim() ?? "");
     setType("all");
     setShowAll(false);
-  }, [initialPlatformParam, initialSearchParam, initialTypeParam]);
+  }, [inferredSearchPlatform, initialSearchParam, initialTypeParam]);
 
   const types = useMemo(() => ["all", ...Array.from(new Set(catalogServices.filter((item) => item.platform === platform).map((item) => typeFor(item.code))))], [catalogServices, platform]);
   const services = useMemo(() => {
