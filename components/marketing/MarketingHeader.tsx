@@ -91,10 +91,18 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const menuCloseRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const supabase = createClient();
@@ -134,10 +142,10 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   }
 
   return (
-    <header className="nav-2-header sticky top-0 z-[9999] border-b border-sr-border bg-surface-page/85 shadow-[0_14px_45px_-30px_rgba(0,0,0,0.95)] backdrop-blur-2xl supports-[backdrop-filter]:bg-surface-page/72">
+    <header className={`nav-2-header sticky top-0 z-[9999] border-b backdrop-blur-2xl supports-[backdrop-filter]:bg-surface-page/72 ${scrolled ? "border-action/20 bg-surface-page/94 shadow-[0_18px_55px_-28px_rgba(0,0,0,.98)]" : "border-sr-border bg-surface-page/85 shadow-[0_14px_45px_-30px_rgba(0,0,0,.95)]"}`}>
       <div aria-hidden="true" className="absolute inset-x-0 bottom-[-1px] h-px bg-gradient-to-r from-transparent via-action/70 to-transparent" />
 
-      <div className="mx-auto flex h-[72px] max-w-sr-content items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+      <div className={`mx-auto flex max-w-sr-content items-center justify-between gap-3 px-4 transition-[height] duration-200 sm:px-6 lg:px-8 ${scrolled ? "h-[64px]" : "h-[72px]"}`}>
         <div className="flex min-w-0 items-center gap-3">
           <Logo
             light
@@ -164,14 +172,14 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                   <ArrowRight className="h-4 w-4 transition-transform group-hover/all:translate-x-0.5" aria-hidden="true" />
                 </span>
               </Link>
-              <div className="mt-2 grid grid-cols-2 gap-1">
+              <div className="mt-2 grid grid-cols-2 gap-1" aria-label="Service platforms">
                 {platforms.map(([label, href]) => (
                   <Link
                     key={href}
                     href={href}
-                    className="flex min-h-10 items-center rounded-xl px-3 text-xs font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus"
+                    className="group/platform flex min-h-10 items-center justify-between rounded-xl px-3 text-xs font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus"
                   >
-                    {label}
+                    <span>{label}</span><ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 text-orange-300 transition group-hover/platform:translate-x-0 group-hover/platform:opacity-100" aria-hidden="true" />
                   </Link>
                 ))}
               </div>
