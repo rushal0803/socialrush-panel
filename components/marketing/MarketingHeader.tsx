@@ -14,6 +14,7 @@ import {
   Menu,
   ShieldCheck,
   Sparkles,
+  Search,
   UserRound,
   X,
 } from "lucide-react";
@@ -68,7 +69,7 @@ function DesktopDropdown({
   children: React.ReactNode;
 }) {
   return (
-    <details className="group relative">
+    <details className="group relative nav-2-dropdown">
       <summary
         className={`flex min-h-10 cursor-pointer list-none items-center gap-1 rounded-sr-control px-3 py-2 outline-none transition duration-fast ease-sr-out hover:bg-white/[0.05] hover:text-content-primary focus-visible:shadow-sr-focus [&::-webkit-details-marker]:hidden ${
           active ? "bg-white/[0.06] text-content-primary" : "text-content-secondary"
@@ -88,10 +89,20 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
   const reduceMotion = useReducedMotion();
   const [open, setOpen] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [scrolled, setScrolled] = useState(false);
   const menuTriggerRef = useRef<HTMLButtonElement>(null);
   const menuCloseRef = useRef<HTMLButtonElement>(null);
 
   useEffect(() => setOpen(false), [pathname]);
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > 18);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   useEffect(() => {
     const supabase = createClient();
@@ -108,15 +119,33 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
     router.refresh();
   }
 
+  useEffect(() => {
+    if (!searchOpen) return;
+    const closeSearch = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setSearchOpen(false);
+    };
+    document.addEventListener("keydown", closeSearch);
+    return () => document.removeEventListener("keydown", closeSearch);
+  }, [searchOpen]);
+
   const servicesActive = pathname.startsWith("/services");
   const resourcesActive = resourceNav.some(([, href]) => isActive(pathname, href));
   const companyActive = companyNav.some(([, href]) => isActive(pathname, href));
 
+  function submitSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    const query = searchQuery.trim();
+    if (!query) return;
+    setSearchOpen(false);
+    setOpen(false);
+    router.push(`/services?q=${encodeURIComponent(query)}`);
+  }
+
   return (
-    <header className="sticky top-0 z-[9999] border-b border-sr-border bg-surface-page/85 shadow-[0_14px_45px_-30px_rgba(0,0,0,0.95)] backdrop-blur-2xl supports-[backdrop-filter]:bg-surface-page/72">
+    <header className={`nav-2-header sticky top-0 z-[9999] border-b backdrop-blur-2xl supports-[backdrop-filter]:bg-surface-page/72 ${scrolled ? "border-action/20 bg-surface-page/94 shadow-[0_18px_55px_-28px_rgba(0,0,0,.98)]" : "border-sr-border bg-surface-page/85 shadow-[0_14px_45px_-30px_rgba(0,0,0,.95)]"}`}>
       <div aria-hidden="true" className="absolute inset-x-0 bottom-[-1px] h-px bg-gradient-to-r from-transparent via-action/70 to-transparent" />
 
-      <div className="mx-auto flex h-[72px] max-w-sr-content items-center justify-between gap-3 px-4 sm:px-6 lg:px-8">
+      <div className={`mx-auto flex max-w-sr-content items-center justify-between gap-3 px-4 transition-[height] duration-200 sm:px-6 lg:px-8 ${scrolled ? "h-[64px]" : "h-[72px]"}`}>
         <div className="flex min-w-0 items-center gap-3">
           <Logo
             light
@@ -130,7 +159,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
 
         <nav className="hidden items-center gap-0.5 text-[13px] font-semibold xl:flex" aria-label="Primary navigation">
           <DesktopDropdown label="Services" active={servicesActive}>
-            <div className="absolute left-0 top-[calc(100%+.65rem)] z-30 w-[28rem] overflow-hidden rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2.5 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
+            <div className="nav-2-panel absolute left-0 top-[calc(100%+.65rem)] z-30 w-[28rem] overflow-hidden rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2.5 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               <Link
                 href="/services"
                 className="group/all flex items-center justify-between gap-4 rounded-xl border border-action/15 bg-action/[0.07] p-4 outline-none transition hover:border-action/30 hover:bg-action/[0.11] focus-visible:shadow-sr-focus"
@@ -143,14 +172,14 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                   <ArrowRight className="h-4 w-4 transition-transform group-hover/all:translate-x-0.5" aria-hidden="true" />
                 </span>
               </Link>
-              <div className="mt-2 grid grid-cols-2 gap-1">
+              <div className="mt-2 grid grid-cols-2 gap-1" aria-label="Service platforms">
                 {platforms.map(([label, href]) => (
                   <Link
                     key={href}
                     href={href}
-                    className="flex min-h-10 items-center rounded-xl px-3 text-xs font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus"
+                    className="group/platform flex min-h-10 items-center justify-between rounded-xl px-3 text-xs font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus"
                   >
-                    {label}
+                    <span>{label}</span><ArrowRight className="h-3.5 w-3.5 -translate-x-1 opacity-0 text-orange-300 transition group-hover/platform:translate-x-0 group-hover/platform:opacity-100" aria-hidden="true" />
                   </Link>
                 ))}
               </div>
@@ -174,7 +203,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           })}
 
           <DesktopDropdown label="Resources" active={resourcesActive}>
-            <div className="absolute left-1/2 top-[calc(100%+.65rem)] z-30 w-72 -translate-x-1/2 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
+            <div className="nav-2-panel absolute left-1/2 top-[calc(100%+.65rem)] z-30 w-72 -translate-x-1/2 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               {resourceNav.map(([label, href, Icon]) => (
                 <Link key={href} href={href} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus">
                   <span className="grid h-8 w-8 place-items-center rounded-lg border border-sr-border bg-white/[.03] text-orange-300"><Icon className="h-4 w-4" aria-hidden="true" /></span>
@@ -185,7 +214,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </DesktopDropdown>
 
           <DesktopDropdown label="Company" active={companyActive}>
-            <div className="absolute right-0 top-[calc(100%+.65rem)] z-30 w-60 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
+            <div className="nav-2-panel absolute right-0 top-[calc(100%+.65rem)] z-30 w-60 rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               {companyNav.map(([label, href, Icon]) => (
                 <Link key={href} href={href} className="flex min-h-11 items-center gap-3 rounded-xl px-3 text-sm font-semibold text-content-secondary outline-none transition hover:bg-white/[.05] hover:text-content-primary focus-visible:shadow-sr-focus">
                   <Icon className="h-4 w-4 text-orange-300" aria-hidden="true" />
@@ -197,6 +226,9 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </nav>
 
         <div className="hidden items-center gap-1.5 xl:flex">
+          <button type="button" onClick={() => setSearchOpen(true)} className="grid h-10 w-10 place-items-center rounded-sr-control border border-transparent text-content-muted outline-none transition hover:border-sr-border hover:bg-white/[.04] hover:text-content-primary focus-visible:shadow-sr-focus" aria-label="Search SocialRUSH services">
+            <Search className="h-4 w-4" aria-hidden="true" />
+          </button>
           <CurrencyDropdown compact tone={tone} />
           {isLoggedIn ? (
             <>
@@ -245,6 +277,23 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
         </div>
       </div>
 
+      {searchOpen ? (
+        <div className="fixed inset-0 z-[10000] hidden items-start justify-center bg-black/70 px-4 pt-[12vh] backdrop-blur-md xl:flex" role="dialog" aria-modal="true" aria-label="Search services" onMouseDown={() => setSearchOpen(false)}>
+          <form onSubmit={submitSearch} onMouseDown={(event) => event.stopPropagation()} className="w-full max-w-2xl rounded-3xl border border-sr-border-strong bg-surface-elevated p-3 shadow-[0_32px_90px_-25px_rgba(0,0,0,.95)]">
+            <div className="flex items-center gap-3 rounded-2xl border border-action/25 bg-surface-page px-4">
+              <Search className="h-5 w-5 shrink-0 text-orange-300" aria-hidden="true" />
+              <input autoFocus value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search Instagram, YouTube, followers, views..." className="min-h-14 min-w-0 flex-1 bg-transparent text-sm font-semibold text-white outline-none placeholder:text-content-muted" />
+              <button type="button" onClick={() => setSearchOpen(false)} className="grid h-10 w-10 shrink-0 place-items-center rounded-xl text-content-muted hover:bg-white/[.05] hover:text-white" aria-label="Close search"><X className="h-5 w-5" /></button>
+            </div>
+            <div className="flex flex-wrap gap-2 px-1 pb-1 pt-3">
+              {["Instagram followers", "YouTube subscribers", "LinkedIn followers", "TikTok followers"].map((item) => (
+                <button key={item} type="button" onClick={() => setSearchQuery(item)} className="rounded-full border border-sr-border bg-white/[.03] px-3 py-2 text-xs font-bold text-content-secondary transition hover:border-action/30 hover:text-white">{item}</button>
+              ))}
+            </div>
+          </form>
+        </div>
+      ) : null}
+
       <MobileMenuLayer
         open={open}
         onClose={() => setOpen(false)}
@@ -286,7 +335,12 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
               </PortalCTA>
             </section>
 
-            <nav className="mt-4 grid gap-1" aria-label="Mobile navigation">
+            <form onSubmit={submitSearch} className="mt-4 flex items-center gap-2 rounded-xl border border-sr-border bg-surface-secondary px-3">
+              <Search className="h-4 w-4 shrink-0 text-orange-300" aria-hidden="true" />
+              <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search services..." className="min-h-11 min-w-0 flex-1 bg-transparent text-sm font-semibold text-white outline-none placeholder:text-content-muted" />
+            </form>
+
+            <nav className="mt-3 grid gap-1" aria-label="Mobile navigation">
               <Link href="/services" onClick={() => setOpen(false)} className={`flex min-h-12 items-center justify-between rounded-xl border px-3.5 py-2.5 text-sm font-bold outline-none transition ${servicesActive ? "border-action/25 bg-action/10 text-white" : "border-transparent text-content-secondary hover:border-sr-border hover:bg-white/[.04] hover:text-white"}`}>
                 Services
                 <ArrowRight className="h-4 w-4 text-orange-300" aria-hidden="true" />
