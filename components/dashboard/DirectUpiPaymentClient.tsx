@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
-  Building2,
   CheckCircle2,
   Clock3,
   Copy,
