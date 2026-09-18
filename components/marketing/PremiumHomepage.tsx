@@ -107,7 +107,6 @@ export default function PremiumHomepage({ searchParams }: { searchParams?: { pla
 /* The legacy sample visual is retained only as unrendered source during the staged homepage transition. */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 function SectionHeading({ eyebrow, title, text, align = "center" }: { eyebrow: string; title: string; text: string; align?: "left" | "center" }) { return <div className={align === "center" ? "mx-auto max-w-2xl text-center" : "max-w-xl"}><p className="eyebrow">{eyebrow}</p><h2 className="mt-3 text-3xl font-black tracking-[-.045em] sm:text-4xl">{title}</h2><p className="mt-4 text-sm leading-7 text-[#A8AFBD]">{text}</p></div>; }
-function ComparisonRow({ before, after }: { before: string; after: string }) { return <div className="grid grid-cols-[minmax(0,1fr)_20px_minmax(0,1fr)] items-center gap-2 rounded-2xl border border-white/[.07] bg-white/[.025] p-3"><span className="text-xs leading-5 text-[#8F96A3]">{before}</span><ArrowRight className="h-4 w-4 text-orange-300" aria-hidden="true" /><span className="text-xs font-bold leading-5 text-[#E5E7EB]">{after}</span></div>; }
 function PremiumJourney() {
   return <aside className="journey-experience mx-auto w-full max-w-xl">
     <div className="journey-heading"><p className="eyebrow">SocialRUSH dashboard</p><h2>Your order details, <span>in one place.</span></h2><p>Preview service details, checkout information and delivery updates from an organized customer workspace.</p></div>
