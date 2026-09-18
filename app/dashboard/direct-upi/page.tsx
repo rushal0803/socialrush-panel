@@ -52,6 +52,16 @@ export default async function DirectUpiPage({ searchParams }: PageProps) {
   const serviceName = service?.name || intent.service_code.split("-").map((part: string) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
   const upiId = "8860330771@pthdfc";
   const payeeName = "Rushal";
+  const usdtTrc20Address = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
+  let usdtAmount: number | null = null;
+  try {
+    const fxResponse = await fetch("https://api.frankfurter.app/latest?from=USD&to=INR", { next: { revalidate: 300 } });
+    const fx = await fxResponse.json() as { rates?: { INR?: number } };
+    const inrPerUsd = Number(fx.rates?.INR);
+    if (Number.isFinite(inrPerUsd) && inrPerUsd > 0) usdtAmount = Math.ceil((Number(intent.total_paise) / 100 / inrPerUsd) * 100) / 100;
+  } catch {
+    usdtAmount = null;
+  }
 
   const bankTransfer = {
     enabled: process.env.BANK_TRANSFER_ENABLED === "true",
@@ -79,6 +89,8 @@ export default async function DirectUpiPage({ searchParams }: PageProps) {
         total={Number(intent.total_paise) / 100}
         upiId={upiId}
         payeeName={payeeName}
+        usdtTrc20Address={usdtTrc20Address}
+        usdtAmount={usdtAmount}
         bankTransfer={bankTransfer}
       />
     </main>

@@ -5,9 +5,9 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 
-const UTR_PATTERN = /^[A-Za-z0-9-]{8,40}$/;
+const UTR_PATTERN = /^[A-Za-z0-9-]{8,80}$/;
 const PAYMENT_REF_PATTERN = /^SR-[A-Z0-9-]{8,40}$/;
-const PAYMENT_METHODS = new Set(["upi", "bank_transfer"]);
+const PAYMENT_METHODS = new Set(["upi", "bank_transfer", "usdt_trc20"]);
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -100,7 +100,7 @@ export async function POST(request: NextRequest) {
   const quantity = Number(intent.quantity);
   const charge = Number(intent.total_paise) / 100;
   const unitPrice = Math.round((charge * 1000 / quantity) * 10000) / 10000;
-  const methodLabel = paymentMethod === "bank_transfer" ? "Bank transfer (IMPS/NEFT)" : "UPI";
+  const methodLabel = paymentMethod === "bank_transfer" ? "Bank transfer (IMPS/NEFT)" : paymentMethod === "usdt_trc20" ? "USDT (TRC20)" : "UPI";
   const customerNote = `${methodLabel} payment submitted for verification. Payment Ref: ${paymentReference}. UTR: ${utr}.`;
 
   const { data: existingByRequest } = await admin

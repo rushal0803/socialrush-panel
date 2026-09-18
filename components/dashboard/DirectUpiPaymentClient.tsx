@@ -4,7 +4,6 @@ import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
-  Building2,
   CheckCircle2,
   Clock3,
   Copy,
@@ -13,6 +12,8 @@ import {
   LockKeyhole,
   ShieldCheck,
   Smartphone,
+  WalletCards,
+  Coins,
 } from "lucide-react";
 import { track } from "@/lib/analytics/events";
 
@@ -35,6 +36,8 @@ type Props = {
   upiId: string;
   payeeName: string;
   bankTransfer: BankTransferDetails;
+  usdtTrc20Address: string;
+  usdtAmount: number | null;
 };
 
 function paymentReference() {
@@ -52,15 +55,19 @@ export default function DirectUpiPaymentClient({
   total,
   upiId,
   payeeName,
+  usdtTrc20Address,
+  usdtAmount,
 }: Props) {
   const router = useRouter();
   const [reference] = useState(paymentReference);
   const [paymentStarted, setPaymentStarted] = useState(false);
+  const [paymentMethod, setPaymentMethod] = useState<"upi" | "usdt_trc20">("upi");
   const [utr, setUtr] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{ public_order_id: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [cryptoCopied, setCryptoCopied] = useState(false);
 
   const amountLabel = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -87,10 +94,16 @@ export default function DirectUpiPaymentClient({
     window.setTimeout(() => setCopied(false), 1400);
   }
 
+  async function copyCryptoAddress() {
+    await navigator.clipboard.writeText(usdtTrc20Address).catch(() => undefined);
+    setCryptoCopied(true);
+    window.setTimeout(() => setCryptoCopied(false), 1400);
+  }
+
   async function submitUtr() {
     const cleanUtr = utr.trim().replace(/\s+/g, "");
-    if (!/^[A-Za-z0-9-]{8,40}$/.test(cleanUtr)) {
-      setError("Enter the UTR / Transaction ID from your successful UPI payment.");
+    if (!/^[A-Za-z0-9-]{8,80}$/.test(cleanUtr)) {
+      setError(paymentMethod === "usdt_trc20" ? "Enter the transaction hash / TxID from your successful USDT transfer." : "Enter the UTR / Transaction ID from your successful UPI payment.");
       return;
     }
 
@@ -98,7 +111,7 @@ export default function DirectUpiPaymentClient({
     setError("");
     track("utr_submitted", {
       service_code: serviceCode,
-      method: "upi",
+      method: paymentMethod,
       step: "verification",
     });
 
@@ -110,7 +123,7 @@ export default function DirectUpiPaymentClient({
           intentId,
           clientRequestId,
           paymentReference: reference,
-          paymentMethod: "upi",
+          paymentMethod,
           utr: cleanUtr,
         }),
       });
@@ -128,7 +141,7 @@ export default function DirectUpiPaymentClient({
       setError(cause instanceof Error ? cause.message : "Unable to confirm your order.");
       track("checkout_error", {
         service_code: serviceCode,
-        method: "upi",
+        method: paymentMethod,
         step: "verification",
         error_category: "manual_payment_confirmation_failed",
       });
@@ -199,30 +212,46 @@ export default function DirectUpiPaymentClient({
           </div>
         </div>
 
-        <div className="grid grid-cols-2 gap-3">
-          <div className="relative rounded-2xl border border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5 p-4 shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)]">
+        <div>
+          <div className="mb-3 flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Payment method</p><h2 className="mt-1 text-lg font-black">How would you like to pay?</h2></div><span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-300">UPI recommended</span></div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <button type="button" onClick={() => { setPaymentMethod("upi"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)] transition ${paymentMethod === "upi" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/15 text-orange-300"><Smartphone className="h-5 w-5" /></div>
               <div>
-                <p className="text-sm font-black">Direct UPI</p>
-                <p className="mt-0.5 text-[11px] text-zinc-400">Instant & easy</p>
+                <p className="text-sm font-black">UPI</p>
+                <p className="mt-0.5 text-[11px] text-zinc-400">Google Pay · PhonePe · Paytm · BHIM</p>
               </div>
             </div>
-            <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" />
-          </div>
+            {paymentMethod === "upi" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
+          </button>
 
-          <div aria-disabled="true" className="cursor-not-allowed rounded-2xl border border-white/8 bg-white/[0.025] p-4 opacity-45">
+          <button type="button" disabled={!usdtAmount} onClick={() => { setPaymentMethod("usdt_trc20"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "usdt_trc20" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
-              <div className="grid h-10 w-10 place-items-center rounded-xl bg-white/5 text-zinc-500"><Building2 className="h-5 w-5" /></div>
-              <div className="min-w-0">
-                <p className="text-sm font-black text-zinc-400">Bank Transfer</p>
-                <p className="mt-0.5 text-[10px] font-bold uppercase tracking-wider text-zinc-600">Coming soon</p>
-              </div>
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-300"><Coins className="h-5 w-5" /></div>
+              <div className="min-w-0"><p className="text-sm font-black">USDT</p><p className="mt-0.5 text-[11px] text-zinc-400">TRON network · TRC20</p></div>
             </div>
-          </div>
+            {usdtAmount ? <span className="absolute right-3 top-3 rounded-full bg-sky-500/10 px-2 py-1 text-[9px] font-black uppercase text-sky-300">International</span> : null}
+          </button>
+        </div>
+          <div className="mt-3 flex items-start gap-2 rounded-xl border border-white/5 bg-white/[0.02] p-3 text-xs leading-5 text-zinc-500"><WalletCards className="mt-0.5 h-4 w-4 shrink-0" /><span>More payment methods will appear here only when they are available and approved for SocialRUSH.</span></div>
         </div>
 
-        {!upiId ? (
+        {paymentMethod === "usdt_trc20" ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
+            <div className="flex items-start gap-4"><div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-orange-500 to-amber-400 text-sm font-black text-black">{paymentStarted ? "2" : "1"}</div><div className="min-w-0 flex-1">
+              {!paymentStarted ? <><h2 className="text-xl font-black">Send {usdtAmount?.toFixed(2)} USDT</h2><p className="mt-1 text-sm leading-6 text-zinc-400">International payment via TRON (TRC20). The USDT amount is calculated from the current USD/INR reference rate.</p>
+              <div className="mt-4 rounded-2xl border border-red-400/20 bg-red-500/10 p-4 text-xs font-bold leading-5 text-red-100">TRC20 ONLY. Do not send USDT using ERC20, BEP20, Solana or another network.</div>
+              <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-zinc-500">USDT · TRC20 deposit address</p><p className="mt-2 break-all font-black text-white">{usdtTrc20Address}</p><button type="button" onClick={() => void copyCryptoAddress()} className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-orange-200"><Copy className="h-4 w-4" />{cryptoCopied ? "Copied" : "Copy address"}</button></div>
+              <button type="button" onClick={() => { setPaymentStarted(true); track("payment_started", { service_code: serviceCode, method: "usdt_trc20", currency: "INR", value: total, step: "crypto_instructions_shown" }); }} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black">I’ve sent the USDT</button></> :
+              <><h2 className="text-xl font-black">Enter transaction hash / TxID</h2><p className="mt-1 text-sm leading-6 text-zinc-400">Paste the TxID from your successful TRC20 transfer. We verify it before processing your order.</p>
+              <input value={utr} onChange={(e) => setUtr(e.target.value.slice(0,80))} placeholder="TRC20 transaction hash / TxID" autoComplete="off" className="mt-4 w-full rounded-2xl border border-white/10 bg-[#080b10] px-4 py-4 text-base font-semibold outline-none focus:border-orange-400/70" />
+              {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
+              <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black disabled:opacity-60">{submitting ? "Submitting..." : "Submit TxID & Place Order"}</button>
+              <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 text-sm font-bold text-zinc-300">Back to USDT details</button></>}
+            </div></div>
+          </div>
+        ) : !upiId ? (
           <div className="rounded-2xl border border-red-400/20 bg-red-500/10 p-4 text-sm font-semibold text-red-200">UPI is not configured right now. Please contact support before paying.</div>
         ) : !paymentStarted ? (
           <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
