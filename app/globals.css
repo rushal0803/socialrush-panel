@@ -1776,3 +1776,80 @@ input, select, textarea { font-size: max(16px, 1em); }
     transform: none !important;
   }
 }
+
+
+/* SocialRUSH 2.0 — visible premium motion (palette preserved) */
+@keyframes sr-hero-glow-drift {
+  0%,100% { transform: translate3d(-2%,0,0) scale(1); opacity:.7; }
+  50% { transform: translate3d(4%,3%,0) scale(1.08); opacity:1; }
+}
+@keyframes sr-float-premium {
+  0%,100% { transform: translate3d(0,0,0); }
+  50% { transform: translate3d(0,-10px,0); }
+}
+@keyframes sr-icon-breathe {
+  0%,100% { box-shadow:0 0 0 0 rgba(255,122,0,.05); }
+  50% { box-shadow:0 0 0 8px rgba(255,122,0,.08); }
+}
+@keyframes sr-cta-arrow {
+  0%,100% { transform:translateX(0); }
+  50% { transform:translateX(5px); }
+}
+.premium-homepage > section:first-child::after {
+  content:"";
+  pointer-events:none;
+  position:absolute;
+  width:min(44rem,82vw);
+  height:min(44rem,82vw);
+  right:-16rem;
+  top:-18rem;
+  border-radius:999px;
+  background:radial-gradient(circle,rgba(255,122,0,.13),transparent 66%);
+  filter:blur(8px);
+  animation:sr-hero-glow-drift 7s ease-in-out infinite;
+}
+.premium-homepage .growth-engine-core {
+  animation:sr-float-premium 5s var(--sr-ease-out) infinite;
+}
+.premium-homepage .growth-engine-node:nth-child(2n) {
+  animation:sr-float-premium 5.8s var(--sr-ease-out) .5s infinite;
+}
+.premium-homepage .growth-engine-node:nth-child(2n+1) {
+  animation:sr-float-premium 6.4s var(--sr-ease-out) 1s infinite;
+}
+.premium-homepage .service-card > div:first-child > span:first-child {
+  animation:sr-icon-breathe 3.2s ease-in-out infinite;
+}
+.premium-homepage .sr-primary svg {
+  animation:sr-cta-arrow 1.8s ease-in-out infinite;
+}
+@media (hover:hover) and (pointer:fine) {
+  .premium-homepage .service-card:hover {
+    transform:translate3d(0,-9px,0) scale(1.015);
+    border-color:rgba(255,154,46,.48);
+    box-shadow:0 30px 70px -34px rgba(255,122,0,.62);
+  }
+  .premium-homepage .growth-engine-node:hover {
+    animation-play-state:paused;
+    transform:translate3d(0,-7px,0) scale(1.025);
+    border-color:rgba(255,154,46,.42);
+  }
+}
+@media (max-width:767px) {
+  .premium-homepage .growth-engine-node:nth-child(n) {
+    animation-duration:7s;
+  }
+  .premium-homepage > section:first-child::after {
+    right:-20rem;
+    top:-13rem;
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .premium-homepage > section:first-child::after,
+  .premium-homepage .growth-engine-core,
+  .premium-homepage .growth-engine-node,
+  .premium-homepage .service-card > div:first-child > span:first-child,
+  .premium-homepage .sr-primary svg {
+    animation:none !important;
+  }
+}
