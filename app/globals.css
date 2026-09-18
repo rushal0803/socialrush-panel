@@ -2107,3 +2107,176 @@ input, select, textarea { font-size: max(16px, 1em); }
 @media (prefers-reduced-motion:reduce) {
   .sr-platform-rail { scroll-behavior:auto; }
 }
+
+
+/* SocialRUSH 2.0 — Order Experience */
+.sr-order-platform-rail { scrollbar-width:none; -ms-overflow-style:none; }
+.sr-order-platform-rail::-webkit-scrollbar { display:none; }
+.sr-order-platform-tile { flex:0 0 auto; }
+.sr-order-step-card {
+  position:relative;
+  overflow:hidden;
+  transition:border-color 240ms ease,box-shadow 300ms ease,transform 300ms var(--sr-ease-out);
+}
+.sr-order-step-card::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 12% 0%,rgba(255,122,0,.09),transparent 28%);
+}
+.sr-order-progress > * { transition:transform 220ms var(--sr-ease-out),border-color 220ms ease; }
+@media (max-width:639px) {
+  .sr-order-platform-rail {
+    margin-inline:-1.25rem;
+    padding-inline:1.25rem;
+    scroll-padding-inline:1.25rem;
+  }
+  .sr-order-platform-rail::after { content:""; flex:0 0 .25rem; }
+}
+@media (hover:hover) and (pointer:fine) {
+  .sr-order-platform-tile:hover { transform:translateY(-5px); }
+  .sr-order-step-card:hover {
+    border-color:rgba(251,146,60,.34);
+    box-shadow:0 30px 64px -42px rgba(255,122,0,.65);
+  }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sr-order-platform-tile,.sr-order-step-card,.sr-order-progress > * { transition:none !important; transform:none !important; }
+}
+
+
+/* Order Experience 2.0 — service selection */
+@keyframes sr-order-service-enter {
+  from { opacity:0; transform:translate3d(0,18px,0) scale(.985); }
+  to { opacity:1; transform:translate3d(0,0,0) scale(1); }
+}
+.sr-order-service-grid > article { animation:sr-order-service-enter 520ms var(--sr-ease-out) both; }
+.sr-order-service-grid > article:nth-child(2){animation-delay:55ms}
+.sr-order-service-grid > article:nth-child(3){animation-delay:110ms}
+.sr-order-service-grid > article:nth-child(4){animation-delay:165ms}
+.sr-order-service-grid > article:nth-child(5){animation-delay:220ms}
+.sr-order-service-grid > article:nth-child(6){animation-delay:275ms}
+.sr-order-service-card {
+  position:relative;
+  isolation:isolate;
+  overflow:hidden;
+}
+.sr-order-service-card::before {
+  content:"";
+  position:absolute;
+  z-index:-1;
+  inset:-1px;
+  background:radial-gradient(circle at 12% 0%,rgba(255,122,0,.12),transparent 34%);
+  opacity:0;
+  transition:opacity 260ms ease;
+  pointer-events:none;
+}
+@media (hover:hover) and (pointer:fine) {
+  .sr-order-service-card:hover {
+    border-color:rgba(251,146,60,.48);
+    box-shadow:0 28px 58px -38px rgba(255,122,0,.62);
+  }
+  .sr-order-service-card:hover::before { opacity:1; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sr-order-service-grid > article { animation:none !important; }
+}
+
+
+/* Order Experience 2.0 — campaign details */
+.sr-order-field {
+  display:block;
+  padding:14px;
+  border:1px solid rgba(255,255,255,.07);
+  border-radius:18px;
+  background:rgba(255,255,255,.018);
+  transition:border-color 220ms ease,background 220ms ease,box-shadow 220ms ease;
+}
+.sr-order-field:focus-within {
+  border-color:rgba(251,146,60,.38);
+  background:rgba(255,122,0,.025);
+  box-shadow:0 18px 42px -34px rgba(255,122,0,.65);
+}
+.sr-order-quantity-option { overflow:hidden; }
+.sr-order-quantity-option::after {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 15% 0%,rgba(255,122,0,.10),transparent 42%);
+  opacity:0;
+  transition:opacity 220ms ease;
+}
+.sr-order-quantity-option[aria-pressed="true"]::after { opacity:1; }
+.sr-order-live-preview > div { min-height:112px; }
+@media (hover:hover) and (pointer:fine) {
+  .sr-order-quantity-option:hover {
+    transform:translateY(-3px);
+    box-shadow:0 18px 38px -30px rgba(255,122,0,.72);
+  }
+  .sr-order-quantity-option:hover::after { opacity:1; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sr-order-field,.sr-order-quantity-option { transition:none !important; transform:none !important; }
+}
+
+
+/* Order Experience 2.0 — Review & Pay */
+.sr-order-review-card,
+.sr-order-payment-card,
+.sr-order-summary-aside {
+  position:relative;
+  overflow:hidden;
+}
+.sr-order-review-card::before,
+.sr-order-payment-card::before,
+.sr-order-summary-aside::before {
+  content:"";
+  position:absolute;
+  inset:0;
+  pointer-events:none;
+  background:radial-gradient(circle at 8% 0%,rgba(255,122,0,.10),transparent 30%);
+}
+.sr-order-payment-card {
+  box-shadow:0 26px 62px -44px rgba(255,122,0,.72);
+}
+.sr-order-final-cta {
+  position:relative;
+  overflow:hidden;
+  transition:transform 180ms var(--sr-ease-out),filter 180ms ease,box-shadow 220ms ease;
+}
+.sr-order-final-cta::after {
+  content:"";
+  position:absolute;
+  top:-30%;
+  left:-35%;
+  width:24%;
+  height:160%;
+  transform:skewX(-18deg);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.25),transparent);
+  pointer-events:none;
+}
+@media (hover:hover) and (pointer:fine) {
+  .sr-order-final-cta:not(:disabled):hover {
+    transform:translateY(-2px);
+    filter:brightness(1.08);
+    box-shadow:0 22px 42px -18px rgba(255,122,0,.72);
+  }
+  .sr-order-final-cta:not(:disabled):hover::after {
+    left:125%;
+    transition:left 650ms var(--sr-ease-out);
+  }
+  .sr-order-summary-aside:hover {
+    border-color:rgba(251,146,60,.28);
+    box-shadow:0 28px 60px -44px rgba(255,122,0,.55);
+  }
+}
+@media (max-width:639px) {
+  .sr-order-payment-card { padding:1rem; }
+  .sr-order-final-cta { min-height:3.25rem; }
+}
+@media (prefers-reduced-motion:reduce) {
+  .sr-order-final-cta { transition:none !important; transform:none !important; }
+  .sr-order-final-cta::after { display:none; }
+}
