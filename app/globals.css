@@ -2385,3 +2385,12 @@ input, select, textarea { font-size: max(16px, 1em); }
 }
 @media(max-width:639px){.sr-smart-conversion{gap:.75rem}.sr-smart-repeat-card,.sr-smart-recovery-card{min-height:150px}}
 @media(prefers-reduced-motion:reduce){.sr-smart-service,.sr-smart-repeat-card,.sr-smart-recovery-card{transition:none!important;transform:none!important}}
+
+/* Smart Features 2.0 — contextual command layer */
+.sr-smart-context-card{overflow:hidden}
+.sr-smart-context-card::after{content:"";position:absolute;inset:auto -35% -80% 35%;height:110px;pointer-events:none;background:radial-gradient(ellipse,rgba(255,122,0,.10),transparent 68%);opacity:0;transition:opacity 240ms ease}
+.sr-smart-action-dock{position:sticky;bottom:max(.75rem,env(safe-area-inset-bottom));z-index:20;backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 22px 60px -35px rgba(0,0,0,.9)}
+@media(hover:hover) and (pointer:fine){.sr-smart-context-card:hover::after{opacity:1}}
+@media(min-width:1024px){.sr-smart-action-dock{position:relative;bottom:auto}}
+@media(max-width:639px){.sr-smart-action-dock{border-color:rgba(251,146,60,.18);background:rgba(16,17,22,.88)}}
+@media(prefers-reduced-motion:reduce){.sr-smart-context-card::after{transition:none!important}}
