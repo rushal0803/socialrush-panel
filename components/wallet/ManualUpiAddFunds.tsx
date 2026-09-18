@@ -3,8 +3,8 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 
-const UPI_ID = process.env.NEXT_PUBLIC_UPI_ID || "8860330771@pthdfc";
-const PAYEE = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME || "Rushal";
+const UPI_ID = "8860330771@pthdfc";
+const PAYEE = "Rushal";
 const quickAmounts = [100, 500, 1000, 2000, 5000];
 
 function makeReference() {
