@@ -902,7 +902,7 @@ export default function NewOrderPage() {
         </section>
 
         <section aria-label="Order progress" className="sticky top-[4.75rem] z-20 mt-3 rounded-xl border border-orange-400/20 bg-[#0B0B0F]/95 p-1.5 shadow-[0_16px_36px_-24px_rgba(0,0,0,.8)] backdrop-blur-xl sm:top-20 sm:mt-4 sm:rounded-2xl sm:p-3">
-          <div className="grid grid-cols-4 gap-1 sm:gap-2">
+          <div className="sr-order-progress grid grid-cols-4 gap-1 sm:gap-2">
             <ProgressItem number={1} title="Platform" state={progressState(1, currentStep)} />
             <ProgressItem number={2} title="Service" state={progressState(2, currentStep)} />
             <ProgressItem number={3} title="Details" state={progressState(3, currentStep)} />
@@ -910,10 +910,10 @@ export default function NewOrderPage() {
           </div>
         </section>
 
-        <section ref={platformRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
+        <section ref={platformRef} className="sr-order-step-card scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
           <p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 1</p>
           <h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Choose your platform</h2>
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 xl:grid-cols-7">
+          <div className="sr-order-platform-rail mt-5 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 xl:grid-cols-7">
             {platformOrder.map((platformId) => {
               const meta = platformMeta[platformId];
               const active = platform === platformId;
@@ -925,7 +925,7 @@ export default function NewOrderPage() {
                   whileTap={{ scale: 0.98 }}
                   onClick={() => choosePlatform(platformId)}
                   aria-pressed={active}
-                  className={`relative min-h-24 min-w-0 rounded-2xl border p-3 text-left transition sm:p-4 ${platformId === platformOrder[platformOrder.length - 1] ? "col-span-2 w-[calc(50%_-_0.375rem)] justify-self-center sm:col-span-1 sm:w-auto" : ""} ${active ? "border-orange-400/80 bg-orange-500/15 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"}`}
+                  className={`sr-order-platform-tile relative min-h-24 min-w-[150px] snap-start rounded-2xl border p-3 text-left transition sm:min-w-0 sm:p-4 ${platformId === platformOrder[platformOrder.length - 1] ? "col-span-2 w-[calc(50%_-_0.375rem)] justify-self-center sm:col-span-1 sm:w-auto" : ""} ${active ? "border-orange-400/80 bg-orange-500/15 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"}`}
                 >
                   {active ? <CheckCircle2 className="absolute right-2 top-2 h-5 w-5 text-emerald-600" /> : null}
                       <IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge>
