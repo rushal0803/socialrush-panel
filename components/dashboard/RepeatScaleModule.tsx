@@ -14,7 +14,7 @@ const paths = [
 export default function RepeatScaleModule({ completedOrders }: { completedOrders: number }) {
   if (completedOrders < 1) return null;
   return (
-    <section className="dashboard-glass mt-4 overflow-hidden p-4 sm:p-5" aria-labelledby="repeat-scale-heading">
+    <section className="sr-smart-repeat dashboard-glass mt-4 overflow-hidden p-4 sm:p-5" aria-labelledby="repeat-scale-heading">
       <div className="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
         <div>
           <p className="text-[10px] font-black uppercase tracking-[.15em] text-orange-300">Repeat & scale</p>
@@ -25,7 +25,7 @@ export default function RepeatScaleModule({ completedOrders }: { completedOrders
       </div>
       <div className="mt-4 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {paths.map(({ href, label, detail, icon: Icon, source }) => (
-          <Link key={href} href={href} onClick={() => track("dashboard_repeat_scale_click", { source })} className="group rounded-2xl border border-white/10 bg-white/[.025] p-4 transition hover:-translate-y-0.5 hover:border-orange-400/35 hover:bg-orange-500/[.05]">
+          <Link key={href} href={href} onClick={() => track("dashboard_repeat_scale_click", { source })} className="sr-smart-repeat-card group rounded-2xl border border-white/10 bg-white/[.025] p-4 transition hover:-translate-y-0.5 hover:border-orange-400/35 hover:bg-orange-500/[.05]">
             <span className="grid h-9 w-9 place-items-center rounded-xl border border-orange-400/20 bg-orange-500/10 text-orange-300"><Icon className="h-4 w-4" /></span>
             <h3 className="mt-3 text-sm font-black text-white">{label}</h3>
             <p className="mt-1 text-[11px] leading-5 text-slate-400">{detail}</p>
