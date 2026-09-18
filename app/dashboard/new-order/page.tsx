@@ -936,7 +936,7 @@ export default function NewOrderPage() {
           </div>
         </section>
 
-        <section ref={serviceRef} className="scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
+        <section ref={serviceRef} className="sr-order-step-card scroll-mt-40 mt-6 rounded-3xl border border-orange-400/20 bg-[#111111] p-5 shadow-[0_24px_54px_-36px_rgba(255,122,0,.55)] sm:p-6">
           <div className="flex flex-wrap items-start justify-between gap-3">
             <div><p className="text-[10px] font-black uppercase tracking-[0.15em] text-orange-400">Step 2</p><h2 className="mt-2 text-xl font-black text-white sm:text-2xl">Choose your service</h2></div>
             {platform ? <button type="button" onClick={() => scrollTo(platformRef)} className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3.5 py-2.5 text-xs font-bold text-orange-300">Change platform</button> : null}
@@ -946,14 +946,14 @@ export default function NewOrderPage() {
           ) : services.length === 0 ? (
             <div className="sr-motion-lift mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-6 text-center text-sm font-semibold text-amber-800">No services available for this platform right now. Please contact support.</div>
           ) : (
-            <><>{platform === "x" && services.some((service) => service.qualityType.includes("Crypto-Based")) ? <p className="sr-motion-lift mt-5 rounded-2xl border border-amber-300/25 bg-amber-500/[.07] p-4 text-sm leading-6 text-amber-100"><strong>Twitter / X – Crypto Based Services.</strong> Specialized Twitter/X engagement services designed for crypto-related profiles and content. Delivery speed is fixed and cannot be accelerated. These services do not include refill.</p> : null}</><div className="mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
+            <><>{platform === "x" && services.some((service) => service.qualityType.includes("Crypto-Based")) ? <p className="sr-motion-lift mt-5 rounded-2xl border border-amber-300/25 bg-amber-500/[.07] p-4 text-sm leading-6 text-amber-100"><strong>Twitter / X – Crypto Based Services.</strong> Specialized Twitter/X engagement services designed for crypto-related profiles and content. Delivery speed is fixed and cannot be accelerated. These services do not include refill.</p> : null}</><div className="sr-order-service-grid mt-5 grid gap-4 md:grid-cols-2 2xl:grid-cols-3">
               {services.map((service) => {
                 const active = selectedService?.code === service.code;
                 const experience = serviceExperience[service.code];
                 const health = healthByService[service.code];
                 const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
                 return (
-                  <motion.article key={service.code} whileHover={{ y: -3 }} className={`flex min-w-0 flex-col rounded-2xl border p-4 transition sm:p-5 ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
+                  <motion.article key={service.code} whileHover={{ y: -3 }} className={`sr-order-service-card flex min-w-0 flex-col rounded-2xl border p-4 transition sm:p-5 ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge label={platformMeta[service.platform].label}><PlatformIcon platform={platformMeta[service.platform].label} className="h-6 w-6" /></IconBadge>
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
