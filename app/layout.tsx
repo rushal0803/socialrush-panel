@@ -21,6 +21,20 @@ export const metadata: Metadata = {
   },
   description:
     "Explore transparent social media growth services, secure ordering, refill information and clear order tracking through the SocialRUSH dashboard.",
+  alternates: {
+    canonical: "/",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+      "max-video-preview": -1,
+    },
+  },
     other: {
   "google-adsense-account": "ca-pub-5748505888279439",
 },
