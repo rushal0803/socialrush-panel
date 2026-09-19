@@ -77,6 +77,8 @@ const serviceVisuals: Record<Service, { badge: string; Icon: LucideIcon }> = {
   members: { badge: "Community Growth", Icon: Users },
 };
 const trustBadges = ["Transparent pricing", "Public-link ordering", "Secure checkout", "Order tracking"] as const;
+const platformServiceCount = bigPackages.length;
+const packageCount = bigPackages.length;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
 type ApiOrderData = {
@@ -764,7 +766,7 @@ export default function PackagesPageContent({
                 Choose the package that fits your goal.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
-                Compare SocialRUSH packages by platform, service, quantity, delivery and total price before you continue.
+                Choose your platform and goal, then compare quantity, delivery and total price in one simple flow.
               </p>
               <p className="mt-3 max-w-3xl text-xs font-semibold leading-6 text-[#9CA3AF]">
                 Every package uses the current catalog price and only requires the correct public destination link.
@@ -777,7 +779,7 @@ export default function PackagesPageContent({
                   Read the {relatedGuides[0][0].replace(" Guide", "").toLowerCase()} guide
                 </Link>
               ) : null}
-              <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
+              <div className="mt-5 grid grid-cols-3 gap-2 sm:mt-6 sm:max-w-2xl"><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">7</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Platforms</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">{platformServiceCount}</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Package options</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">4 steps</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">To compare</span></div></div><div className="mt-4 flex flex-wrap gap-2">
                 {trustBadges.map((chip) => (
                   <span key={chip} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-[11px] font-semibold text-orange-100">
                     {chip}
@@ -800,7 +802,7 @@ export default function PackagesPageContent({
           <p className="sr-only" aria-live="polite">
             {currentStepAnnouncement}
           </p>
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-4 gap-1.5 rounded-2xl border border-orange-400/20 bg-[#111111] p-2 sm:gap-3 sm:p-3">
+          <div className="mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-2 overflow-x-auto rounded-2xl border border-orange-400/20 bg-[#111111] p-2 [scrollbar-width:none] sm:grid sm:grid-cols-4 sm:gap-3 sm:p-3">
             <PackageStep number="1" title="Pick a Platform" state={hasPlatformSelection ? "complete" : "active"} />
             <PackageStep
               number="2"
@@ -834,7 +836,7 @@ export default function PackagesPageContent({
             ) : (
               <p className="sr-only">Choose one of the available platforms.</p>
             )}
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
+              <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 lg:grid-cols-7">
                 {platforms.map((platform) => {
                   const active = hasPlatformSelection && selectedPlatform === platform.key;
                   return (
@@ -843,11 +845,11 @@ export default function PackagesPageContent({
                       type="button"
                       onClick={() => selectPlatform(platform.key)}
                       aria-pressed={active}
-                      className={`relative min-w-0 rounded-2xl border p-2.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                      className={`relative w-[44%] min-w-[142px] shrink-0 snap-start rounded-2xl border p-3 text-left sm:w-auto sm:min-w-0 sm:shrink transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         active
                           ? "border-2 border-orange-400 bg-[#1A1612] shadow-[0_18px_40px_-24px_rgba(255,122,0,.9)]"
                           : "border-white/10 bg-[#111111] hover:border-orange-400/45"
-                      } ${platform.key === "X" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
+                      } ${platform.key === "X" ? "sm:col-span-1" : ""}`}
                     >
                       {active ? <CheckCircle2 className="absolute right-2.5 top-2.5 h-5 w-5 text-orange-400" aria-hidden="true" /> : null}
                       <span className={`grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-[#151515] ${active ? platformIconColors[platform.key] : "text-orange-300"}`}>
@@ -891,7 +893,7 @@ export default function PackagesPageContent({
                   Back to platforms
                 </button>
               </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
                 {services.map((service) => {
                   const startingPrice = getStartingPrice(selectedPlatform, service);
                   const { badge, Icon } = serviceVisuals[service];
@@ -906,7 +908,7 @@ export default function PackagesPageContent({
                       onClick={() => { if (!unavailable) selectService(service); }}
                       disabled={unavailable}
                       aria-pressed={selected}
-                      className={`group flex min-h-[128px] w-full flex-col rounded-2xl border p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                      className={`group flex min-h-[150px] w-[82%] min-w-[270px] shrink-0 snap-start flex-col rounded-2xl border sm:w-full sm:min-w-0 sm:shrink p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         selected
                           ? "border-2 border-orange-400 bg-[#1A1612] shadow-[0_20px_44px_-26px_rgba(255,122,0,.9)]"
                           : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45 hover:bg-[#151515]"
@@ -979,11 +981,11 @@ export default function PackagesPageContent({
                         </div>
                       ) : null}
 
-                      <div className="grid items-stretch gap-3 md:grid-cols-2 xl:grid-cols-4">
+                      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 [scrollbar-width:none] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 xl:grid-cols-4">
                         {visibleCategoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
-                            className={`flex h-full min-w-0 flex-col rounded-3xl border bg-[#111111] p-4 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-5 ${
+                            className={`flex h-full w-[86%] min-w-[285px] shrink-0 snap-start flex-col rounded-3xl border md:w-auto md:min-w-0 md:shrink bg-[#111111] p-4 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-5 ${
                               selectedPackageId === pkg.packageId
                                 ? "border-orange-400 ring-2 ring-orange-500/15"
                                 : "border-orange-400/20"
