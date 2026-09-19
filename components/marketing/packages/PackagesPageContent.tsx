@@ -20,6 +20,7 @@ import { type Dispatch, type MouseEvent, type RefObject, type SetStateAction, us
 import { usePathname, useRouter } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
+import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -779,7 +780,7 @@ export default function PackagesPageContent({
                   Read the {relatedGuides[0][0].replace(" Guide", "").toLowerCase()} guide
                 </Link>
               ) : null}
-              <div className="mt-5 grid grid-cols-3 gap-2 sm:mt-6 sm:max-w-2xl"><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">7</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Platforms</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">{platformServiceCount}</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Package options</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">4 steps</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">To compare</span></div></div><div className="mt-4 flex flex-wrap gap-2">
+              <div className="mt-5 grid grid-cols-3 gap-2 sm:mt-6 sm:max-w-2xl"><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">7</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Platforms</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">{platformServiceCount}</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Active services</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">4 steps</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">To compare</span></div></div><div className="mt-4 flex flex-wrap gap-2">
                 {trustBadges.map((chip) => (
                   <span key={chip} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-[11px] font-semibold text-orange-100">
                     {chip}
@@ -798,7 +799,7 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
+        <section className="relative px-4 pb-3 sm:px-6 lg:px-8"><div className="mx-auto flex w-full max-w-7xl items-start gap-3 rounded-2xl border border-orange-400/20 bg-orange-500/[.07] p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-orange-300" /><div><p className="text-sm font-black text-white">Full SocialRUSH service catalog</p><p className="mt-1 text-xs leading-5 text-slate-400">Curated packages are available here, while the complete active service catalog remains available through the standard order flow with its current rate, limits and availability.</p><Link href="/dashboard/new-order" className="mt-2 inline-flex min-h-10 items-center text-xs font-black text-orange-300">Browse all active services →</Link></div></div></section>\n\n        <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
           <p className="sr-only" aria-live="polite">
             {currentStepAnnouncement}
           </p>
