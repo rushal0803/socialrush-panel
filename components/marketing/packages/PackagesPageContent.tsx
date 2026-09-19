@@ -147,11 +147,7 @@ function platformFromParam(value: string | null): Platform | null {
 }
 
 function getFirstServiceForPlatform(platform: Platform): Service {
-  return (
-    serviceOrder.find((candidate) =>
-      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === candidate),
-    ) ?? "followers"
-  );
+  return bigPackages.find((pkg) => pkg.platform === platform)?.service ?? "followers";
 }
 
 function getStartingPrice(platform: Platform, service: Service) {
@@ -170,13 +166,12 @@ function getRatePerThousand(pkg: BigPackage) {
 }
 
 function serviceFromParam(value: string | null, platform: Platform): Service | null {
-  const normalized = normalizeParam(value).split("-").pop() || "";
-  const service = serviceParamMap[normalized] ?? serviceParamMap[normalizeParam(value)];
-  if (service && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service)) {
-    return service;
-  }
-
-  return null;
+  const normalizedValue = normalizeParam(value);
+  const exact = bigPackages.find((pkg) => pkg.platform === platform && normalizeParam(pkg.service) === normalizedValue)?.service;
+  if (exact) return exact;
+  const legacyKey = normalizedValue.split("-").pop() || "";
+  const legacy = serviceParamMap[legacyKey] ?? serviceParamMap[normalizedValue];
+  return legacy && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === legacy) ? legacy : null;
 }
 
 function platformFromServiceParam(value: string | null): Platform | null {
