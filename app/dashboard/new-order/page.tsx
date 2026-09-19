@@ -432,7 +432,7 @@ export default function NewOrderPage() {
 
   const chooseService = (service: SmmService) => {
     const health = healthByService[service.code];
-    if (advanceTimer.current || health && (!health.acceptsNewOrders || health.status === "paused")) return;
+    if (advanceTimer.current || health && (!health.acceptsNewOrders || health.status === "paused" || health.status === "maintenance")) return;
     if (selectedService?.code === service.code) return;
     track("service_selected", { service_code: service.code, platform: service.platform });
     track("order_started", { service_code: service.code, platform: service.platform });
@@ -836,7 +836,7 @@ export default function NewOrderPage() {
                   const isFavourite = Boolean(serviceId && favouriteServiceIds.has(serviceId));
                   const favouriteUpdating = Boolean(serviceId && favouriteUpdatingServiceIds.has(serviceId));
                   const health = healthByService[service.code];
-                  const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
+                  const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused" || health.status === "maintenance"));
                   const experience = serviceExperience[service.code];
                   const ServiceGlyph = service.code.includes("likes") ? Heart : service.code.includes("views") ? Eye : service.code.includes("shares") ? ThumbsUp : Users;
                   return <article key={service.code} className={`rounded-2xl border p-4 transition ${active ? "border-orange-400/80 bg-orange-500/10 shadow-[0_18px_34px_-24px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"} ${unavailable ? "opacity-55" : ""}`}>
