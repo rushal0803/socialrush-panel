@@ -78,7 +78,7 @@ const platformCode: Record<Platform, string> = {
   TikTok: "tiktok",
   X: "x",
 };
-const relatedGuideMap: Partial<Record<`${Platform}:${Service}`, Array<readonly [string, string]>>> = {
+const relatedGuideMap: Record<string, Array<readonly [string, string]>> = {
   "Instagram:followers": [["Instagram Followers Guide", "/buy-instagram-followers-india"]],
   "Instagram:likes": [["Instagram Likes Guide", "/instagram-likes"]],
   "Instagram:views": [["Instagram Views Guide", "/instagram-views"]],
