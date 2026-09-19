@@ -54,29 +54,9 @@ const platformIconColors: Record<Platform, string> = {
   X: "text-white",
 };
 
-const serviceLabels: Record<Service, string> = {
-  followers: "Followers",
-  subscribers: "Subscribers",
-  likes: "Likes",
-  views: "Views",
-  members: "Members",
-};
-
-const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
-const serviceDescriptions: Record<Service, string> = {
-  followers: "Compare profile growth packages with clear pricing, delivery estimates and eligible support.",
-  subscribers: "Compare channel subscriber packages with transparent pricing, delivery estimates and support.",
-  likes: "Compare engagement packages for public posts or videos with clear pricing and delivery details.",
-  views: "Compare content view packages for public posts, Reels or videos with transparent totals.",
-  members: "Compare community member packages with clear quantity, delivery and support details.",
-};
-const serviceVisuals: Record<Service, { badge: string; Icon: LucideIcon }> = {
-  followers: { badge: "Profile Growth", Icon: Users },
-  subscribers: { badge: "Channel Growth", Icon: UserPlus },
-  likes: { badge: "Engagement", Icon: Heart },
-  views: { badge: "Content Reach", Icon: Eye },
-  members: { badge: "Community Growth", Icon: Users },
-};
+function serviceLabel(service: Service) { const catalog=activeSmmServices.find(item=>item.code===service); return catalog ? catalog.name.replace(/^(Instagram|YouTube|Facebook|LinkedIn|Telegram|TikTok|Twitter \/ X|X)\s+/i,"") : service.split("-").map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(" "); }
+function serviceDescription(service: Service) { return activeSmmServices.find(item=>item.code===service)?.description ?? "Compare package quantities, current pricing and delivery details."; }
+function serviceVisual(service: Service): { badge:string; Icon:LucideIcon } { const value=service.toLowerCase(); if(value.includes("view")) return {badge:"Content Reach",Icon:Eye}; if(value.includes("like")||value.includes("reaction")) return {badge:"Engagement",Icon:Heart}; if(value.includes("subscriber")) return {badge:"Channel Growth",Icon:UserPlus}; if(value.includes("member")||value.includes("follower")||value.includes("connection")) return {badge:"Audience Growth",Icon:Users}; return {badge:"Engagement",Icon:Heart}; }
 const trustBadges = ["Transparent pricing", "Public-link ordering", "Secure checkout", "Order tracking"] as const;
 const platformServiceCount = bigPackages.length;
 const packageCount = bigPackages.length;
@@ -366,12 +346,7 @@ export default function PackagesPageContent({
   const requestIdRef = useRef("");
 
   const services = useMemo(
-    () =>
-      selectedPlatform
-        ? serviceOrder.filter((service) =>
-            bigPackages.some((pkg) => pkg.platform === selectedPlatform && pkg.service === service),
-          )
-        : [],
+    () => selectedPlatform ? [...new Set(bigPackages.filter((pkg) => pkg.platform === selectedPlatform).map((pkg) => pkg.service))] : [],
     [selectedPlatform],
   );
   const [selectedService, setSelectedService] = useState<Service>(initialService);
@@ -710,7 +685,7 @@ export default function PackagesPageContent({
       requestId: requestIdRef.current,
       notes: null,
       fallbackPrice,
-      fallbackName: `${selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform} ${serviceLabels[selectedPackage.service]}`,
+      fallbackName: `${selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform} ${serviceLabel(selectedPackage.service)}`,
       fallbackPlatform: platformCode[selectedPackage.platform],
       fallbackMin: selectedPackage.quantity,
       fallbackMax: selectedPackage.quantity,
@@ -897,7 +872,7 @@ export default function PackagesPageContent({
               <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
                 {services.map((service) => {
                   const startingPrice = getStartingPrice(selectedPlatform, service);
-                  const { badge, Icon } = serviceVisuals[service];
+                  const { badge, Icon } = serviceVisual(service);
                   const selected = hasServiceSelection && activeService === service;
                   const servicePackage = bigPackages.find((pkg) => pkg.platform === selectedPlatform && pkg.service === service);
                   const health = servicePackage ? healthByService[getServiceCode(servicePackage)] : undefined;
@@ -920,14 +895,14 @@ export default function PackagesPageContent({
                           {selected ? <CheckCircle2 className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-base font-black text-white">{serviceLabels[service]}</span>
+                          <span className="block truncate text-base font-black text-white">{serviceLabel(service)}</span>
                           <span className="mt-1 inline-flex max-w-full rounded-full border border-orange-400/25 bg-orange-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-orange-200">
                             {badge}
                           </span>
                           <span className="mt-2 block"><ServiceHealthBadge health={health} /></span>
                         </span>
                       </span>
-                      <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
+                      <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescription(service)}</span>
                       <span className="mt-auto flex min-w-0 items-center justify-between gap-3 pt-3">
                         <span className="min-w-0 truncate text-xs font-black text-orange-200">
                           {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "View packages"}
@@ -962,7 +937,7 @@ export default function PackagesPageContent({
                         <div>
                           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3 · Compare packages</p>
                           <h2 id={`${platformCode[selectedPlatform]}-${activeService}-packages`} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                            {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService]} packages
+                            {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabel(activeService)} packages
                           </h2>
                           <p className="mt-2 text-sm text-[#D1D5DB]">
                             Compare total price, quantity, effective rate and delivery before selecting.
@@ -1005,7 +980,7 @@ export default function PackagesPageContent({
 
                             <h3 className="mt-3 text-lg font-extrabold text-white">{pkg.title}</h3>
                             <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#9CA3AF]">
-                              {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
+                              {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabel(pkg.service)}
                             </p>
                             <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#D1D5DB]">{pkg.description}</p>
                             <span className="mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-200">
@@ -1162,7 +1137,7 @@ export default function PackagesPageContent({
             <div className="mx-auto max-w-7xl rounded-[28px] border border-white/85 bg-white/78 p-6 shadow-[0_20px_48px_rgba(255, 159, 0, .13)] backdrop-blur-xl sm:p-8">
               <h2 className="text-2xl font-black text-[#0B0B0F]">Read relevant service guides</h2>
               <p className="mt-2 text-sm leading-7 text-[#111827]">
-                Review current {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService].toLowerCase()} details before choosing a package.
+                Review current {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabel(activeService).toLowerCase()} details before choosing a package.
               </p>
               <div className="mt-5 flex flex-wrap gap-2.5">
                 {relatedGuides.map(([label, href]) => (
@@ -1434,7 +1409,7 @@ function PackageReviewSection({
                   </IconBadge>
                   <div className="min-w-0">
                     <p className="text-[10px] font-black uppercase tracking-[0.13em] text-orange-300">
-                      {platformLabel} • {serviceLabels[selectedPackage.service]}
+                      {platformLabel} • {serviceLabel(selectedPackage.service)}
                     </p>
                     <h3 className="mt-1 break-words text-xl font-black text-white">{selectedPackage.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{selectedPackage.description}</p>
@@ -1451,7 +1426,7 @@ function PackageReviewSection({
 
               <dl className="grid gap-x-3 gap-y-1 p-3 text-xs sm:grid-cols-2 sm:p-4 lg:grid-cols-3">
                 <SummaryMetric label="Platform" value={platformLabel} />
-                <SummaryMetric label="Service" value={serviceLabels[selectedPackage.service]} />
+                <SummaryMetric label="Service" value={serviceLabel(selectedPackage.service)} />
                 <SummaryMetric label="Quantity" value={selectedPackage.quantityLabel} />
                 <SummaryMetric label="Delivery" value={selectedPackage.deliveryTime} />
                 <SummaryMetric label="Price" value={formatCurrency(selectedPackage.basePriceINR, currency)} highlight />
@@ -1547,7 +1522,7 @@ function PackageReviewSection({
             <div className="mt-5 space-y-3.5 text-sm">
               <SummaryRow label="Package" value={selectedPackage.title} />
               <SummaryRow label="Platform" value={platformLabel} />
-              <SummaryRow label="Service" value={serviceLabels[selectedPackage.service]} />
+              <SummaryRow label="Service" value={serviceLabel(selectedPackage.service)} />
               <SummaryRow label="Quantity" value={selectedPackage.quantityLabel} />
               <SummaryRow label="Effective rate" value={`${formatCurrency(getRatePerThousand(selectedPackage), currency)} / 1K`} />
               <SummaryRow label="Public link" value={targetLink.trim() || "Not entered"} />
