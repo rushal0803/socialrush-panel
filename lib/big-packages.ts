@@ -1,7 +1,8 @@
 export interface BigPackage {
   packageId: string;
   platform: "Instagram" | "YouTube" | "LinkedIn" | "Facebook" | "Telegram" | "TikTok" | "X";
-  service: "followers" | "subscribers" | "likes" | "views" | "members";
+  service: string;
+  serviceCode?: string;
   title: string;
   quantity: number;
   quantityLabel: string;
@@ -703,16 +704,12 @@ const packagePlatformCodes: Record<BigPackage["platform"], SmmPlatformId> = {
  * amount and delivery label deliberately derive from the same catalog used by
  * checkout; historic card discounts are not comparison prices and are hidden.
  */
-export const bigPackages: readonly BigPackage[] = packageDefinitions.map((pkg) => {
-  const service = getServiceById(`${packagePlatformCodes[pkg.platform]}-${pkg.service}`);
-  if (!service) return { ...pkg, discountBadge: undefined };
-  return {
-    ...pkg,
-    basePriceINR: calculateServiceTotal(service.code, pkg.quantity),
-    deliveryTime: service.deliveryTime,
-    discountBadge: undefined,
-  };
-});
+const packagePlatformLabels: Record<SmmPlatformId, BigPackage["platform"]> = { instagram:"Instagram", youtube:"YouTube", linkedin:"LinkedIn", facebook:"Facebook", telegram:"Telegram", tiktok:"TikTok", x:"X" };
+function packageQuantities(min:number,max:number){ return [...new Set([min,1000,5000,10000].map(q=>Math.max(min,q)))].filter(q=>q<=max).slice(0,4); }
+const curatedPackages: BigPackage[] = packageDefinitions.map((pkg)=>{ const service=getServiceById(`${packagePlatformCodes[pkg.platform]}-${pkg.service}`); return service ? {...pkg,serviceCode:service.code,basePriceINR:calculateServiceTotal(service.code,pkg.quantity),deliveryTime:service.deliveryTime,discountBadge:undefined} : {...pkg,discountBadge:undefined}; });
+const curatedServiceCodes=new Set(curatedPackages.map(pkg=>pkg.serviceCode).filter(Boolean));
+const generatedPackages: BigPackage[]=activeSmmServices.filter(service=>!curatedServiceCodes.has(service.code)&&!service.requiresLiveCatalogFacts&&service.pricePer1000>0&&service.minQuantity>0&&service.maxQuantity>=service.minQuantity).flatMap(service=>packageQuantities(service.minQuantity,service.maxQuantity).map((quantity,index)=>({packageId:`${service.code}-package-${quantity}`,platform:packagePlatformLabels[service.platform],service:service.code,serviceCode:service.code,title:`${quantity.toLocaleString("en-IN")} · ${service.name}`,quantity,quantityLabel:quantity.toLocaleString("en-IN"),basePriceINR:calculateServiceTotal(service.code,quantity),discountBadge:index===2?"Popular":undefined,deliveryTime:service.deliveryTime,description:service.description,bestFor:index===0?"Starter campaigns":index===1?"Growing campaigns":index===2?"Popular campaigns":"Larger campaigns"})));
+export const bigPackages: readonly BigPackage[]=[...curatedPackages,...generatedPackages];
 
 export function getPackageById(packageId: string): BigPackage | undefined {
   return bigPackages.find((p) => p.packageId === packageId);
@@ -724,4 +721,4 @@ export function getPackagesByPlatform(platform: string): BigPackage[] {
 
 export const platforms = ["Instagram", "YouTube", "LinkedIn", "Facebook", "Telegram", "TikTok", "X"] as const;
 import { calculateServiceTotal } from "./service-pricing";
-import { getServiceById, type SmmPlatformId } from "./smm-service-catalog";
+import { activeSmmServices, getServiceById, type SmmPlatformId } from "./smm-service-catalog";
