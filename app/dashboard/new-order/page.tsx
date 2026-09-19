@@ -201,7 +201,15 @@ export default function NewOrderPage() {
   const [favouriteUpdatingServiceIds, setFavouriteUpdatingServiceIds] = useState<Set<number>>(new Set());
   const [favouriteNotice, setFavouriteNotice] = useState("");
   const [favouriteError, setFavouriteError] = useState("");
-  const [quantityInput, setQuantityInput] = useState(prefillRequested ? cleanQuantity(searchParams.get("quantity") || "") : "");
+  const [quantityInput, setQuantityInput] = useState(() => {
+    if (!prefillRequested) return "";
+    const requestedQuantity = cleanQuantity(searchParams.get("quantity") || "");
+    if (!initialService) return requestedQuantity;
+    const numericQuantity = Number(requestedQuantity);
+    return Number.isFinite(numericQuantity) && numericQuantity >= initialService.minQuantity && numericQuantity <= initialService.maxQuantity
+      ? requestedQuantity
+      : String(initialService.minQuantity);
+  });
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [walletLoading, setWalletLoading] = useState(true);
   const [walletError, setWalletError] = useState("");
