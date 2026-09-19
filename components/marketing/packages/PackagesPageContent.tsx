@@ -531,13 +531,9 @@ export default function PackagesPageContent({
     setShowLinkError(false);
     requestIdRef.current = "";
     setShowAllPackages(false);
-    const firstService = serviceOrder.find((service) =>
-      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service),
-    );
-    if (firstService) {
-      setSelectedService(firstService);
-      updatePackageUrl(platform);
-    }
+    const firstService = getFirstServiceForPlatform(platform);
+    setSelectedService(firstService);
+    updatePackageUrl(platform);
     trackPackageEvent("package_platform_selected", { platform: platformCode[platform] });
     window.requestAnimationFrame(() => {
       packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
