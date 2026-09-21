@@ -145,8 +145,20 @@ function platformFromParam(value: string | null): Platform | null {
   return platformParamMap[normalized] ?? platformParamMap[normalized.replace(/\//g, "-")] ?? null;
 }
 
+function catalogServiceKey(service: (typeof activeSmmServices)[number]): Service {
+  const prefix = `${service.platform}-`;
+  return service.code.startsWith(prefix) ? service.code.slice(prefix.length) : service.code;
+}
+
+function getCatalogService(platform: Platform, service: Service) {
+  return activeSmmServices.find(
+    (item) => item.platform === platformCode[platform] && catalogServiceKey(item) === service,
+  );
+}
+
 function getFirstServiceForPlatform(platform: Platform): Service {
-  return bigPackages.find((pkg) => pkg.platform === platform)?.service ?? "followers";
+  const first = activeSmmServices.find((service) => service.platform === platformCode[platform]);
+  return first ? catalogServiceKey(first) : "followers";
 }
 
 function getStartingPrice(platform: Platform, service: Service) {
@@ -157,7 +169,7 @@ function getStartingPrice(platform: Platform, service: Service) {
 }
 
 function getServiceCount(platform: Platform) {
-  return new Set(bigPackages.filter((pkg) => pkg.platform === platform).map((pkg) => pkg.service)).size;
+  return activeSmmServices.filter((service) => service.platform === platformCode[platform]).length;
 }
 
 function getRatePerThousand(pkg: BigPackage) {
@@ -166,11 +178,17 @@ function getRatePerThousand(pkg: BigPackage) {
 
 function serviceFromParam(value: string | null, platform: Platform): Service | null {
   const normalizedValue = normalizeParam(value);
-  const exact = bigPackages.find((pkg) => pkg.platform === platform && normalizeParam(pkg.service) === normalizedValue)?.service;
-  if (exact) return exact;
+  const exact = activeSmmServices.find(
+    (service) =>
+      service.platform === platformCode[platform] &&
+      (normalizeParam(service.code) === normalizedValue || normalizeParam(catalogServiceKey(service)) === normalizedValue),
+  );
+  if (exact) return catalogServiceKey(exact);
   const legacyKey = normalizedValue.split("-").pop() || "";
   const legacy = serviceParamMap[legacyKey] ?? serviceParamMap[normalizedValue];
-  return legacy && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === legacy) ? legacy : null;
+  return legacy && activeSmmServices.some(
+    (service) => service.platform === platformCode[platform] && catalogServiceKey(service) === legacy,
+  ) ? legacy : null;
 }
 
 function platformFromServiceParam(value: string | null): Platform | null {
@@ -186,7 +204,7 @@ function platformFromServiceParam(value: string | null): Platform | null {
 }
 
 function getServiceCode(pkg: BigPackage) {
-  return `${platformCode[pkg.platform]}-${pkg.service}`;
+  return pkg.serviceCode ?? `${platformCode[pkg.platform]}-${pkg.service}`;
 }
 
 const packageLinkCopy: Record<string, Partial<Pick<LinkRule, "label" | "placeholder" | "helper">>> = {
@@ -340,11 +358,16 @@ export default function PackagesPageContent({
   const requestIdRef = useRef("");
 
   const services = useMemo(
-    () => selectedPlatform ? [...new Set(bigPackages.filter((pkg) => pkg.platform === selectedPlatform).map((pkg) => pkg.service))] : [],
+    () => selectedPlatform
+      ? activeSmmServices
+          .filter((service) => service.platform === platformCode[selectedPlatform])
+          .map(catalogServiceKey)
+      : [],
     [selectedPlatform],
   );
   const [selectedService, setSelectedService] = useState<Service>(initialService);
   const activeService = services.includes(selectedService) ? selectedService : services[0] ?? selectedService;
+  const activeCatalogService = selectedPlatform ? getCatalogService(selectedPlatform, activeService) : undefined;
   const selectedPackage = useMemo(
     () => bigPackages.find((pkg) => pkg.packageId === selectedPackageId),
     [selectedPackageId],
@@ -865,7 +888,8 @@ export default function PackagesPageContent({
                   const { badge, Icon } = serviceVisual(service);
                   const selected = hasServiceSelection && activeService === service;
                   const servicePackage = bigPackages.find((pkg) => pkg.platform === selectedPlatform && pkg.service === service);
-                  const health = servicePackage ? healthByService[getServiceCode(servicePackage)] : undefined;
+                  const catalogService = getCatalogService(selectedPlatform, service);
+                  const health = healthByService[servicePackage ? getServiceCode(servicePackage) : (catalogService?.code ?? "")];
                   const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
                   return (
                     <button
@@ -895,7 +919,7 @@ export default function PackagesPageContent({
                       <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescription(service)}</span>
                       <span className="mt-auto flex min-w-0 items-center justify-between gap-3 pt-3">
                         <span className="min-w-0 truncate text-xs font-black text-orange-200">
-                          {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "View packages"}
+                          {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "Live price at checkout"}
                         </span>
                         <span className="inline-flex min-h-10 shrink-0 items-center justify-center gap-1 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 py-2 text-center text-xs font-black text-white shadow-[0_10px_22px_-12px_rgba(255,122,0,.9)]">
                           {unavailable ? "Choose another service" : selected ? <><CheckCircle2 className="h-3.5 w-3.5" /> Selected</> : "Compare Packages"}
@@ -937,6 +961,24 @@ export default function PackagesPageContent({
                           Back
                         </button>
                       </div>
+
+                      {activeCategoryPackages.length === 0 && activeCatalogService ? (
+                        <div className="mb-5 rounded-3xl border border-orange-400/25 bg-[linear-gradient(135deg,rgba(255,122,0,.12),rgba(255,176,0,.04))] p-5 sm:flex sm:items-center sm:justify-between sm:gap-6">
+                          <div>
+                            <p className="text-xs font-black uppercase tracking-[0.12em] text-orange-300">Live service</p>
+                            <h3 className="mt-2 text-lg font-black text-white">Current price and limits load in New Order</h3>
+                            <p className="mt-2 max-w-2xl text-sm leading-6 text-[#D1D5DB]">
+                              This service is active, but its price, minimum, maximum or delivery facts are protected live data. We do not create a fixed package using stale values.
+                            </p>
+                          </div>
+                          <Link
+                            href={`/dashboard/new-order?platform=${encodeURIComponent(activeCatalogService.platform)}&service=${encodeURIComponent(activeCatalogService.code)}`}
+                            className="mt-4 inline-flex min-h-12 shrink-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white sm:mt-0"
+                          >
+                            Continue with Live Service
+                          </Link>
+                        </div>
+                      ) : null}
 
                       {activeCategoryPackages.length > 1 ? (
                         <div className="mb-4 grid grid-cols-4 overflow-hidden rounded-2xl border border-white/10 bg-[#111111] text-center text-[10px] sm:text-xs">
