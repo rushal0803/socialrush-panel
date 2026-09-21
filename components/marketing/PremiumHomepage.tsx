@@ -37,6 +37,14 @@ export default function PremiumHomepage({ searchParams }: { searchParams?: { pla
   const services = useMemo(() => activeSmmServices.filter(s => s.platform === platform), [platform]);
   const selected = services.find(s => s.code === serviceCode) || services.find(s => s.code.endsWith(`-${searchParams?.service}`)) || services[0];
   useEffect(() => { if (selected && selected.code !== serviceCode) setServiceCode(selected.code); }, [selected, serviceCode]);
+  useEffect(() => {
+    if (!selected) return;
+    setQuantity((current) => {
+      const step = selected.quantityStep ?? 1;
+      const valid = current >= selected.minQuantity && current <= selected.maxQuantity && (current - selected.minQuantity) % step === 0;
+      return valid ? current : selected.minQuantity;
+    });
+  }, [selected]);
   const total = selected ? calculateServiceTotal(selected.code, quantity) : 0;
   // Keep this handoff aligned with the existing New Order resume flow.  The
   // service code is the catalog identifier consumed by that page, rather than
