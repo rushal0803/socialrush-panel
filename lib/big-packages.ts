@@ -705,10 +705,18 @@ const packagePlatformCodes: Record<BigPackage["platform"], SmmPlatformId> = {
  * checkout; historic card discounts are not comparison prices and are hidden.
  */
 const packagePlatformLabels: Record<SmmPlatformId, BigPackage["platform"]> = { instagram:"Instagram", youtube:"YouTube", linkedin:"LinkedIn", facebook:"Facebook", telegram:"Telegram", tiktok:"TikTok", x:"X" };
-function packageQuantities(min:number,max:number){ return [...new Set([min,1000,5000,10000].map(q=>Math.max(min,q)))].filter(q=>q<=max).slice(0,4); }
+function packageQuantities(min:number,max:number,step=1){
+  const preferred=max>=5000 ? [5000,10000,25000,50000,100000] : [min,Math.round((min+max)/2),max];
+  const normalize=(value:number)=>{
+    const bounded=Math.min(max,Math.max(min,value));
+    return min+Math.floor((bounded-min)/Math.max(1,step))*Math.max(1,step);
+  };
+  const quantities=[...new Set(preferred.map(normalize).filter(q=>q>=min&&q<=max))];
+  return (quantities.length ? quantities : [min]).slice(0,4);
+}
 const curatedPackages: BigPackage[] = packageDefinitions.map((pkg)=>{ const service=getServiceById(`${packagePlatformCodes[pkg.platform]}-${pkg.service}`); return service ? {...pkg,serviceCode:service.code,basePriceINR:calculateServiceTotal(service.code,pkg.quantity),deliveryTime:service.deliveryTime,discountBadge:undefined} : {...pkg,discountBadge:undefined}; });
 const curatedServiceCodes=new Set(curatedPackages.map(pkg=>pkg.serviceCode).filter(Boolean));
-const generatedPackages: BigPackage[]=activeSmmServices.filter(service=>!curatedServiceCodes.has(service.code)&&!service.requiresLiveCatalogFacts&&service.pricePer1000>0&&service.minQuantity>0&&service.maxQuantity>=service.minQuantity).flatMap(service=>packageQuantities(service.minQuantity,service.maxQuantity).map((quantity,index)=>({packageId:`${service.code}-package-${quantity}`,platform:packagePlatformLabels[service.platform],service:service.code,serviceCode:service.code,title:`${quantity.toLocaleString("en-IN")} · ${service.name}`,quantity,quantityLabel:quantity.toLocaleString("en-IN"),basePriceINR:calculateServiceTotal(service.code,quantity),discountBadge:index===2?"Popular":undefined,deliveryTime:service.deliveryTime,description:service.description,bestFor:index===0?"Starter campaigns":index===1?"Growing campaigns":index===2?"Popular campaigns":"Larger campaigns"})));
+const generatedPackages: BigPackage[]=activeSmmServices.filter(service=>!curatedServiceCodes.has(service.code)&&!service.requiresLiveCatalogFacts&&service.pricePer1000>0&&service.minQuantity>0&&service.maxQuantity>=service.minQuantity).flatMap(service=>packageQuantities(service.minQuantity,service.maxQuantity,service.quantityStep ?? 1).map((quantity,index)=>({packageId:`${service.code}-package-${quantity}`,platform:packagePlatformLabels[service.platform],service:service.code,serviceCode:service.code,title:`${quantity.toLocaleString("en-IN")} · ${service.name}`,quantity,quantityLabel:quantity.toLocaleString("en-IN"),basePriceINR:calculateServiceTotal(service.code,quantity),discountBadge:index===2?"Popular":undefined,deliveryTime:service.deliveryTime,description:service.description,bestFor:index===0?"Starter campaigns":index===1?"Growing campaigns":index===2?"Popular campaigns":"Larger campaigns"})));
 export const bigPackages: readonly BigPackage[]=[...curatedPackages,...generatedPackages];
 
 export function getPackageById(packageId: string): BigPackage | undefined {
