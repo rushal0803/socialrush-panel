@@ -58,8 +58,7 @@ function serviceLabel(service: Service) { const catalog=activeSmmServices.find(i
 function serviceDescription(service: Service) { return activeSmmServices.find(item=>item.code===service)?.description ?? "Compare package quantities, current pricing and delivery details."; }
 function serviceVisual(service: Service): { badge:string; Icon:LucideIcon } { const value=service.toLowerCase(); if(value.includes("view")) return {badge:"Content Reach",Icon:Eye}; if(value.includes("like")||value.includes("reaction")) return {badge:"Engagement",Icon:Heart}; if(value.includes("subscriber")) return {badge:"Channel Growth",Icon:UserPlus}; if(value.includes("member")||value.includes("follower")||value.includes("connection")) return {badge:"Audience Growth",Icon:Users}; return {badge:"Engagement",Icon:Heart}; }
 const trustBadges = ["Transparent pricing", "Public-link ordering", "Secure checkout", "Order tracking"] as const;
-const platformServiceCount = bigPackages.length;
-const packageCount = bigPackages.length;
+const platformServiceCount = new Set(bigPackages.map((pkg) => `${pkg.platform}:${pkg.service}`)).size;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
 type ApiOrderData = {
