@@ -20,6 +20,7 @@ import { type Dispatch, type MouseEvent, type RefObject, type SetStateAction, us
 import { usePathname, useRouter } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
+import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -53,30 +54,11 @@ const platformIconColors: Record<Platform, string> = {
   X: "text-white",
 };
 
-const serviceLabels: Record<Service, string> = {
-  followers: "Followers",
-  subscribers: "Subscribers",
-  likes: "Likes",
-  views: "Views",
-  members: "Members",
-};
-
-const serviceOrder: Service[] = ["followers", "subscribers", "likes", "views", "members"];
-const serviceDescriptions: Record<Service, string> = {
-  followers: "Compare profile growth packages with clear pricing, delivery estimates and eligible support.",
-  subscribers: "Compare channel subscriber packages with transparent pricing, delivery estimates and support.",
-  likes: "Compare engagement packages for public posts or videos with clear pricing and delivery details.",
-  views: "Compare content view packages for public posts, Reels or videos with transparent totals.",
-  members: "Compare community member packages with clear quantity, delivery and support details.",
-};
-const serviceVisuals: Record<Service, { badge: string; Icon: LucideIcon }> = {
-  followers: { badge: "Profile Growth", Icon: Users },
-  subscribers: { badge: "Channel Growth", Icon: UserPlus },
-  likes: { badge: "Engagement", Icon: Heart },
-  views: { badge: "Content Reach", Icon: Eye },
-  members: { badge: "Community Growth", Icon: Users },
-};
+function serviceLabel(service: Service) { const catalog=activeSmmServices.find(item=>item.code===service); return catalog ? catalog.name.replace(/^(Instagram|YouTube|Facebook|LinkedIn|Telegram|TikTok|Twitter \/ X|X)\s+/i,"") : service.split("-").map(part=>part.charAt(0).toUpperCase()+part.slice(1)).join(" "); }
+function serviceDescription(service: Service) { return activeSmmServices.find(item=>item.code===service)?.description ?? "Compare package quantities, current pricing and delivery details."; }
+function serviceVisual(service: Service): { badge:string; Icon:LucideIcon } { const value=service.toLowerCase(); if(value.includes("view")) return {badge:"Content Reach",Icon:Eye}; if(value.includes("like")||value.includes("reaction")) return {badge:"Engagement",Icon:Heart}; if(value.includes("subscriber")) return {badge:"Channel Growth",Icon:UserPlus}; if(value.includes("member")||value.includes("follower")||value.includes("connection")) return {badge:"Audience Growth",Icon:Users}; return {badge:"Engagement",Icon:Heart}; }
 const trustBadges = ["Transparent pricing", "Public-link ordering", "Secure checkout", "Order tracking"] as const;
+const platformServiceCount = new Set(bigPackages.map((pkg) => `${pkg.platform}:${pkg.service}`)).size;
 const PENDING_PACKAGE_ORDER_KEY = "socialrush.packages.pending-order.v1";
 
 type ApiOrderData = {
@@ -95,7 +77,7 @@ const platformCode: Record<Platform, string> = {
   TikTok: "tiktok",
   X: "x",
 };
-const relatedGuideMap: Partial<Record<`${Platform}:${Service}`, Array<readonly [string, string]>>> = {
+const relatedGuideMap: Record<string, Array<readonly [string, string]>> = {
   "Instagram:followers": [["Instagram Followers Guide", "/buy-instagram-followers-india"]],
   "Instagram:likes": [["Instagram Likes Guide", "/instagram-likes"]],
   "Instagram:views": [["Instagram Views Guide", "/instagram-views"]],
@@ -164,11 +146,7 @@ function platformFromParam(value: string | null): Platform | null {
 }
 
 function getFirstServiceForPlatform(platform: Platform): Service {
-  return (
-    serviceOrder.find((candidate) =>
-      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === candidate),
-    ) ?? "followers"
-  );
+  return bigPackages.find((pkg) => pkg.platform === platform)?.service ?? "followers";
 }
 
 function getStartingPrice(platform: Platform, service: Service) {
@@ -187,13 +165,12 @@ function getRatePerThousand(pkg: BigPackage) {
 }
 
 function serviceFromParam(value: string | null, platform: Platform): Service | null {
-  const normalized = normalizeParam(value).split("-").pop() || "";
-  const service = serviceParamMap[normalized] ?? serviceParamMap[normalizeParam(value)];
-  if (service && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service)) {
-    return service;
-  }
-
-  return null;
+  const normalizedValue = normalizeParam(value);
+  const exact = bigPackages.find((pkg) => pkg.platform === platform && normalizeParam(pkg.service) === normalizedValue)?.service;
+  if (exact) return exact;
+  const legacyKey = normalizedValue.split("-").pop() || "";
+  const legacy = serviceParamMap[legacyKey] ?? serviceParamMap[normalizedValue];
+  return legacy && bigPackages.some((pkg) => pkg.platform === platform && pkg.service === legacy) ? legacy : null;
 }
 
 function platformFromServiceParam(value: string | null): Platform | null {
@@ -363,12 +340,7 @@ export default function PackagesPageContent({
   const requestIdRef = useRef("");
 
   const services = useMemo(
-    () =>
-      selectedPlatform
-        ? serviceOrder.filter((service) =>
-            bigPackages.some((pkg) => pkg.platform === selectedPlatform && pkg.service === service),
-          )
-        : [],
+    () => selectedPlatform ? [...new Set(bigPackages.filter((pkg) => pkg.platform === selectedPlatform).map((pkg) => pkg.service))] : [],
     [selectedPlatform],
   );
   const [selectedService, setSelectedService] = useState<Service>(initialService);
@@ -558,13 +530,9 @@ export default function PackagesPageContent({
     setShowLinkError(false);
     requestIdRef.current = "";
     setShowAllPackages(false);
-    const firstService = serviceOrder.find((service) =>
-      bigPackages.some((pkg) => pkg.platform === platform && pkg.service === service),
-    );
-    if (firstService) {
-      setSelectedService(firstService);
-      updatePackageUrl(platform);
-    }
+    const firstService = getFirstServiceForPlatform(platform);
+    setSelectedService(firstService);
+    updatePackageUrl(platform);
     trackPackageEvent("package_platform_selected", { platform: platformCode[platform] });
     window.requestAnimationFrame(() => {
       packageStepRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -707,7 +675,7 @@ export default function PackagesPageContent({
       requestId: requestIdRef.current,
       notes: null,
       fallbackPrice,
-      fallbackName: `${selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform} ${serviceLabels[selectedPackage.service]}`,
+      fallbackName: `${selectedPackage.platform === "X" ? "X / Twitter" : selectedPackage.platform} ${serviceLabel(selectedPackage.service)}`,
       fallbackPlatform: platformCode[selectedPackage.platform],
       fallbackMin: selectedPackage.quantity,
       fallbackMax: selectedPackage.quantity,
@@ -764,7 +732,7 @@ export default function PackagesPageContent({
                 Choose the package that fits your goal.
               </h1>
               <p className="mt-3 max-w-3xl text-sm leading-7 text-[#D1D5DB] sm:mt-4 sm:text-lg sm:leading-8">
-                Compare SocialRUSH packages by platform, service, quantity, delivery and total price before you continue.
+                Choose your platform and goal, then compare quantity, delivery and total price in one simple flow.
               </p>
               <p className="mt-3 max-w-3xl text-xs font-semibold leading-6 text-[#9CA3AF]">
                 Every package uses the current catalog price and only requires the correct public destination link.
@@ -777,7 +745,7 @@ export default function PackagesPageContent({
                   Read the {relatedGuides[0][0].replace(" Guide", "").toLowerCase()} guide
                 </Link>
               ) : null}
-              <div className="mt-5 flex flex-wrap gap-2 sm:mt-6">
+              <div className="mt-5 grid grid-cols-3 gap-2 sm:mt-6 sm:max-w-2xl"><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">7</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Platforms</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">{platformServiceCount}</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">Active services</span></div><div className="rounded-2xl border border-orange-400/20 bg-white/[.04] p-3"><strong className="block text-lg font-black text-white">4 steps</strong><span className="text-[10px] font-bold uppercase tracking-[.1em] text-slate-400">To compare</span></div></div><div className="mt-4 flex flex-wrap gap-2">
                 {trustBadges.map((chip) => (
                   <span key={chip} className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1.5 text-[11px] font-semibold text-orange-100">
                     {chip}
@@ -796,11 +764,11 @@ export default function PackagesPageContent({
           </div>
         </section>
 
-        <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
+        <section className="relative px-4 pb-3 sm:px-6 lg:px-8"><div className="mx-auto flex w-full max-w-7xl items-start gap-3 rounded-2xl border border-orange-400/20 bg-orange-500/[.07] p-4"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-orange-300" /><div><p className="text-sm font-black text-white">Full SocialRUSH service catalog</p><p className="mt-1 text-xs leading-5 text-slate-400">Curated packages are available here, while the complete active service catalog remains available through the standard order flow with its current rate, limits and availability.</p><Link href="/dashboard/new-order" className="mt-2 inline-flex min-h-10 items-center text-xs font-black text-orange-300">Browse all active services →</Link></div></div></section>\n\n        <section aria-label="Package selection progress" className="relative px-4 py-3 sm:px-6 lg:px-8">
           <p className="sr-only" aria-live="polite">
             {currentStepAnnouncement}
           </p>
-          <div className="mx-auto grid w-full max-w-7xl grid-cols-4 gap-1.5 rounded-2xl border border-orange-400/20 bg-[#111111] p-2 sm:gap-3 sm:p-3">
+          <div className="mx-auto flex w-full max-w-7xl snap-x snap-mandatory gap-2 overflow-x-auto rounded-2xl border border-orange-400/20 bg-[#111111] p-2 [scrollbar-width:none] sm:grid sm:grid-cols-4 sm:gap-3 sm:p-3">
             <PackageStep number="1" title="Pick a Platform" state={hasPlatformSelection ? "complete" : "active"} />
             <PackageStep
               number="2"
@@ -834,7 +802,7 @@ export default function PackagesPageContent({
             ) : (
               <p className="sr-only">Choose one of the available platforms.</p>
             )}
-              <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-7">
+              <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:grid sm:grid-cols-3 sm:overflow-visible sm:pb-0 lg:grid-cols-7">
                 {platforms.map((platform) => {
                   const active = hasPlatformSelection && selectedPlatform === platform.key;
                   return (
@@ -843,11 +811,11 @@ export default function PackagesPageContent({
                       type="button"
                       onClick={() => selectPlatform(platform.key)}
                       aria-pressed={active}
-                      className={`relative min-w-0 rounded-2xl border p-2.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                      className={`relative w-[44%] min-w-[142px] shrink-0 snap-start rounded-2xl border p-3 text-left sm:w-auto sm:min-w-0 sm:shrink transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         active
                           ? "border-2 border-orange-400 bg-[#1A1612] shadow-[0_18px_40px_-24px_rgba(255,122,0,.9)]"
                           : "border-white/10 bg-[#111111] hover:border-orange-400/45"
-                      } ${platform.key === "X" ? "col-span-2 mx-auto w-full max-w-[calc(50%_-_0.375rem)] sm:col-span-1 sm:max-w-none" : ""}`}
+                      } ${platform.key === "X" ? "sm:col-span-1" : ""}`}
                     >
                       {active ? <CheckCircle2 className="absolute right-2.5 top-2.5 h-5 w-5 text-orange-400" aria-hidden="true" /> : null}
                       <span className={`grid h-11 w-11 place-items-center rounded-2xl border border-white/10 bg-[#151515] ${active ? platformIconColors[platform.key] : "text-orange-300"}`}>
@@ -891,10 +859,10 @@ export default function PackagesPageContent({
                   Back to platforms
                 </button>
               </div>
-              <div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="mt-4 flex snap-x snap-mandatory gap-3 overflow-x-auto pb-2 [scrollbar-width:none] sm:grid sm:grid-cols-2 sm:overflow-visible sm:pb-0 lg:grid-cols-3">
                 {services.map((service) => {
                   const startingPrice = getStartingPrice(selectedPlatform, service);
-                  const { badge, Icon } = serviceVisuals[service];
+                  const { badge, Icon } = serviceVisual(service);
                   const selected = hasServiceSelection && activeService === service;
                   const servicePackage = bigPackages.find((pkg) => pkg.platform === selectedPlatform && pkg.service === service);
                   const health = servicePackage ? healthByService[getServiceCode(servicePackage)] : undefined;
@@ -906,7 +874,7 @@ export default function PackagesPageContent({
                       onClick={() => { if (!unavailable) selectService(service); }}
                       disabled={unavailable}
                       aria-pressed={selected}
-                      className={`group flex min-h-[128px] w-full flex-col rounded-2xl border p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
+                      className={`group flex min-h-[150px] w-[82%] min-w-[270px] shrink-0 snap-start flex-col rounded-2xl border sm:w-full sm:min-w-0 sm:shrink p-3.5 text-left transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 sm:p-4 ${
                         selected
                           ? "border-2 border-orange-400 bg-[#1A1612] shadow-[0_20px_44px_-26px_rgba(255,122,0,.9)]"
                           : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45 hover:bg-[#151515]"
@@ -917,14 +885,14 @@ export default function PackagesPageContent({
                           {selected ? <CheckCircle2 className="h-5 w-5" /> : <Icon className="h-5 w-5" />}
                         </span>
                         <span className="min-w-0 flex-1">
-                          <span className="block truncate text-base font-black text-white">{serviceLabels[service]}</span>
+                          <span className="block truncate text-base font-black text-white">{serviceLabel(service)}</span>
                           <span className="mt-1 inline-flex max-w-full rounded-full border border-orange-400/25 bg-orange-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-[0.1em] text-orange-200">
                             {badge}
                           </span>
                           <span className="mt-2 block"><ServiceHealthBadge health={health} /></span>
                         </span>
                       </span>
-                      <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescriptions[service]}</span>
+                      <span className="mt-3 line-clamp-2 text-sm leading-6 text-[#D1D5DB]">{serviceDescription(service)}</span>
                       <span className="mt-auto flex min-w-0 items-center justify-between gap-3 pt-3">
                         <span className="min-w-0 truncate text-xs font-black text-orange-200">
                           {startingPrice !== null ? `Packages from ${formatCurrency(startingPrice, currency)}` : "View packages"}
@@ -959,7 +927,7 @@ export default function PackagesPageContent({
                         <div>
                           <p className="text-[10px] font-bold uppercase tracking-[0.14em] text-[#FF9F00]">Step 3 · Compare packages</p>
                           <h2 id={`${platformCode[selectedPlatform]}-${activeService}-packages`} ref={packageHeadingRef} tabIndex={-1} className="mt-1 text-xl font-black text-white outline-none sm:text-2xl">
-                            {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService]} packages
+                            {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabel(activeService)} packages
                           </h2>
                           <p className="mt-2 text-sm text-[#D1D5DB]">
                             Compare total price, quantity, effective rate and delivery before selecting.
@@ -979,11 +947,11 @@ export default function PackagesPageContent({
                         </div>
                       ) : null}
 
-                      <div className="grid items-stretch gap-3 md:grid-cols-2 xl:grid-cols-4">
+                      <div className="flex snap-x snap-mandatory gap-3 overflow-x-auto pb-3 [scrollbar-width:none] md:grid md:grid-cols-2 md:overflow-visible md:pb-0 xl:grid-cols-4">
                         {visibleCategoryPackages.map((pkg) => (
                           <article
                             key={pkg.packageId}
-                            className={`flex h-full min-w-0 flex-col rounded-3xl border bg-[#111111] p-4 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-5 ${
+                            className={`flex h-full w-[86%] min-w-[285px] shrink-0 snap-start flex-col rounded-3xl border md:w-auto md:min-w-0 md:shrink bg-[#111111] p-4 shadow-[0_20px_46px_-32px_rgba(255,122,0,.65)] transition duration-200 hover:-translate-y-1 hover:border-orange-400/55 active:scale-[.99] sm:p-5 ${
                               selectedPackageId === pkg.packageId
                                 ? "border-orange-400 ring-2 ring-orange-500/15"
                                 : "border-orange-400/20"
@@ -1002,7 +970,7 @@ export default function PackagesPageContent({
 
                             <h3 className="mt-3 text-lg font-extrabold text-white">{pkg.title}</h3>
                             <p className="mt-1 text-xs font-semibold uppercase tracking-[0.1em] text-[#9CA3AF]">
-                              {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabels[pkg.service]}
+                              {pkg.platform === "X" ? "X / Twitter" : pkg.platform} · {serviceLabel(pkg.service)}
                             </p>
                             <p className="mt-2 line-clamp-2 text-xs leading-5 text-[#D1D5DB]">{pkg.description}</p>
                             <span className="mt-2 inline-flex w-fit items-center gap-2 rounded-full border border-emerald-400/25 bg-emerald-500/10 px-2.5 py-1 text-[10px] font-bold text-emerald-200">
@@ -1159,7 +1127,7 @@ export default function PackagesPageContent({
             <div className="mx-auto max-w-7xl rounded-[28px] border border-white/85 bg-white/78 p-6 shadow-[0_20px_48px_rgba(255, 159, 0, .13)] backdrop-blur-xl sm:p-8">
               <h2 className="text-2xl font-black text-[#0B0B0F]">Read relevant service guides</h2>
               <p className="mt-2 text-sm leading-7 text-[#111827]">
-                Review current {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabels[activeService].toLowerCase()} details before choosing a package.
+                Review current {selectedPlatform === "X" ? "X / Twitter" : selectedPlatform} {serviceLabel(activeService).toLowerCase()} details before choosing a package.
               </p>
               <div className="mt-5 flex flex-wrap gap-2.5">
                 {relatedGuides.map(([label, href]) => (
@@ -1431,7 +1399,7 @@ function PackageReviewSection({
                   </IconBadge>
                   <div className="min-w-0">
                     <p className="text-[10px] font-black uppercase tracking-[0.13em] text-orange-300">
-                      {platformLabel} • {serviceLabels[selectedPackage.service]}
+                      {platformLabel} • {serviceLabel(selectedPackage.service)}
                     </p>
                     <h3 className="mt-1 break-words text-xl font-black text-white">{selectedPackage.title}</h3>
                     <p className="mt-2 text-sm leading-6 text-[#D1D5DB]">{selectedPackage.description}</p>
@@ -1448,7 +1416,7 @@ function PackageReviewSection({
 
               <dl className="grid gap-x-3 gap-y-1 p-3 text-xs sm:grid-cols-2 sm:p-4 lg:grid-cols-3">
                 <SummaryMetric label="Platform" value={platformLabel} />
-                <SummaryMetric label="Service" value={serviceLabels[selectedPackage.service]} />
+                <SummaryMetric label="Service" value={serviceLabel(selectedPackage.service)} />
                 <SummaryMetric label="Quantity" value={selectedPackage.quantityLabel} />
                 <SummaryMetric label="Delivery" value={selectedPackage.deliveryTime} />
                 <SummaryMetric label="Price" value={formatCurrency(selectedPackage.basePriceINR, currency)} highlight />
@@ -1544,7 +1512,7 @@ function PackageReviewSection({
             <div className="mt-5 space-y-3.5 text-sm">
               <SummaryRow label="Package" value={selectedPackage.title} />
               <SummaryRow label="Platform" value={platformLabel} />
-              <SummaryRow label="Service" value={serviceLabels[selectedPackage.service]} />
+              <SummaryRow label="Service" value={serviceLabel(selectedPackage.service)} />
               <SummaryRow label="Quantity" value={selectedPackage.quantityLabel} />
               <SummaryRow label="Effective rate" value={`${formatCurrency(getRatePerThousand(selectedPackage), currency)} / 1K`} />
               <SummaryRow label="Public link" value={targetLink.trim() || "Not entered"} />
