@@ -39,6 +39,14 @@ export function createPageMetadata({
     // Keywords do not influence ranking. Keep only page-specific terms where
     // they add useful context instead of repeating a sitewide keyword block.
     keywords: [...new Set(keywords)],
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+      },
+    },
     alternates: {
       canonical: canonicalUrl,
     },
