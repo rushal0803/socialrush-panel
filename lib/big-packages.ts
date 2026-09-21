@@ -716,7 +716,25 @@ function packageQuantities(min:number,max:number,step=1){
 }
 const curatedPackages: BigPackage[] = packageDefinitions.map((pkg)=>{ const service=getServiceById(`${packagePlatformCodes[pkg.platform]}-${pkg.service}`); return service ? {...pkg,serviceCode:service.code,basePriceINR:calculateServiceTotal(service.code,pkg.quantity),deliveryTime:service.deliveryTime,discountBadge:undefined} : {...pkg,discountBadge:undefined}; });
 const curatedServiceCodes=new Set(curatedPackages.map(pkg=>pkg.serviceCode).filter(Boolean));
-const generatedPackages: BigPackage[]=activeSmmServices.filter(service=>!curatedServiceCodes.has(service.code)&&!service.requiresLiveCatalogFacts&&service.pricePer1000>0&&service.minQuantity>0&&service.maxQuantity>=service.minQuantity).flatMap(service=>packageQuantities(service.minQuantity,service.maxQuantity,service.quantityStep ?? 1).map((quantity,index)=>({packageId:`${service.code}-package-${quantity}`,platform:packagePlatformLabels[service.platform],service:service.code,serviceCode:service.code,title:`${quantity.toLocaleString("en-IN")} · ${service.name}`,quantity,quantityLabel:quantity.toLocaleString("en-IN"),basePriceINR:calculateServiceTotal(service.code,quantity),discountBadge:index===2?"Popular":undefined,deliveryTime:service.deliveryTime,description:service.description,bestFor:index===0?"Starter campaigns":index===1?"Growing campaigns":index===2?"Popular campaigns":"Larger campaigns"})));
+const generatedPackages: BigPackage[]=activeSmmServices
+  .filter(service=>!curatedServiceCodes.has(service.code)&&!service.requiresLiveCatalogFacts&&service.pricePer1000>0&&service.minQuantity>0&&service.maxQuantity>=service.minQuantity)
+  .flatMap(service=>{
+    const serviceKey=service.code.replace(new RegExp(`^${service.platform}-`),"");
+    return packageQuantities(service.minQuantity,service.maxQuantity,service.quantityStep ?? 1).map((quantity,index)=>({
+      packageId:`${service.code}-package-${quantity}`,
+      platform:packagePlatformLabels[service.platform],
+      service:serviceKey,
+      serviceCode:service.code,
+      title:`${quantity.toLocaleString("en-IN")} · ${service.name}`,
+      quantity,
+      quantityLabel:quantity.toLocaleString("en-IN"),
+      basePriceINR:calculateServiceTotal(service.code,quantity),
+      discountBadge:index===1?"Popular":index===3?"High Volume":undefined,
+      deliveryTime:service.deliveryTime,
+      description:service.description,
+      bestFor:index===0?"Growth campaigns":index===1?"Scaling campaigns":index===2?"High-volume campaigns":"Agency-scale campaigns",
+    }));
+  });
 export const bigPackages: readonly BigPackage[]=[...curatedPackages,...generatedPackages];
 
 export function getPackageById(packageId: string): BigPackage | undefined {
