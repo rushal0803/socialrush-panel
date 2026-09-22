@@ -16,6 +16,7 @@ import {
 
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import {
   createPageMetadata,
@@ -179,7 +180,7 @@ export default function FacebookGrowthIndiaPage() {
 
   return (
     <PublicShell>
-      <main className="overflow-hidden bg-[#050505] text-white">
+      <InteractiveHomepageShell><div className="service-money-page overflow-hidden bg-[#050505] text-white">
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: schema(breadcrumbSchema) }}
@@ -709,7 +710,7 @@ export default function FacebookGrowthIndiaPage() {
             </div>
           </div>
         </section>
-      </main>
+      </div></InteractiveHomepageShell>
     </PublicShell>
   );
 }
