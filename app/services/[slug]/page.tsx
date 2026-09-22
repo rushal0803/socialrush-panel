@@ -312,8 +312,8 @@ export default async function ServiceSeoPage({
     const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
     const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
     const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: service.name, item: `${siteUrl}/services/linkedin-usa-reposts` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaRepostsLanding service={service} /></>;
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name, areaServed: { "@type": "Country", name: "United States" } };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaRepostsLanding service={service} /><LinkedInUsaAuthorityLinks /></>;
   }
   if (params.slug === "linkedin-usa-endorsements") {
     const catalogService = activeSmmServices.find((service) => service.code === params.slug);
@@ -325,8 +325,8 @@ export default async function ServiceSeoPage({
     const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
     const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
     const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: service.name, item: `${siteUrl}/services/linkedin-usa-endorsements` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaEndorsementsLanding service={service} /></>;
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name, areaServed: { "@type": "Country", name: "United States" } };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaEndorsementsLanding service={service} /><LinkedInUsaAuthorityLinks /></>;
   }
   if (params.slug === "linkedin-usa-post-likes") {
     const catalogService = activeSmmServices.find((service) => service.code === params.slug);
@@ -337,9 +337,9 @@ export default async function ServiceSeoPage({
     const faqs = linkedInUsaPostLikesFaqs(service);
     const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
     const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: service.name, item: `${siteUrl}/services/linkedin-usa-post-likes` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name, areaServed: { "@type": "Country", name: "United States" } };
     const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaPostLikesLanding service={service} /></>;
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaPostLikesLanding service={service} /><LinkedInUsaAuthorityLinks /></>;
   }
   if (params.slug === "linkedin-usa-custom-comments") {
     const catalogService = activeSmmServices.find((service) => service.code === params.slug);
@@ -351,8 +351,8 @@ export default async function ServiceSeoPage({
     const safeSchema = (value: object) => JSON.stringify(value).replace(/</g, "\\u003c");
     const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
     const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: `${siteUrl}/` }, { "@type": "ListItem", position: 2, name: "Services", item: `${siteUrl}/services` }, { "@type": "ListItem", position: 3, name: service.name, item: `${siteUrl}/services/linkedin-usa-custom-comments` }] };
-    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name };
-    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaCustomCommentsLanding service={service} /></>;
+    const serviceSchema = { "@context": "https://schema.org", "@type": "Service", name: service.name, description: service.description, provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl }, serviceType: service.name, areaServed: { "@type": "Country", name: "United States" } };
+    return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(breadcrumbSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeSchema(serviceSchema) }} /><LinkedInUsaCustomCommentsLanding service={service} /><LinkedInUsaAuthorityLinks /></>;
   }
   if (params.slug === "linkedin-usa-followers") {
     const faqSchema = {
@@ -590,6 +590,7 @@ export default async function ServiceSeoPage({
         "USA-targeted LinkedIn Group Members service for an eligible LinkedIn Group.",
       provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
       serviceType: "LinkedIn USA Group Members",
+      areaServed: { "@type": "Country", name: "United States" },
     };
     return (
       <>
@@ -612,6 +613,7 @@ export default async function ServiceSeoPage({
           }}
         />
         <LinkedInUsaGroupMembersLanding />
+        <LinkedInUsaAuthorityLinks />
       </>
     );
   }
