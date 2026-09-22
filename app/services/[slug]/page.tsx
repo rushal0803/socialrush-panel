@@ -9,6 +9,7 @@ import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
+import LinkedInUsaAuthorityLinks from "@/components/seo/LinkedInUsaAuthorityLinks";
 import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
 import LinkedInUsaPostLikesLanding from "@/components/marketing/LinkedInUsaPostLikesLanding";
 import LinkedInUsaCustomCommentsLanding from "@/components/marketing/LinkedInUsaCustomCommentsLanding";
@@ -390,6 +391,7 @@ export default async function ServiceSeoPage({
         "USA-targeted LinkedIn follower service for eligible public personal profiles.",
       provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
       serviceType: "LinkedIn USA Followers",
+      areaServed: { "@type": "Country", name: "United States" },
     };
     return (
       <>
@@ -412,6 +414,7 @@ export default async function ServiceSeoPage({
           }}
         />
         <LinkedInUsaFollowersLanding />
+        <LinkedInUsaAuthorityLinks />
       </>
     );
   }
@@ -481,6 +484,7 @@ export default async function ServiceSeoPage({
         "USA-targeted LinkedIn Connections service for eligible public personal profiles.",
       provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
       serviceType: "LinkedIn USA Connections",
+      areaServed: { "@type": "Country", name: "United States" },
     };
     return (
       <>
@@ -503,6 +507,7 @@ export default async function ServiceSeoPage({
           }}
         />
         <LinkedInUsaConnectionsLanding />
+        <LinkedInUsaAuthorityLinks />
       </>
     );
   }
