@@ -89,8 +89,8 @@ export default function CanonicalServicePage({
     return <><YouTubeEngagementJsonLd code="youtube-views" name="YouTube Views" path="/youtube-views" /><YouTubeViewsLanding /><MoneyPageAuthorityLinks platform="youtube" /></>;
   }
   if (slug === "buy-facebook-followers-india") return <FacebookFollowersLanding />;
-  if (slug === "buy-facebook-views-india") return <FacebookViewsLanding />;
-  if (slug === "buy-facebook-likes-india") return <FacebookLikesLanding />;
+  if (slug === "buy-facebook-views-india") return <><IndiaCommercialServiceJsonLd code="facebook-views" name="Facebook Views" path="/facebook-views" platform="Facebook" serviceType="Facebook views service" /><FacebookViewsLanding /><MoneyPageAuthorityLinks platform="facebook" /></>;
+  if (slug === "buy-facebook-likes-india") return <><IndiaCommercialServiceJsonLd code="facebook-likes" name="Facebook Likes" path="/facebook-likes" platform="Facebook" serviceType="Facebook likes service" /><FacebookLikesLanding /><MoneyPageAuthorityLinks platform="facebook" /></>;
   if (slug === "buy-linkedin-followers-india") {
     const faqSchema = {
       "@context": "https://schema.org",
@@ -101,12 +101,12 @@ export default function CanonicalServicePage({
         acceptedAnswer: { "@type": "Answer", text: answer },
       })),
     };
-    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "LinkedIn Services", path: "/services" }, { name: "LinkedIn Followers", path: "/linkedin-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><LinkedInFollowersLanding /></>;
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "LinkedIn Services", path: "/services" }, { name: "LinkedIn Followers", path: "/linkedin-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} /><IndiaCommercialServiceJsonLd code="linkedin-followers" name="LinkedIn Followers" path="/linkedin-followers" platform="LinkedIn" serviceType="LinkedIn followers service" /><LinkedInFollowersLanding /><MoneyPageAuthorityLinks platform="linkedin" /></>;
   }
-  if (slug === "buy-linkedin-likes-india") return <LinkedInLikesLanding />;
+  if (slug === "buy-linkedin-likes-india") return <><IndiaCommercialServiceJsonLd code="linkedin-likes" name="LinkedIn Likes" path="/linkedin-likes" platform="LinkedIn" serviceType="LinkedIn likes service" /><LinkedInLikesLanding /><MoneyPageAuthorityLinks platform="linkedin" /></>;
   if (slug === "buy-tiktok-followers-india") {
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: tiktokFollowersFaqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
-    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "TikTok Services", path: "/services?platform=tiktok" }, { name: "TikTok Followers", path: "/tiktok-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><TikTokFollowersLanding /></>;
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "TikTok Services", path: "/services?platform=tiktok" }, { name: "TikTok Followers", path: "/tiktok-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><IndiaCommercialServiceJsonLd code="tiktok-followers" name="TikTok Followers" path="/tiktok-followers" platform="TikTok" serviceType="TikTok followers service" /><TikTokFollowersLanding /><MoneyPageAuthorityLinks platform="tiktok" /></>;
   }
   if (slug === "buy-twitter-followers-india") {
     const faqs = getIndiaServiceFaqs(slug);
