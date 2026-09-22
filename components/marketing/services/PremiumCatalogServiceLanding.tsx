@@ -2,6 +2,7 @@ import Link from "next/link";
 import PlatformIcon from "@/components/PlatformIcon";
 import CurrencyAmount from "@/components/currency/CurrencyAmount";
 import PublicShell from "@/components/marketing/PublicShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
@@ -88,7 +89,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(faqSchema) }} />
 
-      <main className="bg-[#07090d] px-4 pb-20 pt-8 text-white sm:px-6 lg:px-8">
+      <InteractiveHomepageShell><div className="service-money-page bg-[#07090d] px-4 pb-20 pt-8 text-white sm:px-6 lg:px-8">
         <div className="mx-auto max-w-7xl">
           <nav className="mb-5 text-xs font-semibold text-zinc-400" aria-label="Breadcrumb">
             <Link href="/" className="hover:text-white">Home</Link>
@@ -197,7 +198,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
             <Link href={orderHref} className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-7 py-3 text-sm font-black text-black">Start Order</Link>
           </section>
         </div>
-      </main>
+      </div></InteractiveHomepageShell>
     </PublicShell>
   );
 }

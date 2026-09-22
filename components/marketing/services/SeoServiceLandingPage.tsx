@@ -19,6 +19,7 @@ import {
 import Link from "next/link";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
 import {
@@ -167,6 +168,8 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schemas.faq) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schemas.service) }} />
 
+      <InteractiveHomepageShell>
+        <div className="service-money-page">
       <section className="relative overflow-hidden px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24">
         <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-orange-200/45 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 top-24 h-80 w-80 rounded-full bg-amber-200/50 blur-3xl" />
@@ -508,6 +511,8 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
           </div>
         </div>
       </section>
+        </div>
+      </InteractiveHomepageShell>
       <ServiceOrderStickyCta
         href={packagesHref}
         serviceName={page.displayName}
