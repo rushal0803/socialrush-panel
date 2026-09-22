@@ -9,6 +9,7 @@ import {
 } from "lucide-react";
 
 import PublicShell from "@/components/marketing/PublicShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
@@ -92,7 +93,7 @@ const faq = [
 export default function InstagramGrowthIndiaPage() {
   return (
     <PublicShell>
-      <main className="bg-[#050505] text-white">
+      <InteractiveHomepageShell><div className="service-money-page bg-[#050505] text-white">
         <section className="relative overflow-hidden px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_20%_10%,rgba(255,122,0,.22),transparent_30%),radial-gradient(circle_at_85%_25%,rgba(255,176,0,.12),transparent_28%),linear-gradient(#050505,#090a0f)]" />
 
@@ -334,7 +335,7 @@ export default function InstagramGrowthIndiaPage() {
             </div>
           </div>
         </section>
-      </main>
+      </div></InteractiveHomepageShell>
     </PublicShell>
   );
 }
