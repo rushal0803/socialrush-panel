@@ -64,7 +64,7 @@ export default function CanonicalServicePage({
   if (slug === "buy-instagram-views-india") return <><IndiaCommercialServiceJsonLd code="instagram-views" name="Instagram Views" path="/instagram-views" platform="Instagram" serviceType="Instagram views service" /><InstagramViewsPage /><MoneyPageAuthorityLinks platform="instagram" /></>;
   // The canonical route is /youtube-likes; reuse the dedicated visual
   // experience instead of the generic India template.
-  if (slug === "buy-youtube-likes-india") return <YouTubeLikesPage />;
+  if (slug === "buy-youtube-likes-india") return <><YouTubeLikesPage /><MoneyPageAuthorityLinks platform="youtube" /></>;
   // The canonical route is /youtube-subscribers; this is the only crawlable
   // commercial subscriber page. The legacy keyword URL permanently redirects.
   if (slug === "buy-youtube-subscribers-india") {
@@ -108,10 +108,14 @@ export default function CanonicalServicePage({
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: tiktokFollowersFaqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
     return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "TikTok Services", path: "/services?platform=tiktok" }, { name: "TikTok Followers", path: "/tiktok-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><IndiaCommercialServiceJsonLd code="tiktok-followers" name="TikTok Followers" path="/tiktok-followers" platform="TikTok" serviceType="TikTok followers service" /><TikTokFollowersLanding /><MoneyPageAuthorityLinks platform="tiktok" /></>;
   }
+  if (slug === "buy-youtube-comments-india") return <><IndiaCommercialServiceJsonLd code="youtube-comments" name="YouTube Comments" path="/buy-youtube-comments-india" platform="YouTube" serviceType="YouTube comments service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/buy-youtube-comments-india" /><MoneyPageAuthorityLinks platform="youtube" /></>;
+  if (slug === "buy-facebook-group-members-india") return <><IndiaCommercialServiceJsonLd code="facebook-group-members" name="Facebook Group Members" path="/buy-facebook-group-members-india" platform="Facebook" serviceType="Facebook group members service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/buy-facebook-group-members-india" /><MoneyPageAuthorityLinks platform="facebook" /></>;
+  if (slug === "buy-facebook-shares-india") return <><IndiaCommercialServiceJsonLd code="facebook-shares" name="Facebook Shares" path="/buy-facebook-shares-india" platform="Facebook" serviceType="Facebook shares service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/buy-facebook-shares-india" /><MoneyPageAuthorityLinks platform="facebook" /></>;
+  if (slug === "buy-telegram-members-india") return <><IndiaCommercialServiceJsonLd code="telegram-members" name="Telegram Members" path="/telegram-members" platform="Telegram" serviceType="Telegram members service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/telegram-members" /><MoneyPageAuthorityLinks platform="telegram" /></>;
   if (slug === "buy-twitter-followers-india") {
     const faqs = getIndiaServiceFaqs(slug);
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
-    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "X / Twitter Services", path: "/services?platform=twitter" }, { name: "X / Twitter Followers", path: "/twitter-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><TwitterFollowersLanding /></>;
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "X / Twitter Services", path: "/services?platform=twitter" }, { name: "X / Twitter Followers", path: "/twitter-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><IndiaCommercialServiceJsonLd code="twitter-followers" name="X / Twitter Followers" path="/twitter-followers" platform="Twitter" serviceType="X / Twitter followers service" /><TwitterFollowersLanding /><MoneyPageAuthorityLinks platform="twitter" /></>;
   }
 
   return (
