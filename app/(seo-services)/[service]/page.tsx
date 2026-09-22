@@ -15,6 +15,7 @@ import TikTokFollowersLanding from "@/components/marketing/TikTokFollowersLandin
 import TwitterFollowersLanding from "@/components/marketing/TwitterFollowersLanding";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import YouTubeEngagementJsonLd from "@/components/seo/YouTubeEngagementJsonLd";
+import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { tiktokFollowersFaqs } from "@/lib/seo/tiktok-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -58,8 +59,8 @@ export default function CanonicalServicePage({
 
   // Instagram Likes has a purpose-built conversion page. Its order builder reads
   // the exact `instagram-likes` catalog entry used by Services and New Order.
-  if (slug === "buy-instagram-likes-india") return <InstagramLikesPage />;
-  if (slug === "buy-instagram-views-india") return <InstagramViewsPage />;
+  if (slug === "buy-instagram-likes-india") return <><IndiaCommercialServiceJsonLd code="instagram-likes" name="Instagram Likes" path="/instagram-likes" platform="Instagram" serviceType="Instagram likes service" /><InstagramLikesPage /></>;
+  if (slug === "buy-instagram-views-india") return <><IndiaCommercialServiceJsonLd code="instagram-views" name="Instagram Views" path="/instagram-views" platform="Instagram" serviceType="Instagram views service" /><InstagramViewsPage /></>;
   // The canonical route is /youtube-likes; reuse the dedicated visual
   // experience instead of the generic India template.
   if (slug === "buy-youtube-likes-india") return <YouTubeLikesPage />;
@@ -81,7 +82,7 @@ export default function CanonicalServicePage({
       ["What if I submit the wrong channel link?", "Verify the public channel link carefully before payment. Contact support from your dashboard if you need help with an order."],
     ];
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
-    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "YouTube Services", path: "/services?platform=youtube" }, { name: "YouTube Subscribers", path: "/youtube-subscribers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeSubscribersLanding /></>;
+    return <><IndiaCommercialServiceJsonLd code="youtube-subscribers" name="YouTube Subscribers" path="/youtube-subscribers" platform="YouTube" serviceType="YouTube subscribers service" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeSubscribersLanding /></>;
   }
   if (slug === "buy-youtube-views-india") {
     return <><YouTubeEngagementJsonLd code="youtube-views" name="YouTube Views" path="/youtube-views" /><YouTubeViewsLanding /></>;
