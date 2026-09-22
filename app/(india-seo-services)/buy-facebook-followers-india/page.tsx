@@ -1,6 +1,7 @@
 import FacebookFollowersLanding from "@/components/marketing/FacebookFollowersLanding";
 import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
-import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
+import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 
 export const metadata = getIndiaServiceMetadata("buy-facebook-followers-india");
 
@@ -18,8 +19,6 @@ function jsonLd(value: object) {
 }
 
 export default function Page() {
-  const url = `${SEO_SITE_URL}/buy-facebook-followers-india`;
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
-  const breadcrumbSchema = { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Facebook Services", item: `${SEO_SITE_URL}/services` }, { "@type": "ListItem", position: 3, name: "Facebook Followers", item: url }] };
-  return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema) }} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(breadcrumbSchema) }} /><FacebookFollowersLanding /></>;
+  return <><IndiaCommercialServiceJsonLd code="facebook-followers" name="Facebook Followers" path="/buy-facebook-followers-india" platform="Facebook" serviceType="Facebook followers service" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema) }} /><FacebookFollowersLanding /><MoneyPageAuthorityLinks platform="facebook" /></>;
 }
