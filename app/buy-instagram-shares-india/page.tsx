@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import IndiaServiceLandingPage from "@/components/marketing/services/IndiaServiceLandingPage";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
+import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 
 const path = "/buy-instagram-shares-india";
 
@@ -15,5 +17,5 @@ export const metadata: Metadata = {
 };
 
 export default function BuyInstagramSharesIndiaPage() {
-  return <IndiaServiceLandingPage slug="buy-instagram-shares-india" canonicalPath={path} />;
+  return <><IndiaCommercialServiceJsonLd code="instagram-shares" name="Instagram Shares" path={path} platform="Instagram" serviceType="Instagram shares service" /><IndiaServiceLandingPage slug="buy-instagram-shares-india" canonicalPath={path} /><MoneyPageAuthorityLinks platform="instagram" /></>;
 }
