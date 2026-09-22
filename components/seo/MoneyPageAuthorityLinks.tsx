@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-type Platform = "instagram" | "youtube";
+type Platform = "instagram" | "youtube" | "facebook" | "linkedin" | "tiktok";
 
 const groups = {
   instagram: {
@@ -17,6 +17,51 @@ const groups = {
       ["Instagram Saves", "/buy-instagram-saves-india"],
       ["Instagram Shares", "/buy-instagram-shares-india"],
       ["Instagram Engagement Calculator", "/tools/instagram-engagement-rate-calculator"],
+    ],
+  },
+  facebook: {
+    eyebrow: "Facebook topic cluster",
+    title: "Explore related Facebook growth services",
+    intro: "Compare audience, post engagement, video visibility and community-growth options from one connected Facebook service cluster.",
+    links: [
+      ["Facebook Growth India", "/facebook-growth-india"],
+      ["Facebook Followers", "/buy-facebook-followers-india"],
+      ["Facebook Likes", "/facebook-likes"],
+      ["Facebook Views", "/facebook-views"],
+      ["Facebook Group Members", "/buy-facebook-group-members-india"],
+      ["Facebook Shares", "/buy-facebook-shares-india"],
+      ["All Services", "/services?platform=facebook"],
+      ["Creator Growth", "/creator-growth"],
+    ],
+  },
+  linkedin: {
+    eyebrow: "LinkedIn topic cluster",
+    title: "Explore related LinkedIn growth services",
+    intro: "Compare profile growth, post engagement and professional-audience services before choosing the option that fits your LinkedIn campaign.",
+    links: [
+      ["LinkedIn Growth India", "/linkedin-growth-india"],
+      ["LinkedIn Followers", "/linkedin-followers"],
+      ["LinkedIn Likes", "/linkedin-likes"],
+      ["LinkedIn Services", "/services/linkedin"],
+      ["LinkedIn USA Followers", "/services/linkedin-usa-followers"],
+      ["LinkedIn USA Connections", "/services/linkedin-usa-connections"],
+      ["For Brands", "/for-brands"],
+      ["For Agencies", "/for-agencies"],
+    ],
+  },
+  tiktok: {
+    eyebrow: "TikTok topic cluster",
+    title: "Explore related TikTok growth services",
+    intro: "Compare follower growth, video engagement and content-interaction services from the TikTok growth hub.",
+    links: [
+      ["TikTok Growth India", "/tiktok-growth-india"],
+      ["TikTok Followers", "/tiktok-followers"],
+      ["TikTok Likes", "/services/tiktok-likes"],
+      ["TikTok Views", "/services/tiktok-views"],
+      ["TikTok Comments", "/services/tiktok-custom-comments"],
+      ["TikTok Saves", "/services/tiktok-saves"],
+      ["TikTok Services", "/services/tiktok"],
+      ["Creator Growth", "/creator-growth"],
     ],
   },
   youtube: {
