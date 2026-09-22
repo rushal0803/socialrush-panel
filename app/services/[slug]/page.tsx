@@ -391,6 +391,7 @@ export default async function ServiceSeoPage({
         "USA-targeted LinkedIn follower service for eligible public personal profiles.",
       provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
       serviceType: "LinkedIn USA Followers",
+      areaServed: { "@type": "Country", name: "United States" },
     };
     return (
       <>
@@ -483,6 +484,7 @@ export default async function ServiceSeoPage({
         "USA-targeted LinkedIn Connections service for eligible public personal profiles.",
       provider: { "@type": "Organization", name: "SocialRUSH", url: siteUrl },
       serviceType: "LinkedIn USA Connections",
+      areaServed: { "@type": "Country", name: "United States" },
     };
     return (
       <>
