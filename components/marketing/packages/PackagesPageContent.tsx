@@ -19,6 +19,7 @@ import {
 import { type Dispatch, type MouseEvent, type RefObject, type SetStateAction, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import BlogShell from "@/components/marketing/blog/BlogShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import { bigPackages, type BigPackage } from "@/lib/big-packages";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { formatCurrency } from "@/lib/currency";
@@ -738,7 +739,8 @@ export default function PackagesPageContent({
 
   return (
     <BlogShell>
-      <div className="packages-page premium-packages relative scroll-pt-24 overflow-x-clip pb-36 lg:pb-24">
+      <InteractiveHomepageShell>
+        <div className="sr-page packages-page premium-packages relative scroll-pt-24 overflow-x-clip pb-36 lg:pb-24">
         <div aria-hidden="true" className="pointer-events-none absolute inset-0">
           <div className="absolute -left-14 top-16 h-72 w-72 rounded-full bg-orange-200/35 blur-3xl" />
           <div className="absolute right-[-8%] top-44 h-80 w-80 rounded-full bg-amber-200/40 blur-3xl" />
@@ -1203,7 +1205,8 @@ export default function PackagesPageContent({
             </div>
           </div>
         </section>
-      </div>
+        </div>
+      </InteractiveHomepageShell>
     </BlogShell>
   );
 }
