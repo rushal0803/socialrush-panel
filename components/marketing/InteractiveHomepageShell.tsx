@@ -5,11 +5,11 @@ import {
   LazyMotion,
   domAnimation,
   m,
+  useMotionTemplate,
   useMotionValue,
   useReducedMotion,
   useScroll,
   useSpring,
-  useTransform,
 } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { useEffect, useState } from "react";
@@ -28,8 +28,7 @@ export default function InteractiveHomepageShell({
   });
   const pointerX = useMotionValue(50);
   const pointerY = useMotionValue(22);
-  const glowX = useTransform(pointerX, (value) => `${value}%`);
-  const glowY = useTransform(pointerY, (value) => `${value}%`);
+  const glowBackground = useMotionTemplate`radial-gradient(30rem circle at ${pointerX}% ${pointerY}%, rgba(255, 126, 32, 0.10), transparent 70%)`;
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
@@ -63,13 +62,7 @@ export default function InteractiveHomepageShell({
           <m.div
             aria-hidden="true"
             className="pointer-events-none fixed inset-0 -z-10 hidden opacity-70 lg:block"
-            style={{
-              background: useTransform(
-                [glowX, glowY],
-                ([x, y]) =>
-                  `radial-gradient(30rem circle at ${x} ${y}, rgba(255, 126, 32, 0.10), transparent 70%)`,
-              ),
-            }}
+            style={{ background: glowBackground }}
           />
         ) : null}
 
