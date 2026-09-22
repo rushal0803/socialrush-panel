@@ -3,18 +3,43 @@ import PublicShell from "@/components/marketing/PublicShell";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import MarketCurrencyInitializer from "./MarketCurrencyInitializer";
 import type { InternationalMarket } from "@/lib/seo/international";
-import { publishedCountryServicePages } from "@/lib/seo/international";
+import { internationalMarkets, publishedCountryServicePages } from "@/lib/seo/international";
 
 const platforms = [["Instagram","instagram"],["YouTube","youtube"],["Facebook","facebook"],["LinkedIn","linkedin"],["TikTok","tiktok"],["Telegram","telegram"],["X / Twitter","x"]] as const;
 
 export default function CountryHubPage({ market }: { market: InternationalMarket }) {
   const path = `/${market.slug}`;
   const services = publishedCountryServicePages.filter((page) => page.market.slug === market.slug);
-  const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [{ "@type": "Question", name: market.faq.question, acceptedAnswer: { "@type": "Answer", text: market.faq.answer } }] };
+  const otherMarkets = internationalMarkets.filter((item) => item.slug !== market.slug);
+  const schema = [
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      name: `Social Media Growth Services in ${market.name}`,
+      url: `https://www.getsocialrush.com/${market.slug}`,
+      description: `SocialRUSH market hub for discovering social media growth services in ${market.name}.`,
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: `${market.name} SocialRUSH service pages`,
+      itemListElement: services.map((service, index) => ({
+        "@type": "ListItem",
+        position: index + 1,
+        name: service.h1,
+        url: `https://www.getsocialrush.com/${market.slug}/${service.serviceSlug}`,
+      })),
+    },
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      mainEntity: [{ "@type": "Question", name: market.faq.question, acceptedAnswer: { "@type": "Answer", text: market.faq.answer } }],
+    },
+  ];
   return <PublicShell>
     <MarketCurrencyInitializer currency={market.currency} />
     <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: market.name, path }]} />
-    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema).replace(/</g, "\\u003c") }} />
+    <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} />
     <main>
       <section className="relative overflow-hidden border-b border-white/10 bg-[#0b0d13] px-5 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="pointer-events-none absolute inset-x-0 top-0 h-64 bg-[radial-gradient(ellipse_at_12%_0%,rgba(255,118,0,.18),transparent_64%)]"/><div className="relative mx-auto grid max-w-6xl gap-7 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
         <div><p className="sr-eyebrow">SocialRUSH in {market.name}</p><h1 className="mt-4 max-w-4xl text-4xl font-black tracking-tight text-white sm:text-6xl">Social media growth services for {market.name}.</h1><p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">A focused place for {market.audience} to explore supported social media services. Start with your campaign goal, compare clear service information and place an order using a public profile or content link.</p><div className="mt-8 flex flex-wrap gap-3"><a href="#market-services" className="inline-flex min-h-12 items-center rounded-xl bg-orange-500 px-5 py-3 text-sm font-black text-white">Explore {market.name} services</a><Link href="/packages" className="inline-flex min-h-12 items-center rounded-xl border border-white/15 px-5 py-3 text-sm font-black text-white">Compare larger packages</Link></div></div>
@@ -26,6 +51,7 @@ export default function CountryHubPage({ market }: { market: InternationalMarket
       <section className="border-y border-white/10 bg-[#101219] px-5 py-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-6xl"><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Choose by campaign size</p><h2 className="mt-3 text-3xl font-black">Move into the right revenue path.</h2><p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">Use a country service page for a focused requirement. For larger, multi-service or recurring campaigns, use the appropriate planning path instead of assuming a discount or local payment method.</p><div className="mt-7 grid gap-3 md:grid-cols-3"><Link href="/packages" className="rounded-2xl border border-white/10 bg-black/20 p-5 transition hover:border-orange-400/40"><b className="text-white">Larger single-service requirement</b><span className="mt-2 block text-sm leading-6 text-slate-400">Compare current package quantities and pricing.</span><span className="mt-4 block text-sm font-black text-orange-300">Compare packages →</span></Link><Link href="/dashboard/campaign-stacks" className="rounded-2xl border border-white/10 bg-black/20 p-5 transition hover:border-orange-400/40"><b className="text-white">Multi-service campaign</b><span className="mt-2 block text-sm leading-6 text-slate-400">Plan complementary services with current catalog information.</span><span className="mt-4 block text-sm font-black text-orange-300">Campaign stacks →</span></Link><Link href="/for-agencies#bulk-lead-engine" className="rounded-2xl border border-white/10 bg-black/20 p-5 transition hover:border-orange-400/40"><b className="text-white">Agency or recurring requirement</b><span className="mt-2 block text-sm leading-6 text-slate-400">Share platform, expected volume, frequency and campaign scope.</span><span className="mt-4 block text-sm font-black text-orange-300">Discuss requirement →</span></Link></div></div></section>
       <section className="px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-6xl gap-6 md:grid-cols-2"><article className="rounded-2xl border border-orange-400/25 bg-orange-500/[.07] p-6"><h2 className="text-2xl font-black">Currency display for planning</h2><p className="mt-3 text-sm leading-7 text-slate-300">{market.paymentNote} Display currency is a convenience only and does not create a separate SEO URL, payment method or local checkout.</p></article><article className="rounded-2xl border border-white/10 bg-[#101219] p-6"><h2 className="text-2xl font-black">Order with confidence</h2><p className="mt-3 text-sm leading-7 text-slate-300">Use public profile, post, page, channel or video links. SocialRUSH does not ask for social-account passwords, OTPs or recovery codes.</p><Link href="/trust" className="mt-5 inline-flex text-sm font-bold text-orange-300">Read customer safety guidance</Link></article></div></section>
       <section className="border-t border-white/10 bg-[#0b0d13] px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><h2 className="text-3xl font-black">Questions for visitors in {market.name}</h2><article className="mt-6 rounded-2xl border border-white/10 bg-[#101219] p-6"><h3 className="text-lg font-black">{market.faq.question}</h3><p className="mt-3 text-sm leading-7 text-slate-300">{market.faq.answer}</p></article></div></section>
+      <section className="border-t border-white/10 px-5 py-12 sm:px-6 lg:px-8"><div className="mx-auto max-w-6xl"><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Other international markets</p><div className="mt-5 flex flex-wrap gap-3">{otherMarkets.map((item) => <Link key={item.slug} href={`/${item.slug}`} className="rounded-xl border border-white/10 bg-[#101219] px-4 py-3 text-sm font-bold transition hover:border-orange-400/40">{item.name}</Link>)}</div></div></section>
     </main>
   </PublicShell>;
 }
