@@ -28,11 +28,23 @@ export function createCountryServiceSchema(page: PublishedCountryServicePage, se
         "@type": "Service",
         name: page.h1,
         url: `https://www.getsocialrush.com${path}`,
+        serviceType: `${service.name} service`,
+        areaServed: {
+          "@type": "Country",
+          name: page.market.name,
+        },
+        provider: {
+          "@type": "Organization",
+          name: "SocialRUSH",
+          url: "https://www.getsocialrush.com",
+        },
         offers: {
           "@type": "Offer",
           priceCurrency: "INR",
           price: service.pricePer1000,
           description: `Price per 1,000 ${service.name}`,
+          url: `https://www.getsocialrush.com${path}`,
+          availability: "https://schema.org/InStock",
         },
       },
       {
