@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
-type Platform = "instagram" | "youtube" | "facebook" | "linkedin" | "tiktok";
+type Platform = "instagram" | "youtube" | "facebook" | "linkedin" | "tiktok" | "twitter" | "telegram";
 
 const groups = {
   instagram: {
@@ -62,6 +62,36 @@ const groups = {
       ["TikTok Saves", "/services/tiktok-saves"],
       ["TikTok Services", "/services/tiktok"],
       ["Creator Growth", "/creator-growth"],
+    ],
+  },
+  twitter: {
+    eyebrow: "X / Twitter topic cluster",
+    title: "Explore related X / Twitter growth services",
+    intro: "Compare follower, like, view, retweet and crypto-audience options from one connected X / Twitter service cluster.",
+    links: [
+      ["X / Twitter Growth", "/services/twitter-x"],
+      ["X / Twitter Followers", "/twitter-followers"],
+      ["X / Twitter Likes", "/services/twitter-likes"],
+      ["X / Twitter Views", "/services/twitter-views"],
+      ["X / Twitter Retweets", "/services/twitter-retweets"],
+      ["Crypto Followers", "/services/twitter-crypto-followers"],
+      ["Crypto Likes", "/services/twitter-crypto-likes"],
+      ["Crypto Retweets", "/services/twitter-crypto-retweets"],
+    ],
+  },
+  telegram: {
+    eyebrow: "Telegram topic cluster",
+    title: "Explore related Telegram growth services",
+    intro: "Compare member growth, post visibility, reactions and poll activity from the Telegram service hub.",
+    links: [
+      ["Telegram Services", "/services/telegram"],
+      ["Telegram Members", "/telegram-members"],
+      ["Telegram Post Views", "/services/telegram-post-views"],
+      ["Telegram Reactions", "/services/telegram-post-reactions"],
+      ["Telegram Poll Votes", "/services/telegram-poll-votes"],
+      ["All Services", "/services"],
+      ["For Brands", "/for-brands"],
+      ["For Agencies", "/for-agencies"],
     ],
   },
   youtube: {
