@@ -4,6 +4,7 @@ import Link from "next/link";
 import { ArrowRight, Check, CheckCircle2, ChevronDown, Clock3, Eye, Heart, Package, Play, RefreshCw, Search, ShieldCheck, Users, UsersRound, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformIcon from "@/components/PlatformIcon";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
 import { formatCurrency } from "@/lib/currency";
@@ -119,7 +120,7 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
   const visibleServices = showAll || query || type !== "all" ? services : services.slice(0, 6);
   const platformServiceCounts = useMemo(() => Object.fromEntries(platforms.map((id) => [id, catalogServices.filter((item) => item.platform === id).length])) as Record<SmmPlatformId, number>, [catalogServices]);
 
-  return <BlogShell><main className="sr-page relative overflow-x-clip pb-16 text-white sm:pb-20">
+  return <BlogShell><InteractiveHomepageShell><main className="sr-page relative overflow-x-clip pb-16 text-white sm:pb-20">
     <div className="pointer-events-none absolute inset-x-0 top-0 h-[32rem] bg-[radial-gradient(circle_at_12%_8%,rgba(255,122,0,.15),transparent_27rem),radial-gradient(circle_at_90%_20%,rgba(255,190,80,.08),transparent_24rem)]" />
 
     <section className="relative px-4 pb-6 pt-5 sm:px-6 sm:pb-8 sm:pt-8 lg:px-8">
@@ -171,5 +172,5 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
     <section aria-labelledby="services-faq-heading" className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-4xl"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-[10px] font-black tracking-[.16em] text-orange-300">HELPFUL ANSWERS</p><h2 id="services-faq-heading" className="mt-2 text-2xl font-black">Services FAQ</h2></div><Link href="/faq" className="inline-flex min-h-10 items-center gap-1 text-sm font-black text-orange-200 hover:text-orange-100">View All FAQs <ArrowRight className="h-4 w-4" /></Link></div><div className="mt-4 space-y-2">{serviceFaqs.map(([question, answer]) => <details key={question} className="group rounded-2xl border border-white/10 bg-[#111113] px-4"><summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 text-sm font-black [&::-webkit-details-marker]:hidden">{question}<ChevronDown className="h-4 w-4 shrink-0 text-orange-300 transition group-open:rotate-180" /></summary><p className="border-t border-white/[.08] py-4 text-sm leading-6 text-[#C7CBD3]">{answer}</p></details>)}</div></div></section>
 
     <section className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-7xl rounded-[1.6rem] border border-orange-400/20 bg-[radial-gradient(circle_at_80%_0%,rgba(255,153,0,.14),transparent_18rem),linear-gradient(120deg,#1c1208,#111113)] p-6 sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-7"><div><p className="text-[10px] font-black tracking-[.16em] text-orange-300">READY WHEN YOU ARE</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">Ready to Grow Your Social Presence?</h2><p className="mt-2 max-w-xl text-sm leading-6 text-[#C7CBD3]">Choose a service, review the current details and continue to your existing SocialRUSH order flow.</p></div><div className="mt-5 flex flex-wrap gap-3 sm:mt-0 sm:shrink-0"><Link href="/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black">Start Your Order <ArrowRight className="h-4 w-4" /></Link><Link href="/packages" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-5 text-sm font-black hover:border-orange-400/50">View Packages</Link></div></div></section>
-  </main></BlogShell>;
+  </main></InteractiveHomepageShell></BlogShell>;
 }
