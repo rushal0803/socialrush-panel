@@ -15,10 +15,10 @@ import { ArrowUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const interactiveCardSelector =
-  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .sr-service-card, .sr-platform-tile";
+  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .sr-service-card, .sr-platform-tile, .service-money-page article";
 
 const revealSelector =
-  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .final-cta, .sr-service-card, .sr-platform-tile";
+  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .final-cta, .sr-service-card, .sr-platform-tile, .service-money-page article";
 
 export default function InteractiveHomepageShell({
   children,
@@ -182,7 +182,8 @@ export default function InteractiveHomepageShell({
                 .demo-card,
                 .dashboard-preview,
                 .sr-service-card,
-                .sr-platform-tile
+                .sr-platform-tile,
+                .service-money-page article
               ) {
               transform:
                 perspective(900px)
@@ -202,7 +203,8 @@ export default function InteractiveHomepageShell({
                 .demo-card,
                 .dashboard-preview,
                 .sr-service-card,
-                .sr-platform-tile
+                .sr-platform-tile,
+                .service-money-page article
               )[data-sr-tilt-active="true"] {
               border-color: rgba(251, 146, 60, 0.34);
               box-shadow:
