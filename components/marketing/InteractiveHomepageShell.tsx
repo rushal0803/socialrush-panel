@@ -15,10 +15,10 @@ import { ArrowUp } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 
 const interactiveCardSelector =
-  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview";
+  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .sr-service-card, .sr-platform-tile";
 
 const revealSelector =
-  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .final-cta";
+  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .final-cta, .sr-service-card, .sr-platform-tile";
 
 export default function InteractiveHomepageShell({
   children,
@@ -175,12 +175,14 @@ export default function InteractiveHomepageShell({
 
         <style jsx global>{`
           @media (hover: hover) and (pointer: fine) {
-            .premium-homepage :is(
+            .sr-page :is(
                 .service-card,
                 .trust-card,
                 .growth-engine-node,
                 .demo-card,
-                .dashboard-preview
+                .dashboard-preview,
+                .sr-service-card,
+                .sr-platform-tile
               ) {
               transform:
                 perspective(900px)
@@ -193,12 +195,14 @@ export default function InteractiveHomepageShell({
                 box-shadow 220ms ease;
             }
 
-            .premium-homepage :is(
+            .sr-page :is(
                 .service-card,
                 .trust-card,
                 .growth-engine-node,
                 .demo-card,
-                .dashboard-preview
+                .dashboard-preview,
+                .sr-service-card,
+                .sr-platform-tile
               )[data-sr-tilt-active="true"] {
               border-color: rgba(251, 146, 60, 0.34);
               box-shadow:
@@ -209,9 +213,9 @@ export default function InteractiveHomepageShell({
           }
 
           @media (prefers-reduced-motion: reduce) {
-            .premium-homepage *,
-            .premium-homepage *::before,
-            .premium-homepage *::after {
+            .sr-page *,
+            .sr-page *::before,
+            .sr-page *::after {
               scroll-behavior: auto !important;
             }
           }
