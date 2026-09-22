@@ -12,13 +12,20 @@ import {
   useSpring,
 } from "framer-motion";
 import { ArrowUp } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+
+const interactiveCardSelector =
+  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview";
+
+const revealSelector =
+  ".service-card, .trust-card, .growth-engine-node, .demo-card, .dashboard-preview, .final-cta";
 
 export default function InteractiveHomepageShell({
   children,
 }: {
   children: ReactNode;
 }) {
+  const rootRef = useRef<HTMLDivElement>(null);
   const reduceMotion = useReducedMotion();
   const { scrollYProgress } = useScroll();
   const progress = useSpring(scrollYProgress, {
@@ -32,26 +39,95 @@ export default function InteractiveHomepageShell({
   const [showTop, setShowTop] = useState(false);
 
   useEffect(() => {
+    const root = rootRef.current;
     const updateScrollState = () => setShowTop(window.scrollY > 720);
     const updatePointer = (event: PointerEvent) => {
       if (reduceMotion || event.pointerType === "touch") return;
       pointerX.set((event.clientX / window.innerWidth) * 100);
       pointerY.set((event.clientY / window.innerHeight) * 100);
     };
+    const tiltCard = (event: PointerEvent) => {
+      if (reduceMotion || event.pointerType === "touch") return;
+      const card = (event.target as Element).closest(
+        interactiveCardSelector,
+      ) as HTMLElement | null;
+      if (!card || !root?.contains(card)) return;
+
+      const bounds = card.getBoundingClientRect();
+      const relativeX = (event.clientX - bounds.left) / bounds.width;
+      const relativeY = (event.clientY - bounds.top) / bounds.height;
+      card.style.setProperty("--sr-tilt-x", `${(0.5 - relativeY) * 5}deg`);
+      card.style.setProperty("--sr-tilt-y", `${(relativeX - 0.5) * 6}deg`);
+      card.style.setProperty("--sr-glow-x", `${relativeX * 100}%`);
+      card.style.setProperty("--sr-glow-y", `${relativeY * 100}%`);
+      card.dataset.srTiltActive = "true";
+    };
+    const resetCard = (event: PointerEvent) => {
+      const card = (event.target as Element).closest(
+        interactiveCardSelector,
+      ) as HTMLElement | null;
+      if (!card) return;
+      const nextTarget = event.relatedTarget;
+      if (nextTarget instanceof Node && card.contains(nextTarget)) return;
+
+      card.style.removeProperty("--sr-tilt-x");
+      card.style.removeProperty("--sr-tilt-y");
+      delete card.dataset.srTiltActive;
+    };
 
     updateScrollState();
     window.addEventListener("scroll", updateScrollState, { passive: true });
     window.addEventListener("pointermove", updatePointer, { passive: true });
+    root?.addEventListener("pointermove", tiltCard, { passive: true });
+    root?.addEventListener("pointerout", resetCard, { passive: true });
+
+    const revealItems = root
+      ? Array.from(root.querySelectorAll<HTMLElement>(revealSelector))
+      : [];
+    const observer =
+      reduceMotion || revealItems.length === 0
+        ? null
+        : new IntersectionObserver(
+            (entries) => {
+              for (const entry of entries) {
+                if (!entry.isIntersecting) continue;
+                const item = entry.target as HTMLElement;
+                const index = Number(item.dataset.srRevealIndex || 0);
+                item.animate(
+                  [
+                    { opacity: 0.72, transform: "translateY(18px) scale(.985)" },
+                    { opacity: 1, transform: "translateY(0) scale(1)" },
+                  ],
+                  {
+                    duration: 480,
+                    delay: (index % 4) * 45,
+                    easing: "cubic-bezier(.22,1,.36,1)",
+                    fill: "both",
+                  },
+                );
+                observer?.unobserve(item);
+              }
+            },
+            { threshold: 0.12, rootMargin: "0px 0px -7% 0px" },
+          );
+
+    revealItems.forEach((item, index) => {
+      item.dataset.srRevealIndex = String(index);
+      observer?.observe(item);
+    });
 
     return () => {
       window.removeEventListener("scroll", updateScrollState);
       window.removeEventListener("pointermove", updatePointer);
+      root?.removeEventListener("pointermove", tiltCard);
+      root?.removeEventListener("pointerout", resetCard);
+      observer?.disconnect();
     };
   }, [pointerX, pointerY, reduceMotion]);
 
   return (
     <LazyMotion features={domAnimation}>
-      <div className="relative isolate">
+      <div ref={rootRef} className="relative isolate">
         <m.div
           aria-hidden="true"
           className="pointer-events-none fixed inset-x-0 top-0 z-[80] h-[3px] origin-left bg-gradient-to-r from-orange-500 via-amber-300 to-orange-500"
@@ -96,6 +172,50 @@ export default function InteractiveHomepageShell({
         >
           <ArrowUp className="h-5 w-5" />
         </m.button>
+
+        <style jsx global>{`
+          @media (hover: hover) and (pointer: fine) {
+            .premium-homepage :is(
+                .service-card,
+                .trust-card,
+                .growth-engine-node,
+                .demo-card,
+                .dashboard-preview
+              ) {
+              transform:
+                perspective(900px)
+                rotateX(var(--sr-tilt-x, 0deg))
+                rotateY(var(--sr-tilt-y, 0deg));
+              transform-style: preserve-3d;
+              transition:
+                transform 220ms cubic-bezier(.22, 1, .36, 1),
+                border-color 220ms ease,
+                box-shadow 220ms ease;
+            }
+
+            .premium-homepage :is(
+                .service-card,
+                .trust-card,
+                .growth-engine-node,
+                .demo-card,
+                .dashboard-preview
+              )[data-sr-tilt-active="true"] {
+              border-color: rgba(251, 146, 60, 0.34);
+              box-shadow:
+                0 22px 55px rgba(0, 0, 0, 0.32),
+                0 0 0 1px rgba(251, 146, 60, 0.08),
+                inset 0 1px 0 rgba(255, 255, 255, 0.06);
+            }
+          }
+
+          @media (prefers-reduced-motion: reduce) {
+            .premium-homepage *,
+            .premium-homepage *::before,
+            .premium-homepage *::after {
+              scroll-behavior: auto !important;
+            }
+          }
+        `}</style>
       </div>
     </LazyMotion>
   );
