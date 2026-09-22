@@ -16,9 +16,10 @@ const canonicalServicePaths: Record<string, string> = {
   "linkedin-usa-custom-comments": "/services/linkedin-usa-custom-comments",
   "x-followers": "/twitter-followers",
   "tiktok-followers": "/tiktok-followers",
+  "telegram-members": "/telegram-members",
 };
 
-const copy: Record<"linkedin" | "x" | "tiktok", { eyebrow: string; title: string; intro: string; guide: string; benefits: string[] }> = {
+const copy: Record<"linkedin" | "x" | "tiktok" | "telegram", { eyebrow: string; title: string; intro: string; guide: string; benefits: string[] }> = {
   linkedin: {
     eyebrow: "LINKEDIN GROWTH SERVICES",
     title: "LinkedIn Growth Services for Profiles, Posts and Communities",
@@ -33,6 +34,13 @@ const copy: Record<"linkedin" | "x" | "tiktok", { eyebrow: string; title: string
     guide: "Select the X service that matches your campaign, confirm the correct public profile or post link, then review the service details before checkout.",
     benefits: ["Follower growth options", "Post engagement services", "Crypto-focused options", "Public-link ordering"],
   },
+  telegram: {
+    eyebrow: "TELEGRAM GROWTH SERVICES",
+    title: "Telegram Growth Services for Members, Views, Reactions and Polls",
+    intro: "Explore SocialRUSH Telegram services for channel or group members, post views, reactions and poll votes from one focused service hub.",
+    guide: "Choose the Telegram service that matches your goal, use the exact public channel, group, post or poll link requested, and review current service details before ordering.",
+    benefits: ["Community growth", "Post visibility", "Reaction activity", "Poll engagement"],
+  },
   tiktok: {
     eyebrow: "TIKTOK GROWTH SERVICES",
     title: "TikTok Growth Services for Followers, Views and Engagement",
@@ -46,7 +54,7 @@ function hrefFor(code: string) {
   return canonicalServicePaths[code] ?? `/services/${code}`;
 }
 
-export default function PlatformServicesLanding({ platform }: { platform: "linkedin" | "x" | "tiktok" }) {
+export default function PlatformServicesLanding({ platform }: { platform: "linkedin" | "x" | "tiktok" | "telegram" }) {
   const meta = platformMeta[platform];
   const services = activeSmmServices.filter((service) => service.platform === platform);
   const pageCopy = copy[platform];

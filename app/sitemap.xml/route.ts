@@ -11,6 +11,25 @@ import { countryServicePaths, internationalHubPaths } from "@/lib/seo/internatio
 
 export const revalidate = 21600;
 
+
+const supplementalServiceRoutes = [
+  "/services/tiktok-likes",
+  "/services/tiktok-views",
+  "/services/tiktok-custom-comments",
+  "/services/tiktok-story-views",
+  "/services/tiktok-saves",
+  "/services/telegram-post-views",
+  "/services/telegram-post-reactions",
+  "/services/telegram-poll-votes",
+  "/services/twitter-likes",
+  "/services/twitter-views",
+  "/services/twitter-retweets",
+  "/services/twitter-crypto-followers",
+  "/services/twitter-crypto-likes",
+  "/services/twitter-crypto-retweets",
+  "/services/twitter-crypto-custom-comments",
+] as const;
+
 const publicRoutes = [
   "/",
   "/about",
@@ -18,6 +37,7 @@ const publicRoutes = [
   "/services/linkedin",
   "/services/twitter-x",
   "/services/tiktok",
+  "/services/telegram",
   "/pricing",
   "/packages",
   "/blog",
@@ -118,6 +138,7 @@ export async function GET() {
       ...internationalHubPaths,
       ...countryServicePaths,
       ...serviceRoutes,
+      ...supplementalServiceRoutes,
       ...blogRoutes,
       ...caseStudyRoutes,
     ]),
