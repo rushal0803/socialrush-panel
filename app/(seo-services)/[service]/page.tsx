@@ -16,6 +16,7 @@ import TwitterFollowersLanding from "@/components/marketing/TwitterFollowersLand
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import YouTubeEngagementJsonLd from "@/components/seo/YouTubeEngagementJsonLd";
 import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
+import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { tiktokFollowersFaqs } from "@/lib/seo/tiktok-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -59,8 +60,8 @@ export default function CanonicalServicePage({
 
   // Instagram Likes has a purpose-built conversion page. Its order builder reads
   // the exact `instagram-likes` catalog entry used by Services and New Order.
-  if (slug === "buy-instagram-likes-india") return <><IndiaCommercialServiceJsonLd code="instagram-likes" name="Instagram Likes" path="/instagram-likes" platform="Instagram" serviceType="Instagram likes service" /><InstagramLikesPage /></>;
-  if (slug === "buy-instagram-views-india") return <><IndiaCommercialServiceJsonLd code="instagram-views" name="Instagram Views" path="/instagram-views" platform="Instagram" serviceType="Instagram views service" /><InstagramViewsPage /></>;
+  if (slug === "buy-instagram-likes-india") return <><IndiaCommercialServiceJsonLd code="instagram-likes" name="Instagram Likes" path="/instagram-likes" platform="Instagram" serviceType="Instagram likes service" /><InstagramLikesPage /><MoneyPageAuthorityLinks platform="instagram" /></>;
+  if (slug === "buy-instagram-views-india") return <><IndiaCommercialServiceJsonLd code="instagram-views" name="Instagram Views" path="/instagram-views" platform="Instagram" serviceType="Instagram views service" /><InstagramViewsPage /><MoneyPageAuthorityLinks platform="instagram" /></>;
   // The canonical route is /youtube-likes; reuse the dedicated visual
   // experience instead of the generic India template.
   if (slug === "buy-youtube-likes-india") return <YouTubeLikesPage />;
@@ -82,10 +83,10 @@ export default function CanonicalServicePage({
       ["What if I submit the wrong channel link?", "Verify the public channel link carefully before payment. Contact support from your dashboard if you need help with an order."],
     ];
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) }).replace(/</g, "\\u003c");
-    return <><IndiaCommercialServiceJsonLd code="youtube-subscribers" name="YouTube Subscribers" path="/youtube-subscribers" platform="YouTube" serviceType="YouTube subscribers service" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeSubscribersLanding /></>;
+    return <><IndiaCommercialServiceJsonLd code="youtube-subscribers" name="YouTube Subscribers" path="/youtube-subscribers" platform="YouTube" serviceType="YouTube subscribers service" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeSubscribersLanding /><MoneyPageAuthorityLinks platform="youtube" /></>;
   }
   if (slug === "buy-youtube-views-india") {
-    return <><YouTubeEngagementJsonLd code="youtube-views" name="YouTube Views" path="/youtube-views" /><YouTubeViewsLanding /></>;
+    return <><YouTubeEngagementJsonLd code="youtube-views" name="YouTube Views" path="/youtube-views" /><YouTubeViewsLanding /><MoneyPageAuthorityLinks platform="youtube" /></>;
   }
   if (slug === "buy-facebook-followers-india") return <FacebookFollowersLanding />;
   if (slug === "buy-facebook-views-india") return <FacebookViewsLanding />;
