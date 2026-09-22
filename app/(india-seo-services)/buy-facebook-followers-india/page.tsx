@@ -1,6 +1,5 @@
 import FacebookFollowersLanding from "@/components/marketing/FacebookFollowersLanding";
 import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
-import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 
@@ -20,7 +19,6 @@ function jsonLd(value: object) {
 }
 
 export default function Page() {
-  const url = `${SEO_SITE_URL}/buy-facebook-followers-india`;
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
   return <><IndiaCommercialServiceJsonLd code="facebook-followers" name="Facebook Followers" path="/buy-facebook-followers-india" platform="Facebook" serviceType="Facebook followers service" /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(faqSchema) }} /><FacebookFollowersLanding /><MoneyPageAuthorityLinks platform="facebook" /></>;
 }
