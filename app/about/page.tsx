@@ -2,6 +2,7 @@ import Link from "next/link";
 import MarketingIcon, { type MarketingIconName } from "@/components/marketing/MarketingIcon";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
@@ -74,6 +75,7 @@ function ProductPreview({ compact = false }: { compact?: boolean }) {
 export default function AboutPage() {
   return <PublicShell>
     <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "About", path: "/about" }]} />
+    <InteractiveHomepageShell><div className="service-money-page">
 
     <section className="relative isolate overflow-hidden border-b border-white/[.07] px-4 pb-16 pt-14 sm:px-6 sm:pb-24 sm:pt-20 lg:px-8 lg:pb-28">
       <div className="pointer-events-none absolute left-[8%] top-[-15rem] h-[34rem] w-[34rem] rounded-full bg-orange-500/[.16] blur-[120px]" />
@@ -115,5 +117,6 @@ export default function AboutPage() {
     <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-5 md:grid-cols-[.9fr_1.1fr] md:items-center"><div><PanelLabel>Clear services. No unrealistic promises.</PanelLabel><h2 className="mt-3 text-2xl font-black tracking-[-.035em] text-white sm:text-3xl">A service does not guarantee virality, rankings, sales or revenue.</h2></div><p className="text-sm leading-7 text-[#A8AFBD]">Social growth services are one part of a wider presence. Content quality, relevance, audience fit and platform dynamics still matter. We focus on making the ordering experience and campaign details clearer—not on promising outcomes nobody can responsibly guarantee.</p></div></section>
 
     <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24"><div className="relative mx-auto max-w-7xl overflow-hidden rounded-[2rem] border border-orange-400/25 bg-gradient-to-br from-[#17110C] via-[#101219] to-[#0B0D13] p-7 text-center shadow-[0_35px_90px_-42px_rgba(255,118,0,.55)] sm:p-12"><div className="pointer-events-none absolute left-1/2 top-0 h-56 w-[36rem] max-w-full -translate-x-1/2 bg-orange-500/[.18] blur-[90px]" /><div className="relative"><PanelLabel>SocialRUSH</PanelLabel><h2 className="mx-auto mt-3 max-w-3xl text-3xl font-black tracking-[-.05em] text-white sm:text-5xl">Ready to explore SocialRUSH?</h2><p className="mx-auto mt-5 max-w-2xl text-sm leading-7 text-[#B9C0CC]">Browse available services, compare pricing and choose the option that fits your goal.</p><div className="mt-8 flex flex-col justify-center gap-3 min-[420px]:flex-row"><Link href="/services" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-6 py-3 text-sm font-black text-white transition hover:-translate-y-0.5">Explore Services <MarketingIcon name="arrow" className="h-4 w-4" /></Link><Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/[.05] px-6 py-3 text-sm font-black text-white transition hover:bg-white/[.09]">View Packages</Link><Link href="/contact" className="inline-flex min-h-12 items-center justify-center px-5 py-3 text-sm font-black text-orange-200 hover:text-white">Contact Us</Link></div></div></div></section>
+    </div></InteractiveHomepageShell>
   </PublicShell>;
 }
