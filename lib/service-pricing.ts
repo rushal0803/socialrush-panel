@@ -9,7 +9,7 @@ export const SERVICE_PRICES = {
   // UI fallback only; New Order and checkout replace this with the active
   // Supabase service row before an Instagram Shares order is priced.
   "instagram-shares": 199,
-  "youtube-subscribers": 3999,
+  "youtube-subscribers": 6999,
   "youtube-likes": 499,
   "youtube-views": 249,
   // This code is intentionally not a public price. YouTube Comments is
