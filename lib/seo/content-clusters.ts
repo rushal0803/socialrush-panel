@@ -109,7 +109,13 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
     label: "TikTok",
     hubPath: "/tiktok-growth-india",
     hubLabel: "TikTok growth hub",
-    serviceLinks: [{ label: "Buy TikTok followers in India", href: "/tiktok-followers" }],
+    serviceLinks: [
+      { label: "Buy TikTok followers in India", href: "/tiktok-followers" },
+      { label: "Buy TikTok likes", href: "/services/tiktok-likes" },
+      { label: "Buy TikTok views", href: "/services/tiktok-views" },
+      { label: "Buy TikTok custom comments", href: "/services/tiktok-custom-comments" },
+      { label: "Buy TikTok saves", href: "/services/tiktok-saves" },
+    ],
     guideLinks: [
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "Social media growth strategy for Indian creators", href: "/blog/social-media-growth-strategy-indian-creators" },
