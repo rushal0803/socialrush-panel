@@ -3,6 +3,7 @@ import PlatformIcon from "@/components/PlatformIcon";
 import CurrencyAmount from "@/components/currency/CurrencyAmount";
 import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
+import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
@@ -35,6 +36,8 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
   const platform = platformMeta[service.platform];
   const orderHref = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
   const canonical = `${SEO_SITE_URL}/services/${service.code}`;
+  const authorityPlatform = service.platform === "x" ? "twitter" : service.platform;
+  const supportsAuthorityCluster = ["instagram", "youtube", "facebook", "linkedin", "tiktok", "twitter", "telegram"].includes(authorityPlatform);
 
   const faq = [
     [
@@ -199,6 +202,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
           </section>
         </div>
       </div></InteractiveHomepageShell>
+      {supportsAuthorityCluster ? <MoneyPageAuthorityLinks platform={authorityPlatform as "instagram" | "youtube" | "facebook" | "linkedin" | "tiktok" | "twitter" | "telegram"} /> : null}
     </PublicShell>
   );
 }
