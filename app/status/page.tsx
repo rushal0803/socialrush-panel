@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import StatusContent from "./status-content";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 
 export const metadata: Metadata = {
   title: { absolute: "Service Status | SocialRUSH" },
@@ -8,5 +9,5 @@ export const metadata: Metadata = {
 };
 
 export default function StatusPage() {
-  return <StatusContent />;
+  return <InteractiveHomepageShell><div className="service-money-page"><StatusContent /></div></InteractiveHomepageShell>;
 }
