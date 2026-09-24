@@ -11,12 +11,10 @@ import { countryServicePaths, internationalHubPaths } from "@/lib/seo/internatio
 
 export const revalidate = 21600;
 
-
 const supplementalServiceRoutes = [
   "/services/tiktok-likes",
   "/services/tiktok-views",
   "/services/tiktok-custom-comments",
-  "/services/tiktok-story-views",
   "/services/tiktok-saves",
   "/services/telegram-post-views",
   "/services/telegram-post-reactions",
