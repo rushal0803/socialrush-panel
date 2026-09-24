@@ -94,6 +94,11 @@ const nextConfig = {
         permanent: true,
       },
       {
+        source: "/buy-linkedin-likes-india",
+        destination: "/linkedin-likes",
+        permanent: true,
+      },
+      {
         source: "/blog/linkedin-growth-tips-for-personal-brands",
         destination: "/blog/linkedin-growth-tips-personal-brands",
         permanent: true,

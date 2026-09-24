@@ -138,6 +138,20 @@ export default function PlatformServicesLanding({ platform }: { platform: "linke
           </div>
         </section>
 
+        {platform === "linkedin" && (
+          <section className="relative px-4 pb-10 sm:px-6 lg:px-8" aria-labelledby="linkedin-guides-title">
+            <div className="mx-auto max-w-7xl rounded-[1.7rem] border border-white/10 bg-[#111318] p-6 sm:p-9">
+              <h2 id="linkedin-guides-title" className="text-2xl font-black tracking-tight sm:text-3xl">Choose the right LinkedIn signal</h2>
+              <p className="mt-3 max-w-3xl text-sm leading-7 text-white/65">Followers build a visible audience on a profile or company page. Connections concern a personal profile network. Likes, comments and reposts apply to individual posts; group members and skill endorsements have different destinations. Check each service page for eligibility and current catalog details.</p>
+              <div className="mt-5 flex flex-wrap gap-x-6 gap-y-3 text-sm font-bold text-orange-200">
+                <Link href="/linkedin-growth-india" className="hover:text-white">LinkedIn growth in India</Link>
+                <Link href="/blog/linkedin-followers-vs-engagement-india" className="hover:text-white">Followers vs engagement guide</Link>
+                <Link href="/blog/linkedin-followers-for-business-growth" className="hover:text-white">Followers for business growth</Link>
+              </div>
+            </div>
+          </section>
+        )}
+
         <section className="relative px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.7rem] border border-orange-400/20 bg-gradient-to-br from-orange-500/[.12] to-white/[.025] p-6 sm:p-9">
             <h2 className="text-2xl font-black tracking-tight sm:text-3xl">Ready to choose your {meta.label} service?</h2>
