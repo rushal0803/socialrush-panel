@@ -10,7 +10,6 @@ import {
   Link2,
   MessageCircle,
   MousePointerClick,
-  Share2,
   ShieldCheck,
   Sparkles,
   Users,
