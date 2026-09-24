@@ -13,6 +13,7 @@ const guidance: Record<ContentPlatform, readonly string[]> = {
   twitter: ["Choose a clear topic and point of view.", "Write posts people can respond to or share.", "Review audience quality alongside follower growth."],
   facebook: ["Keep page details and contact paths accurate.", "Publish locally useful, easy-to-understand posts.", "Measure messages and enquiries as well as reactions."],
   tiktok: ["Make the first seconds clear and specific.", "Use formats that fit the intended audience.", "Review completion, comments and follows together."],
+  telegram: ["Give the channel or group a clear purpose.", "Publish useful updates consistently.", "Review views, reactions and member activity together."],
 };
 
 export default function PlatformGrowthHub({ platform }: { platform: ContentPlatform }) {
