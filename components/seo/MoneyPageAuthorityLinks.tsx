@@ -104,7 +104,7 @@ const groups = {
       ["YouTube Views", "/youtube-views"],
       ["YouTube Likes", "/youtube-likes"],
       ["YouTube Comments", "/buy-youtube-comments-india"],
-      ["YouTube Watch Hours", "/buy-youtube-watch-hours-india"],
+      ["YouTube Watch Hours", "/youtube-watch-hours"],
       ["YouTube Engagement Calculator", "/tools/youtube-engagement-rate-calculator"],
       ["Creator Growth", "/creator-growth"],
     ],
