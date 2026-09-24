@@ -38,7 +38,76 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
   return <main className="dashboard-premium-page dashboard-home-page mx-auto w-full max-w-[1500px] overflow-x-clip px-4 pb-10 pt-5 text-white sm:px-6 sm:pt-7 lg:px-8">
     <header className="sr-dashboard-hero relative overflow-hidden rounded-[1.35rem] border border-orange-400/20 bg-[radial-gradient(circle_at_85%_0%,rgba(255,137,20,.18),transparent_34%),linear-gradient(125deg,#17150f,#101218_60%,#101116)] p-5 shadow-[0_24px_70px_-48px_rgba(255,122,0,.85)] sm:p-6">
       <div aria-hidden className="pointer-events-none absolute inset-0 opacity-30 [background-image:linear-gradient(rgba(255,190,110,.12)_1px,transparent_1px),linear-gradient(90deg,rgba(255,190,110,.12)_1px,transparent_1px)] [background-size:32px_32px] [mask-image:linear-gradient(125deg,black,transparent_70%)]" />
-      <div className="sr-dashboard-hero-content relative flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between"><div><p className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[.16em] text-orange-200"><ShieldCheck className="h-3.5 w-3.5" />Secure customer account</p><h1 className="mt-2 text-3xl font-black tracking-tight sm:text-4xl">{greeting}{userName ? `, ${userName}` : ""}</h1><p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">Manage your campaigns, orders and account from one place.</p><div className="mt-4 flex flex-wrap gap-2 text-[10px] font-bold text-slate-300"><span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Track live orders</span><span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Repeat campaigns faster</span><span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Wallet & support in one place</span></div></div><Link href="/dashboard/new-order" className="btn-dashboard-primary gap-2 px-5 text-sm"><Plus className="h-4 w-4" />Start New Campaign</Link></div>
+      <div className="sr-dashboard-hero-content relative grid gap-6 lg:grid-cols-[1.15fr_.85fr] lg:items-stretch">
+        <div className="flex flex-col justify-center">
+          <p className="inline-flex w-fit items-center gap-2 rounded-full border border-orange-300/20 bg-orange-400/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[.16em] text-orange-200">
+            <ShieldCheck className="h-3.5 w-3.5" />
+            SocialRUSH Command Center
+          </p>
+          <h1 className="mt-4 text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl">
+            {greeting}{userName ? `, ${userName}` : ""}
+            <span className="mt-1 block bg-gradient-to-r from-orange-300 via-amber-200 to-orange-300 bg-clip-text text-transparent">
+              Ready for your next campaign?
+            </span>
+          </h1>
+          <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
+            Manage orders, wallet activity, saved profiles and support from one focused workspace.
+          </p>
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <Link href="/dashboard/new-order" className="btn-dashboard-primary min-h-12 gap-2 px-5 text-sm">
+              <Plus className="h-4 w-4" />
+              Start New Campaign
+            </Link>
+            <Link href="/dashboard/orders" className="btn-dashboard-secondary min-h-12 gap-2 px-5 text-sm">
+              <LayoutList className="h-4 w-4" />
+              View My Orders
+            </Link>
+          </div>
+          <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold text-slate-300">
+            <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Live order tracking</span>
+            <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Faster repeat campaigns</span>
+            <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Secure account support</span>
+          </div>
+        </div>
+
+        <aside className="sr-dashboard-wallet-card relative overflow-hidden rounded-2xl border border-orange-300/20 bg-black/25 p-5 backdrop-blur sm:p-6" aria-label="Wallet summary">
+          <div aria-hidden className="absolute -right-12 -top-12 h-40 w-40 rounded-full bg-orange-400/15 blur-3xl" />
+          <div className="relative flex items-center justify-between gap-3">
+            <span className="grid h-11 w-11 place-items-center rounded-xl border border-orange-300/20 bg-orange-400/10 text-orange-300">
+              <Wallet className="h-5 w-5" />
+            </span>
+            <span className="inline-flex items-center gap-1.5 rounded-full border border-emerald-300/20 bg-emerald-400/10 px-2.5 py-1 text-[10px] font-black text-emerald-200">
+              <i className="h-1.5 w-1.5 rounded-full bg-emerald-300" />
+              Account active
+            </span>
+          </div>
+          <div className="relative mt-7">
+            <p className="text-[10px] font-black uppercase tracking-[.16em] text-slate-400">Available wallet balance</p>
+            <p className="mt-2 text-4xl font-black tracking-[-.04em] text-white sm:text-5xl">{money(walletBalance)}</p>
+            <p className="mt-2 text-xs leading-5 text-slate-400">
+              {walletBalance > 0 ? "Ready to use for your next order." : "Add funds now or pay during checkout."}
+            </p>
+          </div>
+          <div className="relative mt-6 grid grid-cols-2 gap-2">
+            <Link href="/dashboard/add-funds" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-500 px-3 text-xs font-black text-white">
+              Add Funds
+            </Link>
+            <Link href="/dashboard/wallet" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/15 bg-white/[.04] px-3 text-xs font-black text-slate-100">
+              Wallet History
+            </Link>
+          </div>
+          <div className="relative mt-4 grid grid-cols-2 gap-2 border-t border-white/[.08] pt-4">
+            <div>
+              <p className="text-xl font-black text-orange-200">{activeOrders}</p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-[.1em] text-slate-500">Active orders</p>
+            </div>
+            <div>
+              <p className="text-xl font-black text-emerald-300">{completedOrders}</p>
+              <p className="mt-1 text-[10px] font-bold uppercase tracking-[.1em] text-slate-500">Completed</p>
+            </div>
+          </div>
+        </aside>
+      </div>
       <div className="sr-dashboard-status-rail relative mt-5 flex gap-x-4 gap-y-2 overflow-x-auto border-t border-white/10 pt-4 text-xs text-slate-300 sm:flex-wrap sm:overflow-visible"><span className="inline-flex items-center gap-2"><i className="h-2 w-2 rounded-full bg-emerald-400" />Account Active</span><Link href="/dashboard/add-funds" className="whitespace-nowrap transition hover:text-white">Wallet <b className="text-white">{money(walletBalance)}</b></Link><Link href="/dashboard/orders" className="whitespace-nowrap transition hover:text-white"><b className="text-white">{activeOrders}</b> Active Orders</Link>{openTickets ? <Link href="/dashboard/support" className="whitespace-nowrap transition hover:text-white"><b className="text-white">{openTickets}</b> Open {openTickets === 1 ? "Ticket" : "Tickets"}</Link> : <Link href="/dashboard/support" className="whitespace-nowrap text-emerald-300 transition hover:text-emerald-200">Support: All Clear</Link>}</div>
       <nav aria-label="Hero quick actions" className="sr-dashboard-quick-actions relative mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/add-funds"><CreditCard className="h-4 w-4" />Add Funds</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/orders"><LayoutList className="h-4 w-4" />Track Orders</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/support"><CircleHelp className="h-4 w-4" />Contact Support</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/saved-profiles"><HeartHandshake className="h-4 w-4" />Saved Profiles</Link></nav>
     </header>
