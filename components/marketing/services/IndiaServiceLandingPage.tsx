@@ -629,6 +629,32 @@ export default async function IndiaServiceLandingPage({
         </div>
       </section>
 
+      {page.platformKey === "linkedin" && (
+        <section className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8" aria-labelledby="linkedin-service-choice">
+          <div className="mx-auto max-w-7xl">
+            <h2 id="linkedin-service-choice" className="text-3xl font-black tracking-tight text-[#0B0B0F]">Which LinkedIn service fits your goal?</h2>
+            <p className="mt-3 max-w-3xl text-sm leading-7 text-[#374151]">Choose by the destination you can share and the visible activity you want. Review the current catalog terms on the individual service page before ordering.</p>
+            <div className="mt-7 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
+              {[
+                { name: "LinkedIn followers in India", href: "/linkedin-followers", purpose: "Audience count on an eligible profile or company page", url: "Public profile or company page URL" },
+                { name: "LinkedIn post likes in India", href: "/linkedin-likes", purpose: "Visible engagement on one eligible post", url: "Exact public post URL" },
+                { name: "LinkedIn USA connections", href: "/services/linkedin-usa-connections", purpose: "Connection activity for an eligible personal profile", url: "Public personal profile URL" },
+                { name: "LinkedIn USA group members", href: "/services/linkedin-usa-group-members", purpose: "Member activity for an eligible group", url: "LinkedIn Group URL" },
+                { name: "LinkedIn USA custom comments", href: "/services/linkedin-usa-custom-comments", purpose: "Customer-provided text on an eligible post", url: "Exact public post URL and comment text" },
+                { name: "LinkedIn USA reposts", href: "/services/linkedin-usa-reposts", purpose: "Repost activity on an eligible post", url: "Exact public post URL" },
+              ].map((option) => (
+                <Link key={option.href} href={option.href} className="rounded-2xl border border-orange-100 bg-white p-5 transition hover:border-orange-400 hover:shadow-lg">
+                  <h3 className="font-black text-[#0B0B0F]">{option.name}</h3>
+                  <p className="mt-2 text-sm leading-6 text-[#374151]">{option.purpose}</p>
+                  <p className="mt-3 text-xs font-bold text-[#9A4B00]">Submit: {option.url}</p>
+                </Link>
+              ))}
+            </div>
+            <Link href="/services/linkedin" className="mt-6 inline-flex min-h-11 items-center font-bold text-[#9A4B00] underline underline-offset-4">Compare all LinkedIn services</Link>
+          </div>
+        </section>
+      )}
+
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
           <h2 className="text-3xl font-black tracking-tight text-[#0B0B0F]">
