@@ -184,7 +184,7 @@ const packageDefinitions: BigPackage[] = [
     title: "1K Subscribers",
     quantity: 1000,
     quantityLabel: "1,000",
-    basePriceINR: 3999,
+    basePriceINR: 5999,
     deliveryTime: "3–7 days",
     description: "Reach 1,000 YouTube subscribers milestone.",
     bestFor: "New YouTube channels",
