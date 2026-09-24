@@ -4,6 +4,7 @@ import {
   FileText, Link2, MessageCircle, ShieldCheck, WalletCards,
 } from "lucide-react";
 import PublicShell from "./PublicShell";
+import InteractiveHomepageShell from "./InteractiveHomepageShell";
 
 type Section = { id: string; title: string; body: string[]; bullets?: string[] };
 
@@ -32,7 +33,7 @@ const overview = [
 
 export default function TermsCenter() {
   return <PublicShell>
-    <div className="relative overflow-x-clip bg-[#08090d] text-white">
+    <InteractiveHomepageShell><div className="service-money-page relative overflow-x-clip bg-[#08090d] text-white">
       <div className="pointer-events-none absolute inset-x-0 top-0 h-[38rem] bg-[radial-gradient(circle_at_14%_5%,rgba(255,117,24,.19),transparent_32%),radial-gradient(circle_at_85%_12%,rgba(245,158,11,.12),transparent_30%)]" />
       <main className="relative">
         <section className="border-b border-white/[.08] px-4 py-12 sm:px-6 sm:py-16 lg:px-8 lg:py-20">
@@ -53,7 +54,7 @@ export default function TermsCenter() {
 
         <section className="px-4 pb-16 sm:px-6 lg:px-8 lg:pb-24"><div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-[1.05fr_.95fr]"><div className="rounded-[28px] border border-white/[.1] bg-[#10131b] p-6 sm:p-8"><p className="text-[10px] font-black tracking-[.18em] text-orange-300">TERMS FAQ</p><h2 className="mt-3 text-2xl font-black">Quick answers</h2><div className="mt-5 divide-y divide-white/[.08]">{[["Do I need to provide my social media password?", "No. Do not share your social media password, OTP, or recovery code with SocialRUSH."],["Can I cancel an order after it starts?", "Cancellation and refund eligibility follows the Refund Policy. Processing or delivered campaigns may not be refundable."],["Are all services eligible for refill?", "No. Only services marked refill eligible receive coverage, and only during the displayed period."],["How long does delivery take?", "Delivery timing is an estimate and can vary with platform changes, availability, destination settings, quantity, and external conditions."]].map(([q,a]) => <details key={q} className="group py-2"><summary className="flex min-h-12 cursor-pointer list-none items-center justify-between gap-3 text-sm font-bold"><span>{q}</span><span className="text-orange-300 group-open:rotate-45">+</span></summary><p className="pb-4 pr-6 text-sm leading-7 text-slate-400">{a}</p></details>)}</div></div><aside className="rounded-[28px] border border-orange-300/20 bg-[radial-gradient(circle_at_top_right,rgba(249,115,22,.17),transparent_46%),#10131b] p-6 sm:p-8"><WalletCards className="h-7 w-7 text-orange-300" /><p className="mt-5 text-[10px] font-black tracking-[.18em] text-orange-200">RELATED POLICIES & HELP</p><h2 className="mt-3 text-2xl font-black">Find the right guidance.</h2><div className="mt-6 grid gap-2">{[["Privacy Policy", "/privacy-policy"],["Refund Policy", "/refund-policy"],["Customer Safety", "/trust"],["FAQ", "/faq"],["Contact Support", "/contact"]].map(([label, href]) => <Link key={href} href={href} className="flex min-h-11 items-center justify-between rounded-xl border border-white/[.1] bg-black/15 px-4 text-sm font-bold hover:border-orange-300/40">{label}<ExternalLink className="h-4 w-4 text-orange-300" /></Link>)}</div></aside></div></section>
       </main>
-    </div>
+    </div></InteractiveHomepageShell>
   </PublicShell>;
 }
 
