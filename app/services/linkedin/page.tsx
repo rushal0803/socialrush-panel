@@ -5,6 +5,10 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 const path = "/services/linkedin";
 const services = activeSmmServices.filter((service) => service.platform === "linkedin");
+const canonicalCorePaths: Record<string, string> = {
+  "linkedin-followers": "/linkedin-followers",
+  "linkedin-likes": "/linkedin-likes",
+};
 
 export const metadata = createPageMetadata({
   title: "LinkedIn Growth Services | Followers, Likes & USA Options | SocialRUSH",
@@ -23,7 +27,7 @@ export default function LinkedInServicesPage() {
       "@type": "ListItem",
       position: index + 1,
       name: service.name,
-      url: `${SEO_SITE_URL}/services/${service.code}`,
+      url: `${SEO_SITE_URL}${canonicalCorePaths[service.code] ?? `/services/${service.code}`}`,
     })),
   };
 
