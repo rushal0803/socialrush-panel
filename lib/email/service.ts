@@ -54,8 +54,12 @@ const terminal=async(db:AdminClient,id:string,reason:string)=>patchEvent(db,id,{
 
 export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailProcessResult>{
  const db=createAdminClient();
- const {error:enqueueError}=await db.rpc("enqueue_customer_lifecycle_email_events");
+ const [{error:enqueueError},{error:abandonedEnqueueError}]=await Promise.all([
+  db.rpc("enqueue_customer_lifecycle_email_events"),
+  db.rpc("enqueue_abandoned_order_email_events")
+ ]);
  if(enqueueError)throw enqueueError;
+ if(abandonedEnqueueError)throw abandonedEnqueueError;
  const outcomes:CustomerEmailProcessOutcome[]=[];
  let processed=0;
 
