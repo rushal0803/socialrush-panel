@@ -14,6 +14,7 @@ type RawReward = { id: string; amount: number; status: string; created_at: strin
 type RawProfile = { id: string; label: string; platform: string; public_url: string; last_used_at: string | null; created_at: string };
 type RawDraft = { platform: string; service_code: string; quantity: number; updated_at: string };
 type RawFavourite = { service_id: number; services: { code: string | null; status: string | null; name: string | null } | null };
+type RawStarterService = { code: string | null; name: string | null; platform: string | null; rate: number | string | null; min: number | null; status: string | null; is_active: boolean | null; accepts_new_orders: boolean | null };
 
 export default async function DashboardPage() {
   const { supabase, user, profile } = await getDashboardContext();
@@ -34,6 +35,7 @@ export default async function DashboardPage() {
     supabase.from("customer_favourites").select("service_id, services(code,status,name)").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "pending"),
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("payment_status", "verification_pending"),
+    supabase.from("services").select("code,name,platform,rate,min,status,is_active,accepts_new_orders").in("code", ["instagram-likes", "facebook-followers", "instagram-followers"]),
   ]);
   const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
   const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
@@ -49,7 +51,25 @@ export default async function DashboardPage() {
   const favourites = value<RawFavourite[]>(11, []).flatMap((row) => { const code = row.services?.code; const service = code ? customerOrderServices.find((item) => item.code === code) : null; return service ? [{ code: service.code, name: service.name, platform: service.platform, available: row.services?.status === "active" }] : []; });
   const draftService = rawDraft ? customerOrderServices.find((service) => service.code === rawDraft.service_code && service.platform === rawDraft.platform) : null;
   const draft = rawDraft && draftService ? { platform: rawDraft.platform, serviceCode: rawDraft.service_code, serviceName: draftService.name, quantity: Number(rawDraft.quantity), updatedAt: rawDraft.updated_at } : null;
-  const shortcuts = ["instagram-followers", "instagram-likes", "youtube-subscribers"].map((code) => customerOrderServices.find((service) => service.code === code)).filter((service): service is NonNullable<typeof service> => Boolean(service)).map((service) => ({ code: service.code, platform: service.platform, name: service.name, price: service.pricePer1000 }));
+  const starterCodes = ["instagram-likes", "facebook-followers", "instagram-followers"] as const;
+  const liveStarterRows = value<RawStarterService[]>(14, []).filter((row) => row.code && row.status === "active" && row.is_active !== false && row.accepts_new_orders !== false);
+  const shortcuts = starterCodes.flatMap((code) => {
+    const live = liveStarterRows.find((row) => row.code === code);
+    const fallback = customerOrderServices.find((service) => service.code === code);
+    if (!live && !fallback) return [];
+    const rate = Number(live?.rate ?? fallback?.pricePer1000 ?? 0);
+    const minQuantity = Number(live?.min ?? fallback?.minQuantity ?? 0);
+    const platform = String(live?.platform ?? fallback?.platform ?? "").toLowerCase() === "twitter" ? "x" : String(live?.platform ?? fallback?.platform ?? "");
+    if (!rate || !minQuantity || !platform) return [];
+    return [{
+      code,
+      platform,
+      name: live?.name || fallback?.name || code,
+      pricePer1000: rate,
+      minQuantity,
+      minimumTotal: Math.round((rate * minQuantity * 100) / 1000) / 100,
+    }];
+  });
   const completedOrders = count(2);
   const pendingOrders = count(12);
   const paymentChecks = count(13);
