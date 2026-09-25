@@ -3,7 +3,7 @@ import { ArrowRight, BadgeCheck, CircleHelp, Clock3, CreditCard, Gift, HeartHand
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { supportStatus } from "@/lib/support/customer";
-import OrderConversionCards, { type DraftSummary, type ServiceShortcut } from "./OrderConversionCards";
+import OrderConversionCards, { type CheckoutRecoverySummary, type DraftSummary, type ServiceShortcut } from "./OrderConversionCards";
 import FirstOrderBonusBanner from "./FirstOrderBonusBanner";
 
 type Order = { id: string; serviceName: string; platform: string; quantity: number; status: string; price: number; createdAt: string; progress: number | null; refillEligible: boolean };
@@ -25,7 +25,7 @@ function Platform({ name, className = "" }: { name: string; className?: string }
 function Panel({ children, className = "" }: { children: React.ReactNode; className?: string }) { return <section className={`sr-dashboard-panel dashboard-glass min-w-0 p-4 sm:p-5 ${className}`}>{children}</section>; }
 function SectionError() { return <p role="status" className="mt-4 rounded-xl border border-white/10 bg-white/[.03] p-3 text-xs text-slate-300">This section could not be loaded. Please try again.</p>; }
 
-export default function DashboardOverviewContent({ greeting, userName, walletBalance, orders, activeCampaigns, totalOrders, activeOrders, completedOrders, transactions, ticket, openTickets, rewardBalance, savedProfiles, favourites, firstOrder, draft, shortcuts, errors }: { greeting: string; userName: string; walletBalance: number; orders: Order[]; activeCampaigns: Order[]; totalOrders: number; activeOrders: number; completedOrders: number; transactions: Transaction[]; ticket: TicketData; openTickets: number; rewardBalance: number; savedProfiles: Profile[]; favourites: Favourite[]; firstOrder: boolean; draft: DraftSummary | null; shortcuts: ServiceShortcut[]; errors: Record<string, boolean> }) {
+export default function DashboardOverviewContent({ greeting, userName, walletBalance, orders, activeCampaigns, totalOrders, activeOrders, completedOrders, transactions, ticket, openTickets, rewardBalance, savedProfiles, favourites, firstOrder, draft, shortcuts, checkoutRecovery, errors }: { greeting: string; userName: string; walletBalance: number; orders: Order[]; activeCampaigns: Order[]; totalOrders: number; activeOrders: number; completedOrders: number; transactions: Transaction[]; ticket: TicketData; openTickets: number; rewardBalance: number; savedProfiles: Profile[]; favourites: Favourite[]; firstOrder: boolean; draft: DraftSummary | null; shortcuts: ServiceShortcut[]; checkoutRecovery: CheckoutRecoverySummary | null; errors: Record<string, boolean> }) {
   const money = (amount: number) => formatCurrency(amount, "INR");
   const pendingOrders = orders.filter((order) => ["pending", "processing", "in_progress", "partial"].includes(order.status)).length;
   const failedPayment = transactions.find((transaction) => transaction.status === "failed");
@@ -117,7 +117,7 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
     </header>
 
     <FirstOrderBonusBanner />
-    {(firstOrder || draft) ? <OrderConversionCards firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} /> : null}
+    {(firstOrder || draft || checkoutRecovery) ? <OrderConversionCards firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} checkoutRecovery={checkoutRecovery} /> : null}
 
     <div className="mt-4 flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.14em] text-orange-300">Account snapshot</p><p className="mt-1 text-xs text-slate-400">Your key account numbers and fastest next actions.</p></div><Link href="/dashboard/new-order" className="hidden shrink-0 items-center gap-1 text-xs font-bold text-orange-300 sm:inline-flex">New campaign <ArrowRight className="h-3.5 w-3.5" /></Link></div><section aria-label="Account overview" className="sr-dashboard-metrics mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">{metrics.map(([label, value, action, Icon, href, tone]) => <Link key={label} href={href} className="sr-dashboard-metric dashboard-glass group min-h-32 p-4 transition duration-200 hover:-translate-y-0.5 hover:border-orange-400/35"><Icon className={`h-5 w-5 ${tone}`} /><p className="mt-4 text-[10px] font-black uppercase tracking-[.12em] text-slate-400">{label}</p><p className="mt-1 text-xl font-black tracking-tight">{value}</p><span className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-orange-300">{action}<ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" /></span></Link>)}</section>
 
