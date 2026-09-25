@@ -97,6 +97,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for another order." }, { status: 409 });
   }
 
+  const { data: existingWalletPayment, error: existingWalletPaymentError } = await admin
+    .from("transactions")
+    .select("id")
+    .eq("provider_payment_id", utr)
+    .maybeSingle();
+  if (existingWalletPaymentError) {
+    console.error("[MANUAL_PAYMENT_DUPLICATE_WALLET_UTR_CHECK_ERROR]", existingWalletPaymentError);
+    return NextResponse.json({ error: "Unable to verify this transaction ID right now. Please try again." }, { status: 503 });
+  }
+  if (existingWalletPayment) {
+    return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for a wallet payment." }, { status: 409 });
+  }
+
   const quantity = Number(intent.quantity);
   const charge = Number(intent.total_paise) / 100;
   const unitPrice = Math.round((charge * 1000 / quantity) * 10000) / 10000;
