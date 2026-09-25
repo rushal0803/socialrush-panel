@@ -80,7 +80,16 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
     label: "X / Twitter",
     hubPath: "/x-growth-india",
     hubLabel: "X / Twitter growth hub",
-    serviceLinks: [{ label: "Buy X / Twitter followers in India", href: "/twitter-followers" }],
+    serviceLinks: [
+      { label: "Buy Twitter / X followers in India", href: "/twitter-followers" },
+      { label: "Buy Twitter / X likes", href: "/services/twitter-likes" },
+      { label: "Buy Twitter / X views", href: "/services/twitter-views" },
+      { label: "Buy Twitter retweets / X reposts", href: "/services/twitter-retweets" },
+      { label: "Twitter / X crypto followers", href: "/services/twitter-crypto-followers" },
+      { label: "Twitter / X crypto likes", href: "/services/twitter-crypto-likes" },
+      { label: "Twitter crypto retweets / X crypto reposts", href: "/services/twitter-crypto-retweets" },
+      { label: "Twitter / X crypto custom comments", href: "/services/twitter-crypto-custom-comments" },
+    ],
     guideLinks: [
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "How social media growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" },
