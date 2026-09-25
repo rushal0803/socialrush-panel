@@ -4,6 +4,7 @@ import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { supportStatus } from "@/lib/support/customer";
 import OrderConversionCards, { type DraftSummary, type ServiceShortcut } from "./OrderConversionCards";
+import FirstOrderBonusBanner from "./FirstOrderBonusBanner";
 
 type Order = { id: string; serviceName: string; platform: string; quantity: number; status: string; price: number; createdAt: string; progress: number | null; refillEligible: boolean };
 type Transaction = { id: string; amount: number; type: string; status: string; paymentMethod: string; createdAt: string };
@@ -115,6 +116,7 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
       <nav aria-label="Hero quick actions" className="sr-dashboard-quick-actions relative mt-4 grid grid-cols-2 gap-2 sm:flex sm:flex-wrap"><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/add-funds"><CreditCard className="h-4 w-4" />Add Funds</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/orders"><LayoutList className="h-4 w-4" />Track Orders</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/support"><CircleHelp className="h-4 w-4" />Contact Support</Link><Link className="btn-dashboard-secondary gap-2 px-3 text-xs" href="/dashboard/saved-profiles"><HeartHandshake className="h-4 w-4" />Saved Profiles</Link></nav>
     </header>
 
+    <FirstOrderBonusBanner />
     {(firstOrder || draft) ? <OrderConversionCards firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} /> : null}
 
     <div className="mt-4 flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.14em] text-orange-300">Account snapshot</p><p className="mt-1 text-xs text-slate-400">Your key account numbers and fastest next actions.</p></div><Link href="/dashboard/new-order" className="hidden shrink-0 items-center gap-1 text-xs font-bold text-orange-300 sm:inline-flex">New campaign <ArrowRight className="h-3.5 w-3.5" /></Link></div><section aria-label="Account overview" className="sr-dashboard-metrics mt-3 grid grid-cols-2 gap-3 lg:grid-cols-4">{metrics.map(([label, value, action, Icon, href, tone]) => <Link key={label} href={href} className="sr-dashboard-metric dashboard-glass group min-h-32 p-4 transition duration-200 hover:-translate-y-0.5 hover:border-orange-400/35"><Icon className={`h-5 w-5 ${tone}`} /><p className="mt-4 text-[10px] font-black uppercase tracking-[.12em] text-slate-400">{label}</p><p className="mt-1 text-xl font-black tracking-tight">{value}</p><span className="mt-2 inline-flex items-center gap-1 text-[11px] font-bold text-orange-300">{action}<ArrowRight className="h-3 w-3 transition group-hover:translate-x-0.5" /></span></Link>)}</section>
