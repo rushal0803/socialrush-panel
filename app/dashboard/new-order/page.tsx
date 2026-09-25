@@ -299,6 +299,13 @@ export default function NewOrderPage() {
     }),
     [favouriteServiceIds, liveServices, serviceIds],
   );
+  const quickStartServices = useMemo(
+    () => {
+      const preferred = new Set(["instagram-followers", "instagram-likes", "youtube-subscribers"]);
+      return mergeCustomerOrderServices(liveServices).filter((service) => preferred.has(service.code)).slice(0, 3);
+    },
+    [liveServices],
+  );
   const quantity = Number(quantityInput || 0);
   const quantityError = useMemo(() => {
     if (!selectedService || !quantityInput) return "";
@@ -824,6 +831,22 @@ export default function NewOrderPage() {
           <section className="rounded-3xl border border-white/10 bg-[#111111] p-4 shadow-[0_28px_70px_-45px_rgba(0,0,0,.9)] sm:p-6">
             {currentStep === 1 ? <div>
               <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 1 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a platform</h2><p className="mt-2 text-sm text-[#9CA3AF]">Select where you want your campaign to run.</p>
+              {quickStartServices.length ? <section className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/[.055] p-4" aria-label="Quick start services">
+                <div className="flex flex-wrap items-start justify-between gap-3">
+                  <div><p className="text-xs font-black text-white">Not sure where to start?</p><p className="mt-1 text-[11px] leading-5 text-[#A7ADB7]">Use a simple starting point below, or choose any platform from the full list.</p></div>
+                  <a href="/dashboard/support" className="inline-flex min-h-9 items-center rounded-lg border border-white/10 bg-white/[.04] px-3 text-[11px] font-bold text-orange-200 hover:border-orange-400/40">Need help choosing?</a>
+                </div>
+                <div className="mt-3 grid gap-2 sm:grid-cols-3">
+                  {quickStartServices.map((service) => {
+                    const minimumTotal = Math.round((service.minQuantity * service.pricePer1000 * 100) / 1000) / 100;
+                    return <button key={service.code} type="button" onClick={() => { track("service_selected", { service_code: service.code, platform: service.platform, step: "quick_start" }); chooseService(service); }} className="sr-motion-press rounded-xl border border-white/10 bg-[#0B0B0F] p-3 text-left transition hover:border-orange-400/45 hover:bg-orange-500/[.06]">
+                      <div className="flex items-center gap-2"><IconBadge size="sm" label={platformMeta[service.platform].label} className={`bg-gradient-to-br ${platformAccent(service.platform)}`}><PlatformIcon platform={platformMeta[service.platform].label} /></IconBadge><span className="text-[10px] font-black uppercase tracking-wider text-[#8F949D]">{platformMeta[service.platform].label}</span></div>
+                      <p className="mt-3 text-xs font-black text-white">{serviceExperience[service.code]?.name || service.name}</p>
+                      <p className="mt-1 text-[10px] text-[#9CA3AF]">Start from {formatCurrency(minimumTotal, currency)}</p>
+                    </button>;
+                  })}
+                </div>
+              </section> : null}
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
                 {platformOrder.map((platformId) => { const meta = platformMeta[platformId]; const active = platform === platformId; const serviceCount = customerOrderServices.filter((service) => service.platform === platformId).length; return <motion.button key={platformId} type="button" whileHover={{ y: -3 }} whileTap={{ scale: .98 }} onClick={() => choosePlatform(platformId)} aria-pressed={active} className={`relative min-h-28 rounded-2xl border p-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active ? "border-orange-400 bg-orange-500/10 ring-2 ring-orange-500/15 shadow-[0_16px_32px_-20px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25 hover:bg-white/[.035]"}`}><IconBadge label={meta.label} className={`bg-gradient-to-br ${platformAccent(platformId)}`}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge><span className="mt-4 block text-sm font-black">{meta.label}</span><span className="mt-1 block text-[10px] font-semibold text-[#9CA3AF]">{serviceCount} service{serviceCount === 1 ? "" : "s"} to compare</span>{active && <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-400" />}</motion.button>; })}
               </div>
