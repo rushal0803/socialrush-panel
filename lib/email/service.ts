@@ -1,20 +1,20 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { firstOrderReminder, inactive7d, inactivePlatform, inactivePremium, orderCompleted, orderCreated, type EmailTemplate } from "@/lib/email/templates";
+import { firstOrderFinal7d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate } from "@/lib/email/templates";
 import { canSendPromotional, hasActiveRefill, hasUnresolvedSupport, inactiveEmailKind, lifecycleEligibility, promotionalEvent, recipientMatchesProfile } from "@/lib/email/lifecycle";
 
 type Event={
  id:string;
  user_id:string;
  order_id:string|null;
- event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"inactive_7d";
+ event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"never_ordered_reactivation"|"inactive_7d";
  recipient:string;
  provider_message_id:string|null;
  attempt_count:number;
  created_at:string;
 };
 type LifecycleOrderContext={user_id:string;created_at:string;status:string|null;payment_status:string|null;platform:string|null;charge:number|string|null};
-type CrmTagRow={crm_tags:{name:string|null}[]|null};
+type CrmTag={name:string|null};\ntype CrmTagRow={crm_tags:CrmTag|CrmTag[]|null};
 type AdminClient=ReturnType<typeof createAdminClient>;
 type EventPatch=Partial<{status:string;provider_message_id:string|null;sent_at:string|null;processing_started_at:string|null;error_message:string|null;updated_at:string}>;
 export type CustomerEmailProcessOutcome={id:string;eventType:Event["event_type"];outcome:"sent"|"recovered"|"skipped"|"failed";detail?:string};
@@ -22,7 +22,7 @@ export type CustomerEmailProcessResult={processed:number;outcomes:CustomerEmailP
 
 const safeError=(e:unknown)=>e instanceof Error?e.message.slice(0,500):"Email provider request failed";
 const transactional=(type:Event["event_type"])=>type==="order_created"||type==="order_completed";
-const staleTransactional=(event:Event)=>transactional(event.event_type)&&Date.now()-new Date(event.created_at).getTime()>48*60*60*1000;
+const staleTransactional=(event:Event)=>transactional(event.event_type)&&Date.now()-new Date(event.created_at).getTime()>48*60*60*1000;\nconst crmTagNames=(rows:CrmTagRow[])=>rows.flatMap(row=>Array.isArray(row.crm_tags)?row.crm_tags.map(tag=>tag.name):row.crm_tags?[row.crm_tags.name]:[]);
 
 async function patchEvent(db:AdminClient,id:string,patch:EventPatch){
  const {error}=await db.from("customer_email_events").update(patch).eq("id",id);
@@ -93,7 +93,7 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
     const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError}]=await Promise.all([
      db.from("crm_suppression_list").select("email").eq("email",event.recipient.trim().toLowerCase()).maybeSingle(),
      db.from("orders").select("user_id,created_at,status,payment_status,platform,charge").eq("user_id",event.user_id),
-     db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at").eq("id",true).single(),
+     db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at,first_order_sequence_activation_at").eq("id",true).single(),
      db.from("support_tickets").select("status").eq("user_id",event.user_id).not("status","in","(resolved,closed)"),
      db.from("order_refill_requests").select("status").eq("customer_id",event.user_id).not("status","in","(completed,rejected,cancelled)"),
      db.from("crm_customer_profiles").select("lifecycle_stage").eq("customer_id",event.user_id).maybeSingle(),
@@ -116,7 +116,7 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
      outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"customer_service_issue"});
      continue;
     }
-    const eligible=profile&&lifecycleEligibility(event.event_type as "first_order_reminder"|"inactive_7d",profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,config.lifecycle_activation_at);
+    const activationBoundary=event.event_type==="inactive_7d"?config.lifecycle_activation_at:config.first_order_sequence_activation_at;\n    const eligible=profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
     if(!eligible||suppression||!canSendPromotional()){
      const reason=!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible";
      await terminal(db,event.id,reason);
@@ -128,8 +128,18 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
    let template:EmailTemplate;
    if(event.event_type==="first_order_reminder"){
     template=firstOrderReminder(profile?.full_name,event.user_id);
+   }else if(event.event_type==="first_order_nudge_2h"){
+    template=firstOrderNudge2h(profile?.full_name,event.user_id);
+   }else if(event.event_type==="first_order_trust_24h"){
+    template=firstOrderTrust24h(profile?.full_name,event.user_id);
+   }else if(event.event_type==="first_order_reminder_3d"){
+    template=firstOrderReminder3d(profile?.full_name,event.user_id);
+   }else if(event.event_type==="first_order_final_7d"){
+    template=firstOrderFinal7d(profile?.full_name,event.user_id);
+   }else if(event.event_type==="never_ordered_reactivation"){
+    template=neverOrderedReactivation(profile?.full_name,event.user_id);
    }else if(event.event_type==="inactive_7d"){
-    const kind=inactiveEmailKind({lifecycle_stage:crm?.lifecycle_stage,tags:tagRows.flatMap(row=>row.crm_tags?.map(tag=>tag.name)||[])},orders);
+    const kind=inactiveEmailKind({lifecycle_stage:crm?.lifecycle_stage,tags:crmTagNames(tagRows)},orders);
     template=kind==="vip"||kind==="high_value"?inactivePremium(profile?.full_name,event.user_id,kind):kind==="generic"?inactive7d(profile?.full_name,event.user_id):inactivePlatform(profile?.full_name,event.user_id,kind);
    }else{
     const {data:order,error:orderError}=await db.from("orders").select("id,public_order_id,platform,service_name,quantity,charge,status,created_at").eq("id",event.order_id!).single();
