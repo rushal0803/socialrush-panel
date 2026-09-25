@@ -88,6 +88,7 @@ export default async function CrmOverviewPage(){
       <div className="flex flex-wrap gap-2">
         <Link href="/admin/crm/reactivation" className="rounded-xl border border-orange-400/30 px-4 py-3 text-xs font-bold text-orange-200">Reactivation Queue</Link>
         <Link href="/admin/crm/customers?filter=never_ordered" className="rounded-xl border border-emerald-400/30 px-4 py-3 text-xs font-bold text-emerald-200">Never Ordered</Link>
+        <Link href="/admin/crm/customers?filter=abandoned_draft" className="rounded-xl border border-amber-400/30 px-4 py-3 text-xs font-bold text-amber-200">Abandoned Drafts</Link>
         <Link href="/admin/crm/customers" className="rounded-xl border border-orange-400/30 px-4 py-3 text-xs font-bold text-orange-200">Customers</Link>
         <Link href="/admin/crm/follow-ups" className="rounded-xl bg-orange-500 px-4 py-3 text-xs font-bold text-white">Follow-ups</Link>
       </div>
@@ -111,6 +112,7 @@ export default async function CrmOverviewPage(){
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
         <Link href="/admin/crm/customers?filter=never_ordered" className="rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-black text-[#04110b]">Open Never-Ordered Users</Link>
+        <Link href="/admin/crm/customers?filter=abandoned_draft" className="rounded-xl border border-amber-400/30 bg-amber-500/[.07] px-4 py-2.5 text-xs font-bold text-amber-100">Open Abandoned Drafts</Link>
         <Link href="/admin/crm/reactivation" className="rounded-xl border border-white/15 px-4 py-2.5 text-xs font-bold text-white">Open Reactivation Queue</Link>
       </div>
     </section>
