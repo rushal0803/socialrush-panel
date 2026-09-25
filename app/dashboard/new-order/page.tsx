@@ -8,6 +8,7 @@ import {
   Copy,
   Clock3,
   Eye,
+  Gift,
   Hash,
   Heart,
   Info,
