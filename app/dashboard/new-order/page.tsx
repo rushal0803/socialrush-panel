@@ -322,6 +322,7 @@ export default function NewOrderPage() {
   const pollAnswerNumberError = requiresPollAnswerNumber && !/^\d+$/.test(pollAnswerNumber) ? "Enter a non-negative whole-number answer number." : "";
   const endorsementSkillError = requiresEndorsementSkill && !endorsementSkillName.trim() ? "Enter the exact LinkedIn skill that should receive endorsements." : "";
   const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError && !customCommentsError && !pollAnswerNumberError && !endorsementSkillError);
+  const priceIsReady = Boolean(selectedService && quantityInput && !quantityError);
   const totalPrice = selectedService ? Math.round((quantity * selectedService.pricePer1000 * 100) / 1000) / 100 : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
@@ -410,6 +411,20 @@ export default function NewOrderPage() {
     window.setTimeout(() => ref.current?.scrollIntoView({ behavior: reducedMotion ? "auto" : "smooth", block: "start" }), 80);
   };
 
+  const pasteTargetLink = async () => {
+    try {
+      const value = await navigator.clipboard.readText();
+      if (!value.trim()) {
+        setError("Your clipboard is empty.");
+        return;
+      }
+      setTargetLink(value.trim());
+      setError("");
+    } catch {
+      setError("Paste permission was blocked. Please paste the public link manually.");
+    }
+  };
+
   const resetOrderDetails = () => {
     setTargetLink("");
     setCustomComments("");
@@ -446,6 +461,8 @@ export default function NewOrderPage() {
     track("order_started", { service_code: service.code, platform: service.platform });
     setSelectedService(service);
     resetOrderDetails();
+    const starterQuantity = buildQuantityMerchandising(service)[0]?.value ?? service.minQuantity;
+    setQuantityInput(String(starterQuantity));
     setCheckoutStep(2);
     const params = new URLSearchParams();
     params.set("platform", service.platform);
@@ -885,7 +902,7 @@ export default function NewOrderPage() {
   : requiresCustomComments
     ? "Enter the post link, quantity, and custom comments."
     : "Enter the public link and quantity to get started."}</p>
-              <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold text-[#AEB5C0]"><span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1">No password</span><span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1">Review total before payment</span><span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1">Track after ordering</span></div><div className="sr-order-details-grid mt-5 grid gap-5"><label className="sr-order-field text-xs font-black">Public Link / Username<input value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setError(""); }} placeholder={linkRule.placeholder} className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${linkError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${linkError ? "text-red-300" : "text-[#999]"}`}>{linkError || linkRule.helper}</span></label><label className="sr-order-field text-xs font-black">Quantity<input value={quantityInput} onChange={(e) => { setQuantityInput(cleanQuantity(e.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${quantityError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${quantityError ? "text-red-300" : "text-[#999]"}`}>{quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")}`}</span></label></div>
+              <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold text-[#AEB5C0]"><span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1">No password</span><span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1">Review total before payment</span><span className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1">Track after ordering</span></div><div className="sr-order-details-grid mt-5 grid gap-5"><label className="sr-order-field text-xs font-black">Public Link / Username<div className="mt-2 flex gap-2"><input value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setError(""); }} placeholder={linkRule.placeholder} className={`min-h-14 min-w-0 flex-1 rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${linkError ? "border-red-400" : "border-white/15"}`} /><button type="button" onClick={() => void pasteTargetLink()} className="min-h-14 shrink-0 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-xs font-black text-orange-200 hover:bg-orange-500/15">Paste</button></div><span className={`mt-2 block font-medium ${linkError ? "text-red-300" : "text-[#999]"}`}>{linkError || linkRule.helper}</span></label><label className="sr-order-field text-xs font-black">Quantity<input value={quantityInput} onChange={(e) => { setQuantityInput(cleanQuantity(e.target.value)); setError(""); }} inputMode="numeric" placeholder="Enter quantity" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${quantityError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${quantityError ? "text-red-300" : "text-[#999]"}`}>{quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")}`}</span></label></div>
               {requiresPollAnswerNumber ? <label className="mt-5 block text-xs font-black">Poll Answer Number<input value={pollAnswerNumber} onChange={(e) => { setPollAnswerNumber(e.target.value); setError(""); }} inputMode="numeric" placeholder="Enter answer number" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${pollAnswerNumberError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${pollAnswerNumberError ? "text-red-300" : "text-[#999]"}`}>{pollAnswerNumberError || "Enter the answer number for the poll option that should receive the votes."}</span></label> : null}
               {requiresEndorsementSkill ? <label className="mt-5 block text-xs font-black">Skill Name<input value={endorsementSkillName} onChange={(e) => { setEndorsementSkillName(e.target.value); setError(""); }} placeholder="e.g. Digital Marketing" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#090909] px-4 text-base font-medium outline-none transition placeholder:text-[#555] focus:border-orange-400 focus:ring-4 focus:ring-orange-500/15 ${endorsementSkillError ? "border-red-400" : "border-white/15"}`} /><span className={`mt-2 block font-medium ${endorsementSkillError ? "text-red-300" : "text-[#999]"}`}>{endorsementSkillError || "Enter the exact LinkedIn skill that should receive endorsements."}</span></label> : null}
               {quantityOptions.length > 0 && <section className="mt-5" aria-label="Recommended quantity options">
@@ -901,7 +918,7 @@ export default function NewOrderPage() {
       })}</div>
       <p className="mt-2 text-[10px] leading-4 text-[#777]">These labels guide quantity selection only. Your live rate, service limits and checkout validation stay unchanged.</p>
     </section>}
-              <div className="sr-order-live-preview mt-5 grid gap-3 sm:grid-cols-2"><div className="sr-motion-lift rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{formIsValid ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {formIsValid ? quantity.toLocaleString("en-IN") : "Enter valid details"}</p></div><div className="sr-motion-lift flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
+              <div className="sr-order-live-preview mt-5 grid gap-3 sm:grid-cols-2"><div className="sr-motion-lift rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{priceIsReady ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {priceIsReady ? `${quantity.toLocaleString("en-IN")} selected` : "Choose a valid quantity"}</p>{priceIsReady && !targetLink.trim() ? <p className="mt-2 text-[10px] font-semibold text-orange-200">Starter quantity is preselected. Add your public link to continue.</p> : null}</div><div className="sr-motion-lift flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
   ? "No password required. Public poll link and answer number only."
   : requiresCustomComments
     ? "No password required. Public post link and custom comments only."
@@ -1071,9 +1088,9 @@ export default function NewOrderPage() {
                 <div className={`rounded-2xl border bg-[linear-gradient(135deg,#19120B,#0B0B0F)] p-4 shadow-[0_18px_45px_-28px_rgba(255,122,0,.75)] ${quantityError ? "border-red-400/40" : "border-orange-400/35"}`}>
                   <p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Price preview</p>
                   <p className={`mt-2 text-xl font-black sm:text-2xl ${quantityError ? "text-red-200" : "text-white"}`}>
-                    {!formIsValid ? "Enter a valid public link and quantity to calculate your final total." : formatCurrency(totalPrice, currency)}
+                    {!priceIsReady ? "Choose a valid quantity to calculate your total." : formatCurrency(totalPrice, currency)}
                   </p>
-                  {formIsValid ? <p className="mt-2 text-xs text-[#D1D5DB]">{formatCurrency(selectedService.pricePer1000, currency)} / 1K × {quantity.toLocaleString("en-IN")}</p> : null}
+                  {priceIsReady ? <p className="mt-2 text-xs text-[#D1D5DB]">{formatCurrency(selectedService.pricePer1000, currency)} / 1K × {quantity.toLocaleString("en-IN")}</p> : null}
                 </div>
                 <div className="sr-motion-lift safety-note flex items-center gap-3 rounded-2xl border border-emerald-400/45 bg-[#0B1F18] p-4 shadow-[0_16px_38px_rgba(0,0,0,0.22)]"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" /><p className="text-sm font-bold leading-6 text-white">No password required. Only your public link is needed.</p></div>
               </div>
