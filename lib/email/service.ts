@@ -1,6 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { abandonedOrderReminder, firstOrderFinal7d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate } from "@/lib/email/templates";
+import { abandonedOrderReminder, firstOrderFinal7d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate, type FirstOrderOffer } from "@/lib/email/templates";
 import { canSendPromotional, hasActiveRefill, hasUnresolvedSupport, inactiveEmailKind, lifecycleEligibility, promotionalEvent, recipientMatchesProfile } from "@/lib/email/lifecycle";
 
 type Event={
@@ -95,9 +95,9 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
    const {data:profile,error:profileError}=await db.from("profiles").select("id,full_name,notification_preferences,role,email,created_at").eq("id",event.user_id).single();
    if(profileError)throw new Error(promotional?"Lifecycle profile eligibility lookup failed":"Customer profile lookup failed");
 
-   let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[],draft:DraftContext|null=null;
+   let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[],draft:DraftContext|null=null,offer:FirstOrderOffer|undefined;
    if(promotional){
-    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError},{data:draftRow,error:draftError}]=await Promise.all([
+    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError},{data:draftRow,error:draftError},{data:rewardRules,error:rewardError}]=await Promise.all([
      db.from("crm_suppression_list").select("email").eq("email",event.recipient.trim().toLowerCase()).maybeSingle(),
      db.from("orders").select("user_id,created_at,status,payment_status,platform,charge").eq("user_id",event.user_id),
      db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at,first_order_sequence_activation_at,abandoned_order_enabled,abandoned_order_delay_hours,abandoned_order_max_age_days,abandoned_order_activation_at").eq("id",true).single(),
@@ -105,10 +105,14 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
      db.from("order_refill_requests").select("status").eq("customer_id",event.user_id).not("status","in","(completed,rejected,cancelled)"),
      db.from("crm_customer_profiles").select("lifecycle_stage").eq("customer_id",event.user_id).maybeSingle(),
      db.from("crm_customer_tags").select("crm_tags(name)").eq("customer_id",event.user_id),
-     db.from("order_drafts").select("platform,service_code,quantity,updated_at").eq("user_id",event.user_id).maybeSingle()
+     db.from("order_drafts").select("platform,service_code,quantity,updated_at").eq("user_id",event.user_id).maybeSingle(),
+     db.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id",true).maybeSingle()
     ]);
-    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||draftError||!config)throw new Error("Lifecycle eligibility lookup failed");
+    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||draftError||rewardError||!config)throw new Error("Lifecycle eligibility lookup failed");
     orders=orderRows||[];crm=crmRow;tagRows=crmTagRows||[];draft=(draftRow||null) as DraftContext|null;
+    const hasPriorQualifyingOrder=orders.some(order=>!["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase())&&!["cancelled","refunded","failed"].includes(String(order.payment_status||"paid").toLowerCase()));
+    const reward=Number(rewardRules?.new_customer_reward||0),minimum=Number(rewardRules?.minimum_order_amount||0);
+    if(!hasPriorQualifyingOrder&&rewardRules?.enabled&&!rewardRules.manual_approval&&reward>0&&minimum>0)offer={reward,minimum};
     if(!config.lifecycle_enabled){
      await patchEvent(db,event.id,{status:"queued",processing_started_at:null,error_message:"Deferred: lifecycle disabled",updated_at:new Date().toISOString()});
      outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"lifecycle_disabled"});
@@ -168,11 +172,11 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
    }else if(event.event_type==="first_order_final_7d"){
     template=firstOrderFinal7d(profile?.full_name,event.user_id);
    }else if(event.event_type==="never_ordered_reactivation"){
-    template=neverOrderedReactivation(profile?.full_name,event.user_id);
+    template=neverOrderedReactivation(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="abandoned_order_reminder"){
     if(!draft)throw new Error("Saved order draft is unavailable");
     const serviceName=draft.service_code.split("-").map(part=>part?part[0].toUpperCase()+part.slice(1):part).join(" ");
-    template=abandonedOrderReminder(profile?.full_name,event.user_id,{platform:draft.platform,serviceName,quantity:draft.quantity});
+    template=abandonedOrderReminder(profile?.full_name,event.user_id,{platform:draft.platform,serviceName,quantity:draft.quantity},offer);
    }else if(event.event_type==="inactive_7d"){
     const kind=inactiveEmailKind({lifecycle_stage:crm?.lifecycle_stage,tags:crmTagNames(tagRows)},orders);
     template=kind==="vip"||kind==="high_value"?inactivePremium(profile?.full_name,event.user_id,kind):kind==="generic"?inactive7d(profile?.full_name,event.user_id):inactivePlatform(profile?.full_name,event.user_id,kind);
