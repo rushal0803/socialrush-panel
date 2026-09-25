@@ -18,7 +18,12 @@ export async function POST(request: NextRequest) {
   const amount = Number(body?.amount);
   const utr = String(body?.utr || "").trim().replace(/\s+/g, "");
   const paymentReference = String(body?.paymentReference || "").trim().toUpperCase();
-  const paymentMethod = body?.paymentMethod === "usdt_trc20" ? "usdt_trc20" : "upi";
+  const paymentMethod =
+    body?.paymentMethod === "bank_transfer"
+      ? "bank_transfer"
+      : body?.paymentMethod === "usdt_trc20"
+        ? "usdt_trc20"
+        : "upi";
   const usdtAmount = Number(body?.usdtAmount);
 
   if (!Number.isFinite(amount) || amount < 100 || amount > 500000 || Math.round(amount * 100) !== amount * 100) {
@@ -43,11 +48,27 @@ export async function POST(request: NextRequest) {
     amount,
     type: "credit",
     status: "pending",
-    payment_method: paymentMethod === "usdt_trc20" ? "manual_usdt_trc20" : "manual_upi",
+    payment_method:
+      paymentMethod === "bank_transfer"
+        ? "manual_bank_transfer"
+        : paymentMethod === "usdt_trc20"
+          ? "manual_usdt_trc20"
+          : "manual_upi",
     provider_order_id: paymentReference,
     provider_payment_id: utr,
-    description: `${paymentMethod === "usdt_trc20" ? "USDT TRC20" : "UPI"} wallet top-up submitted for verification · Ref ${paymentReference} · Transaction ${utr}`,
-    metadata: { source: paymentMethod === "usdt_trc20" ? "manual_usdt_trc20_wallet" : "manual_upi_wallet", payment_reference: paymentReference, transaction_id: utr, payment_method: paymentMethod, ...(paymentMethod === "usdt_trc20" && Number.isFinite(usdtAmount) ? { submitted_usdt_amount: usdtAmount } : {}) },
+    description: `${paymentMethod === "bank_transfer" ? "Bank Transfer" : paymentMethod === "usdt_trc20" ? "USDT TRC20" : "UPI"} wallet top-up submitted for verification · Ref ${paymentReference} · Transaction ${utr}`,
+    metadata: {
+      source:
+        paymentMethod === "bank_transfer"
+          ? "manual_bank_transfer_wallet"
+          : paymentMethod === "usdt_trc20"
+            ? "manual_usdt_trc20_wallet"
+            : "manual_upi_wallet",
+      payment_reference: paymentReference,
+      transaction_id: utr,
+      payment_method: paymentMethod,
+      ...(paymentMethod === "usdt_trc20" && Number.isFinite(usdtAmount) ? { submitted_usdt_amount: usdtAmount } : {}),
+    },
   }).select("id,status,amount,provider_order_id").single();
 
   if (error || !transaction) {
