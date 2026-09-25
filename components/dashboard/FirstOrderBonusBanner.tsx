@@ -5,6 +5,7 @@ import { ArrowRight, Gift, Wallet } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
+import { track } from "@/lib/analytics/events";
 
 type Offer = { reward:number; minimum:number };
 
@@ -34,6 +35,7 @@ export default function FirstOrderBonusBanner({ compact=false,currentTotal=0 }: 
     return()=>{active=false;};
   },[]);
 
+  useEffect(()=>{ if(offer)track("first_order_bonus_view",{reward:offer.reward,minimum:offer.minimum}); },[offer]);
   if(!offer)return null;
   const safeTotal=Number.isFinite(currentTotal)?Math.max(0,currentTotal):0;
   const remaining=Math.max(0,offer.minimum-safeTotal);
@@ -56,7 +58,7 @@ export default function FirstOrderBonusBanner({ compact=false,currentTotal=0 }: 
           </div> : null}
         </div>
       </div>
-      <Link href="/dashboard/new-order" className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-xs font-black text-[#04110b] shadow-lg shadow-emerald-500/15">
+      <Link href="/dashboard/new-order" onClick={()=>track("first_order_bonus_click",{reward:offer.reward,minimum:offer.minimum})} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-xs font-black text-[#04110b] shadow-lg shadow-emerald-500/15">
         <Wallet className="h-4 w-4" /> Start First Order <ArrowRight className="h-4 w-4" />
       </Link>
     </div>
