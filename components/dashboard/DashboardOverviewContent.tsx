@@ -54,9 +54,12 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
             Manage orders, wallet activity, saved profiles and support from one focused workspace.
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <Link href="/dashboard/new-order" className="btn-dashboard-primary min-h-12 gap-2 px-5 text-sm">
-              <Plus className="h-4 w-4" />
-              Start New Campaign
+            <Link
+              href={draft ? "/dashboard/new-order?draft=1" : "/dashboard/new-order"}
+              className="btn-dashboard-primary min-h-12 gap-2 px-5 text-sm"
+            >
+              {draft ? <Clock3 className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {draft ? "Continue Saved Order" : firstOrder ? "Place Your First Order" : "Start New Campaign"}
             </Link>
             <Link href="/dashboard/orders" className="btn-dashboard-secondary min-h-12 gap-2 px-5 text-sm">
               <LayoutList className="h-4 w-4" />
