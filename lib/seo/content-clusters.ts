@@ -4,7 +4,8 @@ export type ContentPlatform =
   | "linkedin"
   | "twitter"
   | "facebook"
-  | "tiktok";
+  | "tiktok"
+  | "telegram";
 
 type ContentLink = Readonly<{ label: string; href: string }>;
 
@@ -119,6 +120,23 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
     guideLinks: [
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "Social media growth strategy for Indian creators", href: "/blog/social-media-growth-strategy-indian-creators" },
+      { label: "Social media campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
+    ],
+  },
+  telegram: {
+    platform: "telegram",
+    label: "Telegram",
+    hubPath: "/services/telegram",
+    hubLabel: "Telegram services hub",
+    serviceLinks: [
+      { label: "Buy Telegram members", href: "/telegram-members" },
+      { label: "Buy Telegram post views", href: "/services/telegram-post-views" },
+      { label: "Buy Telegram post reactions", href: "/services/telegram-post-reactions" },
+      { label: "Buy Telegram poll votes", href: "/services/telegram-poll-votes" },
+    ],
+    guideLinks: [
+      { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
+      { label: "How social media growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" },
       { label: "Social media campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
     ],
   },
