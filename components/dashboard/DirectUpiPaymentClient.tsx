@@ -21,8 +21,10 @@ type BankTransferDetails = {
   enabled: boolean;
   accountName: string;
   bankName: string;
+  accountType: string;
   accountNumber: string;
   ifsc: string;
+  branch: string;
 };
 
 type Props = {
@@ -55,19 +57,21 @@ export default function DirectUpiPaymentClient({
   total,
   upiId,
   payeeName,
+  bankTransfer,
   usdtTrc20Address,
   usdtAmount,
 }: Props) {
   const router = useRouter();
   const [reference] = useState(paymentReference);
   const [paymentStarted, setPaymentStarted] = useState(false);
-  const [paymentMethod, setPaymentMethod] = useState<"upi" | "usdt_trc20">("upi");
+  const [paymentMethod, setPaymentMethod] = useState<"upi" | "bank_transfer" | "usdt_trc20">("upi");
   const [utr, setUtr] = useState("");
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{ public_order_id: string } | null>(null);
   const [copied, setCopied] = useState(false);
   const [cryptoCopied, setCryptoCopied] = useState(false);
+  const [copiedBankField, setCopiedBankField] = useState("");
 
   const amountLabel = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -100,10 +104,22 @@ export default function DirectUpiPaymentClient({
     window.setTimeout(() => setCryptoCopied(false), 1400);
   }
 
+  async function copyBankField(label: string, value: string) {
+    await navigator.clipboard.writeText(value).catch(() => undefined);
+    setCopiedBankField(label);
+    window.setTimeout(() => setCopiedBankField(""), 1400);
+  }
+
   async function submitUtr() {
     const cleanUtr = utr.trim().replace(/\s+/g, "");
     if (!/^[A-Za-z0-9-]{8,80}$/.test(cleanUtr)) {
-      setError(paymentMethod === "usdt_trc20" ? "Enter the transaction hash / TxID from your successful USDT transfer." : "Enter the UTR / Transaction ID from your successful UPI payment.");
+      setError(
+        paymentMethod === "usdt_trc20"
+          ? "Enter the transaction hash / TxID from your successful USDT transfer."
+          : paymentMethod === "bank_transfer"
+            ? "Enter the UTR / Transaction ID from your successful bank transfer."
+            : "Enter the UTR / Transaction ID from your successful UPI payment.",
+      );
       return;
     }
 
@@ -184,7 +200,7 @@ export default function DirectUpiPaymentClient({
             <LockKeyhole className="h-4 w-4" /> Secure checkout
           </div>
         </div>
-        <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">Pay the exact amount with your UPI app, then enter the UTR / Transaction ID. We verify the payment before processing your order.</p>
+        <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-300">Choose UPI, Bank Transfer, or USDT (TRC20), pay the exact amount shown, then submit the transaction reference. We verify every manual payment before processing your order.</p>
       </div>
 
       <div className="space-y-5 p-4 sm:p-6 lg:p-8">
@@ -214,22 +230,33 @@ export default function DirectUpiPaymentClient({
 
         <div>
           <div className="mb-3 flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Payment method</p><h2 className="mt-1 text-lg font-black">How would you like to pay?</h2></div><span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-300">UPI recommended</span></div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
           <button type="button" onClick={() => { setPaymentMethod("upi"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)] transition ${paymentMethod === "upi" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/15 text-orange-300"><Smartphone className="h-5 w-5" /></div>
               <div>
                 <p className="text-sm font-black">UPI</p>
-                <p className="mt-0.5 text-[11px] text-zinc-400">Google Pay · PhonePe · Paytm · BHIM</p>
+                <p className="mt-0.5 text-[11px] text-zinc-400">Google Pay · PhonePe · Paytm</p>
               </div>
             </div>
             {paymentMethod === "upi" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
           </button>
 
+          <button type="button" disabled={!bankTransfer.enabled} onClick={() => { setPaymentMethod("bank_transfer"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "bank_transfer" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
+            <div className="flex items-center gap-3">
+              <div className="grid h-10 w-10 place-items-center rounded-xl bg-sky-500/10 text-sky-300"><WalletCards className="h-5 w-5" /></div>
+              <div>
+                <p className="text-sm font-black">Bank Transfer</p>
+                <p className="mt-0.5 text-[11px] text-zinc-400">IMPS · NEFT · bank app</p>
+              </div>
+            </div>
+            {paymentMethod === "bank_transfer" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
+          </button>
+
           <button type="button" disabled={!usdtAmount} onClick={() => { setPaymentMethod("usdt_trc20"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "usdt_trc20" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-300"><Coins className="h-5 w-5" /></div>
-              <div className="min-w-0"><p className="text-sm font-black">USDT</p><p className="mt-0.5 text-[11px] text-zinc-400">TRON network · TRC20</p></div>
+              <div className="min-w-0"><p className="text-sm font-black">USDT</p><p className="mt-0.5 text-[11px] text-zinc-400">TRON · TRC20</p></div>
             </div>
             {usdtAmount ? <span className="absolute right-3 top-3 rounded-full bg-sky-500/10 px-2 py-1 text-[9px] font-black uppercase text-sky-300">International</span> : null}
           </button>
@@ -237,7 +264,58 @@ export default function DirectUpiPaymentClient({
           <div className="mt-3 flex items-start gap-2 rounded-xl border border-white/5 bg-white/[0.02] p-3 text-xs leading-5 text-zinc-500"><WalletCards className="mt-0.5 h-4 w-4 shrink-0" /><span>More payment methods will appear here only when they are available and approved for SocialRUSH.</span></div>
         </div>
 
-        {paymentMethod === "usdt_trc20" ? (
+        {paymentMethod === "bank_transfer" ? (
+          <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
+            <div className="flex items-start gap-4">
+              <div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-orange-500 to-amber-400 text-sm font-black text-black">{paymentStarted ? "2" : "1"}</div>
+              <div className="min-w-0 flex-1">
+                {!paymentStarted ? (
+                  <>
+                    <div className="flex flex-wrap items-start justify-between gap-3">
+                      <div>
+                        <h2 className="text-xl font-black">Bank Transfer</h2>
+                        <p className="mt-1 text-sm leading-6 text-zinc-400">Secure manual bank payment to SocialRUSH. Transfer the exact amount shown.</p>
+                      </div>
+                      <span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount: {amountLabel}</span>
+                    </div>
+                    <div className="mt-4 rounded-2xl border border-orange-400/20 bg-black/25 p-4">
+                      <p className="text-base font-black text-white">{bankTransfer.bankName}</p>
+                      <div className="mt-4 space-y-3 text-sm">
+                        {[
+                          ["Account Holder", bankTransfer.accountName],
+                          ["Account Type", bankTransfer.accountType],
+                          ["Account Number", bankTransfer.accountNumber],
+                          ["IFSC", bankTransfer.ifsc],
+                          ["Branch", bankTransfer.branch],
+                        ].map(([label, value]) => (
+                          <div key={label} className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                            <div><p className="text-[10px] font-black uppercase tracking-wider text-zinc-500">{label}</p><p className="mt-1 break-all font-black text-zinc-100">{value}</p></div>
+                            {["Account Holder", "Account Number", "IFSC"].includes(label) ? <button type="button" onClick={() => void copyBankField(label, value)} className="inline-flex min-h-9 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-orange-200"><Copy className="h-3.5 w-3.5" />{copiedBankField === label ? "Copied" : "Copy"}</button> : null}
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="mt-4 rounded-xl border border-amber-400/15 bg-amber-500/10 p-4 text-xs leading-6 text-amber-100">
+                      Transfer the exact amount shown above. After completing the payment, enter your UTR/Transaction ID below. Your order will start only after payment verification.
+                      <strong className="mt-2 block text-white">No need to pay again after submitting your transaction for verification.</strong>
+                    </div>
+                    <button type="button" onClick={() => { setPaymentStarted(true); track("payment_started", { service_code: serviceCode, method: "bank_transfer", currency: "INR", value: total, step: "bank_details_shown" }); }} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black">I’ve made the transfer</button>
+                  </>
+                ) : (
+                  <>
+                    <h2 className="text-xl font-black">Enter UTR / Transaction ID</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">Enter the reference from your successful bank transfer. We will verify it before the order starts.</p>
+                    <input value={utr} onChange={(e) => setUtr(e.target.value.slice(0,80))} placeholder="UTR / Transaction ID" autoComplete="off" className="mt-4 w-full rounded-2xl border border-white/10 bg-[#080b10] px-4 py-4 text-base font-semibold outline-none focus:border-orange-400/70" />
+                    {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
+                    <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black disabled:opacity-60">{submitting ? "Submitting..." : "Submit for Verification"}</button>
+                    <p className="mt-3 text-center text-xs leading-5 text-zinc-500">No need to pay again after submitting your transaction for verification.</p>
+                    <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 text-sm font-bold text-zinc-300">Back to bank details</button>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        ) : paymentMethod === "usdt_trc20" ? (
           <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-4 sm:p-6">
             <div className="flex items-start gap-4"><div className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-gradient-to-br from-orange-500 to-amber-400 text-sm font-black text-black">{paymentStarted ? "2" : "1"}</div><div className="min-w-0 flex-1">
               {!paymentStarted ? <><h2 className="text-xl font-black">Send {usdtAmount?.toFixed(2)} USDT</h2><p className="mt-1 text-sm leading-6 text-zinc-400">International payment via TRON (TRC20). The USDT amount is calculated from the current USD/INR reference rate.</p>

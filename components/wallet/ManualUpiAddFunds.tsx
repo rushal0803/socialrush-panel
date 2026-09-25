@@ -6,6 +6,14 @@ import Link from "next/link";
 const UPI_ID = "8860330771@pthdfc";
 const PAYEE = "Rushal";
 const USDT_TRC20_ADDRESS = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
+const BANK_TRANSFER = {
+  bankName: "Canara Bank",
+  accountName: "RUSHAL",
+  accountType: "Savings",
+  accountNumber: "2743101012204",
+  ifsc: "CNRB0002743",
+  branch: "Saket",
+};
 const quickAmounts = [100, 500, 1000, 2000, 5000];
 
 function makeReference() {
@@ -17,8 +25,9 @@ function makeReference() {
 
 export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | null }) {
   const [amountText, setAmountText] = useState("1000");
-  const [paymentMethod, setPaymentMethod] = useState<"upi" | "usdt_trc20">("upi");
+  const [paymentMethod, setPaymentMethod] = useState<"upi" | "bank_transfer" | "usdt_trc20">("upi");
   const [copied, setCopied] = useState(false);
+  const [copiedBankField, setCopiedBankField] = useState("");
   const [reference] = useState(makeReference);
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [utr, setUtr] = useState("");
@@ -37,12 +46,21 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
   }, [amount, reference, upiConfigured, validAmount]);
 
   async function copyCryptoAddress() { await navigator.clipboard.writeText(USDT_TRC20_ADDRESS); setCopied(true); setTimeout(() => setCopied(false), 1500); }
+  async function copyBankField(label: string, value: string) { await navigator.clipboard.writeText(value); setCopiedBankField(label); setTimeout(() => setCopiedBankField(""), 1500); }
 
   async function submitPayment() {
     setError("");
     if (!validAmount) return setError("Enter an amount between ₹100 and ₹5,00,000.");
     const paymentId = utr.trim().replace(/\s+/g, "");
-    if (!/^[A-Za-z0-9-]{8,80}$/.test(paymentId)) return setError(paymentMethod === "upi" ? "Enter a valid UTR / Transaction ID from your payment app." : "Enter a valid TRC20 transaction hash / TxID.");
+    if (!/^[A-Za-z0-9-]{8,80}$/.test(paymentId)) {
+      return setError(
+        paymentMethod === "usdt_trc20"
+          ? "Enter a valid TRC20 transaction hash / TxID."
+          : paymentMethod === "bank_transfer"
+            ? "Enter a valid UTR / Transaction ID from your bank transfer."
+            : "Enter a valid UTR / Transaction ID from your payment app.",
+      );
+    }
     setSubmitting(true);
     try {
       const response = await fetch("/api/wallet/manual-upi", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ amount, utr: paymentId, paymentReference: reference, paymentMethod, usdtAmount }) });
@@ -65,7 +83,7 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
   </section>;
 
   return <main className="mx-auto max-w-3xl px-4 py-6 pb-28 sm:py-10">
-    <div className="mb-6"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-400">Wallet</p><h1 className="mt-2 text-3xl font-black text-white">Add funds</h1><p className="mt-2 text-sm text-slate-400">Choose UPI for India or USDT (TRC20) for international payments. Your wallet is credited only after verification.</p></div>
+    <div className="mb-6"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-400">Wallet</p><h1 className="mt-2 text-3xl font-black text-white">Add funds</h1><p className="mt-2 text-sm text-slate-400">Choose UPI, Bank Transfer, or USDT (TRC20). Your wallet is credited only after payment verification.</p></div>
     <div className="mb-5 grid grid-cols-3 gap-2 text-center text-[10px] font-bold uppercase tracking-wider sm:text-xs">
       <div className={`rounded-xl border px-2 py-3 ${!paymentStarted ? "border-orange-400 bg-orange-500/10 text-orange-300" : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"}`}>1 · Amount</div>
       <div className={`rounded-xl border px-2 py-3 ${paymentStarted ? "border-orange-400 bg-orange-500/10 text-orange-300" : "border-white/10 text-slate-500"}`}>2 · Pay</div>
@@ -77,29 +95,41 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
       <p className="mt-2 text-xs text-slate-500">Minimum ₹100 · Maximum ₹5,00,000</p>
       <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-5">{quickAmounts.map((value)=><button key={value} onClick={()=>setAmountText(String(value))} className="rounded-xl border border-white/10 bg-white/[.03] px-2 py-3 text-xs font-bold text-slate-300 hover:border-orange-400/40">₹{value.toLocaleString("en-IN")}</button>)}</div>
       {!paymentStarted ? <>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2">
+        <div className="mt-6 grid gap-3 sm:grid-cols-3">
           <button type="button" onClick={()=>{setPaymentMethod("upi");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="upi"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">UPI</strong><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-black text-emerald-300">India</span></div><p className="mt-2 text-xs text-slate-400">Google Pay · PhonePe · Paytm · BHIM</p></button>
+          <button type="button" onClick={()=>{setPaymentMethod("bank_transfer");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="bank_transfer"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between gap-2"><strong className="text-sm text-white">Bank Transfer</strong><span className="rounded-full bg-sky-500/10 px-2 py-1 text-[10px] font-black text-sky-300">Manual</span></div><p className="mt-2 text-xs text-slate-400">Secure manual bank payment</p></button>
           <button type="button" disabled={!usdtAmount} onClick={()=>{if(usdtAmount){setPaymentMethod("usdt_trc20");setError("");}}} className={`rounded-2xl border p-4 text-left disabled:opacity-50 ${paymentMethod==="usdt_trc20"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">USDT · TRC20</strong><span className="rounded-full bg-blue-500/10 px-2 py-1 text-[10px] font-black text-blue-300">International</span></div><p className="mt-2 text-xs text-slate-400">{usdtAmount ? `Pay ≈ ${usdtAmount.toFixed(2)} USDT` : "Rate temporarily unavailable"}</p></button>
         </div>
         {paymentMethod==="upi" ? <>
           {!upiConfigured && <p className="mt-4 rounded-xl bg-red-500/10 p-3 text-xs text-red-300">UPI is temporarily unavailable. Please contact support.</p>}
           <a href={upiHref} onClick={(e)=>{if(!validAmount||!upiConfigured){e.preventDefault();setError(!upiConfigured?"UPI is temporarily unavailable.":"Enter a valid amount.");return;} setError("");setPaymentStarted(true);}} className={`mt-5 flex w-full items-center justify-center rounded-xl px-5 py-4 text-sm font-black ${validAmount&&upiConfigured?"bg-gradient-to-r from-orange-500 to-amber-400 text-black":"cursor-not-allowed bg-white/10 text-slate-500"}`}>Pay ₹{validAmount ? amount.toLocaleString("en-IN",{minimumFractionDigits:2}) : "0.00"} with UPI</a>
-        </> : <div className="mt-5">
+        </> : paymentMethod==="bank_transfer" ? <div className="mt-5">
+          <div className="rounded-2xl border border-orange-400/20 bg-black/20 p-4 sm:p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Bank Transfer</p><h2 className="mt-1 text-lg font-black text-white">Secure manual bank payment</h2></div><span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount ₹{validAmount ? amount.toLocaleString("en-IN",{minimumFractionDigits:2}) : "0.00"}</span></div>
+            <p className="mt-4 text-base font-black text-white">{BANK_TRANSFER.bankName}</p>
+            <div className="mt-4 space-y-3 text-sm">
+              {[["Account Holder",BANK_TRANSFER.accountName],["Account Type",BANK_TRANSFER.accountType],["Account Number",BANK_TRANSFER.accountNumber],["IFSC",BANK_TRANSFER.ifsc],["Branch",BANK_TRANSFER.branch]].map(([label,value])=><div key={label} className="flex flex-wrap items-center justify-between gap-3 border-b border-white/5 pb-3 last:border-0 last:pb-0"><div><p className="text-[10px] font-black uppercase tracking-wider text-slate-500">{label}</p><p className="mt-1 break-all font-black text-white">{value}</p></div>{["Account Holder","Account Number","IFSC"].includes(label)?<button type="button" onClick={()=>void copyBankField(label,value)} className="rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-orange-300">{copiedBankField===label?"Copied":"Copy"}</button>:null}</div>)}
+            </div>
+          </div>
+          <div className="mt-3 rounded-xl border border-amber-400/15 bg-amber-500/10 p-4 text-xs leading-6 text-amber-100">Transfer the exact amount shown above. After completing the payment, enter your UTR/Transaction ID below. Your wallet will be credited after payment verification.<strong className="mt-2 block text-white">No need to pay again after submitting your transaction for verification.</strong></div>
+          <button type="button" disabled={!validAmount} onClick={()=>{setError("");setPaymentStarted(true);}} className="mt-4 w-full rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black disabled:opacity-50">I’ve made the transfer</button>
+        </div> : <div className="mt-5">
           <div className="rounded-xl border border-red-400/20 bg-red-500/10 p-3 text-xs font-bold text-red-200">TRC20 ONLY. Do not send USDT using ERC20, BEP20, Solana or another network.</div>
           <div className="mt-3 rounded-2xl border border-white/10 bg-black/20 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-slate-500">USDT TRC20 address</p><p className="mt-2 break-all text-sm font-black text-white">{USDT_TRC20_ADDRESS}</p><button type="button" onClick={()=>void copyCryptoAddress()} className="mt-3 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-orange-300">{copied?"Copied":"Copy address"}</button></div>
           <button type="button" disabled={!usdtAmount} onClick={()=>{setError("");setPaymentStarted(true);}} className="mt-4 w-full rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black disabled:opacity-50">I’ve sent {usdtAmount?.toFixed(2)} USDT</button>
         </div>}
         <p className="mt-3 text-center text-[11px] text-slate-500">Exact amount and payment reference are prepared for you.</p>
       </> : <div className="mt-6 border-t border-white/10 pt-6">
-        <p className="text-xs font-black uppercase tracking-[.18em] text-orange-300">Payment completed?</p><h2 className="mt-2 text-xl font-black text-white">Confirm your payment</h2><p className="mt-2 text-xs leading-5 text-slate-400">{paymentMethod === "upi" ? "Enter the UTR / Transaction ID shown in your UPI app." : "Paste the TRC20 transaction hash / TxID from your successful USDT transfer."} This helps us match your payment safely.</p>
+        <p className="text-xs font-black uppercase tracking-[.18em] text-orange-300">Payment completed?</p><h2 className="mt-2 text-xl font-black text-white">Confirm your payment</h2><p className="mt-2 text-xs leading-5 text-slate-400">{paymentMethod === "usdt_trc20" ? "Paste the TRC20 transaction hash / TxID from your successful USDT transfer." : paymentMethod === "bank_transfer" ? "Enter the UTR / Transaction ID from your successful bank transfer." : "Enter the UTR / Transaction ID shown in your UPI app."} This helps us match your payment safely.</p>
         <div className="mt-4 rounded-xl border border-white/10 bg-black/20 p-3 text-xs"><span className="text-slate-500">Reference</span><span className="ml-2 font-mono font-bold text-white">{reference}</span></div>
-        <label className="mt-4 block text-[11px] font-black uppercase tracking-wider text-slate-400">{paymentMethod === "upi" ? "UTR / Transaction ID" : "TRC20 TxID"}</label><input value={utr} onChange={(e)=>setUtr(e.target.value)} placeholder={paymentMethod === "upi" ? "Example: 423456789012" : "Paste TRC20 transaction hash"} className="mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3.5 text-sm text-white outline-none focus:border-orange-400" />
+        <label className="mt-4 block text-[11px] font-black uppercase tracking-wider text-slate-400">{paymentMethod === "usdt_trc20" ? "TRC20 TxID" : "UTR / Transaction ID"}</label><input value={utr} onChange={(e)=>setUtr(e.target.value)} placeholder={paymentMethod === "usdt_trc20" ? "Paste TRC20 transaction hash" : "Enter UTR / Transaction ID"} className="mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3.5 text-sm text-white outline-none focus:border-orange-400" />
         {error && <p className="mt-3 rounded-xl bg-red-500/10 p-3 text-xs text-red-300">{error}</p>}
-        <button disabled={submitting} onClick={submitPayment} className="mt-4 w-full rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black disabled:opacity-60">{submitting?"Submitting…":"Confirm & Add Funds"}</button>
+        <button disabled={submitting} onClick={submitPayment} className="mt-4 w-full rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black disabled:opacity-60">{submitting?"Submitting…":paymentMethod==="bank_transfer"?"Submit for Verification":"Confirm & Add Funds"}</button>
+        {paymentMethod==="bank_transfer" && <p className="mt-3 text-center text-xs font-semibold text-amber-200">No need to pay again after submitting your transaction for verification.</p>}
         <button onClick={()=>{setPaymentStarted(false);setError("");}} className="mt-3 w-full py-2 text-xs font-bold text-slate-400">Need to pay? Go back</button>
       </div>}
       {error && !paymentStarted && <p className="mt-4 rounded-xl bg-red-500/10 p-3 text-xs text-red-300">{error}</p>}
     </section>
-    <div className="mt-5 rounded-2xl border border-white/10 bg-white/[.02] p-4 text-xs leading-5 text-slate-400"><strong className="text-white">Safe payment process:</strong> submitting a UTR does not automatically credit funds. We verify the received payment first, which protects your wallet from incorrect or duplicate credits.</div>
+    <div className="mt-5 rounded-2xl border border-white/10 bg-white/[.02] p-4 text-xs leading-5 text-slate-400"><strong className="text-white">Safe payment process:</strong> submitting a UTR or transaction ID does not automatically credit funds. We verify the received payment first, which protects your wallet from incorrect or duplicate credits.</div>
   </main>;
 }
