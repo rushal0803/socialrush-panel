@@ -62,7 +62,7 @@ export default async function CrmOverviewPage(){
   const paymentToCheckout=paymentStarted?Math.round(checkoutStarted/paymentStarted*1000)/10:0;
   const mobilePayments=new Set(analytics.filter(x=>x.event_name==="payment_started"&&x.device_category==="mobile"&&x.customer_id).map(x=>x.customer_id)).size;
   const mobileCheckouts=new Set(analytics.filter(x=>x.event_name==="checkout_started"&&x.device_category==="mobile"&&x.customer_id).map(x=>x.customer_id)).size;
-  const errorStages=Object.entries(analytics.filter(x=>x.event_name==="checkout_error").reduce((acc:Record<string,number>,x:any)=>{const stage=String(x.safe_metadata?.step||"unknown");acc[stage]=(acc[stage]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1]).slice(0,4);
+  const errorStageCounts=analytics.filter(x=>x.event_name==="checkout_error").reduce((acc:Record<string,number>,x:any)=>{const stage=String(x.safe_metadata?.step||"unknown");acc[stage]=(acc[stage]||0)+1;return acc;},{} as Record<string,number>);\n  const errorStages=(Object.entries(errorStageCounts) as Array<[string,number]>).sort((a,b)=>b[1]-a[1]).slice(0,4);
 
   const cards=[
     ["Total Customers",profiles.length],
