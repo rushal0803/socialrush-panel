@@ -64,15 +64,14 @@ export default async function DirectUpiPage({ searchParams }: PageProps) {
   }
 
   const bankTransfer = {
-    enabled: process.env.BANK_TRANSFER_ENABLED === "true",
-    accountName: process.env.BANK_TRANSFER_ACCOUNT_NAME?.trim() || "",
-    bankName: process.env.BANK_TRANSFER_BANK_NAME?.trim() || "",
-    accountNumber: process.env.BANK_TRANSFER_ACCOUNT_NUMBER?.trim() || "",
-    ifsc: process.env.BANK_TRANSFER_IFSC?.trim().toUpperCase() || "",
+    enabled: true,
+    accountName: "RUSHAL",
+    bankName: "Canara Bank",
+    accountType: "Savings",
+    accountNumber: "2743101012204",
+    ifsc: "CNRB0002743",
+    branch: "Saket",
   };
-  bankTransfer.enabled = bankTransfer.enabled && Boolean(
-    bankTransfer.accountName && bankTransfer.bankName && bankTransfer.accountNumber && bankTransfer.ifsc,
-  );
 
   return (
     <main className="min-h-[calc(100vh-5rem)] bg-[#050505] px-4 pb-28 pt-7 sm:px-6 sm:pb-12 lg:px-8">
