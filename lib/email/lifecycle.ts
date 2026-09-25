@@ -1,6 +1,6 @@
 export type LifecycleProfile = { id:string; email:string|null; created_at:string; notification_preferences?:{marketing?:boolean}|null; role?:string|null };
 export type LifecycleOrder = { user_id:string; created_at:string; status:string|null; payment_status?:string|null; platform?:string|null; charge?:number|string|null };
-export type LifecycleEvent = "first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"never_ordered_reactivation"|"inactive_7d";
+export type LifecycleEvent = "first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"never_ordered_reactivation"|"abandoned_order_reminder"|"inactive_7d";
 
 export const qualifyingOrder = (order: Pick<LifecycleOrder,"status"|"payment_status">) =>
   !["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase()) &&
@@ -20,7 +20,7 @@ export function lifecycleEligibility(event:LifecycleEvent, profile:LifecycleProf
 }
 
 export const lifecycleKey=(event:LifecycleEvent,userId:string,anchor:string)=>`${event}:${userId}:${anchor.slice(0,10)}`;
-export const promotionalEvent=(event:string)=>["first_order_reminder","first_order_nudge_2h","first_order_trust_24h","first_order_reminder_3d","first_order_final_7d","never_ordered_reactivation","inactive_7d"].includes(event);
+export const promotionalEvent=(event:string)=>["first_order_reminder","first_order_nudge_2h","first_order_trust_24h","first_order_reminder_3d","first_order_final_7d","never_ordered_reactivation","abandoned_order_reminder","inactive_7d"].includes(event);
 export const canSendPromotional=()=>Boolean(process.env.EMAIL_UNSUBSCRIBE_SECRET);
 export const recipientMatchesProfile=(recipient:string, profileEmail:string|null|undefined)=>recipient.trim().toLowerCase()===String(profileEmail||"").trim().toLowerCase();
 
