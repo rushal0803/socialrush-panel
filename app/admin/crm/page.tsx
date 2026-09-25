@@ -56,7 +56,6 @@ export default async function CrmOverviewPage(){
   const uniqueCustomers=(eventName:string)=>new Set(analytics.filter(x=>x.event_name===eventName&&x.customer_id).map(x=>x.customer_id)).size;
   const serviceSelected=uniqueCustomers("service_selected");
   const paymentStarted=uniqueCustomers("payment_started");
-  const checkoutStarted=uniqueCustomers("checkout_started");
   const checkoutErrors=uniqueCustomers("checkout_error");
   const uniquePathCustomers=(eventName:string,path:string,device?:string)=>new Set(analytics.filter(x=>x.event_name===eventName&&x.customer_id&&x.safe_metadata?.payment_path===path&&(!device||x.device_category===device)).map(x=>x.customer_id)).size;
   const cashfreePayments=uniquePathCustomers("payment_started","cashfree");
