@@ -40,6 +40,20 @@ export async function POST(request: NextRequest) {
   const { data: existing } = await admin.from("transactions").select("id,user_id,status").eq("provider_payment_id", utr).maybeSingle();
   if (existing) return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted." }, { status: 409 });
 
+  const { data: existingOrderPayment, error: existingOrderPaymentError } = await admin
+    .from("orders")
+    .select("id")
+    .ilike("customer_note", `%UTR: ${utr}.%`)
+    .limit(1)
+    .maybeSingle();
+  if (existingOrderPaymentError) {
+    console.error("[MANUAL_WALLET_DUPLICATE_ORDER_UTR_CHECK_ERROR]", existingOrderPaymentError);
+    return NextResponse.json({ error: "Unable to verify this transaction ID right now. Please try again." }, { status: 503 });
+  }
+  if (existingOrderPayment) {
+    return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for an order." }, { status: 409 });
+  }
+
   const { data: existingRef } = await admin.from("transactions").select("id,status").eq("provider_order_id", paymentReference).eq("user_id", user.id).maybeSingle();
   if (existingRef) return NextResponse.json({ data: existingRef, duplicate: true });
 
