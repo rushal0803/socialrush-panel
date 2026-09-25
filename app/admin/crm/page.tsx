@@ -12,8 +12,9 @@ export default async function CrmOverviewPage(){
   const sinceDate=new Date(Date.now()-30*864e5);
   const since=sinceDate.toISOString();
   const draftSince=new Date(Date.now()-7*864e5).toISOString();
+  const funnelSince=new Date(Date.now()-7*864e5).toISOString();
 
-  const [pr,or,cr,fr,sr,rr,dr,rw,rules]=await Promise.all([
+  const [pr,or,cr,fr,sr,rr,dr,rw,rules,ar]=await Promise.all([
     s.from("profiles").select("id,full_name,email,created_at").neq("role","admin").order("created_at",{ascending:false}).limit(1000),
     s.from("orders").select("user_id,charge,status,payment_status,platform,created_at").order("created_at",{ascending:false}).limit(10000),
     s.from("crm_customer_profiles").select("customer_id,lifecycle_stage,priority"),
@@ -23,6 +24,7 @@ export default async function CrmOverviewPage(){
     s.from("order_drafts").select("user_id,updated_at").limit(2000),
     s.from("customer_reward_events").select("user_id,amount,status,source,created_at").eq("source","first_order_bonus").limit(2000),
     s.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id",true).maybeSingle(),
+    s.from("analytics_events").select("event_name,customer_id,device_category,safe_metadata,created_at").gte("created_at",funnelSince).in("event_name",["service_selected","payment_started","checkout_started","checkout_error"]).limit(5000),
   ]);
 
   const profiles=(pr.data||[])as any[];
@@ -50,6 +52,17 @@ export default async function CrmOverviewPage(){
   const creditedRewards=rewards.filter(x=>x.status==="credited");
   const rewardTotal=creditedRewards.reduce((n,x)=>n+Number(x.amount||0),0);
   const rewardRule=rules.data as any;
+  const analytics=(ar.data||[]) as any[];
+  const uniqueCustomers=(eventName:string)=>new Set(analytics.filter(x=>x.event_name===eventName&&x.customer_id).map(x=>x.customer_id)).size;
+  const serviceSelected=uniqueCustomers("service_selected");
+  const paymentStarted=uniqueCustomers("payment_started");
+  const checkoutStarted=uniqueCustomers("checkout_started");
+  const checkoutErrors=uniqueCustomers("checkout_error");
+  const serviceToPayment=serviceSelected?Math.round(paymentStarted/serviceSelected*1000)/10:0;
+  const paymentToCheckout=paymentStarted?Math.round(checkoutStarted/paymentStarted*1000)/10:0;
+  const mobilePayments=new Set(analytics.filter(x=>x.event_name==="payment_started"&&x.device_category==="mobile"&&x.customer_id).map(x=>x.customer_id)).size;
+  const mobileCheckouts=new Set(analytics.filter(x=>x.event_name==="checkout_started"&&x.device_category==="mobile"&&x.customer_id).map(x=>x.customer_id)).size;
+  const errorStages=Object.entries(analytics.filter(x=>x.event_name==="checkout_error").reduce((acc:Record<string,number>,x:any)=>{const stage=String(x.safe_metadata?.step||"unknown");acc[stage]=(acc[stage]||0)+1;return acc;},{})).sort((a,b)=>b[1]-a[1]).slice(0,4);
 
   const cards=[
     ["Total Customers",profiles.length],
@@ -115,6 +128,22 @@ export default async function CrmOverviewPage(){
         <Link href="/admin/crm/customers?filter=abandoned_draft" className="rounded-xl border border-amber-400/30 bg-amber-500/[.07] px-4 py-2.5 text-xs font-bold text-amber-100">Open Abandoned Drafts</Link>
         <Link href="/admin/crm/reactivation" className="rounded-xl border border-white/15 px-4 py-2.5 text-xs font-bold text-white">Open Reactivation Queue</Link>
       </div>
+    </section>
+
+    <section className="mt-6 rounded-2xl border border-sky-400/20 bg-[linear-gradient(135deg,rgba(14,165,233,.07),rgba(17,17,17,.98)_55%)] p-5">
+      <div className="flex flex-wrap items-start justify-between gap-3">
+        <div><p className="text-[10px] font-black uppercase tracking-[.16em] text-sky-300">Checkout funnel · 7 days</p><h2 className="mt-1 text-xl font-black text-white">See exactly where buyers stop</h2><p className="mt-1 text-xs text-[#9CA3AF]">Unique signed-in customers. Payment-path and error-stage tracking was upgraded on 25 Sep, so use the newer data for clean comparisons.</p></div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs text-[#D1D5DB]">Mobile: <b className="text-white">{mobilePayments}</b> payment starts → <b className="text-white">{mobileCheckouts}</b> checkouts</div>
+      </div>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+        {[
+          ["Service selected",serviceSelected,"High-intent users"],
+          ["Payment started",paymentStarted,String(serviceToPayment)+"% of selectors"],
+          ["Checkout reached",checkoutStarted,String(paymentToCheckout)+"% of payment starters"],
+          ["Checkout errors",checkoutErrors,checkoutErrors?"Inspect failure stages below":"No tracked errors in this window"],
+        ].map(([label,value,helper])=><article key={String(label)} className="rounded-xl border border-white/10 bg-[#0B0B0F] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-[#8F949D]">{label}</p><b className="mt-2 block text-2xl text-white">{value}</b><p className="mt-1 text-[11px] leading-5 text-[#8F949D]">{helper}</p></article>)}
+      </div>
+      {errorStages.length?<div className="mt-4 rounded-xl border border-red-400/15 bg-red-500/[.04] p-4"><p className="text-xs font-black text-red-100">Recent checkout error stages</p><div className="mt-2 flex flex-wrap gap-2">{errorStages.map(([stage,count])=><span key={stage} className="rounded-full border border-red-400/15 bg-red-500/[.06] px-2.5 py-1 text-[10px] font-bold text-red-200">{stage}: {count}</span>)}</div></div>:null}
     </section>
 
     <section className="mt-6 grid gap-5 xl:grid-cols-[1.1fr_.9fr]">
