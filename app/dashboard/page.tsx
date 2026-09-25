@@ -71,10 +71,12 @@ export default async function DashboardPage() {
     }];
   });
   const completedOrders = count(2);
+  const totalOrders = count(9);
+  const firstOrder = !failed(9) && totalOrders === 0;
   const pendingOrders = count(12);
   const paymentChecks = count(13);
 
   const hour = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Kolkata" }).format(new Date()));
   const greeting = hour < 5 ? "Welcome back" : hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  return <div className={styles.commandCenter}><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={count(9)} activeOrders={count(1)} completedOrders={completedOrders} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={orders.length === 0} draft={draft} shortcuts={shortcuts} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><ReactivationRecoveryPanel completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RepeatScaleModule completedOrders={completedOrders} /></div></div>;
+  return <div className={styles.commandCenter}><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={totalOrders} activeOrders={count(1)} completedOrders={completedOrders} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10), payments: failed(3), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><ReactivationRecoveryPanel completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RepeatScaleModule completedOrders={completedOrders} /></div></div>;
 }
