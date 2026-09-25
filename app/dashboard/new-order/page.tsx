@@ -520,7 +520,9 @@ export default function NewOrderPage() {
   useEffect(() => {
     void loadWalletBalance();
     void fetch("/api/rewards/first-order-offer", { credentials: "same-origin", cache: "no-store" })
-      .then(async (response) => response.ok ? response.json() as Promise<{ eligible?: boolean; reward?: number; minimum?: number }> : { eligible: false })
+      .then(async (response): Promise<{ eligible: boolean; reward?: number; minimum?: number }> =>
+        response.ok ? await response.json() as { eligible: boolean; reward?: number; minimum?: number } : { eligible: false }
+      )
       .then((data) => {
         const reward = Number(data.reward || 0);
         const minimum = Number(data.minimum || 0);
