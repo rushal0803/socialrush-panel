@@ -73,8 +73,13 @@ export default async function DashboardPage() {
     }];
   });
   const rawCheckoutRecovery = value<RawCheckoutRecovery | null>(15, null);
-  const checkoutService = rawCheckoutRecovery ? customerOrderServices.find((service) => service.code === rawCheckoutRecovery.service_code) : null;
-  const checkoutRecovery = rawCheckoutRecovery ? {
+  const latestOrderCreatedAt = orders[0]?.createdAt ? Date.parse(orders[0].createdAt) : Number.NEGATIVE_INFINITY;
+  const checkoutIsStillUnfinished = Boolean(
+    rawCheckoutRecovery &&
+    Date.parse(rawCheckoutRecovery.created_at) > latestOrderCreatedAt
+  );
+  const checkoutService = checkoutIsStillUnfinished && rawCheckoutRecovery ? customerOrderServices.find((service) => service.code === rawCheckoutRecovery.service_code) : null;
+  const checkoutRecovery = checkoutIsStillUnfinished && rawCheckoutRecovery ? {
     id: rawCheckoutRecovery.id,
     serviceCode: rawCheckoutRecovery.service_code,
     serviceName: checkoutService?.name || rawCheckoutRecovery.service_code.replaceAll("-", " ").replace(/\b\w/g, (letter) => letter.toUpperCase()),
