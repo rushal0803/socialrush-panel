@@ -12,6 +12,47 @@ function safeJson(value: object) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
+const twitterServiceCopy: Record<string, { headline: string; intro: string; target: string; terminology?: string }> = {
+  "twitter-likes": {
+    headline: "Buy Twitter (X) Likes",
+    intro: "Add likes to an eligible public X post using its direct post link. Review the current rate, quantity range, delivery estimate and refill terms before ordering.",
+    target: "public X post",
+    terminology: "X is the platform formerly known as Twitter, so this page uses both names where they help describe the same likes service.",
+  },
+  "twitter-views": {
+    headline: "Buy Twitter (X) Views",
+    intro: "Order views for an eligible public X post. Check the current rate, quantity limits, delivery estimate and service requirements before checkout.",
+    target: "public X post",
+    terminology: "People still commonly search for Twitter views even though Twitter is now called X; both terms refer to the same platform here.",
+  },
+  "twitter-retweets": {
+    headline: "Buy Twitter Retweets / X Reposts",
+    intro: "Order repost activity for an eligible public X post. Retweets are now called reposts on X; review the current rate, quantity limits and service conditions before checkout.",
+    target: "public X post",
+    terminology: "Twitter called this action a retweet. X now calls it a repost, so both terms are used naturally on this page.",
+  },
+  "twitter-crypto-followers": {
+    headline: "Twitter (X) Crypto Followers",
+    intro: "A specialist follower option for eligible public X profiles in the crypto niche. Review current availability, quantity limits and service conditions before ordering.",
+    target: "public X profile",
+  },
+  "twitter-crypto-likes": {
+    headline: "Twitter (X) Crypto Likes",
+    intro: "A specialist likes option for eligible public X posts in the crypto niche. Review the current rate, limits and delivery details before ordering.",
+    target: "public X post",
+  },
+  "twitter-crypto-retweets": {
+    headline: "Twitter Crypto Retweets / X Crypto Reposts",
+    intro: "A specialist repost option for eligible public X posts in the crypto niche. Twitter retweets are now called reposts on X; check current service details before ordering.",
+    target: "public X post",
+  },
+  "twitter-crypto-custom-comments": {
+    headline: "Twitter (X) Crypto Custom Comments",
+    intro: "Add customer-supplied custom comment text to an eligible public X post using the required post link. Review formatting, quantity and current service requirements before checkout.",
+    target: "public X post",
+  },
+};
+
 export default async function PremiumCatalogServiceLanding({ serviceCode }: { serviceCode: string }) {
   const catalog = activeSmmServices.find((service) => service.code === serviceCode);
   if (!catalog) return null;
@@ -38,33 +79,51 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
   const canonical = `${SEO_SITE_URL}/services/${service.code}`;
   const authorityPlatform = service.platform === "x" ? "twitter" : service.platform;
   const supportsAuthorityCluster = ["instagram", "youtube", "facebook", "linkedin", "tiktok", "twitter", "telegram"].includes(authorityPlatform);
+  const intentCopy = twitterServiceCopy[service.code];
+  const headline = intentCopy?.headline ?? service.name;
+  const target = intentCopy?.target ?? `public ${platform.label} destination`;
 
-  const faq = [
+  const faq: ReadonlyArray<readonly [string, string]> = [
     [
-      `How do I order ${service.name}?`,
-      `Choose your quantity, enter the correct public ${platform.label} link, review the total, and continue to checkout. Your order can then be tracked from the SocialRUSH dashboard.`,
+      `How do I order ${headline}?`,
+      `Choose your quantity, enter the correct ${target} link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard.`,
+    ],
+    [
+      `Which link should I submit for ${headline}?`,
+      `Use the direct link for the eligible ${target}. Check the URL carefully before payment and keep the destination public and available while the order is processing.`,
     ],
     [
       "Do I need to share my password?",
-      `No. SocialRUSH only requires the eligible public ${platform.label} link needed for this service. Never share your password, OTP, recovery code or UPI PIN.`,
+      `No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN.`,
+    ],
+    [
+      `How much does ${headline} cost?`,
+      `The service card shows the current rate and quantity limits. Your order total is calculated from the quantity you select before checkout.`,
     ],
     [
       "How long does delivery take?",
-      `The current delivery estimate is ${service.deliveryTime}. Timing can vary with quantity and destination availability.`,
+      `The current service estimate is ${service.deliveryTime}. Timing can vary with quantity, destination availability and current service conditions.`,
     ],
     [
       "What is the refill policy?",
-      `The current service policy is: ${service.refillPolicy}. Review the order details before checkout because service conditions can change.`,
+      `The current service policy is ${service.refillPolicy}. Review the order details before checkout because service conditions can change.`,
     ],
-  ] as const;
+    ...(intentCopy?.terminology
+      ? [["Why does this page mention both Twitter and X?", intentCopy.terminology] as const]
+      : []),
+    [
+      `Does ${headline} guarantee reach, followers, sales or ranking?`,
+      "No. SocialRUSH does not guarantee organic reach, follower growth, sales, leads, search visibility or other platform outcomes from an engagement order.",
+    ],
+  ];
 
   const serviceSchema = {
     "@context": "https://schema.org",
     "@type": "Service",
-    name: service.name,
-    description: service.description,
+    name: headline,
+    description: intentCopy?.intro ?? service.description,
     provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL },
-    serviceType: service.name,
+    serviceType: headline,
     url: canonical,
   };
   const breadcrumbSchema = {
@@ -73,7 +132,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
     itemListElement: [
       { "@type": "ListItem", position: 1, name: "Home", item: `${SEO_SITE_URL}/` },
       { "@type": "ListItem", position: 2, name: "Services", item: `${SEO_SITE_URL}/services` },
-      { "@type": "ListItem", position: 3, name: service.name, item: canonical },
+      { "@type": "ListItem", position: 3, name: headline, item: canonical },
     ],
   };
   const faqSchema = {
@@ -99,7 +158,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
             <span className="mx-2">/</span>
             <Link href="/services" className="hover:text-white">Services</Link>
             <span className="mx-2">/</span>
-            <span className="text-orange-300">{service.name}</span>
+            <span className="text-orange-300">{headline}</span>
           </nav>
 
           <section className="overflow-hidden rounded-[32px] border border-orange-400/20 bg-[radial-gradient(circle_at_top_right,rgba(255,122,0,.18),transparent_34%),linear-gradient(145deg,#10141c,#090b10)] p-6 shadow-2xl sm:p-10 lg:p-12">
@@ -110,14 +169,15 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
                   {platform.label} service
                 </div>
                 <h1 className="mt-5 max-w-3xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">
-                  {service.name}
+                  {headline}
                 </h1>
                 <p className="mt-5 max-w-2xl text-base leading-8 text-zinc-300 sm:text-lg">
-                  {service.description} Review the current rate, quantity limits and service requirements before placing your order.
+                  {intentCopy?.intro ?? `${service.description} Review the current rate, quantity limits and service requirements before placing your order.`}
                 </p>
+                {intentCopy?.terminology ? <p className="mt-3 max-w-2xl text-sm leading-7 text-zinc-400">{intentCopy.terminology}</p> : null}
                 <div className="mt-7 flex flex-wrap gap-3">
                   <Link href={orderHref} className="inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-6 py-3 text-sm font-black text-black shadow-[0_18px_45px_-20px_rgba(255,132,0,.9)] transition hover:brightness-105">
-                    Start {service.name} Order
+                    Start {headline} Order
                   </Link>
                   <Link href={`/services/${service.platform === "x" ? "twitter-x" : service.platform}`} className="inline-flex min-h-12 items-center justify-center rounded-2xl border border-white/15 bg-white/[.04] px-6 py-3 text-sm font-bold text-white hover:bg-white/[.08]">
                     View {platform.label} Services
@@ -151,7 +211,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
 
           <section className="mt-8 grid gap-4 md:grid-cols-3">
             {[
-              ["Public-link ordering", "Submit only the correct eligible public link. Passwords and OTPs are never required."],
+              ["Public-link ordering", `Submit only the correct eligible ${target} link. Passwords and OTPs are never required.`],
               ["Clear order details", `Check quantity, rate, delivery estimate and ${service.refillPolicy.toLowerCase()} before checkout.`],
               ["Dashboard tracking", "Track your order status from your SocialRUSH account after the order is created."],
             ].map(([title, copy]) => (
@@ -165,7 +225,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
           <section className="mt-8 grid gap-6 lg:grid-cols-[1fr_.9fr]">
             <article className="rounded-3xl border border-white/10 bg-[#0d1118] p-6 sm:p-8">
               <p className="text-xs font-black uppercase tracking-[.15em] text-orange-300">Before you order</p>
-              <h2 className="mt-3 text-2xl font-black">Use the correct {platform.label} destination</h2>
+              <h2 className="mt-3 text-2xl font-black">Use the correct {target}</h2>
               <p className="mt-4 text-sm leading-7 text-zinc-300">{service.importantInstruction}</p>
               <div className="mt-6 rounded-2xl border border-orange-400/20 bg-orange-500/[.07] p-4 text-sm leading-7 text-orange-100">
                 Keep the destination available while the order is processing. Do not change the username, handle, privacy setting or target URL unless support asks you to.
@@ -184,7 +244,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
 
           <section className="mt-8 rounded-3xl border border-white/10 bg-[#0d1118] p-6 sm:p-8">
             <p className="text-xs font-black uppercase tracking-[.15em] text-orange-300">FAQ</p>
-            <h2 className="mt-3 text-2xl font-black">Questions about {service.name}</h2>
+            <h2 className="mt-3 text-2xl font-black">Questions about {headline}</h2>
             <div className="mt-6 grid gap-3">
               {faq.map(([question, answer]) => (
                 <details key={question} className="rounded-2xl border border-white/10 bg-black/20 p-4">
@@ -196,8 +256,8 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
           </section>
 
           <section className="mt-8 rounded-3xl border border-orange-400/20 bg-gradient-to-r from-orange-500/10 to-amber-400/5 p-6 text-center sm:p-8">
-            <h2 className="text-2xl font-black">Ready to place your {service.name} order?</h2>
-            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-zinc-300">Review the live order details and continue through the secure SocialRUSH checkout.</p>
+            <h2 className="text-2xl font-black">Ready to place your {headline} order?</h2>
+            <p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-zinc-300">Review the current order details and continue through the SocialRUSH checkout.</p>
             <Link href={orderHref} className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-7 py-3 text-sm font-black text-black">Start Order</Link>
           </section>
         </div>
