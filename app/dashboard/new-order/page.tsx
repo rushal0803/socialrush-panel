@@ -701,7 +701,7 @@ export default function NewOrderPage() {
       if (!intentResponse.ok || !intentResult.data?.id) {
         throw new Error(intentResult.error || "Unable to prepare your checkout right now.");
       }
-      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentResult.data.id });
+      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentResult.data.id, payment_path: "wallet" });
 
       const response = await fetch("/api/orders", {
         method: "POST",
