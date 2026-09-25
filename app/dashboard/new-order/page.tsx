@@ -367,7 +367,7 @@ export default function NewOrderPage() {
   useEffect(() => {
     if (!selectedService || !quantityInput || quantityError || linkError || success) return;
     const timer = window.setTimeout(() => {
-      void fetch("/api/order-draft", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ platform: selectedService.platform, serviceCode: selectedService.code, quantity, target: targetLink.trim() }) }).then((response) => { if (response.ok) track("order_started", { step: "draft_saved", service_code: selectedService.code, platform: selectedService.platform }); }).catch(() => undefined);
+      void fetch("/api/order-draft", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ platform: selectedService.platform, serviceCode: selectedService.code, quantity, target: targetLink.trim() }) }).then((response) => { if (response.ok) track("order_draft_saved", { service_code: selectedService.code, platform: selectedService.platform }); }).catch(() => undefined);
     }, 850);
     return () => window.clearTimeout(timer);
   }, [linkError, quantity, quantityError, quantityInput, selectedService, success, targetLink]);
@@ -416,6 +416,7 @@ export default function NewOrderPage() {
 
   const choosePlatform = (nextPlatform: PlatformId) => {
     if (advanceTimer.current || platform === nextPlatform && checkoutStep === 2) return;
+    track("order_platform_selected", { platform: nextPlatform });
     setPlatform(nextPlatform);
     setSelectedService(null);
     resetOrderDetails();
@@ -686,6 +687,7 @@ export default function NewOrderPage() {
     setCheckoutStage("Preparing secure payment...");
     setError("");
     if (!requestId.current) requestId.current = crypto.randomUUID();
+    track("payment_started", { service_code: selectedService.code, platform: selectedService.platform });
     try {
       let intentId = directCheckoutIntentId.current;
       if (!intentId) {
@@ -695,6 +697,7 @@ export default function NewOrderPage() {
         intentId = intent.data.id;
         directCheckoutIntentId.current = intentId;
       }
+      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentId });
       const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
       const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, returnPath }) });
       const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; returnUrl?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
@@ -793,6 +796,7 @@ export default function NewOrderPage() {
     if (step === 3 && !selectedService) return;
     if (step === 4 && !formIsValid) return;
     setError("");
+    if (step === 4 && selectedService) track("order_details_completed", { service_code: selectedService.code, platform: selectedService.platform, quantity });
     setCheckoutStep(step);
     const target = step === 1 ? platformRef : step === 2 ? serviceRef : step === 3 ? detailsRef : summaryRef;
     scrollTo(target);
