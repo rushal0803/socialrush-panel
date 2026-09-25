@@ -164,13 +164,13 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
    if(event.event_type==="first_order_reminder"){
     template=firstOrderReminder(profile?.full_name,event.user_id);
    }else if(event.event_type==="first_order_nudge_2h"){
-    template=firstOrderNudge2h(profile?.full_name,event.user_id);
+    template=firstOrderNudge2h(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="first_order_trust_24h"){
-    template=firstOrderTrust24h(profile?.full_name,event.user_id);
+    template=firstOrderTrust24h(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="first_order_reminder_3d"){
-    template=firstOrderReminder3d(profile?.full_name,event.user_id);
+    template=firstOrderReminder3d(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="first_order_final_7d"){
-    template=firstOrderFinal7d(profile?.full_name,event.user_id);
+    template=firstOrderFinal7d(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="never_ordered_reactivation"){
     template=neverOrderedReactivation(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="abandoned_order_reminder"){
