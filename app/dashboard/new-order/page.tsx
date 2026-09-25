@@ -739,6 +739,7 @@ export default function NewOrderPage() {
     setCheckoutStage("Preparing UPI, Bank Transfer & USDT...");
     setError("");
     if (!requestId.current) requestId.current = crypto.randomUUID();
+    track("payment_started", { service_code: selectedService.code, platform: selectedService.platform, payment_path: "manual_direct" });
     try {
       const intentResponse = await fetch("/api/checkout/intent", {
         method: "POST",
@@ -764,6 +765,7 @@ export default function NewOrderPage() {
       });
       router.push(`/dashboard/direct-upi?intent=${encodeURIComponent(intent.data.id)}`);
     } catch (cause) {
+      track("checkout_error", { step: "manual_intent", service_code: selectedService.code, platform: selectedService.platform, payment_path: "manual_direct" });
       setError(cause instanceof Error ? cause.message : "Unable to prepare manual payment.");
       setCheckoutStage("");
       setSubmitting(false);
@@ -778,7 +780,8 @@ export default function NewOrderPage() {
     setCheckoutStage("Preparing secure payment...");
     setError("");
     if (!requestId.current) requestId.current = crypto.randomUUID();
-    track("payment_started", { service_code: selectedService.code, platform: selectedService.platform });
+    track("payment_started", { service_code: selectedService.code, platform: selectedService.platform, payment_path: "cashfree" });
+    let paymentStage = "intent_create";
     try {
       let intentId = directCheckoutIntentId.current;
       if (!intentId) {
@@ -788,7 +791,8 @@ export default function NewOrderPage() {
         intentId = intent.data.id;
         directCheckoutIntentId.current = intentId;
       }
-      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentId });
+      paymentStage = "cashfree_session";
+      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentId, payment_path: "cashfree" });
       const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
       const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, returnPath }) });
       const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; returnUrl?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
@@ -803,9 +807,11 @@ export default function NewOrderPage() {
       }
       if (!paymentResponse.ok || !payment.data?.paymentSessionId || !payment.data.returnUrl || !payment.data.environment) throw new Error(payment.error || "Unable to initialize secure payment.");
       setCheckoutStage("Opening secure payment...");
+      paymentStage = "sdk_load";
       const loaded = await loadCashfree();
       if (!loaded || !window.Cashfree) throw new Error("Secure Cashfree checkout could not be loaded. Please try again.");
       const checkout = window.Cashfree({ mode: payment.data.environment }) as unknown as { checkout: (input: { paymentSessionId: string; returnUrl: string; redirectTarget: "_self" }) => Promise<unknown> };
+      paymentStage = "provider_checkout";
       await checkout.checkout({ paymentSessionId: payment.data.paymentSessionId, returnUrl: payment.data.returnUrl, redirectTarget: "_self" });
       if (isSocialRushAndroidApp()) {
         // A returned Cashfree sheet is an abandoned/cancelled attempt unless
@@ -817,7 +823,7 @@ export default function NewOrderPage() {
         inFlight.current = false;
       }
     } catch (cause) {
-      track("checkout_error", { step: "payment_init", service_code: selectedService.code, platform: selectedService.platform });
+      track("checkout_error", { step: paymentStage, service_code: selectedService.code, platform: selectedService.platform, payment_path: "cashfree" });
       setError(cause instanceof Error ? cause.message : "Unable to open secure payment.");
       setCheckoutStage(""); setSubmitting(false); inFlight.current = false;
     }
