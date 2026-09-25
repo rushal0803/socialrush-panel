@@ -40,6 +40,7 @@ import { validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
+import FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
@@ -851,6 +852,7 @@ export default function NewOrderPage() {
     <main className="dashboard-premium-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-10 pt-5 text-white sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-600/10 blur-3xl" /><div className="absolute right-0 top-20 h-64 w-64 rounded-full bg-amber-500/5 blur-3xl" /></div>
       <div className="relative mx-auto max-w-6xl">
+        <FirstOrderBonusBanner compact />
         <header className="mb-4 flex items-end justify-between gap-4 sm:mb-6">
           <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">New order</p><h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Build your campaign</h1></div>
           <p className="hidden text-right text-xs leading-5 text-[#9CA3AF] sm:block">Transparent pricing<br />Secure checkout</p>
@@ -959,6 +961,7 @@ export default function NewOrderPage() {
       </div>
 
       <div className="relative mx-auto max-w-[1450px]">
+        <FirstOrderBonusBanner compact />
         <section className="relative overflow-hidden rounded-[1.6rem] border border-orange-400/25 bg-[#111111] p-5 shadow-[0_30px_80px_-42px_rgba(255,122,0,.65)] sm:p-8">
           <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-[10px] font-black uppercase tracking-[0.16em] text-orange-300">
             <Sparkles className="h-3.5 w-3.5" /> Quick order · 4 simple steps
