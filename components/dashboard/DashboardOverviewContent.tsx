@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { ArrowRight, BadgeCheck, CircleHelp, CreditCard, Gift, HeartHandshake, LayoutList, Plus, ReceiptText, ShieldCheck, ShoppingBag, Sparkles, Ticket, Wallet, Zap } from "lucide-react";
+import { ArrowRight, BadgeCheck, CircleHelp, Clock3, CreditCard, Gift, HeartHandshake, LayoutList, Plus, ReceiptText, ShieldCheck, ShoppingBag, Sparkles, Ticket, Wallet, Zap } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { supportStatus } from "@/lib/support/customer";
