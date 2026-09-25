@@ -34,6 +34,7 @@ export default function RegisterForm() {
     const confirmPassword = String(formData.get("confirmPassword") || "");
     const fullName = String(formData.get("fullName") || "").trim();
     const marketingOptIn = formData.get("marketingOptIn") === "on";
+    if (marketingOptIn) track("marketing_opt_in_selected");
 
     if (password !== confirmPassword) {
       setError("Password and confirm password must match.");
