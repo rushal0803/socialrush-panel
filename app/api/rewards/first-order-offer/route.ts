@@ -6,22 +6,24 @@ export async function GET() {
   const { data: { user } } = await db.auth.getUser();
   if (!user) return NextResponse.json({ eligible: false }, { status: 401, headers: { "Cache-Control": "no-store" } });
 
-  const [{ data: rules, error: rulesError }, { count, error: ordersError }] = await Promise.all([
+  const [{ data: rules, error: rulesError }, { data: orders, error: ordersError }] = await Promise.all([
     db.from("reward_programme_rules")
       .select("enabled,manual_approval,minimum_order_amount,new_customer_reward")
       .eq("id", true)
       .maybeSingle(),
     db.from("orders")
-      .select("id", { count: "exact", head: true })
-      .eq("user_id", user.id)
-      .not("status", "in", "(cancelled,refunded,failed)")
-      .not("payment_status", "in", "(cancelled,refunded,failed)"),
+      .select("status,payment_status")
+      .eq("user_id", user.id),
   ]);
 
   if (rulesError || ordersError) {
     return NextResponse.json({ eligible: false }, { status: 200, headers: { "Cache-Control": "no-store" } });
   }
 
+  const hasPriorQualifyingOrder = (orders || []).some((order) =>
+    !["cancelled", "refunded", "failed"].includes(String(order.status || "").toLowerCase()) &&
+    !["cancelled", "refunded", "failed"].includes(String(order.payment_status || "paid").toLowerCase())
+  );
   const reward = Number(rules?.new_customer_reward || 0);
   const minimum = Number(rules?.minimum_order_amount || 0);
   const eligible = Boolean(
@@ -29,7 +31,7 @@ export async function GET() {
     !rules.manual_approval &&
     reward > 0 &&
     minimum > 0 &&
-    (count || 0) === 0
+    !hasPriorQualifyingOrder
   );
 
   return NextResponse.json(
