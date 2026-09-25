@@ -931,7 +931,7 @@ export default function NewOrderPage() {
                 <div className="mt-3 grid gap-2 sm:grid-cols-3">
                   {quickStartServices.map((service) => {
                     const minimumTotal = Math.round((service.minQuantity * service.pricePer1000 * 100) / 1000) / 100;
-                    return <button key={service.code} type="button" onClick={() => { track("service_selected", { service_code: service.code, platform: service.platform, step: "quick_start" }); chooseService(service); }} className="sr-motion-press rounded-xl border border-white/10 bg-[#0B0B0F] p-3 text-left transition hover:border-orange-400/45 hover:bg-orange-500/[.06]">
+                    return <button key={service.code} type="button" onClick={() => chooseService(service)} className="sr-motion-press rounded-xl border border-white/10 bg-[#0B0B0F] p-3 text-left transition hover:border-orange-400/45 hover:bg-orange-500/[.06]">
                       <div className="flex items-center gap-2"><IconBadge size="sm" label={platformMeta[service.platform].label} className={`bg-gradient-to-br ${platformAccent(service.platform)}`}><PlatformIcon platform={platformMeta[service.platform].label} /></IconBadge><span className="text-[10px] font-black uppercase tracking-wider text-[#8F949D]">{platformMeta[service.platform].label}</span></div>
                       <p className="mt-3 text-xs font-black text-white">{serviceExperience[service.code]?.name || service.name}</p>
                       <p className="mt-1 text-[10px] text-[#9CA3AF]">Start from {formatCurrency(minimumTotal, currency)}</p>
