@@ -89,6 +89,7 @@ export default async function CrmOverviewPage(){
     ["Saved Drafts",drafts.length,"Unfinished orders currently saved"],
     ["Drafts · 7 Days",recentDrafts.length,"Recent high-intent unfinished orders"],
     ["Never Ordered + Draft",neverOrderedWithDraft,"Highest-intent first-order leads"],
+    ["Never Ordered · No Draft",Math.max(0,neverOrdered.length-neverOrderedWithDraft),"Registered users who never saved an order"],
     ["30-Day First Order Rate",`${signupToFirstOrder}%`,`${newCustomersWithOrder.length} of ${newCustomers.length} recent signups converted`],
     ["Bonus Credited",creditedRewards.length,`${money(rewardTotal)} credited in first-order rewards`],
   ];
@@ -134,6 +135,7 @@ export default async function CrmOverviewPage(){
       </div>
       <div className="mt-4 flex flex-wrap gap-2">
         <Link href="/admin/crm/customers?filter=never_ordered" className="rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-black text-[#04110b]">Open Never-Ordered Users</Link>
+        <Link href="/admin/crm/customers?filter=never_ordered_no_draft" className="rounded-xl border border-sky-400/30 bg-sky-500/[.07] px-4 py-2.5 text-xs font-bold text-sky-100">Open No-Draft Users</Link>
         <Link href="/admin/crm/customers?filter=abandoned_draft" className="rounded-xl border border-amber-400/30 bg-amber-500/[.07] px-4 py-2.5 text-xs font-bold text-amber-100">Open Abandoned Drafts</Link>
         <Link href="/admin/crm/reactivation" className="rounded-xl border border-white/15 px-4 py-2.5 text-xs font-bold text-white">Open Reactivation Queue</Link>
       </div>
