@@ -33,6 +33,7 @@ export default function RegisterForm() {
     const password = String(formData.get("password") || "");
     const confirmPassword = String(formData.get("confirmPassword") || "");
     const fullName = String(formData.get("fullName") || "").trim();
+    const marketingOptIn = formData.get("marketingOptIn") === "on";
 
     if (password !== confirmPassword) {
       setError("Password and confirm password must match.");
@@ -48,7 +49,7 @@ export default function RegisterForm() {
         email,
         password,
         options: {
-          data: { full_name: fullName },
+          data: { full_name: fullName, marketing_opt_in: marketingOptIn },
           emailRedirectTo: callbackUrl.toString(),
         },
       });
@@ -143,6 +144,19 @@ export default function RegisterForm() {
             <Link href="/terms-and-conditions" className="font-semibold text-orange-600 transition hover:text-orange-500">Terms</Link>
             {" "}and{" "}
             <Link href="/privacy-policy" className="font-semibold text-orange-600 transition hover:text-orange-500">Privacy Policy</Link>.
+          </span>
+        </label>
+        <label className="flex items-start gap-3 rounded-xl border border-emerald-400/20 bg-emerald-500/[.06] p-3 text-sm leading-5 text-[#D1D5DB]">
+          <input
+            type="checkbox"
+            name="marketingOptIn"
+            className="mt-0.5 h-4 w-4 shrink-0 rounded border-slate-300 accent-emerald-500"
+          />
+          <span>
+            <strong className="block text-white">Send me useful order tips and occasional offers.</strong>
+            <span className="mt-1 block text-xs leading-5 text-[#9CA3AF]">
+              Optional. This may include first-order rewards and saved-order reminders. You can unsubscribe anytime.
+            </span>
           </span>
         </label>
         <button
