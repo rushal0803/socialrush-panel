@@ -14,7 +14,8 @@ type Event={
  created_at:string;
 };
 type LifecycleOrderContext={user_id:string;created_at:string;status:string|null;payment_status:string|null;platform:string|null;charge:number|string|null};
-type CrmTag={name:string|null};\ntype CrmTagRow={crm_tags:CrmTag|CrmTag[]|null};
+type CrmTag={name:string|null};
+type CrmTagRow={crm_tags:CrmTag|CrmTag[]|null};
 type AdminClient=ReturnType<typeof createAdminClient>;
 type EventPatch=Partial<{status:string;provider_message_id:string|null;sent_at:string|null;processing_started_at:string|null;error_message:string|null;updated_at:string}>;
 export type CustomerEmailProcessOutcome={id:string;eventType:Event["event_type"];outcome:"sent"|"recovered"|"skipped"|"failed";detail?:string};
@@ -22,7 +23,8 @@ export type CustomerEmailProcessResult={processed:number;outcomes:CustomerEmailP
 
 const safeError=(e:unknown)=>e instanceof Error?e.message.slice(0,500):"Email provider request failed";
 const transactional=(type:Event["event_type"])=>type==="order_created"||type==="order_completed";
-const staleTransactional=(event:Event)=>transactional(event.event_type)&&Date.now()-new Date(event.created_at).getTime()>48*60*60*1000;\nconst crmTagNames=(rows:CrmTagRow[])=>rows.flatMap(row=>Array.isArray(row.crm_tags)?row.crm_tags.map(tag=>tag.name):row.crm_tags?[row.crm_tags.name]:[]);
+const staleTransactional=(event:Event)=>transactional(event.event_type)&&Date.now()-new Date(event.created_at).getTime()>48*60*60*1000;
+const crmTagNames=(rows:CrmTagRow[])=>rows.flatMap(row=>Array.isArray(row.crm_tags)?row.crm_tags.map(tag=>tag.name):row.crm_tags?[row.crm_tags.name]:[]);
 
 async function patchEvent(db:AdminClient,id:string,patch:EventPatch){
  const {error}=await db.from("customer_email_events").update(patch).eq("id",id);
@@ -116,7 +118,8 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
      outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"customer_service_issue"});
      continue;
     }
-    const activationBoundary=event.event_type==="inactive_7d"?config.lifecycle_activation_at:config.first_order_sequence_activation_at;\n    const eligible=profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
+    const activationBoundary=event.event_type==="inactive_7d"?config.lifecycle_activation_at:config.first_order_sequence_activation_at;
+    const eligible=profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
     if(!eligible||suppression||!canSendPromotional()){
      const reason=!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible";
      await terminal(db,event.id,reason);
