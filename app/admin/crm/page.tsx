@@ -58,10 +58,19 @@ export default async function CrmOverviewPage(){
   const paymentStarted=uniqueCustomers("payment_started");
   const checkoutStarted=uniqueCustomers("checkout_started");
   const checkoutErrors=uniqueCustomers("checkout_error");
+  const uniquePathCustomers=(eventName:string,path:string,device?:string)=>new Set(analytics.filter(x=>x.event_name===eventName&&x.customer_id&&x.safe_metadata?.payment_path===path&&(!device||x.device_category===device)).map(x=>x.customer_id)).size;
+  const cashfreePayments=uniquePathCustomers("payment_started","cashfree");
+  const manualPayments=uniquePathCustomers("payment_started","manual_direct");
+  const cashfreeCheckouts=uniquePathCustomers("checkout_started","cashfree");
+  const manualCheckouts=uniquePathCustomers("checkout_started","manual_direct");
+  const walletCheckouts=uniquePathCustomers("checkout_started","wallet");
   const serviceToPayment=serviceSelected?Math.round(paymentStarted/serviceSelected*1000)/10:0;
-  const paymentToCheckout=paymentStarted?Math.round(checkoutStarted/paymentStarted*1000)/10:0;
-  const mobilePayments=new Set(analytics.filter(x=>x.event_name==="payment_started"&&x.device_category==="mobile"&&x.customer_id).map(x=>x.customer_id)).size;
-  const mobileCheckouts=new Set(analytics.filter(x=>x.event_name==="checkout_started"&&x.device_category==="mobile"&&x.customer_id).map(x=>x.customer_id)).size;
+  const cashfreeToCheckout=cashfreePayments?Math.round(cashfreeCheckouts/cashfreePayments*1000)/10:0;
+  const manualToCheckout=manualPayments?Math.round(manualCheckouts/manualPayments*1000)/10:0;
+  const mobileCashfreePayments=uniquePathCustomers("payment_started","cashfree","mobile");
+  const mobileCashfreeCheckouts=uniquePathCustomers("checkout_started","cashfree","mobile");
+  const mobileManualPayments=uniquePathCustomers("payment_started","manual_direct","mobile");
+  const mobileManualCheckouts=uniquePathCustomers("checkout_started","manual_direct","mobile");
   const errorStageCounts=analytics.filter(x=>x.event_name==="checkout_error").reduce((acc:Record<string,number>,x:any)=>{const stage=String(x.safe_metadata?.step||"unknown");acc[stage]=(acc[stage]||0)+1;return acc;},{} as Record<string,number>);
   const errorStages=(Object.entries(errorStageCounts) as Array<[string,number]>).sort((a,b)=>b[1]-a[1]).slice(0,4);
 
@@ -134,13 +143,15 @@ export default async function CrmOverviewPage(){
     <section className="mt-6 rounded-2xl border border-sky-400/20 bg-[linear-gradient(135deg,rgba(14,165,233,.07),rgba(17,17,17,.98)_55%)] p-5">
       <div className="flex flex-wrap items-start justify-between gap-3">
         <div><p className="text-[10px] font-black uppercase tracking-[.16em] text-sky-300">Checkout funnel · 7 days</p><h2 className="mt-1 text-xl font-black text-white">See exactly where buyers stop</h2><p className="mt-1 text-xs text-[#9CA3AF]">Unique signed-in customers. Payment-path and error-stage tracking was upgraded on 25 Sep, so use the newer data for clean comparisons.</p></div>
-        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs text-[#D1D5DB]">Mobile: <b className="text-white">{mobilePayments}</b> payment starts → <b className="text-white">{mobileCheckouts}</b> checkouts</div>
+        <div className="rounded-xl border border-white/10 bg-black/20 px-3 py-2 text-xs leading-5 text-[#D1D5DB]">Mobile Cashfree: <b className="text-white">{mobileCashfreePayments}</b> → <b className="text-white">{mobileCashfreeCheckouts}</b><br/>Mobile direct pay: <b className="text-white">{mobileManualPayments}</b> → <b className="text-white">{mobileManualCheckouts}</b></div>
       </div>
       <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
         {[
           ["Service selected",serviceSelected,"High-intent users"],
           ["Payment started",paymentStarted,String(serviceToPayment)+"% of selectors"],
-          ["Checkout reached",checkoutStarted,String(paymentToCheckout)+"% of payment starters"],
+          ["Cashfree checkout",cashfreeCheckouts,cashfreePayments?String(cashfreeToCheckout)+"% of Cashfree starts":"No Cashfree starts yet"],
+          ["Direct-pay checkout",manualCheckouts,manualPayments?String(manualToCheckout)+"% of direct-pay starts":"No direct-pay starts yet"],
+          ["Wallet checkout",walletCheckouts,"Wallet-funded checkout intents"],
           ["Checkout errors",checkoutErrors,checkoutErrors?"Inspect failure stages below":"No tracked errors in this window"],
         ].map(([label,value,helper])=><article key={String(label)} className="rounded-xl border border-white/10 bg-[#0B0B0F] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-[#8F949D]">{label}</p><b className="mt-2 block text-2xl text-white">{value}</b><p className="mt-1 text-[11px] leading-5 text-[#8F949D]">{helper}</p></article>)}
       </div>
