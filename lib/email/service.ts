@@ -137,7 +137,13 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
       profile.notification_preferences?.marketing===true &&
       !orders.some(order=>Date.parse(order.created_at)>=draftUpdated && !["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase()) && !["cancelled","refunded","failed"].includes(String(order.payment_status||"").toLowerCase()))
     );
-    const eligible=isAbandoned?abandonedEligible:profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
+    const recentDraft=Boolean(draft && Date.parse(draft.updated_at)>=Date.now()-7*86400000);
+    const firstOrderEvent=["first_order_reminder","first_order_nudge_2h","first_order_trust_24h","first_order_reminder_3d","first_order_final_7d"].includes(event.event_type);
+    const eligible=isAbandoned
+      ? abandonedEligible
+      : firstOrderEvent && recentDraft
+        ? false
+        : profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
     if(!eligible||suppression||!canSendPromotional()){
      const reason=!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible";
      await terminal(db,event.id,reason);
