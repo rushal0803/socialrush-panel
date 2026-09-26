@@ -53,10 +53,11 @@ export function generateStaticParams() {
   return [...new Set([...articleSlugs, ...blogRedirects.map((entry) => entry.slug)])].map((slug) => ({ slug }));
 }
 
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
-  const redirect = blogRedirects.find((entry) => entry.slug === params.slug);
+export async function generateMetadata({ params }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const { slug } = await params;
+  const redirect = blogRedirects.find((entry) => entry.slug === slug);
   if (redirect) return { robots: { index: false, follow: true } };
-  const article = getArticleBySlug(params.slug);
+  const article = getArticleBySlug(slug);
   if (!article) {
     return {
       title: "Blog Article Not Found",
@@ -104,10 +105,11 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
 }
 
-export default function BlogDetailPage({ params }: { params: { slug: string } }) {
-  const redirect = blogRedirects.find((entry) => entry.slug === params.slug);
+export default async function BlogDetailPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
+  const redirect = blogRedirects.find((entry) => entry.slug === slug);
   if (redirect) permanentRedirect(redirect.destination);
-  const article = getArticleBySlug(params.slug);
+  const article = getArticleBySlug(slug);
 
   if (!article) {
     notFound();

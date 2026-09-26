@@ -4,5 +4,5 @@ import { createLinkedInUsaServiceMetadata } from "@/lib/seo/linkedin-usa-service
 export const metadata = createLinkedInUsaServiceMetadata("linkedin-usa-custom-comments");
 
 export default async function LinkedInUsaCustomCommentsPage() {
-  return ServiceSeoPage({ params: { slug: "linkedin-usa-custom-comments" } });
+  return ServiceSeoPage({ params: Promise.resolve({ slug: "linkedin-usa-custom-comments" }) });
 }

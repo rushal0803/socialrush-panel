@@ -4,7 +4,8 @@ import { AdminPageHeader, AdminStatus } from "@/components/admin/AdminUI";
 
 const statuses = ["all", "requested", "reviewing", "approved", "processing", "completed", "rejected", "cancelled"] as const;
 
-export default async function AdminRefillsPage({ searchParams }: { searchParams?: { status?: string } }) {
+export default async function AdminRefillsPage({ searchParams: searchParamsPromise }: { searchParams?: Promise<{ status?: string }> }) {
+  const searchParams = searchParamsPromise ? await searchParamsPromise : undefined;
   const db = await createClient();
   const requestedStatus = searchParams?.status;
   const status = statuses.includes(requestedStatus as typeof statuses[number]) ? requestedStatus || "all" : "all";

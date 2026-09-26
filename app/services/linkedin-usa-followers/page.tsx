@@ -4,5 +4,5 @@ import { createLinkedInUsaServiceMetadata } from "@/lib/seo/linkedin-usa-service
 export const metadata = createLinkedInUsaServiceMetadata("linkedin-usa-followers");
 
 export default async function LinkedInUsaFollowersPage() {
-  return ServiceSeoPage({ params: { slug: "linkedin-usa-followers" } });
+  return ServiceSeoPage({ params: Promise.resolve({ slug: "linkedin-usa-followers" }) });
 }

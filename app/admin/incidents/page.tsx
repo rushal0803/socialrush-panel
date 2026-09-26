@@ -2,7 +2,8 @@ import { createClient } from "@/lib/supabase/server";
 import { acknowledgeIncident, resolveIncident } from "../actions";
 
 const stamp = (value: string) => new Date(value).toLocaleString("en-IN", { dateStyle: "medium", timeStyle: "short" });
-export default async function IncidentsPage({ searchParams }: { searchParams: { status?: string; severity?: string } }) {
+export default async function IncidentsPage({ searchParams: searchParamsPromise }: { searchParams: Promise<{ status?: string; severity?: string }> }) {
+  const searchParams = await searchParamsPromise;
   const db = await createClient(); let query = db.from("operational_incidents").select("id,incident_type,severity,status,title,safe_summary,source,first_seen_at,last_seen_at,occurrence_count,resolution_note", { count: "exact" }).order("last_seen_at", { ascending: false }).limit(50);
   if (["open", "acknowledged", "resolved"].includes(searchParams.status || "")) query = query.eq("status", searchParams.status!);
   if (["critical", "high", "medium", "low", "informational"].includes(searchParams.severity || "")) query = query.eq("severity", searchParams.severity!);

@@ -13,30 +13,30 @@
     "test:currency": "node --experimental-strip-types --test tests/unit/currency-localization.test.ts",
     "test:international-seo": "node --experimental-strip-types --test tests/unit/international-seo.test.ts",
     "test:topical-authority": "node --experimental-strip-types --test tests/unit/topical-authority.test.ts",
-    "test:trust": "node --experimental-strip-types --test tests/unit/trust-content.test.ts"
-    ,"test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts"
-    ,"test:cro": "node --experimental-strip-types --test tests/unit/cro-personalization.test.ts"
-    ,"test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts"
+    "test:trust": "node --experimental-strip-types --test tests/unit/trust-content.test.ts",
+    "test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts",
+    "test:cro": "node --experimental-strip-types --test tests/unit/cro-personalization.test.ts",
+    "test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
     "@supabase/supabase-js": "^2.49.1",
     "framer-motion": "^12.40.0",
     "lucide-react": "^1.21.0",
-    "next": "^14.2.33",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "next": "15.5.26",
+    "react": "19.2.8",
+    "react-dom": "19.2.8",
     "react-icons": "^5.6.0",
     "resend": "^6.25.0"
   },
   "devDependencies": {
     "@playwright/test": "^1.62.1",
     "@types/node": "^20.16.11",
-    "@types/react": "^18.3.11",
-    "@types/react-dom": "^18.3.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
     "autoprefixer": "^10.4.20",
     "eslint": "^8.57.1",
-    "eslint-config-next": "^14.2.33",
+    "eslint-config-next": "15.5.26",
     "postcss": "^8.4.47",
     "supabase": "^2.108.0",
     "tailwindcss": "^3.4.14",

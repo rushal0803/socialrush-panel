@@ -2,6 +2,7 @@
 
 import { motion, AnimatePresence, useInView } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -677,7 +678,7 @@ export default function WalletDashboard({
             </div>
           </div>
         </motion.section>
-        <div className="mt-3 grid gap-2 sm:flex sm:flex-wrap"><a href="#add-funds" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-xs font-black text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.7)] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300">Add Funds</a><a href="#transactions" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-bold text-[#D1D5DB] transition hover:border-orange-400/35 hover:bg-orange-500/10">View Transactions</a><a href="/dashboard/support?category=payment_or_wallet" className="hidden min-h-11 items-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-xs font-bold text-orange-200 sm:inline-flex">Payment Help</a></div>
+        <div className="mt-3 grid gap-2 sm:flex sm:flex-wrap"><a href="#add-funds" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-xs font-black text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.7)] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300">Add Funds</a><a href="#transactions" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-4 text-xs font-bold text-[#D1D5DB] transition hover:border-orange-400/35 hover:bg-orange-500/10">View Transactions</a><Link href="/dashboard/support?category=payment_or_wallet" className="hidden min-h-11 items-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-xs font-bold text-orange-200 sm:inline-flex">Payment Help</Link></div>
 
         <section className="mt-4 grid grid-cols-2 gap-3 sm:mt-5 sm:gap-4 xl:grid-cols-4">
           {stats.map((stat, index) => (
@@ -1012,12 +1013,7 @@ export default function WalletDashboard({
                             ? `Minimum ${money(minimumAmount)} required`
                             : "Proceed to Secure Payment"}
                     </button>
-                    <a
-                      href="/dashboard/support?category=payment_or_wallet"
-                      className="mt-3 inline-flex w-full items-center justify-center text-xs font-bold text-orange-300 transition hover:text-orange-200"
-                    >
-                      Get Payment Help
-                    </a>
+                    <Link href="/dashboard/support?category=payment_or_wallet" className="mt-3 inline-flex w-full items-center justify-center text-xs font-bold text-orange-300 transition hover:text-orange-200">Get Payment Help</Link>
                   </div>
                 </div>
 
@@ -1286,7 +1282,7 @@ export default function WalletDashboard({
               <p className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/10 p-3 text-sm font-black text-orange-300">
                 New balance: {money(success.balance)}
               </p>
-              <dl className="mt-4 space-y-2 text-left text-xs"><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Payment reference</dt><dd className="mt-1 break-all font-bold text-white">{success.paymentId}</dd></div><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Wallet credit</dt><dd className="mt-1 font-bold text-emerald-300">{money(success.amount)}</dd></div><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Verified at</dt><dd className="mt-1 font-bold text-white">{new Date(success.completedAt).toLocaleString("en-IN")}</dd></div></dl><div className="mt-4 grid gap-2"><button type="button" onClick={() => { setSuccess(null); document.getElementById("transactions")?.scrollIntoView({behavior:"smooth"}); }} className="min-h-11 rounded-xl border border-white/10 text-xs font-bold text-white">View Transaction</button><a href="/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 text-xs font-bold text-white">Create New Order</a></div>
+              <dl className="mt-4 space-y-2 text-left text-xs"><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Payment reference</dt><dd className="mt-1 break-all font-bold text-white">{success.paymentId}</dd></div><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Wallet credit</dt><dd className="mt-1 font-bold text-emerald-300">{money(success.amount)}</dd></div><div className="rounded-xl bg-[#0B0B0F] p-3"><dt className="text-[#9CA3AF]">Verified at</dt><dd className="mt-1 font-bold text-white">{new Date(success.completedAt).toLocaleString("en-IN")}</dd></div></dl><div className="mt-4 grid gap-2"><button type="button" onClick={() => { setSuccess(null); document.getElementById("transactions")?.scrollIntoView({behavior:"smooth"}); }} className="min-h-11 rounded-xl border border-white/10 text-xs font-bold text-white">View Transaction</button><Link href="/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center rounded-xl bg-orange-500 text-xs font-bold text-white">Create New Order</Link></div>
             </motion.div>
           </motion.div>
         )}

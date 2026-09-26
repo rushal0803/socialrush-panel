@@ -9,7 +9,8 @@ import { formatPublicOrderId } from "@/lib/orders/public-reference";
 const money = (value: unknown) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(Number(value ?? 0));
 const count = (value: unknown) => value === null || value === undefined ? "Not available" : Number(value).toLocaleString("en-IN");
 
-export default async function AdminOrderDetailsPage({ params }: { params: { id: string } }) {
+export default async function AdminOrderDetailsPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const supabase = await createClient();
   const { data: order, error } = await supabase
     .from("orders")

@@ -6,10 +6,11 @@ import { createClient } from "@/lib/supabase/server";
 const ticketStatuses = ["open", "waiting_for_support", "waiting_for_customer", "resolved", "closed"] as const;
 
 export default async function AdminSupportPage({
-  searchParams,
+  searchParams: searchParamsPromise,
 }: {
-  searchParams?: { ticket?: string; status?: string; q?: string; category?: string; order?: string };
+  searchParams?: Promise<{ ticket?: string; status?: string; q?: string; category?: string; order?: string }>;
 }) {
+  const searchParams = searchParamsPromise ? await searchParamsPromise : undefined;
   const supabase = await createClient();
   let query = supabase
     .from("support_tickets")

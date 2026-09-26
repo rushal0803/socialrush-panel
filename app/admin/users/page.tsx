@@ -99,10 +99,11 @@ function UserActions({ user, compact = false }: { user: UserRow; compact?: boole
 }
 
 export default async function UsersPage({
-  searchParams,
+  searchParams: searchParamsPromise,
 }: {
-  searchParams?: { q?: string };
+  searchParams?: Promise<{ q?: string }>;
 }) {
+  const searchParams = searchParamsPromise ? await searchParamsPromise : undefined;
   const supabase = await createClient();
   const search = String(searchParams?.q || "").trim().slice(0, 100);
   const safeSearch = search.replace(/[^\p{L}\p{N}@._+\-\s]/gu, "");

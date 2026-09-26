@@ -4,5 +4,5 @@ import { createLinkedInUsaServiceMetadata } from "@/lib/seo/linkedin-usa-service
 export const metadata = createLinkedInUsaServiceMetadata("linkedin-usa-connections");
 
 export default async function LinkedInUsaConnectionsPage() {
-  return ServiceSeoPage({ params: { slug: "linkedin-usa-connections" } });
+  return ServiceSeoPage({ params: Promise.resolve({ slug: "linkedin-usa-connections" }) });
 }

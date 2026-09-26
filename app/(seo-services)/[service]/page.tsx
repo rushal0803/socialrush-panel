@@ -40,22 +40,24 @@ export function generateStaticParams() {
   return Object.keys(serviceRoutes).map((service) => ({ service }));
 }
 
-export function generateMetadata({
+export async function generateMetadata({
   params,
 }: {
-  params: { service: string };
-}): Metadata {
-  const slug = serviceRoutes[params.service];
+  params: Promise<{ service: string }>;
+}): Promise<Metadata> {
+  const { service } = await params;
+  const slug = serviceRoutes[service];
   if (!slug) return {};
-  return getIndiaServiceMetadata(slug, `/${params.service}`);
+  return getIndiaServiceMetadata(slug, `/${service}`);
 }
 
-export default function CanonicalServicePage({
+export default async function CanonicalServicePage({
   params,
 }: {
-  params: { service: string };
+  params: Promise<{ service: string }>;
 }) {
-  const slug = serviceRoutes[params.service];
+  const { service } = await params;
+  const slug = serviceRoutes[service];
   if (!slug) notFound();
 
   // Instagram Likes has a purpose-built conversion page. Its order builder reads
@@ -121,7 +123,7 @@ export default function CanonicalServicePage({
   return (
     <IndiaServiceLandingPage
       slug={slug}
-      canonicalPath={`/${params.service}`}
+      canonicalPath={`/${service}`}
     />
   );
 }

@@ -3,7 +3,8 @@ import { revalidatePath } from "next/cache";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
 import { detectPublicCount } from "@/lib/orders/count-detector";
 
-export async function POST(_request: Request, { params }: { params: { id: string } }) {
+export async function POST(_request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
 

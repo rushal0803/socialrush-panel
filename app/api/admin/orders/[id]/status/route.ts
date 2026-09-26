@@ -9,7 +9,8 @@ const statuses = new Set([
   "refunded", "failed", "refill_requested", "refilling",
 ]);
 
-export async function POST(request: Request, { params }: { params: { id: string } }) {
+export async function POST(request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
   const body = (await request.json().catch(() => null)) as { status?: string; note?: string } | null;

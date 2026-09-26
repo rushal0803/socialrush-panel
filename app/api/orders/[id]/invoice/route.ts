@@ -6,7 +6,8 @@ import { formatPublicOrderId } from "@/lib/orders/public-reference";
 const escapeHtml = (value: unknown) => String(value ?? "").replace(/[&<>"']/g, (character) => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character] || character);
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
 const platformName = (value: string | null) => ({ instagram: "Instagram", youtube: "YouTube", facebook: "Facebook", linkedin: "LinkedIn", telegram: "Telegram", tiktok: "TikTok", twitter: "X", x: "X" }[String(value || "").trim().toLowerCase()] || value || "Not specified");
-export async function GET(_: Request, { params }: { params: { id: string } }) {
+export async function GET(_: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   if (!isUuid(params.id)) return NextResponse.json({ error: "Invalid order reference." }, { status: 422 });
   const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });

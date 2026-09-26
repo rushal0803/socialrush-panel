@@ -24,6 +24,7 @@ import {
   Wallet,
 } from "lucide-react";
 import { useCallback, useMemo, useRef, useState, useEffect } from "react";
+import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -771,7 +772,7 @@ export default function NewOrderPage() {
               {quickStartServices.length ? <section className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/[.055] p-4" aria-label="Quick start services">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div><p className="text-xs font-black text-white">Not sure where to start?</p><p className="mt-1 text-[11px] leading-5 text-[#A7ADB7]">Use a simple starting point below, or choose any platform from the full list.</p></div>
-                  <a href="/dashboard/support" className="inline-flex min-h-9 items-center rounded-lg border border-white/10 bg-white/[.04] px-3 text-[11px] font-bold text-orange-200 hover:border-orange-400/40">Need help choosing?</a>
+                  <Link href="/dashboard/support" className="inline-flex min-h-9 items-center rounded-lg border border-white/10 bg-white/[.04] px-3 text-[11px] font-bold text-orange-200 hover:border-orange-400/40">Need help choosing?</Link>
                 </div>
                 <div className="mt-3 grid gap-2 sm:grid-cols-3">
                   {quickStartServices.map((service) => {
@@ -975,7 +976,7 @@ export default function NewOrderPage() {
                   <span className={`mt-2 block text-[11px] leading-5 ${linkError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
                     {targetLink.trim() && linkValidation ? `${linkValidation.severity === "success" ? "✓ " : linkValidation.severity === "warning" ? "⚠ " : "✕ "}${linkValidation.message}${linkValidation.suggestion ? ` ${linkValidation.suggestion}` : ""}` : linkRule.helper}
                   </span>
-                  {targetLink.trim() && linkValidation?.valid && /(followers|subscribers|members)/.test(selectedService.code) && ["profile", "channel", "page or profile", "profile or company", "channel or group"].includes(linkValidation.detectedType || "") ? <a href="/dashboard/saved-profiles" className="mt-2 inline-flex min-h-10 items-center text-[11px] font-bold text-orange-300 hover:text-orange-200">+ Save this profile</a> : null}
+                  {targetLink.trim() && linkValidation?.valid && /(followers|subscribers|members)/.test(selectedService.code) && ["profile", "channel", "page or profile", "profile or company", "channel or group"].includes(linkValidation.detectedType || "") ? <Link href="/dashboard/saved-profiles" className="mt-2 inline-flex min-h-10 items-center text-[11px] font-bold text-orange-300 hover:text-orange-200">+ Save this profile</Link> : null}
                 </label>
                 <div className="block text-xs font-black text-white">
                   <label htmlFor="order-quantity" className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</label>
@@ -1063,7 +1064,7 @@ export default function NewOrderPage() {
                   ) : (
                     <button type="button" disabled className="mt-5 min-h-12 w-full rounded-xl bg-white/15 px-5 py-3 text-sm font-black text-white/60">Complete details to continue</button>
                   )}
-                  {!hasEnoughWallet && formIsValid && !walletLoading ? (walletBalance === 0 ? <button type="button" onClick={() => void payWithManualMethods()} disabled={submitting} className="mt-2 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/[.07] px-4 text-xs font-black text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/[.12] disabled:opacity-50">Pay directly · UPI · Bank Transfer · USDT</button> : <a href="/dashboard/add-funds" onClick={() => track("checkout_recovery_click", { source: "alternative_payment_methods", surface: "new_order" })} className="mt-2 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-white/15 bg-white/[.035] px-4 text-xs font-black text-orange-200 transition hover:border-orange-400/40 hover:bg-orange-500/[.06]">Add funds · UPI · Bank Transfer · USDT</a>) : null}
+                  {!hasEnoughWallet && formIsValid && !walletLoading ? (walletBalance === 0 ? <button type="button" onClick={() => void payWithManualMethods()} disabled={submitting} className="mt-2 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-orange-400/30 bg-orange-500/[.07] px-4 text-xs font-black text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/[.12] disabled:opacity-50">Pay directly · UPI · Bank Transfer · USDT</button> : <Link href="/dashboard/add-funds" onClick={() => track("checkout_recovery_click", { source: "alternative_payment_methods", surface: "new_order" })} className="mt-2 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-white/15 bg-white/[.035] px-4 text-xs font-black text-orange-200 transition hover:border-orange-400/40 hover:bg-orange-500/[.06]">Add funds · UPI · Bank Transfer · USDT</Link>) : null}
                   <p className="mt-3 flex items-center justify-center gap-2 text-[10px] text-orange-100"><RefreshCw className="h-3.5 w-3.5" /> Wallet charged only after confirmation</p>
                 </aside>
               </div>}

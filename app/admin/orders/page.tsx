@@ -42,10 +42,11 @@ const filterField =
   "min-h-11 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-2.5 text-xs text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15";
 
 export default async function AdminOrdersPage({
-  searchParams = {},
+  searchParams: searchParamsPromise,
 }: {
-  searchParams?: SearchParams;
+  searchParams?: Promise<SearchParams>;
 }) {
+  const searchParams = searchParamsPromise ? await searchParamsPromise : {};
   const supabase = await createClient();
   const needsAttention = searchParams.filter === "needs-attention";
   const paymentVerification = searchParams.filter === "payment-verification";

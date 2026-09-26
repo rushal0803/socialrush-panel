@@ -108,10 +108,11 @@ export async function generateStaticParams() {
 }
 
 export async function generateMetadata({
-  params,
+  params: paramsPromise,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
+  const params = await paramsPromise;
   if (params.slug === "linkedin-usa-followers") {
     const title = "Buy LinkedIn USA Followers | SocialRUSH";
     const description =
@@ -298,10 +299,11 @@ function getSeoData(slug: string) {
 }
 
 export default async function ServiceSeoPage({
-  params,
+  params: paramsPromise,
 }: {
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await paramsPromise;
   if (params.slug === "linkedin-usa-reposts") {
     const catalogService = activeSmmServices.find((service) => service.code === params.slug);
     if (!catalogService) notFound();

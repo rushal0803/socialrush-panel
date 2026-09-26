@@ -13,7 +13,8 @@ const orderIdFromMetadata = (metadata: unknown) => {
   return typeof value === "string" && value.length <= 100 ? value : null;
 };
 
-export default async function Page({ searchParams }: { searchParams: { range?: string } }) {
+export default async function Page({ searchParams: searchParamsPromise }: { searchParams: Promise<{ range?: string }> }) {
+  const searchParams = await searchParamsPromise;
   const db = await createClient(); const key = searchParams.range && searchParams.range in ranges ? searchParams.range as keyof typeof ranges : "30d"; const days=ranges[key]; const since=new Date(Date.now()-days*86_400_000).toISOString();
   const [analyticsResult,ordersResult,transactionsResult,supportResult]=await Promise.all([db.from("analytics_events").select("event_name,customer_id,anonymous_session_id,platform,service_code,device_category,source,medium,campaign,safe_metadata,created_at").gte("created_at",since),db.from("orders").select("id,user_id,service_name,platform,charge,status,payment_status,created_at").gte("created_at",since),db.from("transactions").select("amount,type,status,payment_method,created_at").gte("created_at",since),db.from("support_tickets").select("id",{count:"exact",head:true}).gte("created_at",since)]);
   const events=analyticsResult.data??[],orders=ordersResult.data??[],transactions=transactionsResult.data??[],supportCount=supportResult.count??0; const queryFailed=Boolean(analyticsResult.error||ordersResult.error||transactionsResult.error||supportResult.error);

@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import Logo from "@/components/Logo";
 import { createClient } from "@/lib/supabase/client";
@@ -110,12 +111,7 @@ export default function AdminLoginForm({ initialError = "" }: { initialError?: s
             {loading ? "Checking access…" : "Sign in to admin"}
           </button>
         </form>
-        <a
-          href="/"
-          className="mt-5 block text-center text-xs font-semibold text-[#9CA3AF] hover:text-orange-400"
-        >
-          ← Return to website
-        </a>
+        <Link href="/" className="mt-5 block text-center text-xs font-semibold text-[#9CA3AF] hover:text-orange-400">← Return to website</Link>
       </section>
     </main>
   );

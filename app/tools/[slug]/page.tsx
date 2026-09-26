@@ -6,12 +6,14 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { tools, toolBySlug } from "@/lib/tools/catalog";
 
 export function generateStaticParams() { return tools.map(({ slug }) => ({ slug })); }
-export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
+export async function generateMetadata({ params: paramsPromise }: { params: Promise<{ slug: string }> }): Promise<Metadata> {
+  const params = await paramsPromise;
   const tool = toolBySlug[params.slug];
   if (!tool) return {};
   return createPageMetadata({ title: tool.title, description: tool.description, path: `/tools/${tool.slug}`, keywords: tool.slug === "youtube-thumbnail-preview" ? [...tool.keywords, "YouTube thumbnail preview tool", "YouTube video title checker", "preview YouTube thumbnail"] : [...tool.keywords] });
 }
-export default function ToolPage({ params }: { params: { slug: string } }) {
+export default async function ToolPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
+  const params = await paramsPromise;
   const legacySlug = {
     "youtube-thumbnail-preview-title-checker": "youtube-thumbnail-preview",
     "instagram-caption-character-counter": "instagram-caption-counter",

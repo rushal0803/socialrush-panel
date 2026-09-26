@@ -8,13 +8,15 @@ export function generateStaticParams() {
     .map((page) => ({ service: page.serviceSlug }));
 }
 
-export function generateMetadata({ params }: { params: { service: string } }) {
-  const page = getPublishedCountryServicePage("sg", params.service);
+export async function generateMetadata({ params }: { params: Promise<{ service: string }> }) {
+  const { service } = await params;
+  const page = getPublishedCountryServicePage("sg", service);
   return page ? createCountryServiceMetadata(page) : {};
 }
 
-export default function Page({ params }: { params: { service: string } }) {
-  const page = getPublishedCountryServicePage("sg", params.service);
+export default async function Page({ params }: { params: Promise<{ service: string }> }) {
+  const { service } = await params;
+  const page = getPublishedCountryServicePage("sg", service);
   if (!page) notFound();
   return <CountryServiceLandingPage page={page} />;
 }

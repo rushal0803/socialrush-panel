@@ -6,7 +6,8 @@ import { createClient } from "@/lib/supabase/server";
 const statuses = ["all", "issue", "pending", "completed", "failed"];
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(value);
 
-export default async function AdminPaymentsPage({ searchParams }: { searchParams?: { status?: string } }) {
+export default async function AdminPaymentsPage({ searchParams: searchParamsPromise }: { searchParams?: Promise<{ status?: string }> }) {
+  const searchParams = searchParamsPromise ? await searchParamsPromise : undefined;
   const filter = statuses.includes(searchParams?.status || "") ? searchParams!.status! : "all";
   const supabase = await createClient();
   let query = supabase.from("transactions").select("id,user_id,amount,type,status,payment_method,provider_order_id,provider_payment_id,description,created_at,profiles(full_name,email)").eq("type", "credit").order("created_at", { ascending: false });
