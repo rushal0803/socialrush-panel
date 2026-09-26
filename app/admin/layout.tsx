@@ -11,7 +11,8 @@ export const metadata: Metadata = {
 };
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
-  const requestHeaders = await headers();\n  const isAdminLogin = requestHeaders.get("x-socialrush-admin-login") === "1";
+  const requestHeaders = await headers();
+  const isAdminLogin = requestHeaders.get("x-socialrush-admin-login") === "1";
   if (isAdminLogin) return <>{children}</>;
 
   const supabase = await createClient();
