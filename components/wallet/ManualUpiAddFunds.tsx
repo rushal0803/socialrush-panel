@@ -41,10 +41,17 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
 
   const upiHref = useMemo(() => {
     if (!validAmount || !upiConfigured) return "#";
-    const params = new URLSearchParams({ pa: UPI_ID, pn: PAYEE, am: amount.toFixed(2), cu: "INR", tr: reference, tn: `SocialRUSH wallet ${reference}` });
+    const params = new URLSearchParams({
+      pa: UPI_ID,
+      pn: PAYEE,
+      am: amount.toFixed(2),
+      cu: "INR",
+      tn: `SocialRUSH ${reference}`.slice(0, 80),
+    });
     return `upi://pay?${params.toString()}`;
   }, [amount, reference, upiConfigured, validAmount]);
 
+  async function copyUpiId() { await navigator.clipboard.writeText(UPI_ID).catch(() => undefined); setCopied(true); setTimeout(() => setCopied(false), 1500); }
   async function copyCryptoAddress() { await navigator.clipboard.writeText(USDT_TRC20_ADDRESS); setCopied(true); setTimeout(() => setCopied(false), 1500); }
   async function copyBankField(label: string, value: string) { await navigator.clipboard.writeText(value); setCopiedBankField(label); setTimeout(() => setCopiedBankField(""), 1500); }
 
@@ -96,13 +103,28 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
       <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-5">{quickAmounts.map((value)=><button key={value} onClick={()=>setAmountText(String(value))} className="rounded-xl border border-white/10 bg-white/[.03] px-2 py-3 text-xs font-bold text-slate-300 hover:border-orange-400/40">₹{value.toLocaleString("en-IN")}</button>)}</div>
       {!paymentStarted ? <>
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <button type="button" onClick={()=>{setPaymentMethod("upi");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="upi"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">UPI</strong><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-black text-emerald-300">India</span></div><p className="mt-2 text-xs text-slate-400">Google Pay · PhonePe · Paytm · BHIM</p></button>
+          <button type="button" onClick={()=>{setPaymentMethod("upi");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="upi"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">UPI</strong><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-black text-emerald-300">Recommended</span></div><p className="mt-2 text-xs text-slate-400">Any installed UPI app · fastest option</p></button>
           <button type="button" onClick={()=>{setPaymentMethod("bank_transfer");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="bank_transfer"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between gap-2"><strong className="text-sm text-white">Bank Transfer</strong><span className="rounded-full bg-sky-500/10 px-2 py-1 text-[10px] font-black text-sky-300">Manual</span></div><p className="mt-2 text-xs text-slate-400">Secure manual bank payment</p></button>
           <button type="button" disabled={!usdtAmount} onClick={()=>{if(usdtAmount){setPaymentMethod("usdt_trc20");setError("");}}} className={`rounded-2xl border p-4 text-left disabled:opacity-50 ${paymentMethod==="usdt_trc20"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">USDT · TRC20</strong><span className="rounded-full bg-blue-500/10 px-2 py-1 text-[10px] font-black text-blue-300">International</span></div><p className="mt-2 text-xs text-slate-400">{usdtAmount ? `Pay ≈ ${usdtAmount.toFixed(2)} USDT` : "Rate temporarily unavailable"}</p></button>
         </div>
         {paymentMethod==="upi" ? <>
           {!upiConfigured && <p className="mt-4 rounded-xl bg-red-500/10 p-3 text-xs text-red-300">UPI is temporarily unavailable. Please contact support.</p>}
-          <a href={upiHref} onClick={(e)=>{if(!validAmount||!upiConfigured){e.preventDefault();setError(!upiConfigured?"UPI is temporarily unavailable.":"Enter a valid amount.");return;} setError("");setPaymentStarted(true);}} className={`mt-5 flex w-full items-center justify-center rounded-xl px-5 py-4 text-sm font-black ${validAmount&&upiConfigured?"bg-gradient-to-r from-orange-500 to-amber-400 text-black":"cursor-not-allowed bg-white/10 text-slate-500"}`}>Pay ₹{validAmount ? amount.toLocaleString("en-IN",{minimumFractionDigits:2}) : "0.00"} with UPI</a>
+          <div className="mt-5 rounded-2xl border border-orange-400/20 bg-black/20 p-4 sm:p-5">
+            <div className="flex flex-wrap items-start justify-between gap-3">
+              <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Universal UPI</p><h2 className="mt-1 text-lg font-black text-white">Pay with your preferred UPI app</h2><p className="mt-2 text-xs leading-5 text-slate-400">Uses the standard UPI payment link so your phone can open a compatible installed app.</p></div>
+              <span className="rounded-full bg-emerald-500/10 px-3 py-1.5 text-xs font-black text-emerald-300">Exact amount ₹{validAmount ? amount.toLocaleString("en-IN",{minimumFractionDigits:2}) : "0.00"}</span>
+            </div>
+            <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-black text-slate-300">
+              {["Google Pay","PhonePe","Paytm","BHIM","Amazon Pay","WhatsApp Pay"].map((app)=><span key={app} className="rounded-full border border-white/10 bg-white/[.035] px-2.5 py-1.5">{app}</span>)}
+            </div>
+            <div className="mt-4 flex items-center justify-between gap-3 rounded-xl border border-white/10 bg-white/[.025] p-3">
+              <div className="min-w-0"><p className="text-[10px] font-black uppercase tracking-wider text-slate-500">UPI ID</p><p className="mt-1 break-all text-sm font-black text-white">{UPI_ID}</p></div>
+              <button type="button" onClick={()=>void copyUpiId()} className="shrink-0 rounded-xl border border-white/10 px-3 py-2 text-xs font-bold text-orange-300">{copied?"Copied":"Copy"}</button>
+            </div>
+          </div>
+          <a href={upiHref} onClick={(e)=>{if(!validAmount||!upiConfigured){e.preventDefault();setError(!upiConfigured?"UPI is temporarily unavailable.":"Enter a valid amount.");return;} setError("");setPaymentStarted(true);}} className={`mt-4 flex w-full items-center justify-center rounded-xl px-5 py-4 text-sm font-black ${validAmount&&upiConfigured?"bg-gradient-to-r from-orange-500 to-amber-400 text-black":"cursor-not-allowed bg-white/10 text-slate-500"}`}>Open UPI App · Pay ₹{validAmount ? amount.toLocaleString("en-IN",{minimumFractionDigits:2}) : "0.00"}</a>
+          <button type="button" disabled={!validAmount||!upiConfigured} onClick={()=>{setError("");setPaymentStarted(true);}} className="mt-3 w-full rounded-xl border border-orange-400/25 bg-orange-500/[.06] px-5 py-3.5 text-sm font-black text-orange-200 disabled:opacity-50">Already paid? Enter UTR</button>
+          <p className="mt-3 text-center text-[11px] leading-5 text-slate-500">If the app chooser does not open, copy the UPI ID above and pay the exact amount manually from any UPI app.</p>
         </> : paymentMethod==="bank_transfer" ? <div className="mt-5">
           <div className="rounded-2xl border border-orange-400/20 bg-black/20 p-4 sm:p-5">
             <div className="flex flex-wrap items-start justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Bank Transfer</p><h2 className="mt-1 text-lg font-black text-white">Secure manual bank payment</h2></div><span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount ₹{validAmount ? amount.toLocaleString("en-IN",{minimumFractionDigits:2}) : "0.00"}</span></div>
