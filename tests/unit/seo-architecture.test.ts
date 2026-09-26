@@ -340,7 +340,7 @@ test("phase 5F crawl priority points only to canonical India money pages", () =>
   assert.ok(crawlPriorityServiceLinks.length >= 6);
   assert.equal(new Set(crawlPriorityServiceLinks.map((item) => item.href)).size, crawlPriorityServiceLinks.length);
   for (const item of crawlPriorityServiceLinks) {
-    assert.ok(canonicalPaths.has(item.href as (typeof canonicalIndiaServicePaths)[IndiaServiceSlug]));
+    assert.ok(canonicalPaths.has(item.href));
     assert.equal(item.href.includes("?"), false);
     assert.equal(redirectedServicePaths.has(item.href), false);
   }
