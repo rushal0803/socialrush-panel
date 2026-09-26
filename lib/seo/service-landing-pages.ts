@@ -267,6 +267,9 @@ export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
       page.keyword,
       `${page.displayName} price India`,
       `${page.displayName} service India`,
+      `1000 ${page.displayName} price India`,
+      `5000 ${page.displayName} price India`,
+      `10000 ${page.displayName} price India`,
     ],
   });
 }
