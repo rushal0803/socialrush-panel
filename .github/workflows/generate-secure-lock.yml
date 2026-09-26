@@ -1,0 +1,28 @@
+name: Generate secure dependency lock
+
+on:
+  pull_request:
+    paths:
+      - package.json
+      - .github/workflows/generate-secure-lock.yml
+
+permissions:
+  contents: read
+
+jobs:
+  lockfile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+      - name: Generate package lock
+        run: npm install --package-lock-only --legacy-peer-deps
+      - name: Upload package lock
+        uses: actions/upload-artifact@v4
+        with:
+          name: secure-package-lock
+          path: package-lock.json
+          if-no-files-found: error
