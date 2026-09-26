@@ -8,22 +8,27 @@ const guideLinks: Record<string, Array<{ label:string; href:string }>> = {
     { label: "Instagram followers vs engagement", href: "/blog/instagram-followers-vs-engagement" },
   ],
   youtube: [
+    { label: "YouTube subscribers price guide", href: "/blog/youtube-subscribers-price-in-india" },
     { label: "YouTube views price guide", href: "/blog/youtube-views-price-in-india" },
     { label: "YouTube channel readiness checklist", href: "/blog/youtube-channel-readiness-checklist" },
   ],
   linkedin: [
+    { label: "LinkedIn followers price guide", href: "/blog/linkedin-followers-price-in-india" },
     { label: "LinkedIn followers for business growth", href: "/blog/linkedin-followers-for-business-growth" },
     { label: "LinkedIn followers vs engagement", href: "/blog/linkedin-followers-vs-engagement-india" },
   ],
   x: [
+    { label: "Twitter / X followers price guide", href: "/blog/twitter-followers-price-in-india" },
     { label: "Public-link ordering safety", href: "/blog/why-public-link-ordering-is-safer" },
     { label: "Campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
   ],
   facebook: [
+    { label: "Facebook followers price guide", href: "/blog/facebook-followers-price-in-india" },
     { label: "Facebook page growth for local businesses", href: "/blog/facebook-page-growth-tips-for-local-businesses" },
     { label: "Public-link ordering safety", href: "/blog/why-public-link-ordering-is-safer" },
   ],
   telegram: [
+    { label: "Telegram members price guide", href: "/blog/telegram-members-price-in-india" },
     { label: "How growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" },
     { label: "Campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
   ],
