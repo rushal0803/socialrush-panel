@@ -312,7 +312,11 @@ test("platform authority graph routes research to clean canonical targets", () =
 
 test("authority graph deduplicates repeated destinations without changing order", () => {
   const targets = getPlatformAuthorityTargets("instagram");
-  const deduped = uniqueAuthorityTargets([...targets, targets[0], targets[1]]);
+  const first = targets[0];
+  const second = targets[1];
+  assert.ok(first);
+  assert.ok(second);
+  const deduped = uniqueAuthorityTargets([...targets, first, second]);
   assert.deepEqual(deduped.map((target) => target.href), targets.map((target) => target.href));
 });
 
