@@ -72,6 +72,14 @@ export default function AbandonedCheckoutRecovery() {
     setCandidate(newest);
   }, [hidden, pathname]);
 
+  useEffect(() => {
+    if (!candidate) return;
+    track("checkout_recovery_view", {
+      source: candidate.source === "direct" ? "direct_payment_recovery" : "dashboard_recovery",
+      payment_started: candidate.paymentStarted,
+    });
+  }, [candidate]);
+
   const amount = useMemo(() => candidate?.amount ? new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR" }).format(candidate.amount) : "your order", [candidate]);
   if (hidden || !candidate) return null;
 
