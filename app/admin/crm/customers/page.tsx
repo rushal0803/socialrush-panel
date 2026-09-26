@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import Link from "next/link";import {Search} from "lucide-react";import {createClient} from "@/lib/supabase/server";import {date,metricsForOrders,money} from "@/lib/crm/types";
 type Profile={id:string;email:string;full_name:string|null;phone:string|null;company_name:string|null;created_at:string}; const human=(x?:string|null)=>x?x.replaceAll("_"," ").replace(/\b\w/g,c=>c.toUpperCase()):"Unassigned";
-export default async function CustomersPage({searchParams}:{searchParams?:{q?:string;filter?:string;platform?:string;sort?:string;page?:string}}){const s=await createClient(),q=String(searchParams?.q||"").trim().slice(0,100).replace(/[^\p{L}\p{N}@._+\-\s]/gu,""),filter=searchParams?.filter||"all",platform=searchParams?.platform||"all",sort=searchParams?.sort||"recent",page=Math.max(1,Number(searchParams?.page)||1),size=50;
+export default async function CustomersPage({searchParams:searchParamsPromise}:{searchParams?:Promise<{q?:string;filter?:string;platform?:string;sort?:string;page?:string}>}){const searchParams=searchParamsPromise?await searchParamsPromise:undefined;const s=await createClient(),q=String(searchParams?.q||"").trim().slice(0,100).replace(/[^\p{L}\p{N}@._+\-\s]/gu,""),filter=searchParams?.filter||"all",platform=searchParams?.platform||"all",sort=searchParams?.sort||"recent",page=Math.max(1,Number(searchParams?.page)||1),size=50;
 const draftSince=new Date(Date.now()-7*864e5).toISOString();
 const draftLookup=filter==="abandoned_draft"
   ? await s.from("order_drafts").select("user_id").gte("updated_at",draftSince).not("target","is",null).limit(2000)
