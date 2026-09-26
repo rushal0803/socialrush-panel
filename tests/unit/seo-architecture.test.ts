@@ -9,6 +9,7 @@ import { createCountryServiceSchema } from "../../lib/seo/country-service-schema
 import { contentClusters } from "../../lib/seo/content-clusters.ts";
 import { articleSlugs } from "../../components/marketing/blog/blogData.ts";
 import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search-demand.ts";
+import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/seo/authority-graph.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -283,4 +284,46 @@ test("search-demand service units stay readable for long-tail price headings", (
   assert.equal(serviceUnitFromCode("youtube-subscribers"), "subscribers");
   assert.equal(serviceUnitFromCode("telegram-members"), "members");
   assert.equal(serviceUnitFromCode("instagram-saves"), "saves");
+});
+
+
+test("platform authority graph routes research to clean canonical targets", () => {
+  const publishedArticles = new Set(articleSlugs);
+
+  for (const [platform, cluster] of Object.entries(contentClusters)) {
+    const targets = getPlatformAuthorityTargets(platform as keyof typeof contentClusters);
+    assert.ok(targets.length >= 4, `${platform} should expose a useful authority path`);
+    assert.equal(targets[0]?.href, cluster.hubPath);
+    assert.equal(targets[1]?.href, cluster.serviceLinks[0]?.href);
+    assert.equal(new Set(targets.map((target) => target.href)).size, targets.length);
+
+    for (const target of targets) {
+      assert.match(target.href, /^\//);
+      assert.equal(target.href.includes("?"), false, `${target.href} should remain a clean crawlable URL`);
+      if (target.kind === "service") {
+        assert.equal(redirectedServicePaths.has(target.href), false, `${target.href} should not require an internal redirect`);
+      }
+      if (target.kind === "guide") {
+        assert.ok(publishedArticles.has(target.href.replace("/blog/", "")), `${target.href} must be a published guide`);
+      }
+    }
+  }
+});
+
+test("authority graph deduplicates repeated destinations without changing order", () => {
+  const targets = getPlatformAuthorityTargets("instagram");
+  const deduped = uniqueAuthorityTargets([...targets, targets[0], targets[1]]);
+  assert.deepEqual(deduped.map((target) => target.href), targets.map((target) => target.href));
+});
+
+test("blog authority links stay canonical and avoid tracking-query crawl noise", () => {
+  const blogSource = readFileSync(new URL("../../app/blog/[slug]/page.tsx", import.meta.url), "utf8");
+  const bridgeSource = readFileSync(new URL("../../components/marketing/blog/ContentAuthorityBridge.tsx", import.meta.url), "utf8");
+
+  assert.match(blogSource, /getPlatformAuthorityTargets\(articlePlatform\)/);
+  assert.match(blogSource, /authorityTargets\.map/);
+  assert.match(blogSource, /authorityTargetHrefs\.has\(item\.href\)/);
+  assert.match(bridgeSource, /getPlatformAuthorityTargets/);
+  assert.doesNotMatch(bridgeSource, /utm_source|utm_medium|utm_campaign|utm_content/);
+  assert.doesNotMatch(bridgeSource, /\/services\/instagram|\/services\/youtube|\/services\/facebook|\/services\/twitter/);
 });
