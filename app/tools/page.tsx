@@ -6,9 +6,9 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
   title: "Free Social Media Creator Tools | SocialRUSH",
-  description: "Free, privacy-first creator tools for engagement, image sizing, YouTube previews, Instagram captions and UTM links.",
+  description: "Free social media creator tools for India, including service cost, engagement, budget, image, YouTube, Instagram and UTM calculators.",
   path: "/tools",
-  keywords: ["free social media tools", "creator tools", "social media calculator"],
+  keywords: ["free social media tools", "creator tools", "social media calculator", "social media service cost calculator India", "followers cost calculator"],
 });
 
 export default function ToolsPage() { return <PublicShell><InteractiveHomepageShell><div className="service-money-page"><ToolsContent /></div></InteractiveHomepageShell></PublicShell>; }
