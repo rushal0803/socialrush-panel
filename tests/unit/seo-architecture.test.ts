@@ -8,6 +8,7 @@ import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedIntern
 import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
 import { contentClusters } from "../../lib/seo/content-clusters.ts";
 import { articleSlugs } from "../../components/marketing/blog/blogData.ts";
+import { buildSearchDemandPriceRows, searchDemandPriceHeading } from "../../lib/seo/search-demand.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -263,5 +264,45 @@ test("country service schema remains INR-authoritative", () => {
     assert.equal(offer?.priceCurrency, "INR");
     assert.notEqual(page.market.currency, "INR");
     assert.notEqual(offer?.priceCurrency, page.market.currency);
+  }
+});
+
+
+test("search demand pricing rows use current catalog economics without creating new intent routes", () => {
+  const instagram = activeSmmServices.find((service) => service.code === "instagram-followers");
+  const youtube = activeSmmServices.find((service) => service.code === "youtube-subscribers");
+  assert.ok(instagram);
+  assert.ok(youtube);
+
+  const instagramRows = buildSearchDemandPriceRows(instagram);
+  assert.deepEqual(instagramRows.map((row) => row.quantity), [100, 500, 1000, 5000, 10000]);
+  assert.equal(instagramRows.find((row) => row.quantity === 1000)?.total, instagram.pricePer1000);
+  assert.equal(instagramRows.find((row) => row.quantity === 5000)?.total, instagram.pricePer1000 * 5);
+
+  const youtubeRows = buildSearchDemandPriceRows(youtube);
+  assert.equal(youtubeRows.find((row) => row.quantity === 1000)?.total, youtube.pricePer1000);
+  assert.equal(searchDemandPriceHeading("YouTube", "subscribers"), "YouTube subscribers price in India by quantity");
+  assert.equal(seoIntentMap.some((intent) => intent.primaryTarget.includes("price-in-india-by-quantity")), false);
+});
+
+test("search demand pricing never exposes protected live-only catalog totals", () => {
+  const protectedService = activeSmmServices.find((service) => service.requiresLiveCatalogFacts);
+  assert.ok(protectedService);
+  assert.equal(buildSearchDemandPriceRows(protectedService).every((row) => row.total === null), true);
+});
+
+test("priority audience money pages include the shared search-demand module", () => {
+  for (const [path, code] of [
+    ["../../app/buy-instagram-followers-india/page.tsx", "instagram-followers"],
+    ["../../components/marketing/YouTubeSubscribersLanding.tsx", "youtube-subscribers"],
+    ["../../components/marketing/LinkedInFollowersLanding.tsx", "linkedin-followers"],
+    ["../../components/marketing/TwitterFollowersLanding.tsx", "x-followers"],
+    ["../../components/marketing/FacebookFollowersLanding.tsx", "facebook-followers"],
+    ["../../components/marketing/TikTokFollowersLanding.tsx", "tiktok-followers"],
+    ["../../components/marketing/TelegramFollowersLanding.tsx", "telegram-members"],
+  ] as const) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, /IndiaSearchDemandSection/);
+    assert.match(source, new RegExp(`serviceCode=["']${code}["']`));
   }
 });
