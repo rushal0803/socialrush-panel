@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, BookmarkPlus, BriefcaseBusiness, Check, Copy, FolderKanban, History, Percent, RefreshCw, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
+import { ArrowRight, BookmarkPlus, BriefcaseBusiness, CalendarClock, Check, Copy, FolderKanban, History, Percent, RefreshCw, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import PlatformIcon from "@/components/PlatformIcon";
 import { createClient } from "@/lib/supabase/client";
@@ -10,11 +10,12 @@ import { platformMeta, smmServiceCatalog, type SmmPlatformId } from "@/lib/smm-s
 import { revenueBundlesForPlatform, resolveRevenueBundle } from "@/lib/cro/revenue-bundles";
 import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "@/lib/reseller/monthly-plan";
 import { compareSavedMonthlyPlan, planSnapshotItems } from "@/lib/reseller/saved-monthly-plan";
+import { nextMonthlyReviewDate } from "@/lib/reseller/portfolio";
 import { track } from "@/lib/analytics/events";
 
 type ClientOption = { id: string; name: string };
 type CampaignOption = { id: string; name: string; client_id: string | null };
-type SavedPlanRow = { id:string; name:string; client_id:string|null; campaign_id:string|null; platform:string; bundle_id:string; markup_percent:number; baseline_fulfillment_cost:number; baseline_client_quote:number; baseline_gross_margin:number; updated_at:string };
+type SavedPlanRow = { id:string; name:string; client_id:string|null; campaign_id:string|null; platform:string; bundle_id:string; markup_percent:number; baseline_fulfillment_cost:number; baseline_client_quote:number; baseline_gross_margin:number; next_review_on:string|null; updated_at:string };
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "linkedin", "x", "tiktok", "telegram"];
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
@@ -54,6 +55,7 @@ export default function MonthlyPlanBuilderPage() {
   const [planName, setPlanName] = useState("");
   const [saveMessage, setSaveMessage] = useState("");
   const [saving, setSaving] = useState(false);
+  const [nextReviewOn, setNextReviewOn] = useState(() => nextMonthlyReviewDate());
 
   useEffect(() => {
     let active = true;
@@ -62,7 +64,7 @@ export default function MonthlyPlanBuilderPage() {
       const { data: { user } } = await db.auth.getUser();
       if (!user || !active) return;
       const planQuery = requestedPlanId
-        ? db.from("reseller_monthly_plans").select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,updated_at").eq("id", requestedPlanId).eq("user_id", user.id).maybeSingle()
+        ? db.from("reseller_monthly_plans").select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,next_review_on,updated_at").eq("id", requestedPlanId).eq("user_id", user.id).maybeSingle()
         : Promise.resolve({ data: null });
       const [{ data: clientRows }, { data: campaignRows }, { data: planRow }] = await Promise.all([
         db.from("customer_clients").select("id,name").eq("user_id", user.id).is("archived_at", null).order("name"),
@@ -82,6 +84,7 @@ export default function MonthlyPlanBuilderPage() {
         if (platforms.includes(loaded.platform as SmmPlatformId)) setPlatform(loaded.platform as SmmPlatformId);
         setBundleId(loaded.bundle_id);
         setMarkupInput(String(normalizeMarkupPercent(Number(loaded.markup_percent || 0))));
+        setNextReviewOn(loaded.next_review_on || nextMonthlyReviewDate());
       } else if (requestedClientId && !safeClients.some((client) => client.id === requestedClientId)) {
         setClientId("");
       }
@@ -169,10 +172,11 @@ export default function MonthlyPlanBuilderPage() {
       baseline_client_quote: quote.clientQuote,
       baseline_gross_margin: quote.grossMargin,
       items_snapshot: planSnapshotItems(selectedBundle.items),
+      next_review_on: nextReviewOn || null,
       updated_at: new Date().toISOString(),
     };
     if (savedPlan) {
-      const { data, error } = await db.from("reseller_monthly_plans").update(payload).eq("id", savedPlan.id).eq("user_id", user.id).select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,updated_at").single();
+      const { data, error } = await db.from("reseller_monthly_plans").update(payload).eq("id", savedPlan.id).eq("user_id", user.id).select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,next_review_on,updated_at").single();
       if (error || !data) setSaveMessage(error?.message || "Could not refresh this saved plan.");
       else {
         setSavedPlan(data as SavedPlanRow);
@@ -180,7 +184,7 @@ export default function MonthlyPlanBuilderPage() {
         setSaveMessage("Saved baseline refreshed with the current plan.");
       }
     } else {
-      const { data, error } = await db.from("reseller_monthly_plans").insert(payload).select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,updated_at").single();
+      const { data, error } = await db.from("reseller_monthly_plans").insert(payload).select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,next_review_on,updated_at").single();
       if (error || !data) setSaveMessage(error?.message || "Could not save this monthly plan.");
       else {
         setSavedPlan(data as SavedPlanRow);
@@ -203,7 +207,7 @@ export default function MonthlyPlanBuilderPage() {
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">Choose a client, use the current SocialRUSH catalog stack as your fulfillment-cost baseline, add your own agency markup, then copy a client-ready monthly scope. Orders still run one by one through normal checkout with final validation.</p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link href="/dashboard/reseller" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">← Reseller Hub</Link>
-              <Link href="/dashboard/reseller/monthly-plans" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><History className="h-4 w-4"/>Saved plans</Link>
+              <Link href="/dashboard/reseller/portfolio" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><CalendarClock className="h-4 w-4"/>Portfolio</Link><Link href="/dashboard/reseller/monthly-plans" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><History className="h-4 w-4"/>Saved plans</Link>
               <Link href="/dashboard/retainers" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">Recurring Revenue Center</Link>
             </div>
           </div>
@@ -242,6 +246,10 @@ export default function MonthlyPlanBuilderPage() {
             </label>
             <label className="grid gap-2 text-xs font-black uppercase tracking-[.1em] text-slate-400">Plan name
               <input value={planName} onChange={(event) => setPlanName(event.target.value.slice(0,160))} className="dashboard-input normal-case tracking-normal text-white" placeholder={selectedClient && selectedBundle ? selectedClient.name + " — " + selectedBundle.name : "Monthly client plan"}/>
+            </label>
+            <label className="grid gap-2 text-xs font-black uppercase tracking-[.1em] text-slate-400">Next renewal review
+              <input type="date" value={nextReviewOn} onChange={(event) => setNextReviewOn(event.target.value)} className="dashboard-input normal-case tracking-normal text-white"/>
+              <span className="normal-case tracking-normal text-[11px] font-medium leading-5 text-slate-500">Used only for your renewal pipeline. It does not schedule an order or charge.</span>
             </label>
             <label className="grid gap-2 text-xs font-black uppercase tracking-[.1em] text-slate-400">Agency markup
               <div className="relative"><Percent className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"/><input value={markupInput} onChange={(event) => setMarkupInput(event.target.value.replace(/\D/g, "").slice(0, 3))} onBlur={() => setMarkupInput(String(markup))} inputMode="numeric" className="dashboard-input pr-11 text-white" placeholder="40"/></div>
