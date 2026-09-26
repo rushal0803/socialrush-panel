@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { addRecentService, parseContinueOrder, parseRecentServices, serializeContinueOrder } from "../../lib/cro/personalization.ts";
+import { buildQuantityMerchandising, quantityForMinimumSpend } from "../../lib/cro/quantity-merchandising.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -14,4 +15,36 @@ test("continue order expires and contains no destination or price", () => {
   assert.equal(parseContinueOrder(serializeContinueOrder(current), allowed, 10_000 + 8 * 24 * 60 * 60 * 1000), null);
   assert.equal(serializeContinueOrder(current).includes("link"), false);
   assert.equal(serializeContinueOrder(current).includes("price"), false);
+});
+
+
+const merchandisingService = {
+  platform: "instagram",
+  code: "instagram-followers",
+  name: "Instagram Followers",
+  description: "Test service",
+  pricePer1000: 799,
+  minQuantity: 100,
+  maxQuantity: 10000,
+  quantityStep: 1,
+  deliveryTime: "Test",
+  refillPolicy: "Test",
+  qualityType: "Test",
+  importantInstruction: "Test",
+  isActive: true,
+} as const;
+
+test("quantity merchandising uses descriptive tiers without popularity claims", () => {
+  const options = buildQuantityMerchandising(merchandisingService);
+  assert.equal(options[0]?.label, "Starter");
+  assert.equal(options.some((option) => option.label === "Balanced"), true);
+  assert.equal(options.map((option) => String(option.label)).includes("Popular"), false);
+  assert.equal(options.at(-1)?.label, "Scale");
+});
+
+test("minimum-spend quantity reaches the threshold without changing the service rate", () => {
+  const quantity = quantityForMinimumSpend(merchandisingService, 1000);
+  assert.equal(quantity, 1252);
+  assert.ok(quantity !== null && Math.round((quantity * merchandisingService.pricePer1000 * 100) / 1000) / 100 >= 1000);
+  assert.equal(quantityForMinimumSpend(merchandisingService, 100000), null);
 });

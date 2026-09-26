@@ -28,7 +28,7 @@ export default function ServiceDetailSmartPricing({ service }: { service: SmmSer
     [requiresLiveFacts, service],
   );
   const defaultQuantity =
-    quantityOptions.find((option) => option.label === "Popular")?.value ??
+    quantityOptions.find((option) => option.label === "Balanced")?.value ??
     quantityOptions[0]?.value ??
     service.minQuantity;
   const [quantityInput, setQuantityInput] = useState(
