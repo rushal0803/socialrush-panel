@@ -9,6 +9,9 @@ type Props = {
   serviceCode: ServiceCode;
   unitLabel: string;
   platformLabel?: string;
+  liveRatePer1000?: number | null;
+  liveMinQuantity?: number | null;
+  liveMaxQuantity?: number | null;
 };
 
 function formatQuantity(value: number) {
@@ -28,12 +31,18 @@ function clusterKey(platform: SmmPlatformId) {
   return platform === "x" ? "twitter" : platform;
 }
 
-export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platformLabel }: Props) {
+export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platformLabel, liveRatePer1000, liveMinQuantity, liveMaxQuantity }: Props) {
   const service = getServiceById(serviceCode);
   if (!service) return null;
 
   const label = platformLabel || (service.platform === "x" ? "Twitter / X" : service.platform.charAt(0).toUpperCase() + service.platform.slice(1));
-  const rows = buildSearchDemandPriceRows(service);
+  const effectiveService = {
+    ...service,
+    pricePer1000: liveRatePer1000 && liveRatePer1000 > 0 ? liveRatePer1000 : service.pricePer1000,
+    minQuantity: liveMinQuantity && liveMinQuantity > 0 ? liveMinQuantity : service.minQuantity,
+    maxQuantity: liveMaxQuantity && liveMaxQuantity > 0 ? liveMaxQuantity : service.maxQuantity,
+  };
+  const rows = buildSearchDemandPriceRows(effectiveService);
   const cluster = getContentCluster(clusterKey(service.platform));
   const liveOnly = service.requiresLiveCatalogFacts || service.pricePer1000 <= 0;
 
