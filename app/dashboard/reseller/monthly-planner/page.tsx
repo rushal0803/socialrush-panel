@@ -2,17 +2,19 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { ArrowRight, BriefcaseBusiness, Check, Copy, FolderKanban, Percent, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
-import { useSearchParams } from "next/navigation";
+import { ArrowRight, BookmarkPlus, BriefcaseBusiness, Check, Copy, FolderKanban, History, Percent, RefreshCw, ShieldCheck, Sparkles, WalletCards } from "lucide-react";
+import { useRouter, useSearchParams } from "next/navigation";
 import PlatformIcon from "@/components/PlatformIcon";
 import { createClient } from "@/lib/supabase/client";
 import { platformMeta, smmServiceCatalog, type SmmPlatformId } from "@/lib/smm-service-catalog";
 import { revenueBundlesForPlatform, resolveRevenueBundle } from "@/lib/cro/revenue-bundles";
 import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "@/lib/reseller/monthly-plan";
+import { compareSavedMonthlyPlan, planSnapshotItems } from "@/lib/reseller/saved-monthly-plan";
 import { track } from "@/lib/analytics/events";
 
 type ClientOption = { id: string; name: string };
 type CampaignOption = { id: string; name: string; client_id: string | null };
+type SavedPlanRow = { id:string; name:string; client_id:string|null; campaign_id:string|null; platform:string; bundle_id:string; markup_percent:number; baseline_fulfillment_cost:number; baseline_client_quote:number; baseline_gross_margin:number; updated_at:string };
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "linkedin", "x", "tiktok", "telegram"];
 const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 }).format(value);
@@ -36,8 +38,10 @@ function orderHref(input: {
 }
 
 export default function MonthlyPlanBuilderPage() {
+  const router = useRouter();
   const searchParams = useSearchParams();
   const requestedClientId = searchParams.get("client")?.trim() || "";
+  const requestedPlanId = searchParams.get("plan")?.trim() || "";
   const [clients, setClients] = useState<ClientOption[]>([]);
   const [campaigns, setCampaigns] = useState<CampaignOption[]>([]);
   const [clientId, setClientId] = useState(requestedClientId);
@@ -46,6 +50,10 @@ export default function MonthlyPlanBuilderPage() {
   const [bundleId, setBundleId] = useState("");
   const [markupInput, setMarkupInput] = useState("40");
   const [copied, setCopied] = useState(false);
+  const [savedPlan, setSavedPlan] = useState<SavedPlanRow | null>(null);
+  const [planName, setPlanName] = useState("");
+  const [saveMessage, setSaveMessage] = useState("");
+  const [saving, setSaving] = useState(false);
 
   useEffect(() => {
     let active = true;
@@ -53,20 +61,33 @@ export default function MonthlyPlanBuilderPage() {
       const db = createClient();
       const { data: { user } } = await db.auth.getUser();
       if (!user || !active) return;
-      const [{ data: clientRows }, { data: campaignRows }] = await Promise.all([
+      const planQuery = requestedPlanId
+        ? db.from("reseller_monthly_plans").select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,updated_at").eq("id", requestedPlanId).eq("user_id", user.id).maybeSingle()
+        : Promise.resolve({ data: null });
+      const [{ data: clientRows }, { data: campaignRows }, { data: planRow }] = await Promise.all([
         db.from("customer_clients").select("id,name").eq("user_id", user.id).is("archived_at", null).order("name"),
         db.from("campaigns").select("id,name,client_id").eq("user_id", user.id).order("created_at", { ascending: false }),
+        planQuery,
       ]);
       if (!active) return;
       const safeClients = (clientRows || []) as ClientOption[];
       setClients(safeClients);
       setCampaigns((campaignRows || []) as CampaignOption[]);
-      if (requestedClientId && !safeClients.some((client) => client.id === requestedClientId)) {
+      if (planRow) {
+        const loaded = planRow as SavedPlanRow;
+        setSavedPlan(loaded);
+        setPlanName(loaded.name);
+        setClientId(loaded.client_id && safeClients.some((client) => client.id === loaded.client_id) ? loaded.client_id : "");
+        setCampaignId(loaded.campaign_id || "");
+        if (platforms.includes(loaded.platform as SmmPlatformId)) setPlatform(loaded.platform as SmmPlatformId);
+        setBundleId(loaded.bundle_id);
+        setMarkupInput(String(normalizeMarkupPercent(Number(loaded.markup_percent || 0))));
+      } else if (requestedClientId && !safeClients.some((client) => client.id === requestedClientId)) {
         setClientId("");
       }
     })();
     return () => { active = false; };
-  }, [requestedClientId]);
+  }, [requestedClientId, requestedPlanId]);
 
   const bundles = useMemo(
     () => revenueBundlesForPlatform(platform)
@@ -94,6 +115,12 @@ export default function MonthlyPlanBuilderPage() {
   const availableCampaigns = campaigns.filter((campaign) => !campaign.client_id || campaign.client_id === clientId);
   const markup = normalizeMarkupPercent(Number(markupInput || 0));
   const quote = calculateAgencyQuote(selectedBundle?.total || 0, markup);
+  const savedComparison = savedPlan && selectedBundle ? compareSavedMonthlyPlan({
+    baselineFulfillmentCost:Number(savedPlan.baseline_fulfillment_cost || 0),
+    baselineClientQuote:Number(savedPlan.baseline_client_quote || 0),
+    baselineGrossMargin:Number(savedPlan.baseline_gross_margin || 0),
+    markupPercent:Number(savedPlan.markup_percent || 0),
+  }, selectedBundle.total) : null;
   const proposalText = selectedBundle ? buildClientProposalText({
     clientName: selectedClient?.name,
     planName: selectedBundle.name,
@@ -118,6 +145,54 @@ export default function MonthlyPlanBuilderPage() {
     window.setTimeout(() => setCopied(false), 1400);
   }
 
+  async function savePlanBaseline() {
+    if (!selectedBundle || saving) return;
+    setSaving(true);
+    setSaveMessage("");
+    const db = createClient();
+    const { data: { user } } = await db.auth.getUser();
+    if (!user) {
+      setSaveMessage("Sign in again before saving.");
+      setSaving(false);
+      return;
+    }
+    const defaultName = (selectedClient?.name ? selectedClient.name + " — " : "") + selectedBundle.name;
+    const payload = {
+      user_id: user.id,
+      client_id: clientId || null,
+      campaign_id: campaignId || null,
+      name: (planName.trim() || defaultName).slice(0,160),
+      platform: selectedBundle.platform,
+      bundle_id: selectedBundle.id,
+      markup_percent: markup,
+      baseline_fulfillment_cost: quote.fulfillmentCost,
+      baseline_client_quote: quote.clientQuote,
+      baseline_gross_margin: quote.grossMargin,
+      items_snapshot: planSnapshotItems(selectedBundle.items),
+      updated_at: new Date().toISOString(),
+    };
+    if (savedPlan) {
+      const { data, error } = await db.from("reseller_monthly_plans").update(payload).eq("id", savedPlan.id).eq("user_id", user.id).select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,updated_at").single();
+      if (error || !data) setSaveMessage(error?.message || "Could not refresh this saved plan.");
+      else {
+        setSavedPlan(data as SavedPlanRow);
+        setPlanName(data.name);
+        setSaveMessage("Saved baseline refreshed with the current plan.");
+      }
+    } else {
+      const { data, error } = await db.from("reseller_monthly_plans").insert(payload).select("id,name,client_id,campaign_id,platform,bundle_id,markup_percent,baseline_fulfillment_cost,baseline_client_quote,baseline_gross_margin,updated_at").single();
+      if (error || !data) setSaveMessage(error?.message || "Could not save this monthly plan.");
+      else {
+        setSavedPlan(data as SavedPlanRow);
+        setPlanName(data.name);
+        setSaveMessage("Monthly plan saved for fast renewal.");
+        router.replace("/dashboard/reseller/monthly-planner?plan=" + encodeURIComponent(data.id));
+      }
+    }
+    track("agency_revenue_path_click", { action: savedPlan ? "monthly_plan_refresh" : "monthly_plan_save", bundle_id: selectedBundle.id, client_id: clientId || undefined, campaign_id: campaignId || undefined });
+    setSaving(false);
+  }
+
   return (
     <main className="dashboard-premium-page mx-auto w-full max-w-[1500px] px-4 pb-12 pt-5 text-white sm:px-6 lg:px-8">
       <section className="overflow-hidden rounded-[1.6rem] border border-orange-400/20 bg-[radial-gradient(circle_at_top_right,rgba(255,153,0,.18),transparent_34%),linear-gradient(125deg,#17150f,#0f1117_62%)] p-5 sm:p-7 lg:p-8">
@@ -128,6 +203,7 @@ export default function MonthlyPlanBuilderPage() {
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">Choose a client, use the current SocialRUSH catalog stack as your fulfillment-cost baseline, add your own agency markup, then copy a client-ready monthly scope. Orders still run one by one through normal checkout with final validation.</p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
               <Link href="/dashboard/reseller" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">← Reseller Hub</Link>
+              <Link href="/dashboard/reseller/monthly-plans" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><History className="h-4 w-4"/>Saved plans</Link>
               <Link href="/dashboard/retainers" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">Recurring Revenue Center</Link>
             </div>
           </div>
@@ -164,6 +240,9 @@ export default function MonthlyPlanBuilderPage() {
                 {bundles.map((bundle) => <option key={bundle.id} value={bundle.id}>{bundle.name}</option>)}
               </select>
             </label>
+            <label className="grid gap-2 text-xs font-black uppercase tracking-[.1em] text-slate-400">Plan name
+              <input value={planName} onChange={(event) => setPlanName(event.target.value.slice(0,160))} className="dashboard-input normal-case tracking-normal text-white" placeholder={selectedClient && selectedBundle ? selectedClient.name + " — " + selectedBundle.name : "Monthly client plan"}/>
+            </label>
             <label className="grid gap-2 text-xs font-black uppercase tracking-[.1em] text-slate-400">Agency markup
               <div className="relative"><Percent className="pointer-events-none absolute right-4 top-1/2 h-4 w-4 -translate-y-1/2 text-slate-500"/><input value={markupInput} onChange={(event) => setMarkupInput(event.target.value.replace(/\D/g, "").slice(0, 3))} onBlur={() => setMarkupInput(String(markup))} inputMode="numeric" className="dashboard-input pr-11 text-white" placeholder="40"/></div>
               <span className="normal-case tracking-normal text-[11px] font-medium leading-5 text-slate-500">0–200%. This is your own agency pricing decision, not a SocialRUSH discount.</span>
@@ -181,6 +260,8 @@ export default function MonthlyPlanBuilderPage() {
               <div className="rounded-2xl border border-emerald-400/15 bg-emerald-500/[.055] p-4"><p className="text-[9px] font-black uppercase tracking-[.12em] text-emerald-300">Gross margin</p><p className="mt-2 text-2xl font-black">{money(quote.grossMargin)}</p><p className="mt-1 text-[10px] text-slate-400">{quote.grossMarginPercent}% of client fee</p></div>
             </div>
 
+            {savedPlan && savedComparison ? <div className={"mt-4 rounded-2xl border p-4 text-xs leading-5 " + (savedComparison.costDelta>0 ? "border-amber-400/20 bg-amber-500/[.06] text-amber-100" : savedComparison.costDelta<0 ? "border-emerald-400/20 bg-emerald-500/[.06] text-emerald-100" : "border-white/10 bg-white/[.025] text-slate-300")}><div className="flex items-center gap-2"><RefreshCw className="h-4 w-4"/><b>Renewal comparison</b></div><p className="mt-2">Saved cost {money(Number(savedPlan.baseline_fulfillment_cost||0))} → current cost {money(savedComparison.current.fulfillmentCost)}{savedComparison.costDelta===0 ? " · no change" : " · " + (savedComparison.costDelta>0?"+":"") + money(savedComparison.costDelta)}.</p><p className="mt-1">Saved client quote {money(Number(savedPlan.baseline_client_quote||0))} → current quote {money(savedComparison.current.clientQuote)} at the saved {savedPlan.markup_percent}% markup. Change inputs if you want a new markup before refreshing the baseline.</p></div> : null}
+
             <div className="mt-5 grid gap-3">
               {selectedBundle.items.map((item, index) => <div key={item.service.code} className="flex flex-col gap-3 rounded-2xl border border-white/[.07] bg-white/[.025] p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0"><p className="text-[9px] font-black uppercase tracking-[.12em] text-slate-500">Monthly item {index + 1}</p><p className="mt-1 font-black">{item.service.name}</p><p className="mt-1 text-[11px] text-slate-400">{item.quantity.toLocaleString("en-IN")} · internal estimate {money(item.total)}</p></div>
@@ -188,10 +269,12 @@ export default function MonthlyPlanBuilderPage() {
               </div>)}
             </div>
 
-            <div className="mt-5 grid gap-3 sm:grid-cols-2">
-              <button type="button" onClick={() => void copyProposal()} className="btn-dashboard-primary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">{copied ? <Check className="h-4 w-4"/> : <Copy className="h-4 w-4"/>}{copied ? "Proposal copied" : "Copy client proposal"}</button>
+            <div className="mt-5 grid gap-3 sm:grid-cols-3">
+              <button type="button" onClick={() => void savePlanBaseline()} disabled={saving} className="btn-dashboard-primary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm disabled:opacity-60">{savedPlan ? <RefreshCw className="h-4 w-4"/> : <BookmarkPlus className="h-4 w-4"/>}{saving ? "Saving..." : savedPlan ? "Refresh saved baseline" : "Save monthly plan"}</button>
+              <button type="button" onClick={() => void copyProposal()} className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">{copied ? <Check className="h-4 w-4"/> : <Copy className="h-4 w-4"/>}{copied ? "Proposal copied" : "Copy client proposal"}</button>
               {clientId ? <Link href={campaignId ? `/dashboard/campaigns/${encodeURIComponent(campaignId)}` : `/dashboard/campaigns?client=${encodeURIComponent(clientId)}`} className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><FolderKanban className="h-4 w-4"/>{campaignId ? "Open campaign" : "Create campaign"}</Link> : <Link href="/dashboard/clients" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><BriefcaseBusiness className="h-4 w-4"/>Add client first</Link>}
             </div>
+            {saveMessage ? <p role="status" className="mt-3 rounded-xl border border-white/10 bg-white/[.03] p-3 text-xs text-slate-300">{saveMessage}</p> : null}
 
             <div className="mt-5 rounded-2xl border border-sky-400/15 bg-sky-500/[.045] p-4 text-xs leading-6 text-slate-300"><div className="flex gap-2"><WalletCards className="mt-0.5 h-4 w-4 shrink-0 text-sky-300"/><p><b className="text-sky-200">Final checkout remains authoritative.</b> Current service availability, live pricing where applicable, link eligibility, delivery and refill conditions are checked again when each order is placed. The quoted client fee is never passed into SocialRUSH checkout.</p></div></div>
           </> : <div className="grid min-h-[420px] place-items-center text-center"><div><Sparkles className="mx-auto h-8 w-8 text-orange-300"/><h2 className="mt-3 text-xl font-black">No eligible stack for this platform</h2><p className="mt-2 text-sm text-slate-400">Choose another platform or use the normal service catalog.</p></div></div>}

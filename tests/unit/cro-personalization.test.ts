@@ -6,6 +6,7 @@ import { postOrderRecommendations } from "../../lib/cro/revenue-bundles.ts";
 import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
 import { buildFrequentRepeatPatterns, buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
 import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "../../lib/reseller/monthly-plan.ts";
+import { compareSavedMonthlyPlan, planSnapshotItems } from "../../lib/reseller/saved-monthly-plan.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -138,4 +139,34 @@ test("agency markup is bounded and proposal text avoids internal cost disclosure
   assert.equal(proposal.includes("fulfillment cost"), false);
   assert.equal(proposal.includes("margin"), false);
   assert.match(proposal, /does not create an automatic renewal/i);
+});
+
+
+test("saved monthly plan comparison shows current cost and margin deltas without changing the saved baseline", () => {
+  const result = compareSavedMonthlyPlan({
+    baselineFulfillmentCost: 10000,
+    baselineClientQuote: 14000,
+    baselineGrossMargin: 4000,
+    markupPercent: 40,
+  }, 12000);
+  assert.equal(result.costDelta, 2000);
+  assert.equal(result.costDeltaPercent, 20);
+  assert.equal(result.current.clientQuote, 16800);
+  assert.equal(result.current.grossMargin, 4800);
+  assert.equal(result.quoteDelta, 2800);
+  assert.equal(result.marginDelta, 800);
+});
+
+test("saved plan snapshots keep only service identity, quantity and rounded planning totals", () => {
+  const snapshot = planSnapshotItems([{
+    service: { code: "instagram-followers", name: "Instagram Followers" },
+    quantity: 5000,
+    total: 3995.126,
+  }]);
+  assert.deepEqual(snapshot, [{
+    service_code: "instagram-followers",
+    name: "Instagram Followers",
+    quantity: 5000,
+    total: 3995.13,
+  }]);
 });
