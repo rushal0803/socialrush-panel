@@ -93,7 +93,8 @@ export const viewport: Viewport = {
 export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const cookieStore = await cookies();\n  const storedCurrency = cookieStore.get(DISPLAY_CURRENCY_COOKIE)?.value;
+  const cookieStore = await cookies();
+  const storedCurrency = cookieStore.get(DISPLAY_CURRENCY_COOKIE)?.value;
   const initialCurrency = isCurrency(storedCurrency) ? storedCurrency : "INR";
   const rates = await getExchangeRates();
   return (
