@@ -4,7 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
-import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
+import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 type IntentRow = {
   id: string;
@@ -17,6 +17,8 @@ type IntentRow = {
   currency: string;
   status: string;
   created_at: string;
+  client_id: string | null;
+  campaign_id: string | null;
 };
 
 function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
@@ -34,6 +36,8 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
         currency: intent.currency,
         status: intent.status,
         created_at: intent.created_at,
+        clientId: intent.client_id,
+        campaignId: intent.campaign_id,
         duplicate,
       },
     },
@@ -41,7 +45,7 @@ function intentResponse(intent: IntentRow, duplicate: boolean, status: number) {
   );
 }
 
-const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at";
+const INTENT_COLUMNS = "id, service_code, quantity, destination_link, package_name, notes, total_paise, currency, status, created_at, client_id, campaign_id";
 
 const liveCatalogServiceCodes = new Set<ServiceCode>(["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "linkedin-usa-connections", "linkedin-usa-post-likes", "linkedin-usa-endorsements", "linkedin-usa-followers", "linkedin-usa-group-members", "linkedin-usa-custom-comments", "linkedin-usa-reposts", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
 const cryptoServiceCodes = new Set<ServiceCode>(["twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments"]);
@@ -63,6 +67,8 @@ export async function POST(request: NextRequest) {
     notes?: string | null;
     pollAnswerNumber?: string;
     endorsementSkillName?: string;
+    clientId?: string | null;
+    campaignId?: string | null;
   } | null;
 
   const serviceCode = typeof body?.serviceCode === "string" ? body.serviceCode.trim() : "";
@@ -72,6 +78,8 @@ export async function POST(request: NextRequest) {
   const pollAnswerNumber = body?.pollAnswerNumber;
   const endorsementSkillName = typeof body?.endorsementSkillName === "string" ? body.endorsementSkillName.trim() : "";
   const quantity = body?.quantity;
+  const requestedClientId = typeof body?.clientId === "string" && body.clientId.trim() ? body.clientId.trim() : null;
+  const requestedCampaignId = typeof body?.campaignId === "string" && body.campaignId.trim() ? body.campaignId.trim() : null;
 
   if (!serviceCode || !link || !clientRequestId || !Number.isInteger(quantity)) {
     return NextResponse.json(
@@ -81,6 +89,9 @@ export async function POST(request: NextRequest) {
   }
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(clientRequestId)) {
     return NextResponse.json({ error: "clientRequestId must be a valid random UUID." }, { status: 422 });
+  }
+  if ((requestedClientId && !isUuid(requestedClientId)) || (requestedCampaignId && !isUuid(requestedCampaignId))) {
+    return NextResponse.json({ error: "Client or campaign context is invalid." }, { status: 422 });
   }
 
   const service = getServiceById(serviceCode);
@@ -134,6 +145,41 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "A valid destination link is required." }, { status: 400 });
   }
 
+  let clientId: string | null = null;
+  let campaignId: string | null = null;
+
+  if (requestedClientId) {
+    const { data: client } = await supabase
+      .from("customer_clients")
+      .select("id,archived_at")
+      .eq("id", requestedClientId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (!client || client.archived_at) {
+      return NextResponse.json({ error: "This client workspace is unavailable." }, { status: 404 });
+    }
+    clientId = client.id;
+  }
+
+  if (requestedCampaignId) {
+    const { data: campaign } = await supabase
+      .from("campaigns")
+      .select("id,client_id")
+      .eq("id", requestedCampaignId)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (!campaign) {
+      return NextResponse.json({ error: "This campaign workspace is unavailable." }, { status: 404 });
+    }
+    campaignId = campaign.id;
+    if (campaign.client_id) {
+      if (clientId && clientId !== campaign.client_id) {
+        return NextResponse.json({ error: "The selected campaign belongs to a different client." }, { status: 409 });
+      }
+      clientId = campaign.client_id;
+    }
+  }
+
   const databasePlatform = service.platform === "x" ? "twitter" : service.platform;
   let matchedServiceQuery = supabase
     .from("services")
@@ -182,7 +228,9 @@ export async function POST(request: NextRequest) {
       Number(existing.quantity) === requestedQuantity &&
       existing.destination_link === link &&
       existing.package_name === "Custom" &&
-      existing.notes === notes;
+      existing.notes === notes &&
+      existing.client_id === clientId &&
+      existing.campaign_id === campaignId;
     if (!matches) {
       return NextResponse.json(
         { error: "This request ID was already used with different order details." },
@@ -212,6 +260,8 @@ export async function POST(request: NextRequest) {
       total_paise: totalPaise,
       currency: "INR",
       status: "created",
+      client_id: clientId,
+      campaign_id: campaignId,
     })
     .select(INTENT_COLUMNS)
     .single<IntentRow>();
@@ -230,7 +280,9 @@ export async function POST(request: NextRequest) {
           Number(raced.quantity) === requestedQuantity &&
           raced.destination_link === link &&
           raced.package_name === "Custom" &&
-          raced.notes === notes;
+          raced.notes === notes &&
+          raced.client_id === clientId &&
+          raced.campaign_id === campaignId;
         if (!matches) {
           return NextResponse.json(
             { error: "This request ID was already used with different order details." },

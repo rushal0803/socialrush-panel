@@ -1,20 +1,41 @@
 "use client";
 
 import Link from "next/link";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { ArrowRight, Plus, Trash2 } from "lucide-react";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
+import { createClient } from "@/lib/supabase/client";
 
 type ServiceCode = typeof activeSmmServices[number]["code"];
-type Row = { id: string; client: string; serviceCode: ServiceCode; quantity: string; link: string };
+type ClientOption = { id: string; name: string };
+type Row = { id: string; clientId: string; serviceCode: ServiceCode; quantity: string; link: string };
 
 function newRow(): Row {
-  return { id: crypto.randomUUID(), client: "", serviceCode: activeSmmServices[0].code, quantity: "", link: "" };
+  return { id: crypto.randomUUID(), clientId: "", serviceCode: activeSmmServices[0].code, quantity: "", link: "" };
 }
 
 export default function BulkPlannerPage() {
   const [rows, setRows] = useState<Row[]>(() => [newRow()]);
+  const [clients, setClients] = useState<ClientOption[]>([]);
+
+  useEffect(() => {
+    let active = true;
+    void (async () => {
+      const db = createClient();
+      const { data: { user } } = await db.auth.getUser();
+      if (!user || !active) return;
+      const { data } = await db
+        .from("customer_clients")
+        .select("id,name")
+        .eq("user_id", user.id)
+        .is("archived_at", null)
+        .order("name");
+      if (active) setClients((data || []) as ClientOption[]);
+    })();
+    return () => { active = false; };
+  }, []);
+
 
   const total = useMemo(() => rows.reduce((sum, row) => {
     const quantity = Number(row.quantity || 0);
@@ -28,7 +49,7 @@ export default function BulkPlannerPage() {
       <section className="rounded-[1.5rem] border border-orange-400/20 bg-[linear-gradient(125deg,#17150f,#101218_60%)] p-5 sm:p-7">
         <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Reseller bulk operations</p>
         <h1 className="mt-2 text-3xl font-black">Bulk Planner</h1>
-        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">Prepare several client jobs in one place, review the current catalog estimate, then open each job in the existing single-service order flow. This planner does not create or charge multiple orders automatically.</p>
+        <p className="mt-3 max-w-3xl text-sm leading-6 text-slate-300">Prepare several client jobs in one place, review the current catalog estimate, then open each job in the existing single-service order flow. This planner does not create or charge multiple orders automatically. Choose a saved client when you want the resulting order attributed to that client workspace.</p>
         <div className="mt-5 flex flex-wrap gap-3"><Link href="/dashboard/reseller" className="btn-dashboard-secondary px-4 text-sm">← Reseller Hub</Link><Link href="/dashboard/clients" className="btn-dashboard-secondary px-4 text-sm">Manage clients</Link></div>
       </section>
 
@@ -44,13 +65,20 @@ export default function BulkPlannerPage() {
           const quantity = Number(row.quantity || 0);
           const validQuantity = Boolean(service && Number.isInteger(quantity) && quantity >= service.minQuantity && quantity <= service.maxQuantity);
           const estimate = service && validQuantity ? calculateServiceTotal(service.code, quantity) : 0;
-          const href = service && validQuantity && row.link.trim()
-            ? `/dashboard/new-order?service=${encodeURIComponent(service.code)}&quantity=${quantity}&link=${encodeURIComponent(row.link.trim())}&resume=1`
-            : "";
+          const params = new URLSearchParams();
+          if (service && validQuantity && row.link.trim()) {
+            params.set("service", service.code);
+            params.set("quantity", String(quantity));
+            params.set("link", row.link.trim());
+            params.set("resume", "1");
+            if (row.clientId) params.set("client", row.clientId);
+          }
+          const href = params.toString() ? `/dashboard/new-order?${params.toString()}` : "";
+          const clientName = clients.find((client) => client.id === row.clientId)?.name || "";
           return <article key={row.id} className="dashboard-glass p-4 sm:p-5">
-            <div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.13em] text-orange-300">Job {index + 1}</p><p className="mt-1 text-sm font-black">{row.client || "Unlabelled client job"}</p></div>{rows.length > 1 ? <button type="button" onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))} className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-slate-400 hover:text-red-300" aria-label={`Remove job ${index + 1}`}><Trash2 className="h-4 w-4" /></button> : null}</div>
+            <div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.13em] text-orange-300">Job {index + 1}</p><p className="mt-1 text-sm font-black">{clientName || "General / unassigned job"}</p></div>{rows.length > 1 ? <button type="button" onClick={() => setRows((current) => current.filter((item) => item.id !== row.id))} className="grid h-10 w-10 place-items-center rounded-xl border border-white/10 text-slate-400 hover:text-red-300" aria-label={`Remove job ${index + 1}`}><Trash2 className="h-4 w-4" /></button> : null}</div>
             <div className="mt-4 grid gap-3 md:grid-cols-2 xl:grid-cols-[1fr_1.2fr_.6fr_1.5fr_auto]">
-              <input value={row.client} onChange={(event) => update(row.id, { client: event.target.value })} className="dashboard-input" placeholder="Client / brand label" />
+              <select value={row.clientId} onChange={(event) => update(row.id, { clientId: event.target.value })} className="dashboard-input"><option value="">General / no saved client</option>{clients.map((client) => <option key={client.id} value={client.id}>{client.name}</option>)}</select>
               <select value={row.serviceCode} onChange={(event) => update(row.id, { serviceCode: event.target.value as ServiceCode, quantity: "" })} className="dashboard-input">{activeSmmServices.map((item) => <option key={item.code} value={item.code}>{item.name}</option>)}</select>
               <input value={row.quantity} onChange={(event) => update(row.id, { quantity: event.target.value.replace(/\D/g, "") })} inputMode="numeric" className="dashboard-input" placeholder="Quantity" />
               <input value={row.link} onChange={(event) => update(row.id, { link: event.target.value })} className="dashboard-input" placeholder="Public profile / post / video link" />
@@ -62,7 +90,7 @@ export default function BulkPlannerPage() {
       </section>
 
       <button type="button" onClick={() => setRows((current) => [...current, newRow()])} className="btn-dashboard-secondary mt-4 inline-flex min-h-11 items-center gap-2 px-4 text-sm"><Plus className="h-4 w-4" />Add another job</button>
-      <p className="mt-4 max-w-3xl text-xs leading-5 text-slate-500">Estimates use the current catalog loaded by this page and can change before checkout. Live-only or temporarily unavailable services may not appear here. Each job still uses the normal SocialRUSH validation, payment and order-creation flow.</p>
+      <p className="mt-4 max-w-3xl text-xs leading-5 text-slate-500">Estimates use the current catalog loaded by this page and can change before checkout. Live-only or temporarily unavailable services may not appear here. Each job still uses the normal SocialRUSH validation, payment and order-creation flow. Saved-client selections are carried into checkout so client history and recurring-revenue reporting stay accurate.</p>
     </main>
   );
 }
