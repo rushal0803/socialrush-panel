@@ -2,6 +2,8 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { addRecentService, parseContinueOrder, parseRecentServices, serializeContinueOrder } from "../../lib/cro/personalization.ts";
 import { buildQuantityMerchandising, quantityForMinimumSpend } from "../../lib/cro/quantity-merchandising.ts";
+import { postOrderRecommendations } from "../../lib/cro/revenue-bundles.ts";
+import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -47,4 +49,18 @@ test("minimum-spend quantity reaches the threshold without changing the service 
   assert.equal(quantity, 1252);
   assert.ok(quantity !== null && Math.round((quantity * merchandisingService.pricePer1000 * 100) / 1000) / 100 >= 1000);
   assert.equal(quantityForMinimumSpend(merchandisingService, 100000), null);
+});
+
+
+test("post-order recommendations stay complementary and avoid protected live-price services", () => {
+  const recommendations = postOrderRecommendations("instagram-followers", smmServiceCatalog, 2);
+  assert.equal(recommendations.length, 2);
+  assert.equal(recommendations.some((item) => item.service.code === "instagram-followers"), false);
+  assert.equal(recommendations.every((item) => item.service.platform === "instagram"), true);
+  assert.equal(recommendations.every((item) => !item.service.requiresLiveCatalogFacts && item.total > 0), true);
+});
+
+test("post-order recommendations require an existing stack containing the completed service", () => {
+  assert.deepEqual(postOrderRecommendations("facebook-followers", smmServiceCatalog, 2), []);
+  assert.deepEqual(postOrderRecommendations("not-a-service", smmServiceCatalog, 2), []);
 });

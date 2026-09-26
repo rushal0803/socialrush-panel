@@ -1,6 +1,6 @@
 "use client";
 
-import { AlertTriangle, ArrowLeft, Check, Clipboard, Clock3, Copy, ExternalLink, RefreshCw, ReceiptText } from "lucide-react";
+import { AlertTriangle, ArrowLeft, ArrowRight, Check, Clipboard, Clock3, Copy, ExternalLink, Layers3, RefreshCw, ReceiptText } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
@@ -12,6 +12,7 @@ import PlatformIcon from "@/components/PlatformIcon";
 import { customerOrderStages, customerOrderStatus, customerStatusClass } from "@/lib/customer-order-status";
 import { formatPublicOrderId, orderWhatsAppHref } from "@/lib/orders/public-reference";
 import { track } from "@/lib/analytics/events";
+import { postOrderRecommendations } from "@/lib/cro/revenue-bundles";
 
 type Order = {
   id: string; public_order_id: string; link: string; quantity: number; charge: number; unit_price: number | null; status: string;
@@ -46,14 +47,34 @@ export default function CustomerOrderDetailsPage() {
     });
   }, [id]);
 
-  const reorder = useMemo(() => {
+  const orderService = useMemo(() => {
     if (!order) return null;
     const name = order.service_name || order.services?.name || "";
-    const service = customerOrderServices.find((item) => item.name.toLowerCase() === name.toLowerCase())
-      ?? customerOrderServices.find((item) => item.platform === order.platform?.toLowerCase() && name.toLowerCase().includes(item.code.split("-").pop() || ""));
-    if (!service) return null;
-    return `/dashboard/new-order?${new URLSearchParams({ platform: service.platform, service: service.code, link: order.link, quantity: String(order.quantity), resume: "1" })}`;
+    return customerOrderServices.find((item) => item.name.toLowerCase() === name.toLowerCase())
+      ?? customerOrderServices.find((item) => item.platform === order.platform?.toLowerCase() && name.toLowerCase().includes(item.code.split("-").pop() || ""))
+      ?? null;
   }, [order]);
+
+  const reorder = useMemo(() => {
+    if (!order || !orderService) return null;
+    return `/dashboard/new-order?${new URLSearchParams({ platform: orderService.platform, service: orderService.code, link: order.link, quantity: String(order.quantity), resume: "1" })}`;
+  }, [order, orderService]);
+
+  const complementaryServices = useMemo(
+    () => orderService ? postOrderRecommendations(orderService.code, customerOrderServices, 2) : [],
+    [orderService],
+  );
+
+  useEffect(() => {
+    if (order?.status !== "completed") return;
+    for (const recommendation of complementaryServices) {
+      track("order_success_recommendation_view", {
+        service_code: recommendation.service.code,
+        platform: recommendation.service.platform,
+        surface: "completed_order",
+      });
+    }
+  }, [complementaryServices, order?.status]);
 
   const copy = async (value: string, label: string) => {
     await navigator.clipboard.writeText(value);
@@ -96,6 +117,14 @@ export default function CustomerOrderDetailsPage() {
       </section>
 
       <section className="mt-5 grid gap-3 rounded-3xl border border-white/10 bg-[#111111] p-4 sm:grid-cols-3 sm:p-5">{reorder && order.status === "completed" ? <Link href={reorder} onClick={() => track("repeat_order_click", { platform: order.platform || "other", step: "order_again" })} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 text-sm font-black"><RefreshCw className="h-4 w-4" />Order Again</Link> : null}{receiptAvailable ? <a href={`/api/orders/${order.id}/invoice`} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-sm font-bold text-orange-200"><ReceiptText className="h-4 w-4" />View / Download Receipt</a> : null}<Link href={supportHref} className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-4 text-sm font-bold text-orange-200"><ExternalLink className="h-4 w-4" />Contact Support</Link><a href={orderWhatsAppHref(orderId)} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-12 items-center justify-center gap-2 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 text-sm font-bold text-emerald-200">WhatsApp Support</a>{order.refill_eligible && order.status === "completed" && !order.refill_requested_at ? <button type="button" onClick={() => setRefillOpen(true)} className="min-h-12 rounded-xl border border-emerald-400/25 bg-emerald-500/10 px-4 text-sm font-bold text-emerald-200">Request Refill</button> : <p className="flex min-h-12 items-center justify-center rounded-xl border border-white/10 bg-white/[.03] px-4 text-center text-xs text-[#9CA3AF]">{order.refill_requested_at ? "Refill request received" : order.status === "cancelled" || order.status === "refunded" ? "Refills are not available for this order." : "This order is not currently eligible for refill."}</p>}</section>
+      {order.status === "completed" && complementaryServices.length ? <section className="mt-5 rounded-3xl border border-orange-400/20 bg-[linear-gradient(135deg,rgba(255,122,0,.09),rgba(17,17,17,.98)_52%)] p-5 sm:p-6" aria-labelledby="continue-campaign-title">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between"><div><p className="inline-flex items-center gap-2 text-[10px] font-black uppercase tracking-[.16em] text-orange-300"><Layers3 className="h-4 w-4" />Continue this campaign</p><h2 id="continue-campaign-title" className="mt-2 text-xl font-black">Add a complementary service when it fits your goal.</h2><p className="mt-2 max-w-3xl text-xs leading-5 text-slate-400">These options come from the same platform campaign stack as your completed service. Each opens as a separate order, and you will enter the correct public target before payment.</p></div><Link href="/dashboard/campaign-stacks" onClick={() => track("campaign_stack_growth_path_click", { surface: "completed_order" })} className="inline-flex min-h-10 shrink-0 items-center gap-1 text-xs font-black text-orange-200">View campaign stacks <ArrowRight className="h-3.5 w-3.5" /></Link></div>
+        <div className="mt-5 grid gap-3 md:grid-cols-2">{complementaryServices.map((recommendation) => {
+          const href=`/dashboard/new-order?${new URLSearchParams({ platform: recommendation.service.platform, service: recommendation.service.code, quantity: String(recommendation.quantity), resume: "1" })}`;
+          return <article key={recommendation.service.code} className="rounded-2xl border border-white/10 bg-black/25 p-4"><div className="flex items-start justify-between gap-3"><div className="min-w-0"><p className="text-[9px] font-black uppercase tracking-[.13em] text-slate-500">{recommendation.bundleName}</p><h3 className="mt-1 truncate font-black text-white">{recommendation.service.name}</h3></div><PlatformIcon platform={recommendation.service.platform} className="h-5 w-5 shrink-0 text-orange-300" /></div><dl className="mt-4 grid grid-cols-2 gap-2 text-xs"><div className="rounded-xl bg-white/[.035] p-3"><dt className="text-[9px] font-black uppercase tracking-wider text-slate-500">Suggested quantity</dt><dd className="mt-1 font-black text-white">{recommendation.quantity.toLocaleString("en-IN")}</dd></div><div className="rounded-xl bg-white/[.035] p-3"><dt className="text-[9px] font-black uppercase tracking-wider text-slate-500">Current estimate</dt><dd className="mt-1 font-black text-white">{formatCurrency(recommendation.total, currency)}</dd></div></dl><p className="mt-3 text-[11px] leading-5 text-slate-400">The order builder rechecks the service, quantity, current price and target requirements before checkout.</p><Link href={href} onClick={() => track("order_success_recommendation_click", { service_code: recommendation.service.code, platform: recommendation.service.platform, surface: "completed_order" })} className="mt-4 inline-flex min-h-11 w-full items-center justify-center gap-2 rounded-xl border border-orange-400/30 bg-orange-500/10 px-4 text-xs font-black text-orange-200 transition hover:border-orange-400/55 hover:bg-orange-500/15">Review this service <ArrowRight className="h-4 w-4" /></Link></article>;
+        })}</div>
+        <p className="mt-4 text-[10px] leading-4 text-slate-500">No bundle discount is assumed. The completed order’s public link is not copied because a complementary service may require a different profile, post, video, channel or page target.</p>
+      </section> : null}
       {refillMessage ? <p role="status" className="mt-4 rounded-xl border border-emerald-400/25 bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-100">{refillMessage}</p> : null}
       {refillOpen ? <section role="dialog" aria-modal="true" aria-labelledby="refill-title" className="fixed inset-x-4 bottom-4 z-50 mx-auto max-w-lg rounded-3xl border border-orange-400/30 bg-[#151515] p-5 shadow-2xl"><h2 id="refill-title" className="text-lg font-black">Review refill request</h2><p className="mt-2 text-sm text-[#D1D5DB]">{orderId} · {serviceName} · {order.quantity.toLocaleString("en-IN")}. This service is currently refill eligible. Our team will review your request; submitting does not promise a result.</p><label className="mt-4 block text-xs font-bold text-orange-200">Optional note<textarea maxLength={500} value={refillNote} onChange={(event) => setRefillNote(event.target.value)} className="mt-2 min-h-24 w-full rounded-xl border border-white/15 bg-black/30 p-3 text-sm" placeholder="Describe the issue (optional)" /></label><div className="mt-4 grid grid-cols-2 gap-3"><button type="button" onClick={() => setRefillOpen(false)} className="min-h-11 rounded-xl border border-white/15">Cancel</button><button type="button" disabled={submittingRefill} onClick={() => void requestRefill()} className="min-h-11 rounded-xl bg-orange-500 font-bold disabled:opacity-60">{submittingRefill ? "Submitting…" : "Confirm request"}</button></div></section> : null}
       {order.status === "completed" ? <section className="mt-5 rounded-3xl border border-amber-400/20 bg-amber-500/[.07] p-5"><h2 className="font-black">How did this order go?</h2><p className="mt-1 text-sm text-slate-300">Share feedback tied to this completed order. Reviews are moderated before publication.</p><Link href={`/dashboard/reviews/new?order=${order.id}`} className="mt-4 inline-flex min-h-11 items-center rounded-xl bg-amber-500 px-5 text-sm font-black text-black">Leave a verified review</Link></section> : null}

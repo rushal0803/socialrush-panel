@@ -1,6 +1,7 @@
 import type { SmmPlatformId, SmmService } from "@/lib/smm-service-catalog";
 
 export type RevenueBundle = { id:string; name:string; eyebrow:string; description:string; platform:SmmPlatformId; serviceCodes:string[]; recommendedQuantity:number };
+export type PostOrderRecommendation = { bundleId:string; bundleName:string; service:SmmService; quantity:number; total:number };
 
 const BUNDLES: RevenueBundle[] = [
   { id:"instagram-growth-stack",name:"Instagram Growth Stack",eyebrow:"Build a fuller campaign",description:"Pair follower growth with visible post engagement instead of relying on one signal alone.",platform:"instagram",serviceCodes:["instagram-followers","instagram-likes","instagram-views"],recommendedQuantity:5000 },
@@ -17,4 +18,28 @@ export function resolveRevenueBundle(bundle:RevenueBundle,services:SmmService[])
  const available=bundle.serviceCodes.map(code=>services.find(service=>service.code===code)).filter((service):service is SmmService=>Boolean(service&&service.isActive&&!service.requiresLiveCatalogFacts&&service.pricePer1000>0));
  const items=available.map(service=>{const step=Math.max(1,service.quantityStep??1);const floor=Math.max(service.minQuantity,step);const ceiling=Math.min(service.maxQuantity,bundle.recommendedQuantity);const quantity=ceiling<floor?floor:Math.max(floor,Math.floor(ceiling/step)*step);return{service,quantity,total:(service.pricePer1000*quantity)/1000};});
  return{...bundle,items,total:items.reduce((sum,item)=>sum+item.total,0)};
+}
+
+/**
+ * Finds a small set of complementary services only from an existing campaign
+ * stack that contains the completed service. Protected live-price services are
+ * already excluded by resolveRevenueBundle, and the original target link is
+ * intentionally not part of the recommendation.
+ */
+export function postOrderRecommendations(currentServiceCode:string,services:SmmService[],limit=2):PostOrderRecommendation[]{
+ const current=services.find(service=>service.code===currentServiceCode);
+ if(!current||limit<=0)return[];
+ const seen=new Set<string>();
+ const recommendations:PostOrderRecommendation[]=[];
+ for(const bundle of BUNDLES){
+  if(bundle.platform!==current.platform||!bundle.serviceCodes.includes(currentServiceCode))continue;
+  const resolved=resolveRevenueBundle(bundle,services);
+  for(const item of resolved.items){
+   if(item.service.code===currentServiceCode||seen.has(item.service.code))continue;
+   seen.add(item.service.code);
+   recommendations.push({bundleId:bundle.id,bundleName:bundle.name,...item});
+   if(recommendations.length>=limit)return recommendations;
+  }
+ }
+ return recommendations;
 }
