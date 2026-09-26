@@ -1,3 +1,4 @@
+import Link from "next/link";
 import FacebookViewsLanding from "@/components/marketing/FacebookViewsLanding";
 import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
 import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
@@ -59,6 +60,23 @@ export default function Page() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }}
       />
       <FacebookViewsLanding />
+      <section className="border-t border-white/10 bg-[#0d0f13] px-4 py-12 text-white sm:px-6 lg:px-8">
+        <div className="mx-auto max-w-5xl">
+          <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Facebook video visibility</p>
+          <h2 className="mt-3 text-2xl font-black sm:text-3xl">Facebook Views have a different goal from Likes and Followers</h2>
+          <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
+            This page is intended for view campaigns on eligible public Facebook video or post URLs. Likes focus on visible post engagement, while Followers focus on the visible audience of a Page or profile. Use the service that matches the metric you actually want to support.
+          </p>
+          <div className="mt-6 grid gap-3 sm:grid-cols-3">
+            <div className="rounded-2xl border border-white/10 bg-white/[.035] p-4"><p className="font-black">Required link</p><p className="mt-2 text-sm leading-6 text-slate-300">Submit the exact eligible public Facebook video or post URL. Private or inaccessible content cannot be processed.</p></div>
+            <div className="rounded-2xl border border-white/10 bg-white/[.035] p-4"><p className="font-black">Live order total</p><p className="mt-2 text-sm leading-6 text-slate-300">Choose an available quantity and review the total calculated from the active catalog rate before checkout.</p></div>
+            <div className="rounded-2xl border border-white/10 bg-white/[.035] p-4"><p className="font-black">Delivery conditions</p><p className="mt-2 text-sm leading-6 text-slate-300">Timing depends on the active service, quantity and link availability. Keep the submitted content public while the order is processing.</p></div>
+          </div>
+          <p className="mt-6 text-sm leading-7 text-slate-300">
+            Need another Facebook service? Compare <Link href="/buy-facebook-followers-india" className="font-bold text-orange-300 hover:text-orange-200">Facebook Followers</Link>, <Link href="/facebook-likes" className="font-bold text-orange-300 hover:text-orange-200">Facebook Likes</Link>, or use the <Link href="/facebook-growth-india" className="font-bold text-orange-300 hover:text-orange-200">Facebook Growth India hub</Link> to choose the right destination.
+          </p>
+        </div>
+      </section>
       <MoneyPageAuthorityLinks platform="facebook" />
     </>
   );
