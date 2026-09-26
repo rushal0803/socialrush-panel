@@ -89,8 +89,7 @@ export default function DirectUpiPaymentClient({
       pn: payeeName || "SocialRUSH",
       am: total.toFixed(2),
       cu: "INR",
-      tr: reference,
-      tn: `SocialRUSH ${reference}`,
+      tn: `SocialRUSH ${reference}`.slice(0, 80),
     });
     return `upi://pay?${params.toString()}`;
   }, [payeeName, reference, total, upiId]);
@@ -284,7 +283,7 @@ export default function DirectUpiPaymentClient({
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/15 text-orange-300"><Smartphone className="h-5 w-5" /></div>
               <div>
                 <p className="text-sm font-black">UPI</p>
-                <p className="mt-0.5 text-[11px] text-zinc-400">Google Pay · PhonePe · Paytm</p>
+                <p className="mt-0.5 text-[11px] text-zinc-400">Any compatible installed UPI app</p>
               </div>
             </div>
             {paymentMethod === "upi" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
@@ -386,13 +385,17 @@ export default function DirectUpiPaymentClient({
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-black">Pay with any UPI app</h2>
-                    <p className="mt-1 text-sm leading-6 text-zinc-400">Tap the button below to open your UPI app with the exact amount pre-filled.</p>
+                    <h2 className="text-xl font-black">Pay with your preferred UPI app</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">Tap once to open the standard UPI app chooser with the exact amount pre-filled.</p>
                   </div>
                   <span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount: {amountLabel}</span>
                 </div>
 
-                <div className="mt-5 rounded-2xl border border-white/10 bg-black/25 p-4">
+                <div className="mt-4 flex flex-wrap gap-2 text-[10px] font-black text-zinc-300">
+                  {["Google Pay","PhonePe","Paytm","BHIM","Amazon Pay","WhatsApp Pay"].map((app) => <span key={app} className="rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5">{app}</span>)}
+                </div>
+
+                <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4">
                   <div className="flex items-center justify-between gap-3">
                     <div className="min-w-0">
                       <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Pay to UPI ID</p>
@@ -420,10 +423,12 @@ export default function DirectUpiPaymentClient({
                   }}
                   className="mt-4 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-4 text-base font-black text-black shadow-[0_14px_38px_rgba(249,115,22,.24)] transition hover:brightness-105"
                 >
-                  Pay {amountLabel} with UPI <ExternalLink className="h-4 w-4" />
+                  Open UPI App · Pay {amountLabel} <ExternalLink className="h-4 w-4" />
                 </a>
 
-                <button type="button" onClick={() => { setPaymentStarted(true); returnTrackedRef.current = false; track("payment_returned", { service_code: serviceCode, method: "upi", surface: "already_paid_cta" }); window.setTimeout(() => utrInputRef.current?.focus(), 150); }} className="mt-3 min-h-11 w-full rounded-xl border border-orange-400/25 bg-orange-500/[0.06] px-4 text-sm font-black text-orange-200 transition hover:border-orange-400/50 hover:bg-orange-500/[0.1]">I already paid · Enter UTR</button>
+                <button type="button" onClick={() => { setPaymentStarted(true); returnTrackedRef.current = false; track("payment_returned", { service_code: serviceCode, method: "upi", surface: "already_paid_cta" }); window.setTimeout(() => utrInputRef.current?.focus(), 150); }} className="mt-3 min-h-11 w-full rounded-xl border border-orange-400/25 bg-orange-500/[0.06] px-4 text-sm font-black text-orange-200 transition hover:border-orange-400/50 hover:bg-orange-500/[0.1]">Already paid? Enter UTR / Transaction ID</button>
+
+                <p className="mt-3 text-center text-xs leading-5 text-zinc-500">If the UPI app chooser does not open, copy the UPI ID above and pay the exact amount manually from any UPI app.</p>
 
                 <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] p-3 text-xs leading-5 text-emerald-100/80">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
@@ -472,7 +477,7 @@ export default function DirectUpiPaymentClient({
 
                 <details className="mt-3 rounded-xl border border-white/5 bg-white/[0.025] px-3 py-2 text-xs text-zinc-400">
                   <summary className="cursor-pointer font-bold text-orange-300">Where can I find the UTR?</summary>
-                  <p className="mt-2 leading-5">Open your UPI app, go to transaction history, open this successful payment, then copy the UTR / Transaction ID.</p>
+                  <p className="mt-2 leading-5">Open your UPI app → Transaction history → open this successful payment → copy the UTR / Transaction ID. It is usually shown in payment details.</p>
                 </details>
 
                 {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
