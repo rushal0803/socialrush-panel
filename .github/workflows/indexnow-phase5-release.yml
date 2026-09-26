@@ -1,0 +1,24 @@
+name: Phase 5 IndexNow release
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "public/8f7d2c91a4e64b7f9c3d1a6e5b8f2047.txt"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  notify-indexnow:
+    name: Notify IndexNow after production key is live
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Submit Phase 5 changed URLs
+        run: node scripts/indexnow-phase5-release.mjs

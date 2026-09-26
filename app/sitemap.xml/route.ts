@@ -9,6 +9,7 @@ import {
 import { createAdminClient } from "@/lib/supabase/admin";
 import { countryServicePaths, internationalHubPaths } from "@/lib/seo/international";
 import { isCommercialAliasPath } from "@/lib/seo/query-ownership";
+import { searchFreshnessLastmod } from "@/lib/seo/search-freshness";
 
 export const revalidate = 21600;
 
@@ -151,7 +152,7 @@ export async function GET() {
       ...caseStudyRoutes,
     ]),
   ].filter((route) => !isCommercialAliasPath(route));
-  const lastModified = new Map<string, string>();
+  const lastModified = new Map<string, string>(Object.entries(searchFreshnessLastmod));
   uniqueBlogArticles.forEach((article) => {
     if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt);
   });
