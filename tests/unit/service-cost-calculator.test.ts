@@ -25,7 +25,7 @@ test("only confirmed public services auto-fill a price", () => {
 test("every calculator service points to one canonical public money page", () => {
   assert.equal(new Set(serviceCostOptions.map((option) => option.id)).size, serviceCostOptions.length);
   for (const option of serviceCostOptions) {
-    assert.match(option.href, /^//);
+    assert.equal(option.href.startsWith("/"), true);
     assert.equal(option.href.includes("?"), false);
   }
 });
