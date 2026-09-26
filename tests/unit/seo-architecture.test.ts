@@ -8,6 +8,7 @@ import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedIntern
 import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
 import { contentClusters } from "../../lib/seo/content-clusters.ts";
 import { articleSlugs } from "../../components/marketing/blog/blogData.ts";
+import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search-demand.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -264,4 +265,22 @@ test("country service schema remains INR-authoritative", () => {
     assert.notEqual(page.market.currency, "INR");
     assert.notEqual(offer?.priceCurrency, page.market.currency);
   }
+});
+
+
+test("search-demand quantity planning derives 1K 5K and 10K totals from the confirmed per-1K rate", () => {
+  assert.deepEqual(buildQuantityPlanning(799), [
+    { quantity: 1000, total: 799 },
+    { quantity: 5000, total: 3995 },
+    { quantity: 10000, total: 7990 },
+  ]);
+  assert.deepEqual(buildQuantityPlanning(null), []);
+  assert.deepEqual(buildQuantityPlanning(0), []);
+});
+
+test("search-demand service units stay readable for long-tail price headings", () => {
+  assert.equal(serviceUnitFromCode("instagram-followers"), "followers");
+  assert.equal(serviceUnitFromCode("youtube-subscribers"), "subscribers");
+  assert.equal(serviceUnitFromCode("telegram-members"), "members");
+  assert.equal(serviceUnitFromCode("instagram-saves"), "saves");
 });
