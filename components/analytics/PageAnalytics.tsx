@@ -2,12 +2,13 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
-import { track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
+import { primeAttribution, track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
 
 export default function PageAnalytics() {
   const path = usePathname();
 
   useEffect(() => {
+    primeAttribution();
     let event: ClientAnalyticsEvent | null = null;
     if (path.startsWith("/blog/")) event = "blog_article_viewed";
     const market = path.match(/^\/(us|uk|ca|au|ae|sg)$/)?.[1];
