@@ -47,15 +47,22 @@ export default function IndiaCommercialServiceJsonLd({
       : {}),
   };
 
+  // /twitter-followers already renders a purpose-built breadcrumb schema in its
+  // route so its visible Twitter/X breadcrumb and JSON-LD stay aligned. Avoid
+  // emitting a second BreadcrumbList from this shared commercial schema helper.
+  const shouldRenderBreadcrumb = path !== "/twitter-followers";
+
   return (
     <>
-      <BreadcrumbJsonLd
-        items={[
-          { name: "Home", path: "/" },
-          { name: `${platform} Growth India`, path: `/${platform.toLowerCase()}-growth-india` },
-          { name, path },
-        ]}
-      />
+      {shouldRenderBreadcrumb ? (
+        <BreadcrumbJsonLd
+          items={[
+            { name: "Home", path: "/" },
+            { name: `${platform} Growth India`, path: `/${platform.toLowerCase()}-growth-india` },
+            { name, path },
+          ]}
+        />
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{
