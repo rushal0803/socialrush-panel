@@ -260,9 +260,12 @@ async function checkRobotsAndSitemap() {
       return;
     }
     const stale = phase5FreshnessPaths.filter((path) => {
-      const loc = new URL(path, baseUrl).toString();
-      const escaped = loc.replace(/[.*+?^${}()|[\]\\]/g, "\\    pass(`sitemap.xml contains ${requiredSitemapPaths.length} priority URLs`);");
-      return !new RegExp(`<url>[\\s\\S]*?<loc>${escaped}<\\/loc>[\\s\\S]*?<lastmod>${PHASE5_LASTMOD}<\\/lastmod>[\\s\\S]*?<\\/url>`).test(sitemap);
+      const loc = `<loc>${new URL(path, baseUrl).toString()}</loc>`;
+      const entryStart = sitemap.indexOf(loc);
+      if (entryStart < 0) return true;
+      const entryEnd = sitemap.indexOf("</url>", entryStart);
+      if (entryEnd < 0) return true;
+      return !sitemap.slice(entryStart, entryEnd).includes(`<lastmod>${PHASE5_LASTMOD}</lastmod>`);
     });
     if (stale.length > 0) {
       fail("sitemap.xml", `missing Phase 5 lastmod for ${stale.join(", ")}`);
