@@ -2,8 +2,8 @@ import type { SmmService } from "@/lib/smm-service-catalog";
 
 export type QuantityMerchandisingOption = {
   value: number;
-  label: "Starter" | "Popular" | "Scale" | null;
-  emphasis: "standard" | "popular" | "scale";
+  label: "Starter" | "Balanced" | "Scale" | null;
+  emphasis: "standard" | "balanced" | "scale";
 };
 
 function validForService(service: SmmService, value: number) {
@@ -27,10 +27,29 @@ function closestIndex(values: readonly number[], target: number, blocked = new S
   return bestIndex;
 }
 
+function orderTotal(service: SmmService, quantity: number) {
+  return Math.round((quantity * service.pricePer1000 * 100) / 1000) / 100;
+}
+
+/**
+ * Returns the smallest valid service quantity whose rounded checkout total
+ * reaches the requested spend. This never changes the underlying service rate.
+ */
+export function quantityForMinimumSpend(service: SmmService, minimumTotal: number): number | null {
+  if (!Number.isFinite(minimumTotal) || minimumTotal <= 0 || !Number.isFinite(service.pricePer1000) || service.pricePer1000 <= 0) return null;
+  const step = service.quantityStep ?? 1;
+  const rawTarget = Math.max(service.minQuantity, Math.ceil((minimumTotal * 1000) / service.pricePer1000));
+  let quantity = service.minQuantity + Math.max(0, Math.ceil((rawTarget - service.minQuantity) / step)) * step;
+
+  while (quantity <= service.maxQuantity && orderTotal(service, quantity) < minimumTotal) quantity += step;
+  return quantity <= service.maxQuantity ? quantity : null;
+}
+
 /**
  * Builds a compact quantity ladder that deliberately spans the useful service
- * range instead of taking only the five smallest valid quantities. Pricing,
- * service limits and checkout validation remain unchanged.
+ * range instead of taking only the five smallest valid quantities. "Balanced"
+ * is a merchandising position, not a claim about customer popularity.
+ * Pricing, service limits and checkout validation remain unchanged.
  */
 export function buildQuantityMerchandising(service: SmmService): QuantityMerchandisingOption[] {
   const candidates = [
@@ -52,11 +71,11 @@ export function buildQuantityMerchandising(service: SmmService): QuantityMerchan
   const starter = validValues[0];
   const practicalCeiling = Math.min(service.maxQuantity, 25000);
   const scaleTarget = Math.max(starter, practicalCeiling);
-  const popularTarget = Math.max(starter, Math.min(5000, scaleTarget / 2));
+  const balancedTarget = Math.max(starter, Math.min(5000, scaleTarget / 2));
 
   const chosen = new Set<number>([0]);
-  const popularIndex = closestIndex(validValues, popularTarget, chosen);
-  if (popularIndex >= 0) chosen.add(popularIndex);
+  const balancedIndex = closestIndex(validValues, balancedTarget, chosen);
+  if (balancedIndex >= 0) chosen.add(balancedIndex);
   const scaleIndex = closestIndex(validValues, scaleTarget, chosen);
   if (scaleIndex >= 0) chosen.add(scaleIndex);
 
@@ -87,12 +106,12 @@ function labelOptions(values: readonly number[]): QuantityMerchandisingOption[] 
   if (!values.length) return [];
 
   const scaleIndex = values.length >= 2 ? values.length - 1 : -1;
-  const popularTarget = Math.min(5000, values[scaleIndex] ?? values[0]);
-  const popularIndex = values.length >= 3 ? closestIndex(values, popularTarget, new Set([0, scaleIndex])) : -1;
+  const balancedTarget = Math.min(5000, values[scaleIndex] ?? values[0]);
+  const balancedIndex = values.length >= 3 ? closestIndex(values, balancedTarget, new Set([0, scaleIndex])) : -1;
 
   return values.map((value, index) => {
     if (index === 0) return { value, label: "Starter", emphasis: "standard" };
-    if (index === popularIndex) return { value, label: "Popular", emphasis: "popular" };
+    if (index === balancedIndex) return { value, label: "Balanced", emphasis: "balanced" };
     if (index === scaleIndex) return { value, label: "Scale", emphasis: "scale" };
     return { value, label: null, emphasis: "standard" };
   });

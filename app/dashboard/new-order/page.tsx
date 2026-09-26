@@ -45,7 +45,7 @@ import FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner"
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
-import { buildQuantityMerchandising } from "@/lib/cro/quantity-merchandising";
+import { buildQuantityMerchandising, quantityForMinimumSpend } from "@/lib/cro/quantity-merchandising";
 import { findSafeAlternative } from "@/lib/service-alternatives";
 
 type PlatformId = SmmPlatformId;
@@ -102,7 +102,13 @@ function cleanQuantity(value: string) {
 }
 
 function compactQuantity(value: number) {
-  return value >= 1000 ? `${value / 1000}K` : value.toLocaleString("en-IN");
+  if (value < 1000) return value.toLocaleString("en-IN");
+  const thousands = value / 1000;
+  return `${Number.isInteger(thousands) ? thousands : thousands.toFixed(1).replace(/\.0$/, "")}K`;
+}
+
+function serviceTotal(pricePer1000: number, quantity: number) {
+  return Math.round((quantity * pricePer1000 * 100) / 1000) / 100;
 }
 
 function platformAccent(platform: PlatformId) {
@@ -323,13 +329,18 @@ export default function NewOrderPage() {
   const endorsementSkillError = requiresEndorsementSkill && !endorsementSkillName.trim() ? "Enter the exact LinkedIn skill that should receive endorsements." : "";
   const formIsValid = Boolean(selectedService && quantityInput && targetLink.trim() && !quantityError && !linkError && !customCommentsError && !pollAnswerNumberError && !endorsementSkillError);
   const priceIsReady = Boolean(selectedService && quantityInput && !quantityError);
-  const totalPrice = selectedService ? Math.round((quantity * selectedService.pricePer1000 * 100) / 1000) / 100 : 0;
+  const totalPrice = selectedService ? serviceTotal(selectedService.pricePer1000, quantity) : 0;
   const hasEnoughWallet = walletBalance !== null && totalPrice > 0 && walletBalance + 0.0001 >= totalPrice;
   const amountRequired = walletBalance === null ? 0 : Math.max(0, Math.round((totalPrice - walletBalance) * 100) / 100);
   const remainingBalance = walletBalance === null ? null : Math.max(0, walletBalance - totalPrice);
   const currentStep = checkoutStep;
   const quantityOptions = selectedService ? buildQuantityMerchandising(selectedService) : [];
-  const quickQuantities = quantityOptions.map((option) => option.value);
+  const bonusThresholdQuantity = firstOrderOffer && selectedService && totalPrice < firstOrderOffer.minimum
+    ? quantityForMinimumSpend(selectedService, firstOrderOffer.minimum)
+    : null;
+  const bonusThresholdTotal = bonusThresholdQuantity && selectedService
+    ? serviceTotal(selectedService.pricePer1000, bonusThresholdQuantity)
+    : 0;
 
   useEffect(() => {
     if (!selectedService || !quantityInput || quantityError || linkError || success) return;
@@ -808,10 +819,10 @@ export default function NewOrderPage() {
       <div className="flex items-end justify-between gap-3"><div><p className="text-xs font-black text-white">Choose a quantity</p><p className="mt-1 text-[11px] text-[#8F949D]">Quick options based on this service’s live limits.</p></div><span className="hidden text-[10px] font-bold uppercase tracking-wider text-[#777] sm:inline">Same live rate</span></div>
       <div className="sr-order-quantity-grid mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3">{quantityOptions.map((option) => {
         const selected = quantity === option.value;
-        const emphasis = option.emphasis === "popular" ? "border-orange-400/50 bg-orange-500/[.08]" : option.emphasis === "scale" ? "border-emerald-400/35 bg-emerald-500/[.06]" : "border-white/10 bg-white/[.035]";
+        const emphasis = option.emphasis === "balanced" ? "border-orange-400/50 bg-orange-500/[.08]" : option.emphasis === "scale" ? "border-emerald-400/35 bg-emerald-500/[.06]" : "border-white/10 bg-white/[.035]";
         const optionPrice = Math.round((option.value * selectedService.pricePer1000 * 100) / 1000) / 100;
         return <button key={option.value} type="button" aria-pressed={selected} onClick={() => { setQuantityInput(String(option.value)); setError(""); }} className={`sr-order-quantity-option relative min-h-20 rounded-xl border px-3 py-3 text-left transition hover:border-orange-300/60 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${selected ? "border-orange-400 bg-orange-500/15 ring-2 ring-orange-500/10" : emphasis}`}>
-          <span className="flex items-start justify-between gap-2"><strong className="text-sm font-black text-white">{compactQuantity(option.value)}</strong>{option.label ? <span className={`rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-wide ${option.emphasis === "popular" ? "bg-orange-500/20 text-orange-200" : option.emphasis === "scale" ? "bg-emerald-500/15 text-emerald-200" : "bg-white/10 text-[#C7CBD1]"}`}>{option.label}</span> : null}</span>
+          <span className="flex items-start justify-between gap-2"><strong className="text-sm font-black text-white">{compactQuantity(option.value)}</strong>{option.label ? <span className={`rounded-full px-2 py-1 text-[9px] font-black uppercase tracking-wide ${option.emphasis === "balanced" ? "bg-orange-500/20 text-orange-200" : option.emphasis === "scale" ? "bg-emerald-500/15 text-emerald-200" : "bg-white/10 text-[#C7CBD1]"}`}>{option.label}</span> : null}</span>
           <span className="mt-2 block text-xs font-bold text-[#B8BDC6]">{formatCurrency(optionPrice, currency)}</span>
         </button>;
       })}</div>
@@ -958,9 +969,10 @@ export default function NewOrderPage() {
                   </span>
                   {targetLink.trim() && linkValidation?.valid && /(followers|subscribers|members)/.test(selectedService.code) && ["profile", "channel", "page or profile", "profile or company", "channel or group"].includes(linkValidation.detectedType || "") ? <a href="/dashboard/saved-profiles" className="mt-2 inline-flex min-h-10 items-center text-[11px] font-bold text-orange-300 hover:text-orange-200">+ Save this profile</a> : null}
                 </label>
-                <label className="block text-xs font-black text-white">
-                  <span className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</span>
+                <div className="block text-xs font-black text-white">
+                  <label htmlFor="order-quantity" className="inline-flex items-center gap-2"><Hash className="h-4 w-4 text-orange-400" />Quantity</label>
                   <input
+                    id="order-quantity"
                     value={quantityInput}
                     onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }}
                     inputMode="numeric"
@@ -968,10 +980,24 @@ export default function NewOrderPage() {
                     className="mt-2 min-h-14 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none transition-all duration-200 ease-out placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
                   />
                   <span className={`mt-2 block text-[11px] leading-5 ${quantityError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>
-                    {quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")} · Whole numbers`}
+                    {quantityError || `Min ${selectedService.minQuantity.toLocaleString("en-IN")} · Max ${selectedService.maxQuantity.toLocaleString("en-IN")} · Current rate ${formatCurrency(selectedService.pricePer1000, currency)} / 1K`}
                   </span>
-                  {quickQuantities.length ? <span className="mt-3 flex flex-wrap gap-2">{quickQuantities.map((value) => <button key={value} type="button" onClick={() => setQuantityInput(String(value))} className={`min-h-10 rounded-full border px-3 text-xs font-black ${quantity === value ? "border-orange-400 bg-orange-500/20 text-orange-200" : "border-white/15 bg-white/5 text-[#D1D5DB]"}`}>{value / 1000}K</button>)}</span> : null}
-                </label>
+                  {quantityOptions.length ? <div className="mt-3 grid grid-cols-2 gap-2 sm:grid-cols-3 xl:grid-cols-5">{quantityOptions.map((option) => {
+                    const optionTotal = serviceTotal(selectedService.pricePer1000, option.value);
+                    const active = quantity === option.value;
+                    return <button key={option.value} type="button" aria-pressed={active} onClick={() => { setQuantityInput(String(option.value)); setError(""); }} className={`relative min-h-[76px] rounded-xl border p-3 text-left transition ${active ? "border-orange-400 bg-orange-500/15 shadow-[0_12px_30px_-22px_rgba(255,122,0,.95)]" : option.emphasis === "balanced" ? "border-amber-300/30 bg-amber-400/[.06] hover:border-amber-300/55" : option.emphasis === "scale" ? "border-sky-300/20 bg-sky-400/[.04] hover:border-sky-300/40" : "border-white/10 bg-white/[.035] hover:border-orange-400/35"}`}>
+                      {option.label ? <span className={`text-[9px] font-black uppercase tracking-[.12em] ${option.emphasis === "balanced" ? "text-amber-200" : option.emphasis === "scale" ? "text-sky-200" : "text-slate-400"}`}>{option.label}</span> : <span className="text-[9px] font-black uppercase tracking-[.12em] text-slate-600">Quantity</span>}
+                      <strong className="mt-1 block text-sm text-white">{compactQuantity(option.value)}</strong>
+                      <span className="mt-1 block text-[10px] font-bold text-slate-400">{formatCurrency(optionTotal, currency)} total</span>
+                    </button>;
+                  })}</div> : null}
+                  {firstOrderOffer ? totalPrice >= firstOrderOffer.minimum && priceIsReady ? <div className="mt-3 rounded-xl border border-emerald-400/25 bg-emerald-400/[.08] p-3 text-[11px] leading-5 text-emerald-100"><strong className="text-emerald-200">First-order bonus unlocked.</strong> This order meets the current {formatCurrency(firstOrderOffer.minimum, currency)} eligibility minimum for a {formatCurrency(firstOrderOffer.reward, currency)} wallet bonus after eligible completion.</div> : bonusThresholdQuantity && bonusThresholdQuantity > quantity ? <div className="mt-3 rounded-xl border border-emerald-400/25 bg-[linear-gradient(135deg,rgba(16,185,129,.1),rgba(255,122,0,.05))] p-3">
+                    <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                      <div><p className="text-[10px] font-black uppercase tracking-[.12em] text-emerald-300">First-order bonus available</p><p className="mt-1 text-[11px] font-semibold leading-5 text-slate-300">Set the smallest valid quantity that reaches the current {formatCurrency(firstOrderOffer.minimum, currency)} eligibility minimum. Your service rate stays unchanged.</p></div>
+                      <button type="button" onClick={() => { setQuantityInput(String(bonusThresholdQuantity)); setError(""); track("first_order_bonus_click", { surface: "quantity_threshold", value: firstOrderOffer.reward, step: String(bonusThresholdQuantity) }); }} className="min-h-10 shrink-0 rounded-xl border border-emerald-300/25 bg-emerald-400/10 px-3 text-[11px] font-black text-emerald-200">Use {bonusThresholdQuantity.toLocaleString("en-IN")} · {formatCurrency(bonusThresholdTotal, currency)}</button>
+                    </div>
+                  </div> : null : null}
+                </div>
               </div>
               {requiresEndorsementSkill ? <label className="mt-5 block text-xs font-black text-white"><span>Skill Name</span><input value={endorsementSkillName} onChange={(event) => { setEndorsementSkillName(event.target.value); setError(""); }} placeholder="e.g. Digital Marketing" className={`mt-2 min-h-14 w-full rounded-xl border bg-[#0B0B0F] px-4 text-base text-white outline-none placeholder:text-[#6B7280] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15 ${endorsementSkillError ? "border-red-400" : "border-orange-400/25"}`} /><span className={`mt-2 block text-[11px] leading-5 ${endorsementSkillError ? "font-semibold text-red-300" : "text-[#D1D5DB]"}`}>{endorsementSkillError || "Enter the exact LinkedIn skill that should receive endorsements."}</span></label> : null}
               {requiresCustomComments ? <label className="mt-5 block text-xs font-black text-white">
