@@ -8,10 +8,11 @@ import { getServiceById } from "@/lib/smm-service-catalog";
 export const dynamic = "force-dynamic";
 
 type PageProps = {
-  searchParams?: { intent?: string };
+  searchParams?: Promise<{ intent?: string }>;
 };
 
-export default async function DirectUpiPage({ searchParams }: PageProps) {
+export default async function DirectUpiPage({ searchParams: searchParamsPromise }: PageProps) {
+  const searchParams = searchParamsPromise ? await searchParamsPromise : undefined;
   const intentId = String(searchParams?.intent || "").trim();
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(intentId)) {
     redirect("/dashboard/new-order");
