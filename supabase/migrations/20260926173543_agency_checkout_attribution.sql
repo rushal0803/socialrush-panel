@@ -147,3 +147,7 @@ begin
   return jsonb_build_object('id',v_order_id,'charge',v_charge,'balance',v_balance,'duplicate',false);
 end
 $function$;
+
+
+revoke all on function public.checkout_custom_intent_with_wallet(uuid, text, text, integer, text) from public, anon;
+grant execute on function public.checkout_custom_intent_with_wallet(uuid, text, text, integer, text) to authenticated, service_role;
