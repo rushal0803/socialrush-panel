@@ -48,7 +48,7 @@ export async function POST(request: NextRequest) {
   const admin = createAdminClient();
   const { data: intent, error: intentError } = await admin
     .from("checkout_intents")
-    .select("id,user_id,client_request_id,service_id,service_code,quantity,destination_link,package_name,notes,total_paise,currency,status,order_id,expires_at")
+    .select("id,user_id,client_request_id,service_id,service_code,quantity,destination_link,package_name,notes,total_paise,currency,status,order_id,expires_at,client_id,campaign_id")
     .eq("id", intentId)
     .maybeSingle();
 
@@ -72,6 +72,29 @@ export async function POST(request: NextRequest) {
   }
   if (intent.currency !== "INR" || Number(intent.total_paise) <= 0) {
     return NextResponse.json({ error: "Checkout amount is invalid." }, { status: 409 });
+  }
+
+  if (intent.client_id) {
+    const { data: client } = await admin
+      .from("customer_clients")
+      .select("id")
+      .eq("id", intent.client_id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (!client) return NextResponse.json({ error: "This client workspace is no longer available." }, { status: 409 });
+  }
+
+  if (intent.campaign_id) {
+    const { data: campaign } = await admin
+      .from("campaigns")
+      .select("id,client_id")
+      .eq("id", intent.campaign_id)
+      .eq("user_id", user.id)
+      .maybeSingle();
+    if (!campaign) return NextResponse.json({ error: "This campaign workspace is no longer available." }, { status: 409 });
+    if (campaign.client_id && intent.client_id && campaign.client_id !== intent.client_id) {
+      return NextResponse.json({ error: "The checkout client and campaign no longer match." }, { status: 409 });
+    }
   }
 
   const { data: service } = await admin
@@ -141,6 +164,8 @@ export async function POST(request: NextRequest) {
       client_request_id: clientRequestId,
       notes: intent.notes,
       customer_note: customerNote,
+      client_id: intent.client_id,
+      campaign_id: intent.campaign_id,
     })
     .select("id,public_order_id,status,payment_status")
     .single();
