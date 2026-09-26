@@ -10,6 +10,8 @@ import { contentClusters } from "../../lib/seo/content-clusters.ts";
 import { articleSlugs } from "../../components/marketing/blog/blogData.ts";
 import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search-demand.ts";
 import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/seo/authority-graph.ts";
+import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
+import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -330,4 +332,41 @@ test("blog authority links stay canonical and avoid tracking-query crawl noise",
   assert.match(bridgeSource, /getPlatformAuthorityTargets/);
   assert.doesNotMatch(bridgeSource, /utm_source|utm_medium|utm_campaign|utm_content/);
   assert.doesNotMatch(bridgeSource, /\/services\/instagram|\/services\/youtube|\/services\/facebook|\/services\/twitter/);
+});
+
+
+test("phase 5F crawl priority points only to canonical India money pages", () => {
+  const canonicalPaths = new Set(Object.values(canonicalIndiaServicePaths));
+  assert.ok(crawlPriorityServiceLinks.length >= 6);
+  assert.equal(new Set(crawlPriorityServiceLinks.map((item) => item.href)).size, crawlPriorityServiceLinks.length);
+  for (const item of crawlPriorityServiceLinks) {
+    assert.ok(canonicalPaths.has(item.href as (typeof canonicalIndiaServicePaths)[IndiaServiceSlug]));
+    assert.equal(item.href.includes("?"), false);
+    assert.equal(redirectedServicePaths.has(item.href), false);
+  }
+  for (const item of searchPlanningLinks) {
+    assert.match(item.href, /^\//);
+    assert.equal(item.href.includes("?"), false);
+  }
+});
+
+test("phase 5F commercial search descriptions cover price, public-link safety and tracking", () => {
+  const description = buildCommercialSearchDescription({
+    serviceName: "YouTube Subscribers",
+    destination: "public YouTube channel link",
+  });
+  assert.match(description, /Buy YouTube Subscribers in India/);
+  assert.match(description, /live INR pricing/i);
+  assert.match(description, /quantity-based totals/i);
+  assert.match(description, /public YouTube channel link/i);
+  assert.match(description, /no password required/i);
+  assert.match(description, /dashboard tracking/i);
+  assert.ok(description.length <= 180);
+});
+
+test("homepage and services expose the canonical crawl-priority module", () => {
+  const homepage = readFileSync(new URL("../../app/page.tsx", import.meta.url), "utf8");
+  const services = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  assert.match(homepage, /<CrawlPriorityLinks \/>/);
+  assert.match(services, /<CrawlPriorityLinks \/>/);
 });
