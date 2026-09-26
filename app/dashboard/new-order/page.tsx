@@ -795,7 +795,7 @@ export default function NewOrderPage() {
       track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentId, payment_path: "cashfree" });
       const returnPath = `/dashboard/new-order?${returnParams.toString()}`;
       const paymentResponse = await fetch("/api/checkout/cashfree/order", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, returnPath }) });
-      const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; returnUrl?: string; environment?: "sandbox" | "production" }; error?: string; code?: string };
+      const payment = await paymentResponse.json() as { data?: { paymentSessionId?: string; returnUrl?: string; environment?: "sandbox" | "production"; method?: string }; error?: string; code?: string };
       if (payment.code === "WALLET_SUFFICIENT") {
         const walletOrderResponse = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId: requestId.current, serviceCode: selectedService.code, quantity, link: targetLink.trim() }) });
         const walletOrder = await walletOrderResponse.json() as { data?: ApiOrderData; error?: string };
@@ -806,6 +806,17 @@ export default function NewOrderPage() {
         return;
       }
       if (!paymentResponse.ok || !payment.data?.paymentSessionId || !payment.data.returnUrl || !payment.data.environment) throw new Error(payment.error || "Unable to initialize secure payment.");
+      if (payment.data.method === "upi" || payment.data.paymentSessionId.startsWith("socialrush_direct_upi:")) {
+        paymentStage = "direct_payment_handoff";
+        track("payment_method_selected", {
+          service_code: selectedService.code,
+          platform: selectedService.platform,
+          method: "direct_upi",
+          surface: "primary_checkout",
+        });
+        window.location.assign(payment.data.returnUrl);
+        return;
+      }
       setCheckoutStage("Opening secure payment...");
       paymentStage = "sdk_load";
       const loaded = await loadCashfree();
