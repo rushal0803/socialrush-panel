@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AlertTriangle, ArrowRight, CalendarClock, CircleDollarSign, RefreshCw, TrendingUp, UsersRound } from "lucide-react";
+import { AlertTriangle, ArrowRight, CalendarClock, CircleDollarSign, RefreshCw, TrendingUp } from "lucide-react";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { revenueBundlesForPlatform, resolveRevenueBundle } from "@/lib/cro/revenue-bundles";
 import { platformMeta, smmServiceCatalog, type SmmPlatformId } from "@/lib/smm-service-catalog";
