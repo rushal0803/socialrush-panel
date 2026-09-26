@@ -3,6 +3,9 @@
 const DEFAULT_BASE_URL = "https://www.getsocialrush.com";
 const REQUEST_TIMEOUT_MS = 30_000;
 const CONCURRENCY = 4;
+const PHASE5_LASTMOD = "2026-09-27";
+const INDEXNOW_KEY = "8f7d2c91a4e64b7f9c3d1a6e5b8f2047";
+const INDEXNOW_KEY_PATH = `/${INDEXNOW_KEY}.txt`;
 
 const canonicalServicePaths = [
   "/buy-instagram-followers-india",
@@ -49,6 +52,14 @@ const requiredSitemapPaths = [
   ...priorityIndexablePaths,
   "/tools/social-media-growth-audit",
   "/tools/social-media-growth-planner",
+];
+
+const phase5FreshnessPaths = [
+  "/",
+  "/services",
+  "/pricing",
+  "/tools/social-media-service-cost-calculator",
+  ...canonicalServicePaths.filter((path) => path !== "/buy-facebook-shares-india"),
 ];
 
 const privateRobotsPaths = [
@@ -248,9 +259,35 @@ async function checkRobotsAndSitemap() {
       fail("sitemap.xml", `missing ${missing.join(", ")}`);
       return;
     }
-    pass(`sitemap.xml contains ${requiredSitemapPaths.length} priority URLs`);
+    const stale = phase5FreshnessPaths.filter((path) => {
+      const loc = `<loc>${new URL(path, baseUrl).toString()}</loc>`;
+      const entryStart = sitemap.indexOf(loc);
+      if (entryStart < 0) return true;
+      const entryEnd = sitemap.indexOf("</url>", entryStart);
+      if (entryEnd < 0) return true;
+      return !sitemap.slice(entryStart, entryEnd).includes(`<lastmod>${PHASE5_LASTMOD}</lastmod>`);
+    });
+    if (stale.length > 0) {
+      fail("sitemap.xml", `missing Phase 5 lastmod for ${stale.join(", ")}`);
+      return;
+    }
+    pass(`sitemap.xml contains ${requiredSitemapPaths.length} priority URLs and truthful Phase 5 lastmod signals`);
   } catch (error) {
     fail("sitemap.xml", error instanceof Error ? error.message : String(error));
+  }
+}
+
+async function checkIndexNowKey() {
+  try {
+    const response = await fetchWithTimeout(INDEXNOW_KEY_PATH);
+    const body = (await response.text()).trim();
+    if (response.status !== 200 || body !== INDEXNOW_KEY) {
+      fail("IndexNow key", `expected public key file at ${INDEXNOW_KEY_PATH}`);
+      return;
+    }
+    pass("IndexNow ownership key is publicly verifiable");
+  } catch (error) {
+    fail("IndexNow key", error instanceof Error ? error.message : String(error));
   }
 }
 
@@ -280,6 +317,7 @@ async function runInBatches(items, task) {
 
 console.log(`SocialRUSH SEO health check: ${baseUrl.origin}`);
 await checkRobotsAndSitemap();
+await checkIndexNowKey();
 await runInBatches(priorityIndexablePaths, checkPage);
 await runInBatches(legacyRedirects, checkRedirect);
 
