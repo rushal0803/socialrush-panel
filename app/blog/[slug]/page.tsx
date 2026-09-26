@@ -11,6 +11,7 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import TrackedLink from "@/components/analytics/TrackedLink";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { getContentCluster } from "@/lib/seo/content-clusters";
+import { getPlatformAuthorityTargets } from "@/lib/seo/authority-graph";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
@@ -128,6 +129,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const articleWordCount = getArticleWords(article);
   const articlePlatform = getBlogPlatform(article);
   const contentCluster = getContentCluster(articlePlatform);
+  const authorityTargets = getPlatformAuthorityTargets(articlePlatform);
+  const authorityTargetHrefs = new Set(authorityTargets.map((target) => target.href));
   const relatedArticles = uniqueArticlesBySlug(blogArticles)
     .filter((candidate) => candidate.slug !== article.slug)
     .map((candidate) => ({
@@ -390,8 +393,20 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
                 Continue with the guide, platform option, or pricing information most relevant to this strategy.
               </p>
               <div className="mt-5 flex flex-wrap gap-3">
-                {contentCluster ? <TrackedLink href={contentCluster.hubPath} event="blog_service_cta_clicked" metadata={{ article_slug: article.slug, destination: contentCluster.hubPath }} className="inline-flex min-h-11 items-center rounded-xl border border-orange-400/40 bg-orange-400/10 px-4 py-2.5 text-sm font-bold text-orange-100 transition hover:-translate-y-0.5 hover:border-orange-400/70">Explore the {contentCluster.label} growth hub</TrackedLink> : null}
-                {articleRelatedLinks.map((item) => (
+                {authorityTargets.map((target) => (
+                  <TrackedLink
+                    key={target.href}
+                    href={target.href}
+                    event={target.kind === "tool" ? "blog_tool_cta_clicked" : "blog_service_cta_clicked"}
+                    metadata={{ article_slug: article.slug, destination: target.href, authority_kind: target.kind }}
+                    className={target.kind === "hub" || target.kind === "service"
+                      ? "inline-flex min-h-11 items-center rounded-xl border border-orange-400/40 bg-orange-400/10 px-4 py-2.5 text-sm font-bold text-orange-100 transition hover:-translate-y-0.5 hover:border-orange-400/70"
+                      : "inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/[.04] px-4 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:border-orange-400/60"}
+                  >
+                    {target.label}
+                  </TrackedLink>
+                ))}
+                {articleRelatedLinks.filter((item) => !authorityTargetHrefs.has(item.href)).map((item) => (
                   <TrackedLink key={item.href} href={item.href} event={item.href.startsWith("/tools") ? "blog_tool_cta_clicked" : "blog_service_cta_clicked"} metadata={{ article_slug: article.slug, destination: item.href }} className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/[.04] px-4 py-2.5 text-sm font-bold text-white transition hover:-translate-y-0.5 hover:border-orange-400/60">
                     {item.label}
                   </TrackedLink>
