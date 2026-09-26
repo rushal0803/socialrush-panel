@@ -15,13 +15,14 @@ const dedicatedExperienceSlugs = new Set([
   "linkedin-usa-group-members",
 ]);
 
-export default function ServiceDetailLayout({
+export default async function ServiceDetailLayout({
   children,
-  params,
+  params: paramsPromise,
 }: {
   children: ReactNode;
-  params: { slug: string };
+  params: Promise<{ slug: string }>;
 }) {
+  const params = await paramsPromise;
   const service = activeSmmServices.find((candidate) => candidate.code === params.slug) ?? null;
   const showPlanner = Boolean(service && !dedicatedExperienceSlugs.has(params.slug));
 
