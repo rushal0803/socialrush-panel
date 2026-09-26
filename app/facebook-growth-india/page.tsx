@@ -191,7 +191,7 @@ export default function FacebookGrowthIndiaPage() {
             </div>
             <div className="rounded-2xl border border-white/10 bg-white/[.035] p-6">
               <h2 className="text-xl font-black">What these services do not guarantee</h2>
-              <p className="mt-3 text-sm leading-7 text-slate-300">Purchased growth signals do not guarantee organic reach, recommendations, comments, leads, sales or long-term audience quality. Facebook's distribution systems and real audience response remain outside SocialRUSH's control.</p>
+              <p className="mt-3 text-sm leading-7 text-slate-300">Purchased growth signals do not guarantee organic reach, recommendations, comments, leads, sales or long-term audience quality. Facebook&apos;s distribution systems and real audience response remain outside SocialRUSH&apos;s control.</p>
               <p className="mt-3 text-sm leading-7 text-slate-400">Use service-specific growth alongside useful content, clear Page positioning and ongoing measurement.</p>
             </div>
           </div>
