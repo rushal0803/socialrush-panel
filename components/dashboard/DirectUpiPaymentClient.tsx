@@ -16,6 +16,7 @@ import {
   Coins,
 } from "lucide-react";
 import { track } from "@/lib/analytics/events";
+import FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner";
 
 type BankTransferDetails = {
   enabled: boolean;
@@ -228,10 +229,12 @@ export default function DirectUpiPaymentClient({
           </div>
         </div>
 
+        <FirstOrderBonusBanner compact currentTotal={total} />
+
         <div>
           <div className="mb-3 flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Payment method</p><h2 className="mt-1 text-lg font-black">How would you like to pay?</h2></div><span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-300">UPI recommended</span></div>
         <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <button type="button" onClick={() => { setPaymentMethod("upi"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)] transition ${paymentMethod === "upi" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
+          <button type="button" onClick={() => { setPaymentMethod("upi"); setPaymentStarted(false); setUtr(""); setError(""); track("payment_method_selected", { service_code: serviceCode, method: "upi", surface: "direct_checkout" }); }} className={`relative rounded-2xl border p-4 text-left shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)] transition ${paymentMethod === "upi" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/15 text-orange-300"><Smartphone className="h-5 w-5" /></div>
               <div>
@@ -242,7 +245,7 @@ export default function DirectUpiPaymentClient({
             {paymentMethod === "upi" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
           </button>
 
-          <button type="button" disabled={!bankTransfer.enabled} onClick={() => { setPaymentMethod("bank_transfer"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "bank_transfer" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
+          <button type="button" disabled={!bankTransfer.enabled} onClick={() => { setPaymentMethod("bank_transfer"); setPaymentStarted(false); setUtr(""); setError(""); track("payment_method_selected", { service_code: serviceCode, method: "bank_transfer", surface: "direct_checkout" }); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "bank_transfer" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-sky-500/10 text-sky-300"><WalletCards className="h-5 w-5" /></div>
               <div>
@@ -253,7 +256,7 @@ export default function DirectUpiPaymentClient({
             {paymentMethod === "bank_transfer" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
           </button>
 
-          <button type="button" disabled={!usdtAmount} onClick={() => { setPaymentMethod("usdt_trc20"); setPaymentStarted(false); setUtr(""); setError(""); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "usdt_trc20" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
+          <button type="button" disabled={!usdtAmount} onClick={() => { setPaymentMethod("usdt_trc20"); setPaymentStarted(false); setUtr(""); setError(""); track("payment_method_selected", { service_code: serviceCode, method: "usdt_trc20", surface: "direct_checkout" }); }} className={`relative rounded-2xl border p-4 text-left transition disabled:cursor-not-allowed disabled:opacity-45 ${paymentMethod === "usdt_trc20" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-emerald-500/10 text-emerald-300"><Coins className="h-5 w-5" /></div>
               <div className="min-w-0"><p className="text-sm font-black">USDT</p><p className="mt-0.5 text-[11px] text-zinc-400">TRON · TRC20</p></div>
