@@ -106,7 +106,8 @@ export default function MonthlyPlanBuilderPage() {
     if (!proposalText) return;
     await navigator.clipboard.writeText(proposalText).catch(() => undefined);
     setCopied(true);
-    track("agency_monthly_plan_copy", {
+    track("agency_revenue_path_click", {
+      action: "monthly_plan_copy",
       client_id: clientId || undefined,
       campaign_id: campaignId || undefined,
       bundle_id: selectedBundle?.id,
@@ -183,7 +184,7 @@ export default function MonthlyPlanBuilderPage() {
             <div className="mt-5 grid gap-3">
               {selectedBundle.items.map((item, index) => <div key={item.service.code} className="flex flex-col gap-3 rounded-2xl border border-white/[.07] bg-white/[.025] p-4 sm:flex-row sm:items-center sm:justify-between">
                 <div className="min-w-0"><p className="text-[9px] font-black uppercase tracking-[.12em] text-slate-500">Monthly item {index + 1}</p><p className="mt-1 font-black">{item.service.name}</p><p className="mt-1 text-[11px] text-slate-400">{item.quantity.toLocaleString("en-IN")} · internal estimate {money(item.total)}</p></div>
-                <Link href={orderHref({ platform: selectedBundle.platform, service: item.service.code, quantity: item.quantity, clientId, campaignId })} onClick={() => track("agency_monthly_plan_order_click", { bundle_id: selectedBundle.id, service_code: item.service.code, client_id: clientId || undefined, campaign_id: campaignId || undefined })} className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-black text-orange-100">Open order <ArrowRight className="h-3.5 w-3.5"/></Link>
+                <Link href={orderHref({ platform: selectedBundle.platform, service: item.service.code, quantity: item.quantity, clientId, campaignId })} onClick={() => track("bundle_click", { action: "agency_monthly_plan_order", bundle_id: selectedBundle.id, service_code: item.service.code, client_id: clientId || undefined, campaign_id: campaignId || undefined })} className="inline-flex min-h-10 shrink-0 items-center justify-center gap-2 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-black text-orange-100">Open order <ArrowRight className="h-3.5 w-3.5"/></Link>
               </div>)}
             </div>
 
