@@ -40,6 +40,24 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     ],
   },
   {
+    id: "instagram-comments-india",
+    canonicalPath: canonicalIndiaServicePaths["buy-instagram-comments-india"],
+    intent: "buy Instagram comments in India",
+    aliases: [],
+  },
+  {
+    id: "instagram-saves-india",
+    canonicalPath: canonicalIndiaServicePaths["buy-instagram-saves-india"],
+    intent: "buy Instagram saves in India",
+    aliases: [],
+  },
+  {
+    id: "instagram-shares-india",
+    canonicalPath: canonicalIndiaServicePaths["buy-instagram-shares-india"],
+    intent: "buy Instagram shares in India",
+    aliases: [],
+  },
+  {
     id: "youtube-subscribers-india",
     canonicalPath: canonicalIndiaServicePaths["buy-youtube-subscribers-india"],
     intent: "buy YouTube subscribers in India",
@@ -70,6 +88,12 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     canonicalPath: "/buy-youtube-watch-hours-india",
     intent: "buy YouTube watch hours in India",
     aliases: ["/youtube-watch-hours"],
+  },
+  {
+    id: "youtube-comments-india",
+    canonicalPath: canonicalIndiaServicePaths["buy-youtube-comments-india"],
+    intent: "buy YouTube comments in India",
+    aliases: [],
   },
   {
     id: "linkedin-followers-india",
@@ -109,6 +133,12 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
       "/services/facebook-brand-engagement",
       "/services/facebook-followers",
     ],
+  },
+  {
+    id: "facebook-group-members-india",
+    canonicalPath: canonicalIndiaServicePaths["buy-facebook-group-members-india"],
+    intent: "buy Facebook group members in India",
+    aliases: [],
   },
   {
     id: "facebook-likes-india",
