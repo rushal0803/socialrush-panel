@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SERVICE_PRICES, type ServiceCode } from "../service-pricing.ts";
 import { SEO_SITE_URL } from "./metadata.ts";
 import { linkedInFollowersFaqs } from "./linkedin-followers.ts";
+import { buildCommercialSearchDescription } from "./search-snippets.ts";
 
 export const indiaServiceSlugs = [
   "buy-instagram-followers-india",
@@ -717,7 +718,7 @@ export function getIndiaServiceMetadata(
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live ₹ Plans | SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle }, 
-    description: page.metaDescription,
+    description: buildCommercialSearchDescription({ serviceName: page.serviceName, destination: page.destination }),
     keywords: [
       `Buy ${page.serviceName} India`,
       `Buy ${page.serviceName}`,

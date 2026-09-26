@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import HomepageContent from "@/components/marketing/HomepageContent";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
+import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { homepageFaqItems } from "@/lib/seo/homepage-faq";
 
@@ -44,6 +45,7 @@ export default function HomePage({
       />
       <HomepageContent searchParams={searchParams} />
       <IndiaGrowthDiscovery compact />
+      <CrawlPriorityLinks />
     </>
   );
 }
