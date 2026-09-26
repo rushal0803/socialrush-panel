@@ -20,7 +20,7 @@ const guideLinks: Record<string, Array<{ label:string; href:string }>> = {
     { label: "Campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
   ],
   facebook: [
-    { label: "Facebook page growth for local businesses", href: "/blog/facebook-page-growth-local-businesses-india" },
+    { label: "Facebook page growth for local businesses", href: "/blog/facebook-page-growth-tips-for-local-businesses" },
     { label: "Public-link ordering safety", href: "/blog/why-public-link-ordering-is-safer" },
   ],
   telegram: [
