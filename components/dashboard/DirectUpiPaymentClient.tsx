@@ -71,6 +71,7 @@ export default function DirectUpiPaymentClient({
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{ public_order_id: string } | null>(null);
   const [copied, setCopied] = useState(false);
+  const [copiedAmount, setCopiedAmount] = useState(false);
   const [cryptoCopied, setCryptoCopied] = useState(false);
   const [copiedBankField, setCopiedBankField] = useState("");
   const utrInputRef = useRef<HTMLInputElement>(null);
@@ -140,6 +141,12 @@ export default function DirectUpiPaymentClient({
     await navigator.clipboard.writeText(upiId).catch(() => undefined);
     setCopied(true);
     window.setTimeout(() => setCopied(false), 1400);
+  }
+
+  async function copyAmount() {
+    await navigator.clipboard.writeText(total.toFixed(2)).catch(() => undefined);
+    setCopiedAmount(true);
+    window.setTimeout(() => setCopiedAmount(false), 1400);
   }
 
   async function copyCryptoAddress() {
@@ -284,14 +291,14 @@ export default function DirectUpiPaymentClient({
         <FirstOrderBonusBanner compact currentTotal={total} />
 
         <div>
-          <div className="mb-3 flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Payment method</p><h2 className="mt-1 text-lg font-black">How would you like to pay?</h2></div><span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-300">UPI recommended</span></div>
-        <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-          <button type="button" onClick={() => { setPaymentMethod("upi"); setPaymentStarted(false); setUtr(""); setError(""); track("payment_method_selected", { service_code: serviceCode, method: "upi", surface: "direct_checkout" }); }} className={`relative rounded-2xl border p-4 text-left shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)] transition ${paymentMethod === "upi" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
+          <div className="mb-3 flex items-end justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Payment method</p><h2 className="mt-1 text-lg font-black">Choose the easiest way to pay</h2></div><span className="rounded-full bg-emerald-500/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wider text-emerald-300">UPI fastest</span></div>
+        <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+          <button type="button" onClick={() => { setPaymentMethod("upi"); setPaymentStarted(false); setUtr(""); setError(""); track("payment_method_selected", { service_code: serviceCode, method: "upi", surface: "direct_checkout" }); }} className={`relative rounded-2xl border p-4 text-left shadow-[inset_0_0_0_1px_rgba(249,115,22,.08)] transition sm:col-span-2 ${paymentMethod === "upi" ? "border-orange-400/50 bg-gradient-to-br from-orange-500/15 to-amber-400/5" : "border-white/10 bg-white/[0.025]"}`}>
             <div className="flex items-center gap-3">
               <div className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/15 text-orange-300"><Smartphone className="h-5 w-5" /></div>
               <div>
-                <p className="text-sm font-black">UPI</p>
-                <p className="mt-0.5 text-[11px] text-zinc-400">Any compatible installed UPI app</p>
+                <p className="text-sm font-black">UPI · All Apps</p>
+                <p className="mt-0.5 text-[11px] text-zinc-400">Google Pay, PhonePe, Paytm, BHIM & more</p>
               </div>
             </div>
             {paymentMethod === "upi" ? <span className="absolute right-3 top-3 h-2.5 w-2.5 rounded-full bg-emerald-400 shadow-[0_0_12px_rgba(52,211,153,.65)]" /> : null}
@@ -393,8 +400,8 @@ export default function DirectUpiPaymentClient({
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-black">Pay with your preferred UPI app</h2>
-                    <p className="mt-1 text-sm leading-6 text-zinc-400">Tap once to open the standard UPI app chooser with the exact amount pre-filled.</p>
+                    <h2 className="text-xl font-black">Pay in one tap with any UPI app</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">We use the standard UPI payment link, so your phone can show compatible installed UPI apps with the amount already filled.</p>
                   </div>
                   <span className="rounded-full bg-orange-500/10 px-3 py-1.5 text-xs font-black text-orange-200">Exact amount: {amountLabel}</span>
                 </div>
@@ -403,15 +410,28 @@ export default function DirectUpiPaymentClient({
                   {["Google Pay","PhonePe","Paytm","BHIM","Amazon Pay","WhatsApp Pay"].map((app) => <span key={app} className="rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5">{app}</span>)}
                 </div>
 
-                <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4">
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="min-w-0">
-                      <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Pay to UPI ID</p>
-                      <p className="mt-1 break-all text-base font-black text-white">{upiId}</p>
+                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                  <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div className="min-w-0">
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Pay to UPI ID</p>
+                        <p className="mt-1 break-all text-base font-black text-white">{upiId}</p>
+                      </div>
+                      <button type="button" onClick={() => void copyUpiId()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-orange-200">
+                        <Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy"}
+                      </button>
                     </div>
-                    <button type="button" onClick={() => void copyUpiId()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-orange-200">
-                      <Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy"}
-                    </button>
+                  </div>
+                  <div className="rounded-2xl border border-orange-400/20 bg-orange-500/[0.06] p-4">
+                    <div className="flex items-center justify-between gap-3">
+                      <div>
+                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Exact amount</p>
+                        <p className="mt-1 text-lg font-black text-orange-200">{amountLabel}</p>
+                      </div>
+                      <button type="button" onClick={() => void copyAmount()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-orange-400/20 bg-orange-500/[0.08] px-3 text-xs font-black text-orange-200">
+                        <Copy className="h-4 w-4" /> {copiedAmount ? "Copied" : "Copy"}
+                      </button>
+                    </div>
                   </div>
                 </div>
 
@@ -431,12 +451,12 @@ export default function DirectUpiPaymentClient({
                   }}
                   className="mt-4 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-4 text-base font-black text-black shadow-[0_14px_38px_rgba(249,115,22,.24)] transition hover:brightness-105"
                 >
-                  Open UPI App · Pay {amountLabel} <ExternalLink className="h-4 w-4" />
+                  Pay Now · Open UPI Apps <ExternalLink className="h-4 w-4" />
                 </a>
 
-                <button type="button" onClick={() => { setPaymentStarted(true); returnTrackedRef.current = false; track("payment_returned", { service_code: serviceCode, method: "upi", surface: "already_paid_cta" }); window.setTimeout(() => utrInputRef.current?.focus(), 150); }} className="mt-3 min-h-11 w-full rounded-xl border border-orange-400/25 bg-orange-500/[0.06] px-4 text-sm font-black text-orange-200 transition hover:border-orange-400/50 hover:bg-orange-500/[0.1]">Already paid? Enter UTR / Transaction ID</button>
+                <button type="button" onClick={() => { setPaymentStarted(true); returnTrackedRef.current = false; track("payment_returned", { service_code: serviceCode, method: "upi", surface: "already_paid_cta" }); window.setTimeout(() => utrInputRef.current?.focus(), 150); }} className="mt-3 min-h-11 w-full rounded-xl border border-orange-400/25 bg-orange-500/[0.06] px-4 text-sm font-black text-orange-200 transition hover:border-orange-400/50 hover:bg-orange-500/[0.1]">I already paid · Enter UTR</button>
 
-                <p className="mt-3 text-center text-xs leading-5 text-zinc-500">If the UPI app chooser does not open, copy the UPI ID above and pay the exact amount manually from any UPI app.</p>
+                <p className="mt-3 text-center text-xs leading-5 text-zinc-500">If the app chooser does not open, use Copy UPI ID + Copy Amount and pay from any UPI app. On desktop, use those same details on your phone.</p>
 
                 <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] p-3 text-xs leading-5 text-emerald-100/80">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
@@ -452,8 +472,8 @@ export default function DirectUpiPaymentClient({
               <div className="min-w-0 flex-1">
                 <div className="flex flex-wrap items-start justify-between gap-3">
                   <div>
-                    <h2 className="text-xl font-black">Payment done? Enter your UTR</h2>
-                    <p className="mt-1 text-sm leading-6 text-zinc-400">Copy the UTR / Transaction ID from your successful payment and paste it below. Do not pay again.</p>
+                    <h2 className="text-xl font-black">Final step · paste your UTR</h2>
+                    <p className="mt-1 text-sm leading-6 text-zinc-400">After the payment succeeds, copy the UTR / Transaction ID from your UPI app and paste it below. Do not pay again.</p>
                   </div>
                   <div className="inline-flex items-center gap-2 rounded-full border border-amber-400/15 bg-amber-500/10 px-3 py-1.5 text-xs font-bold text-amber-200">
                     <Clock3 className="h-3.5 w-3.5" /> Verification pending
@@ -494,7 +514,7 @@ export default function DirectUpiPaymentClient({
                 {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
 
                 <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 via-orange-400 to-amber-400 px-5 py-4 font-black text-black shadow-[0_14px_38px_rgba(249,115,22,.24)] disabled:opacity-60">
-                  {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Confirming...</> : <>Submit Payment & Place Order <ArrowRight className="h-4 w-4" /></>}
+                  {submitting ? <><LoaderCircle className="h-4 w-4 animate-spin" /> Confirming...</> : <>Submit UTR & Place Order <ArrowRight className="h-4 w-4" /></>}
                 </button>
                 <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 bg-white/[0.025] px-4 text-sm font-bold text-zinc-300 transition hover:bg-white/[0.05]">Back to payment details</button>
                 <p className="mt-3 text-center text-xs leading-5 text-zinc-500">Do not submit the same UTR for more than one order. Incorrect details may delay verification.</p>
@@ -505,7 +525,7 @@ export default function DirectUpiPaymentClient({
 
         <div className="grid grid-cols-2 gap-2 sm:grid-cols-4">
           <TrustItem icon={<ShieldCheck className="h-4 w-4" />} title="Secure payment" subtitle="Protected flow" />
-          <TrustItem icon={<Clock3 className="h-4 w-4" />} title="Manual verification" subtitle="Before processing" />
+          <TrustItem icon={<Clock3 className="h-4 w-4" />} title="UTR verification" subtitle="No duplicate payment" />
           <TrustItem icon={<Smartphone className="h-4 w-4" />} title="Direct UPI" subtitle="No gateway" />
           <TrustItem icon={<LockKeyhole className="h-4 w-4" />} title="Privacy first" subtitle="No PIN or OTP" />
         </div>
