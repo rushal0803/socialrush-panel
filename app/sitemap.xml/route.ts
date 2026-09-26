@@ -8,6 +8,7 @@ import {
 } from "@/lib/seo/india-service-pages";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { countryServicePaths, internationalHubPaths } from "@/lib/seo/international";
+import { isCommercialAliasPath } from "@/lib/seo/query-ownership";
 
 export const revalidate = 21600;
 
@@ -148,7 +149,7 @@ export async function GET() {
       ...blogRoutes,
       ...caseStudyRoutes,
     ]),
-  ];
+  ].filter((route) => !isCommercialAliasPath(route));
   const lastModified = new Map<string, string>();
   uniqueBlogArticles.forEach((article) => {
     if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt);
