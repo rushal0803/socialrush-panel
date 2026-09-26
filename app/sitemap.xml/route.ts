@@ -83,6 +83,7 @@ const publicRoutes = [
   "/tools/social-media-growth-budget-calculator",
   "/tools/social-media-service-cost-calculator",
   "/tools/social-media-roi-calculator",
+  "/tools/social-media-cpm-cpc-ctr-calculator",
   "/tools/creator-growth-checklist",
   "/tools/social-media-growth-goal-planner",
   "/tools/social-media-growth-audit",
