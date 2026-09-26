@@ -5,6 +5,7 @@ import { buildQuantityMerchandising, quantityForMinimumSpend } from "../../lib/c
 import { postOrderRecommendations } from "../../lib/cro/revenue-bundles.ts";
 import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
 import { buildFrequentRepeatPatterns, buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
+import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "../../lib/reseller/monthly-plan.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -110,4 +111,31 @@ test("frequent repeat patterns keep different targets and quantities separate", 
     { serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "https://instagram.com/b", createdAt: "2026-09-03T00:00:00Z" },
   ], smmServiceCatalog);
   assert.deepEqual(patterns, []);
+});
+
+
+test("agency monthly quote keeps fulfillment cost separate from client markup", () => {
+  const quote = calculateAgencyQuote(10000, 40);
+  assert.equal(quote.fulfillmentCost, 10000);
+  assert.equal(quote.clientQuote, 14000);
+  assert.equal(quote.grossMargin, 4000);
+  assert.equal(quote.grossMarginPercent, 28.6);
+  assert.equal(quote.markupPercent, 40);
+});
+
+test("agency markup is bounded and proposal text avoids internal cost disclosure", () => {
+  assert.equal(normalizeMarkupPercent(-10), 0);
+  assert.equal(normalizeMarkupPercent(500), 200);
+  const proposal = buildClientProposalText({
+    clientName: "Acme",
+    planName: "Instagram Growth Stack",
+    platformLabel: "Instagram",
+    items: [{ name: "Instagram Followers", quantity: 5000 }],
+    clientQuote: 12500,
+  });
+  assert.match(proposal, /Monthly Growth Plan — Acme/);
+  assert.match(proposal, /Monthly service fee: ₹12,500/);
+  assert.equal(proposal.includes("fulfillment cost"), false);
+  assert.equal(proposal.includes("margin"), false);
+  assert.match(proposal, /does not create an automatic renewal/i);
 });
