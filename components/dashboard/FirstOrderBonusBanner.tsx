@@ -40,6 +40,7 @@ export default function FirstOrderBonusBanner({ compact=false,currentTotal=0 }: 
   const safeTotal=Number.isFinite(currentTotal)?Math.max(0,currentTotal):0;
   const remaining=Math.max(0,offer.minimum-safeTotal);
   const progress=Math.max(0,Math.min(100,offer.minimum>0?(safeTotal/offer.minimum)*100:0));
+  if(compact && remaining>0)return null;
 
   return <section className={`${compact?"mb-4":"mt-4"} overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,rgba(16,185,129,.12),rgba(255,122,0,.08),rgba(11,11,15,.98))] p-4 shadow-[0_18px_46px_-32px_rgba(16,185,129,.8)] sm:p-5`} aria-label="First order bonus">
     <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
@@ -58,9 +59,9 @@ export default function FirstOrderBonusBanner({ compact=false,currentTotal=0 }: 
           </div> : null}
         </div>
       </div>
-      <Link href="/dashboard/new-order" onClick={()=>track("first_order_bonus_click",{reward:offer.reward,minimum:offer.minimum})} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-xs font-black text-[#04110b] shadow-lg shadow-emerald-500/15">
+      {compact ? <span className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 text-xs font-black text-emerald-200"><Wallet className="h-4 w-4" /> Bonus unlocked</span> : <Link href="/dashboard/new-order" onClick={()=>track("first_order_bonus_click",{reward:offer.reward,minimum:offer.minimum})} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-xs font-black text-[#04110b] shadow-lg shadow-emerald-500/15">
         <Wallet className="h-4 w-4" /> Start First Order <ArrowRight className="h-4 w-4" />
-      </Link>
+      </Link>}
     </div>
   </section>;
 }
