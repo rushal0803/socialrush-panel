@@ -154,6 +154,14 @@ export default function DirectUpiPaymentClient({
     window.setTimeout(() => setCopiedBankField(""), 1400);
   }
 
+  async function pasteTransactionId() {
+    const value = await navigator.clipboard.readText().catch(() => "");
+    const clean = value.trim().replace(/\s+/g, "").slice(0, 80);
+    if (!clean) return;
+    setUtr(clean);
+    setError("");
+  }
+
   async function submitUtr() {
     const cleanUtr = utr.trim().replace(/\s+/g, "");
     if (!/^[A-Za-z0-9-]{8,80}$/.test(cleanUtr)) {
@@ -352,7 +360,7 @@ export default function DirectUpiPaymentClient({
                   <>
                     <h2 className="text-xl font-black">Enter UTR / Transaction ID</h2>
                     <p className="mt-1 text-sm leading-6 text-zinc-400">Enter the reference from your successful bank transfer. We will verify it before the order starts.</p>
-                    <input value={utr} onChange={(e) => setUtr(e.target.value.slice(0,80))} placeholder="UTR / Transaction ID" autoComplete="off" className="mt-4 w-full rounded-2xl border border-white/10 bg-[#080b10] px-4 py-4 text-base font-semibold outline-none focus:border-orange-400/70" />
+                    <div className="mt-4 flex gap-2"><input value={utr} onChange={(e) => setUtr(e.target.value.slice(0,80))} placeholder="UTR / Transaction ID" autoComplete="off" className="min-h-14 min-w-0 flex-1 rounded-2xl border border-white/10 bg-[#080b10] px-4 text-base font-semibold outline-none focus:border-orange-400/70" /><button type="button" onClick={() => void pasteTransactionId()} className="min-h-14 shrink-0 rounded-2xl border border-orange-400/25 bg-orange-500/[0.08] px-4 text-xs font-black text-orange-200">Paste</button></div>
                     {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
                     <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black disabled:opacity-60">{submitting ? "Submitting..." : "Submit for Verification"}</button>
                     <p className="mt-3 text-center text-xs leading-5 text-zinc-500">No need to pay again after submitting your transaction for verification.</p>
@@ -370,7 +378,7 @@ export default function DirectUpiPaymentClient({
               <div className="mt-4 rounded-2xl border border-white/10 bg-black/25 p-4"><p className="text-[10px] font-black uppercase tracking-wider text-zinc-500">USDT · TRC20 deposit address</p><p className="mt-2 break-all font-black text-white">{usdtTrc20Address}</p><button type="button" onClick={() => void copyCryptoAddress()} className="mt-3 inline-flex min-h-10 items-center gap-2 rounded-xl border border-white/10 px-3 text-xs font-black text-orange-200"><Copy className="h-4 w-4" />{cryptoCopied ? "Copied" : "Copy address"}</button></div>
               <button type="button" onClick={() => { setPaymentStarted(true); track("payment_started", { service_code: serviceCode, method: "usdt_trc20", currency: "INR", value: total, step: "crypto_instructions_shown" }); }} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black">I’ve sent the USDT</button></> :
               <><h2 className="text-xl font-black">Enter transaction hash / TxID</h2><p className="mt-1 text-sm leading-6 text-zinc-400">Paste the TxID from your successful TRC20 transfer. We verify it before processing your order.</p>
-              <input value={utr} onChange={(e) => setUtr(e.target.value.slice(0,80))} placeholder="TRC20 transaction hash / TxID" autoComplete="off" className="mt-4 w-full rounded-2xl border border-white/10 bg-[#080b10] px-4 py-4 text-base font-semibold outline-none focus:border-orange-400/70" />
+              <div className="mt-4 flex gap-2"><input value={utr} onChange={(e) => setUtr(e.target.value.slice(0,80))} placeholder="TRC20 transaction hash / TxID" autoComplete="off" className="min-h-14 min-w-0 flex-1 rounded-2xl border border-white/10 bg-[#080b10] px-4 text-base font-semibold outline-none focus:border-orange-400/70" /><button type="button" onClick={() => void pasteTransactionId()} className="min-h-14 shrink-0 rounded-2xl border border-orange-400/25 bg-orange-500/[0.08] px-4 text-xs font-black text-orange-200">Paste</button></div>
               {error ? <p className="mt-3 rounded-xl border border-red-400/15 bg-red-500/10 p-3 text-xs font-semibold text-red-200">{error}</p> : null}
               <button type="button" disabled={submitting} onClick={() => void submitUtr()} className="mt-4 min-h-14 w-full rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 font-black text-black disabled:opacity-60">{submitting ? "Submitting..." : "Submit TxID & Place Order"}</button>
               <button type="button" onClick={() => setPaymentStarted(false)} className="mt-3 min-h-11 w-full rounded-xl border border-white/10 text-sm font-bold text-zinc-300">Back to USDT details</button></>}
@@ -464,16 +472,19 @@ export default function DirectUpiPaymentClient({
                 </div>
 
                 <label htmlFor="manual-payment-utr" className="mt-5 block text-sm font-black">UTR / Transaction ID</label>
-                <input
-                  ref={utrInputRef}
-                  id="manual-payment-utr"
-                  value={utr}
-                  onChange={(event) => setUtr(event.target.value.slice(0, 40))}
-                  placeholder="Enter transaction ID"
-                  autoComplete="off"
-                  inputMode="text"
-                  className="mt-2 w-full rounded-2xl border border-white/10 bg-[#080b10] px-4 py-4 text-base font-semibold outline-none transition placeholder:text-zinc-600 focus:border-orange-400/70 focus:ring-2 focus:ring-orange-400/10"
-                />
+                <div className="mt-2 flex gap-2">
+                  <input
+                    ref={utrInputRef}
+                    id="manual-payment-utr"
+                    value={utr}
+                    onChange={(event) => setUtr(event.target.value.slice(0, 40))}
+                    placeholder="Enter transaction ID"
+                    autoComplete="off"
+                    inputMode="text"
+                    className="min-h-14 min-w-0 flex-1 rounded-2xl border border-white/10 bg-[#080b10] px-4 text-base font-semibold outline-none transition placeholder:text-zinc-600 focus:border-orange-400/70 focus:ring-2 focus:ring-orange-400/10"
+                  />
+                  <button type="button" onClick={() => void pasteTransactionId()} className="min-h-14 shrink-0 rounded-2xl border border-orange-400/25 bg-orange-500/[0.08] px-4 text-xs font-black text-orange-200">Paste</button>
+                </div>
 
                 <details className="mt-3 rounded-xl border border-white/5 bg-white/[0.025] px-3 py-2 text-xs text-zinc-400">
                   <summary className="cursor-pointer font-bold text-orange-300">Where can I find the UTR?</summary>
