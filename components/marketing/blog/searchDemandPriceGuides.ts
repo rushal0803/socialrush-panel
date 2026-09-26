@@ -1,5 +1,5 @@
 import type { BlogArticle } from "./blogData";
-import { getServiceById } from "@/lib/smm-service-catalog";
+import { getServiceById } from "../../../lib/smm-service-catalog.ts";
 
 type GuideConfig = {
   slug: string;
