@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   ArrowRight,
@@ -73,6 +73,9 @@ export default function DirectUpiPaymentClient({
   const [copied, setCopied] = useState(false);
   const [cryptoCopied, setCryptoCopied] = useState(false);
   const [copiedBankField, setCopiedBankField] = useState("");
+  const utrInputRef = useRef<HTMLInputElement>(null);
+  const returnTrackedRef = useRef(false);
+  const paymentStateKey = `socialrush-direct-payment:${intentId}`;
 
   const amountLabel = new Intl.NumberFormat("en-IN", {
     style: "currency",
@@ -91,6 +94,47 @@ export default function DirectUpiPaymentClient({
     });
     return `upi://pay?${params.toString()}`;
   }, [payeeName, reference, total, upiId]);
+
+  useEffect(() => {
+    try {
+      const saved = sessionStorage.getItem(paymentStateKey);
+      if (!saved) return;
+      const parsed = JSON.parse(saved) as { method?: "upi" | "bank_transfer" | "usdt_trc20"; started?: boolean };
+      if (parsed.method) setPaymentMethod(parsed.method);
+      if (parsed.started) setPaymentStarted(true);
+    } catch {
+      sessionStorage.removeItem(paymentStateKey);
+    }
+  }, [paymentStateKey]);
+
+  useEffect(() => {
+    try {
+      sessionStorage.setItem(paymentStateKey, JSON.stringify({ method: paymentMethod, started: paymentStarted }));
+    } catch {
+      // Payment recovery state is best-effort only.
+    }
+  }, [paymentMethod, paymentStarted, paymentStateKey]);
+
+  useEffect(() => {
+    if (!paymentStarted) return;
+    const handleReturn = () => {
+      if (document.visibilityState !== "visible" || returnTrackedRef.current) return;
+      returnTrackedRef.current = true;
+      track("payment_returned", {
+        service_code: serviceCode,
+        method: paymentMethod,
+        surface: "direct_checkout",
+      });
+      window.setTimeout(() => utrInputRef.current?.focus(), 250);
+    };
+    window.addEventListener("focus", handleReturn);
+    document.addEventListener("visibilitychange", handleReturn);
+    return () => {
+      window.removeEventListener("focus", handleReturn);
+      document.removeEventListener("visibilitychange", handleReturn);
+    };
+  }, [paymentMethod, paymentStarted, serviceCode]);
+
 
   async function copyUpiId() {
     if (!upiId) return;
@@ -153,6 +197,7 @@ export default function DirectUpiPaymentClient({
       }
 
       setSuccess({ public_order_id: payload.data.public_order_id });
+      try { sessionStorage.removeItem(paymentStateKey); } catch {}
       window.setTimeout(() => router.push("/dashboard/orders"), 1800);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to confirm your order.");
@@ -363,6 +408,8 @@ export default function DirectUpiPaymentClient({
                   href={upiHref}
                   onClick={() => {
                     setPaymentStarted(true);
+                    returnTrackedRef.current = false;
+                    try { sessionStorage.setItem(paymentStateKey, JSON.stringify({ method: "upi", started: true })); } catch {}
                     track("payment_started", {
                       service_code: serviceCode,
                       method: "upi",
@@ -375,6 +422,8 @@ export default function DirectUpiPaymentClient({
                 >
                   Pay {amountLabel} with UPI <ExternalLink className="h-4 w-4" />
                 </a>
+
+                <button type="button" onClick={() => { setPaymentStarted(true); returnTrackedRef.current = false; track("payment_returned", { service_code: serviceCode, method: "upi", surface: "already_paid_cta" }); window.setTimeout(() => utrInputRef.current?.focus(), 150); }} className="mt-3 min-h-11 w-full rounded-xl border border-orange-400/25 bg-orange-500/[0.06] px-4 text-sm font-black text-orange-200 transition hover:border-orange-400/50 hover:bg-orange-500/[0.1]">I already paid · Enter UTR</button>
 
                 <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] p-3 text-xs leading-5 text-emerald-100/80">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
@@ -411,6 +460,7 @@ export default function DirectUpiPaymentClient({
 
                 <label htmlFor="manual-payment-utr" className="mt-5 block text-sm font-black">UTR / Transaction ID</label>
                 <input
+                  ref={utrInputRef}
                   id="manual-payment-utr"
                   value={utr}
                   onChange={(event) => setUtr(event.target.value.slice(0, 40))}
