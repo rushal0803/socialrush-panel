@@ -12,6 +12,7 @@ import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search
 import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/seo/authority-graph.ts";
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
+import { commercialCanonicalRedirects, hasUniqueQueryOwnership, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -369,4 +370,42 @@ test("homepage and services expose the canonical crawl-priority module", () => {
   const services = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
   assert.match(homepage, /<CrawlPriorityLinks \/>/);
   assert.match(services, /<CrawlPriorityLinks \/>/);
+});
+
+
+test("phase 5G gives every India transaction intent one canonical owner", () => {
+  assert.equal(hasUniqueQueryOwnership(), true);
+  const canonicalOwners = new Set(transactionalQueryOwners.map((owner) => owner.canonicalPath));
+  for (const path of Object.values(canonicalIndiaServicePaths)) {
+    assert.ok(canonicalOwners.has(path), `${path} should have a query owner`);
+  }
+  assert.ok(canonicalOwners.has("/buy-youtube-watch-hours-india"));
+  assert.ok(canonicalOwners.has("/services"));
+});
+
+test("phase 5G commercial aliases always resolve to their single canonical owner", () => {
+  for (const owner of transactionalQueryOwners) {
+    assert.ok(owner.canonicalPath.startsWith("/"));
+    assert.equal(owner.canonicalPath.includes("?"), false);
+    for (const alias of owner.aliases) {
+      assert.ok(alias.startsWith("/"));
+      assert.notEqual(alias, owner.canonicalPath);
+      assert.equal(commercialCanonicalRedirects[alias], owner.canonicalPath);
+    }
+  }
+});
+
+test("phase 5G middleware and sitemap consume the canonical ownership guard", () => {
+  const middlewareSource = readFileSync(new URL("../../middleware.ts", import.meta.url), "utf8");
+  const sitemapSource = readFileSync(new URL("../../app/sitemap.xml/route.ts", import.meta.url), "utf8");
+  assert.match(middlewareSource, /commercialCanonicalRedirects/);
+  assert.match(sitemapSource, /isCommercialAliasPath/);
+  assert.match(sitemapSource, /filter\(\(route\) => !isCommercialAliasPath\(route\)\)/);
+});
+
+test("phase 5G production SEO monitor checks every commercial alias redirect", () => {
+  const monitorSource = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  for (const [alias, canonical] of Object.entries(commercialCanonicalRedirects)) {
+    assert.ok(monitorSource.includes(`["${alias}", "${canonical}"]`), `${alias} redirect should be monitored`);
+  }
 });
