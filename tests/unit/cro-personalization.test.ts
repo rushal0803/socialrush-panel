@@ -38,7 +38,7 @@ test("quantity merchandising uses descriptive tiers without popularity claims", 
   const options = buildQuantityMerchandising(merchandisingService);
   assert.equal(options[0]?.label, "Starter");
   assert.equal(options.some((option) => option.label === "Balanced"), true);
-  assert.equal(options.some((option) => option.label === "Popular"), false);
+  assert.equal(options.map((option) => String(option.label)).includes("Popular"), false);
   assert.equal(options.at(-1)?.label, "Scale");
 });
 
