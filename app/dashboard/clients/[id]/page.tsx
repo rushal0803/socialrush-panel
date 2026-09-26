@@ -4,7 +4,8 @@ import { ArchiveRestore, ArrowLeft, CircleDollarSign, FolderKanban, Pencil, Shop
 import { createClient } from "@/lib/supabase/server";
 import { archiveClient, restoreClient, saveClient } from "../actions";
 
-export default async function ClientDetailPage({ params }: { params: { id: string } }) {
+export default async function ClientDetailPage({ params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const db = await createClient(); const { data: { user } } = await db.auth.getUser(); if (!user) redirect("/login");
   const { data: client } = await db.from("customer_clients").select("id,name,contact_name,email,notes,archived_at,created_at,client_social_profiles(saved_social_profiles(id,label,platform,public_url))").eq("id", params.id).eq("user_id", user.id).maybeSingle();
   if (!client) notFound();
