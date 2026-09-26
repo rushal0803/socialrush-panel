@@ -2,7 +2,8 @@ import { NextResponse } from "next/server";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
 
 const allowed = new Set(["reviewing", "approved", "processing", "completed", "rejected", "cancelled"]);
-export async function PATCH(request: Request, { params }: { params: { id: string } }) {
+export async function PATCH(request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
   const body = await request.json().catch(() => null) as { status?: unknown; adminNote?: unknown } | null;
