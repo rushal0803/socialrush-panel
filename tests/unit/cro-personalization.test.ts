@@ -7,6 +7,7 @@ import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
 import { buildFrequentRepeatPatterns, buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
 import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "../../lib/reseller/monthly-plan.ts";
 import { compareSavedMonthlyPlan, planSnapshotItems } from "../../lib/reseller/saved-monthly-plan.ts";
+import { nextMonthlyReviewDate, renewalEconomicsAtSavedQuote, renewalStatus } from "../../lib/reseller/portfolio.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -169,4 +170,32 @@ test("saved plan snapshots keep only service identity, quantity and rounded plan
     quantity: 5000,
     total: 3995.13,
   }]);
+});
+
+
+test("renewal pipeline classifies explicit review dates without guessing missing dates", () => {
+  assert.deepEqual(renewalStatus(null, "2026-09-26"), { status: "unscheduled", daysUntil: null });
+  assert.deepEqual(renewalStatus("2026-09-25", "2026-09-26"), { status: "overdue", daysUntil: -1 });
+  assert.deepEqual(renewalStatus("2026-09-26", "2026-09-26"), { status: "today", daysUntil: 0 });
+  assert.deepEqual(renewalStatus("2026-10-02", "2026-09-26"), { status: "due_soon", daysUntil: 6 });
+  assert.deepEqual(renewalStatus("2026-10-20", "2026-09-26"), { status: "scheduled", daysUntil: 24 });
+});
+
+test("next monthly review preserves calendar day when possible", () => {
+  assert.equal(nextMonthlyReviewDate(new Date("2026-09-26T00:00:00Z")), "2026-10-26");
+  assert.equal(nextMonthlyReviewDate(new Date("2026-01-31T00:00:00Z")), "2026-02-28");
+});
+
+test("renewal economics exposes margin compression at the old client quote", () => {
+  const result = renewalEconomicsAtSavedQuote({
+    baselineFulfillmentCost: 10000,
+    baselineClientQuote: 14000,
+    baselineGrossMargin: 4000,
+    markupPercent: 40,
+  }, 12000);
+  assert.equal(result.marginAtSavedQuote, 2000);
+  assert.equal(result.marginAtSavedQuotePercent, 14.3);
+  assert.equal(result.savedMarginDelta, -2000);
+  assert.equal(result.recommendedQuote, 16800);
+  assert.equal(result.recommendedMargin, 4800);
 });
