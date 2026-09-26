@@ -71,7 +71,7 @@ export default function ServiceCostCalculatorWorkspace() {
       {[500,1000,2500,5000,10000].map((amount) => <button key={amount} type="button" onClick={() => setQuantity(String(amount))} className="min-h-9 rounded-full border border-white/10 bg-white/[.04] px-3 text-xs font-bold text-slate-200 hover:border-orange-400/40">{amount.toLocaleString("en-IN")} {service.unit}</button>)}
     </div>
 
-    {service.pricingMode === "confirmed" ? <p className="mt-4 flex items-start gap-2 text-xs leading-5 text-emerald-200"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0"/>Using SocialRUSH's confirmed public per-1K rate for this service. Final checkout remains authoritative.</p> : <p className="mt-4 text-xs leading-5 text-amber-200">This service uses live pricing. Open the service page, copy the current per-1K rate, and enter it above to calculate a planning total.</p>}
+    {service.pricingMode === "confirmed" ? <p className="mt-4 flex items-start gap-2 text-xs leading-5 text-emerald-200"><CheckCircle2 className="mt-0.5 h-4 w-4 shrink-0"/>Using SocialRUSH&apos;s confirmed public per-1K rate for this service. Final checkout remains authoritative.</p> : <p className="mt-4 text-xs leading-5 text-amber-200">This service uses live pricing. Open the service page, copy the current per-1K rate, and enter it above to calculate a planning total.</p>}
 
     <div className="mt-6 rounded-2xl border border-orange-400/25 bg-orange-400/[.07] p-5">
       <p className="text-xs font-black uppercase tracking-[.13em] text-orange-200">Estimated planning total</p>
