@@ -3,6 +3,7 @@ import { ArrowRight, BriefcaseBusiness, CircleDollarSign, FolderKanban, PackageC
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
 const workflow = [
+  { title: "Build monthly plan", text: "Price a recurring client stack, protect margin and copy a client-ready monthly proposal before ordering.", href: "/dashboard/reseller/monthly-planner", icon: CircleDollarSign },
   { title: "Add client", text: "Create a client workspace so every brand, profile and order stays organized.", href: "/dashboard/clients", icon: Users },
   { title: "Build campaign", text: "Group multi-service work into campaigns instead of managing disconnected orders.", href: "/dashboard/campaigns", icon: FolderKanban },
   { title: "Plan bulk work", text: "Prepare several client jobs in one queue, then hand each item into the normal checkout safely.", href: "/dashboard/reseller/bulk-planner", icon: PackageCheck },
@@ -46,7 +47,7 @@ export default async function ResellerHubPage() {
             <h1 className="mt-3 max-w-3xl text-3xl font-black tracking-[-.035em] sm:text-4xl lg:text-5xl">Run repeat client growth from one workspace.</h1>
             <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">Use real client, campaign and order activity to manage recurring spend, prepare larger workloads and protect margin before you quote the next job.</p>
             <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-              <Link href="/dashboard/reseller/bulk-planner" className="btn-dashboard-primary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">Open bulk planner <ArrowRight className="h-4 w-4" /></Link>
+              <Link href="/dashboard/reseller/monthly-planner" className="btn-dashboard-primary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">Build monthly plan <ArrowRight className="h-4 w-4" /></Link>
               <Link href="/dashboard/clients" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">Manage clients <Users className="h-4 w-4" /></Link>
             </div>
           </div>
@@ -59,7 +60,7 @@ export default async function ResellerHubPage() {
 
       <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{metrics.map(([label, value]) => <article key={label} className="rounded-2xl border border-white/10 bg-[#101116] p-5"><p className="text-[10px] font-black uppercase tracking-[.13em] text-slate-500">{label}</p><p className="mt-2 text-2xl font-black text-white">{value}</p></article>)}</section>
 
-      <section className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
         {workflow.map(({ title, text, href, icon: Icon }, index) => <Link key={title} href={href} className="group rounded-2xl border border-white/10 bg-[#101116] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/30 hover:bg-orange-500/[.05]"><div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><Icon className="h-5 w-5" /></span><span className="text-[10px] font-black text-slate-500">0{index + 1}</span></div><h2 className="mt-4 text-lg font-black">{title}</h2><p className="mt-2 text-sm leading-6 text-slate-400">{text}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Open <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" /></span></Link>)}
       </section>
 
