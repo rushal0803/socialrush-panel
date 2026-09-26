@@ -178,6 +178,7 @@ export async function POST(request: NextRequest) {
     pagePath: "/dashboard/direct-upi",
     eventId: `manual-payment-order:${order.id}`,
     metadata: {
+      order_id: order.id,
       method: paymentMethod,
       currency: "INR",
       service_code: intent.service_code,
