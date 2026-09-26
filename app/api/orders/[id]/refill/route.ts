@@ -3,7 +3,8 @@ import { createClient } from "@/lib/supabase/server";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 
-export async function POST(request: NextRequest, { params }: { params: { id: string } }) {
+export async function POST(request: NextRequest, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Sign in to request a refill." }, { status: 401 });
