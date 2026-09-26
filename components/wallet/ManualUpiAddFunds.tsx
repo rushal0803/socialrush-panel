@@ -55,6 +55,14 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
   async function copyCryptoAddress() { await navigator.clipboard.writeText(USDT_TRC20_ADDRESS); setCopied(true); setTimeout(() => setCopied(false), 1500); }
   async function copyBankField(label: string, value: string) { await navigator.clipboard.writeText(value); setCopiedBankField(label); setTimeout(() => setCopiedBankField(""), 1500); }
 
+  async function pasteTransactionId() {
+    const value = await navigator.clipboard.readText().catch(() => "");
+    const clean = value.trim().replace(/\s+/g, "").slice(0, 80);
+    if (!clean) return;
+    setUtr(clean);
+    setError("");
+  }
+
   async function submitPayment() {
     setError("");
     if (!validAmount) return setError("Enter an amount between ₹100 and ₹5,00,000.");
@@ -103,7 +111,7 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
       <div className="mt-4 grid grid-cols-3 gap-2 sm:grid-cols-5">{quickAmounts.map((value)=><button key={value} onClick={()=>setAmountText(String(value))} className="rounded-xl border border-white/10 bg-white/[.03] px-2 py-3 text-xs font-bold text-slate-300 hover:border-orange-400/40">₹{value.toLocaleString("en-IN")}</button>)}</div>
       {!paymentStarted ? <>
         <div className="mt-6 grid gap-3 sm:grid-cols-3">
-          <button type="button" onClick={()=>{setPaymentMethod("upi");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="upi"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">UPI</strong><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-black text-emerald-300">Recommended</span></div><p className="mt-2 text-xs text-slate-400">Any installed UPI app · fastest option</p></button>
+          <button type="button" onClick={()=>{setPaymentMethod("upi");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="upi"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">UPI</strong><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-black text-emerald-300">Recommended</span></div><p className="mt-2 text-xs text-slate-400">Compatible UPI app · fastest option</p></button>
           <button type="button" onClick={()=>{setPaymentMethod("bank_transfer");setError("");}} className={`rounded-2xl border p-4 text-left ${paymentMethod==="bank_transfer"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between gap-2"><strong className="text-sm text-white">Bank Transfer</strong><span className="rounded-full bg-sky-500/10 px-2 py-1 text-[10px] font-black text-sky-300">Manual</span></div><p className="mt-2 text-xs text-slate-400">Secure manual bank payment</p></button>
           <button type="button" disabled={!usdtAmount} onClick={()=>{if(usdtAmount){setPaymentMethod("usdt_trc20");setError("");}}} className={`rounded-2xl border p-4 text-left disabled:opacity-50 ${paymentMethod==="usdt_trc20"?"border-orange-400 bg-orange-500/10":"border-white/10 bg-black/20"}`}><div className="flex items-center justify-between"><strong className="text-sm text-white">USDT · TRC20</strong><span className="rounded-full bg-blue-500/10 px-2 py-1 text-[10px] font-black text-blue-300">International</span></div><p className="mt-2 text-xs text-slate-400">{usdtAmount ? `Pay ≈ ${usdtAmount.toFixed(2)} USDT` : "Rate temporarily unavailable"}</p></button>
         </div>
@@ -144,7 +152,7 @@ export default function ManualUpiAddFunds({ inrPerUsd }: { inrPerUsd: number | n
       </> : <div className="mt-6 border-t border-white/10 pt-6">
         <p className="text-xs font-black uppercase tracking-[.18em] text-orange-300">Payment completed?</p><h2 className="mt-2 text-xl font-black text-white">Confirm your payment</h2><p className="mt-2 text-xs leading-5 text-slate-400">{paymentMethod === "usdt_trc20" ? "Paste the TRC20 transaction hash / TxID from your successful USDT transfer." : paymentMethod === "bank_transfer" ? "Enter the UTR / Transaction ID from your successful bank transfer." : "Enter the UTR / Transaction ID shown in your UPI app."} This helps us match your payment safely.</p>
         <div className="mt-4 rounded-xl border border-white/10 bg-black/20 p-3 text-xs"><span className="text-slate-500">Reference</span><span className="ml-2 font-mono font-bold text-white">{reference}</span></div>
-        <label className="mt-4 block text-[11px] font-black uppercase tracking-wider text-slate-400">{paymentMethod === "usdt_trc20" ? "TRC20 TxID" : "UTR / Transaction ID"}</label><input value={utr} onChange={(e)=>setUtr(e.target.value)} placeholder={paymentMethod === "usdt_trc20" ? "Paste TRC20 transaction hash" : "Enter UTR / Transaction ID"} className="mt-2 w-full rounded-xl border border-white/10 bg-black/20 px-4 py-3.5 text-sm text-white outline-none focus:border-orange-400" />
+        <label className="mt-4 block text-[11px] font-black uppercase tracking-wider text-slate-400">{paymentMethod === "usdt_trc20" ? "TRC20 TxID" : "UTR / Transaction ID"}</label><div className="mt-2 flex gap-2"><input value={utr} onChange={(e)=>setUtr(e.target.value.slice(0,80))} placeholder={paymentMethod === "usdt_trc20" ? "Paste TRC20 transaction hash" : "Enter UTR / Transaction ID"} className="min-h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-black/20 px-4 text-sm text-white outline-none focus:border-orange-400" /><button type="button" onClick={()=>void pasteTransactionId()} className="min-h-12 shrink-0 rounded-xl border border-orange-400/25 bg-orange-500/[.08] px-4 text-xs font-black text-orange-200">Paste</button></div>
         {error && <p className="mt-3 rounded-xl bg-red-500/10 p-3 text-xs text-red-300">{error}</p>}
         <button disabled={submitting} onClick={submitPayment} className="mt-4 w-full rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black disabled:opacity-60">{submitting?"Submitting…":paymentMethod==="bank_transfer"?"Submit for Verification":"Confirm & Add Funds"}</button>
         {paymentMethod==="bank_transfer" && <p className="mt-3 text-center text-xs font-semibold text-amber-200">No need to pay again after submitting your transaction for verification.</p>}
