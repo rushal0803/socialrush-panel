@@ -4,5 +4,5 @@ import { createLinkedInUsaServiceMetadata } from "@/lib/seo/linkedin-usa-service
 export const metadata = createLinkedInUsaServiceMetadata("linkedin-usa-endorsements");
 
 export default async function LinkedInUsaEndorsementsPage() {
-  return ServiceSeoPage({ params: { slug: "linkedin-usa-endorsements" } });
+  return ServiceSeoPage({ params: Promise.resolve({ slug: "linkedin-usa-endorsements" }) });
 }
