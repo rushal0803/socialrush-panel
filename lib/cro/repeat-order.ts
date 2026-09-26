@@ -47,3 +47,53 @@ export function buildRepeatOrderHref(input: RepeatOrderInput, services: readonly
     resume: "1",
   })}`;
 }
+
+
+export type RepeatHistoryItem = RepeatOrderInput & { createdAt: string };
+export type FrequentRepeatPattern = {
+  href: string;
+  serviceName: string;
+  platform: string;
+  quantity: number;
+  count: number;
+  latestAt: string;
+};
+
+export function buildFrequentRepeatPatterns(
+  items: readonly RepeatHistoryItem[],
+  services: readonly SmmService[],
+  minimumCount = 2,
+  limit = 3,
+): FrequentRepeatPattern[] {
+  if (minimumCount < 2 || limit <= 0) return [];
+  const groups = new Map<string, FrequentRepeatPattern>();
+
+  for (const item of items) {
+    const service = resolveRepeatOrderService(item, services);
+    const href = buildRepeatOrderHref(item, services);
+    if (!service || !href) continue;
+    const key = [service.code, String(item.quantity), item.link.trim()].join("\u0000");
+    const current = groups.get(key);
+    if (!current) {
+      groups.set(key, {
+        href,
+        serviceName: service.name,
+        platform: service.platform,
+        quantity: item.quantity,
+        count: 1,
+        latestAt: item.createdAt,
+      });
+      continue;
+    }
+    current.count += 1;
+    if (Date.parse(item.createdAt) > Date.parse(current.latestAt)) {
+      current.latestAt = item.createdAt;
+      current.href = href;
+    }
+  }
+
+  return [...groups.values()]
+    .filter((item) => item.count >= minimumCount)
+    .sort((a, b) => b.count - a.count || Date.parse(b.latestAt) - Date.parse(a.latestAt))
+    .slice(0, limit);
+}

@@ -4,7 +4,7 @@ import { addRecentService, parseContinueOrder, parseRecentServices, serializeCon
 import { buildQuantityMerchandising, quantityForMinimumSpend } from "../../lib/cro/quantity-merchandising.ts";
 import { postOrderRecommendations } from "../../lib/cro/revenue-bundles.ts";
 import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
-import { buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
+import { buildFrequentRepeatPatterns, buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -88,4 +88,26 @@ test("repeat-order builder resolves Twitter platform aliases and rejects incompl
   assert.equal(buildRepeatOrderHref({ serviceName: "Unknown", platform: "instagram", quantity: 1000, link: "https://instagram.com/example" }, smmServiceCatalog), null);
   assert.equal(buildRepeatOrderHref({ serviceName: "Instagram Followers", platform: "instagram", quantity: 0, link: "https://instagram.com/example" }, smmServiceCatalog), null);
   assert.equal(buildRepeatOrderHref({ serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "" }, smmServiceCatalog), null);
+});
+
+
+test("frequent repeat patterns require at least two matching completed-order shapes", () => {
+  const patterns = buildFrequentRepeatPatterns([
+    { serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "https://instagram.com/example", createdAt: "2026-09-01T00:00:00Z" },
+    { serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "https://instagram.com/example", createdAt: "2026-09-10T00:00:00Z" },
+    { serviceName: "Instagram Likes", platform: "instagram", quantity: 1000, link: "https://instagram.com/p/abc", createdAt: "2026-09-12T00:00:00Z" },
+  ], smmServiceCatalog);
+  assert.equal(patterns.length, 1);
+  assert.equal(patterns[0]?.serviceName, "Instagram Followers");
+  assert.equal(patterns[0]?.count, 2);
+  assert.equal(patterns[0]?.latestAt, "2026-09-10T00:00:00Z");
+});
+
+test("frequent repeat patterns keep different targets and quantities separate", () => {
+  const patterns = buildFrequentRepeatPatterns([
+    { serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "https://instagram.com/a", createdAt: "2026-09-01T00:00:00Z" },
+    { serviceName: "Instagram Followers", platform: "instagram", quantity: 2000, link: "https://instagram.com/a", createdAt: "2026-09-02T00:00:00Z" },
+    { serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "https://instagram.com/b", createdAt: "2026-09-03T00:00:00Z" },
+  ], smmServiceCatalog);
+  assert.deepEqual(patterns, []);
 });
