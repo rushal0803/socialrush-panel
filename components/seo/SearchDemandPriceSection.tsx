@@ -2,6 +2,15 @@ import Link from "next/link";
 import { ArrowRight, IndianRupee, Link2, ShieldCheck } from "lucide-react";
 import { buildQuantityPlanning, serviceUnitFromCode } from "@/lib/seo/search-demand";
 
+const serviceGuideLinks: Record<string, Array<{ label:string; href:string }>> = {
+  "instagram-followers": [{ label: "Instagram follower price guide", href: "/blog/instagram-followers-price-in-india" }],
+  "youtube-subscribers": [{ label: "YouTube subscribers price guide", href: "/blog/youtube-subscribers-price-in-india" }],
+  "linkedin-followers": [{ label: "LinkedIn followers price guide", href: "/blog/linkedin-followers-price-in-india" }],
+  "facebook-followers": [{ label: "Facebook followers price guide", href: "/blog/facebook-followers-price-in-india" }],
+  "x-followers": [{ label: "Twitter / X followers price guide", href: "/blog/twitter-followers-price-in-india" }],
+  "telegram-members": [{ label: "Telegram members price guide", href: "/blog/telegram-members-price-in-india" }],
+};
+
 const guideLinks: Record<string, Array<{ label:string; href:string }>> = {
   instagram: [
     { label: "Instagram follower price guide", href: "/blog/instagram-followers-price-in-india" },
@@ -57,7 +66,7 @@ export default function SearchDemandPriceSection({
   const rows=buildQuantityPlanning(pricePer1000);
   const unit=serviceUnitFromCode(serviceCode);
   const dark=tone==="dark";
-  const links=guideLinks[platform]||[];
+  const links=[...(serviceGuideLinks[serviceCode]||[]), ...(guideLinks[platform]||[])].filter((link,index,all)=>all.findIndex(candidate=>candidate.href===link.href)===index);
   return <section className={dark?"border-y border-white/10 bg-[#111114] px-4 py-16 text-white sm:px-6 lg:px-8":"bg-white/70 px-4 py-16 sm:px-6 lg:px-8 lg:py-24"}>
     <div className="mx-auto max-w-7xl">
       <div className="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-start">

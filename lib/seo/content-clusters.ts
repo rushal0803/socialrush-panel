@@ -55,6 +55,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Buy YouTube watch hours in India", href: "/buy-youtube-watch-hours-india" },
     ],
     guideLinks: [
+      { label: "YouTube subscribers price guide for India", href: "/blog/youtube-subscribers-price-in-india" },
       { label: "How to promote a new YouTube channel in India", href: "/blog/how-to-promote-new-youtube-channel-in-india" },
       { label: "YouTube subscribers vs views for Indian creators", href: "/blog/youtube-subscribers-vs-views-india" },
       { label: "YouTube views pricing guide for India", href: "/blog/youtube-views-price-in-india" },
@@ -70,6 +71,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Buy LinkedIn likes in India", href: "/linkedin-likes" },
     ],
     guideLinks: [
+      { label: "LinkedIn followers price guide for India", href: "/blog/linkedin-followers-price-in-india" },
       { label: "LinkedIn growth tips for personal brands", href: "/blog/linkedin-growth-tips-personal-brands" },
       { label: "LinkedIn followers for business growth", href: "/blog/linkedin-followers-for-business-growth" },
       { label: "LinkedIn followers vs engagement in India", href: "/blog/linkedin-followers-vs-engagement-india" },
@@ -91,6 +93,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Twitter / X crypto custom comments", href: "/services/twitter-crypto-custom-comments" },
     ],
     guideLinks: [
+      { label: "Twitter / X followers price guide for India", href: "/blog/twitter-followers-price-in-india" },
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "How social media growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" },
       { label: "Campaign budget planning for India", href: "/blog/social-media-campaign-budget-planning-india" },
@@ -109,6 +112,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Buy Facebook group members in India", href: "/buy-facebook-group-members-india" },
     ],
     guideLinks: [
+      { label: "Facebook followers price guide for India", href: "/blog/facebook-followers-price-in-india" },
       { label: "Facebook page growth tips for local businesses", href: "/blog/facebook-page-growth-tips-for-local-businesses" },
       { label: "Facebook followers vs engagement in India", href: "/blog/facebook-followers-vs-engagement-india" },
       { label: "How small businesses build social proof online", href: "/blog/how-small-businesses-build-social-proof-online" },
@@ -144,6 +148,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Buy Telegram poll votes", href: "/services/telegram-poll-votes" },
     ],
     guideLinks: [
+      { label: "Telegram members price guide for India", href: "/blog/telegram-members-price-in-india" },
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "How social media growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" },
       { label: "Social media campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
