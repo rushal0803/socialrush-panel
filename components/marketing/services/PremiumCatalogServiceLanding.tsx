@@ -4,6 +4,7 @@ import CurrencyAmount from "@/components/currency/CurrencyAmount";
 import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
+import TwitterIntentGuide from "@/components/seo/TwitterIntentGuide";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
@@ -32,6 +33,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
   const canonical = `${SEO_SITE_URL}/services/${service.code}`;
   const authorityPlatform = service.platform === "x" ? "twitter" : service.platform;
   const supportsAuthorityCluster = ["instagram", "youtube", "facebook", "linkedin", "tiktok", "twitter", "telegram"].includes(authorityPlatform);
+  const isTwitterService = authorityPlatform === "twitter";
   const intentCopy = twitterServiceCopy[service.code];
   const headline = intentCopy?.headline ?? service.name;
   const faqName = intentCopy?.faqName ?? service.name;
@@ -69,6 +71,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode }: { se
         <section className="mt-8 rounded-3xl border border-white/10 bg-[#0d1118] p-6 sm:p-8"><p className="text-xs font-black uppercase tracking-[.15em] text-orange-300">FAQ</p><h2 className="mt-3 text-2xl font-black">Questions about {faqName}</h2><div className="mt-6 grid gap-3">{faq.map(([question, answer]) => <details key={question} className="rounded-2xl border border-white/10 bg-black/20 p-4"><summary className="cursor-pointer list-none text-sm font-black text-white">{question}</summary><p className="mt-3 text-sm leading-7 text-zinc-400">{answer}</p></details>)}</div></section>
         <section className="mt-8 rounded-3xl border border-orange-400/20 bg-gradient-to-r from-orange-500/10 to-amber-400/5 p-6 text-center sm:p-8"><h2 className="text-2xl font-black">Ready to get started?</h2><p className="mx-auto mt-3 max-w-2xl text-sm leading-7 text-zinc-300">Review the current rate, quantity, delivery estimate and service requirements, then continue securely through the SocialRUSH checkout.</p><Link href={orderHref} className="mt-5 inline-flex min-h-12 items-center justify-center rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 px-7 py-3 text-sm font-black text-black">Continue to Order</Link></section>
       </div></div></InteractiveHomepageShell>
+      {isTwitterService ? <TwitterIntentGuide /> : null}
       {supportsAuthorityCluster ? <MoneyPageAuthorityLinks platform={authorityPlatform as "instagram" | "youtube" | "facebook" | "linkedin" | "tiktok" | "twitter" | "telegram"} /> : null}
     </PublicShell>
   );
