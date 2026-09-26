@@ -13,8 +13,19 @@ const groups = {
     ],
   },
   facebook: {
-    eyebrow: "Facebook topic cluster", title: "Explore related Facebook growth services", intro: "Compare audience, post engagement, video visibility and community-growth options from one connected Facebook service cluster.",
-    links: [["Facebook Growth India", "/facebook-growth-india"], ["Facebook Followers", "/buy-facebook-followers-india"], ["Facebook Likes", "/facebook-likes"], ["Facebook Views", "/facebook-views"], ["Facebook Group Members", "/buy-facebook-group-members-india"], ["Facebook Shares", "/buy-facebook-shares-india"], ["All Services", "/services?platform=facebook"], ["Creator Growth", "/creator-growth"]],
+    eyebrow: "Facebook topic cluster",
+    title: "Explore related Facebook growth services",
+    intro: "Compare audience growth, post engagement, video visibility and community-growth options that are currently represented by dedicated SocialRUSH Facebook pages.",
+    links: [
+      ["Facebook Growth India", "/facebook-growth-india"],
+      ["Facebook Followers", "/buy-facebook-followers-india"],
+      ["Facebook Likes", "/facebook-likes"],
+      ["Facebook Views", "/facebook-views"],
+      ["Facebook Group Members", "/buy-facebook-group-members-india"],
+      ["All Facebook Services", "/services?platform=facebook"],
+      ["For Brands", "/for-brands"],
+      ["Creator Growth", "/creator-growth"],
+    ],
   },
   linkedin: {
     eyebrow: "LinkedIn topic cluster", title: "Explore related LinkedIn growth services", intro: "Compare profile growth, post engagement and professional-audience services before choosing the option that fits your LinkedIn campaign.",
