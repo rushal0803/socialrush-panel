@@ -8,6 +8,7 @@ import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformIcon from "@/components/PlatformIcon";
 import YouTubeSubscribersOrderPanel from "@/components/marketing/YouTubeSubscribersOrderPanel";
+import IndiaSearchDemandSection from "@/components/seo/IndiaSearchDemandSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -28,6 +29,7 @@ export default function YouTubeSubscribersLanding() {
       <HeroDashboard price={price} active={playing} progress={progress} /></div></section>
     <section className="border-y border-white/10 bg-[#101116] px-4 py-4 sm:px-6 lg:px-8"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3">{[[LockKeyhole,"No Password Required"],[Link2,"Public Channel Link"],[CreditCard,"Live Pricing"],[BarChart3,"Order Tracking"],[ShieldCheck,"Refill Information"],[Headphones,"Secure Checkout"]].map(([Icon,label]) => { const C=Icon as typeof LockKeyhole; return <span key={String(label)} className="flex items-center gap-2 text-xs font-bold text-slate-300"><C className="h-4 w-4 text-orange-300" />{String(label)}</span>})}</div></section>
     <YouTubeSubscribersOrderPanel />
+    <IndiaSearchDemandSection serviceCode="youtube-subscribers" unitLabel="subscribers" platformLabel="YouTube" />
     <BuyerGuidance />
     <section className="px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[.035] p-6 sm:p-8">
