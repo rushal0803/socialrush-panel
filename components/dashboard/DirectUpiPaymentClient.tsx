@@ -99,7 +99,7 @@ export default function DirectUpiPaymentClient({
     try {
       const saved = sessionStorage.getItem(paymentStateKey);
       if (!saved) return;
-      const parsed = JSON.parse(saved) as { method?: "upi" | "bank_transfer" | "usdt_trc20"; started?: boolean };
+      const parsed = JSON.parse(saved) as { method?: "upi" | "bank_transfer" | "usdt_trc20"; started?: boolean; savedAt?: number; total?: number; serviceCode?: string };
       if (parsed.method) setPaymentMethod(parsed.method);
       if (parsed.started) setPaymentStarted(true);
     } catch {
@@ -109,11 +109,11 @@ export default function DirectUpiPaymentClient({
 
   useEffect(() => {
     try {
-      sessionStorage.setItem(paymentStateKey, JSON.stringify({ method: paymentMethod, started: paymentStarted }));
+      sessionStorage.setItem(paymentStateKey, JSON.stringify({ method: paymentMethod, started: paymentStarted, savedAt: Date.now(), total, serviceCode }));
     } catch {
       // Payment recovery state is best-effort only.
     }
-  }, [paymentMethod, paymentStarted, paymentStateKey]);
+  }, [paymentMethod, paymentStarted, paymentStateKey, serviceCode, total]);
 
   useEffect(() => {
     if (!paymentStarted) return;
@@ -440,7 +440,7 @@ export default function DirectUpiPaymentClient({
                   onClick={() => {
                     setPaymentStarted(true);
                     returnTrackedRef.current = false;
-                    try { sessionStorage.setItem(paymentStateKey, JSON.stringify({ method: "upi", started: true })); } catch {}
+                    try { sessionStorage.setItem(paymentStateKey, JSON.stringify({ method: "upi", started: true, savedAt: Date.now(), total, serviceCode })); } catch {}
                     track("payment_started", {
                       service_code: serviceCode,
                       method: "upi",
