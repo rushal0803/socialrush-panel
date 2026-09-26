@@ -2,53 +2,13 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 import { updateSession } from "@/lib/supabase/middleware";
 import { DISPLAY_CURRENCY_COOKIE, getDisplayCurrencyForCountry, isCurrency } from "@/lib/currency";
+import { commercialCanonicalRedirects } from "@/lib/seo/query-ownership";
 
 const canonicalRedirects: Record<string, string> = {
-  // Preserve the established legacy URL for backlinks while keeping all
-  // first-party links on the current, indexable landing page.
-  "/youtube-watch-hours": "/buy-youtube-watch-hours-india",
-  "/buy-instagram-followers": "/buy-instagram-followers-india",
-  "/instagram-followers": "/buy-instagram-followers-india",
-  "/buy-instagram-likes-india": "/instagram-likes",
-  "/buy-instagram-views-india": "/instagram-views",
-  "/buy-youtube-subscribers-india": "/youtube-subscribers",
-  "/buy-youtube-likes-india": "/youtube-likes",
-  "/buy-youtube-views-india": "/youtube-views",
-  "/buy-linkedin-followers-india": "/linkedin-followers",
-  "/buy-linkedin-likes-india": "/linkedin-likes",
-  "/buy-twitter-followers-india": "/twitter-followers",
-  "/facebook-followers": "/buy-facebook-followers-india",
-  "/buy-facebook-likes-india": "/facebook-likes",
-  "/buy-facebook-views-india": "/facebook-views",
-  "/buy-telegram-members-india": "/telegram-members",
-  "/buy-tiktok-followers-india": "/tiktok-followers",
+  ...commercialCanonicalRedirects,
   "/privacy": "/privacy-policy",
   "/refund": "/refund-policy",
   "/testimonials": "/reviews",
-  "/services/facebook-brand-engagement": "/buy-facebook-followers-india",
-  "/services/instagram-audience-growth": "/buy-instagram-followers-india",
-  "/services/instagram-content-reach": "/instagram-views",
-  "/services/instagram-engagement-boost": "/instagram-likes",
-  "/services/instagram-followers": "/buy-instagram-followers-india",
-  "/services/instagram-likes": "/instagram-likes",
-  "/services/instagram-views": "/instagram-views",
-  "/services/linkedin-followers": "/linkedin-followers",
-  "/services/linkedin-likes": "/linkedin-likes",
-  "/services/linkedin-professional-growth": "/linkedin-followers",
-  "/services/smm-panel-india": "/services",
-  "/services/facebook-followers": "/buy-facebook-followers-india",
-  "/services/facebook-likes": "/facebook-likes",
-  "/services/facebook-shares": "/buy-facebook-shares-india",
-  "/services/facebook-views": "/facebook-views",
-  "/services/telegram-members": "/telegram-members",
-  "/services/tiktok-followers": "/tiktok-followers",
-  "/services/x-authority-growth": "/twitter-followers",
-  "/services/x-followers": "/twitter-followers",
-  "/services/youtube-channel-growth": "/youtube-subscribers",
-  "/services/youtube-likes": "/youtube-likes",
-  "/services/youtube-subscribers": "/youtube-subscribers",
-  "/services/youtube-video-promotion": "/youtube-views",
-  "/services/youtube-views": "/youtube-views",
   "/terms": "/terms-and-conditions",
 };
 
