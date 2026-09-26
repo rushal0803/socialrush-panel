@@ -194,6 +194,11 @@ function getFirstTouchAttribution(): ClientAttribution {
   }
 }
 
+export function primeAttribution() {
+  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  void getFirstTouchAttribution();
+}
+
 export function track(
   event: ClientAnalyticsEvent,
   metadata: AnalyticsProperties = {},
