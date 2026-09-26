@@ -12,7 +12,8 @@ import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search
 import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/seo/authority-graph.ts";
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
-import { commercialCanonicalRedirects, hasUniqueQueryOwnership, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
+import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
+import { PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -408,4 +409,36 @@ test("phase 5G production SEO monitor checks every commercial alias redirect", (
   for (const [alias, canonical] of Object.entries(commercialCanonicalRedirects)) {
     assert.ok(monitorSource.includes(`["${alias}", "${canonical}"]`), `${alias} redirect should be monitored`);
   }
+});
+
+
+test("phase 5H freshness registry marks only clean canonical-style paths with a real release date", () => {
+  assert.equal(PHASE5_SIGNIFICANT_UPDATE, "2026-09-27");
+  assert.equal(new Set(phase5SearchFreshnessPaths).size, phase5SearchFreshnessPaths.length);
+  for (const path of phase5SearchFreshnessPaths) {
+    assert.match(path, /^\//);
+    assert.equal(path.includes("?"), false);
+    assert.equal(isCommercialAliasPath(path), false, `${path} should not be a redirect alias`);
+    assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
+  }
+});
+
+test("phase 5H sitemap consumes explicit freshness instead of request-time dates", () => {
+  const sitemapSource = readFileSync(new URL("../../app/sitemap.xml/route.ts", import.meta.url), "utf8");
+  assert.match(sitemapSource, /searchFreshnessLastmod/);
+  assert.match(sitemapSource, /Object\.entries\(searchFreshnessLastmod\)/);
+  assert.doesNotMatch(sitemapSource, /new Date\(\)\.toISOString\(\).*lastmod/);
+});
+
+test("phase 5H IndexNow release submits canonical Phase 5 URLs only after the root key is live", () => {
+  const submitter = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+  const workflow = readFileSync(new URL("../../.github/workflows/indexnow-phase5-release.yml", import.meta.url), "utf8");
+  assert.match(submitter, /api\.indexnow\.org\/indexnow/);
+  assert.match(submitter, /waitForKeyFile/);
+  assert.match(submitter, /www\.getsocialrush\.com/);
+  assert.match(submitter, /"\/pricing"/);
+  assert.match(submitter, /"\/tools\/social-media-service-cost-calculator"/);
+  assert.doesNotMatch(submitter, /\/dashboard|\/admin|\/api\//);
+  assert.match(workflow, /branches: \[main\]/);
+  assert.match(workflow, /node scripts\/indexnow-phase5-release\.mjs/);
 });
