@@ -4,6 +4,7 @@ import { addRecentService, parseContinueOrder, parseRecentServices, serializeCon
 import { buildQuantityMerchandising, quantityForMinimumSpend } from "../../lib/cro/quantity-merchandising.ts";
 import { postOrderRecommendations } from "../../lib/cro/revenue-bundles.ts";
 import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
+import { buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -63,4 +64,28 @@ test("post-order recommendations stay complementary and avoid protected live-pri
 test("post-order recommendations require an existing stack containing the completed service", () => {
   assert.deepEqual(postOrderRecommendations("facebook-followers", smmServiceCatalog, 2), []);
   assert.deepEqual(postOrderRecommendations("not-a-service", smmServiceCatalog, 2), []);
+});
+
+
+test("repeat-order builder preserves service, quantity and exact target", () => {
+  const href = buildRepeatOrderHref({
+    serviceName: "Instagram Followers",
+    platform: "instagram",
+    quantity: 2500,
+    link: "https://instagram.com/example",
+  }, smmServiceCatalog);
+  assert.ok(href);
+  const url = new URL(href!, "https://example.test");
+  assert.equal(url.searchParams.get("service"), "instagram-followers");
+  assert.equal(url.searchParams.get("quantity"), "2500");
+  assert.equal(url.searchParams.get("link"), "https://instagram.com/example");
+  assert.equal(url.searchParams.get("resume"), "1");
+});
+
+test("repeat-order builder resolves Twitter platform aliases and rejects incomplete input", () => {
+  const service = resolveRepeatOrderService({ serviceName: "Twitter / X Followers", platform: "twitter" }, smmServiceCatalog);
+  assert.equal(service?.platform, "x");
+  assert.equal(buildRepeatOrderHref({ serviceName: "Unknown", platform: "instagram", quantity: 1000, link: "https://instagram.com/example" }, smmServiceCatalog), null);
+  assert.equal(buildRepeatOrderHref({ serviceName: "Instagram Followers", platform: "instagram", quantity: 0, link: "https://instagram.com/example" }, smmServiceCatalog), null);
+  assert.equal(buildRepeatOrderHref({ serviceName: "Instagram Followers", platform: "instagram", quantity: 1000, link: "" }, smmServiceCatalog), null);
 });
