@@ -1,4 +1,3 @@
-import { calculateServiceTotal } from "@/lib/service-pricing";
 import type { SmmService } from "@/lib/smm-service-catalog";
 
 export type SearchDemandPriceRow = {
@@ -25,7 +24,7 @@ export function buildSearchDemandPriceRows(service: SmmService): SearchDemandPri
     quantity,
     total: service.requiresLiveCatalogFacts || service.pricePer1000 <= 0
       ? null
-      : calculateServiceTotal(service.code, quantity),
+      : Math.round((quantity * service.pricePer1000) / 10) / 100,
   }));
 }
 
