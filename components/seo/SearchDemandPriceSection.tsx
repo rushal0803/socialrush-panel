@@ -66,7 +66,7 @@ export default function SearchDemandPriceSection({
   const rows=buildQuantityPlanning(pricePer1000);
   const unit=serviceUnitFromCode(serviceCode);
   const dark=tone==="dark";
-  const links=[{label:"Social media service cost calculator",href:"/tools/social-media-service-cost-calculator"}, ...(serviceGuideLinks[serviceCode]||[]), ...(guideLinks[platform]||[])].filter((link,index,all)=>all.findIndex(candidate=>candidate.href===link.href)===index);
+  const links=[{label:"Compare all SocialRUSH pricing",href:"/pricing"},{label:"Social media service cost calculator",href:"/tools/social-media-service-cost-calculator"}, ...(serviceGuideLinks[serviceCode]||[]), ...(guideLinks[platform]||[])].filter((link,index,all)=>all.findIndex(candidate=>candidate.href===link.href)===index);
   return <section className={dark?"border-y border-white/10 bg-[#111114] px-4 py-16 text-white sm:px-6 lg:px-8":"bg-white/70 px-4 py-16 sm:px-6 lg:px-8 lg:py-24"}>
     <div className="mx-auto max-w-7xl">
       <div className="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
