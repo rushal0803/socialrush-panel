@@ -26,13 +26,3 @@ export const searchPlanningLinks = [
   { href: "/pricing", label: "Compare Live Social Media Pricing", intent: "cross-platform live INR rates" },
   { href: "/tools/social-media-service-cost-calculator", label: "Service Cost Calculator", intent: "quantity-based cost planning" },
 ] as const;
-
-export function buildCommercialSearchDescription({
-  serviceName,
-  destination,
-}: {
-  serviceName: string;
-  destination: string;
-}) {
-  return `Buy ${serviceName} in India with live INR pricing and quantity-based totals. Use a ${destination}; no password required. Check delivery, refill/support and dashboard tracking.`;
-}
