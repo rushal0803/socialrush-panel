@@ -20,7 +20,8 @@ const nullableCount = (value: unknown) => {
   return Number.isSafeInteger(number) && number >= 0 ? number : undefined;
 };
 
-export async function GET(_request: NextRequest, { params }: { params: { id: string } }) {
+export async function GET(_request: NextRequest, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
 
@@ -40,7 +41,8 @@ export async function GET(_request: NextRequest, { params }: { params: { id: str
   return NextResponse.json({ data: { order, history: history ?? [], transactions: transactions ?? [] } }, { headers: { "Cache-Control": "no-store" } });
 }
 
-export async function PATCH(request: NextRequest, { params }: { params: { id: string } }) {
+export async function PATCH(request: NextRequest, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+  const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
   const body = (await request.json().catch(() => null)) as Record<string, unknown> | null;
