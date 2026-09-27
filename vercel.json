@@ -12,5 +12,9 @@
       "path": "/api/cron/email",
       "schedule": "0 3 * * *"
     }
+  ],
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "regions": [
+    "syd1"
   ]
 }
