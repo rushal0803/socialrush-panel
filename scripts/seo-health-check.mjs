@@ -127,6 +127,8 @@ const legacyRedirects = [
   ["/smm-panel-for-agencies-india", "/for-agencies"],
   ["/social-media-growth-services-india", "/social-media-growth-india"],
   ["/social-media-growth-service-india", "/social-media-growth-india"],
+  ["/social-media-engagement-services-india", "/social-media-growth-india"],
+  ["/social-media-engagement-service-india", "/social-media-growth-india"],
   [
     "/blog/linkedin-growth-tips-for-personal-brands",
     "/blog/linkedin-growth-tips-personal-brands",
