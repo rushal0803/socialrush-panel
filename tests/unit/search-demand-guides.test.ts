@@ -1,5 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
+import { readFileSync } from "node:fs";
 import { searchDemandPriceGuideArticles } from "../../components/marketing/blog/searchDemandPriceGuides.ts";
 import { indiaCheckoutMethods, paymentIntentFaq, paymentIntentKeywords } from "../../lib/seo/payment-intent.ts";
 
@@ -52,4 +53,23 @@ test("phase 5I keeps India payment intent on canonical service pages", () => {
   assert.match(faq.answer, /exact INR amount/i);
   assert.match(faq.answer, /transaction reference/i);
   assert.match(faq.answer, /checkout.*authoritative/i);
+});
+
+
+test("phase 5A canonical follower and subscriber pages render the shared price-demand section", () => {
+  const pages = [
+    ["../../app/buy-instagram-followers-india/page.tsx", "instagram-followers"],
+    ["../../components/marketing/YouTubeSubscribersLanding.tsx", "youtube-subscribers"],
+    ["../../components/marketing/LinkedInFollowersLanding.tsx", "linkedin-followers"],
+    ["../../components/marketing/TwitterFollowersLanding.tsx", "x-followers"],
+    ["../../components/marketing/FacebookFollowersLanding.tsx", "facebook-followers"],
+    ["../../components/marketing/TikTokFollowersLanding.tsx", "tiktok-followers"],
+    ["../../components/marketing/TelegramFollowersLanding.tsx", "telegram-members"],
+  ] as const;
+
+  for (const [path, serviceCode] of pages) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, /SearchDemandPriceSection/);
+    assert.match(source, new RegExp(`serviceCode=["']${serviceCode}["']`));
+  }
 });
