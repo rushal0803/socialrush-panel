@@ -14,6 +14,7 @@ import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/se
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
 import { PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -441,4 +442,50 @@ test("phase 5H IndexNow release submits canonical Phase 5 URLs only after the ro
   assert.doesNotMatch(submitter, /\/dashboard|\/admin|\/api\//);
   assert.match(workflow, /branches: \[main\]/);
   assert.match(workflow, /node scripts\/indexnow-phase5-release\.mjs/);
+});
+
+
+test("phase 5J models delivery and refill long-tail search intent without guarantees", () => {
+  assert.deepEqual(deliveryRefillIntentKeywords("Instagram Followers"), [
+    "Instagram Followers delivery time India",
+    "how long does Instagram Followers delivery take",
+    "Instagram Followers refill India",
+    "Instagram Followers refill policy",
+  ]);
+
+  const copy = buildDeliveryRefillIntentCopy({
+    serviceName: "Instagram Followers",
+    deliveryTime: "1-7 days",
+    refillPolicy: "30 days refill",
+  });
+  assert.match(copy.heading, /delivery time and refill support in India/i);
+  assert.match(copy.delivery, /estimate, not a guaranteed completion time/i);
+  assert.match(copy.delivery, /1-7 days/);
+  assert.match(copy.refill, /30 days refill/);
+  assert.doesNotMatch(copy.delivery, /guaranteed delivery/i);
+});
+
+test("phase 5J priority money pages expose the visible delivery and refill intent module", () => {
+  const files = [
+    "../../app/buy-instagram-followers-india/page.tsx",
+    "../../components/marketing/YouTubeSubscribersLanding.tsx",
+    "../../components/marketing/LinkedInFollowersLanding.tsx",
+    "../../components/marketing/FacebookFollowersLanding.tsx",
+    "../../components/marketing/TwitterFollowersLanding.tsx",
+    "../../components/marketing/TelegramFollowersLanding.tsx",
+    "../../components/marketing/services/SeoServiceLandingPage.tsx",
+    "../../components/marketing/services/IndiaServiceLandingPage.tsx",
+  ];
+
+  for (const path of files) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, /DeliveryRefillIntentSection/);
+  }
+});
+
+test("phase 5J metadata models include delivery and refill query language", () => {
+  const indiaSource = readFileSync(new URL("../../lib/seo/india-service-pages.ts", import.meta.url), "utf8");
+  const canonicalSource = readFileSync(new URL("../../lib/seo/service-landing-pages.ts", import.meta.url), "utf8");
+  assert.match(indiaSource, /deliveryRefillIntentKeywords\(page\.serviceName\)/);
+  assert.match(canonicalSource, /deliveryRefillIntentKeywords\(page\.displayName\)/);
 });
