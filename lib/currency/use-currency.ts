@@ -9,12 +9,25 @@ export function CurrencyProvider({ children, initialCurrency = "INR", rates: ini
  const [ratesLoading, setRatesLoading] = useState(false);
  const setCurrency = useCallback((value: Currency) => { setValue(value); document.cookie = `${DISPLAY_CURRENCY_COOKIE}=${value}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`; }, []);
  useEffect(() => {
+   let active = true;
    const stored = document.cookie
      .split(";")
      .map((part) => part.trim())
      .find((part) => part.startsWith(`${DISPLAY_CURRENCY_COOKIE}=`))
      ?.split("=")[1];
-   if (isCurrency(stored)) setValue(stored);
+   if (isCurrency(stored)) {
+     setValue(stored);
+     return () => { active = false; };
+   }
+   fetch("/api/display-currency", { cache: "no-store" })
+     .then((response) => response.ok ? response.json() : null)
+     .then((payload) => {
+       if (!active || !isCurrency(payload?.currency)) return;
+       setValue(payload.currency);
+       document.cookie = `${DISPLAY_CURRENCY_COOKIE}=${payload.currency}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
+     })
+     .catch(() => undefined);
+   return () => { active = false; };
  }, []);
  useEffect(() => { setClientCurrencyRates(rates); }, [rates]);
  useEffect(() => {
