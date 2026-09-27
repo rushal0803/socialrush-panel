@@ -5,6 +5,7 @@ import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import PublicShell from "@/components/marketing/PublicShell";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "@/lib/seo/social-engagement-intent";
+import { socialPromotionCriteria, socialPromotionIntentKeywords } from "@/lib/seo/social-promotion-intent";
 
 export const metadata = createPageMetadata({
   title: "Social Media Growth Services India | Compare Platforms | SocialRUSH",
@@ -21,6 +22,7 @@ export const metadata = createPageMetadata({
     "social media packages India",
     "social media services for agencies India",
     ...socialEngagementIntentKeywords,
+    ...socialPromotionIntentKeywords,
   ],
 });
 
@@ -149,6 +151,30 @@ export default function SocialMediaGrowthIndiaPage() {
                 ["Agency workflow", "Multi-client planning and repeat campaign tools are available for agency and reseller operations.", "/for-agencies"],
               ].map(([title, text, href]) => <Link key={title} href={href} className="rounded-2xl border border-white/10 bg-[#101116] p-5 transition hover:border-orange-400/30"><CheckCircle2 className="h-5 w-5 text-emerald-400" /><h3 className="mt-3 font-black">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{text}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Review details <ArrowRight className="h-3.5 w-3.5" /></span></Link>)}
             </div>
+          </div>
+        </section>
+
+        <section className="border-y border-white/10 bg-[#0b0c10] px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Social media promotion services India</p>
+              <h2 className="mt-2 text-3xl font-black">Choose a promotion service by campaign scope, not by vague “boost” promises.</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-400">SocialRUSH uses “promotion services” to describe order-based audience and engagement campaigns for eligible public social-media destinations. It does not mean full social media management, organic strategy execution, content production or paid-ad management.</p>
+            </div>
+            <div className="mt-7 grid gap-4 md:grid-cols-2">
+              {socialPromotionCriteria.map((item) => (
+                <Link key={item.id} href={item.href} className="group rounded-2xl border border-white/10 bg-[#101116] p-5 transition hover:border-orange-400/30">
+                  <div className="flex items-start justify-between gap-3">
+                    <div>
+                      <h3 className="text-base font-black">{item.title}</h3>
+                      <p className="mt-2 text-sm leading-6 text-slate-400">{item.text}</p>
+                    </div>
+                    <ArrowRight className="mt-1 h-4 w-4 shrink-0 text-slate-600 transition group-hover:translate-x-0.5 group-hover:text-orange-300" />
+                  </div>
+                </Link>
+              ))}
+            </div>
+            <p className="mt-5 max-w-4xl text-xs leading-5 text-slate-500">Promotion services support visible campaign metrics only. They do not guarantee organic reach, recommendation placement, follower quality, engagement rate, leads, sales, monetization or revenue.</p>
           </div>
         </section>
 
