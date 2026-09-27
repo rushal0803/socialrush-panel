@@ -95,14 +95,14 @@ export async function updateSession(request: NextRequest) {
     return redirectResponse;
   }
 
-  const { data: roleProfile, error: roleError } = await supabase
+  const { data: accessProfile, error: accessProfileError } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role,is_blocked")
     .eq("id", user.id)
     .maybeSingle();
 
   if (pathname.startsWith("/admin")) {
-    if (roleError || !roleProfile) {
+    if (accessProfileError || !accessProfile) {
       const loginUrl = request.nextUrl.clone();
       loginUrl.pathname = "/admin/login";
       loginUrl.search = "";
@@ -111,7 +111,7 @@ export async function updateSession(request: NextRequest) {
       return redirectResponse;
     }
 
-    if (roleProfile.role !== "admin") {
+    if (accessProfile.role !== "admin") {
       const dashboardUrl = request.nextUrl.clone();
       dashboardUrl.pathname = "/dashboard/new-order";
       dashboardUrl.search = "";
@@ -121,15 +121,7 @@ export async function updateSession(request: NextRequest) {
     }
   }
 
-  // Keep the role check independent so a deployment that has not added the
-  // optional is_blocked column yet cannot misclassify an administrator.
-  const { data: blockedProfile } = await supabase
-    .from("profiles")
-    .select("is_blocked")
-    .eq("id", user.id)
-    .maybeSingle();
-
-  if (blockedProfile?.is_blocked) {
+  if (accessProfile?.is_blocked) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = "/login";
     loginUrl.search = "error=account_blocked";
