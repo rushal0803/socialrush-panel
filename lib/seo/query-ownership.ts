@@ -179,8 +179,15 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
   {
     id: "social-media-growth-services-india",
     canonicalPath: "/social-media-growth-india",
-    intent: "social media growth and engagement services India",
-    aliases: ["/social-media-growth-services-india", "/social-media-growth-service-india", "/social-media-engagement-services-india", "/social-media-engagement-service-india"],
+    intent: "social media growth, engagement and promotion services India",
+    aliases: [
+      "/social-media-growth-services-india",
+      "/social-media-growth-service-india",
+      "/social-media-engagement-services-india",
+      "/social-media-engagement-service-india",
+      "/social-media-promotion-services-india",
+      "/social-media-promotion-service-india",
+    ],
   },
   {
     id: "agency-reseller-panel-india",
