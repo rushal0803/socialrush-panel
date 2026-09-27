@@ -3,7 +3,6 @@ export const socialEngagementIntentKeywords = [
   "social media engagement service India",
   "social media followers services India",
   "social media likes views followers India",
-  "social media promotion services India",
 ] as const;
 
 export const socialEngagementServiceGroups = [

@@ -19,6 +19,7 @@ import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../..
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
 import { agencyResellerCriteria, agencyResellerIntentKeywords } from "../../lib/seo/agency-reseller-intent.ts";
 import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "../../lib/seo/social-engagement-intent.ts";
+import { socialPromotionCriteria, socialPromotionIntentKeywords } from "../../lib/seo/social-promotion-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -629,7 +630,7 @@ test("phase 5N /for-agencies exposes visible reseller authority and truthful fre
 test("phase 5O assigns social media growth services India to one canonical hub", () => {
   const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
   assert.ok(owner);
-  assert.equal(owner.intent, "social media growth and engagement services India");
+  assert.equal(owner.intent, "social media growth, engagement and promotion services India");
   assert.ok(owner.aliases.includes("/social-media-growth-services-india"));
   assert.ok(owner.aliases.includes("/social-media-growth-service-india"));
   assert.equal(commercialCanonicalRedirects["/social-media-growth-services-india"], "/social-media-growth-india");
@@ -671,7 +672,7 @@ test("phase 5O marks the canonical growth hub fresh and submits it for search re
 test("phase 5P consolidates social media engagement services India onto the growth hub", () => {
   const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
   assert.ok(owner);
-  assert.match(owner.intent, /growth and engagement services India/i);
+  assert.match(owner.intent, /growth, engagement and promotion services India/i);
   assert.ok(owner.aliases.includes("/social-media-engagement-services-india"));
   assert.ok(owner.aliases.includes("/social-media-engagement-service-india"));
   assert.equal(commercialCanonicalRedirects["/social-media-engagement-services-india"], "/social-media-growth-india");
@@ -703,5 +704,44 @@ test("phase 5P growth hub exposes visible engagement-service intent without outc
   assert.doesNotMatch(source, /100% safe|guaranteed reach|guaranteed sales|#1|cheapest/i);
   assert.match(monitor, /"\/social-media-engagement-services-india", "\/social-media-growth-india"/);
   assert.match(monitor, /"\/social-media-engagement-service-india", "\/social-media-growth-india"/);
+  assert.equal(searchFreshnessLastmod["/social-media-growth-india"], "2026-09-28");
+});
+
+
+test("phase 5Q assigns social media promotion services India to the existing growth hub", () => {
+  const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
+  assert.ok(owner);
+  assert.match(owner.intent, /promotion services India/i);
+  assert.ok(owner.aliases.includes("/social-media-promotion-services-india"));
+  assert.ok(owner.aliases.includes("/social-media-promotion-service-india"));
+  assert.equal(commercialCanonicalRedirects["/social-media-promotion-services-india"], "/social-media-growth-india");
+  assert.equal(commercialCanonicalRedirects["/social-media-promotion-service-india"], "/social-media-growth-india");
+  assert.ok(socialPromotionIntentKeywords.includes("social media promotion services India"));
+  assert.equal((socialEngagementIntentKeywords as readonly string[]).includes("social media promotion services India"), false);
+});
+
+test("phase 5Q promotion criteria distinguish campaign services from management retainers", () => {
+  assert.deepEqual(socialPromotionCriteria.map((item) => item.id), ["audience", "content", "requirements", "scope"]);
+  const copy = JSON.stringify(socialPromotionCriteria);
+  assert.match(copy, /order-based growth and engagement campaigns/i);
+  assert.match(copy, /not a monthly content creation/i);
+  assert.doesNotMatch(copy, /guaranteed reach|guaranteed sales|best|cheapest|#1/i);
+  for (const item of socialPromotionCriteria) {
+    assert.match(item.href, /^\//);
+    assert.equal(item.href.includes("?"), false);
+  }
+});
+
+test("phase 5Q growth hub exposes visible promotion intent and canonical redirect monitoring", () => {
+  const source = readFileSync(new URL("../../app/social-media-growth-india/page.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+  assert.match(source, /Social media promotion services India/i);
+  assert.match(source, /order-based audience and engagement campaigns/i);
+  assert.match(source, /does not mean full social media management/i);
+  assert.match(source, /do not guarantee organic reach/i);
+  assert.match(monitor, /"\/social-media-promotion-services-india", "\/social-media-growth-india"/);
+  assert.match(monitor, /"\/social-media-promotion-service-india", "\/social-media-growth-india"/);
+  assert.match(indexNow, /"\/social-media-growth-india"/);
   assert.equal(searchFreshnessLastmod["/social-media-growth-india"], "2026-09-28");
 });
