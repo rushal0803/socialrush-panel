@@ -173,8 +173,8 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
   {
     id: "social-media-services-india",
     canonicalPath: "/services",
-    intent: "compare social media growth services",
-    aliases: ["/services/smm-panel-india"],
+    intent: "SMM panel India and social media growth services comparison",
+    aliases: ["/services/smm-panel-india", "/smm-panel-india"],
   },
 ] as const;
 
