@@ -1,6 +1,7 @@
 export const PHASE5_SIGNIFICANT_UPDATE = "2026-09-27";
 export const PHASE5_AGENCY_RESELLER_UPDATE = "2026-09-28";
 export const PHASE5_SOCIAL_GROWTH_UPDATE = "2026-09-28";
+export const PHASE5_SOCIAL_SERVICES_UPDATE = "2026-09-28";
 
 const phase5UpdatedPaths = [
   "/",
@@ -58,4 +59,5 @@ export const searchFreshnessLastmod: Readonly<Record<string, string>> =
     ...phase5UpdatedPaths.map((path) => [path, PHASE5_SIGNIFICANT_UPDATE] as const),
     ["/for-agencies", PHASE5_AGENCY_RESELLER_UPDATE] as const,
     ["/social-media-growth-india", PHASE5_SOCIAL_GROWTH_UPDATE] as const,
+    ["/services", PHASE5_SOCIAL_SERVICES_UPDATE] as const,
   ]);

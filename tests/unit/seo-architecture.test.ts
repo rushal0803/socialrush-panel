@@ -13,13 +13,14 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
 import { agencyResellerCriteria, agencyResellerIntentKeywords } from "../../lib/seo/agency-reseller-intent.ts";
 import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "../../lib/seo/social-engagement-intent.ts";
 import { socialPromotionCriteria, socialPromotionIntentKeywords } from "../../lib/seo/social-promotion-intent.ts";
+import { socialMediaServicesIndiaKeywords, socialMediaServiceGroups } from "../../lib/seo/social-media-services-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -426,6 +427,8 @@ test("phase 5H freshness registry marks only clean canonical-style paths with a 
     assert.equal(path.includes("?"), false);
     assert.equal(isCommercialAliasPath(path), false, `${path} should not be a redirect alias`);
     if (path === "/for-agencies") assert.equal(searchFreshnessLastmod[path], PHASE5_AGENCY_RESELLER_UPDATE);
+    else if (path === "/social-media-growth-india") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_GROWTH_UPDATE);
+    else if (path === "/services") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_SERVICES_UPDATE);
     else assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
   }
 });
@@ -744,4 +747,29 @@ test("phase 5Q growth hub exposes visible promotion intent and canonical redirec
   assert.match(monitor, /"\/social-media-promotion-service-india", "\/social-media-growth-india"/);
   assert.match(indexNow, /"\/social-media-growth-india"/);
   assert.equal(searchFreshnessLastmod["/social-media-growth-india"], "2026-09-28");
+});
+
+
+test("phase 5R keeps social media services India on the existing services canonical", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "social-media-services-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/services");
+  assert.ok(owner.aliases.includes("/social-media-services-india"));
+  assert.equal(commercialCanonicalRedirects["/social-media-services-india"], "/services");
+  assert.ok(socialMediaServicesIndiaKeywords.includes("social media services India"));
+  assert.ok(socialMediaServiceGroups.length >= 3);
+  const hrefs = socialMediaServiceGroups.flatMap((group) => group.links.map((link) => link.href));
+  assert.equal(hrefs.every((href) => href.startsWith("/") && !href.includes("?")), true);
+  assert.equal(new Set(hrefs).size, hrefs.length);
+});
+
+test("phase 5R services page exposes visible social media services India authority", () => {
+  const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  const component = readFileSync(new URL("../../components/marketing/services/SocialMediaServicesIndiaAuthority.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  assert.match(source, /SocialMediaServicesIndiaAuthority/);
+  assert.match(source, /socialMediaServicesIndiaKeywords/);
+  assert.match(component, /Social media services India/);
+  assert.match(component, /not a monthly social media management agency/i);
+  assert.match(monitor, /social-media-services-india/);
 });

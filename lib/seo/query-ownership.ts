@@ -174,7 +174,7 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     id: "social-media-services-india",
     canonicalPath: "/services",
     intent: "SMM panel India and multi-platform service catalog comparison",
-    aliases: ["/services/smm-panel-india", "/smm-panel-india"],
+    aliases: ["/services/smm-panel-india", "/smm-panel-india", "/social-media-services-india"],
   },
   {
     id: "social-media-growth-services-india",
