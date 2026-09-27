@@ -8,6 +8,7 @@ const PHASE5_SOCIAL_GROWTH_LASTMOD = "2026-09-28";
 const PHASE5_SOCIAL_SERVICES_LASTMOD = "2026-09-28";
 const PHASE5_PLATFORM_SMM_LASTMOD = "2026-09-28";
 const PHASE5_PRICING_INTENT_LASTMOD = "2026-09-28";
+const PHASE5_SAFE_ORDERING_LASTMOD = "2026-09-28";
 const INDEXNOW_KEY = "8f7d2c91a4e64b7f9c3d1a6e5b8f2047";
 const INDEXNOW_KEY_PATH = `/${INDEXNOW_KEY}.txt`;
 
@@ -41,6 +42,7 @@ const priorityCommercialPaths = [
   "/for-agencies",
   "/pricing",
   "/packages",
+  "/trust",
   "/instagram-growth-india",
   "/youtube-growth-india",
   "/facebook-growth-india",
@@ -65,6 +67,7 @@ const phase5FreshnessExpected = new Map([
   ["/", PHASE5_LASTMOD],
   ["/services", PHASE5_SOCIAL_SERVICES_LASTMOD],
   ["/pricing", PHASE5_PRICING_INTENT_LASTMOD],
+  ["/trust", PHASE5_SAFE_ORDERING_LASTMOD],
   ["/tools/social-media-service-cost-calculator", PHASE5_LASTMOD],
   ...canonicalServicePaths
     .filter((path) => path !== "/buy-facebook-shares-india")
@@ -153,6 +156,10 @@ const legacyRedirects = [
   ["/upi-smm-panel-india", "/pricing"],
   ["/smm-panel-with-upi-india", "/pricing"],
   ["/smm-panel-for-agencies-india", "/for-agencies"],
+  ["/safe-smm-panel-india", "/trust"],
+  ["/smm-panel-without-password-india", "/trust"],
+  ["/no-password-smm-panel-india", "/trust"],
+  ["/public-link-smm-panel-india", "/trust"],
   ["/social-media-growth-services-india", "/social-media-growth-india"],
   ["/social-media-growth-service-india", "/social-media-growth-india"],
   ["/social-media-engagement-services-india", "/social-media-growth-india"],
