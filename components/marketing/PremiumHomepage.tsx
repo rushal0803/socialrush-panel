@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { ArrowRight, Check, ChevronDown, CircleDollarSign, Headphones, Link2, PackageCheck, RefreshCw, Search, ShieldCheck, Sparkles, TicketCheck, TrendingUp, Wallet, type LucideIcon } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
@@ -24,21 +24,25 @@ function serviceType(code: string) { return code.split("-").slice(1).join(" ").r
 
 export default function PremiumHomepage() {
   const router = useRouter();
-  const searchParams = useSearchParams();
   const { currency, rates } = usePreferredCurrency();
   const money = (value: number) => formatCurrency(value, currency, rates);
-  const initialPlatformParam = searchParams.get("platform");
-  const initialPlatform = platforms.includes(initialPlatformParam as SmmPlatformId) ? initialPlatformParam as SmmPlatformId : "instagram";
-  const [platform, setPlatform] = useState<SmmPlatformId>(initialPlatform);
+  const [platform, setPlatform] = useState<SmmPlatformId>("instagram");
+  const [requestedService, setRequestedService] = useState("");
   const [serviceCode, setServiceCode] = useState("");
   const [quantity, setQuantity] = useState(1000);
   const [health, setHealth] = useState<Record<string, ServiceHealth>>({});
   const [, setDemoComplete] = useState(false);
   const [openFaq, setOpenFaq] = useState<number | null>(0);
 
+  useEffect(() => {
+    const params = new URLSearchParams(window.location.search);
+    const requestedPlatform = params.get("platform");
+    if (platforms.includes(requestedPlatform as SmmPlatformId)) setPlatform(requestedPlatform as SmmPlatformId);
+    setRequestedService(params.get("service") || "");
+  }, []);
   useEffect(() => { fetch("/api/service-health").then(r => r.ok ? r.json() : null).then(x => x?.data && setHealth(x.data)).catch(() => undefined); }, []);
   const services = useMemo(() => activeSmmServices.filter(s => s.platform === platform), [platform]);
-  const selected = services.find(s => s.code === serviceCode) || services.find(s => s.code.endsWith(`-${searchParams.get("service") || ""}`)) || services[0];
+  const selected = services.find(s => s.code === serviceCode) || services.find(s => requestedService && s.code.endsWith(`-${requestedService}`)) || services[0];
   useEffect(() => { if (selected && selected.code !== serviceCode) setServiceCode(selected.code); }, [selected, serviceCode]);
   useEffect(() => {
     if (!selected) return;
@@ -69,7 +73,7 @@ export default function PremiumHomepage() {
     (quantity - selected.minQuantity) % (selected.quantityStep ?? 1) === 0,
   );
   const featured = activeSmmServices.filter(s => ["instagram-followers", "instagram-likes", "instagram-views", "youtube-subscribers", "youtube-views", "facebook-followers"].includes(s.code));
-  const choosePlatform = (next: SmmPlatformId) => { setPlatform(next); setServiceCode(""); setQuantity(1000); };
+  const choosePlatform = (next: SmmPlatformId) => { setPlatform(next); setRequestedService(""); setServiceCode(""); setQuantity(1000); };
   const goOrder = () => router.push(destination);
 
   return <div className="premium-homepage sr-page overflow-hidden bg-[#07080D] text-white">
