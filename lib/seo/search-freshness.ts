@@ -4,6 +4,7 @@ export const PHASE5_SOCIAL_GROWTH_UPDATE = "2026-09-28";
 export const PHASE5_SOCIAL_SERVICES_UPDATE = "2026-09-28";
 export const PHASE5_PLATFORM_SMM_UPDATE = "2026-09-28";
 export const PHASE5_PRICING_INTENT_UPDATE = "2026-09-28";
+export const PHASE5_SAFE_ORDERING_UPDATE = "2026-09-28";
 
 const phase5UpdatedPaths = [
   "/",
@@ -12,6 +13,7 @@ const phase5UpdatedPaths = [
   "/blog",
   "/tools",
   "/tools/social-media-service-cost-calculator",
+  "/trust",
   "/instagram-growth-india",
   "/youtube-growth-india",
   "/facebook-growth-india",
@@ -64,5 +66,6 @@ export const searchFreshnessLastmod: Readonly<Record<string, string>> =
     ["/social-media-growth-india", PHASE5_SOCIAL_GROWTH_UPDATE] as const,
     ["/services", PHASE5_SOCIAL_SERVICES_UPDATE] as const,
     ["/pricing", PHASE5_PRICING_INTENT_UPDATE] as const,
+    ["/trust", PHASE5_SAFE_ORDERING_UPDATE] as const,
     ...["/instagram-growth-india","/youtube-growth-india","/facebook-growth-india","/linkedin-growth-india","/x-growth-india","/tiktok-growth-india","/services/telegram"].map((path) => [path, PHASE5_PLATFORM_SMM_UPDATE] as const),
   ]);
