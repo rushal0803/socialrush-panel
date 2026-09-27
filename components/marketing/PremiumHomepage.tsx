@@ -28,6 +28,7 @@ export default function PremiumHomepage() {
   const money = (value: number) => formatCurrency(value, currency, rates);
   const [platform, setPlatform] = useState<SmmPlatformId>("instagram");
   const [requestedService, setRequestedService] = useState("");
+  const [queryReady, setQueryReady] = useState(false);
   const [serviceCode, setServiceCode] = useState("");
   const [quantity, setQuantity] = useState(1000);
   const [health, setHealth] = useState<Record<string, ServiceHealth>>({});
@@ -39,11 +40,12 @@ export default function PremiumHomepage() {
     const requestedPlatform = params.get("platform");
     if (platforms.includes(requestedPlatform as SmmPlatformId)) setPlatform(requestedPlatform as SmmPlatformId);
     setRequestedService(params.get("service") || "");
+    setQueryReady(true);
   }, []);
   useEffect(() => { fetch("/api/service-health").then(r => r.ok ? r.json() : null).then(x => x?.data && setHealth(x.data)).catch(() => undefined); }, []);
   const services = useMemo(() => activeSmmServices.filter(s => s.platform === platform), [platform]);
   const selected = services.find(s => s.code === serviceCode) || services.find(s => requestedService && s.code.endsWith(`-${requestedService}`)) || services[0];
-  useEffect(() => { if (selected && selected.code !== serviceCode) setServiceCode(selected.code); }, [selected, serviceCode]);
+  useEffect(() => { if (queryReady && selected && selected.code !== serviceCode) setServiceCode(selected.code); }, [queryReady, selected, serviceCode]);
   useEffect(() => {
     if (!selected) return;
     setQuantity((current) => {
