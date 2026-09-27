@@ -116,6 +116,7 @@ const legacyRedirects = [
   ["/buy-tiktok-followers-india", "/tiktok-followers"],
   ["/services/tiktok-followers", "/tiktok-followers"],
   ["/services/smm-panel-india", "/services"],
+  ["/smm-panel-india", "/services"],
   [
     "/blog/linkedin-growth-tips-for-personal-brands",
     "/blog/linkedin-growth-tips-personal-brands",
