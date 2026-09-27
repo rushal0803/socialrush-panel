@@ -349,6 +349,10 @@ export default function NewOrderPage() {
     : 0;
 
   useEffect(() => {
+    if (checkoutStep >= 3) router.prefetch("/dashboard/orders");
+  }, [checkoutStep, router]);
+
+  useEffect(() => {
     if (!selectedService || !quantityInput || quantityError || linkError || success) return;
     const timer = window.setTimeout(() => {
       void fetch("/api/order-draft", { method: "PUT", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ platform: selectedService.platform, serviceCode: selectedService.code, quantity, target: targetLink.trim() }) }).then((response) => { if (response.ok) track("order_draft_saved", { service_code: selectedService.code, platform: selectedService.platform }); }).catch(() => undefined);
@@ -733,7 +737,7 @@ export default function NewOrderPage() {
       clearDraft();
       requestId.current = "";
       window.dispatchEvent(new CustomEvent("wallet-balance-updated", { detail: updatedBalance }));
-      window.setTimeout(() => router.push("/dashboard/orders"), 900);
+      router.replace("/dashboard/orders");
     } catch (cause) {
       track("checkout_error", { step: "wallet_order", service_code: selectedService.code, platform: selectedService.platform });
       setError(cause instanceof Error ? cause.message : "Unable to place your order right now.");
