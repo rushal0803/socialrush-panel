@@ -1,5 +1,6 @@
 import PlatformServicesLanding from "@/components/marketing/services/PlatformServicesLanding";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import PlatformSmmIntentSection from "@/components/seo/PlatformSmmIntentSection";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
@@ -10,7 +11,7 @@ export const metadata = createPageMetadata({
   title: "Telegram Growth Services | Members, Views, Reactions & Poll Votes | SocialRUSH",
   description: "Explore SocialRUSH Telegram growth services, including members, post views, reactions and poll votes with clear public-link requirements and dashboard tracking.",
   path,
-  keywords: ["Telegram growth services", "Telegram members India", "Telegram post views", "Telegram reactions", "Telegram poll votes"],
+  keywords: ["Telegram growth services", "Telegram members India", "Telegram post views", "Telegram reactions", "Telegram poll votes", "Telegram SMM panel India", "SMM panel for Telegram India"],
 });
 
 export default function TelegramServicesPage() {
@@ -33,5 +34,6 @@ export default function TelegramServicesPage() {
     <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services" }, { name: "Telegram Services", path }]} />
     <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(itemList).replace(/</g, "\\u003c") }} />
     <PlatformServicesLanding platform="telegram" />
+    <PlatformSmmIntentSection platform="telegram" />
   </>;
 }
