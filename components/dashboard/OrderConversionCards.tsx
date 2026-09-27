@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, Clock3, CreditCard, Trash2 } from "lucide-react";
+import { ArrowRight, Clock3, CreditCard, Gift, Trash2 } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { track } from "@/lib/analytics/events";
@@ -10,14 +10,15 @@ export type DraftSummary = { platform: string; serviceCode: string; serviceName:
 export type ServiceShortcut = { code: string; platform: string; name: string; pricePer1000: number; minQuantity: number; minimumTotal: number };
 export type CheckoutRecoverySummary = { id: string; serviceCode: string; serviceName: string; quantity: number; target: string | null; total: number; createdAt: string; expiresAt: string | null };
 
-export default function OrderConversionCards({ firstOrder, draft, shortcuts, checkoutRecovery }: { firstOrder: boolean; draft: DraftSummary | null; shortcuts: ServiceShortcut[]; checkoutRecovery: CheckoutRecoverySummary | null }) {
+export default function OrderConversionCards({ firstOrder, draft, shortcuts, checkoutRecovery, firstOrderOffer }: { firstOrder: boolean; draft: DraftSummary | null; shortcuts: ServiceShortcut[]; checkoutRecovery: CheckoutRecoverySummary | null; firstOrderOffer: { reward: number; minimum: number } | null }) {
   const recoveryParams = new URLSearchParams();
   if (checkoutRecovery) { recoveryParams.set("service", checkoutRecovery.serviceCode); recoveryParams.set("quantity", String(checkoutRecovery.quantity)); recoveryParams.set("prefill", "1"); if (checkoutRecovery.target) recoveryParams.set("link", checkoutRecovery.target); }
   const recoveryHref = checkoutRecovery ? `/dashboard/new-order?${recoveryParams.toString()}` : "/dashboard/new-order";
   const discard = async () => { const response = await fetch("/api/order-draft", { method: "DELETE" }); if (response.ok) { track("order_draft_discarded", { step: "dashboard" }); window.location.reload(); } };
   return <section className="sr-smart-conversion mt-4 grid gap-4 xl:grid-cols-2">
     {firstOrder ? <article className="sr-smart-card relative overflow-hidden rounded-[1.35rem] border border-orange-400/25 bg-[radial-gradient(circle_at_85%_10%,rgba(255,122,0,.22),transparent_35%),linear-gradient(135deg,#17120c,#101116)] p-5 shadow-[0_24px_60px_-42px_rgba(255,122,0,.95)] sm:p-6">
-      <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-200">Your first campaign</p><h2 className="mt-2 text-2xl font-black tracking-tight">Ready to launch your first campaign?</h2><p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">Choose a service that matches your growth goal and place your first SocialRUSH order in just a few steps. Any active first-order reward is shown above with its live terms.</p>
+      <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-200">Your first campaign</p><h2 className="mt-2 text-2xl font-black tracking-tight">Ready to launch your first campaign?</h2><p className="mt-2 max-w-xl text-sm leading-6 text-slate-300">Choose a service that matches your growth goal and place your first SocialRUSH order in just a few steps.</p>
+      {firstOrderOffer ? <div className="mt-4 flex items-start gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/[.08] p-4"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl border border-emerald-400/25 bg-emerald-500/10 text-emerald-300"><Gift className="h-5 w-5" /></span><div><p className="text-sm font-black text-emerald-200">{formatCurrency(firstOrderOffer.reward, "INR")} first-order wallet bonus</p><p className="mt-1 text-xs leading-5 text-slate-300">Complete your first qualifying order of {formatCurrency(firstOrderOffer.minimum, "INR")} or more. After completion, the bonus is credited to your SocialRUSH wallet automatically.</p></div></div> : null}
       <div className="mt-4"><p className="mb-2 text-[11px] font-bold text-slate-400">Popular starter choices · minimum quantity prefilled</p><div className="grid gap-2 sm:grid-cols-3">{shortcuts.map((service) => <Link key={service.code} href={`/dashboard/new-order?platform=${service.platform}&service=${service.code}&quantity=${service.minQuantity}&prefill=1`} onClick={() => track("service_selected", { service_code: service.code, platform: service.platform, step: "first_order_shortcut" })} className="sr-smart-service rounded-xl border border-white/10 bg-black/20 p-3 transition hover:border-orange-400/50 hover:bg-orange-500/10 focus:outline-none focus:ring-4 focus:ring-orange-400/20"><PlatformIcon platform={service.platform} className="h-5 w-5 text-orange-300" /><p className="mt-2 text-xs font-black">{service.name}</p><p className="mt-2 text-sm font-black text-emerald-300">Start at {formatCurrency(service.minimumTotal, "INR")}</p><p className="mt-1 text-[10px] text-slate-400">{formatCurrency(service.pricePer1000, "INR")} / 1K · Min {service.minQuantity.toLocaleString("en-IN")}</p></Link>)}</div></div>
       <Link href="/dashboard/new-order" onClick={() => track("new_order_clicked", { step: "first_order_cta" })} className="btn-dashboard-primary mt-5 gap-2 px-5 text-sm">Start Your First Order <ArrowRight className="h-4 w-4" /></Link>
     </article> : null}
