@@ -13,7 +13,7 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
@@ -22,6 +22,7 @@ import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from ".
 import { socialPromotionCriteria, socialPromotionIntentKeywords } from "../../lib/seo/social-promotion-intent.ts";
 import { socialMediaServicesIndiaKeywords, socialMediaServiceGroups } from "../../lib/seo/social-media-services-intent.ts";
 import { smmSelectionChecklist, smmSelectionCriteria, smmSelectionIndiaKeywords } from "../../lib/seo/smm-selection-intent.ts";
+import { platformSmmIntent, platformSmmKeywords } from "../../lib/seo/platform-smm-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -430,6 +431,7 @@ test("phase 5H freshness registry marks only clean canonical-style paths with a 
     if (path === "/for-agencies") assert.equal(searchFreshnessLastmod[path], PHASE5_AGENCY_RESELLER_UPDATE);
     else if (path === "/social-media-growth-india") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_GROWTH_UPDATE);
     else if (path === "/services") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_SERVICES_UPDATE);
+    else if (["/instagram-growth-india","/youtube-growth-india","/facebook-growth-india","/linkedin-growth-india","/x-growth-india","/tiktok-growth-india","/services/telegram"].includes(path)) assert.equal(searchFreshnessLastmod[path], PHASE5_PLATFORM_SMM_UPDATE);
     else assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
   }
 });
@@ -810,4 +812,48 @@ test("phase 5S services page exposes visible SMM selection guidance and monitore
   assert.match(monitor, /"\/best-smm-panel-india", "\/services"/);
   assert.match(monitor, /"\/reliable-smm-panel-india", "\/services"/);
   assert.match(monitor, /"\/trusted-smm-panel-india", "\/services"/);
+});
+
+
+test("phase 5T assigns platform SMM panel queries to existing canonical hubs", () => {
+  const expected = {
+    instagram: "/instagram-growth-india",
+    youtube: "/youtube-growth-india",
+    linkedin: "/linkedin-growth-india",
+    facebook: "/facebook-growth-india",
+    twitter: "/x-growth-india",
+    tiktok: "/tiktok-growth-india",
+    telegram: "/services/telegram",
+  } as const;
+
+  for (const [platform, canonicalPath] of Object.entries(expected)) {
+    const intent = platformSmmIntent[platform as keyof typeof platformSmmIntent];
+    assert.match(intent.primaryKeyword, /SMM panel India/i);
+    const owner = transactionalQueryOwners.find((item) => item.canonicalPath === canonicalPath);
+    assert.ok(owner, `${canonicalPath} should own a platform SMM query family`);
+    for (const alias of intent.aliases) {
+      assert.equal(commercialCanonicalRedirects[alias], canonicalPath);
+    }
+  }
+  assert.match(platformSmmKeywords("instagram")[0] || "", /Instagram SMM panel India/);
+  assert.match(platformSmmKeywords("twitter")[0] || "", /Twitter \/ X SMM panel India/);
+});
+
+test("phase 5T renders platform SMM authority on every target hub", () => {
+  const component = readFileSync(new URL("../../components/seo/PlatformSmmIntentSection.tsx", import.meta.url), "utf8");
+  assert.match(component, /Compare .* services from one canonical India hub/);
+  assert.match(component, /does not claim universal/);
+  assert.match(component, /contentClusters\[platform\]/);
+
+  for (const path of [
+    "../../app/instagram-growth-india/page.tsx",
+    "../../app/youtube-growth-india/page.tsx",
+    "../../app/facebook-growth-india/page.tsx",
+    "../../app/linkedin-growth-india/page.tsx",
+    "../../components/marketing/PlatformGrowthHub.tsx",
+    "../../app/services/telegram/page.tsx",
+  ]) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, /PlatformSmmIntentSection/);
+  }
 });

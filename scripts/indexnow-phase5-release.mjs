@@ -19,6 +19,7 @@ export const phase5IndexNowPaths = [
   "/linkedin-growth-india",
   "/x-growth-india",
   "/tiktok-growth-india",
+  "/services/telegram",
   "/buy-instagram-followers-india",
   "/instagram-likes",
   "/instagram-views",

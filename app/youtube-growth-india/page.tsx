@@ -13,6 +13,7 @@ import {
 import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
+import PlatformSmmIntentSection from "@/components/seo/PlatformSmmIntentSection";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
@@ -20,6 +21,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Explore YouTube growth in India across subscribers, views, likes, comments and watch hours. Compare goals and choose the right SocialRUSH service.",
   path: "/youtube-growth-india",
+  keywords: ["YouTube SMM panel India", "SMM panel for YouTube India", "YouTube social media panel India"],
 });
 
 const growthOptions = [
@@ -331,6 +333,8 @@ export default function YouTubeGrowthIndiaPage() {
             </div>
           </div>
         </section>
+
+        <PlatformSmmIntentSection platform="youtube" />
 
         <section className="px-5 py-16 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">

@@ -12,6 +12,8 @@ export const metadata = createPageMetadata({
     "X engagement services",
     "Twitter followers India",
     "X followers India",
+    "Twitter SMM panel India",
+    "X SMM panel India",
   ],
 });
 

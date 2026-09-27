@@ -18,6 +18,7 @@ import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
+import PlatformSmmIntentSection from "@/components/seo/PlatformSmmIntentSection";
 import {
   createPageMetadata,
   SEO_SITE_URL,
@@ -28,6 +29,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Explore Facebook growth services in India for followers, likes, views, shares and group members. Compare goals and choose the right SocialRUSH option.",
   path: "/facebook-growth-india",
+  keywords: ["Facebook SMM panel India", "SMM panel for Facebook India", "Facebook social media panel India"],
 });
 
 const services = [
@@ -632,6 +634,8 @@ export default function FacebookGrowthIndiaPage() {
             </div>
           </div>
         </section>
+
+        <PlatformSmmIntentSection platform="facebook" />
 
         {/* FAQ */}
         <section className="px-5 pb-20 pt-8 sm:px-6 lg:px-8">
