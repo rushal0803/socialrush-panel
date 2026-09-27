@@ -630,7 +630,7 @@ test("phase 5N /for-agencies exposes visible reseller authority and truthful fre
 test("phase 5O assigns social media growth services India to one canonical hub", () => {
   const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
   assert.ok(owner);
-  assert.equal(owner.intent, "social media growth and engagement services India");
+  assert.equal(owner.intent, "social media growth, engagement and promotion services India");
   assert.ok(owner.aliases.includes("/social-media-growth-services-india"));
   assert.ok(owner.aliases.includes("/social-media-growth-service-india"));
   assert.equal(commercialCanonicalRedirects["/social-media-growth-services-india"], "/social-media-growth-india");
@@ -672,7 +672,7 @@ test("phase 5O marks the canonical growth hub fresh and submits it for search re
 test("phase 5P consolidates social media engagement services India onto the growth hub", () => {
   const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
   assert.ok(owner);
-  assert.match(owner.intent, /growth and engagement services India/i);
+  assert.match(owner.intent, /growth, engagement and promotion services India/i);
   assert.ok(owner.aliases.includes("/social-media-engagement-services-india"));
   assert.ok(owner.aliases.includes("/social-media-engagement-service-india"));
   assert.equal(commercialCanonicalRedirects["/social-media-engagement-services-india"], "/social-media-growth-india");
