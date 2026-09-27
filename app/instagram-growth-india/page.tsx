@@ -11,6 +11,7 @@ import {
 import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
+import PlatformSmmIntentSection from "@/components/seo/PlatformSmmIntentSection";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
@@ -18,6 +19,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Explore Instagram growth services in India for followers, likes, views, comments, saves and shares. Compare goals and choose the right option.",
   path: "/instagram-growth-india",
+  keywords: ["Instagram SMM panel India", "SMM panel for Instagram India", "Instagram social media panel India"],
 });
 
 const growthOptions = [
@@ -283,6 +285,8 @@ export default function InstagramGrowthIndiaPage() {
             </div>
           </div>
         </section>
+
+        <PlatformSmmIntentSection platform="instagram" />
 
         <section className="px-5 pb-20 sm:px-6 lg:px-8">
           <div className="mx-auto max-w-4xl">
