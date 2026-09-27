@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
 import ServiceCompareStudio from "@/components/marketing/services/ServiceCompareStudio";
 import SmmPanelIndiaAuthority from "@/components/marketing/services/SmmPanelIndiaAuthority";
+import SocialMediaServicesIndiaAuthority from "@/components/marketing/services/SocialMediaServicesIndiaAuthority";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
@@ -10,6 +11,7 @@ import { createPageMetadata } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-service-catalog";
 import { smmPanelIndiaKeywords } from "@/lib/seo/smm-panel-intent";
+import { socialMediaServicesIndiaKeywords } from "@/lib/seo/social-media-services-intent";
 
 export const dynamic = "force-dynamic";
 
@@ -26,6 +28,7 @@ export const metadata: Metadata = createPageMetadata({
     "Instagram growth services India",
     "YouTube growth services India",
     ...smmPanelIndiaKeywords,
+    ...socialMediaServicesIndiaKeywords,
   ],
 });
 
@@ -117,6 +120,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         serviceCatalog={serviceCatalog}
       />
       <SmmPanelIndiaAuthority serviceCatalog={serviceCatalog} />
+      <SocialMediaServicesIndiaAuthority />
       <ServiceCompareStudio serviceCatalog={serviceCatalog} />
       <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
