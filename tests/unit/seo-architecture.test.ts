@@ -16,6 +16,7 @@ import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAlia
 import { PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
+import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -548,4 +549,40 @@ test("phase 5K metadata includes minimum-order search language", () => {
   const canonicalSource = readFileSync(new URL("../../lib/seo/service-landing-pages.ts", import.meta.url), "utf8");
   assert.match(indiaSource, /orderRequirementIntentKeywords\(page\.serviceName\)/);
   assert.match(canonicalSource, /orderRequirementIntentKeywords\(page\.displayName\)/);
+});
+
+
+test("phase 5M assigns SMM panel India intent to the existing services canonical", () => {
+  const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/services");
+  assert.ok(owner);
+  assert.match(owner.intent, /SMM panel India/i);
+  assert.ok(owner.aliases.includes("/smm-panel-india"));
+  assert.equal(commercialCanonicalRedirects["/smm-panel-india"], "/services");
+  assert.ok(smmPanelIndiaKeywords.includes("SMM panel India"));
+  assert.ok(smmPanelIndiaKeywords.includes("UPI SMM panel India"));
+});
+
+test("phase 5M comparison model covers practical panel-selection criteria without ranking claims", () => {
+  assert.deepEqual(smmPanelIndiaCriteria.map((item) => item.id), ["pricing", "payments", "requirements", "delivery"]);
+  const summary = smmPanelPlatformSummary({ instagram: 6, youtube: 5, telegram: 0, linkedin: 2 });
+  assert.deepEqual(summary, [
+    { platform: "instagram", count: 6 },
+    { platform: "youtube", count: 5 },
+    { platform: "linkedin", count: 2 },
+  ]);
+  const copy = JSON.stringify(smmPanelIndiaCriteria);
+  assert.doesNotMatch(copy, /best|cheapest|#1/i);
+});
+
+test("phase 5M services page exposes visible SMM panel India authority content", () => {
+  const pageSource = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  const heroSource = readFileSync(new URL("../../components/marketing/services/ServicesPageContent.tsx", import.meta.url), "utf8");
+  const authoritySource = readFileSync(new URL("../../components/marketing/services/SmmPanelIndiaAuthority.tsx", import.meta.url), "utf8");
+  assert.match(pageSource, /SMM Panel India \| Social Media Growth Services/);
+  assert.match(pageSource, /<SmmPanelIndiaAuthority serviceCatalog=\{serviceCatalog\}/);
+  assert.match(heroSource, /SMM Panel India for social media growth services/);
+  assert.match(authoritySource, /SMM panel India/);
+  assert.match(authoritySource, /India-friendly checkout/);
+  assert.match(authoritySource, /For creators, businesses and agencies/);
+  assert.doesNotMatch(authoritySource, /India.?s #1|best SMM|cheapest SMM/i);
 });
