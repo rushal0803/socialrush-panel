@@ -717,7 +717,7 @@ test("phase 5Q assigns social media promotion services India to the existing gro
   assert.equal(commercialCanonicalRedirects["/social-media-promotion-services-india"], "/social-media-growth-india");
   assert.equal(commercialCanonicalRedirects["/social-media-promotion-service-india"], "/social-media-growth-india");
   assert.ok(socialPromotionIntentKeywords.includes("social media promotion services India"));
-  assert.equal(socialEngagementIntentKeywords.includes("social media promotion services India" as never), false);
+  assert.equal((socialEngagementIntentKeywords as readonly string[]).includes("social media promotion services India"), false);
 });
 
 test("phase 5Q promotion criteria distinguish campaign services from management retainers", () => {
