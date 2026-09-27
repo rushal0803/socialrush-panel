@@ -4,6 +4,7 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { SERVICE_PRICES } from "@/lib/service-pricing";
 import { paymentIntentFaq, paymentIntentKeywords } from "@/lib/seo/payment-intent";
 import { deliveryRefillIntentKeywords } from "@/lib/seo/delivery-refill-intent";
+import { orderRequirementIntentKeywords } from "@/lib/seo/order-requirements-intent";
 
 export type SeoServiceSlug =
   | "instagram-followers"
@@ -274,6 +275,7 @@ export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
       `10000 ${page.displayName} price India`,
       ...paymentIntentKeywords(page.displayName),
       ...deliveryRefillIntentKeywords(page.displayName),
+      ...orderRequirementIntentKeywords(page.displayName),
     ],
   });
 }
@@ -353,6 +355,16 @@ export function getSeoServiceFaqs(slug: SeoServiceSlug) {
     {
       question: `Is refill support available for ${page.displayName}?`,
       answer: `${page.service.refillPolicy} is currently listed for this service. Eligibility and the applicable coverage period are shown in the service details when you order.`,
+    },
+    {
+      question: `What is the minimum order for ${page.displayName}?`,
+      answer: page.service.minQuantity > 0
+        ? `The current catalog minimum is ${page.service.minQuantity.toLocaleString("en-IN")}. The live order flow validates the current minimum, maximum and quantity step before checkout.`
+        : "This service uses protected live quantity limits. Open the order flow to review the current minimum and maximum before checkout.",
+    },
+    {
+      question: `What link do I need for ${page.displayName}?`,
+      answer: `Use the correct ${page.destination} and keep it publicly accessible while the order is processing. Never submit a password, OTP, recovery code or private login.`,
     },
     {
       question: "Can I track my order?",
