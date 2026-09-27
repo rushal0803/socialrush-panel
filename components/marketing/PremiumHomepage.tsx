@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useMemo, useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { ArrowRight, Check, ChevronDown, CircleDollarSign, Headphones, Link2, PackageCheck, RefreshCw, Search, ShieldCheck, Sparkles, TicketCheck, TrendingUp, Wallet, type LucideIcon } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { activeSmmServices, platformMeta, type SmmPlatformId } from "@/lib/smm-service-catalog";
@@ -22,11 +22,13 @@ function money(value: number) { return new Intl.NumberFormat("en-IN", { style: "
 
 function serviceType(code: string) { return code.split("-").slice(1).join(" ").replace(/\b\w/g, c => c.toUpperCase()); }
 
-export default function PremiumHomepage({ searchParams }: { searchParams?: { platform?: string; service?: string } }) {
+export default function PremiumHomepage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { currency, rates } = usePreferredCurrency();
   const money = (value: number) => formatCurrency(value, currency, rates);
-  const initialPlatform = platforms.includes(searchParams?.platform as SmmPlatformId) ? searchParams?.platform as SmmPlatformId : "instagram";
+  const initialPlatformParam = searchParams.get("platform");
+  const initialPlatform = platforms.includes(initialPlatformParam as SmmPlatformId) ? initialPlatformParam as SmmPlatformId : "instagram";
   const [platform, setPlatform] = useState<SmmPlatformId>(initialPlatform);
   const [serviceCode, setServiceCode] = useState("");
   const [quantity, setQuantity] = useState(1000);
@@ -36,7 +38,7 @@ export default function PremiumHomepage({ searchParams }: { searchParams?: { pla
 
   useEffect(() => { fetch("/api/service-health").then(r => r.ok ? r.json() : null).then(x => x?.data && setHealth(x.data)).catch(() => undefined); }, []);
   const services = useMemo(() => activeSmmServices.filter(s => s.platform === platform), [platform]);
-  const selected = services.find(s => s.code === serviceCode) || services.find(s => s.code.endsWith(`-${searchParams?.service}`)) || services[0];
+  const selected = services.find(s => s.code === serviceCode) || services.find(s => s.code.endsWith(`-${searchParams.get("service") || ""}`)) || services[0];
   useEffect(() => { if (selected && selected.code !== serviceCode) setServiceCode(selected.code); }, [selected, serviceCode]);
   useEffect(() => {
     if (!selected) return;
