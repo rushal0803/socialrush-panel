@@ -173,8 +173,14 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
   {
     id: "social-media-services-india",
     canonicalPath: "/services",
-    intent: "SMM panel India and social media growth services comparison",
+    intent: "SMM panel India and multi-platform service catalog comparison",
     aliases: ["/services/smm-panel-india", "/smm-panel-india"],
+  },
+  {
+    id: "social-media-growth-services-india",
+    canonicalPath: "/social-media-growth-india",
+    intent: "social media growth services India",
+    aliases: ["/social-media-growth-services-india", "/social-media-growth-service-india"],
   },
   {
     id: "agency-reseller-panel-india",
