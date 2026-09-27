@@ -40,6 +40,7 @@ export const seoIntentMap: readonly SeoIntent[] = [
   { id: "facebook-growth-india", platform: "facebook", kind: "platform-growth", primaryTarget: "/facebook-growth-india" },
   { id: "tiktok-growth-india", platform: "tiktok", kind: "platform-growth", primaryTarget: "/tiktok-growth-india" },
   { id: "social-media-service-comparison", platform: "cross-platform", kind: "commercial-comparison", primaryTarget: "/services" },
+  { id: "social-media-growth-services-india", platform: "cross-platform", kind: "commercial-comparison", primaryTarget: "/social-media-growth-india" },
   ...protectedIndiaIntentTargets.map(({ id, platform, primaryTarget }) => ({
     id: `india-${id}`,
     platform,
