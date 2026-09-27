@@ -3,6 +3,7 @@ import { activeSmmServices, platformMeta, type SmmService } from "@/lib/smm-serv
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { SERVICE_PRICES } from "@/lib/service-pricing";
 import { paymentIntentFaq, paymentIntentKeywords } from "@/lib/seo/payment-intent";
+import { deliveryRefillIntentKeywords } from "@/lib/seo/delivery-refill-intent";
 
 export type SeoServiceSlug =
   | "instagram-followers"
@@ -272,6 +273,7 @@ export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
       `5000 ${page.displayName} price India`,
       `10000 ${page.displayName} price India`,
       ...paymentIntentKeywords(page.displayName),
+      ...deliveryRefillIntentKeywords(page.displayName),
     ],
   });
 }
