@@ -9,6 +9,7 @@ import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepage
 import PlatformIcon from "@/components/PlatformIcon";
 import YouTubeSubscribersOrderPanel from "@/components/marketing/YouTubeSubscribersOrderPanel";
 import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
+import SafetyIntentSection from "@/components/seo/SafetyIntentSection";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -31,6 +32,7 @@ export default function YouTubeSubscribersLanding() {
       <HeroDashboard price={price} active={playing} progress={progress} /></div></section>
     <section className="border-y border-white/10 bg-[#101116] px-4 py-4 sm:px-6 lg:px-8"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3">{[[LockKeyhole,"No Password Required"],[Link2,"Public Channel Link"],[CreditCard,"Live Pricing"],[BarChart3,"Order Tracking"],[ShieldCheck,"Refill Information"],[Headphones,"Secure Checkout"]].map(([Icon,label]) => { const C=Icon as typeof LockKeyhole; return <span key={String(label)} className="flex items-center gap-2 text-xs font-bold text-slate-300"><C className="h-4 w-4 text-orange-300" />{String(label)}</span>})}</div></section>
     <YouTubeSubscribersOrderPanel /><IndiaPaymentIntentSection serviceName="YouTube Subscribers" destination="public YouTube channel link" orderHref="#order" tone="dark" /><DeliveryRefillIntentSection serviceName="YouTube Subscribers" deliveryTime={service?.deliveryTime ?? "Current estimate shown before checkout"} refillPolicy={service?.refillPolicy ?? "Current terms shown before checkout"} destination="public YouTube channel link" orderHref="#order" tone="dark" /><OrderRequirementsIntentSection serviceName="YouTube Subscribers" minQuantity={service?.minQuantity ?? 100} maxQuantity={service?.maxQuantity ?? 1000000} quantityStep={service?.quantityStep ?? 1} destination="public YouTube channel link" pricePer1000={service?.pricePer1000 ?? null} orderHref="#order" tone="dark" />
+    <SafetyIntentSection serviceName="YouTube Subscribers" platform="youtube" destination="public YouTube channel link" guideHref="/blog/is-it-safe-to-buy-youtube-subscribers" orderHref="#order" tone="dark" />
     <BuyerGuidance />
     <section className="px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[.035] p-6 sm:p-8">

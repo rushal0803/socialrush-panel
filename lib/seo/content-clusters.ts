@@ -59,6 +59,8 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "How to promote a new YouTube channel in India", href: "/blog/how-to-promote-new-youtube-channel-in-india" },
       { label: "YouTube subscribers vs views for Indian creators", href: "/blog/youtube-subscribers-vs-views-india" },
       { label: "YouTube views pricing guide for India", href: "/blog/youtube-views-price-in-india" },
+      { label: "YouTube subscriber safety & policy guide", href: "/blog/is-it-safe-to-buy-youtube-subscribers" },
+      { label: "YouTube views safety & policy guide", href: "/blog/is-it-safe-to-buy-youtube-views" },
     ],
   },
   linkedin: {
@@ -75,6 +77,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "LinkedIn growth tips for personal brands", href: "/blog/linkedin-growth-tips-personal-brands" },
       { label: "LinkedIn followers for business growth", href: "/blog/linkedin-followers-for-business-growth" },
       { label: "LinkedIn followers vs engagement in India", href: "/blog/linkedin-followers-vs-engagement-india" },
+      { label: "LinkedIn follower safety & policy guide", href: "/blog/is-it-safe-to-buy-linkedin-followers" },
     ],
   },
   twitter: {
@@ -97,6 +100,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "How social media growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" },
       { label: "Campaign budget planning for India", href: "/blog/social-media-campaign-budget-planning-india" },
+      { label: "Twitter / X follower safety & policy guide", href: "/blog/is-it-safe-to-buy-twitter-followers" },
     ],
   },
   facebook: {
@@ -134,6 +138,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "Social media growth strategy for Indian creators", href: "/blog/social-media-growth-strategy-indian-creators" },
       { label: "Social media campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
+      { label: "Telegram member safety & spam-risk guide", href: "/blog/is-it-safe-to-buy-telegram-members" },
     ],
   },
   telegram: {
