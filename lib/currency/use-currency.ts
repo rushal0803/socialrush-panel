@@ -1,6 +1,6 @@
 "use client";
 import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
-import { DISPLAY_CURRENCY_COOKIE, setClientCurrencyRates, type Currency, type CurrencyRates } from "@/lib/currency";
+import { DISPLAY_CURRENCY_COOKIE, isCurrency, setClientCurrencyRates, type Currency, type CurrencyRates } from "@/lib/currency";
 type State = { currency: Currency; setCurrency: (currency: Currency) => void; rates: CurrencyRates; ratesLoading: boolean; ratesSource: "server"; ratesUpdatedAt: number };
 const Context = createContext<State | null>(null);
 export function CurrencyProvider({ children, initialCurrency = "INR", rates: initialRates = { INR: 1 } }: { children: ReactNode; initialCurrency?: Currency; rates?: CurrencyRates }) {
@@ -8,11 +8,19 @@ export function CurrencyProvider({ children, initialCurrency = "INR", rates: ini
  const [rates, setRates] = useState(initialRates);
  const [ratesLoading, setRatesLoading] = useState(false);
  const setCurrency = useCallback((value: Currency) => { setValue(value); document.cookie = `${DISPLAY_CURRENCY_COOKIE}=${value}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`; }, []);
+ useEffect(() => {
+   const stored = document.cookie
+     .split(";")
+     .map((part) => part.trim())
+     .find((part) => part.startsWith(`${DISPLAY_CURRENCY_COOKIE}=`))
+     ?.split("=")[1];
+   if (isCurrency(stored)) setValue(stored);
+ }, []);
  useEffect(() => { setClientCurrencyRates(rates); }, [rates]);
  useEffect(() => {
    let active = true;
    setRatesLoading(true);
-   fetch("/api/fx-rates", { cache: "no-store" }).then((response) => response.ok ? response.json() : null).then((payload) => {
+   fetch("/api/fx-rates", { cache: "force-cache" }).then((response) => response.ok ? response.json() : null).then((payload) => {
      if (active && payload?.rates?.INR === 1) setRates(payload.rates);
    }).catch(() => undefined).finally(() => { if (active) setRatesLoading(false); });
    return () => { active = false; };
