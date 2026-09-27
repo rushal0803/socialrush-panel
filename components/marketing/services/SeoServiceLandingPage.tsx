@@ -23,6 +23,7 @@ import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepage
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
 import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
+import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
 import {
   getSeoServiceFaqs,
   getSeoServicePage,
@@ -254,6 +255,8 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
       {!page.service.requiresLiveCatalogFacts ? <ServiceLandingOrderBuilder service={page.service} /> : null}
 
       <SearchDemandPriceSection displayName={page.displayName} serviceCode={page.service.code} platform={page.service.platform} pricePer1000={page.confirmedPrice} destination={page.destination} packagesHref={packagesHref} />
+
+      <IndiaPaymentIntentSection serviceName={page.displayName} destination={page.destination} orderHref={packagesHref} tone="light" />
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
