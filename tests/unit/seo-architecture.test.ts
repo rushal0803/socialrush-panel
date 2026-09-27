@@ -21,6 +21,7 @@ import { agencyResellerCriteria, agencyResellerIntentKeywords } from "../../lib/
 import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "../../lib/seo/social-engagement-intent.ts";
 import { socialPromotionCriteria, socialPromotionIntentKeywords } from "../../lib/seo/social-promotion-intent.ts";
 import { socialMediaServicesIndiaKeywords, socialMediaServiceGroups } from "../../lib/seo/social-media-services-intent.ts";
+import { smmSelectionChecklist, smmSelectionCriteria, smmSelectionIndiaKeywords } from "../../lib/seo/smm-selection-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -772,4 +773,41 @@ test("phase 5R services page exposes visible social media services India authori
   assert.match(component, /Social media services India/);
   assert.match(component, /not a monthly social media management agency/i);
   assert.match(monitor, /social-media-services-india/);
+});
+
+
+test("phase 5S consolidates best reliable and trusted SMM panel India queries onto /services", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "social-media-services-india");
+  assert.ok(owner);
+  for (const alias of ["/best-smm-panel-india", "/reliable-smm-panel-india", "/trusted-smm-panel-india"]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/services");
+  }
+  assert.ok(smmSelectionIndiaKeywords.includes("best SMM panel India"));
+  assert.ok(smmSelectionIndiaKeywords.includes("reliable SMM panel India"));
+  assert.ok(smmSelectionIndiaKeywords.includes("trusted SMM panel India"));
+});
+
+test("phase 5S selection model uses factual criteria instead of self-awarded ranking claims", () => {
+  assert.deepEqual(smmSelectionChecklist().map((item) => item.id), ["pricing", "payments", "requirements", "delivery", "tracking"]);
+  const copy = JSON.stringify(smmSelectionCriteria);
+  assert.match(copy, /INR pricing/i);
+  assert.match(copy, /UPI|bank transfer/i);
+  assert.match(copy, /public.*link/i);
+  assert.match(copy, /delivery/i);
+  assert.match(copy, /order status/i);
+  assert.doesNotMatch(copy, /SocialRUSH is the best|#1|cheapest|guaranteed/i);
+});
+
+test("phase 5S services page exposes visible SMM selection guidance and monitored aliases", () => {
+  const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  const authority = readFileSync(new URL("../../components/marketing/services/SmmSelectionAuthority.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  assert.match(source, /SmmSelectionAuthority/);
+  assert.match(source, /smmSelectionIndiaKeywords/);
+  assert.match(authority, /How to compare a reliable SMM panel in India/i);
+  assert.match(authority, /does not claim a universal “best” ranking/i);
+  assert.match(monitor, /"\/best-smm-panel-india", "\/services"/);
+  assert.match(monitor, /"\/reliable-smm-panel-india", "\/services"/);
+  assert.match(monitor, /"\/trusted-smm-panel-india", "\/services"/);
 });
