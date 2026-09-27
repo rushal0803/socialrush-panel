@@ -95,6 +95,12 @@ export async function updateSession(request: NextRequest) {
     return redirectResponse;
   }
 
+  // Dashboard layout performs the profile/block check once for the whole
+  // authenticated tree. Avoid a duplicate profile round-trip in middleware.
+  if (pathname === "/dashboard" || pathname.startsWith("/dashboard/")) {
+    return response;
+  }
+
   const { data: accessProfile, error: accessProfileError } = await supabase
     .from("profiles")
     .select("role,is_blocked")
