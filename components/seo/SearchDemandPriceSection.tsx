@@ -4,11 +4,11 @@ import { buildQuantityPlanning, serviceUnitFromCode } from "@/lib/seo/search-dem
 
 const serviceGuideLinks: Record<string, Array<{ label:string; href:string }>> = {
   "instagram-followers": [{ label: "Instagram follower price guide", href: "/blog/instagram-followers-price-in-india" }],
-  "youtube-subscribers": [{ label: "YouTube subscriber growth guide", href: "/blog/how-to-increase-youtube-subscribers-in-india" }],
-  "linkedin-followers": [{ label: "LinkedIn followers for business growth", href: "/blog/linkedin-followers-for-business-growth" }],
-  "facebook-followers": [{ label: "Facebook page growth guide", href: "/blog/facebook-page-growth-tips-for-local-businesses" }],
-  "x-followers": [{ label: "Public-link ordering safety", href: "/blog/why-public-link-ordering-is-safer" }],
-  "telegram-members": [{ label: "How growth campaigns work", href: "/blog/how-social-media-growth-campaigns-work" }],
+  "youtube-subscribers": [{ label: "YouTube subscribers price guide", href: "/blog/youtube-subscribers-price-in-india" }],
+  "linkedin-followers": [{ label: "LinkedIn followers price guide", href: "/blog/linkedin-followers-price-in-india" }],
+  "facebook-followers": [{ label: "Facebook followers price guide", href: "/blog/facebook-followers-price-in-india" }],
+  "x-followers": [{ label: "Twitter / X followers price guide", href: "/blog/twitter-followers-price-in-india" }],
+  "telegram-members": [{ label: "Telegram members price guide", href: "/blog/telegram-members-price-in-india" }],
 };
 
 const guideLinks: Record<string, Array<{ label:string; href:string }>> = {
