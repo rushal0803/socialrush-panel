@@ -4,6 +4,7 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import PublicShell from "@/components/marketing/PublicShell";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
+import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "@/lib/seo/social-engagement-intent";
 
 export const metadata = createPageMetadata({
   title: "Social Media Growth Services India | Compare Platforms | SocialRUSH",
@@ -19,6 +20,7 @@ export const metadata = createPageMetadata({
     "LinkedIn growth India",
     "social media packages India",
     "social media services for agencies India",
+    ...socialEngagementIntentKeywords,
   ],
 });
 
@@ -154,6 +156,32 @@ export default function SocialMediaGrowthIndiaPage() {
           <div className="max-w-3xl"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">High-intent service paths</p><h2 className="mt-2 text-3xl font-black">Go directly to the service you are comparing.</h2><p className="mt-3 text-sm leading-6 text-slate-400">These pages explain the relevant public-link requirement and connect to the current order experience. Review the active details before payment.</p></div>
           <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
             {commercialPaths.map(([name, text, href]) => <Link key={href} href={href} className="group rounded-2xl border border-white/10 bg-[#101116] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/30"><div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><TrendingUp className="h-5 w-5" /></span><ArrowRight className="h-4 w-4 text-slate-600 transition group-hover:translate-x-0.5 group-hover:text-orange-300" /></div><h3 className="mt-4 text-lg font-black">{name}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{text}</p></Link>)}
+          </div>
+        </section>
+
+        <section className="border-y border-white/10 bg-[#0b0c10] px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Social media engagement services India</p>
+              <h2 className="mt-2 text-3xl font-black">Compare audience, content and interaction services by the metric you actually need.</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-400">SocialRUSH groups eligible social media engagement services by campaign purpose so you can move directly to the canonical service page. Current price, quantity limits, delivery, refill/support and public-link requirements remain authoritative on the selected service and checkout flow.</p>
+            </div>
+            <div className="mt-7 grid gap-4 lg:grid-cols-3">
+              {socialEngagementServiceGroups.map((group) => (
+                <article key={group.id} className="rounded-3xl border border-white/10 bg-[#101116] p-5">
+                  <h3 className="text-lg font-black">{group.title}</h3>
+                  <p className="mt-2 text-sm leading-6 text-slate-400">{group.description}</p>
+                  <div className="mt-5 flex flex-wrap gap-2">
+                    {group.links.map((link) => (
+                      <Link key={link.href} href={link.href} className="inline-flex min-h-10 items-center gap-1 rounded-xl border border-white/10 bg-white/[.035] px-3 text-xs font-black text-orange-200 transition hover:border-orange-400/35 hover:bg-orange-500/[.07]">
+                        {link.label}<ArrowRight className="h-3.5 w-3.5" />
+                      </Link>
+                    ))}
+                  </div>
+                </article>
+              ))}
+            </div>
+            <p className="mt-5 max-w-4xl text-xs leading-5 text-slate-500">These services support visible campaign metrics only. They do not guarantee organic reach, recommendation-system placement, followers-to-customer conversion, monetization, leads, sales or revenue.</p>
           </div>
         </section>
 
