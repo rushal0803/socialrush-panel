@@ -40,6 +40,7 @@ export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platf
   const maxQuantity = liveMaxQuantity && liveMaxQuantity > 0 ? liveMaxQuantity : service.maxQuantity;
   const step = service.quantityStep ?? 1;
   const protectedLiveFacts = service.requiresLiveCatalogFacts || service.pricePer1000 <= 0;
+  const liveRateAvailable = typeof liveRatePer1000 === "number" && liveRatePer1000 > 0;
   const staticRate = protectedLiveFacts ? null : service.pricePer1000;
   const candidateRows = buildQuantityPlanning(staticRate);
   const rows = candidateRows.filter((row) =>
@@ -64,7 +65,9 @@ export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platf
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
               Compare common campaign sizes before ordering. {protectedLiveFacts
-                ? "This service uses protected live catalog facts, so the final price is shown only in the active order flow."
+                ? liveRateAvailable
+                  ? "This service currently has live pricing in the active order flow, so static totals are intentionally not repeated here."
+                  : "This service uses protected live catalog facts, so the final price is shown only in the active order flow."
                 : "The totals below use the current catalog rate on this page."} Final availability, service terms and checkout total remain authoritative.
             </p>
 
