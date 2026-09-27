@@ -48,11 +48,15 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
           <h1 className="mt-4 text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl">
             {greeting}{userName ? `, ${userName}` : ""}
             <span className="mt-1 block bg-gradient-to-r from-orange-300 via-amber-200 to-orange-300 bg-clip-text text-transparent">
-              Ready for your next campaign?
+              {draft ? "Your saved campaign is ready to continue." : firstOrder ? "Ready for your first campaign?" : "Ready for your next campaign?"}
             </span>
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-            Manage orders, wallet activity, saved profiles and support from one focused workspace.
+            {draft
+              ? "You already started an order. Continue from your saved configuration, review the current price and finish when you’re ready."
+              : firstOrder
+                ? "Choose a platform and service, see the exact price before payment, and place your first order without sharing any password."
+                : "Manage orders, wallet activity, saved profiles and support from one focused workspace."}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
@@ -62,15 +66,25 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
               {draft ? <Clock3 className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
               {draft ? "Continue Saved Order" : firstOrder ? "Place Your First Order" : "Start New Campaign"}
             </Link>
-            <Link href="/dashboard/orders" className="btn-dashboard-secondary min-h-12 gap-2 px-5 text-sm">
-              <LayoutList className="h-4 w-4" />
-              View My Orders
+            <Link href={firstOrder ? "/dashboard/support" : "/dashboard/orders"} className="btn-dashboard-secondary min-h-12 gap-2 px-5 text-sm">
+              {firstOrder ? <CircleHelp className="h-4 w-4" /> : <LayoutList className="h-4 w-4" />}
+              {firstOrder ? "Need Help Choosing?" : "View My Orders"}
             </Link>
           </div>
           <div className="mt-5 flex flex-wrap gap-2 text-[10px] font-bold text-slate-300">
-            <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Live order tracking</span>
-            <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Faster repeat campaigns</span>
-            <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Secure account support</span>
+            {firstOrder ? (
+              <>
+                <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">No password required</span>
+                <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Exact price before payment</span>
+                <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Help available before ordering</span>
+              </>
+            ) : (
+              <>
+                <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Live order tracking</span>
+                <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Faster repeat campaigns</span>
+                <span className="rounded-full border border-white/10 bg-white/[.045] px-2.5 py-1">Secure account support</span>
+              </>
+            )}
           </div>
         </div>
 
