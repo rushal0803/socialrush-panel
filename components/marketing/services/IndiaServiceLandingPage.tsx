@@ -35,6 +35,7 @@ import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupM
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
+import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules } from "@/lib/order-service-experience";
 
@@ -575,6 +576,8 @@ export default async function IndiaServiceLandingPage({
       {catalogService && !catalogService.requiresLiveCatalogFacts && linkRules[catalogService.code] ? <ServiceLandingOrderBuilder service={catalogService} /> : null}
 
       <DeliveryRefillIntentSection serviceName={page.serviceName} deliveryTime={delivery} refillPolicy={refill} destination={page.destination} orderHref={available ? orderHref : "/services"} tone="light" />
+
+      <OrderRequirementsIntentSection serviceName={page.serviceName} minQuantity={catalogService?.minQuantity ?? 0} maxQuantity={catalogService?.maxQuantity ?? 0} quantityStep={catalogService?.quantityStep ?? 1} destination={page.destination} pricePer1000={catalogService && !catalogService.requiresLiveCatalogFacts && catalogService.pricePer1000 > 0 ? catalogService.pricePer1000 : null} orderHref={available ? orderHref : "/services"} tone="light" />
 
       {isTwitterFollowers ? (
         <section aria-labelledby="twitter-price-heading" className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8">

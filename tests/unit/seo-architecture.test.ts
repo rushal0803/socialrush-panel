@@ -15,6 +15,7 @@ import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
 import { PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
+import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -488,4 +489,63 @@ test("phase 5J metadata models include delivery and refill query language", () =
   const canonicalSource = readFileSync(new URL("../../lib/seo/service-landing-pages.ts", import.meta.url), "utf8");
   assert.match(indiaSource, /deliveryRefillIntentKeywords\(page\.serviceName\)/);
   assert.match(canonicalSource, /deliveryRefillIntentKeywords\(page\.displayName\)/);
+});
+
+
+test("phase 5K models minimum-order and quantity-limit search intent from catalog facts", () => {
+  assert.deepEqual(orderRequirementIntentKeywords("Instagram Followers"), [
+    "Instagram Followers minimum order India",
+    "minimum Instagram Followers order",
+    "Instagram Followers quantity limit India",
+    "how many Instagram Followers can I buy",
+    "public link required for Instagram Followers",
+  ]);
+
+  const copy = buildOrderRequirementCopy({
+    serviceName: "Instagram Followers",
+    minQuantity: 100,
+    maxQuantity: 1000000,
+    quantityStep: 1,
+    destination: "public Instagram profile link",
+  });
+  assert.equal(copy.validLimits, true);
+  assert.equal(copy.minQuantity, 100);
+  assert.equal(copy.maxQuantity, 1000000);
+  assert.equal(copy.quantityStep, 1);
+  assert.match(copy.heading, /minimum order and quantity limits in India/i);
+
+  const protectedCopy = buildOrderRequirementCopy({
+    serviceName: "Protected Service",
+    minQuantity: 0,
+    maxQuantity: 0,
+    destination: "public link",
+  });
+  assert.equal(protectedCopy.validLimits, false);
+  assert.equal(protectedCopy.minQuantity, null);
+  assert.equal(protectedCopy.maxQuantity, null);
+});
+
+test("phase 5K priority money pages expose the visible order-requirements module", () => {
+  const files = [
+    "../../app/buy-instagram-followers-india/page.tsx",
+    "../../components/marketing/YouTubeSubscribersLanding.tsx",
+    "../../components/marketing/LinkedInFollowersLanding.tsx",
+    "../../components/marketing/FacebookFollowersLanding.tsx",
+    "../../components/marketing/TwitterFollowersLanding.tsx",
+    "../../components/marketing/TelegramFollowersLanding.tsx",
+    "../../components/marketing/services/SeoServiceLandingPage.tsx",
+    "../../components/marketing/services/IndiaServiceLandingPage.tsx",
+  ];
+
+  for (const path of files) {
+    const source = readFileSync(new URL(path, import.meta.url), "utf8");
+    assert.match(source, /OrderRequirementsIntentSection/);
+  }
+});
+
+test("phase 5K metadata includes minimum-order search language", () => {
+  const indiaSource = readFileSync(new URL("../../lib/seo/india-service-pages.ts", import.meta.url), "utf8");
+  const canonicalSource = readFileSync(new URL("../../lib/seo/service-landing-pages.ts", import.meta.url), "utf8");
+  assert.match(indiaSource, /orderRequirementIntentKeywords\(page\.serviceName\)/);
+  assert.match(canonicalSource, /orderRequirementIntentKeywords\(page\.displayName\)/);
 });
