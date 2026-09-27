@@ -18,6 +18,7 @@ import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
 import { agencyResellerCriteria, agencyResellerIntentKeywords } from "../../lib/seo/agency-reseller-intent.ts";
+import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "../../lib/seo/social-engagement-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -628,7 +629,7 @@ test("phase 5N /for-agencies exposes visible reseller authority and truthful fre
 test("phase 5O assigns social media growth services India to one canonical hub", () => {
   const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
   assert.ok(owner);
-  assert.equal(owner.intent, "social media growth services India");
+  assert.equal(owner.intent, "social media growth and engagement services India");
   assert.ok(owner.aliases.includes("/social-media-growth-services-india"));
   assert.ok(owner.aliases.includes("/social-media-growth-service-india"));
   assert.equal(commercialCanonicalRedirects["/social-media-growth-services-india"], "/social-media-growth-india");
@@ -664,4 +665,43 @@ test("phase 5O marks the canonical growth hub fresh and submits it for search re
   assert.match(monitor, /"\/social-media-growth-india"/);
   assert.match(monitor, /"\/social-media-growth-services-india", "\/social-media-growth-india"/);
   assert.match(monitor, /"\/social-media-growth-service-india", "\/social-media-growth-india"/);
+});
+
+
+test("phase 5P consolidates social media engagement services India onto the growth hub", () => {
+  const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
+  assert.ok(owner);
+  assert.match(owner.intent, /growth and engagement services India/i);
+  assert.ok(owner.aliases.includes("/social-media-engagement-services-india"));
+  assert.ok(owner.aliases.includes("/social-media-engagement-service-india"));
+  assert.equal(commercialCanonicalRedirects["/social-media-engagement-services-india"], "/social-media-growth-india");
+  assert.equal(commercialCanonicalRedirects["/social-media-engagement-service-india"], "/social-media-growth-india");
+  assert.ok(socialEngagementIntentKeywords.includes("social media engagement services India"));
+  assert.ok(socialEngagementIntentKeywords.includes("social media followers services India"));
+});
+
+test("phase 5P engagement model links only to clean canonical service paths", () => {
+  assert.deepEqual(socialEngagementServiceGroups.map((group) => group.id), ["audience", "content", "interaction"]);
+  for (const group of socialEngagementServiceGroups) {
+    assert.ok(group.links.length >= 4);
+    for (const link of group.links) {
+      assert.match(link.href, /^\//);
+      assert.equal(link.href.includes("?"), false);
+      assert.equal(isCommercialAliasPath(link.href), false, link.href + " should be canonical");
+    }
+  }
+});
+
+test("phase 5P growth hub exposes visible engagement-service intent without outcome guarantees", () => {
+  const source = readFileSync(new URL("../../app/social-media-growth-india/page.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  assert.match(source, /Social media engagement services India/i);
+  assert.match(source, /Followers, subscribers and members/);
+  assert.match(source, /Likes, views and content engagement/);
+  assert.match(source, /Comments, saves and shares/);
+  assert.match(source, /do not guarantee organic reach/i);
+  assert.doesNotMatch(source, /100% safe|guaranteed reach|guaranteed sales|#1|cheapest/i);
+  assert.match(monitor, /"\/social-media-engagement-services-india", "\/social-media-growth-india"/);
+  assert.match(monitor, /"\/social-media-engagement-service-india", "\/social-media-growth-india"/);
+  assert.equal(searchFreshnessLastmod["/social-media-growth-india"], "2026-09-28");
 });
