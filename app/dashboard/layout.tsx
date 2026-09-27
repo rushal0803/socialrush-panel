@@ -34,6 +34,7 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
     );
   }
   if (!context.user || !context.profile) redirect("/login?next=/dashboard/new-order");
+  if (context.profile.is_blocked) redirect("/login?error=account_blocked");
 
   return (
     <div className="dashboard-shell relative flex min-h-screen">
