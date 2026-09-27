@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
 import ServiceCompareStudio from "@/components/marketing/services/ServiceCompareStudio";
+import SmmPanelIndiaAuthority from "@/components/marketing/services/SmmPanelIndiaAuthority";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
@@ -8,13 +9,14 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-service-catalog";
+import { smmPanelIndiaKeywords } from "@/lib/seo/smm-panel-intent";
 
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Social Media Growth Services | SocialRUSH",
+  title: "SMM Panel India | Social Media Growth Services | SocialRUSH",
   description:
-    "Browse SocialRUSH services by platform, compare transparent pricing and delivery information, and choose an option that fits your campaign.",
+    "Compare SocialRUSH SMM services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with INR pricing, UPI checkout, public-link ordering and dashboard tracking.",
   path: "/services",
   keywords: [
     "social media growth services India",
@@ -23,6 +25,7 @@ export const metadata: Metadata = createPageMetadata({
     "buy Facebook followers India",
     "Instagram growth services India",
     "YouTube growth services India",
+    ...smmPanelIndiaKeywords,
   ],
 });
 
@@ -36,6 +39,21 @@ const servicesFaqs = [
     question: "Can I compare Instagram, YouTube and Facebook services before ordering?",
     answer:
       "Yes. The Services page links to detailed service pages and packages so you can compare pricing, delivery estimates, refill information and link requirements before ordering.",
+  },
+  {
+    question: "What is an SMM panel in India?",
+    answer:
+      "An SMM panel is a dashboard for browsing and ordering supported social-media growth services. Useful India-specific comparison points include INR pricing, payment methods, quantity limits, delivery estimates, refill terms, public-link requirements and order tracking.",
+  },
+  {
+    question: "Can I pay for SocialRUSH SMM services with UPI in India?",
+    answer:
+      "UPI is supported in the SocialRUSH direct checkout flow. Bank Transfer and USDT (TRC20) may also be available. The payment methods and exact amount displayed at checkout are authoritative.",
+  },
+  {
+    question: "Can agencies and resellers use SocialRUSH?",
+    answer:
+      "Yes. SocialRUSH includes agency workflows for organizing clients, campaigns, saved monthly plans and repeat orders. Final service availability and checkout pricing remain authoritative for every order.",
   },
   {
     question: "Do I need to share a password for any service?",
@@ -98,6 +116,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialSearchParam={searchParams?.q ?? searchParams?.search}
         serviceCatalog={serviceCatalog}
       />
+      <SmmPanelIndiaAuthority serviceCatalog={serviceCatalog} />
       <ServiceCompareStudio serviceCatalog={serviceCatalog} />
       <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
