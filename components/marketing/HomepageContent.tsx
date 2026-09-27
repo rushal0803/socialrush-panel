@@ -6,16 +6,12 @@ import PublicShell from "./PublicShell";
 import PersonalizationShelf from "./cro/PersonalizationShelf";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 
-export default function HomepageContent({
-  searchParams,
-}: {
-  searchParams?: { platform?: string; service?: string };
-}) {
+export default function HomepageContent() {
   return (
     <PublicShell>
       <InteractiveHomepageShell>
         <HomepageExperienceFrame>
-          <PremiumHomepage searchParams={searchParams} />
+          <PremiumHomepage />
           <PersonalizationShelf catalog={activeSmmServices} />
           <PublicReviewsSection limit={4} />
         </HomepageExperienceFrame>
