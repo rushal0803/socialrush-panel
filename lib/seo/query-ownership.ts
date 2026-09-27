@@ -190,6 +190,48 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     ],
   },
   {
+    id: "instagram-smm-panel-india",
+    canonicalPath: "/instagram-growth-india",
+    intent: "Instagram SMM panel India and multi-service Instagram discovery",
+    aliases: ["/instagram-smm-panel-india", "/smm-panel-for-instagram-india"],
+  },
+  {
+    id: "youtube-smm-panel-india",
+    canonicalPath: "/youtube-growth-india",
+    intent: "YouTube SMM panel India and multi-service YouTube discovery",
+    aliases: ["/youtube-smm-panel-india", "/smm-panel-for-youtube-india"],
+  },
+  {
+    id: "linkedin-smm-panel-india",
+    canonicalPath: "/linkedin-growth-india",
+    intent: "LinkedIn SMM panel India and multi-service LinkedIn discovery",
+    aliases: ["/linkedin-smm-panel-india", "/smm-panel-for-linkedin-india"],
+  },
+  {
+    id: "facebook-smm-panel-india",
+    canonicalPath: "/facebook-growth-india",
+    intent: "Facebook SMM panel India and multi-service Facebook discovery",
+    aliases: ["/facebook-smm-panel-india", "/smm-panel-for-facebook-india"],
+  },
+  {
+    id: "twitter-smm-panel-india",
+    canonicalPath: "/x-growth-india",
+    intent: "Twitter or X SMM panel India and multi-service X discovery",
+    aliases: ["/twitter-smm-panel-india", "/x-smm-panel-india"],
+  },
+  {
+    id: "tiktok-smm-panel-india",
+    canonicalPath: "/tiktok-growth-india",
+    intent: "TikTok SMM panel India and multi-service TikTok discovery",
+    aliases: ["/tiktok-smm-panel-india", "/smm-panel-for-tiktok-india"],
+  },
+  {
+    id: "telegram-smm-panel-india",
+    canonicalPath: "/services/telegram",
+    intent: "Telegram SMM panel India and multi-service Telegram discovery",
+    aliases: ["/telegram-smm-panel-india", "/smm-panel-for-telegram-india"],
+  },
+  {
     id: "agency-reseller-panel-india",
     canonicalPath: "/for-agencies",
     intent: "SMM reseller panel India and SMM panel for agencies India",
