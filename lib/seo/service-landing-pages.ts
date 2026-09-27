@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { activeSmmServices, platformMeta, type SmmService } from "@/lib/smm-service-catalog";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { SERVICE_PRICES } from "@/lib/service-pricing";
+import { paymentIntentFaq, paymentIntentKeywords } from "@/lib/seo/payment-intent";
 
 export type SeoServiceSlug =
   | "instagram-followers"
@@ -270,6 +271,7 @@ export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
       `1000 ${page.displayName} price India`,
       `5000 ${page.displayName} price India`,
       `10000 ${page.displayName} price India`,
+      ...paymentIntentKeywords(page.displayName),
     ],
   });
 }
@@ -341,6 +343,7 @@ export function getSeoServiceFaqs(slug: SeoServiceSlug) {
         ? `The confirmed public rate starts at ₹${page.confirmedPrice.toLocaleString("en-IN")} per 1,000. Your exact total depends on the selected quantity and is shown before checkout.`
         : "Open the packages page to view the latest confirmed price. Your exact total depends on the selected quantity and is shown before checkout.",
     },
+    paymentIntentFaq(page.displayName),
     {
       question: `How long does ${page.displayName} delivery take?`,
       answer: `The current delivery estimate is ${page.service.deliveryTime}. Actual timing can vary by campaign size, platform conditions and destination availability.`,
