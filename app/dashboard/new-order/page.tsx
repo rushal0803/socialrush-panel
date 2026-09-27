@@ -178,7 +178,6 @@ export default function NewOrderPage() {
   const queryString = useSearchParams().toString();
   const searchParams = useMemo(() => new URLSearchParams(queryString), [queryString]);
   const { currency } = usePreferredCurrency("INR");
-  const healthByService = useServiceHealth(Boolean(platform));
   const resumeRequested = searchParams.get("resume") === "1";
   const requestedClientId = searchParams.get("client")?.trim() || null;
   const requestedCampaignId = searchParams.get("campaign")?.trim() || null;
@@ -191,6 +190,7 @@ export default function NewOrderPage() {
   const initialService = resumedService ?? requestedService;
 
   const [platform, setPlatform] = useState<PlatformId | null>(initialService?.platform ?? requestedPlatform ?? null);
+  const healthByService = useServiceHealth(Boolean(platform));
   const [selectedService, setSelectedService] = useState<SmmService | null>(initialService);
   const prefillRequested = resumeRequested || searchParams.get("prefill") === "1";
   const [targetLink, setTargetLink] = useState(prefillRequested ? searchParams.get("link") || "" : "");
