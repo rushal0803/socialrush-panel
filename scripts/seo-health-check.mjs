@@ -6,6 +6,7 @@ const CONCURRENCY = 4;
 const PHASE5_LASTMOD = "2026-09-27";
 const PHASE5_SOCIAL_GROWTH_LASTMOD = "2026-09-28";
 const PHASE5_SOCIAL_SERVICES_LASTMOD = "2026-09-28";
+const PHASE5_PLATFORM_SMM_LASTMOD = "2026-09-28";
 const INDEXNOW_KEY = "8f7d2c91a4e64b7f9c3d1a6e5b8f2047";
 const INDEXNOW_KEY_PATH = `/${INDEXNOW_KEY}.txt`;
 
@@ -45,6 +46,7 @@ const priorityCommercialPaths = [
   "/linkedin-growth-india",
   "/x-growth-india",
   "/tiktok-growth-india",
+  "/services/telegram",
 ];
 
 const priorityIndexablePaths = [
@@ -67,6 +69,7 @@ const phase5FreshnessExpected = new Map([
     .filter((path) => path !== "/buy-facebook-shares-india")
     .map((path) => [path, PHASE5_LASTMOD]),
   ["/social-media-growth-india", PHASE5_SOCIAL_GROWTH_LASTMOD],
+  ...["/instagram-growth-india","/youtube-growth-india","/facebook-growth-india","/linkedin-growth-india","/x-growth-india","/tiktok-growth-india","/services/telegram"].map((path) => [path, PHASE5_PLATFORM_SMM_LASTMOD]),
 ]);
 
 const privateRobotsPaths = [
@@ -129,6 +132,20 @@ const legacyRedirects = [
   ["/reliable-smm-panel-india", "/services"],
   ["/trusted-smm-panel-india", "/services"],
   ["/smm-reseller-panel-india", "/for-agencies"],
+  ["/instagram-smm-panel-india", "/instagram-growth-india"],
+  ["/smm-panel-for-instagram-india", "/instagram-growth-india"],
+  ["/youtube-smm-panel-india", "/youtube-growth-india"],
+  ["/smm-panel-for-youtube-india", "/youtube-growth-india"],
+  ["/linkedin-smm-panel-india", "/linkedin-growth-india"],
+  ["/smm-panel-for-linkedin-india", "/linkedin-growth-india"],
+  ["/facebook-smm-panel-india", "/facebook-growth-india"],
+  ["/smm-panel-for-facebook-india", "/facebook-growth-india"],
+  ["/twitter-smm-panel-india", "/x-growth-india"],
+  ["/x-smm-panel-india", "/x-growth-india"],
+  ["/tiktok-smm-panel-india", "/tiktok-growth-india"],
+  ["/smm-panel-for-tiktok-india", "/tiktok-growth-india"],
+  ["/telegram-smm-panel-india", "/services/telegram"],
+  ["/smm-panel-for-telegram-india", "/services/telegram"],
   ["/smm-panel-for-agencies-india", "/for-agencies"],
   ["/social-media-growth-services-india", "/social-media-growth-india"],
   ["/social-media-growth-service-india", "/social-media-growth-india"],
