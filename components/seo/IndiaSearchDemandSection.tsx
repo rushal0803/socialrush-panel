@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, IndianRupee, Link2, ShieldCheck, WalletCards } from "lucide-react";
 import { getContentCluster } from "@/lib/seo/content-clusters";
-import { buildSearchDemandPriceRows, searchDemandPriceHeading } from "@/lib/seo/search-demand";
+import { buildQuantityPlanning } from "@/lib/seo/search-demand";
 import { getServiceById, type SmmPlatformId } from "@/lib/smm-service-catalog";
 import type { ServiceCode } from "@/lib/service-pricing";
 
@@ -36,15 +36,22 @@ export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platf
   if (!service) return null;
 
   const label = platformLabel || (service.platform === "x" ? "Twitter / X" : service.platform.charAt(0).toUpperCase() + service.platform.slice(1));
-  const effectiveService = {
-    ...service,
-    pricePer1000: liveRatePer1000 && liveRatePer1000 > 0 ? liveRatePer1000 : service.pricePer1000,
-    minQuantity: liveMinQuantity && liveMinQuantity > 0 ? liveMinQuantity : service.minQuantity,
-    maxQuantity: liveMaxQuantity && liveMaxQuantity > 0 ? liveMaxQuantity : service.maxQuantity,
-  };
-  const rows = buildSearchDemandPriceRows(effectiveService);
+  const minQuantity = liveMinQuantity && liveMinQuantity > 0 ? liveMinQuantity : service.minQuantity;
+  const maxQuantity = liveMaxQuantity && liveMaxQuantity > 0 ? liveMaxQuantity : service.maxQuantity;
+  const step = service.quantityStep ?? 1;
+  const protectedLiveFacts = service.requiresLiveCatalogFacts || service.pricePer1000 <= 0;
+  const staticRate = protectedLiveFacts ? null : service.pricePer1000;
+  const candidateRows = buildQuantityPlanning(staticRate);
+  const rows = candidateRows.filter((row) =>
+    row.quantity >= minQuantity
+    && row.quantity <= maxQuantity
+    && (row.quantity - minQuantity) % step === 0
+  );
+  const displayRows = rows.length > 0 ? rows : [
+    { quantity: minQuantity, total: null as number | null },
+    ...(maxQuantity !== minQuantity ? [{ quantity: maxQuantity, total: null as number | null }] : []),
+  ].slice(0, 2);
   const cluster = getContentCluster(clusterKey(service.platform));
-  const liveOnly = service.requiresLiveCatalogFacts || service.pricePer1000 <= 0;
 
   return (
     <section aria-labelledby={`${serviceCode}-search-demand-heading`} className="border-y border-white/10 bg-[#0e1016] px-4 py-14 text-white sm:px-6 lg:px-8">
@@ -53,10 +60,10 @@ export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platf
           <article>
             <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">India price & order guide</p>
             <h2 id={`${serviceCode}-search-demand-heading`} className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              {searchDemandPriceHeading(label, unitLabel)}
+              {label} {unitLabel} price in India by quantity
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
-              Compare common campaign sizes before ordering. {liveOnly
+              Compare common campaign sizes before ordering. {protectedLiveFacts
                 ? "This service uses protected live catalog facts, so the final price is shown only in the active order flow."
                 : "The totals below use the current catalog rate on this page."} Final availability, service terms and checkout total remain authoritative.
             </p>
@@ -65,7 +72,7 @@ export default function IndiaSearchDemandSection({ serviceCode, unitLabel, platf
               <div className="grid grid-cols-[1fr_1.25fr] bg-white/[.05] px-4 py-3 text-[10px] font-black uppercase tracking-[.12em] text-slate-400">
                 <span>Quantity</span><span>Current INR total</span>
               </div>
-              {rows.map((row) => (
+              {displayRows.map((row) => (
                 <div key={row.quantity} className="grid grid-cols-[1fr_1.25fr] border-t border-white/10 px-4 py-4 text-sm">
                   <span className="font-black text-white">{formatQuantity(row.quantity)} {unitLabel}</span>
                   <span className="font-black text-orange-200">{row.total === null ? "Check live order total" : formatInr(row.total)}</span>
