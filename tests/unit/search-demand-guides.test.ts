@@ -1,6 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 import { searchDemandPriceGuideArticles } from "../../components/marketing/blog/searchDemandPriceGuides.ts";
+import { indiaCheckoutMethods, paymentIntentFaq, paymentIntentKeywords } from "../../lib/seo/payment-intent.ts";
 
 const expected = new Map([
   ["youtube-subscribers-price-in-india", "/youtube-subscribers"],
@@ -37,4 +38,18 @@ test("phase 5B price guides keep checkout authoritative", () => {
     assert.match(text, /password|otp|recovery/);
     assert.doesNotMatch(text, /guaranteed? (ranking|sales|revenue|engagement|monetization)/);
   }
+});
+
+
+test("phase 5I keeps India payment intent on canonical service pages", () => {
+  assert.deepEqual(indiaCheckoutMethods.map((method) => method.id), ["upi", "bank_transfer", "usdt_trc20"]);
+  const keywords = paymentIntentKeywords("YouTube Subscribers");
+  assert.ok(keywords.includes("buy YouTube Subscribers with UPI India"));
+  assert.ok(keywords.includes("buy YouTube Subscribers without password"));
+
+  const faq = paymentIntentFaq("YouTube Subscribers");
+  assert.match(faq.question, /UPI in India/);
+  assert.match(faq.answer, /exact INR amount/i);
+  assert.match(faq.answer, /transaction reference/i);
+  assert.match(faq.answer, /checkout.*authoritative/i);
 });
