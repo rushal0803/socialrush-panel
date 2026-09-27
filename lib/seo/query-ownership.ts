@@ -249,6 +249,17 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     intent: "SMM reseller panel India and SMM panel for agencies India",
     aliases: ["/smm-reseller-panel-india", "/smm-panel-for-agencies-india"],
   },
+  {
+    id: "safe-smm-ordering-india",
+    canonicalPath: "/trust",
+    intent: "safe SMM ordering India, no-password ordering and public-link safety",
+    aliases: [
+      "/safe-smm-panel-india",
+      "/smm-panel-without-password-india",
+      "/no-password-smm-panel-india",
+      "/public-link-smm-panel-india",
+    ],
+  },
 ] as const;
 
 export const commercialCanonicalRedirects: Readonly<Record<string, string>> =
