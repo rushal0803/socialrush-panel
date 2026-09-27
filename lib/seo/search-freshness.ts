@@ -1,9 +1,9 @@
 export const PHASE5_SIGNIFICANT_UPDATE = "2026-09-27";
+export const PHASE5_AGENCY_RESELLER_UPDATE = "2026-09-28";
 
 const phase5UpdatedPaths = [
   "/",
   "/services",
-  "/for-agencies",
   "/pricing",
   "/blog",
   "/tools",
@@ -46,9 +46,13 @@ const phase5UpdatedPaths = [
   "/blog/is-it-safe-to-buy-telegram-members",
 ] as const;
 
-export const phase5SearchFreshnessPaths = phase5UpdatedPaths;
+export const phase5SearchFreshnessPaths = [
+  ...phase5UpdatedPaths,
+  "/for-agencies",
+] as const;
 
 export const searchFreshnessLastmod: Readonly<Record<string, string>> =
-  Object.fromEntries(
-    phase5UpdatedPaths.map((path) => [path, PHASE5_SIGNIFICANT_UPDATE]),
-  );
+  Object.fromEntries([
+    ...phase5UpdatedPaths.map((path) => [path, PHASE5_SIGNIFICANT_UPDATE] as const),
+    ["/for-agencies", PHASE5_AGENCY_RESELLER_UPDATE] as const,
+  ]);
