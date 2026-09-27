@@ -6,6 +6,7 @@ export type UserProfile = {
   full_name: string;
   balance: number;
   role: "user" | "admin";
+  is_blocked: boolean;
 };
 
 export class ProfileSetupError extends Error {
@@ -35,7 +36,7 @@ function setupError(error: { code?: string; message?: string }) {
   return new ProfileSetupError(error.message || "Unable to load your account profile.");
 }
 
-const profileColumns = "id, email, full_name, balance, role";
+const profileColumns = "id, email, full_name, balance, role, is_blocked";
 
 export async function ensureUserProfile(supabase: SupabaseClient, user: User): Promise<UserProfile> {
   const existing = await supabase.from("profiles").select(profileColumns).eq("id", user.id).maybeSingle();
