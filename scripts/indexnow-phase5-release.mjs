@@ -36,6 +36,11 @@ export const phase5IndexNowPaths = [
   "/blog/facebook-followers-price-in-india",
   "/blog/twitter-followers-price-in-india",
   "/blog/telegram-members-price-in-india",
+  "/blog/is-it-safe-to-buy-youtube-subscribers",
+  "/blog/is-it-safe-to-buy-youtube-views",
+  "/blog/is-it-safe-to-buy-linkedin-followers",
+  "/blog/is-it-safe-to-buy-twitter-followers",
+  "/blog/is-it-safe-to-buy-telegram-members",
 ];
 
 const baseUrl = `https://${INDEXNOW_HOST}`;
