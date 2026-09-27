@@ -10,6 +10,7 @@ export const phase5IndexNowPaths = [
   "/social-media-growth-india",
   "/for-agencies",
   "/pricing",
+  "/trust",
   "/blog",
   "/tools",
   "/tools/social-media-service-cost-calculator",

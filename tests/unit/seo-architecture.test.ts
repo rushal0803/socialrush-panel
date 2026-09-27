@@ -13,7 +13,7 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_PRICING_INTENT_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_PRICING_INTENT_UPDATE, PHASE5_SAFE_ORDERING_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
@@ -24,6 +24,7 @@ import { socialMediaServicesIndiaKeywords, socialMediaServiceGroups } from "../.
 import { smmSelectionChecklist, smmSelectionCriteria, smmSelectionIndiaKeywords } from "../../lib/seo/smm-selection-intent.ts";
 import { platformSmmIntent, platformSmmKeywords } from "../../lib/seo/platform-smm-intent.ts";
 import { priceForQuantity, smmPricingCriteria, smmPricingIndiaKeywords } from "../../lib/seo/smm-pricing-intent.ts";
+import { safeSmmOrderingCriteria, safeSmmOrderingKeywords } from "../../lib/seo/safe-smm-ordering-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -906,4 +907,57 @@ test("phase 5U pricing page exposes visible SMM price-list authority and release
   assert.match(indexNow, /"\/pricing"/);
   assert.equal(PHASE5_PRICING_INTENT_UPDATE, "2026-09-28");
   assert.equal(searchFreshnessLastmod["/pricing"], PHASE5_PRICING_INTENT_UPDATE);
+});
+
+
+test("phase 5V assigns safe no-password SMM ordering intent to /trust", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "safe-smm-ordering-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/trust");
+  assert.match(owner.intent, /safe SMM ordering India/i);
+  for (const alias of [
+    "/safe-smm-panel-india",
+    "/smm-panel-without-password-india",
+    "/no-password-smm-panel-india",
+    "/public-link-smm-panel-india",
+  ]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/trust");
+  }
+  assert.ok(safeSmmOrderingKeywords.includes("SMM panel without password India"));
+  assert.ok(safeSmmOrderingKeywords.includes("public link SMM panel India"));
+});
+
+test("phase 5V safe-ordering model uses verifiable checks instead of ranking claims", () => {
+  assert.deepEqual(safeSmmOrderingCriteria.map((item) => item.id), ["public-link", "credentials", "checkout", "tracking"]);
+  const copy = JSON.stringify(safeSmmOrderingCriteria);
+  assert.match(copy, /public profile|public.*link/i);
+  assert.match(copy, /password|OTP|recovery code/i);
+  assert.match(copy, /official SocialRUSH checkout/i);
+  assert.match(copy, /Orders area/i);
+  assert.doesNotMatch(copy, /safest|best|#1|cheapest|guaranteed/i);
+});
+
+test("phase 5V Trust Center exposes visible no-password authority and release safeguards", () => {
+  const page = readFileSync(new URL("../../app/trust/page.tsx", import.meta.url), "utf8");
+  const authority = readFileSync(new URL("../../components/marketing/trust/SafeSmmOrderingAuthority.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+
+  assert.match(page, /Safe SMM Ordering India \| No Password \| SocialRUSH/);
+  assert.match(page, /<SafeSmmOrderingAuthority \/>/);
+  assert.match(authority, /What “no password required” should mean/i);
+  assert.match(authority, /does not need your social-media password, OTP or recovery code/i);
+  assert.match(authority, /does not mean a platform outcome is guaranteed/i);
+  assert.doesNotMatch(authority, /SocialRUSH is the safest|#1|cheapest/i);
+
+  assert.equal(PHASE5_SAFE_ORDERING_UPDATE, "2026-09-28");
+  assert.equal(searchFreshnessLastmod["/trust"], PHASE5_SAFE_ORDERING_UPDATE);
+  assert.ok(phase5SearchFreshnessPaths.includes("/trust"));
+  assert.match(indexNow, /"\/trust"/);
+  assert.match(monitor, /"\/trust"/);
+  assert.match(monitor, /"\/safe-smm-panel-india", "\/trust"/);
+  assert.match(monitor, /"\/smm-panel-without-password-india", "\/trust"/);
+  assert.match(monitor, /"\/no-password-smm-panel-india", "\/trust"/);
+  assert.match(monitor, /"\/public-link-smm-panel-india", "\/trust"/);
 });
