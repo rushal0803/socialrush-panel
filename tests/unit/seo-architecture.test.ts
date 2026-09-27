@@ -20,6 +20,7 @@ import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary }
 import { agencyResellerCriteria, agencyResellerIntentKeywords } from "../../lib/seo/agency-reseller-intent.ts";
 import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "../../lib/seo/social-engagement-intent.ts";
 import { socialPromotionCriteria, socialPromotionIntentKeywords } from "../../lib/seo/social-promotion-intent.ts";
+import { socialMediaServicesIndiaKeywords, socialMediaServiceGroups } from "../../lib/seo/social-media-services-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -744,4 +745,29 @@ test("phase 5Q growth hub exposes visible promotion intent and canonical redirec
   assert.match(monitor, /"\/social-media-promotion-service-india", "\/social-media-growth-india"/);
   assert.match(indexNow, /"\/social-media-growth-india"/);
   assert.equal(searchFreshnessLastmod["/social-media-growth-india"], "2026-09-28");
+});
+
+
+test("phase 5R keeps social media services India on the existing services canonical", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "social-media-services-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/services");
+  assert.ok(owner.aliases.includes("/social-media-services-india"));
+  assert.equal(commercialCanonicalRedirects["/social-media-services-india"], "/services");
+  assert.ok(socialMediaServicesIndiaKeywords.includes("social media services India"));
+  assert.ok(socialMediaServiceGroups.length >= 3);
+  const hrefs = socialMediaServiceGroups.flatMap((group) => group.links.map((link) => link.href));
+  assert.equal(hrefs.every((href) => href.startsWith("/") && !href.includes("?")), true);
+  assert.equal(new Set(hrefs).size, hrefs.length);
+});
+
+test("phase 5R services page exposes visible social media services India authority", () => {
+  const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  const component = readFileSync(new URL("../../components/marketing/services/SocialMediaServicesIndiaAuthority.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  assert.match(source, /SocialMediaServicesIndiaAuthority/);
+  assert.match(source, /socialMediaServicesIndiaKeywords/);
+  assert.match(component, /Social media services India/);
+  assert.match(component, /not a monthly social media management agency/i);
+  assert.match(monitor, /social-media-services-india/);
 });
