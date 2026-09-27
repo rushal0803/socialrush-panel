@@ -4,6 +4,7 @@ const DEFAULT_BASE_URL = "https://www.getsocialrush.com";
 const REQUEST_TIMEOUT_MS = 30_000;
 const CONCURRENCY = 4;
 const PHASE5_LASTMOD = "2026-09-27";
+const PHASE5_SOCIAL_GROWTH_LASTMOD = "2026-09-28";
 const INDEXNOW_KEY = "8f7d2c91a4e64b7f9c3d1a6e5b8f2047";
 const INDEXNOW_KEY_PATH = `/${INDEXNOW_KEY}.txt`;
 
@@ -33,6 +34,7 @@ const canonicalServicePaths = [
 const priorityCommercialPaths = [
   "/",
   "/services",
+  "/social-media-growth-india",
   "/for-agencies",
   "/pricing",
   "/packages",
@@ -55,13 +57,16 @@ const requiredSitemapPaths = [
   "/tools/social-media-growth-planner",
 ];
 
-const phase5FreshnessPaths = [
-  "/",
-  "/services",
-  "/pricing",
-  "/tools/social-media-service-cost-calculator",
-  ...canonicalServicePaths.filter((path) => path !== "/buy-facebook-shares-india"),
-];
+const phase5FreshnessExpected = new Map([
+  ["/", PHASE5_LASTMOD],
+  ["/services", PHASE5_LASTMOD],
+  ["/pricing", PHASE5_LASTMOD],
+  ["/tools/social-media-service-cost-calculator", PHASE5_LASTMOD],
+  ...canonicalServicePaths
+    .filter((path) => path !== "/buy-facebook-shares-india")
+    .map((path) => [path, PHASE5_LASTMOD]),
+  ["/social-media-growth-india", PHASE5_SOCIAL_GROWTH_LASTMOD],
+]);
 
 const privateRobotsPaths = [
   "/dashboard",
@@ -120,6 +125,8 @@ const legacyRedirects = [
   ["/smm-panel-india", "/services"],
   ["/smm-reseller-panel-india", "/for-agencies"],
   ["/smm-panel-for-agencies-india", "/for-agencies"],
+  ["/social-media-growth-services-india", "/social-media-growth-india"],
+  ["/social-media-growth-service-india", "/social-media-growth-india"],
   [
     "/blog/linkedin-growth-tips-for-personal-brands",
     "/blog/linkedin-growth-tips-personal-brands",
@@ -263,14 +270,14 @@ async function checkRobotsAndSitemap() {
       fail("sitemap.xml", `missing ${missing.join(", ")}`);
       return;
     }
-    const stale = phase5FreshnessPaths.filter((path) => {
+    const stale = [...phase5FreshnessExpected.entries()].filter(([path, expectedLastmod]) => {
       const loc = `<loc>${new URL(path, baseUrl).toString()}</loc>`;
       const entryStart = sitemap.indexOf(loc);
       if (entryStart < 0) return true;
       const entryEnd = sitemap.indexOf("</url>", entryStart);
       if (entryEnd < 0) return true;
-      return !sitemap.slice(entryStart, entryEnd).includes(`<lastmod>${PHASE5_LASTMOD}</lastmod>`);
-    });
+      return !sitemap.slice(entryStart, entryEnd).includes(`<lastmod>${expectedLastmod}</lastmod>`);
+    }).map(([path]) => path);
     if (stale.length > 0) {
       fail("sitemap.xml", `missing Phase 5 lastmod for ${stale.join(", ")}`);
       return;
