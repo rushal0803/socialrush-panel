@@ -176,6 +176,12 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     intent: "SMM panel India and social media growth services comparison",
     aliases: ["/services/smm-panel-india", "/smm-panel-india"],
   },
+  {
+    id: "agency-reseller-panel-india",
+    canonicalPath: "/for-agencies",
+    intent: "SMM reseller panel India and SMM panel for agencies India",
+    aliases: ["/smm-reseller-panel-india", "/smm-panel-for-agencies-india"],
+  },
 ] as const;
 
 export const commercialCanonicalRedirects: Readonly<Record<string, string>> =
