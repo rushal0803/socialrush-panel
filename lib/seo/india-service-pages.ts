@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { SERVICE_PRICES, type ServiceCode } from "../service-pricing.ts";
 import { SEO_SITE_URL } from "./metadata.ts";
 import { linkedInFollowersFaqs } from "./linkedin-followers.ts";
+import { deliveryRefillIntentKeywords } from "@/lib/seo/delivery-refill-intent";
 import { paymentIntentKeywords } from "./payment-intent.ts";
 import { buildCommercialSearchDescription } from "./search-snippets.ts";
 
@@ -725,6 +726,7 @@ export function getIndiaServiceMetadata(
       `Buy ${page.serviceName}`,
       `${page.serviceName} India`,
       ...paymentIntentKeywords(page.serviceName),
+      ...deliveryRefillIntentKeywords(page.serviceName),
       ...(slug === "buy-linkedin-followers-india"
         ? ["LinkedIn followers price India", "LinkedIn follower packages", "Buy followers on LinkedIn"]
         : []),
