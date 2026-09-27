@@ -99,6 +99,31 @@ export function abandonedOrderReminder(name:string|null|undefined,userId:string|
  return {subject:"Your SocialRUSH order is saved — continue when ready",html:frame({preheader:"Your unfinished SocialRUSH order is saved in your dashboard.",headline:`Your order is still saved, ${esc(first(name))}.`,body:"You started configuring an order but didn’t finish checkout. Your saved configuration is still available, so you can return, review the current price and continue when you’re ready.",card,cta:"Continue My Saved Order",href:url,support:lifecycleSupport(unsubscribe,"If something stopped you—service choice, quantity, link or payment—reply to this email and we’ll help.")}),text:`Hi ${first(name)},\n\nYou started configuring a SocialRUSH order but didn’t finish checkout.\n\nSaved order: ${draft.platform} · ${draft.serviceName} · Quantity ${quantity}\n\nContinue your saved order: ${url}\n\nIf something stopped you, reply and tell us what happened.\n\nUnsubscribe: ${unsubscribe}`};
 }
 
+export function abandonedCheckoutReminder(
+ name:string|null|undefined,
+ userId:string|undefined,
+ checkout:{serviceName:string;quantity:number;previousTotal:number},
+ offer?:FirstOrderOffer
+):EmailTemplate {
+ const url=`${site()}/dashboard`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const service=esc(checkout.serviceName),quantity=Number(checkout.quantity||0).toLocaleString("en-IN"),previousTotal=money(Number(checkout.previousTotal||0));
+ const checkoutCard=`<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#0C0E14;border:1px solid #2A2E39;border-radius:13px;"><tr><td style="padding:20px;"><p style="margin:0 0 8px;color:#F8FAFC;font-size:15px;line-height:22px;font-weight:700;">Your unfinished checkout</p><p style="margin:0;color:#A8AFBD;font-size:14px;line-height:22px;">${service}<br>Quantity: ${quantity}<br>Previous total: ${previousTotal}</p></td></tr></table>`;
+ const card=checkoutCard+firstOrderOfferCard(offer);
+ return {
+  subject:"Your SocialRUSH checkout wasn’t completed",
+  html:frame({
+   preheader:"Your checkout can be rebuilt safely from your dashboard.",
+   headline:`Your checkout is still recoverable, ${esc(first(name))}.`,
+   body:"You reached checkout, but no SocialRUSH order was created. Return to your dashboard and use Finish Checkout. We’ll rebuild the order with current pricing and payment details instead of reusing the old payment session.",
+   card,
+   cta:"Finish My Checkout",
+   href:url,
+   support:lifecycleSupport(unsubscribe,"If payment or checkout stopped you, reply to this email and tell us what happened.")
+  }),
+  text:`Hi ${first(name)},\n\nYou reached SocialRUSH checkout, but no order was created. Return to your dashboard and use Finish Checkout. We’ll rebuild the order using current pricing and payment details.\n\nService: ${checkout.serviceName}\nQuantity: ${quantity}\nPrevious total: ${previousTotal}\n\nFinish checkout: ${url}\n\nIf payment or checkout stopped you, reply and tell us what happened.\n\nUnsubscribe: ${unsubscribe}`
+ };
+}
+
 export function inactivePremium(name:string|null|undefined,userId:string|undefined,kind:"vip"|"high_value"):EmailTemplate {
  const url=`${site()}/dashboard/new-order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`, valued=kind==="vip"?"valued":"high-value";
  const body=`Hi ${first(name)},\n\nIt’s great to have you as one of our ${valued} SocialRUSH customers. Whenever you’re planning your next campaign, your account, previous orders and services are available from your dashboard, making it easy to pick up where you left off.\n\nPlan my next campaign: ${url}\n\nIf you have a specific growth target or need help deciding which service fits your next campaign, reply directly to this email.\n\nUnsubscribe: ${unsubscribe}`;
