@@ -1,13 +1,13 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { abandonedOrderReminder, firstOrderFinal7d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate, type FirstOrderOffer } from "@/lib/email/templates";
+import { abandonedCheckoutReminder, abandonedOrderReminder, firstOrderFinal7d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate, type FirstOrderOffer } from "@/lib/email/templates";
 import { canSendPromotional, hasActiveRefill, hasUnresolvedSupport, inactiveEmailKind, lifecycleEligibility, promotionalEvent, recipientMatchesProfile } from "@/lib/email/lifecycle";
 
 type Event={
  id:string;
  user_id:string;
  order_id:string|null;
- event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"never_ordered_reactivation"|"abandoned_order_reminder"|"inactive_7d";
+ event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"never_ordered_reactivation"|"abandoned_checkout_reminder"|"abandoned_order_reminder"|"inactive_7d";
  recipient:string;
  provider_message_id:string|null;
  attempt_count:number;
@@ -15,6 +15,7 @@ type Event={
 };
 type LifecycleOrderContext={user_id:string;created_at:string;status:string|null;payment_status:string|null;platform:string|null;charge:number|string|null};
 type DraftContext={platform:string;service_code:string;quantity:number;updated_at:string};
+type CheckoutContext={id:string;service_code:string;quantity:number;total_paise:number|string;created_at:string;expires_at:string|null;status:string;order_id:string|null};
 type CrmTag={name:string|null};
 type CrmTagRow={crm_tags:CrmTag|CrmTag[]|null};
 type AdminClient=ReturnType<typeof createAdminClient>;
@@ -54,11 +55,13 @@ const terminal=async(db:AdminClient,id:string,reason:string)=>patchEvent(db,id,{
 
 export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailProcessResult>{
  const db=createAdminClient();
- const [{error:enqueueError},{error:abandonedEnqueueError}]=await Promise.all([
+ const [{error:enqueueError},{error:abandonedCheckoutEnqueueError},{error:abandonedEnqueueError}]=await Promise.all([
   db.rpc("enqueue_customer_lifecycle_email_events"),
+  db.rpc("enqueue_abandoned_checkout_email_events"),
   db.rpc("enqueue_abandoned_order_email_events")
  ]);
  if(enqueueError)throw enqueueError;
+ if(abandonedCheckoutEnqueueError)throw abandonedCheckoutEnqueueError;
  if(abandonedEnqueueError)throw abandonedEnqueueError;
  const outcomes:CustomerEmailProcessOutcome[]=[];
  let processed=0;
@@ -95,9 +98,9 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
    const {data:profile,error:profileError}=await db.from("profiles").select("id,full_name,notification_preferences,role,email,created_at").eq("id",event.user_id).single();
    if(profileError)throw new Error(promotional?"Lifecycle profile eligibility lookup failed":"Customer profile lookup failed");
 
-   let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[],draft:DraftContext|null=null,offer:FirstOrderOffer|undefined;
+   let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[],draft:DraftContext|null=null,checkout:CheckoutContext|null=null,offer:FirstOrderOffer|undefined;
    if(promotional){
-    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError},{data:draftRow,error:draftError},{data:rewardRules,error:rewardError}]=await Promise.all([
+    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError},{data:draftRow,error:draftError},{data:checkoutRow,error:checkoutError},{data:rewardRules,error:rewardError}]=await Promise.all([
      db.from("crm_suppression_list").select("email").eq("email",event.recipient.trim().toLowerCase()).maybeSingle(),
      db.from("orders").select("user_id,created_at,status,payment_status,platform,charge").eq("user_id",event.user_id),
      db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at,first_order_sequence_activation_at,abandoned_order_enabled,abandoned_order_delay_hours,abandoned_order_max_age_days,abandoned_order_activation_at").eq("id",true).single(),
@@ -106,10 +109,11 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
      db.from("crm_customer_profiles").select("lifecycle_stage").eq("customer_id",event.user_id).maybeSingle(),
      db.from("crm_customer_tags").select("crm_tags(name)").eq("customer_id",event.user_id),
      db.from("order_drafts").select("platform,service_code,quantity,updated_at").eq("user_id",event.user_id).maybeSingle(),
+     db.from("checkout_intents").select("id,service_code,quantity,total_paise,created_at,expires_at,status,order_id").eq("user_id",event.user_id).eq("status","created").is("order_id",null).lt("expires_at",new Date().toISOString()).gte("created_at",new Date(Date.now()-7*86400000).toISOString()).order("created_at",{ascending:false}).limit(1).maybeSingle(),
      db.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id",true).maybeSingle()
     ]);
-    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||draftError||rewardError||!config)throw new Error("Lifecycle eligibility lookup failed");
-    orders=orderRows||[];crm=crmRow;tagRows=crmTagRows||[];draft=(draftRow||null) as DraftContext|null;
+    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||draftError||checkoutError||rewardError||!config)throw new Error("Lifecycle eligibility lookup failed");
+    orders=orderRows||[];crm=crmRow;tagRows=crmTagRows||[];draft=(draftRow||null) as DraftContext|null;checkout=(checkoutRow||null) as CheckoutContext|null;
     const hasPriorQualifyingOrder=orders.some(order=>!["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase())&&!["cancelled","refunded","failed"].includes(String(order.payment_status||"paid").toLowerCase()));
     const reward=Number(rewardRules?.new_customer_reward||0),minimum=Number(rewardRules?.minimum_order_amount||0);
     if(!hasPriorQualifyingOrder&&rewardRules?.enabled&&!rewardRules.manual_approval&&reward>0&&minimum>0)offer={reward,minimum};
@@ -128,9 +132,29 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
      outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"customer_service_issue"});
      continue;
     }
+    const isCheckoutAbandoned=event.event_type==="abandoned_checkout_reminder";
     const isAbandoned=event.event_type==="abandoned_order_reminder";
-    const activationBoundary=event.event_type==="inactive_7d"?config.lifecycle_activation_at:isAbandoned?config.abandoned_order_activation_at:config.first_order_sequence_activation_at;
+    const activationBoundary=event.event_type==="inactive_7d"?config.lifecycle_activation_at:(isCheckoutAbandoned||isAbandoned)?config.abandoned_order_activation_at:config.first_order_sequence_activation_at;
     const draftUpdated=draft?Date.parse(draft.updated_at):Number.NaN;
+    const checkoutCreated=checkout?Date.parse(checkout.created_at):Number.NaN;
+    const hasLaterOrder=(anchor:number)=>orders.some(order=>Date.parse(order.created_at)>=anchor && !["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase()) && !["cancelled","refunded","failed"].includes(String(order.payment_status||"paid").toLowerCase()));
+    const checkoutEligible=Boolean(
+      profile &&
+      config.abandoned_order_enabled &&
+      checkout &&
+      config.abandoned_order_activation_at &&
+      Number.isFinite(checkoutCreated) &&
+      checkoutCreated>=Date.parse(config.abandoned_order_activation_at) &&
+      checkoutCreated<=Date.now()-(config.abandoned_order_delay_hours||2)*3600000 &&
+      checkoutCreated>=Date.now()-(config.abandoned_order_max_age_days||7)*86400000 &&
+      checkout.expires_at &&
+      Date.parse(checkout.expires_at)<Date.now() &&
+      profile.email &&
+      profile.role!=="admin" &&
+      profile.notification_preferences?.marketing===true &&
+      !hasLaterOrder(checkoutCreated)
+    );
+    const recentCheckout=Boolean(checkout && Number.isFinite(checkoutCreated) && checkoutCreated>=Date.now()-7*86400000);
     const abandonedEligible=Boolean(
       profile &&
       config.abandoned_order_enabled &&
@@ -143,15 +167,17 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
       profile.email &&
       profile.role!=="admin" &&
       profile.notification_preferences?.marketing===true &&
-      !orders.some(order=>Date.parse(order.created_at)>=draftUpdated && !["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase()) && !["cancelled","refunded","failed"].includes(String(order.payment_status||"").toLowerCase()))
+      !hasLaterOrder(draftUpdated)
     );
     const recentDraft=Boolean(draft && Date.parse(draft.updated_at)>=Date.now()-7*86400000);
     const firstOrderEvent=["first_order_reminder","first_order_nudge_2h","first_order_trust_24h","first_order_reminder_3d","first_order_final_7d"].includes(event.event_type);
-    const eligible=isAbandoned
-      ? abandonedEligible
-      : firstOrderEvent && recentDraft
-        ? false
-        : profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
+    const eligible=isCheckoutAbandoned
+      ? checkoutEligible
+      : isAbandoned
+        ? abandonedEligible && !recentCheckout
+        : firstOrderEvent && (recentCheckout||recentDraft)
+          ? false
+          : profile&&lifecycleEligibility(event.event_type as import("@/lib/email/lifecycle").LifecycleEvent,profile,orders||[],new Date(),config.first_order_delay_hours||24,config.inactive_days||7,activationBoundary);
     if(!eligible||suppression||!canSendPromotional()){
      const reason=!canSendPromotional()?"Skipped: unsubscribe secret unavailable":"Skipped: lifecycle ineligible";
      await terminal(db,event.id,reason);
@@ -173,6 +199,10 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
     template=firstOrderFinal7d(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="never_ordered_reactivation"){
     template=neverOrderedReactivation(profile?.full_name,event.user_id,offer);
+   }else if(event.event_type==="abandoned_checkout_reminder"){
+    if(!checkout)throw new Error("Checkout recovery details are unavailable");
+    const serviceName=checkout.service_code.split("-").map(part=>part?part[0].toUpperCase()+part.slice(1):part).join(" ");
+    template=abandonedCheckoutReminder(profile?.full_name,event.user_id,{serviceName,quantity:checkout.quantity,previousTotal:Number(checkout.total_paise||0)/100},offer);
    }else if(event.event_type==="abandoned_order_reminder"){
     if(!draft)throw new Error("Saved order draft is unavailable");
     const serviceName=draft.service_code.split("-").map(part=>part?part[0].toUpperCase()+part.slice(1):part).join(" ");
