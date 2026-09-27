@@ -13,7 +13,7 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_PRICING_INTENT_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
@@ -23,6 +23,7 @@ import { socialPromotionCriteria, socialPromotionIntentKeywords } from "../../li
 import { socialMediaServicesIndiaKeywords, socialMediaServiceGroups } from "../../lib/seo/social-media-services-intent.ts";
 import { smmSelectionChecklist, smmSelectionCriteria, smmSelectionIndiaKeywords } from "../../lib/seo/smm-selection-intent.ts";
 import { platformSmmIntent, platformSmmKeywords } from "../../lib/seo/platform-smm-intent.ts";
+import { priceForQuantity, smmPricingCriteria, smmPricingIndiaKeywords } from "../../lib/seo/smm-pricing-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -856,4 +857,53 @@ test("phase 5T renders platform SMM authority on every target hub", () => {
     const source = readFileSync(new URL(path, import.meta.url), "utf8");
     assert.match(source, /PlatformSmmIntentSection/);
   }
+});
+
+
+test("phase 5U assigns SMM pricing and UPI intent to /pricing", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "smm-pricing-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/pricing");
+  assert.match(owner.intent, /SMM panel price list India/i);
+  for (const alias of [
+    "/smm-panel-price-list-india",
+    "/smm-panel-pricing-india",
+    "/smm-panel-rates-india",
+    "/upi-smm-panel-india",
+    "/smm-panel-with-upi-india",
+  ]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/pricing");
+  }
+  assert.ok(smmPricingIndiaKeywords.includes("SMM panel price list India"));
+  assert.ok(smmPricingIndiaKeywords.includes("UPI SMM panel India"));
+});
+
+test("phase 5U pricing model stays factual and derives quantity totals", () => {
+  assert.deepEqual(smmPricingCriteria.map((item) => item.id), ["rate", "quantity", "payment", "support"]);
+  assert.equal(priceForQuantity(799, 1000), 799);
+  assert.equal(priceForQuantity(799, 5000), 3995);
+  assert.equal(priceForQuantity(0, 1000), null);
+  const copy = JSON.stringify(smmPricingCriteria);
+  assert.match(copy, /current per-1,000 rate/i);
+  assert.match(copy, /UPI where available/i);
+  assert.doesNotMatch(copy, /best|cheapest|#1|guaranteed/i);
+});
+
+test("phase 5U pricing page exposes visible SMM price-list authority and release safeguards", () => {
+  const pricing = readFileSync(new URL("../../app/pricing/page.tsx", import.meta.url), "utf8");
+  const authority = readFileSync(new URL("../../components/marketing/pricing/SmmPricingIndiaAuthority.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+
+  assert.match(pricing, /SMM Panel Price List India \| Live INR Rates/);
+  assert.match(pricing, /<SmmPricingIndiaAuthority \/>/);
+  assert.match(authority, /SMM panel pricing in India/i);
+  assert.match(authority, /including UPI where applicable/i);
+  assert.match(authority, /Treat checkout as the final authority/i);
+  assert.match(monitor, /"\/smm-panel-price-list-india", "\/pricing"/);
+  assert.match(monitor, /"\/smm-panel-with-upi-india", "\/pricing"/);
+  assert.match(indexNow, /"\/pricing"/);
+  assert.equal(PHASE5_PRICING_INTENT_UPDATE, "2026-09-28");
+  assert.equal(searchFreshnessLastmod["/pricing"], PHASE5_PRICING_INTENT_UPDATE);
 });

@@ -7,6 +7,7 @@ const PHASE5_LASTMOD = "2026-09-27";
 const PHASE5_SOCIAL_GROWTH_LASTMOD = "2026-09-28";
 const PHASE5_SOCIAL_SERVICES_LASTMOD = "2026-09-28";
 const PHASE5_PLATFORM_SMM_LASTMOD = "2026-09-28";
+const PHASE5_PRICING_INTENT_LASTMOD = "2026-09-28";
 const INDEXNOW_KEY = "8f7d2c91a4e64b7f9c3d1a6e5b8f2047";
 const INDEXNOW_KEY_PATH = `/${INDEXNOW_KEY}.txt`;
 
@@ -63,7 +64,7 @@ const requiredSitemapPaths = [
 const phase5FreshnessExpected = new Map([
   ["/", PHASE5_LASTMOD],
   ["/services", PHASE5_SOCIAL_SERVICES_LASTMOD],
-  ["/pricing", PHASE5_LASTMOD],
+  ["/pricing", PHASE5_PRICING_INTENT_LASTMOD],
   ["/tools/social-media-service-cost-calculator", PHASE5_LASTMOD],
   ...canonicalServicePaths
     .filter((path) => path !== "/buy-facebook-shares-india")
@@ -146,6 +147,11 @@ const legacyRedirects = [
   ["/smm-panel-for-tiktok-india", "/tiktok-growth-india"],
   ["/telegram-smm-panel-india", "/services/telegram"],
   ["/smm-panel-for-telegram-india", "/services/telegram"],
+  ["/smm-panel-price-list-india", "/pricing"],
+  ["/smm-panel-pricing-india", "/pricing"],
+  ["/smm-panel-rates-india", "/pricing"],
+  ["/upi-smm-panel-india", "/pricing"],
+  ["/smm-panel-with-upi-india", "/pricing"],
   ["/smm-panel-for-agencies-india", "/for-agencies"],
   ["/social-media-growth-services-india", "/social-media-growth-india"],
   ["/social-media-growth-service-india", "/social-media-growth-india"],
