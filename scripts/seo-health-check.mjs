@@ -129,6 +129,8 @@ const legacyRedirects = [
   ["/social-media-growth-service-india", "/social-media-growth-india"],
   ["/social-media-engagement-services-india", "/social-media-growth-india"],
   ["/social-media-engagement-service-india", "/social-media-growth-india"],
+  ["/social-media-promotion-services-india", "/social-media-growth-india"],
+  ["/social-media-promotion-service-india", "/social-media-growth-india"],
   [
     "/blog/linkedin-growth-tips-for-personal-brands",
     "/blog/linkedin-growth-tips-personal-brands",
