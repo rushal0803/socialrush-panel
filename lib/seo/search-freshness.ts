@@ -3,6 +3,7 @@ export const PHASE5_SIGNIFICANT_UPDATE = "2026-09-27";
 const phase5UpdatedPaths = [
   "/",
   "/services",
+  "/for-agencies",
   "/pricing",
   "/blog",
   "/tools",
