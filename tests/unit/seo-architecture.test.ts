@@ -13,7 +13,7 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
@@ -622,4 +622,46 @@ test("phase 5N /for-agencies exposes visible reseller authority and truthful fre
   assert.match(monitorSource, /\["\/smm-reseller-panel-india", "\/for-agencies"\]/);
   assert.match(indexNowSource, /"\/for-agencies"/);
   assert.equal(searchFreshnessLastmod["/for-agencies"], "2026-09-28");
+});
+
+
+test("phase 5O assigns social media growth services India to one canonical hub", () => {
+  const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/social-media-growth-india");
+  assert.ok(owner);
+  assert.equal(owner.intent, "social media growth services India");
+  assert.ok(owner.aliases.includes("/social-media-growth-services-india"));
+  assert.ok(owner.aliases.includes("/social-media-growth-service-india"));
+  assert.equal(commercialCanonicalRedirects["/social-media-growth-services-india"], "/social-media-growth-india");
+  assert.equal(commercialCanonicalRedirects["/social-media-growth-service-india"], "/social-media-growth-india");
+
+  const servicesOwner = transactionalQueryOwners.find((item) => item.canonicalPath === "/services");
+  assert.ok(servicesOwner);
+  assert.doesNotMatch(servicesOwner.intent, /social media growth services/i);
+});
+
+test("phase 5O architecture and visible page own cross-platform growth intent without agency confusion", () => {
+  const intent = seoIntentMap.find((item) => item.id === "social-media-growth-services-india");
+  assert.ok(intent);
+  assert.equal(intent.primaryTarget, "/social-media-growth-india");
+  assert.equal(intent.platform, "cross-platform");
+
+  const source = readFileSync(new URL("../../app/social-media-growth-india/page.tsx", import.meta.url), "utf8");
+  assert.match(source, /Social Media Growth Services India/);
+  assert.match(source, /Order-based growth services, not monthly social media management/i);
+  assert.match(source, /monthly content creation, posting calendars, community management or ad-management retainers/i);
+  assert.match(source, /UPI, Bank Transfer/);
+  assert.match(source, /No social password is required/);
+});
+
+test("phase 5O marks the canonical growth hub fresh and submits it for search release", () => {
+  assert.equal(PHASE5_SOCIAL_GROWTH_UPDATE, "2026-09-28");
+  assert.equal(searchFreshnessLastmod["/social-media-growth-india"], PHASE5_SOCIAL_GROWTH_UPDATE);
+  assert.ok(phase5SearchFreshnessPaths.includes("/social-media-growth-india"));
+
+  const submitter = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  assert.match(submitter, /"\/social-media-growth-india"/);
+  assert.match(monitor, /"\/social-media-growth-india"/);
+  assert.match(monitor, /"\/social-media-growth-services-india", "\/social-media-growth-india"/);
+  assert.match(monitor, /"\/social-media-growth-service-india", "\/social-media-growth-india"/);
 });
