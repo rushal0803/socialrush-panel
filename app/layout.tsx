@@ -3,9 +3,6 @@ import "./globals.css";
 import ClientProviders from "@/components/providers/ClientProviders";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import PageAnalytics from "@/components/analytics/PageAnalytics";
-import { cookies } from "next/headers";
-import { DISPLAY_CURRENCY_COOKIE, isCurrency } from "@/lib/currency";
-import { getExchangeRates } from "@/lib/fx-rates";
 import dynamic from "next/dynamic";
 
 const PwaClient = dynamic(() => import("@/components/pwa/PwaClient"));
@@ -90,17 +87,13 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-export default async function RootLayout({
+export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
-  const cookieStore = await cookies();
-  const storedCurrency = cookieStore.get(DISPLAY_CURRENCY_COOKIE)?.value;
-  const initialCurrency = isCurrency(storedCurrency) ? storedCurrency : "INR";
-  const rates = await getExchangeRates();
   return (
     <html lang="en-IN">
       <body className="overflow-x-clip bg-[#07080D] text-white">
-        <ClientProviders initialCurrency={initialCurrency} rates={rates}>
+        <ClientProviders>
           <script
             type="application/ld+json"
             dangerouslySetInnerHTML={{
