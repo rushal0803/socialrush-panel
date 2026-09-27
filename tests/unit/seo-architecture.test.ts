@@ -13,7 +13,7 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
@@ -427,6 +427,8 @@ test("phase 5H freshness registry marks only clean canonical-style paths with a 
     assert.equal(path.includes("?"), false);
     assert.equal(isCommercialAliasPath(path), false, `${path} should not be a redirect alias`);
     if (path === "/for-agencies") assert.equal(searchFreshnessLastmod[path], PHASE5_AGENCY_RESELLER_UPDATE);
+    else if (path === "/social-media-growth-india") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_GROWTH_UPDATE);
+    else if (path === "/services") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_SERVICES_UPDATE);
     else assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
   }
 });
