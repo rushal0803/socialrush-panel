@@ -79,7 +79,18 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  const { data: { user } } = await supabase.auth.getUser();
+  let user = null;
+  try {
+    const authResult = await supabase.auth.getUser();
+    user = authResult.data.user;
+  } catch (error) {
+    const code =
+      typeof error === "object" && error && "code" in error
+        ? String((error as { code?: unknown }).code || "")
+        : "";
+    if (code !== "refresh_token_not_found") throw error;
+  }
+
   if (!user) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = pathname.startsWith("/admin") ? "/admin/login" : "/login";
@@ -92,6 +103,11 @@ export async function updateSession(request: NextRequest) {
     }
     const redirectResponse = NextResponse.redirect(loginUrl);
     response.cookies.getAll().forEach((cookie) => redirectResponse.cookies.set(cookie));
+    for (const cookie of request.cookies.getAll()) {
+      if (cookie.name.startsWith("sb-") || cookie.name.includes("auth-token")) {
+        redirectResponse.cookies.delete(cookie.name);
+      }
+    }
     return redirectResponse;
   }
 
