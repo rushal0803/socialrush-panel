@@ -25,6 +25,7 @@ import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceL
 import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
 import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
+import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
 import {
   getSeoServiceFaqs,
   getSeoServicePage,
@@ -260,6 +261,8 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
       <IndiaPaymentIntentSection serviceName={page.displayName} destination={page.destination} orderHref={packagesHref} tone="light" />
 
       <DeliveryRefillIntentSection serviceName={page.displayName} deliveryTime={page.service.deliveryTime} refillPolicy={page.service.refillPolicy} destination={page.destination} orderHref={packagesHref} tone="light" />
+
+      <OrderRequirementsIntentSection serviceName={page.displayName} minQuantity={page.service.minQuantity} maxQuantity={page.service.maxQuantity} quantityStep={page.service.quantityStep ?? 1} destination={page.destination} pricePer1000={page.confirmedPrice} orderHref={packagesHref} tone="light" />
 
       <section className="bg-white/65 px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">
