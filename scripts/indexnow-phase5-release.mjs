@@ -7,6 +7,7 @@ export const INDEXNOW_KEY_PATH = "/8f7d2c91a4e64b7f9c3d1a6e5b8f2047.txt";
 export const phase5IndexNowPaths = [
   "/",
   "/services",
+  "/for-agencies",
   "/pricing",
   "/blog",
   "/tools",

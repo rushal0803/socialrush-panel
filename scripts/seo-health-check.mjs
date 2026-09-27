@@ -33,6 +33,7 @@ const canonicalServicePaths = [
 const priorityCommercialPaths = [
   "/",
   "/services",
+  "/for-agencies",
   "/pricing",
   "/packages",
   "/instagram-growth-india",
@@ -117,6 +118,8 @@ const legacyRedirects = [
   ["/services/tiktok-followers", "/tiktok-followers"],
   ["/services/smm-panel-india", "/services"],
   ["/smm-panel-india", "/services"],
+  ["/smm-reseller-panel-india", "/for-agencies"],
+  ["/smm-panel-for-agencies-india", "/for-agencies"],
   [
     "/blog/linkedin-growth-tips-for-personal-brands",
     "/blog/linkedin-growth-tips-personal-brands",

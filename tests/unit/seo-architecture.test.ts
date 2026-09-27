@@ -13,10 +13,11 @@ import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/s
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
-import { PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_SIGNIFICANT_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
+import { agencyResellerCriteria, agencyResellerIntentKeywords } from "../../lib/seo/agency-reseller-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -422,7 +423,8 @@ test("phase 5H freshness registry marks only clean canonical-style paths with a 
     assert.match(path, /^\//);
     assert.equal(path.includes("?"), false);
     assert.equal(isCommercialAliasPath(path), false, `${path} should not be a redirect alias`);
-    assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
+    if (path === "/for-agencies") assert.equal(searchFreshnessLastmod[path], PHASE5_AGENCY_RESELLER_UPDATE);
+    else assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
   }
 });
 
@@ -585,4 +587,39 @@ test("phase 5M services page exposes visible SMM panel India authority content",
   assert.match(authoritySource, /India-friendly checkout/);
   assert.match(authoritySource, /For creators, businesses and agencies/);
   assert.doesNotMatch(authoritySource, /India.?s #1|best SMM|cheapest SMM/i);
+});
+
+
+test("phase 5N assigns agency reseller intent to /for-agencies without a doorway page", () => {
+  const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/for-agencies");
+  assert.ok(owner);
+  assert.match(owner.intent, /SMM reseller panel India/i);
+  assert.ok(owner.aliases.includes("/smm-reseller-panel-india"));
+  assert.ok(owner.aliases.includes("/smm-panel-for-agencies-india"));
+  assert.equal(commercialCanonicalRedirects["/smm-reseller-panel-india"], "/for-agencies");
+  assert.equal(commercialCanonicalRedirects["/smm-panel-for-agencies-india"], "/for-agencies");
+  assert.ok(agencyResellerIntentKeywords.includes("SMM reseller panel India"));
+  assert.ok(agencyResellerIntentKeywords.includes("SMM panel for agencies India"));
+});
+
+test("phase 5N agency intent model stays factual and avoids unsupported reseller claims", () => {
+  assert.deepEqual(agencyResellerCriteria.map((item) => item.id), ["clients", "bulk", "monthly", "api"]);
+  const copy = JSON.stringify(agencyResellerCriteria);
+  assert.doesNotMatch(copy, /best|cheapest|#1|guaranteed profit|white-label child panel/i);
+});
+
+test("phase 5N /for-agencies exposes visible reseller authority and truthful freshness", () => {
+  const pageSource = readFileSync(new URL("../../app/for-agencies/page.tsx", import.meta.url), "utf8");
+  const authoritySource = readFileSync(new URL("../../components/marketing/audiences/AgencyResellerIntentSection.tsx", import.meta.url), "utf8");
+  const monitorSource = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const indexNowSource = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+  assert.match(pageSource, /SMM Reseller Panel India for Agencies/);
+  assert.match(pageSource, /<AgencyResellerIntentSection\/>/);
+  assert.match(authoritySource, /SMM reseller panel India/);
+  assert.match(authoritySource, /Multi-client workspace/);
+  assert.match(authoritySource, /API documentation/);
+  assert.match(authoritySource, /does not claim to provide a white-label child panel/i);
+  assert.match(monitorSource, /\["\/smm-reseller-panel-india", "\/for-agencies"\]/);
+  assert.match(indexNowSource, /"\/for-agencies"/);
+  assert.equal(searchFreshnessLastmod["/for-agencies"], "2026-09-28");
 });
