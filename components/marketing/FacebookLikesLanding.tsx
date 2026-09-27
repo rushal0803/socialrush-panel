@@ -5,6 +5,10 @@ import { useEffect, useState } from "react";
 import { ArrowRight, BarChart3, BriefcaseBusiness, Check, ChevronDown, CircleCheck, Heart, Link2, LockKeyhole, MessageCircle, Minus, Pause, Play, Plus, ShieldCheck, Sparkles, Users, WalletCards } from "lucide-react";
 import { FaFacebookF as Facebook } from "react-icons/fa6";
 import PublicShell from "@/components/marketing/PublicShell";
+import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
+import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
+import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
+import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import { formatCurrency } from "@/lib/currency";
@@ -50,6 +54,10 @@ export default function FacebookLikesLanding() {
     </section>
     <section className="border-b border-white/10 bg-[#11141b] px-4 py-4 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold text-slate-300">{[[LockKeyhole,"No password required"],[Link2,"Public post link"],[WalletCards,"Secure checkout"],[BarChart3,"Dashboard tracking"],[ShieldCheck,"Live service details"]].map(([Icon,label]) => { const IconComponent = Icon as typeof LockKeyhole; return <span className="flex items-center gap-2" key={label as string}><IconComponent className="h-4 w-4 text-orange-300" />{label as string}</span>; })}</div></section>
     <OrderBuilder />
+    <SearchDemandPriceSection displayName="Facebook Likes" serviceCode="facebook-likes" platform="facebook" pricePer1000={service.pricePer1000} destination="public Facebook post or video URL" packagesHref="/packages?platform=facebook&service=likes" tone="dark" />
+    <IndiaPaymentIntentSection serviceName="Facebook Likes" destination="public Facebook post or video URL" orderHref="#order" tone="dark" />
+    <DeliveryRefillIntentSection serviceName="Facebook Likes" deliveryTime={service.deliveryTime} refillPolicy={service.refillPolicy} destination="public Facebook post or video URL" orderHref="#order" tone="dark" />
+    <OrderRequirementsIntentSection serviceName="Facebook Likes" minQuantity={service.minQuantity} maxQuantity={service.maxQuantity} quantityStep={service.quantityStep ?? 1} destination="public Facebook post or video URL" pricePer1000={service.pricePer1000} orderHref="#order" tone="dark" />
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">Preview the Facebook engagement experience</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original interface preview onlyÃ¢â‚¬â€not a customer page or performance result. The play control animates demo engagement activity.</p><button type="button" onClick={() => setPlaying((value) => !value)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#1877f2]/35 bg-[#1877f2]/10 px-4 text-sm font-black text-blue-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause Preview" : "Play Preview"}</button></div><PostPreview pulse={pulse} playing={playing} /></div></section>
     <ContentSections price={price} />
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><p className="text-center text-xs font-black uppercase tracking-[.16em] text-orange-300">Helpful answers</p><h2 className="mt-3 text-center text-3xl font-black">Facebook Likes FAQs</h2><div className="mt-7 space-y-3">{faqs.map(([question, answer], index) => <details key={question} open={index === 0} className="group rounded-2xl border border-white/10 bg-white/[.035] p-5"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-black"><span>{question}</span><ChevronDown className="h-5 w-5 text-orange-300 transition group-open:rotate-180" /></summary><p className="mt-3 border-t border-white/10 pt-3 text-sm leading-7 text-slate-300">{answer}</p></details>)}</div></div></section>
