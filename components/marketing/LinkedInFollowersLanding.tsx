@@ -6,6 +6,7 @@ import { ArrowRight, BarChart3, BriefcaseBusiness, Check, ChevronDown, CircleChe
 import { FaLinkedinIn as LinkedIn } from "react-icons/fa6";
 import PublicShell from "@/components/marketing/PublicShell";
 import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
+import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import { formatCurrency } from "@/lib/currency";
@@ -33,7 +34,7 @@ export default function LinkedInFollowersLanding() {
     <section className="border-b border-white/10 bg-[#0e141f] px-4 py-4 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold text-slate-300">{[[LockKeyhole,"No password required"],[Link2,"Public LinkedIn link"],[WalletCards,"Secure checkout"],[BarChart3,"Dashboard tracking"],[ShieldCheck,"Live service details"]].map(([Icon,label]) => { const I = Icon as typeof LockKeyhole; return <span className="flex items-center gap-2" key={label as string}><I className="h-4 w-4 text-orange-300" />{label as string}</span>; })}</div></section>
     <OrderBuilder />
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.76fr_1.24fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">Preview the professional profile experience</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original LinkedIn-inspired interface—not a customer page or campaign result. Play controls animate demo activity only.</p><button type="button" onClick={() => setPlaying(x => !x)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#0a66c2]/40 bg-[#0a66c2]/10 px-4 text-sm font-black text-sky-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause preview" : "Play preview"}</button></div><ProfilePreview playing={playing} pulse={pulse} /></div></section>
-    <LinkedInPriceSection /><IndiaPaymentIntentSection serviceName="LinkedIn Followers" destination="public LinkedIn profile or company page link" orderHref="#order" tone="dark" />
+    <LinkedInPriceSection /><IndiaPaymentIntentSection serviceName="LinkedIn Followers" destination="public LinkedIn profile or company page link" orderHref="#order" tone="dark" /><DeliveryRefillIntentSection serviceName="LinkedIn Followers" deliveryTime={service.deliveryTime} refillPolicy={service.refillPolicy} destination="public LinkedIn profile or company page link" orderHref="#order" tone="dark" />
     <ContentSections price={price} />
     <section className="border-y border-white/10 bg-[#0e141f] px-4 py-14 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">

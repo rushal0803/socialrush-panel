@@ -34,6 +34,7 @@ import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWork
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
+import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules } from "@/lib/order-service-experience";
 
@@ -572,6 +573,8 @@ export default async function IndiaServiceLandingPage({
       </section>
 
       {catalogService && !catalogService.requiresLiveCatalogFacts && linkRules[catalogService.code] ? <ServiceLandingOrderBuilder service={catalogService} /> : null}
+
+      <DeliveryRefillIntentSection serviceName={page.serviceName} deliveryTime={delivery} refillPolicy={refill} destination={page.destination} orderHref={available ? orderHref : "/services"} tone="light" />
 
       {isTwitterFollowers ? (
         <section aria-labelledby="twitter-price-heading" className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8">

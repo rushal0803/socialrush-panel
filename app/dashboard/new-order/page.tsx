@@ -642,7 +642,7 @@ export default function NewOrderPage() {
           importantInstruction: payload.data.importantInstruction,
           isActive: true,
         } satisfies SmmService;
-      })).then((services) => commitServices(services.filter((service): service is SmmService => Boolean(service))));
+      })).then((services) => commitServices(services.filter((service): service is NonNullable<typeof service> => service !== null)));
     }
 
     return () => { active = false; };
