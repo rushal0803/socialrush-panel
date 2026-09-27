@@ -232,6 +232,18 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     aliases: ["/telegram-smm-panel-india", "/smm-panel-for-telegram-india"],
   },
   {
+    id: "smm-pricing-india",
+    canonicalPath: "/pricing",
+    intent: "SMM panel price list India, INR pricing and UPI payment comparison",
+    aliases: [
+      "/smm-panel-price-list-india",
+      "/smm-panel-pricing-india",
+      "/smm-panel-rates-india",
+      "/upi-smm-panel-india",
+      "/smm-panel-with-upi-india",
+    ],
+  },
+  {
     id: "agency-reseller-panel-india",
     canonicalPath: "/for-agencies",
     intent: "SMM reseller panel India and SMM panel for agencies India",
