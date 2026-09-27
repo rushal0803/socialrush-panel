@@ -34,6 +34,8 @@ import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWork
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
+import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
+import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -574,6 +576,10 @@ export default async function IndiaServiceLandingPage({
       </section>
 
       {catalogService && !catalogService.requiresLiveCatalogFacts && linkRules[catalogService.code] ? <ServiceLandingOrderBuilder service={catalogService} /> : null}
+
+      {slug === "buy-telegram-members-india" ? <SearchDemandPriceSection displayName={page.serviceName} serviceCode={page.serviceCode} platform="telegram" pricePer1000={catalogService && !catalogService.requiresLiveCatalogFacts && catalogService.pricePer1000 > 0 ? catalogService.pricePer1000 : null} destination={page.destination} packagesHref={packagesHref} tone="light" /> : null}
+
+      {slug === "buy-telegram-members-india" ? <IndiaPaymentIntentSection serviceName={page.serviceName} destination={page.destination} orderHref={available ? orderHref : "/services"} tone="light" /> : null}
 
       <DeliveryRefillIntentSection serviceName={page.serviceName} deliveryTime={delivery} refillPolicy={refill} destination={page.destination} orderHref={available ? orderHref : "/services"} tone="light" />
 
