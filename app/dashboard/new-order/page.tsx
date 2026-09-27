@@ -1,6 +1,5 @@
 "use client";
 
-import { motion } from "framer-motion";
 import {
   ArrowRight,
   Check,
@@ -42,7 +41,6 @@ import { validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
-import FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
@@ -180,7 +178,7 @@ export default function NewOrderPage() {
   const queryString = useSearchParams().toString();
   const searchParams = useMemo(() => new URLSearchParams(queryString), [queryString]);
   const { currency } = usePreferredCurrency("INR");
-  const healthByService = useServiceHealth();
+  const healthByService = useServiceHealth(Boolean(platform));
   const resumeRequested = searchParams.get("resume") === "1";
   const requestedClientId = searchParams.get("client")?.trim() || null;
   const requestedCampaignId = searchParams.get("campaign")?.trim() || null;
@@ -235,6 +233,10 @@ export default function NewOrderPage() {
   const serviceRef = useRef<HTMLElement>(null);
   const detailsRef = useRef<HTMLElement>(null);
   const summaryRef = useRef<HTMLElement>(null);
+  const stepTwoDataLoaded = useRef(false);
+  const savedProfilesLoaded = useRef(false);
+  const walletRequested = useRef(false);
+  const loadedLivePlatforms = useRef(new Set<PlatformId>());
 
   useEffect(() => {
     if (!queryString) {
@@ -475,7 +477,20 @@ export default function NewOrderPage() {
   }, [router]);
 
   useEffect(() => {
-    void loadWalletBalance();
+    const updateBalance = (event: Event) => {
+      const value = Number((event as CustomEvent<number>).detail);
+      if (Number.isFinite(value)) setWalletBalance(value);
+    };
+    window.addEventListener("wallet-balance-updated", updateBalance);
+    return () => window.removeEventListener("wallet-balance-updated", updateBalance);
+  }, []);
+
+  // Defer non-critical account data until the user actually reaches the service step.
+  useEffect(() => {
+    if (checkoutStep < 2 || stepTwoDataLoaded.current) return;
+    stepTwoDataLoaded.current = true;
+    const db = createClient();
+
     void fetch("/api/rewards/first-order-offer", { credentials: "same-origin", cache: "no-store" })
       .then(async (response): Promise<{ eligible: boolean; reward?: number; minimum?: number }> =>
         response.ok ? await response.json() as { eligible: boolean; reward?: number; minimum?: number } : { eligible: false }
@@ -486,27 +501,36 @@ export default function NewOrderPage() {
         setFirstOrderOffer(data.eligible && reward > 0 && minimum > 0 ? { reward, minimum } : null);
       })
       .catch(() => setFirstOrderOffer(null));
-    const db = createClient();
-    void db.from("saved_social_profiles").select("id,label,platform,public_url,last_used_at").order("last_used_at", { ascending: false, nullsFirst: false }).then(({data}) => setSavedProfiles((data || []) as SavedProfile[]));
+
     void Promise.all([
       db.from("services").select("id,code").eq("status", "active"),
       db.from("customer_favourites").select("service_id"),
     ]).then(([servicesResult, favouritesResult]) => {
       const byCode: Record<string, number> = {};
       const records = (servicesResult.data || []) as ServiceRecord[];
-      for (const record of records) {
-        if (record.code) byCode[record.code] = record.id;
-      }
+      for (const record of records) if (record.code) byCode[record.code] = record.id;
       setServiceIds(byCode);
       setFavouriteServiceIds(new Set((favouritesResult.data || []).map((item) => Number(item.service_id))));
     });
-    const updateBalance = (event: Event) => {
-      const value = Number((event as CustomEvent<number>).detail);
-      if (Number.isFinite(value)) setWalletBalance(value);
-    };
-    window.addEventListener("wallet-balance-updated", updateBalance);
-    return () => window.removeEventListener("wallet-balance-updated", updateBalance);
-  }, [loadWalletBalance]);
+  }, [checkoutStep]);
+
+  // Saved profiles are useful only when entering campaign details.
+  useEffect(() => {
+    if (checkoutStep < 3 || savedProfilesLoaded.current) return;
+    savedProfilesLoaded.current = true;
+    const db = createClient();
+    void db.from("saved_social_profiles")
+      .select("id,label,platform,public_url,last_used_at")
+      .order("last_used_at", { ascending: false, nullsFirst: false })
+      .then(({data}) => setSavedProfiles((data || []) as SavedProfile[]));
+  }, [checkoutStep]);
+
+  // Wallet data is required only on the review/payment step.
+  useEffect(() => {
+    if (checkoutStep < 4 || walletRequested.current) return;
+    walletRequested.current = true;
+    void loadWalletBalance();
+  }, [checkoutStep, loadWalletBalance]);
 
   const toggleFavourite = async (service: SmmService) => {
     const serviceId = serviceIds[service.code];
@@ -541,63 +565,88 @@ export default function NewOrderPage() {
     setFavouriteNotice(isFavourite ? "Removed from favourites" : "Saved to favourites");
   };
 
-  // Live-catalog services are configured in Supabase. They stay absent from
-  // New Order until an active, orderable row supplies their facts.
+  // Load only the live catalog for the platform the customer actually selected.
   useEffect(() => {
-    const isValidLiveService = (service: SmmService) => Number.isFinite(service.pricePer1000) && service.pricePer1000 > 0 && service.minQuantity > 0 && service.maxQuantity >= service.minQuantity;
-    const storeLiveService = (service: SmmService) => {
-      if (!isValidLiveService(service)) return;
-      setLiveServices((current) => [...current.filter((item) => item.code !== service.code), service]);
-      setSelectedService((current) => current?.code === service.code ? service : current);
+    if (!platform || loadedLivePlatforms.current.has(platform)) return;
+    loadedLivePlatforms.current.add(platform);
+    let active = true;
+
+    const clientDefinitions = clientLiveServiceDefinitions.filter((definition) => definition.platform === platform);
+    const protectedDefinitions = protectedLiveServiceDefinitions.filter((definition) => definition.platform === platform);
+    const isValidLiveService = (service: SmmService) =>
+      Number.isFinite(service.pricePer1000) && service.pricePer1000 > 0 && service.minQuantity > 0 && service.maxQuantity >= service.minQuantity;
+    const commitServices = (incoming: SmmService[]) => {
+      if (!active || incoming.length === 0) return;
+      const valid = incoming.filter(isValidLiveService);
+      if (!valid.length) return;
+      setLiveServices((current) => {
+        const byCode = new Map(current.map((item) => [item.code, item]));
+        for (const service of valid) byCode.set(service.code, service);
+        return [...byCode.values()];
+      });
+      setSelectedService((current) => valid.find((item) => item.code === current?.code) ?? current);
     };
+
     const db = createClient();
-    const clientCodes = clientLiveServiceDefinitions.map((definition) => definition.code);
-    void db
-      .from("services")
-      .select("code,platform,rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
-      .in("code", clientCodes)
-      .eq("status", "active")
-      .eq("is_active", true)
-      .eq("accepts_new_orders", true)
-      .then(({ data }) => {
-        const rowsByCode = new Map((data || []).map((row) => [String(row.code), row]));
-        for (const definition of clientLiveServiceDefinitions) {
-          const data = rowsByCode.get(definition.code);
-          if (!data) continue;
-          const expectedPlatform = definition.platform === "x" ? "twitter" : definition.platform;
-          if (String(data.platform || "").toLowerCase() !== expectedPlatform) continue;
-          const liveService: SmmService = {
-            platform: definition.platform,
-            code: definition.code,
-            name: definition.name,
-            description: definition.description,
-            pricePer1000: Number(data.rate),
-            minQuantity: Number(data.min),
-            maxQuantity: Number(data.max),
-            deliveryTime: data.delivery_time || "Estimate shown before checkout",
-            refillPolicy: data.refill_policy || "Check current service terms",
-            qualityType: data.quality_type || "Premium",
-            importantInstruction: data.important_instruction || definition.fallbackInstruction,
-            isActive: true,
-          };
-          storeLiveService(liveService);
-        }
-      });
-    for (const definition of protectedLiveServiceDefinitions) void fetch(`/api/services/live-catalog?code=${definition.code}`, { credentials: "same-origin" })
-      .then(async (response) => response.ok ? response.json() as Promise<{ data?: { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; qualityType: string; importantInstruction: string } | null }> : { data: null })
-      .then(({ data }) => {
-        if (!data) return;
-        const liveService: SmmService = {
-          platform: definition.platform, code: definition.code, name: definition.name,
+    if (clientDefinitions.length) {
+      const clientCodes = clientDefinitions.map((definition) => definition.code);
+      void db.from("services")
+        .select("code,platform,rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
+        .in("code", clientCodes)
+        .eq("status", "active")
+        .eq("is_active", true)
+        .eq("accepts_new_orders", true)
+        .then(({ data }) => {
+          const rowsByCode = new Map((data || []).map((row) => [String(row.code), row]));
+          const services = clientDefinitions.flatMap((definition) => {
+            const data = rowsByCode.get(definition.code);
+            if (!data) return [];
+            const expectedPlatform = definition.platform === "x" ? "twitter" : definition.platform;
+            if (String(data.platform || "").toLowerCase() !== expectedPlatform) return [];
+            return [{
+              platform: definition.platform,
+              code: definition.code,
+              name: definition.name,
+              description: definition.description,
+              pricePer1000: Number(data.rate),
+              minQuantity: Number(data.min),
+              maxQuantity: Number(data.max),
+              deliveryTime: data.delivery_time || "Estimate shown before checkout",
+              refillPolicy: data.refill_policy || "Check current service terms",
+              qualityType: data.quality_type || "Premium",
+              importantInstruction: data.important_instruction || definition.fallbackInstruction,
+              isActive: true,
+            } satisfies SmmService];
+          });
+          commitServices(services);
+        });
+    }
+
+    if (protectedDefinitions.length) {
+      void Promise.all(protectedDefinitions.map(async (definition) => {
+        const response = await fetch(`/api/services/live-catalog?code=${definition.code}`, { credentials: "same-origin" });
+        if (!response.ok) return null;
+        const payload = await response.json() as { data?: { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; qualityType: string; importantInstruction: string } | null };
+        if (!payload.data) return null;
+        return {
+          platform: definition.platform,
+          code: definition.code,
+          name: definition.name,
           description: definition.description,
-          pricePer1000: Number(data.rate), minQuantity: Number(data.min), maxQuantity: Number(data.max),
-          deliveryTime: data.deliveryTime, refillPolicy: data.refillPolicy,
-          qualityType: data.qualityType, importantInstruction: data.importantInstruction,
+          pricePer1000: Number(payload.data.rate),
+          minQuantity: Number(payload.data.min),
+          maxQuantity: Number(payload.data.max),
+          deliveryTime: payload.data.deliveryTime,
+          refillPolicy: payload.data.refillPolicy,
+          qualityType: payload.data.qualityType,
+          importantInstruction: payload.data.importantInstruction,
           isActive: true,
-        };
-        storeLiveService(liveService);
-      });
-  }, []);
+        } satisfies SmmService;
+      })).then((services) => commitServices(services.filter((service): service is SmmService => Boolean(service))));
+    }
+
+    return () => { active = false; };
+  }, [platform]);
 
   async function placeOrder() {
     if (!selectedService || !linkRule || inFlight.current || submitting) return;
@@ -757,7 +806,6 @@ export default function NewOrderPage() {
     <main className="dashboard-premium-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-10 pt-5 text-white sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-600/10 blur-3xl" /><div className="absolute right-0 top-20 h-64 w-64 rounded-full bg-amber-500/5 blur-3xl" /></div>
       <div className="relative mx-auto max-w-6xl">
-        <FirstOrderBonusBanner compact currentTotal={totalPrice} />
         <header className="mb-4 flex items-end justify-between gap-4 sm:mb-6">
           <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">New order</p><h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Build your campaign</h1></div>
           <p className="hidden text-right text-xs leading-5 text-[#9CA3AF] sm:block">Transparent pricing<br />Manual payment verification</p>
@@ -788,7 +836,7 @@ export default function NewOrderPage() {
                 </div>
               </section> : null}
               <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
-                {platformOrder.map((platformId) => { const meta = platformMeta[platformId]; const active = platform === platformId; const serviceCount = customerOrderServices.filter((service) => service.platform === platformId).length; return <motion.button key={platformId} type="button" whileHover={{ y: -3 }} whileTap={{ scale: .98 }} onClick={() => choosePlatform(platformId)} aria-pressed={active} className={`relative min-h-28 rounded-2xl border p-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active ? "border-orange-400 bg-orange-500/10 ring-2 ring-orange-500/15 shadow-[0_16px_32px_-20px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25 hover:bg-white/[.035]"}`}><IconBadge label={meta.label} className={`bg-gradient-to-br ${platformAccent(platformId)}`}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge><span className="mt-4 block text-sm font-black">{meta.label}</span><span className="mt-1 block text-[10px] font-semibold text-[#9CA3AF]">{serviceCount} service{serviceCount === 1 ? "" : "s"} to compare</span>{active && <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-400" />}</motion.button>; })}
+                {platformOrder.map((platformId) => { const meta = platformMeta[platformId]; const active = platform === platformId; const serviceCount = customerOrderServices.filter((service) => service.platform === platformId).length; return <button key={platformId} type="button" onClick={() => choosePlatform(platformId)} aria-pressed={active} className={`relative min-h-28 rounded-2xl border p-4 text-left transition focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active ? "border-orange-400 bg-orange-500/10 ring-2 ring-orange-500/15 shadow-[0_16px_32px_-20px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25 hover:bg-white/[.035]"}`}><IconBadge label={meta.label} className={`bg-gradient-to-br ${platformAccent(platformId)}`}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge><span className="mt-4 block text-sm font-black">{meta.label}</span><span className="mt-1 block text-[10px] font-semibold text-[#9CA3AF]">{serviceCount} service{serviceCount === 1 ? "" : "s"} to compare</span>{active && <CheckCircle2 className="absolute right-3 top-3 h-5 w-5 text-emerald-400" />}</button>; })}
               </div>
               <p className="mt-5 text-center text-xs text-[#9CA3AF]" aria-live="polite">Select a platform to continue automatically.</p>
             </div> : null}
@@ -894,11 +942,11 @@ export default function NewOrderPage() {
               const meta = platformMeta[platformId];
               const active = platform === platformId;
               return (
-                <motion.button
+                <button
                   key={platformId}
                   type="button"
-                  whileHover={{ y: -4 }}
-                  whileTap={{ scale: 0.98 }}
+                 
+                 
                   onClick={() => choosePlatform(platformId)}
                   aria-pressed={active}
                   className={`sr-order-platform-tile relative min-h-24 min-w-[150px] snap-start rounded-2xl border p-3 text-left transition sm:min-w-0 sm:p-4 ${platformId === platformOrder[platformOrder.length - 1] ? "col-span-2 w-[calc(50%_-_0.375rem)] justify-self-center sm:col-span-1 sm:w-auto" : ""} ${active ? "border-orange-400/80 bg-orange-500/15 ring-2 ring-orange-500/15" : "border-white/10 bg-[#0B0B0F] hover:border-orange-400/45"}`}
@@ -906,7 +954,7 @@ export default function NewOrderPage() {
                   {active ? <CheckCircle2 className="absolute right-2 top-2 h-5 w-5 text-emerald-600" /> : null}
                       <IconBadge label={meta.label}><PlatformIcon platform={meta.label} className="h-6 w-6" /></IconBadge>
                   <span className="mt-3 block break-words text-xs font-black text-white">{meta.label}</span>
-                </motion.button>
+                </button>
               );
             })}
           </div>
@@ -929,7 +977,7 @@ export default function NewOrderPage() {
                 const health = healthByService[service.code];
                 const unavailable = Boolean(health && (!health.acceptsNewOrders || health.status === "paused"));
                 return (
-                  <motion.article key={service.code} whileHover={{ y: -3 }} className={`sr-order-service-card flex min-w-0 flex-col rounded-2xl border p-4 transition sm:p-5 ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
+                  <article key={service.code} className={`sr-order-service-card flex min-w-0 flex-col rounded-2xl border p-4 transition sm:p-5 ${active ? "border-orange-400/80 bg-orange-500/10 ring-2 ring-orange-500/10" : "border-white/10 bg-[#0B0B0F]"}`}>
                     <div className="flex items-start justify-between gap-3">
                       <IconBadge label={platformMeta[service.platform].label}><PlatformIcon platform={platformMeta[service.platform].label} className="h-6 w-6" /></IconBadge>
                       {active ? <span className="inline-flex items-center gap-1 rounded-full bg-emerald-50 px-2.5 py-1 text-[10px] font-black text-emerald-700"><Check className="h-3 w-3" /> Selected</span> : null}
@@ -943,7 +991,7 @@ export default function NewOrderPage() {
                     <button type="button" disabled={unavailable} onClick={() => chooseService(service)} className="sr-motion-press mt-4 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-black text-white shadow-[0_18px_36px_-14px_rgba(255,196,0,.65)] disabled:cursor-not-allowed disabled:from-white/10 disabled:to-white/10 disabled:text-[#9CA3AF] disabled:shadow-none">
                       {unavailable ? "Choose another service" : active ? "Service Selected" : "Choose Service"} <ArrowRight className="h-4 w-4" />
                     </button>
-                  </motion.article>
+                  </article>
                 );
               })}
             </div></>
