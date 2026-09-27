@@ -551,36 +551,38 @@ export default function NewOrderPage() {
       setSelectedService((current) => current?.code === service.code ? service : current);
     };
     const db = createClient();
-    for (const definition of clientLiveServiceDefinitions) {
-      const databasePlatform = definition.platform === "x" ? "twitter" : definition.platform;
-      void db
+    const clientCodes = clientLiveServiceDefinitions.map((definition) => definition.code);
+    void db
       .from("services")
-      .select("rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
-      .eq("code", definition.code)
-      .eq("platform", databasePlatform)
+      .select("code,platform,rate,min,max,delivery_time,refill_policy,quality_type,important_instruction")
+      .in("code", clientCodes)
       .eq("status", "active")
       .eq("is_active", true)
       .eq("accepts_new_orders", true)
-      .maybeSingle()
       .then(({ data }) => {
-        if (!data) return;
-        const liveService: SmmService = {
-          platform: definition.platform,
-          code: definition.code,
-          name: definition.name,
-          description: definition.description,
-          pricePer1000: Number(data.rate),
-          minQuantity: Number(data.min),
-          maxQuantity: Number(data.max),
-          deliveryTime: data.delivery_time || "Estimate shown before checkout",
-          refillPolicy: data.refill_policy || "Check current service terms",
-          qualityType: data.quality_type || "Premium",
-          importantInstruction: data.important_instruction || definition.fallbackInstruction,
-          isActive: true,
-        };
-        storeLiveService(liveService);
+        const rowsByCode = new Map((data || []).map((row) => [String(row.code), row]));
+        for (const definition of clientLiveServiceDefinitions) {
+          const data = rowsByCode.get(definition.code);
+          if (!data) continue;
+          const expectedPlatform = definition.platform === "x" ? "twitter" : definition.platform;
+          if (String(data.platform || "").toLowerCase() !== expectedPlatform) continue;
+          const liveService: SmmService = {
+            platform: definition.platform,
+            code: definition.code,
+            name: definition.name,
+            description: definition.description,
+            pricePer1000: Number(data.rate),
+            minQuantity: Number(data.min),
+            maxQuantity: Number(data.max),
+            deliveryTime: data.delivery_time || "Estimate shown before checkout",
+            refillPolicy: data.refill_policy || "Check current service terms",
+            qualityType: data.quality_type || "Premium",
+            importantInstruction: data.important_instruction || definition.fallbackInstruction,
+            isActive: true,
+          };
+          storeLiveService(liveService);
+        }
       });
-    }
     for (const definition of protectedLiveServiceDefinitions) void fetch(`/api/services/live-catalog?code=${definition.code}`, { credentials: "same-origin" })
       .then(async (response) => response.ok ? response.json() as Promise<{ data?: { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; qualityType: string; importantInstruction: string } | null }> : { data: null })
       .then(({ data }) => {
