@@ -7,10 +7,12 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
   title: "Social Media Growth Services India | Compare Platforms | SocialRUSH",
-  description: "Compare SocialRUSH social media growth services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X, then review current pricing and order requirements.",
+  description: "Compare SocialRUSH social media growth services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X. Review INR pricing, public-link requirements, delivery, refill and agency workflows.",
   path: "/social-media-growth-india",
   keywords: [
     "social media growth services India",
+    "social media growth service India",
+    "social media growth platform India",
     "social media services India",
     "Instagram growth India",
     "YouTube growth India",
@@ -62,6 +64,7 @@ const faq = [
   ["How should I choose between followers, views and engagement services?", "Start with the actual campaign gap. Audience services relate to visible profile or channel scale, while views, likes and other engagement services are tied to eligible content. Review the service requirements and current terms before ordering."],
   ["Do I need to share my social media password?", "No. SocialRUSH ordering uses the relevant public profile, page, post, channel or video link. Never share a password, OTP or recovery code."],
   ["Are prices fixed?", "Use the current service or package page for the active INR rate and exact total. Avoid relying on old screenshots or quoted prices because service details can change."],
+  ["Is SocialRUSH a social media management agency?", "No. SocialRUSH provides order-based social media growth services and campaign tools. It does not include monthly content creation, posting calendars, community management or ad-management retainers unless a separate service explicitly says so."],
   ["Can an agency use SocialRUSH for repeat client campaigns?", "Yes. Agencies can review the multi-platform catalog and use the agency workflow for recurring requirements. Each order still follows the current service terms and normal checkout process."],
   ["Do these services guarantee reach, leads or sales?", "No. Followers, subscribers, views or engagement services do not guarantee organic reach, platform ranking, monetization, leads or sales. They should be considered alongside useful content and a broader marketing strategy."],
 ] as const;
@@ -126,6 +129,24 @@ export default function SocialMediaGrowthIndiaPage() {
                 {safeguards.map(({ icon: Icon, title, text }) => <div key={title} className="flex gap-3"><span className="grid h-10 w-10 shrink-0 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><Icon className="h-5 w-5" /></span><div><h2 className="text-sm font-black">{title}</h2><p className="mt-1 text-xs leading-5 text-slate-400">{text}</p></div></div>)}
               </div>
             </aside>
+          </div>
+        </section>
+
+        <section className="border-b border-white/10 bg-[#090a0d] px-4 py-12 sm:px-6 lg:px-8">
+          <div className="mx-auto max-w-7xl">
+            <div className="max-w-3xl">
+              <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">What SocialRUSH means by growth services</p>
+              <h2 className="mt-2 text-3xl font-black">Order-based growth services, not monthly social media management.</h2>
+              <p className="mt-3 text-sm leading-6 text-slate-400">SocialRUSH helps customers compare and order eligible follower, subscriber, view, like, member and related public-link campaigns. It is different from a social media management agency that creates content, publishes posts, answers comments or runs a monthly brand calendar.</p>
+            </div>
+            <div className="mt-7 grid gap-3 md:grid-cols-2 lg:grid-cols-4">
+              {[
+                ["INR pricing", "Review current rates, quantity rules and exact totals before checkout.", "/pricing"],
+                ["Public-link flow", "Orders use the required public profile, post, channel or video link. No social password is required.", "/trust"],
+                ["Payment choices", "Indian checkout can show UPI, Bank Transfer and other currently available methods for the selected flow.", "/pricing"],
+                ["Agency workflow", "Multi-client planning and repeat campaign tools are available for agency and reseller operations.", "/for-agencies"],
+              ].map(([title, text, href]) => <Link key={title} href={href} className="rounded-2xl border border-white/10 bg-[#101116] p-5 transition hover:border-orange-400/30"><CheckCircle2 className="h-5 w-5 text-emerald-400" /><h3 className="mt-3 font-black">{title}</h3><p className="mt-2 text-sm leading-6 text-slate-400">{text}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Review details <ArrowRight className="h-3.5 w-3.5" /></span></Link>)}
+            </div>
           </div>
         </section>
 
