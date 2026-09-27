@@ -79,10 +79,10 @@ export async function updateSession(request: NextRequest) {
     },
   );
 
-  let user = null;
+  let userId = "";
   try {
-    const authResult = await supabase.auth.getUser();
-    user = authResult.data.user;
+    const claimsResult = await supabase.auth.getClaims();
+    userId = String(claimsResult.data?.claims?.sub || "");
   } catch (error) {
     const code =
       typeof error === "object" && error && "code" in error
@@ -91,7 +91,7 @@ export async function updateSession(request: NextRequest) {
     if (code !== "refresh_token_not_found") throw error;
   }
 
-  if (!user) {
+  if (!userId) {
     const loginUrl = request.nextUrl.clone();
     loginUrl.pathname = pathname.startsWith("/admin") ? "/admin/login" : "/login";
     loginUrl.search = "";
@@ -120,7 +120,7 @@ export async function updateSession(request: NextRequest) {
   const { data: accessProfile, error: accessProfileError } = await supabase
     .from("profiles")
     .select("role,is_blocked")
-    .eq("id", user.id)
+    .eq("id", userId)
     .maybeSingle();
 
   if (pathname.startsWith("/admin")) {
