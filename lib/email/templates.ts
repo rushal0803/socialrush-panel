@@ -106,7 +106,7 @@ export function abandonedCheckoutReminder(
  offer?:FirstOrderOffer
 ):EmailTemplate {
  const url=`${site()}/dashboard`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
- const service=esc(checkout.serviceName),quantity=Number(checkout.quantity||0).toLocaleString("en-IN"),previousTotal=money(Number(checkout.previousTotal||0));
+ const service=esc(checkout.serviceName),quantity=Number(checkout.quantity||0).toLocaleString("en-IN"),previousTotal=amount(Number(checkout.previousTotal||0));
  const checkoutCard=`<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#0C0E14;border:1px solid #2A2E39;border-radius:13px;"><tr><td style="padding:20px;"><p style="margin:0 0 8px;color:#F8FAFC;font-size:15px;line-height:22px;font-weight:700;">Your unfinished checkout</p><p style="margin:0;color:#A8AFBD;font-size:14px;line-height:22px;">${service}<br>Quantity: ${quantity}<br>Previous total: ${previousTotal}</p></td></tr></table>`;
  const card=checkoutCard+firstOrderOfferCard(offer);
  return {
