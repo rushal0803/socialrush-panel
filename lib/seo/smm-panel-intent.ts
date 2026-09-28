@@ -1,10 +1,10 @@
 export const smmPanelIndiaKeywords = [
-  "SMM panel India",
-  "social media panel India",
-  "SMM services India",
-  "UPI SMM panel India",
-  "SMM panel for agencies India",
-  "social media growth panel India",
+  "social media growth services India",
+  "social media growth platform India",
+  "social media services India",
+  "social media services with UPI India",
+  "social media growth for agencies India",
+  "social media campaign platform India",
 ] as const;
 
 export const smmPanelIndiaCriteria = [
