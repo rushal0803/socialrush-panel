@@ -5,7 +5,7 @@ import { activeSmmServices } from "../../lib/smm-service-catalog.ts";
 test("only explicit enabled country-service combinations publish", () => {
   assert.equal(countryServicePaths.length, publishedCountryServicePages.length);
   assert.ok(getPublishedCountryServicePage("us", "buy-instagram-followers"));
-  assert.equal(getPublishedCountryServicePage("sg", "buy-instagram-followers"), undefined);
+  assert.ok(getPublishedCountryServicePage("sg", "buy-instagram-followers"));
   assert.equal(getPublishedCountryServicePage("us", "buy-fake-service"), undefined);
 });
 test("every published page maps to a safe static catalog service", () => {
@@ -72,4 +72,29 @@ test("country-service metadata uses concise market search language without dupli
 
   assert.equal(titles.size, publishedCountryServicePages.length);
   assert.equal(descriptions.size, publishedCountryServicePages.length);
+});
+
+
+test("international Instagram pages have distinct market planning intent", () => {
+  const instagramPages = publishedCountryServicePages.filter((page) => page.catalogServiceCode === "instagram-followers");
+  assert.equal(instagramPages.length, 6);
+
+  const summaries = new Set<string>();
+  for (const page of instagramPages) {
+    assert.ok(page.copy.intentTitle?.includes(page.market.searchLabel));
+    assert.ok(page.copy.intentSummary?.includes(page.market.audience));
+    assert.equal(page.copy.planningChecks?.length, 3);
+    assert.ok(page.copy.planningChecks?.[0]?.includes(page.market.currency));
+
+    const metadata = createCountryServiceMetadata(page);
+    const title = (metadata.title as { absolute?: string }).absolute || "";
+    const description = String(metadata.description || "");
+    assert.ok(title.includes(page.market.currency));
+    assert.ok(description.includes(page.market.searchLabel));
+    assert.ok(description.includes("public Instagram profile"));
+    assert.ok(description.includes("INR checkout"));
+    summaries.add(page.copy.intentSummary || "");
+  }
+
+  assert.equal(summaries.size, 6);
 });
