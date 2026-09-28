@@ -24,5 +24,10 @@ export function getSafeCustomerDestination(value: string | null | undefined) {
     return DEFAULT_CUSTOMER_DESTINATION;
   }
 
+  // Never send a signed-in customer back to the public homepage.
+  if (!destination.pathname || destination.pathname === "/") {
+    return DEFAULT_CUSTOMER_DESTINATION;
+  }
+
   return `${destination.pathname}${destination.search}${destination.hash}`;
 }
