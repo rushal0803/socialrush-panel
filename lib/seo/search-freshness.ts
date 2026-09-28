@@ -5,7 +5,7 @@ export const PHASE5_SOCIAL_SERVICES_UPDATE = "2026-09-28";
 export const PHASE5_PLATFORM_SMM_UPDATE = "2026-09-28";
 export const PHASE5_PRICING_INTENT_UPDATE = "2026-09-28";
 export const PHASE5_SAFE_ORDERING_UPDATE = "2026-09-28";
-export const PHASE6_TOOLS_UPDATE = "2026-09-28";
+export const PHASE6_TOOLS_UPDATE = "2026-09-29";
 
 const phase5UpdatedPaths = [
   "/",
@@ -76,4 +76,5 @@ export const searchFreshnessLastmod: Readonly<Record<string, string>> =
     ["/tools/instagram-follower-growth-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
     ["/tools/instagram-reach-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
     ["/tools/instagram-story-engagement-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
+    ["/tools/linkedin-engagement-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
   ]);
