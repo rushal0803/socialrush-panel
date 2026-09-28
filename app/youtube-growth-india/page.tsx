@@ -21,7 +21,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Explore YouTube growth in India across subscribers, views, likes, comments and watch hours. Compare goals and choose the right SocialRUSH service.",
   path: "/youtube-growth-india",
-  keywords: ["YouTube SMM panel India", "SMM panel for YouTube India", "YouTube social media panel India"],
+  keywords: ["YouTube growth services India", "YouTube channel growth India", "YouTube engagement services India"],
 });
 
 const growthOptions = [
