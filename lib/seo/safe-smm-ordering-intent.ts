@@ -1,8 +1,8 @@
 export const safeSmmOrderingKeywords = [
-  "safe SMM panel India",
-  "SMM panel without password India",
-  "no password SMM panel India",
-  "public link SMM panel India",
+  "safe social media growth services India",
+  "social media services without password India",
+  "no password social media growth India",
+  "public link social media services India",
   "safe social media services India",
 ] as const;
 
