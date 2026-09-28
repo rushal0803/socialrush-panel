@@ -71,4 +71,5 @@ export const searchFreshnessLastmod: Readonly<Record<string, string>> =
     ...["/instagram-growth-india","/youtube-growth-india","/facebook-growth-india","/linkedin-growth-india","/x-growth-india","/tiktok-growth-india","/services/telegram"].map((path) => [path, PHASE5_PLATFORM_SMM_UPDATE] as const),
     ["/tools/youtube-watch-time-calculator", PHASE6_TOOLS_UPDATE] as const,
     ["/tools/instagram-follower-growth-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
+    ["/tools/instagram-reach-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
   ]);
