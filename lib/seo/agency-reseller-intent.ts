@@ -1,10 +1,10 @@
 export const agencyResellerIntentKeywords = [
-  "SMM reseller panel India",
-  "SMM panel for agencies India",
-  "social media reseller panel India",
-  "agency SMM panel India",
+  "social media growth platform for agencies India",
+  "agency social media growth services India",
+  "multi client social media campaign management",
   "bulk social media services India",
-  "social media reseller services India",
+  "agency campaign planning platform India",
+  "social media API for agencies India",
 ] as const;
 
 export const agencyResellerCriteria = [
@@ -13,7 +13,7 @@ export const agencyResellerCriteria = [
     title: "Multi-client workspace",
     text: "Keep client and campaign context connected to orders instead of managing every requirement as an isolated transaction.",
     href: "/dashboard/reseller",
-    cta: "Open reseller hub",
+    cta: "Open agency workspace",
   },
   {
     id: "bulk",
@@ -41,24 +41,24 @@ export const agencyResellerCriteria = [
 export function agencyResellerFaqs() {
   return [
     {
-      question: "Is SocialRUSH an SMM reseller panel for agencies in India?",
+      question: "Is SocialRUSH suitable for agencies managing multiple client campaigns?",
       answer:
-        "SocialRUSH provides an agency and reseller workflow for managing client campaigns, bulk planning, monthly plans, order tracking and current service information. Review the live workspace and service catalog to decide whether it fits your agency process.",
+        "Yes. SocialRUSH provides an agency workflow for managing client campaigns, bulk planning, monthly plans, order tracking and current service information. Review the live workspace and service catalog to decide whether it fits your agency process.",
     },
     {
-      question: "Does SocialRUSH offer a white-label child panel?",
+      question: "Is SocialRUSH a white-label reseller system?",
       answer:
-        "A white-label child panel is not promised on this page. The current SocialRUSH agency workflow focuses on client workspaces, bulk planning, campaign operations, monthly planning, order tracking and available API documentation.",
+        "No white-label reseller system is promised on this page. The SocialRUSH agency workflow focuses on client workspaces, bulk planning, campaign operations, monthly planning, order tracking and available API documentation.",
     },
     {
-      question: "Do agencies get automatic wholesale discounts?",
+      question: "Do agencies get automatic volume discounts?",
       answer:
-        "No automatic wholesale discount is promised. Current catalog pricing and the final checkout total remain authoritative. Agencies can keep their own client pricing, service fee and margin strategy separate.",
+        "No automatic volume discount is promised. Current catalog pricing and the final checkout total remain authoritative. Agencies can keep their own client pricing, service fee and margin strategy separate.",
     },
     {
       question: "Can agencies manage several client campaigns?",
       answer:
-        "Yes. The reseller workspace, saved clients, campaign attribution and bulk planner are designed to keep multiple client requirements organized. Each order still follows the normal validation and payment flow.",
+        "Yes. The agency workspace, saved clients, campaign attribution and bulk planner are designed to keep multiple client requirements organized. Each order still follows the normal validation and payment flow.",
     },
   ] as const;
 }
