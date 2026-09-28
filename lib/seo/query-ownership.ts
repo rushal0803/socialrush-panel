@@ -234,13 +234,17 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
   {
     id: "smm-pricing-india",
     canonicalPath: "/pricing",
-    intent: "SMM panel price list India, INR pricing and UPI payment comparison",
+    intent: "SMM panel price list India, affordable SMM panel India, INR pricing and UPI payment comparison",
     aliases: [
       "/smm-panel-price-list-india",
       "/smm-panel-pricing-india",
       "/smm-panel-rates-india",
       "/upi-smm-panel-india",
       "/smm-panel-with-upi-india",
+      "/cheap-smm-panel-india",
+      "/affordable-smm-panel-india",
+      "/low-cost-smm-panel-india",
+      "/budget-smm-panel-india",
     ],
   },
   {
