@@ -1,9 +1,9 @@
 export const smmSelectionIndiaKeywords = [
-  "best SMM panel India",
-  "reliable SMM panel India",
-  "trusted SMM panel India",
-  "best social media panel India",
+  "reliable social media growth services India",
+  "trusted social media growth services India",
+  "best social media growth platform India",
   "reliable social media services India",
+  "social media growth service comparison India",
 ] as const;
 
 export const smmSelectionCriteria = [
