@@ -9,9 +9,9 @@ export default function SmmSelectionAuthority() {
     <section className="px-4 py-14 sm:px-6 lg:px-8 lg:py-18" aria-labelledby="smm-selection-heading">
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-[linear-gradient(145deg,#111113,#0d0d10_60%,#15110d)] p-6 text-white shadow-[0_28px_70px_-42px_rgba(255,122,0,.8)] sm:p-8">
         <div className="max-w-3xl">
-          <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">SMM panel comparison guide</p>
+          <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Growth service comparison guide</p>
           <h2 id="smm-selection-heading" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">
-            How to compare a reliable SMM panel in India
+            How to compare reliable social media growth services in India
           </h2>
           <p className="mt-3 text-sm leading-7 text-[#C7CBD3]">
             Search results often use words like “best” or “trusted.” A more useful comparison is to verify the current facts for the exact service you want: price, payment options, public-link requirements, delivery/refill terms, and order tracking.
