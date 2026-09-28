@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { Check, Copy, RotateCcw } from "lucide-react";
-import { revenueEstimate, youtubeMetrics } from "@/lib/tools/calculations";
+import { revenueEstimate } from "@/lib/tools/calculations";
+import { calculateYouTubeEngagement, type YouTubeEngagementMode } from "@/lib/tools/youtube-engagement";
 import { track } from "@/lib/analytics/events";
 
 const field = "mt-2 min-h-12 w-full rounded-xl border border-white/15 bg-[#090A0F] px-4 py-3 text-base text-white outline-none transition placeholder:text-[#747B89] focus:border-orange-400 focus:ring-4 focus:ring-orange-400/10";
@@ -12,11 +13,72 @@ function Shell({ title, description, children }: { title: string; description: s
 const Input = ({ label, value, setValue, placeholder = "0" }: { label: string; value: string; setValue: (value: string) => void; placeholder?: string }) => <label className="text-sm font-semibold text-[#D7DBE3]">{label}<input className={field} type="number" min="0" inputMode="decimal" value={value} onChange={(e) => setValue(e.target.value)} placeholder={placeholder} /></label>;
 
 export function YouTubeEngagementWorkspace() {
-  const initial = { subscribers: "", views: "", likes: "", comments: "" }; const [v, setV] = useState(initial);
+  const initial = { mode: "video" as YouTubeEngagementMode, subscribers: "", views: "", likes: "", comments: "", shares: "", engagedViews: "" };
+  const [v, setV] = useState(initial);
   const update = (key: keyof typeof initial) => (value: string) => setV({ ...v, [key]: value });
-  const metric = youtubeMetrics(number(v.subscribers), number(v.views), number(v.likes), number(v.comments)); const ready = number(v.views) > 0;
-  useEffect(() => { if (ready) track("creator_tool_result_generated", { tool: "youtube_engagement_rate" }); }, [ready]);
-  return <Shell title="Calculate video engagement" description="Enter typical video figures. These independent ratios are calculated only from your inputs."><div className="grid gap-4 sm:grid-cols-2"><Input label="Subscribers" value={v.subscribers} setValue={update("subscribers")} /><Input label="Average views per video" value={v.views} setValue={update("views")} /><Input label="Average likes" value={v.likes} setValue={update("likes")} /><Input label="Average comments" value={v.comments} setValue={update("comments")} /></div><div className="mt-6 grid gap-3 sm:grid-cols-3">{[["Engagement relative to views", metric.engagementByViews], ["Views-to-subscriber ratio", metric.viewsToSubscribers], ["Likes-to-views ratio", metric.likesToViews]].map(([label, value]) => <div key={String(label)} className="rounded-2xl border border-orange-400/25 bg-orange-400/[.07] p-4"><p className="text-xs text-[#C0C6D0]">{String(label)}</p><p className="mt-2 text-2xl font-black text-orange-200">{typeof value === "number" ? `${value.toFixed(2)}%` : "—"}</p></div>)}</div><p className="mt-4 text-xs leading-5 text-[#A8AFBD]">Formula: (likes + comments) ÷ views × 100. The other ratios divide views or likes by the relevant entered total. These are not official YouTube metrics.</p><div className="mt-5 flex flex-wrap gap-3"><button type="button" className="btn-secondary min-h-12 gap-2 px-4" onClick={() => setV(initial)}><RotateCcw className="h-4 w-4" /> Reset</button>{ready && <CopyResult value={`YouTube engagement: ${metric.engagementByViews?.toFixed(2)}%; views-to-subscribers: ${metric.viewsToSubscribers?.toFixed(2) ?? "N/A"}%; likes-to-views: ${metric.likesToViews?.toFixed(2)}%`} />}</div><p aria-live="polite" className="mt-3 min-h-5 text-sm font-semibold text-emerald-300">{ready ? `${metric.interactions.toLocaleString()} average interactions calculated` : v.views ? "Enter views greater than zero" : ""}</p></Shell>;
+  const result = calculateYouTubeEngagement({
+    mode: v.mode,
+    subscribers: number(v.subscribers),
+    views: number(v.views),
+    likes: number(v.likes),
+    comments: number(v.comments),
+    shares: number(v.shares),
+    engagedViews: number(v.engagedViews),
+  });
+  const ready = result !== null;
+  useEffect(() => {
+    if (ready) track("creator_tool_result_generated", { tool: "youtube_engagement_rate", format: v.mode });
+  }, [ready, v.mode]);
+
+  return <Shell
+    title="Calculate YouTube video or Shorts engagement"
+    description="Choose Video or Shorts, then enter values from the same YouTube Analytics reporting period. The tool calculates transparent ratios from only your inputs."
+  >
+    <div className="grid gap-4 sm:grid-cols-2">
+      <label className="text-sm font-semibold text-[#D7DBE3]">
+        Content format
+        <select className={field} value={v.mode} onChange={(e) => setV({ ...v, mode: e.target.value as YouTubeEngagementMode })}>
+          <option value="video">Regular video</option>
+          <option value="shorts">YouTube Shorts</option>
+        </select>
+      </label>
+      <Input label="Views" value={v.views} setValue={update("views")} />
+      <Input label="Likes" value={v.likes} setValue={update("likes")} />
+      <Input label="Comments" value={v.comments} setValue={update("comments")} />
+      <Input label="Shares" value={v.shares} setValue={update("shares")} />
+      <Input label="Subscribers (optional)" value={v.subscribers} setValue={update("subscribers")} />
+      {v.mode === "shorts" ? <Input label="Engaged views (optional)" value={v.engagedViews} setValue={update("engagedViews")} /> : null}
+    </div>
+
+    <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">
+      {[
+        ["Engagement rate by views", result?.engagementRate ?? null],
+        ["Like rate", result?.likeRate ?? null],
+        ["Comment rate", result?.commentRate ?? null],
+        ["Share rate", result?.shareRate ?? null],
+        ["Views-to-subscribers", result?.viewsToSubscribers ?? null],
+        ...(v.mode === "shorts" ? [["Engaged-view rate", result?.engagedViewRate ?? null] as const] : []),
+      ].map(([label, value]) => <div key={String(label)} className="rounded-2xl border border-orange-400/25 bg-orange-400/[.07] p-4">
+        <p className="text-xs text-[#C0C6D0]">{String(label)}</p>
+        <p className="mt-2 text-2xl font-black text-orange-200">{typeof value === "number" ? `${value.toFixed(2)}%` : "—"}</p>
+      </div>)}
+    </div>
+
+    <div className="mt-5 rounded-xl border border-white/10 bg-white/[.03] p-4 text-xs leading-6 text-[#A8AFBD]">
+      <b className="text-[#D7DBE3]">Main formula:</b> (likes + comments + shares) ÷ views × 100. Like, comment and share rates use the same view denominator. For Shorts, engaged-view rate is engaged views ÷ views × 100 when you provide that optional value.
+    </div>
+    <p className="mt-4 text-xs leading-5 text-[#A8AFBD]">
+      These are transparent planning ratios, not an official YouTube performance score or benchmark. Compare like-for-like formats and reporting periods in YouTube Analytics.
+    </p>
+
+    <div className="mt-5 flex flex-wrap gap-3">
+      <button type="button" className="btn-secondary min-h-12 gap-2 px-4" onClick={() => setV(initial)}><RotateCcw className="h-4 w-4" /> Reset</button>
+      {ready && result ? <CopyResult value={`YouTube ${v.mode === "shorts" ? "Shorts" : "video"} engagement: ${result.engagementRate.toFixed(2)}%; like rate: ${result.likeRate.toFixed(2)}%; comment rate: ${result.commentRate.toFixed(2)}%; share rate: ${result.shareRate.toFixed(2)}%`} /> : null}
+    </div>
+    <p aria-live="polite" className="mt-3 min-h-5 text-sm font-semibold text-emerald-300">
+      {ready && result ? `${result.interactions.toLocaleString()} interactions calculated from ${number(v.views).toLocaleString()} views` : v.views ? "Enter views greater than zero" : ""}
+    </p>
+  </Shell>;
 }
 
 export function YouTubeRevenueWorkspace() {
