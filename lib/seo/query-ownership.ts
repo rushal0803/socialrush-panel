@@ -246,8 +246,14 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
   {
     id: "agency-reseller-panel-india",
     canonicalPath: "/for-agencies",
-    intent: "SMM reseller panel India and SMM panel for agencies India",
-    aliases: ["/smm-reseller-panel-india", "/smm-panel-for-agencies-india"],
+    intent: "SMM reseller panel India, SMM panel API India and SMM panel for agencies India",
+    aliases: [
+      "/smm-reseller-panel-india",
+      "/smm-panel-for-agencies-india",
+      "/smm-panel-api-india",
+      "/smm-reseller-api-india",
+      "/smm-api-india",
+    ],
   },
   {
     id: "safe-smm-ordering-india",
