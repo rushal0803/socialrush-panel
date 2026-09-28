@@ -3,7 +3,7 @@ import assert from "node:assert/strict";
 import { absoluteSeoUrl, countryServiceAlternates, countryServicePaths, createCountryServiceMetadata, getPublishedCountryServicePage, publishedCountryServicePages } from "../../lib/seo/international.ts";
 import { activeSmmServices } from "../../lib/smm-service-catalog.ts";
 test("only explicit enabled country-service combinations publish", () => {
-  assert.equal(countryServicePaths.length, 8);
+  assert.equal(countryServicePaths.length, publishedCountryServicePages.length);
   assert.ok(getPublishedCountryServicePage("us", "buy-instagram-followers"));
   assert.equal(getPublishedCountryServicePage("sg", "buy-instagram-followers"), undefined);
   assert.equal(getPublishedCountryServicePage("us", "buy-fake-service"), undefined);
@@ -43,4 +43,33 @@ test("published country-service pages have isolated transactional metadata", () 
     assert.deepEqual(metadata.twitter, { card: "summary_large_image", title: page.title, description: page.description, images: [absoluteSeoUrl("/og-image.png")] });
     assert.deepEqual(metadata.robots, { index: true, follow: true });
   }
+});
+
+
+test("country-service metadata uses concise market search language without duplication", () => {
+  const titles = new Set<string>();
+  const descriptions = new Set<string>();
+
+  for (const page of publishedCountryServicePages) {
+    const metadata = createCountryServiceMetadata(page);
+    const title = (metadata.title as { absolute?: string }).absolute || "";
+    const description = String(metadata.description || "");
+
+    assert.ok(title.startsWith("Buy "));
+    assert.ok(title.includes(page.market.seoLocative));
+    assert.equal(title.match(/SocialRUSH/g)?.length, 1);
+    assert.ok(title.length <= 70);
+
+    assert.ok(description.includes(page.market.searchLabel));
+    assert.ok(description.includes(page.market.currency));
+    assert.match(description, /public .* destination/);
+    assert.match(description, /No social-media password is required/);
+    assert.ok(description.length <= 180);
+
+    titles.add(title);
+    descriptions.add(description);
+  }
+
+  assert.equal(titles.size, publishedCountryServicePages.length);
+  assert.equal(descriptions.size, publishedCountryServicePages.length);
 });
