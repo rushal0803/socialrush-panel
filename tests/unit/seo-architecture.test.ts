@@ -26,6 +26,7 @@ import { platformSmmIntent, platformSmmKeywords } from "../../lib/seo/platform-s
 import { priceForQuantity, smmPricingCriteria, smmPricingIndiaKeywords } from "../../lib/seo/smm-pricing-intent.ts";
 import { safeSmmOrderingCriteria, safeSmmOrderingKeywords } from "../../lib/seo/safe-smm-ordering-intent.ts";
 import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-intent.ts";
+import { affordableSmmCriteria, affordableSmmFaqs, affordableSmmIndiaKeywords } from "../../lib/seo/affordable-smm-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -1004,4 +1005,59 @@ test("phase 5W agency page exposes visible SMM API authority and monitored alias
   assert.match(monitor, /"\/smm-reseller-api-india", "\/for-agencies"/);
   assert.match(monitor, /"\/smm-api-india", "\/for-agencies"/);
   assert.equal(searchFreshnessLastmod["/for-agencies"], "2026-09-28");
+});
+
+
+test("phase 5X assigns cheap and affordable SMM India intent to /pricing", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "smm-pricing-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/pricing");
+  assert.match(owner.intent, /affordable SMM panel India/i);
+  for (const alias of [
+    "/cheap-smm-panel-india",
+    "/affordable-smm-panel-india",
+    "/low-cost-smm-panel-india",
+    "/budget-smm-panel-india",
+  ]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/pricing");
+  }
+  assert.ok(affordableSmmIndiaKeywords.includes("cheap SMM panel India"));
+  assert.ok(affordableSmmIndiaKeywords.includes("affordable SMM panel India"));
+});
+
+test("phase 5X affordability model compares real campaign cost without ranking claims", () => {
+  assert.deepEqual(affordableSmmCriteria.map((item) => item.id), ["unit-cost", "minimum", "terms", "checkout"]);
+  const copy = JSON.stringify({ criteria: affordableSmmCriteria, faqs: affordableSmmFaqs() });
+  assert.match(copy, /current INR rate/i);
+  assert.match(copy, /minimum order/i);
+  assert.match(copy, /delivery.*refill|refill.*delivery/i);
+  assert.match(copy, /final checkout total/i);
+  assert.match(copy, /does not claim a universal cheapest ranking/i);
+  assert.doesNotMatch(copy, /India.?s cheapest|#1|guaranteed lowest|lowest price guaranteed/i);
+});
+
+test("phase 5X pricing page exposes visible affordable SMM authority and monitored aliases", () => {
+  const page = readFileSync(new URL("../../app/pricing/page.tsx", import.meta.url), "utf8");
+  const authority = readFileSync(new URL("../../components/marketing/pricing/AffordableSmmIndiaAuthority.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+
+  assert.match(page, /affordable SocialRUSH SMM panel pricing in India/i);
+  assert.match(page, /<AffordableSmmIndiaAuthority \/>/);
+  assert.match(authority, /Affordable SMM panel India/i);
+  assert.match(authority, /What “cheap SMM panel” should mean/i);
+  assert.match(authority, /does not claim to be universally the cheapest/i);
+  assert.doesNotMatch(authority, /India.?s cheapest|#1 SMM|guaranteed lowest/i);
+
+  for (const alias of [
+    "/cheap-smm-panel-india",
+    "/affordable-smm-panel-india",
+    "/low-cost-smm-panel-india",
+    "/budget-smm-panel-india",
+  ]) {
+    assert.match(monitor, new RegExp(`"${alias.replaceAll("/", "\\/")}", "\\/pricing"`));
+  }
+  assert.match(indexNow, /"\/pricing"/);
+  assert.equal(searchFreshnessLastmod["/pricing"], "2026-09-28");
 });
