@@ -12,6 +12,7 @@ import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search
 import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/seo/authority-graph.ts";
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
 import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.ts";
+import { growthPlatformDecisionPoints, growthPlatformIndiaKeywords } from "../../lib/seo/growth-platform-intent.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
 import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_PRICING_INTENT_UPDATE, PHASE5_SAFE_ORDERING_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
@@ -588,17 +589,11 @@ test("phase 5M comparison model covers practical panel-selection criteria withou
   assert.doesNotMatch(copy, /best|cheapest|#1/i);
 });
 
-test("phase 5M services page exposes visible SMM panel India authority content", () => {
+test("phase 5M legacy panel aliases remain consolidated without controlling visible services positioning", () => {
   const pageSource = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
-  const heroSource = readFileSync(new URL("../../components/marketing/services/ServicesPageContent.tsx", import.meta.url), "utf8");
-  const authoritySource = readFileSync(new URL("../../components/marketing/services/SmmPanelIndiaAuthority.tsx", import.meta.url), "utf8");
-  assert.match(pageSource, /SMM Panel India \| Social Media Growth Services/);
-  assert.match(pageSource, /<SmmPanelIndiaAuthority serviceCatalog=\{serviceCatalog\}/);
-  assert.match(heroSource, /SMM Panel India for social media growth services/);
-  assert.match(authoritySource, /SMM panel India/);
-  assert.match(authoritySource, /India-friendly checkout/);
-  assert.match(authoritySource, /For creators, businesses and agencies/);
-  assert.doesNotMatch(authoritySource, /India.?s #1|best SMM|cheapest SMM/i);
+  assert.ok(commercialCanonicalRedirects["/smm-panel-india"] === "/services");
+  assert.doesNotMatch(pageSource, /<SmmPanelIndiaAuthority/);
+  assert.doesNotMatch(pageSource, /smmPanelIndiaKeywords/);
 });
 
 
@@ -805,14 +800,11 @@ test("phase 5S selection model uses factual criteria instead of self-awarded ran
   assert.doesNotMatch(copy, /SocialRUSH is the best|#1|cheapest|guaranteed/i);
 });
 
-test("phase 5S services page exposes visible SMM selection guidance and monitored aliases", () => {
+test("phase 5S legacy selection aliases remain monitored while visible services copy stays brand-safe", () => {
   const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
-  const authority = readFileSync(new URL("../../components/marketing/services/SmmSelectionAuthority.tsx", import.meta.url), "utf8");
   const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
-  assert.match(source, /SmmSelectionAuthority/);
-  assert.match(source, /smmSelectionIndiaKeywords/);
-  assert.match(authority, /How to compare a reliable SMM panel in India/i);
-  assert.match(authority, /does not claim a universal “best” ranking/i);
+  assert.doesNotMatch(source, /<SmmSelectionAuthority/);
+  assert.doesNotMatch(source, /smmSelectionIndiaKeywords/);
   assert.match(monitor, /"\/best-smm-panel-india", "\/services"/);
   assert.match(monitor, /"\/reliable-smm-panel-india", "\/services"/);
   assert.match(monitor, /"\/trusted-smm-panel-india", "\/services"/);
@@ -1060,4 +1052,25 @@ test("phase 5X pricing page exposes visible affordable SMM authority and monitor
   }
   assert.match(indexNow, /"\/pricing"/);
   assert.equal(searchFreshnessLastmod["/pricing"], "2026-09-28");
+});
+
+
+test("phase 5Y services canonical uses brand-safe growth-platform authority", () => {
+  const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  const authority = readFileSync(new URL("../../components/marketing/services/GrowthPlatformIndiaAuthority.tsx", import.meta.url), "utf8");
+  assert.match(source, /GrowthPlatformIndiaAuthority/);
+  assert.match(source, /growthPlatformIndiaKeywords/);
+  assert.doesNotMatch(source, /smmPanelIndiaKeywords|smmSelectionIndiaKeywords/);
+  assert.match(authority, /SocialRUSH growth platform/);
+  assert.match(authority, /social media growth services in India/i);
+  assert.match(authority, /public-link ordering/i);
+  assert.match(authority, /Agency workflows/);
+});
+
+test("phase 5Y growth-platform intent covers commercial discovery without ranking claims", () => {
+  assert.ok(growthPlatformIndiaKeywords.includes("social media growth platform India"));
+  assert.ok(growthPlatformIndiaKeywords.includes("social media growth services with UPI India"));
+  assert.deepEqual(growthPlatformDecisionPoints.map((item) => item.id), ["platform", "pricing", "safety", "tracking"]);
+  const copy = JSON.stringify({ growthPlatformIndiaKeywords, growthPlatformDecisionPoints });
+  assert.doesNotMatch(copy, /#1|guaranteed ranking|cheapest platform/i);
 });
