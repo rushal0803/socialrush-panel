@@ -13,10 +13,10 @@ export default function SmmPricingIndiaAuthority() {
   return (
     <section className="relative mx-auto max-w-7xl px-5 pb-14 sm:px-6 lg:px-8">
       <div className="rounded-[2rem] border border-orange-400/20 bg-[linear-gradient(135deg,rgba(255,122,0,.10),rgba(255,255,255,.035)_45%,rgba(255,255,255,.02))] p-6 sm:p-8">
-        <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">SMM panel pricing in India</p>
-        <h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-white">How to compare an SMM panel price list without looking at price alone</h2>
+        <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Social media service pricing in India</p>
+        <h2 className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-white">How to compare social media service pricing without looking at price alone</h2>
         <p className="mt-4 max-w-4xl text-sm leading-7 text-slate-300">
-          Searchers looking for an SMM panel price list in India usually need more than one number. A useful comparison includes the current INR rate, valid quantity range, payment options, and the delivery or refill information attached to the service.
+          Customers comparing social media service pricing in India usually need more than one number. A useful comparison includes the current INR rate, valid quantity range, payment options, and the delivery or refill information attached to the service.
         </p>
         <div className="mt-7 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {smmPricingCriteria.map((item) => {
