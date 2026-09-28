@@ -59,6 +59,7 @@ const publicRoutes = [
   "/tools/instagram-follower-growth-rate-calculator",
   "/tools/instagram-reach-rate-calculator",
   "/tools/instagram-story-engagement-rate-calculator",
+  "/tools/linkedin-engagement-rate-calculator",
   "/tools/social-media-image-resizer",
   "/tools/youtube-thumbnail-preview",
   "/tools/instagram-caption-counter",
