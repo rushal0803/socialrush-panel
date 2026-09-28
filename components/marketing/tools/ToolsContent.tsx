@@ -94,7 +94,7 @@ function PremiumEngagement({ tool }: { tool: Tool }) {
   }) : null;
   const calculated = result !== null;
   const rate = result?.engagementRate ?? 0;
-  const update = (key: keyof EngagementValues, value: string) => setValues(current => ({ ...current, [key]: key === "basis" ? value as EngagementValues["basis"] : value.replace(/\s/g, "") }));
+  const update = (key: keyof EngagementValues, value: string) => setValues(current => ({ ...current, [key]: key === "basis" ? value as EngagementValues["basis"] : key === "mode" ? value as InstagramEngagementMode : value.replace(/\s/g, "") }));
   const reset = () => { setValues(engagementInitial); setExpanded(false); setCopied(false); };
   const tryExample = () => setValues({ mode: "reel", likes: "520", comments: "44", saves: "30", shares: "56", audience: "12,500", plays: "18,000", basis: "reach" });
   const copy = async () => { if (!result) return; const reelRate = result.reelPlayEngagementRate === null ? "" : `\nReel interactions per play: ${result.reelPlayEngagementRate.toFixed(2)}%`; await navigator.clipboard?.writeText(`Instagram ${values.mode === "reel" ? "Reel" : "Post"} Engagement Rate: ${result.engagementRate.toFixed(2)}%${reelRate}\nCalculated with SocialRUSH Engagement Rate Calculator`); setCopied(true); setTimeout(() => setCopied(false), 1800); };
