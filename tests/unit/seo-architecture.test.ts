@@ -28,6 +28,7 @@ import { priceForQuantity, smmPricingCriteria, smmPricingIndiaKeywords } from ".
 import { safeSmmOrderingCriteria, safeSmmOrderingKeywords } from "../../lib/seo/safe-smm-ordering-intent.ts";
 import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-intent.ts";
 import { affordableSmmCriteria, affordableSmmFaqs, affordableSmmIndiaKeywords } from "../../lib/seo/affordable-smm-intent.ts";
+import { bulkSmmDecisionPoints, bulkSmmFaqs, bulkSmmIndiaKeywords } from "../../lib/seo/bulk-smm-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -1073,4 +1074,44 @@ test("phase 5Y growth-platform intent covers commercial discovery without rankin
   assert.deepEqual(growthPlatformDecisionPoints.map((item) => item.id), ["platform", "pricing", "safety", "tracking"]);
   const copy = JSON.stringify({ growthPlatformIndiaKeywords, growthPlatformDecisionPoints });
   assert.doesNotMatch(copy, /#1|guaranteed ranking|cheapest platform/i);
+});
+
+
+test("phase 5Z maps bulk SMM search intent to the existing agency canonical", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "agency-reseller-panel-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/for-agencies");
+  for (const alias of [
+    "/bulk-smm-orders-india",
+    "/bulk-smm-services-india",
+    "/bulk-social-media-services-india",
+    "/agency-social-media-fulfillment-india",
+  ]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/for-agencies");
+  }
+  assert.equal(hasUniqueQueryOwnership(), true);
+});
+
+test("phase 5Z bulk intent copy stays operational and avoids unsupported reseller claims", () => {
+  assert.ok(bulkSmmIndiaKeywords.includes("bulk SMM orders India"));
+  assert.ok(bulkSmmIndiaKeywords.includes("bulk social media services India"));
+  assert.equal(bulkSmmDecisionPoints.length, 4);
+  const copy = bulkSmmDecisionPoints.map((item) => item.text).join(" ");
+  assert.match(copy, /current/i);
+  assert.match(copy, /review/i);
+  const faqCopy = bulkSmmFaqs().map((item) => item.answer).join(" ");
+  assert.match(faqCopy, /No automatic bulk or wholesale discount is promised/i);
+  assert.match(faqCopy, /does not automatically place orders/i);
+});
+
+test("phase 5Z agency page exposes the bulk authority section and FAQ schema input", () => {
+  const source = readFileSync(new URL("../../app/for-agencies/page.tsx", import.meta.url), "utf8");
+  const component = readFileSync(new URL("../../components/marketing/audiences/BulkSmmIndiaAuthority.tsx", import.meta.url), "utf8");
+  assert.match(source, /BulkSmmIndiaAuthority/);
+  assert.match(source, /bulkSmmFaqs/);
+  assert.match(source, /bulkSmmIndiaKeywords/);
+  assert.match(component, /Bulk SMM orders India/);
+  assert.match(component, /not a promise of a white-label child panel/i);
+  assert.match(component, /Open bulk planner/);
 });
