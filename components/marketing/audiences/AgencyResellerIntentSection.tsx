@@ -15,12 +15,12 @@ export default function AgencyResellerIntentSection() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-[.78fr_1.22fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[.16em] text-orange-600">SMM reseller panel India</p>
+            <p className="text-xs font-black uppercase tracking-[.16em] text-orange-600">Agency social media growth platform India</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight text-[#0B0B0F] sm:text-4xl">
               An agency workflow built around real client operations
             </h2>
             <p className="mt-4 text-sm leading-7 text-slate-700">
-              Agencies and resellers usually need more than a low headline rate. Practical workflows include client separation,
+              Agencies managing repeat social campaigns usually need more than a simple order form. Practical workflows include client separation,
               bulk planning, current service details, repeat-campaign organization, pricing review and a clear handoff into the
               verified order flow.
             </p>
@@ -29,8 +29,8 @@ export default function AgencyResellerIntentSection() {
               refill terms and payable totals remain controlled by the current service and checkout information.
             </p>
             <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 p-4 text-xs leading-6 text-amber-950">
-              SocialRUSH does not claim to provide a white-label child panel, automatic wholesale discount, guaranteed delivery
-              outcome or guaranteed reseller profit. Use the live workspace and catalog to evaluate the fit for your agency.
+              SocialRUSH is presented as an agency growth workspace, not a white-label panel. No automatic wholesale discount, guaranteed delivery
+              outcome or guaranteed client profit is promised. Use the live workspace and catalog to evaluate the fit for your agency.
             </div>
           </div>
 
@@ -54,7 +54,7 @@ export default function AgencyResellerIntentSection() {
         </div>
 
         <div className="mt-8 rounded-[2rem] border border-slate-200 bg-[#0B0B0F] p-6 text-white sm:p-8">
-          <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">How to compare an agency SMM workflow</p>
+          <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">How to compare an agency growth workflow</p>
           <div className="mt-4 grid gap-4 md:grid-cols-4">
             {[
               ["Client organization", "Can separate clients and preserve campaign context."],
