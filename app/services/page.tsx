@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
 import ServiceCompareStudio from "@/components/marketing/services/ServiceCompareStudio";
-import SmmPanelIndiaAuthority from "@/components/marketing/services/SmmPanelIndiaAuthority";
 import SocialMediaServicesIndiaAuthority from "@/components/marketing/services/SocialMediaServicesIndiaAuthority";
-import SmmSelectionAuthority from "@/components/marketing/services/SmmSelectionAuthority";
+import GrowthPlatformIndiaAuthority from "@/components/marketing/services/GrowthPlatformIndiaAuthority";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
@@ -11,9 +10,8 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-service-catalog";
-import { smmPanelIndiaKeywords } from "@/lib/seo/smm-panel-intent";
 import { socialMediaServicesIndiaKeywords } from "@/lib/seo/social-media-services-intent";
-import { smmSelectionIndiaKeywords } from "@/lib/seo/smm-selection-intent";
+import { growthPlatformIndiaKeywords } from "@/lib/seo/growth-platform-intent";
 
 export const dynamic = "force-dynamic";
 
@@ -29,9 +27,8 @@ export const metadata: Metadata = createPageMetadata({
     "buy Facebook followers India",
     "Instagram growth services India",
     "YouTube growth services India",
-    ...smmPanelIndiaKeywords,
     ...socialMediaServicesIndiaKeywords,
-    ...smmSelectionIndiaKeywords,
+    ...growthPlatformIndiaKeywords,
   ],
 });
 
@@ -122,9 +119,8 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialSearchParam={searchParams?.q ?? searchParams?.search}
         serviceCatalog={serviceCatalog}
       />
-      <SmmPanelIndiaAuthority serviceCatalog={serviceCatalog} />
+      <GrowthPlatformIndiaAuthority />
       <SocialMediaServicesIndiaAuthority />
-      <SmmSelectionAuthority />
       <ServiceCompareStudio serviceCatalog={serviceCatalog} />
       <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
