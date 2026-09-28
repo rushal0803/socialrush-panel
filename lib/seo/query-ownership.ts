@@ -257,6 +257,10 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
       "/smm-panel-api-india",
       "/smm-reseller-api-india",
       "/smm-api-india",
+      "/bulk-smm-orders-india",
+      "/bulk-smm-services-india",
+      "/bulk-social-media-services-india",
+      "/agency-social-media-fulfillment-india",
     ],
   },
   {
