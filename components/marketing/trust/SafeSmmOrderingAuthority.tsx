@@ -15,9 +15,9 @@ export default function SafeSmmOrderingAuthority() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-[1.05fr_.95fr] lg:items-start">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Safe SMM ordering in India</p>
+            <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Safe social media growth ordering in India</p>
             <h2 id="safe-smm-ordering-heading" className="mt-3 max-w-3xl text-3xl font-black tracking-tight text-white sm:text-4xl">
-              What “no password required” should mean before you place an SMM order
+              What “no password required” should mean before you place an order
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
               A useful safety check is based on the order flow, not a marketing badge. SocialRUSH uses the public destination required by the selected service and does not need your social-media password, OTP or recovery code for ordering.
