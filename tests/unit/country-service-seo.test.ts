@@ -71,6 +71,9 @@ test("country-service metadata uses concise market search language without dupli
     } else if (page.catalogServiceCode === "youtube-views") {
       assert.ok(description.includes("public YouTube video"));
       assert.ok(description.includes("No Google or YouTube password is required"));
+    } else if (page.catalogServiceCode === "linkedin-followers") {
+      assert.ok(description.includes("public LinkedIn profile or company page"));
+      assert.ok(description.includes("No LinkedIn password is required"));
     } else {
       assert.match(description, /public .* destination/);
       assert.match(description, /No social-media password is required/);
@@ -172,4 +175,35 @@ test("international YouTube views pages have distinct market planning intent", (
   }
 
   assert.equal(summaries.size, 4);
+});
+
+
+test("international LinkedIn follower pages have distinct market planning intent", () => {
+  const linkedinPages = publishedCountryServicePages.filter((page) => page.catalogServiceCode === "linkedin-followers");
+  assert.equal(linkedinPages.length, 6);
+
+  const summaries = new Set<string>();
+  for (const page of linkedinPages) {
+    assert.ok(page.copy.intentTitle?.includes(page.market.searchLabel));
+    assert.ok(page.copy.intentSummary?.includes(page.market.audience));
+    assert.equal(page.copy.planningChecks?.length, 3);
+    assert.ok(page.copy.planningChecks?.[0]?.includes(page.market.currency));
+    assert.ok(page.copy.planningChecks?.[1]?.includes("public LinkedIn profile or company page"));
+    assert.ok(page.copy.planningChecks?.[2]?.includes("not as guaranteed post reach"));
+    assert.ok(page.copy.planningChecks?.[2]?.includes("business results"));
+
+    const metadata = createCountryServiceMetadata(page);
+    const title = (metadata.title as { absolute?: string }).absolute || "";
+    const description = String(metadata.description || "");
+
+    assert.ok(title.includes("LinkedIn Followers"));
+    assert.ok(title.includes(page.market.currency));
+    assert.ok(description.includes(page.market.searchLabel));
+    assert.ok(description.includes("public LinkedIn profile or company page"));
+    assert.ok(description.includes("INR checkout"));
+    assert.ok(description.includes("No LinkedIn password is required"));
+    summaries.add(page.copy.intentSummary || "");
+  }
+
+  assert.equal(summaries.size, 6);
 });
