@@ -572,8 +572,8 @@ test("phase 5M assigns SMM panel India intent to the existing services canonical
   assert.match(owner.intent, /SMM panel India/i);
   assert.ok(owner.aliases.includes("/smm-panel-india"));
   assert.equal(commercialCanonicalRedirects["/smm-panel-india"], "/services");
-  assert.ok(smmPanelIndiaKeywords.includes("SMM panel India"));
-  assert.ok(smmPanelIndiaKeywords.includes("UPI SMM panel India"));
+  assert.ok(smmPanelIndiaKeywords.includes("social media growth services India"));
+  assert.ok(smmPanelIndiaKeywords.includes("social media services with UPI India"));
 });
 
 test("phase 5M comparison model covers practical panel-selection criteria without ranking claims", () => {
@@ -610,8 +610,8 @@ test("phase 5N assigns agency reseller intent to /for-agencies without a doorway
   assert.ok(owner.aliases.includes("/smm-panel-for-agencies-india"));
   assert.equal(commercialCanonicalRedirects["/smm-reseller-panel-india"], "/for-agencies");
   assert.equal(commercialCanonicalRedirects["/smm-panel-for-agencies-india"], "/for-agencies");
-  assert.ok(agencyResellerIntentKeywords.includes("SMM reseller panel India"));
-  assert.ok(agencyResellerIntentKeywords.includes("SMM panel for agencies India"));
+  assert.ok(agencyResellerIntentKeywords.includes("social media growth platform for agencies India"));
+  assert.ok(agencyResellerIntentKeywords.includes("agency social media growth services India"));
 });
 
 test("phase 5N agency intent model stays factual and avoids unsupported reseller claims", () => {
@@ -789,9 +789,9 @@ test("phase 5S consolidates best reliable and trusted SMM panel India queries on
     assert.ok(owner.aliases.includes(alias));
     assert.equal(commercialCanonicalRedirects[alias], "/services");
   }
-  assert.ok(smmSelectionIndiaKeywords.includes("best SMM panel India"));
-  assert.ok(smmSelectionIndiaKeywords.includes("reliable SMM panel India"));
-  assert.ok(smmSelectionIndiaKeywords.includes("trusted SMM panel India"));
+  assert.ok(smmSelectionIndiaKeywords.includes("best social media growth platform India"));
+  assert.ok(smmSelectionIndiaKeywords.includes("reliable social media growth services India"));
+  assert.ok(smmSelectionIndiaKeywords.includes("trusted social media growth services India"));
 });
 
 test("phase 5S selection model uses factual criteria instead of self-awarded ranking claims", () => {
@@ -878,8 +878,8 @@ test("phase 5U assigns SMM pricing and UPI intent to /pricing", () => {
     assert.ok(owner.aliases.includes(alias));
     assert.equal(commercialCanonicalRedirects[alias], "/pricing");
   }
-  assert.ok(smmPricingIndiaKeywords.includes("SMM panel price list India"));
-  assert.ok(smmPricingIndiaKeywords.includes("UPI SMM panel India"));
+  assert.ok(smmPricingIndiaKeywords.includes("social media service price list India"));
+  assert.ok(smmPricingIndiaKeywords.includes("social media services with UPI India"));
 });
 
 test("phase 5U pricing model stays factual and derives quantity totals", () => {
@@ -926,8 +926,8 @@ test("phase 5V assigns safe no-password SMM ordering intent to /trust", () => {
     assert.ok(owner.aliases.includes(alias));
     assert.equal(commercialCanonicalRedirects[alias], "/trust");
   }
-  assert.ok(safeSmmOrderingKeywords.includes("SMM panel without password India"));
-  assert.ok(safeSmmOrderingKeywords.includes("public link SMM panel India"));
+  assert.ok(safeSmmOrderingKeywords.includes("social media services without password India"));
+  assert.ok(safeSmmOrderingKeywords.includes("public link social media services India"));
 });
 
 test("phase 5V safe-ordering model uses verifiable checks instead of ranking claims", () => {
@@ -974,8 +974,8 @@ test("phase 5W assigns SMM API India intent to the existing agency canonical", (
     assert.ok(owner.aliases.includes(alias));
     assert.equal(commercialCanonicalRedirects[alias], "/for-agencies");
   }
-  assert.ok(smmApiIndiaKeywords.includes("SMM panel API India"));
-  assert.ok(smmApiIndiaKeywords.includes("SMM reseller API India"));
+  assert.ok(smmApiIndiaKeywords.includes("social media growth API India"));
+  assert.ok(smmApiIndiaKeywords.includes("agency social media API India"));
 });
 
 test("phase 5W API model uses only documented workflow capabilities", () => {
@@ -1022,8 +1022,8 @@ test("phase 5X assigns cheap and affordable SMM India intent to /pricing", () =>
     assert.ok(owner.aliases.includes(alias));
     assert.equal(commercialCanonicalRedirects[alias], "/pricing");
   }
-  assert.ok(affordableSmmIndiaKeywords.includes("cheap SMM panel India"));
-  assert.ok(affordableSmmIndiaKeywords.includes("affordable SMM panel India"));
+  assert.ok(affordableSmmIndiaKeywords.includes("cheap social media services India"));
+  assert.ok(affordableSmmIndiaKeywords.includes("affordable social media growth services India"));
 });
 
 test("phase 5X affordability model compares real campaign cost without ranking claims", () => {

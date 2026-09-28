@@ -7,7 +7,7 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import SafeSmmOrderingAuthority from "@/components/marketing/trust/SafeSmmOrderingAuthority";
 import { safeSmmOrderingKeywords } from "@/lib/seo/safe-smm-ordering-intent";
 
-export const metadata: Metadata = createPageMetadata({ title: "Safe SMM Ordering India | No Password | SocialRUSH", description: "Review safe SMM ordering in India with public-link requirements, no social password, official checkout, delivery/refill guidance and account-based order tracking.", path: "/trust", keywords: ["SocialRUSH safety", "SocialRUSH customer safety", "SocialRUSH order safety", "SocialRUSH payment safety", "public link social media services", ...safeSmmOrderingKeywords] });
+export const metadata: Metadata = createPageMetadata({ title: "Safe Social Media Growth Ordering India | SocialRUSH", description: "Review safe social media growth ordering in India with public-link requirements, no social password, official checkout, delivery/refill guidance and account-based order tracking.", path: "/trust", keywords: ["SocialRUSH safety", "SocialRUSH customer safety", "SocialRUSH order safety", "SocialRUSH payment safety", "public link social media services", ...safeSmmOrderingKeywords] });
 
 const officialDomain = new URL(SEO_SITE_URL).hostname;
 const safeItems = ["Public profile, post, video, channel or page URL when required", "Order ID when asking for order support", "Payment reference when resolving a payment issue"];

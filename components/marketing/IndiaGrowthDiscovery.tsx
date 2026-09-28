@@ -12,7 +12,7 @@ const moneyPages = [
 
 const highValuePaths = [
   { title: "Need a larger campaign?", text: "Compare current packages and quantities without assuming a discount.", href: "/packages", cta: "Compare packages", icon: Layers3 },
-  { title: "Agency or reseller requirement?", text: "Send platform, budget, frequency and campaign scope through the qualified bulk enquiry flow.", href: "/for-agencies#bulk-lead-engine", cta: "Discuss bulk requirement", icon: UsersRound },
+  { title: "Agency or multi-client requirement?", text: "Send platform, budget, frequency and campaign scope through the qualified bulk enquiry flow.", href: "/for-agencies#bulk-lead-engine", cta: "Discuss bulk requirement", icon: UsersRound },
   { title: "Multi-platform planning", text: "Browse the live service catalog before building a larger or repeat campaign.", href: "/services", cta: "Explore all services", icon: PackageSearch },
 ];
 
@@ -25,7 +25,7 @@ const authorityGuides = [
 const discoveryLinks = [
   { title: "Social media growth services", text: "Compare the live catalog across seven supported platforms.", href: "/services", icon: PackageSearch },
   { title: "Social media growth packages", text: "Choose a platform, goal and quantity before starting an order.", href: "/packages", icon: Layers3 },
-  { title: "Agency & reseller services", text: "Use a clearer path for repeat client campaigns and larger requirements.", href: "/for-agencies", icon: BriefcaseBusiness },
+  { title: "Agency growth services", text: "Use a clearer path for repeat client campaigns and larger requirements.", href: "/for-agencies", icon: BriefcaseBusiness },
   { title: "Social media growth guides", text: "Use practical India-focused guides alongside any paid campaign.", href: "/blog", icon: BookOpen },
 ];
 

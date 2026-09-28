@@ -1,10 +1,9 @@
 export const smmPricingIndiaKeywords = [
-  "SMM panel price list India",
-  "SMM panel pricing India",
-  "SMM panel rates India",
-  "UPI SMM panel India",
-  "SMM panel with UPI India",
-  "INR SMM panel pricing",
+  "social media service price list India",
+  "social media growth pricing India",
+  "social media service rates India",
+  "social media services with UPI India",
+  "INR social media pricing",
 ] as const;
 
 export const smmPricingCriteria = [

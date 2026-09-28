@@ -29,7 +29,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Explore Facebook growth services in India for followers, likes, views, shares and group members. Compare goals and choose the right SocialRUSH option.",
   path: "/facebook-growth-india",
-  keywords: ["Facebook SMM panel India", "SMM panel for Facebook India", "Facebook social media panel India"],
+  keywords: ["Facebook growth services India", "Facebook social media growth India", "Facebook engagement services India"],
 });
 
 const services = [

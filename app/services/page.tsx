@@ -18,9 +18,9 @@ import { smmSelectionIndiaKeywords } from "@/lib/seo/smm-selection-intent";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "SMM Panel India | Social Media Growth Services | SocialRUSH",
+  title: "Social Media Growth Services India | SocialRUSH",
   description:
-    "Compare SocialRUSH SMM services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with INR pricing, UPI checkout, public-link ordering and dashboard tracking.",
+    "Compare SocialRUSH social media growth services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with INR pricing, UPI checkout, public-link ordering and dashboard tracking.",
   path: "/services",
   keywords: [
     "social media growth services India",
@@ -47,17 +47,17 @@ const servicesFaqs = [
       "Yes. The Services page links to detailed service pages and packages so you can compare pricing, delivery estimates, refill information and link requirements before ordering.",
   },
   {
-    question: "What is an SMM panel in India?",
+    question: "How should I compare social media growth services in India?",
     answer:
-      "An SMM panel is a dashboard for browsing and ordering supported social-media growth services. Useful India-specific comparison points include INR pricing, payment methods, quantity limits, delivery estimates, refill terms, public-link requirements and order tracking.",
+      "Compare the current INR pricing, payment methods, quantity limits, delivery estimates, refill terms, public-link requirements and order tracking for the exact service you need.",
   },
   {
-    question: "Can I pay for SocialRUSH SMM services with UPI in India?",
+    question: "Can I pay for SocialRUSH services with UPI in India?",
     answer:
       "UPI is supported in the SocialRUSH direct checkout flow. Bank Transfer and USDT (TRC20) may also be available. The payment methods and exact amount displayed at checkout are authoritative.",
   },
   {
-    question: "Can agencies and resellers use SocialRUSH?",
+    question: "Can agencies and marketing teams use SocialRUSH?",
     answer:
       "Yes. SocialRUSH includes agency workflows for organizing clients, campaigns, saved monthly plans and repeat orders. Final service availability and checkout pricing remain authoritative for every order.",
   },

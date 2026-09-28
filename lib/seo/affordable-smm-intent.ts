@@ -1,8 +1,7 @@
 export const affordableSmmIndiaKeywords = [
-  "cheap SMM panel India",
-  "affordable SMM panel India",
-  "low cost SMM panel India",
-  "budget SMM panel India",
+  "affordable social media growth services India",
+  "low cost social media services India",
+  "budget social media growth services India",
   "cheap social media services India",
 ] as const;
 
@@ -32,12 +31,12 @@ export const affordableSmmCriteria = [
 export function affordableSmmFaqs() {
   return [
     {
-      question: "What should I compare when looking for a cheap SMM panel in India?",
+      question: "What should I compare when looking for affordable social media growth services in India?",
       answer:
         "Compare the current INR rate, valid minimum and maximum quantity, delivery estimate, refill or support terms, and the final checkout total. A low advertised rate alone does not show the full campaign cost.",
     },
     {
-      question: "Does SocialRUSH claim to be the cheapest SMM panel in India?",
+      question: "Does SocialRUSH claim to be the cheapest social media growth provider in India?",
       answer:
         "No. SocialRUSH publishes current pricing and service details so customers can compare costs for their own campaign. It does not claim a universal cheapest ranking across every service or provider.",
     },

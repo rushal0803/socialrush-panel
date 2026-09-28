@@ -35,12 +35,12 @@ export default function SmmPanelIndiaAuthority({ serviceCatalog }: { serviceCata
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-7 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
           <div>
-            <p className="text-[10px] font-black uppercase tracking-[.17em] text-orange-300">SMM panel India</p>
+            <p className="text-[10px] font-black uppercase tracking-[.17em] text-orange-300">Social media growth services India</p>
             <h2 id="smm-panel-india-heading" className="mt-3 max-w-4xl text-3xl font-black tracking-[-.035em] sm:text-4xl">
               Compare social media services by the facts that matter before you order
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-[#B9C0CB] sm:text-base">
-              An SMM panel is a dashboard for browsing and ordering supported social-media growth services. For Indian customers, useful comparison points include INR pricing, quantity limits, payment options, public-link requirements, delivery estimates, refill terms and order tracking—not unsupported “best” or “cheapest” claims.
+              A useful social media growth platform should make service details easy to compare before you order. For Indian customers, practical comparison points include INR pricing, quantity limits, payment options, public-link requirements, delivery estimates, refill terms and order tracking—not unsupported “best” or “cheapest” claims.
             </p>
           </div>
           <div className="flex flex-wrap gap-3 lg:justify-end">

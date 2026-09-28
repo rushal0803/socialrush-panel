@@ -19,7 +19,7 @@ export const metadata: Metadata = createPageMetadata({
   description:
     "Explore Instagram growth services in India for followers, likes, views, comments, saves and shares. Compare goals and choose the right option.",
   path: "/instagram-growth-india",
-  keywords: ["Instagram SMM panel India", "SMM panel for Instagram India", "Instagram social media panel India"],
+  keywords: ["Instagram growth services India", "Instagram social media growth India", "Instagram engagement services India"],
 });
 
 const growthOptions = [

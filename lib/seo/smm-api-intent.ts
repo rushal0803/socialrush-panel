@@ -1,9 +1,9 @@
 export const smmApiIndiaKeywords = [
-  "SMM panel API India",
-  "SMM reseller API India",
   "social media API India",
-  "SMM API for agencies India",
-  "social media reseller API India",
+  "social media growth API India",
+  "agency social media API India",
+  "social media API for agencies India",
+  "campaign management API India",
 ] as const;
 
 export const smmApiCriteria = [
@@ -32,7 +32,7 @@ export const smmApiCriteria = [
 export function smmApiFaqs() {
   return [
     {
-      question: "Does SocialRUSH provide an SMM panel API in India?",
+      question: "Does SocialRUSH provide a social media growth API in India?",
       answer:
         "SocialRUSH provides authenticated API access for connected workflows. Signed-in users can generate an account-scoped API key, create eligible orders through the documented API and retrieve order status. Current API documentation remains authoritative.",
     },
@@ -42,9 +42,9 @@ export function smmApiFaqs() {
         "The current API documentation includes authenticated order creation and order-status retrieval. Agencies should review the signed-in documentation, current service identifiers, limits and validation rules before integrating an automated workflow.",
     },
     {
-      question: "Is the SocialRUSH API a white-label child panel?",
+      question: "Does the SocialRUSH API create a separate white-label platform?",
       answer:
-        "No white-label child panel is promised. API access is a developer workflow for an authenticated SocialRUSH account and does not by itself create a separate branded panel.",
+        "No separate white-label platform is promised. API access is a developer workflow for an authenticated SocialRUSH account and does not by itself create a separate branded product.",
     },
   ] as const;
 }

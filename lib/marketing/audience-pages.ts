@@ -61,7 +61,7 @@ export const audiencePages: Record<AudienceKey, AudiencePageConfig> = {
     ],
   },
   agencies: {
-    audience: "Agencies", eyebrow: "FOR AGENCIES & RESELLERS", headline: "Turn repeat client work into", emphasis: "a cleaner operating system.",
+    audience: "Agencies", eyebrow: "FOR AGENCIES & MARKETING TEAMS", headline: "Turn repeat client work into", emphasis: "a cleaner operating system.",
     description: "Plan multi-client social campaigns from one workflow: manage clients, prepare bulk jobs, review current catalog pricing, open each verified checkout and keep repeat campaign activity organised in the SocialRUSH dashboard.",
     primaryCta: { label: "Open Agency Workspace", href: "/dashboard/reseller" },
     valuePoints: ["Client & campaign workspace", "Bulk job planner", "Current catalog pricing"],
@@ -71,15 +71,15 @@ export const audiencePages: Record<AudienceKey, AudiencePageConfig> = {
       { title: "Higher-value requirements", text: "Use campaign stacks or the Bulk / agency enquiry path for larger, recurring or multi-platform requirements that need planning before checkout." },
     ],
     paths: [
-      { platform: "Workspace", title: "Agency / Reseller Hub", text: "Manage the repeat-work workflow, client portfolio signals and campaign operations from the authenticated dashboard.", href: "/dashboard/reseller" },
+      { platform: "Workspace", title: "Agency Operations Workspace", text: "Manage repeat-client workflows, client portfolio signals and campaign operations from the authenticated dashboard.", href: "/dashboard/reseller" },
       { platform: "Bulk", title: "Bulk Job Planner", text: "Prepare multiple client jobs and review current catalog estimates before opening each verified checkout.", href: "/dashboard/reseller/bulk-planner" },
       { platform: "Campaigns", title: "Campaign Stacks", text: "Review broader multi-service campaign combinations using current live catalog pricing without hidden bundle discounts.", href: "/dashboard/campaign-stacks" },
       { platform: "Support", title: "Bulk / Agency Enquiry", text: "Discuss a larger, recurring or unusual requirement with support before placing orders.", href: "/contact#support-form" },
     ],
     faqs: [
-      { question: "Does SocialRUSH have a separate agency or reseller workspace?", answer: "Yes. Signed-in customers can use the Agency / Reseller Hub to manage repeat-client workflows, access the bulk planner and move into campaign or order tools from one place." },
+      { question: "Does SocialRUSH have a workspace for agencies managing multiple clients?", answer: "Yes. Signed-in customers can use the Agency Operations Workspace to manage repeat-client workflows, access the bulk planner and move into campaign or order tools from one place." },
       { question: "Can we plan several client jobs at once?", answer: "Yes. The Bulk Job Planner lets you prepare multiple client jobs and review current catalog estimates. It does not auto-charge or auto-create all orders; each job still opens the normal verified order and payment flow." },
-      { question: "Do agencies receive automatic wholesale discounts?", answer: "No automatic wholesale discount is promised on this page. Use the current live SocialRUSH catalog price as your fulfillment-cost input and keep your own strategy, service fee or client margin separate. Contact support for larger requirements that need review." },
+      { question: "Do agencies receive automatic volume discounts?", answer: "No automatic volume discount is promised on this page. Use the current live SocialRUSH catalog price as your fulfillment-cost input and keep your own strategy, service fee or client margin separate. Contact support for larger requirements that need review." },
       { question: "Can we build multi-service campaign plans?", answer: "Yes. Campaign Stacks can help you review a broader campaign across supported services. Each service still follows its current live price, eligibility, public-link requirement and normal checkout." },
       { question: "Do agencies need client account credentials?", answer: "No. Eligible services use the relevant public profile, page, post, video or channel link. Never share passwords, OTPs, recovery codes or unnecessary private account access." },
       { question: "How do we discuss a larger recurring requirement?", answer: "Use the Bulk / agency enquiry path on the Contact page so support can review the requirement before you place orders." },

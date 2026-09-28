@@ -15,12 +15,12 @@ export default function SmmApiIndiaAuthority() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">SMM panel API India</p>
+            <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Social media growth API India</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-              API access for agency and reseller workflows
+              API access for agency campaign workflows
             </h2>
             <p className="mt-4 text-sm leading-7 text-slate-300">
-              SocialRUSH already provides authenticated API documentation for agencies and developers that want to connect
+              SocialRUSH provides authenticated API documentation for agencies and developers that want to connect
               campaign ordering and status checks to their own internal workflow.
             </p>
             <p className="mt-4 text-sm leading-7 text-slate-300">
