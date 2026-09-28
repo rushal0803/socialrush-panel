@@ -14,12 +14,12 @@ export default function PlatformSmmIntentSection({ platform }: { platform: Conte
   const cluster = contentClusters[platform];
   const intent = platformSmmIntent[platform];
   return (
-    <section className="border-y border-white/10 bg-[#090B10] px-5 py-14 text-white sm:px-6 lg:px-8 lg:py-18" aria-labelledby={`${platform}-smm-panel-heading`}>
+    <section className="border-y border-white/10 bg-[#090B10] px-5 py-14 text-white sm:px-6 lg:px-8 lg:py-18" aria-labelledby={`${platform}-growth-services-heading`}>
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-7 lg:grid-cols-[1.05fr_.95fr] lg:items-end">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[.17em] text-orange-300">{intent.primaryKeyword}</p>
-            <h2 id={`${platform}-smm-panel-heading`} className="mt-3 max-w-4xl text-3xl font-black tracking-[-.035em] sm:text-4xl">
+            <h2 id={`${platform}-growth-services-heading`} className="mt-3 max-w-4xl text-3xl font-black tracking-[-.035em] sm:text-4xl">
               Compare {cluster.label} services from one canonical India hub
             </h2>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">
