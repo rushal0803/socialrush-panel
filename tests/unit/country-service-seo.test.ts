@@ -62,8 +62,16 @@ test("country-service metadata uses concise market search language without dupli
 
     assert.ok(description.includes(page.market.searchLabel));
     assert.ok(description.includes(page.market.currency));
-    assert.match(description, /public .* destination/);
-    assert.match(description, /No social-media password is required/);
+    if (page.catalogServiceCode === "instagram-followers") {
+      assert.ok(description.includes("public Instagram profile"));
+      assert.ok(description.includes("No social-media password is required"));
+    } else if (page.catalogServiceCode === "youtube-subscribers") {
+      assert.ok(description.includes("public YouTube channel"));
+      assert.ok(description.includes("No Google or YouTube password is required"));
+    } else {
+      assert.match(description, /public .* destination/);
+      assert.match(description, /No social-media password is required/);
+    }
     assert.ok(description.length <= 180);
 
     titles.add(title);
@@ -93,6 +101,36 @@ test("international Instagram pages have distinct market planning intent", () =>
     assert.ok(description.includes(page.market.searchLabel));
     assert.ok(description.includes("public Instagram profile"));
     assert.ok(description.includes("INR checkout"));
+    summaries.add(page.copy.intentSummary || "");
+  }
+
+  assert.equal(summaries.size, 6);
+});
+
+
+test("international YouTube subscriber pages have distinct market planning intent", () => {
+  const youtubePages = publishedCountryServicePages.filter((page) => page.catalogServiceCode === "youtube-subscribers");
+  assert.equal(youtubePages.length, 6);
+
+  const summaries = new Set<string>();
+  for (const page of youtubePages) {
+    assert.ok(page.copy.intentTitle?.includes(page.market.searchLabel));
+    assert.ok(page.copy.intentSummary?.includes(page.market.audience));
+    assert.equal(page.copy.planningChecks?.length, 3);
+    assert.ok(page.copy.planningChecks?.[0]?.includes(page.market.currency));
+    assert.ok(page.copy.planningChecks?.[1]?.includes("public YouTube channel"));
+    assert.ok(page.copy.planningChecks?.[2]?.includes("does not guarantee views, watch time or monetization"));
+
+    const metadata = createCountryServiceMetadata(page);
+    const title = (metadata.title as { absolute?: string }).absolute || "";
+    const description = String(metadata.description || "");
+
+    assert.ok(title.includes(page.market.currency));
+    assert.ok(title.includes("YouTube Subscribers"));
+    assert.ok(description.includes(page.market.searchLabel));
+    assert.ok(description.includes("public YouTube channel"));
+    assert.ok(description.includes("INR checkout"));
+    assert.ok(description.includes("No Google or YouTube password is required"));
     summaries.add(page.copy.intentSummary || "");
   }
 
