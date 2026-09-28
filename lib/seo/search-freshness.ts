@@ -73,4 +73,5 @@ export const searchFreshnessLastmod: Readonly<Record<string, string>> =
     ["/tools/youtube-subscriber-growth-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
     ["/tools/instagram-follower-growth-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
     ["/tools/instagram-reach-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
+    ["/tools/instagram-story-engagement-rate-calculator", PHASE6_TOOLS_UPDATE] as const,
   ]);
