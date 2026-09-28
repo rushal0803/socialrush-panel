@@ -83,6 +83,7 @@ const publicRoutes = [
   "/tools/youtube-engagement-rate-calculator",
   "/tools/youtube-revenue-calculator",
   "/tools/youtube-watch-time-calculator",
+  "/tools/youtube-subscriber-growth-rate-calculator",
   "/tools/social-media-growth-budget-calculator",
   "/tools/social-media-service-cost-calculator",
   "/tools/social-media-roi-calculator",
