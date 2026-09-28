@@ -25,6 +25,7 @@ import { smmSelectionChecklist, smmSelectionCriteria, smmSelectionIndiaKeywords 
 import { platformSmmIntent, platformSmmKeywords } from "../../lib/seo/platform-smm-intent.ts";
 import { priceForQuantity, smmPricingCriteria, smmPricingIndiaKeywords } from "../../lib/seo/smm-pricing-intent.ts";
 import { safeSmmOrderingCriteria, safeSmmOrderingKeywords } from "../../lib/seo/safe-smm-ordering-intent.ts";
+import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-intent.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -960,4 +961,47 @@ test("phase 5V Trust Center exposes visible no-password authority and release sa
   assert.match(monitor, /"\/smm-panel-without-password-india", "\/trust"/);
   assert.match(monitor, /"\/no-password-smm-panel-india", "\/trust"/);
   assert.match(monitor, /"\/public-link-smm-panel-india", "\/trust"/);
+});
+
+
+test("phase 5W assigns SMM API India intent to the existing agency canonical", () => {
+  const owner = transactionalQueryOwners.find((item) => item.id === "agency-reseller-panel-india");
+  assert.ok(owner);
+  assert.equal(owner.canonicalPath, "/for-agencies");
+  assert.match(owner.intent, /SMM panel API India/i);
+  for (const alias of ["/smm-panel-api-india", "/smm-reseller-api-india", "/smm-api-india"]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/for-agencies");
+  }
+  assert.ok(smmApiIndiaKeywords.includes("SMM panel API India"));
+  assert.ok(smmApiIndiaKeywords.includes("SMM reseller API India"));
+});
+
+test("phase 5W API model uses only documented workflow capabilities", () => {
+  assert.deepEqual(smmApiCriteria.map((item) => item.id), ["auth", "create", "status", "limits"]);
+  const copy = JSON.stringify(smmApiCriteria);
+  assert.match(copy, /Bearer token/i);
+  assert.match(copy, /service identifier/i);
+  assert.match(copy, /order ID/i);
+  assert.match(copy, /120 requests per minute/i);
+  assert.doesNotMatch(copy, /white-label|guaranteed profit|cheapest|#1/i);
+});
+
+test("phase 5W agency page exposes visible SMM API authority and monitored aliases", () => {
+  const page = readFileSync(new URL("../../app/for-agencies/page.tsx", import.meta.url), "utf8");
+  const authority = readFileSync(new URL("../../components/marketing/audiences/SmmApiIndiaAuthority.tsx", import.meta.url), "utf8");
+  const apiDocs = readFileSync(new URL("../../app/dashboard/api-docs/page.tsx", import.meta.url), "utf8");
+  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+
+  assert.match(page, /SMM Reseller Panel & API India for Agencies/);
+  assert.match(page, /<SmmApiIndiaAuthority\/>/);
+  assert.match(authority, /SMM panel API India/i);
+  assert.match(authority, /authenticated API documentation/i);
+  assert.match(authority, /does not guarantee service availability/i);
+  assert.match(apiDocs, /Authorization: Bearer YOUR_API_KEY/);
+  assert.match(apiDocs, /120 requests per minute/);
+  assert.match(monitor, /"\/smm-panel-api-india", "\/for-agencies"/);
+  assert.match(monitor, /"\/smm-reseller-api-india", "\/for-agencies"/);
+  assert.match(monitor, /"\/smm-api-india", "\/for-agencies"/);
+  assert.equal(searchFreshnessLastmod["/for-agencies"], "2026-09-28");
 });
