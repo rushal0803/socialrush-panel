@@ -196,10 +196,17 @@ p {
 
 @layer components {
   .btn-primary {
-    @apply inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 text-sm font-bold text-white transition disabled:pointer-events-none;
+    @apply inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 text-sm font-bold text-white disabled:pointer-events-none;
     background: var(--sr-gradient);
     border: 1px solid rgba(255, 196, 0, 0.18);
     box-shadow: var(--sr-shadow-button);
+    transition:
+      transform 160ms cubic-bezier(.22,1,.36,1),
+      box-shadow 220ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease,
+      opacity 160ms ease;
   }
 
   .btn-primary:hover {
@@ -208,14 +215,23 @@ p {
   }
 
   .btn-secondary {
-    @apply inline-flex min-h-11 items-center justify-center rounded-xl border px-5 py-3 text-sm font-semibold text-white transition disabled:pointer-events-none;
+    @apply inline-flex min-h-11 items-center justify-center rounded-xl border px-5 py-3 text-sm font-semibold text-white disabled:pointer-events-none;
     border-color: var(--sr-border);
     background: var(--sr-bg-secondary);
+    transition:
+      transform 160ms cubic-bezier(.22,1,.36,1),
+      box-shadow 220ms ease,
+      border-color 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease,
+      opacity 160ms ease;
   }
 
   .btn-secondary:hover {
+    transform: translateY(-2px);
     border-color: var(--sr-border-strong);
     background: rgba(255, 122, 0, 0.1);
+    box-shadow: 0 14px 30px rgba(0, 0, 0, .24);
   }
 
   .field {
@@ -276,6 +292,14 @@ p {
     animation-duration: 0.01ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 0.01ms !important;
+  }
+
+  .btn-primary,
+  .btn-secondary,
+  .btn-accent,
+  .btn-dashboard-primary,
+  .btn-dashboard-secondary {
+    transform: none !important;
   }
 }
 
@@ -434,14 +458,49 @@ p {
 }
 
 .btn-dashboard-primary {
-  @apply inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] font-bold text-white transition duration-300 disabled:pointer-events-none;
+  @apply inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] font-bold text-white disabled:pointer-events-none;
   box-shadow: var(--sr-shadow-button);
+  transition:
+    transform 160ms cubic-bezier(.22,1,.36,1),
+    box-shadow 220ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .btn-dashboard-secondary {
-  @apply inline-flex min-h-11 items-center justify-center rounded-xl border bg-[#111111] font-semibold text-white transition duration-300 disabled:pointer-events-none hover:bg-[#21160B];
+  @apply inline-flex min-h-11 items-center justify-center rounded-xl border bg-[#111111] font-semibold text-white disabled:pointer-events-none hover:bg-[#21160B];
   border-color: var(--sr-border);
   box-shadow: 0 10px 24px rgba(0, 0, 0, 0.24);
+  transition:
+    transform 160ms cubic-bezier(.22,1,.36,1),
+    box-shadow 220ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
+}
+
+.btn-primary:not(:disabled):active,
+.btn-secondary:not(:disabled):active,
+.btn-accent:not(:disabled):active,
+.btn-dashboard-primary:not(:disabled):active,
+.btn-dashboard-secondary:not(:disabled):active {
+  transform: translateY(0) scale(.985);
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn-dashboard-primary:not(:disabled):hover,
+  .btn-dashboard-secondary:not(:disabled):hover,
+  .btn-accent:not(:disabled):hover {
+    transform: translateY(-2px);
+  }
+
+  .btn-dashboard-primary:not(:disabled):hover,
+  .btn-accent:not(:disabled):hover {
+    box-shadow: 0 16px 34px rgba(255, 118, 0, .28);
+  }
 }
 
 .dashboard-shell [class*="text-[#0B0B0F]"] {
@@ -716,9 +775,16 @@ p {
 }
 
 .btn-accent {
-  @apply inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 text-sm font-bold text-[#050505] transition;
+  @apply inline-flex min-h-11 items-center justify-center rounded-xl px-5 py-3 text-sm font-bold text-[#050505];
   background: var(--sr-gold);
   box-shadow: 0 12px 24px rgba(255, 196, 0, 0.16);
+  transition:
+    transform 160ms cubic-bezier(.22,1,.36,1),
+    box-shadow 220ms ease,
+    border-color 160ms ease,
+    background-color 160ms ease,
+    color 160ms ease,
+    opacity 160ms ease;
 }
 
 .card-surface {
@@ -1755,14 +1821,14 @@ input, select, textarea { font-size: max(16px, 1em); }
 
 @media (hover:hover) and (pointer:fine) {
   .sr-motion-lift:hover {
-    transform: translate3d(0,-4px,0);
+    transform: translate3d(0,-2px,0);
     box-shadow: 0 22px 55px -34px rgba(255,122,0,.45);
   }
   .sr-motion-shimmer:hover::after {
     animation: sr-shimmer-sweep 850ms var(--sr-ease-out) 1;
   }
 }
-.sr-motion-press:active { transform: scale(.975); }
+.sr-motion-press:active { transform: scale(.985); }
 
 @media (prefers-reduced-motion: reduce) {
   .sr-motion-reveal,
