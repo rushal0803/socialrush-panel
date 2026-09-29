@@ -10,7 +10,7 @@ Standardize SocialRUSH interaction motion so buttons, interactive surfaces and f
 - shared `Button`, `Surface` and `Field` primitives from Phase 1 remain the source of truth for reusable interactions
 
 ## Phase 11 changes
-- add `MotionConfig reducedMotion="user"` inside the existing client-provider boundary so Framer Motion animations follow the operating-system reduced-motion preference
+- keep the global client-provider boundary free of Framer Motion runtime; route-local motion must continue to respect reduced motion
 - standardize shared button transitions to transform, shadow, border, background, color and opacity only
 - add restrained press feedback to shared buttons
 - give secondary and danger buttons the same subtle lift language as primary actions
@@ -25,6 +25,19 @@ Standardize SocialRUSH interaction motion so buttons, interactive surfaces and f
 - no autoplay loops or large parallax effects are introduced
 - no new animation dependency is added
 - reduced-motion preference takes priority over decorative movement
+
+
+## 2026-09-30 performance-safe refresh
+
+The original Phase 11 implementation added a global `MotionConfig` wrapper. A later performance change intentionally removed that global Framer Motion runtime from `ClientProviders`. This refresh preserves that performance decision rather than restoring a site-wide animation runtime.
+
+Current standardization:
+- shared CSS motion remains the default for common buttons and surfaces
+- global CTA/dashboard button transitions are restricted to transform, shadow, border, background, color and opacity
+- shared hover lift is capped at `2px`, matching the Phase 11 motion principle
+- press feedback is standardized to `scale(.985)` rather than stronger compression
+- reduced-motion keeps transforms disabled for shared public/dashboard button primitives
+- route-local Framer Motion can continue where it already provides meaningful state transitions; no new global runtime is introduced
 
 ## Protected scope
 - no pricing or service availability changes
