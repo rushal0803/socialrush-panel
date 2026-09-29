@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { absoluteSeoUrl, canPublishCountryServicePage, countryHubAlternates, createCountryHubMetadata, getInternationalMarket, internationalHubPaths, internationalMarkets } from "../../lib/seo/international.ts";
+import { absoluteSeoUrl, canPublishCountryServicePage, countryHubAlternates, createCountryHubMetadata, getCountryHubIntent, getInternationalMarket, internationalHubPaths, internationalMarkets, publishedCountryServicePages } from "../../lib/seo/international.ts";
 
 test("international hubs use valid locale codes and absolute self-referential URLs", () => {
   for (const path of internationalHubPaths) {
@@ -41,4 +41,40 @@ test("international hub metadata uses natural market labels and one SocialRUSH s
   }
   assert.equal(titles.size, internationalMarkets.length);
   assert.equal(descriptions.size, internationalMarkets.length);
+});
+
+
+test("international hubs expose unique market-specific search intent", () => {
+  const titles = new Set<string>();
+  const summaries = new Set<string>();
+
+  for (const market of internationalMarkets) {
+    const intent = getCountryHubIntent(market);
+    assert.ok(intent.title.includes(market.searchLabel) || intent.summary.includes(market.searchLabel) || intent.summary.includes(market.name));
+    assert.ok(intent.summary.includes(market.currency));
+    assert.equal(intent.planningChecks.length, 3);
+    assert.ok(intent.planningChecks.some((check) => check.includes("INR")));
+    assert.ok(intent.serviceIntro.includes(market.searchLabel) || intent.serviceIntro.includes(market.name));
+
+    const publishedForMarket = publishedCountryServicePages.filter((page) => page.market.slug === market.slug);
+    assert.ok(publishedForMarket.length >= 3);
+    for (const page of publishedForMarket) {
+      const label = page.catalogServiceCode === "instagram-followers"
+        ? "Instagram followers"
+        : page.catalogServiceCode === "youtube-subscribers"
+          ? "YouTube subscribers"
+          : page.catalogServiceCode === "youtube-views"
+            ? "YouTube views"
+            : page.catalogServiceCode === "linkedin-followers"
+              ? "LinkedIn followers"
+              : "";
+      if (label) assert.ok(intent.serviceIntro.includes(label));
+    }
+
+    titles.add(intent.title);
+    summaries.add(intent.summary);
+  }
+
+  assert.equal(titles.size, internationalMarkets.length);
+  assert.equal(summaries.size, internationalMarkets.length);
 });
