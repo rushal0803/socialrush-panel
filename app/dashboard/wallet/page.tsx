@@ -1,5 +1,6 @@
 import WalletDashboard, { type WalletInitialData, type WalletOrder, type WalletTransaction } from "@/components/wallet/WalletDashboard";
 import WalletAddFundsRedirect from "@/components/wallet/WalletAddFundsRedirect";
+import PaymentConfidencePanel from "@/components/wallet/PaymentConfidencePanel";
 import { redirect } from "next/navigation";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 
@@ -22,5 +23,5 @@ export default async function WalletPage() {
     transactions,
     orders,
   };
-  return <><WalletAddFundsRedirect /><style>{`#add-funds{display:none!important}`}</style><WalletDashboard initial={initial} /></>;
+  return <><WalletAddFundsRedirect /><style>{`#add-funds{display:none!important}`}</style><PaymentConfidencePanel transactions={transactions} walletBalance={initial.balance} /><WalletDashboard initial={initial} /></>;
 }
