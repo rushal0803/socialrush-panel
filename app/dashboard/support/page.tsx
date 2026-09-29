@@ -7,6 +7,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { createClient } from "@/lib/supabase/client";
 import { BadgeHelp, Mail, MessageSquare, Ticket, WalletCards, CircleAlert, Search, Send, ArrowUpRight } from "lucide-react";
 import { SUPPORT_STATUSES, supportStatus } from "@/lib/support/customer";
+import SupportJourney from "@/components/support/SupportJourney";
 
 type TicketType = {
   id: string;
@@ -254,6 +255,8 @@ export default function SupportPage() {
           </div>
         </motion.section>
 
+        <SupportJourney variant="dashboard" />
+
         {toast ? (
           <p className="mt-5 rounded-xl border border-emerald-400/30 bg-emerald-500/10 p-3 text-sm font-semibold text-emerald-200">{toast}</p>
         ) : null}
@@ -301,7 +304,7 @@ export default function SupportPage() {
           })}
         </section>
 
-        <section className="mt-6 grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
+        <section id="ticket-workspace" className="mt-6 scroll-mt-24 grid gap-6 xl:grid-cols-[380px_minmax(0,1fr)]">
           <aside className="overflow-hidden rounded-3xl border border-orange-400/25 bg-[#111111] shadow-[0_22px_52px_-34px_rgba(255,122,0,.45)] backdrop-blur-xl">
             <div className="border-b border-orange-400/20 p-5">
               <div className="flex items-center justify-between">
