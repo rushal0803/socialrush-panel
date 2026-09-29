@@ -1,6 +1,6 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { activeLeadCount, buildLeadStageCounts, customerRevenueSummary, sortSalesOpportunities } from "@/lib/crm/sales-pipeline";
+import { activeLeadCount, buildLeadStageCounts, customerRevenueSummary, sortSalesOpportunities } from "../../lib/crm/sales-pipeline.ts";
 
 test("lead stage counts preserve the full sales pipeline", () => {
   const rows = buildLeadStageCounts([
