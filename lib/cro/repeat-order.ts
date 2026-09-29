@@ -34,18 +34,24 @@ export function resolveRepeatOrderService(input: Pick<RepeatOrderInput, "service
   }) ?? null;
 }
 
-export function buildRepeatOrderHref(input: RepeatOrderInput, services: readonly SmmService[]) {
-  if (!input.link.trim() || !Number.isInteger(input.quantity) || input.quantity <= 0) return null;
+export function buildRepeatOrderVariantHref(input: RepeatOrderInput, services: readonly SmmService[], preserveTarget = true) {
+  if (!Number.isInteger(input.quantity) || input.quantity <= 0) return null;
+  if (preserveTarget && !input.link.trim()) return null;
   const service = resolveRepeatOrderService(input, services);
   if (!service) return null;
 
-  return `/dashboard/new-order?${new URLSearchParams({
+  const params = new URLSearchParams({
     platform: service.platform,
     service: service.code,
     quantity: String(input.quantity),
-    link: input.link.trim(),
     resume: "1",
-  })}`;
+  });
+  if (preserveTarget) params.set("link", input.link.trim());
+  return `/dashboard/new-order?${params}`;
+}
+
+export function buildRepeatOrderHref(input: RepeatOrderInput, services: readonly SmmService[]) {
+  return buildRepeatOrderVariantHref(input, services, true);
 }
 
 
