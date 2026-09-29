@@ -45,6 +45,8 @@ export function buildRepeatOrderVariantHref(input: RepeatOrderInput, services: r
     service: service.code,
     quantity: String(input.quantity),
     resume: "1",
+    repeat: "1",
+    repeatMode: preserveTarget ? "same_target" : "new_target",
   });
   if (preserveTarget) params.set("link", input.link.trim());
   return `/dashboard/new-order?${params}`;

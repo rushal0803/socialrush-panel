@@ -86,6 +86,8 @@ test("repeat-order builder preserves service, quantity and exact target", () => 
   assert.equal(url.searchParams.get("quantity"), "2500");
   assert.equal(url.searchParams.get("link"), "https://instagram.com/example");
   assert.equal(url.searchParams.get("resume"), "1");
+  assert.equal(url.searchParams.get("repeat"), "1");
+  assert.equal(url.searchParams.get("repeatMode"), "same_target");
 });
 
 test("repeat-order builder resolves Twitter platform aliases and rejects incomplete input", () => {
@@ -221,6 +223,10 @@ test("repeat-order variants distinguish same target from new target", () => {
   assert.equal(newUrl.searchParams.get("link"), null);
   assert.equal(newUrl.searchParams.get("service"), "instagram-followers");
   assert.equal(newUrl.searchParams.get("quantity"), "2500");
+  assert.equal(sameUrl.searchParams.get("repeat"), "1");
+  assert.equal(sameUrl.searchParams.get("repeatMode"), "same_target");
+  assert.equal(newUrl.searchParams.get("repeat"), "1");
+  assert.equal(newUrl.searchParams.get("repeatMode"), "new_target");
 });
 
 test("refill statuses extend the completed order timeline", () => {
