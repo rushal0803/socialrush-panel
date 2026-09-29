@@ -1,4 +1,4 @@
-import type { CRMLead, CustomerMetric } from "@/lib/crm/types";
+import type { CRMLead, CustomerMetric } from "./types.ts";
 
 const activeLeadStatuses = new Set(["new","researching","ready","contacted","replied","qualified"]);
 const salesPriority: Record<string,number> = {
