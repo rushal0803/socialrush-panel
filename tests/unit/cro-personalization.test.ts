@@ -4,7 +4,9 @@ import { addRecentService, parseContinueOrder, parseRecentServices, serializeCon
 import { buildQuantityMerchandising, quantityForMinimumSpend } from "../../lib/cro/quantity-merchandising.ts";
 import { postOrderRecommendations } from "../../lib/cro/revenue-bundles.ts";
 import { smmServiceCatalog } from "../../lib/smm-service-catalog.ts";
-import { buildFrequentRepeatPatterns, buildRepeatOrderHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
+import { buildFrequentRepeatPatterns, buildRepeatOrderHref, buildRepeatOrderVariantHref, resolveRepeatOrderService } from "../../lib/cro/repeat-order.ts";
+import { customerOrderStages } from "../../lib/customer-order-status.ts";
+import { orderTrackingGuidance } from "../../lib/orders/customer-tracking.ts";
 import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "../../lib/reseller/monthly-plan.ts";
 import { compareSavedMonthlyPlan, planSnapshotItems } from "../../lib/reseller/saved-monthly-plan.ts";
 import { nextMonthlyReviewDate, renewalEconomicsAtSavedQuote, renewalStatus } from "../../lib/reseller/portfolio.ts";
@@ -198,4 +200,41 @@ test("renewal economics exposes margin compression at the old client quote", () 
   assert.equal(result.savedMarginDelta, -2000);
   assert.equal(result.recommendedQuote, 16800);
   assert.equal(result.recommendedMargin, 4800);
+});
+
+
+test("repeat-order variants distinguish same target from new target", () => {
+  const input = {
+    serviceName: "Instagram Followers",
+    platform: "instagram",
+    quantity: 2500,
+    link: "https://instagram.com/example",
+  };
+  const sameTarget = buildRepeatOrderVariantHref(input, smmServiceCatalog, true);
+  const newTarget = buildRepeatOrderVariantHref(input, smmServiceCatalog, false);
+  assert.ok(sameTarget);
+  assert.ok(newTarget);
+  const sameUrl = new URL(sameTarget!, "https://example.test");
+  const newUrl = new URL(newTarget!, "https://example.test");
+  assert.equal(sameUrl.searchParams.get("link"), "https://instagram.com/example");
+  assert.equal(newUrl.searchParams.get("link"), null);
+  assert.equal(newUrl.searchParams.get("service"), "instagram-followers");
+  assert.equal(newUrl.searchParams.get("quantity"), "2500");
+});
+
+test("refill statuses extend the completed order timeline", () => {
+  const requested = customerOrderStages("refill_requested");
+  const refilling = customerOrderStages("refilling");
+  assert.equal(requested.at(-2)?.label, "Refill requested");
+  assert.equal(requested.at(-2)?.state, "current");
+  assert.equal(refilling.at(-1)?.label, "Refill processing");
+  assert.equal(refilling.at(-1)?.state, "current");
+  assert.equal(refilling.filter((stage) => stage.state === "done").length, 6);
+});
+
+test("order tracking guidance gives status-specific next steps", () => {
+  assert.match(orderTrackingGuidance("in_progress").action, /overlapping orders/i);
+  assert.match(orderTrackingGuidance("completed").supportWindow, /refill/i);
+  assert.equal(orderTrackingGuidance("failed").tone, "danger");
+  assert.equal(orderTrackingGuidance("unknown").tone, "neutral");
 });
