@@ -6,6 +6,7 @@ import GrowthPlatformIndiaAuthority from "@/components/marketing/services/Growth
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
+import InternationalMarketAuthorityLinks from "@/components/seo/InternationalMarketAuthorityLinks";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
@@ -124,6 +125,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
       <ServiceCompareStudio serviceCatalog={serviceCatalog} />
       <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
+      <InternationalMarketAuthorityLinks />
       <CrawlPriorityLinks />
     </>
   );
