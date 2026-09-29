@@ -31,8 +31,22 @@ export function customerStatusClass(status: string | null | undefined) {
 }
 
 export function customerOrderStages(status: string) {
-  const base = ["Order received", "Payment confirmed", "Processing", "Delivery in progress", "Completed"];
+  const delivery = ["Order received", "Payment confirmed", "Processing", "Delivery in progress", "Completed"];
+  if (status === "refill_requested") {
+    return [
+      ...delivery.map((label) => ({ label, state: "done" as const })),
+      { label: "Refill requested", state: "current" as const },
+      { label: "Refill processing", state: "upcoming" as const },
+    ];
+  }
+  if (status === "refilling") {
+    return [
+      ...delivery.map((label) => ({ label, state: "done" as const })),
+      { label: "Refill requested", state: "done" as const },
+      { label: "Refill processing", state: "current" as const },
+    ];
+  }
   const position = status === "completed" ? 4 : ["in_progress", "partial"].includes(status) ? 3 : status === "processing" ? 2 : 1;
-  if (["cancelled", "refunded", "failed"].includes(status)) return base.map((label, index) => ({ label, state: index === 0 ? "done" : "upcoming" as const }));
-  return base.map((label, index) => ({ label, state: index < position ? "done" : index === position ? "current" : "upcoming" as const }));
+  if (["cancelled", "refunded", "failed"].includes(status)) return delivery.map((label, index) => ({ label, state: index === 0 ? "done" as const : "upcoming" as const }));
+  return delivery.map((label, index) => ({ label, state: index < position ? "done" as const : index === position ? "current" as const : "upcoming" as const }));
 }
