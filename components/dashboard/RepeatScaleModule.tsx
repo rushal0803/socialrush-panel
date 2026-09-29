@@ -9,21 +9,15 @@ type LatestRepeat = { href: string; serviceName: string; quantity: number };
 export default function RepeatScaleModule({ completedOrders, latestRepeat }: { completedOrders: number; latestRepeat: LatestRepeat | null }) {
   if (completedOrders < 1) return null;
   const paths = [
-    latestRepeat
-      ? {
-          href: latestRepeat.href,
-          label: "Repeat latest completed order",
-          detail: `${latestRepeat.serviceName} · ${latestRepeat.quantity.toLocaleString("en-IN")} quantity. Service, target and quantity are prefilled; current pricing is checked again.`,
-          icon: RotateCcw,
-          source: "dashboard_repeat_latest",
-        }
-      : {
-          href: "/dashboard/order-history",
-          label: "Repeat a completed order",
-          detail: "Choose a completed order and review the current service price before placing it again.",
-          icon: RotateCcw,
-          source: "dashboard_repeat",
-        },
+    {
+      href: "/dashboard/repeat-campaigns",
+      label: "Repeat campaigns",
+      detail: latestRepeat
+        ? `Open your repeat workspace. Latest eligible campaign: ${latestRepeat.serviceName} · ${latestRepeat.quantity.toLocaleString("en-IN")} quantity.`
+        : "Open completed campaigns that can be safely prefilled and reviewed again.",
+      icon: RotateCcw,
+      source: "dashboard_repeat_workspace",
+    },
     { href: "/dashboard/campaign-stacks", label: "Build a campaign stack", detail: "Compare complementary services and place each order separately.", icon: Layers3, source: "dashboard_campaign_stacks" },
     { href: "/packages", label: "Compare larger packages", detail: "Review current package and quantity options for a larger requirement.", icon: PackageOpen, source: "dashboard_packages" },
     { href: "/for-agencies#bulk-lead-engine", label: "Agency or recurring requirement", detail: "Share platform, expected volume, frequency and campaign scope for bulk planning.", icon: UsersRound, source: "dashboard_agency" },
