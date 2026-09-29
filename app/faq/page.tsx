@@ -3,6 +3,7 @@ import type { FaqCategory } from "@/components/marketing/FaqPageContent";
 import PublicShell from "@/components/marketing/PublicShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import SupportJourney from "@/components/support/SupportJourney";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
@@ -181,6 +182,7 @@ export default function FaqPage() {
     <PublicShell tone="light3d">
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "FAQ", path: "/faq" }]} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} />
+      <SupportJourney variant="public" />
       <InteractiveHomepageShell><div className="service-money-page"><FaqPageContent categories={faqCategories} /></div></InteractiveHomepageShell>
     </PublicShell>
   );
