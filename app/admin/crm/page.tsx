@@ -109,7 +109,7 @@ export default async function CrmOverviewPage(){
         <p className="mt-2 text-sm text-[#9CA3AF]">Understand customer value, first-order conversion and next steps.</p>
       </div>
       <div className="flex flex-wrap gap-2">
-        <Link href="/admin/crm/reactivation" className="rounded-xl border border-orange-400/30 px-4 py-3 text-xs font-bold text-orange-200">Reactivation Queue</Link>
+        <Link href="/admin/crm/pipeline" className="rounded-xl bg-orange-500 px-4 py-3 text-xs font-bold text-white">Sales Pipeline</Link><Link href="/admin/crm/reactivation" className="rounded-xl border border-orange-400/30 px-4 py-3 text-xs font-bold text-orange-200">Reactivation Queue</Link>
         <Link href="/admin/crm/customers?filter=never_ordered" className="rounded-xl border border-emerald-400/30 px-4 py-3 text-xs font-bold text-emerald-200">Never Ordered</Link>
         <Link href="/admin/crm/customers?filter=abandoned_draft" className="rounded-xl border border-amber-400/30 px-4 py-3 text-xs font-bold text-amber-200">Abandoned Drafts</Link>
         <Link href="/admin/crm/customers" className="rounded-xl border border-orange-400/30 px-4 py-3 text-xs font-bold text-orange-200">Customers</Link>
