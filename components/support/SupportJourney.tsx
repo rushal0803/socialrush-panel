@@ -55,11 +55,11 @@ export default function SupportJourney({ variant = "public" }: { variant?: "publ
               </p>
             </div>
             <Link
-              href="/dashboard/support"
+              href={dashboard ? "#ticket-workspace" : "/dashboard/support"}
               className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7200] to-[#FFAA00] px-5 text-sm font-black text-white shadow-[0_14px_30px_-20px_rgba(255,122,0,.8)] transition hover:-translate-y-0.5 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
             >
               <TicketCheck className="h-4 w-4" />
-              {dashboard ? "Support tickets" : "Open dashboard support"}
+              {dashboard ? "Jump to tickets" : "Open dashboard support"}
             </Link>
           </div>
 
