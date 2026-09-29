@@ -10,6 +10,7 @@ import { orderTrackingGuidance } from "../../lib/orders/customer-tracking.ts";
 import { buildClientProposalText, calculateAgencyQuote, normalizeMarkupPercent } from "../../lib/reseller/monthly-plan.ts";
 import { compareSavedMonthlyPlan, planSnapshotItems } from "../../lib/reseller/saved-monthly-plan.ts";
 import { nextMonthlyReviewDate, renewalEconomicsAtSavedQuote, renewalStatus } from "../../lib/reseller/portfolio.ts";
+import { notificationActionLabel, notificationContextLabel } from "../../lib/notifications/customer.ts";
 
 const allowed = new Set(["instagram-followers", "youtube-subscribers", "linkedin-followers"]);
 test("recent services are limited, de-duplicated and catalog filtered", () => {
@@ -237,4 +238,23 @@ test("order tracking guidance gives status-specific next steps", () => {
   assert.match(orderTrackingGuidance("completed").supportWindow, /refill/i);
   assert.equal(orderTrackingGuidance("failed").tone, "danger");
   assert.equal(orderTrackingGuidance("unknown").tone, "neutral");
+});
+
+
+test("customer notification actions stay explicit by event type", () => {
+  assert.equal(notificationActionLabel("order_status", "/dashboard/orders/abc"), "Track order");
+  assert.equal(notificationActionLabel("order_completed", "/dashboard/orders/abc"), "View completed order");
+  assert.equal(notificationActionLabel("refill", "/dashboard/orders/abc"), "Track refill");
+  assert.equal(notificationActionLabel("support_reply", "/dashboard/support"), "Open support");
+  assert.equal(notificationActionLabel("abandoned_order", "/dashboard/new-order?draft=1"), "Resume order");
+  assert.equal(notificationActionLabel("unknown", "/dashboard/orders/abc"), "View order");
+  assert.equal(notificationActionLabel("unknown", "/dashboard"), "Open update");
+});
+
+test("customer notification context labels distinguish post-purchase updates", () => {
+  assert.equal(notificationContextLabel("refill"), "Refill");
+  assert.equal(notificationContextLabel("refund"), "Refund");
+  assert.equal(notificationContextLabel("support_reply"), "Support");
+  assert.equal(notificationContextLabel("order_completed"), "Completed");
+  assert.equal(notificationContextLabel("account_action"), "Account");
 });
