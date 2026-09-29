@@ -49,7 +49,8 @@ export default async function RepeatCampaignsPage(){
         <div className="mt-5 grid gap-3 lg:grid-cols-2 xl:grid-cols-3">{frequent.map(pattern=>{
           const url=new URL(pattern.href,"https://example.test");
           const target=url.searchParams.get("link")||"";
-          const newTargetHref=pattern.href.replace(/([?&])link=[^&]*&?/,"$1").replace(/[?&]$/,"");
+          const newTargetHref=buildRepeatOrderVariantHref({serviceName:pattern.serviceName,platform:pattern.platform,quantity:pattern.quantity,link:target},customerOrderServices,false);
+          if(!newTargetHref)return null;
           return <RepeatCampaignCard key={pattern.href} serviceName={pattern.serviceName} platform={pattern.platform} quantity={pattern.quantity} target={target} completedAt={pattern.latestAt} sameTargetHref={pattern.href} newTargetHref={newTargetHref} source="repeat_campaigns_frequent" repeatCount={pattern.count}/>;
         })}</div>
       </section>:null}
