@@ -27,7 +27,7 @@ const countryHubIntentBySlug: Record<InternationalMarket["slug"], CountryHubInte
       "Use the exact public profile, channel, video or company-page link required by the selected service.",
       "Review delivery, refill terms and the final INR checkout total before payment; no service guarantees reach, revenue or business outcomes.",
     ],
-    serviceIntro: "Focused US pages currently cover Instagram followers, YouTube subscribers, YouTube views and LinkedIn followers.",
+    serviceIntro: "Focused USA pages currently cover Instagram followers, YouTube subscribers, YouTube views and LinkedIn followers.",
   },
   uk: {
     title: "Compare UK social media growth services before choosing a campaign",

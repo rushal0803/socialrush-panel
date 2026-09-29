@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { absoluteSeoUrl, canPublishCountryServicePage, countryHubAlternates, createCountryHubMetadata, getCountryHubIntent, getInternationalMarket, internationalHubPaths, internationalMarkets, publishedCountryServicePages } from "../../lib/seo/international.ts";
+import fs from "node:fs";
+import { absoluteSeoUrl, canPublishCountryServicePage, countryHubAlternates, countryServiceAlternates, countryServicePaths, createCountryHubMetadata, createCountryServiceMetadata, getCountryHubIntent, getInternationalMarket, internationalHubPaths, internationalMarkets, publishedCountryServicePages } from "../../lib/seo/international.ts";
 
 test("international hubs use valid locale codes and absolute self-referential URLs", () => {
   for (const path of internationalHubPaths) {
@@ -77,4 +78,74 @@ test("international hubs expose unique market-specific search intent", () => {
 
   assert.equal(titles.size, internationalMarkets.length);
   assert.equal(summaries.size, internationalMarkets.length);
+});
+
+
+test("international hub and service paths are unique and never overlap", () => {
+  assert.equal(new Set(internationalHubPaths).size, internationalHubPaths.length);
+  assert.equal(new Set(countryServicePaths).size, countryServicePaths.length);
+  const overlap = countryServicePaths.filter((path) => internationalHubPaths.includes(path as (typeof internationalHubPaths)[number]));
+  assert.deepEqual(overlap, []);
+});
+
+test("every published international service has a self canonical and reciprocal same-service hreflang cluster", () => {
+  for (const page of publishedCountryServicePages) {
+    const path = `/${page.market.slug}/${page.serviceSlug}`;
+    assert.ok(countryServicePaths.includes(path));
+
+    const metadata = createCountryServiceMetadata(page);
+    assert.equal(metadata.alternates?.canonical, absoluteSeoUrl(path));
+
+    const alternates = countryServiceAlternates(page);
+    assert.equal(alternates[page.market.hreflang], absoluteSeoUrl(path));
+
+    const expectedPeers = publishedCountryServicePages.filter(
+      (candidate) => candidate.catalogServiceCode === page.catalogServiceCode,
+    );
+    assert.equal(Object.keys(alternates).length, expectedPeers.length);
+
+    for (const peer of expectedPeers) {
+      assert.equal(
+        alternates[peer.market.hreflang],
+        absoluteSeoUrl(`/${peer.market.slug}/${peer.serviceSlug}`),
+      );
+    }
+
+    for (const href of Object.values(alternates)) {
+      assert.equal(href.includes("?"), false);
+      assert.equal(href.includes("#"), false);
+    }
+  }
+});
+
+test("localized international service metadata stays unique across published pages", () => {
+  const titles = new Set<string>();
+  const descriptions = new Set<string>();
+  const canonicals = new Set<string>();
+
+  for (const page of publishedCountryServicePages) {
+    const metadata = createCountryServiceMetadata(page);
+    const title = (metadata.title as { absolute?: string }).absolute || "";
+    const description = String(metadata.description || "");
+    const canonical = String(metadata.alternates?.canonical || "");
+
+    assert.ok(title.includes(page.market.seoLocative));
+    assert.ok(description.includes(page.market.searchLabel));
+    assert.ok(description.includes(page.market.currency));
+    assert.ok(canonical.endsWith(`/${page.market.slug}/${page.serviceSlug}`));
+
+    titles.add(title);
+    descriptions.add(description);
+    canonicals.add(canonical);
+  }
+
+  assert.equal(titles.size, publishedCountryServicePages.length);
+  assert.equal(descriptions.size, publishedCountryServicePages.length);
+  assert.equal(canonicals.size, publishedCountryServicePages.length);
+});
+
+test("sitemap keeps both international hubs and published country service paths in discovery", () => {
+  const source = fs.readFileSync("app/sitemap.xml/route.ts", "utf8");
+  assert.match(source, /\.\.\.internationalHubPaths/);
+  assert.match(source, /\.\.\.countryServicePaths/);
 });
