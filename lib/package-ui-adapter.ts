@@ -117,6 +117,18 @@ export function getFirstPackageUiService(platform: PackageUiPlatform): PackageUi
   return getPackageUiPlatformServices(platform)[0]?.uiService ?? null;
 }
 
+export function getPackageUiServiceLabel(platform: PackageUiPlatform, service: PackageUiService) {
+  const group = getPackageUiGroup(platform, service);
+  if (!group) return service.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
+  const platformPattern = /^(Instagram|YouTube|Facebook|LinkedIn|Telegram|TikTok|Twitter \/ X|X)\s+/i;
+  return group.service.name.replace(platformPattern, "");
+}
+
+export function getPackageUiServiceDescription(platform: PackageUiPlatform, service: PackageUiService) {
+  return getPackageUiGroup(platform, service)?.service.description
+    ?? "Compare supported quantities, current pricing and service details.";
+}
+
 export function findPackageUiSelection(id: string | null | undefined) {
   if (!id) return null;
   return getPackageUiSelections().find((selection) => selection.id === id) ?? null;
