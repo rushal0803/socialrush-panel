@@ -88,6 +88,20 @@ export function findPackageUiSelection(id: string | null | undefined) {
   return getPackageUiSelections().find((selection) => selection.id === id) ?? null;
 }
 
+export function findPackageUiSelectionByContext(
+  platform: PackageUiPlatform,
+  service: PackageUiService,
+  id: string | null | undefined,
+) {
+  if (!id) return null;
+  return getPackageUiSelections().find(
+    (selection) =>
+      selection.platform === platform &&
+      selection.service === service &&
+      selection.id === id,
+  ) ?? null;
+}
+
 export function getPackageUiGroup(platform: PackageUiPlatform, service: PackageUiService) {
   return getPackageUiGroups().find(
     (group) => group.uiPlatform === platform && group.uiService === service,
@@ -96,6 +110,22 @@ export function getPackageUiGroup(platform: PackageUiPlatform, service: PackageU
 
 export function getPackageUiServices(platform: PackageUiPlatform) {
   return getPackageUiGroups().filter((group) => group.uiPlatform === platform);
+}
+
+export function getPackageUiStartingPricePaise(platform: PackageUiPlatform, service: PackageUiService) {
+  const prices = getPackageUiGroup(platform, service)?.packages
+    .map((selection) => selection.pricePaise)
+    .filter((price): price is number => price !== null) ?? [];
+  return prices.length ? Math.min(...prices) : null;
+}
+
+export function getPackageUiUrl(selection: PackageUiSelection) {
+  const params = new URLSearchParams({
+    platform: selection.platformId,
+    service: selection.serviceCode,
+    package: selection.id,
+  });
+  return `/packages?${params.toString()}`;
 }
 
 export function paiseToRupees(paise: number | null) {
