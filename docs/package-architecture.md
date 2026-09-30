@@ -26,4 +26,6 @@ Trust content is limited to facts already supported by the selected service conf
 
 Rollout: integrate the shared engine alongside the legacy path, render all active service states, migrate selection identity, wire validated custom quantity, add wallet/auth continuity, verify any future promotion source, then test backend bundle semantics. Remove duplicated package definitions only after all flows pass verification.
 
+Verification covers all seven active platform IDs and every active service record, not merely each platform tab. For each service verify generated-tier or protected-pricing state, URL restoration, target-link rules, checkout start and relevant wallet/auth handoffs.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
