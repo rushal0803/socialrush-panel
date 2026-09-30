@@ -28,3 +28,7 @@ The initial catalog-generated tier price equals its mathematically computed regu
 ## Migration rule
 
 `lib/big-packages.ts` remains temporarily available so the existing production purchase flow is not broken mid-migration. New package UI work should consume `lib/package-engine.ts`; the legacy definitions can be removed only after public packages, dashboard packages, pending-selection restoration and order creation have all migrated and passed build/flow verification.
+
+## Analytics contract
+
+The shared package funnel should emit the existing analytics pipeline with stable event names: `packages_viewed`, `platform_selected`, `service_selected`, `package_selected`, `custom_quantity_used`, `package_checkout_started`, `add_funds_clicked`, and `package_purchase_completed`. Event properties must remain non-sensitive and limited to platform, service, package/tier, quantity, price and verified discount values.
