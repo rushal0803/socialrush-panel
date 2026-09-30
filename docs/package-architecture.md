@@ -49,6 +49,10 @@ Platform navigation must remain horizontally usable without page overflow. Packa
 
 Public package selection should remain encoded in shareable platform/service/package URL state. Logged-out checkout should persist only the non-sensitive selected package facts needed to restore the decision after authentication. Dashboard insufficient-balance handoff should carry the same selection through Add Funds where the existing flow permits it, so users do not have to rebuild their package choice.
 
+## SEO boundary
+
+Keep the canonical public packages route server-rendered and crawlable with meaningful headings and service content. Platform/service query state is a browsing aid, not a reason to generate hundreds of separately indexed thin URLs. Dashboard package routes continue to follow the site's private-page indexing policy.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
