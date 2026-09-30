@@ -50,4 +50,6 @@ The shared engine deliberately generates no monetary discount by itself. A promo
 
 Recommended-tier emphasis is independent from discounting: Growth may be visually recommended when multiple tiers exist because it is a middle decision point, but it cannot display `Best Value`, percentage savings or a crossed-out price without verified economics.
 
+Package unit economics are displayed from integer paise calculations. Effective per-1K price is derived from the selected tier total and quantity, preventing a separate manually maintained rate from drifting out of sync.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
