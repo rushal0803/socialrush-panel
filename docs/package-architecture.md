@@ -57,6 +57,10 @@ Keep the canonical public packages route server-rendered and crawlable with mean
 
 Trust messaging may render only facts already supported by the service configuration or existing product flow: secure checkout mechanics, order tracking, available support, actual delivery information, and refill eligibility when the selected service explicitly provides it. Never generalize a refill or delivery guarantee across services.
 
+## UI hierarchy
+
+Use a compact premium platform rail, then service chips/search, then the tier comparison. Only one tier receives the dominant `Most Popular`/recommended treatment. Cards should prioritize quantity, final price, verified savings when present, effective rate, concise service facts, and one primary CTA. Avoid decorative animation that competes with the purchase decision.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
