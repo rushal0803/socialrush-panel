@@ -38,4 +38,6 @@ Services that require protected live catalog facts remain visible in navigation 
 
 Service search, if added, filters only the selected platform's already-active catalog. Search text does not alter pricing/availability and does not create indexable URL variants; platform and service selection remain the durable shareable state.
 
+Empty/error states never render undefined values, NaN or zero-price purchase cards. Recoverable catalog/loading errors retain the selected platform/service context and offer retry or a safe route to the existing order experience.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
