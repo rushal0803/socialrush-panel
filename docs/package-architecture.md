@@ -72,4 +72,6 @@ No production merge is part of the current step. Branch changes are isolated for
 
 Implementation checkpoint: `lib/package-engine.ts` is the first functional code addition; documentation records the release invariants. The existing package UI still runs unchanged until the integration step is complete.
 
+Once component migration is functional, use the existing deployment/preview workflow to inspect real rendering before any merge. Do not treat static code review as final UI verification.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
