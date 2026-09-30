@@ -106,4 +106,6 @@ Phase 2 first visual milestone is complete service navigation: every active serv
 
 The service navigation should use the catalog's canonical service code in URL state where practical, while continuing to accept existing legacy short service params for backwards compatibility.
 
+A service with a small maximum quantity may naturally produce one or two tiers; card-grid styling adapts to the tier count rather than implying missing content.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
