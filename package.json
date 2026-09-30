@@ -18,7 +18,8 @@
     "test:cro": "node --experimental-strip-types --test tests/unit/cro-personalization.test.ts",
     "test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts",
     "test:crm-pipeline": "node --experimental-strip-types --test tests/unit/sales-pipeline.test.ts",
-    "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts"
+    "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts",
+    "test:phase12": "node --experimental-strip-types --test tests/unit/phase12-quality.test.ts"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
