@@ -84,4 +84,6 @@ Adapter output should include stable id, platform, service code/key, tier label,
 
 Adapter-generated selections still pass the canonical service code to order/link validation so new catalog services do not lose their service-specific URL rules.
 
+Wallet shortfall uses max(selected final price minus current balance, zero), displayed only for authenticated insufficient-balance states.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
