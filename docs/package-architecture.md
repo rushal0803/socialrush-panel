@@ -61,6 +61,10 @@ Trust messaging may render only facts already supported by the service configura
 
 Use a compact premium platform rail, then service chips/search, then the tier comparison. Only one tier receives the dominant `Most Popular`/recommended treatment. Cards should prioritize quantity, final price, verified savings when present, effective rate, concise service facts, and one primary CTA. Avoid decorative animation that competes with the purchase decision.
 
+## Performance boundary
+
+Prefer existing React/Tailwind/Lucide primitives and the project's current motion dependency rather than adding another UI or animation package. Keep platform/service switching local, reserve layout space for cards and availability states to limit CLS, and defer noncritical educational content below the purchase decision.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
