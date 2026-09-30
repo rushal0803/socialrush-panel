@@ -70,4 +70,6 @@ The next code change should touch the shared package component only after mappin
 
 No production merge is part of the current step. Branch changes are isolated for review and verification.
 
+Implementation checkpoint: `lib/package-engine.ts` is the first functional code addition; documentation records the release invariants. The existing package UI still runs unchanged until the integration step is complete.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
