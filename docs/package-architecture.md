@@ -64,4 +64,6 @@ UI migration must preserve the existing shareable `platform`, `service` and pack
 
 For services with fewer than four meaningful supported quantities, render only unique valid tiers; never duplicate quantities merely to fill a four-card layout.
 
+Custom quantity appears after standard tiers only when browser-safe min/max/step rules are available. Its computed total uses the same service pricing calculation and backend validation remains authoritative at order submission.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
