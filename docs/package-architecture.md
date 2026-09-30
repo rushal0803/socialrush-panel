@@ -99,6 +99,10 @@ Browsing and comparison remain open to signed-out visitors. `Buy Package` stores
 
 The final verification matrix must cover all seven platform IDs from the active catalog. For each active service record, record whether it receives generated catalog tiers or a protected live-pricing state, then verify URL selection, package selection, target-link validation, checkout start and relevant wallet/auth handoffs. A service is not considered covered merely because its platform tab renders.
 
+## Pricing consistency invariant
+
+Public and dashboard surfaces must never calculate package totals independently. Both consume the same tier price in paise from the shared package model, while final order creation continues to rely on the authoritative backend validation. Any mismatch discovered between displayed package pricing and backend pricing blocks release until reconciled.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
