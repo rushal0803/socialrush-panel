@@ -69,6 +69,10 @@ Prefer existing React/Tailwind/Lucide primitives and the project's current motio
 
 Platform and service controls must expose selected state, keyboard focus must remain visible, touch targets should be comfortably tappable, pricing must not rely on color alone, and recommended/discount labels need text equivalents. Motion should respect the project's reduced-motion behavior where available.
 
+## Dashboard wallet presentation
+
+When authenticated, show wallet balance near the purchase decision. If the balance covers the selected final price, the primary action can be `Buy with Wallet`. If not, show package price, current balance and the exact shortfall, then use `Add Funds` as the primary action. The shortfall is derived from the same final price used for checkout and must never be independently hardcoded.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
