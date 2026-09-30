@@ -56,4 +56,6 @@ The first UI integration should be additive: import the engine, derive platform/
 
 Release is blocked until production build checks pass and final UI is inspected. The branch is intentionally not merged or deployed while component migration remains incomplete.
 
+Public and dashboard package pages must ultimately consume the same generated service/tier model so adding an active catalog service does not require separately creating a second dashboard package definition.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
