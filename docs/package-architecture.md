@@ -32,3 +32,7 @@ The initial catalog-generated tier price equals its mathematically computed regu
 ## Analytics contract
 
 The shared package funnel should emit the existing analytics pipeline with stable event names: `packages_viewed`, `platform_selected`, `service_selected`, `package_selected`, `custom_quantity_used`, `package_checkout_started`, `add_funds_clicked`, and `package_purchase_completed`. Event properties must remain non-sensitive and limited to platform, service, package/tier, quantity, price and verified discount values.
+
+## Custom quantity contract
+
+Custom quantity must reuse each service's existing minimum, maximum and quantity-step validation. For services requiring live catalog facts, custom quantity and pricing stay unavailable until those authoritative facts have been loaded through the protected order flow; client fallbacks must never bypass backend restrictions.
