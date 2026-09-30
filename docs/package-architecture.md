@@ -82,4 +82,6 @@ The package component currently contains several BigPackage-specific helpers; mi
 
 Adapter output should include stable id, platform, service code/key, tier label, quantity, price in paise/rupees at the display edge, delivery/refill facts and recommendation state; legacy-only marketing badge text is excluded.
 
+Adapter-generated selections still pass the canonical service code to order/link validation so new catalog services do not lose their service-specific URL rules.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
