@@ -88,4 +88,6 @@ Wallet shortfall uses max(selected final price minus current balance, zero), dis
 
 The package page should never preselect a paid package merely to increase conversion; recommendation styling may guide comparison, while purchase selection remains an explicit user action.
 
+Analytics package identifiers use the stable generated identity, not card position, so funnel history remains interpretable if visual ordering changes later.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
