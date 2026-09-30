@@ -42,4 +42,6 @@ Empty/error states never render undefined values, NaN or zero-price purchase car
 
 Dashboard Add Funds handoff preserves selected package context where supported. After funding, restoration must revalidate the service and price rather than trusting stale client state.
 
+Package cards do not invent guarantees. Delivery, refill and quality text comes from the selected service configuration; when protected live facts are required, those details are deferred to the authoritative order flow.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
