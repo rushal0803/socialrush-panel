@@ -54,4 +54,6 @@ Package unit economics are displayed from integer paise calculations. Effective 
 
 The first UI integration should be additive: import the engine, derive platform/service groups from it, and retain the current purchase handlers until equivalent generated selections can pass through them. This minimizes regression risk while expanding service coverage.
 
-The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
+Release is blocked until production build checks pass and final UI is inspected. The branch is intentionally not merged or deployed while component migration remains incomplete.
+
+The canonical public package route remains crawlable without creating thin indexed filter pages.
