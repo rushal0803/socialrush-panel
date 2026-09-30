@@ -104,4 +104,6 @@ Service switching likewise clears a tier/custom selection before rendering the n
 
 Phase 2 first visual milestone is complete service navigation: every active service should be selectable even before every purchase card has migrated, with protected services showing a deliberate state instead of disappearing.
 
+The service navigation should use the catalog's canonical service code in URL state where practical, while continuing to accept existing legacy short service params for backwards compatibility.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
