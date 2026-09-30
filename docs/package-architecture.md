@@ -88,6 +88,13 @@ Browsing and comparison remain open to signed-out visitors. `Buy Package` stores
 7. Test bundle backend semantics before exposing bundles.
 8. Run full verification, then remove obsolete duplicated package definitions.
 
+## Phase status
+
+- Audit: in progress; public and dashboard routes, shared package component, service catalog and pricing split have been identified.
+- Shared package engine: implemented on the feature branch for catalog-priced services, with protected live-priced services gated.
+- Public/dashboard UI migration: next.
+- Production merge: not started.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
