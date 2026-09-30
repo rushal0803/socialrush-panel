@@ -48,6 +48,14 @@ const platformToUi: Record<SmmPlatformId, PackageUiPlatform> = {
   x: "X",
 };
 
+const uiToPlatform = Object.fromEntries(
+  Object.entries(platformToUi).map(([id, label]) => [label, id]),
+) as Record<PackageUiPlatform, SmmPlatformId>;
+
+function normalize(value: string | null | undefined) {
+  return String(value ?? "").trim().toLowerCase().replace(/\s+/g, "-");
+}
+
 function serviceKey(group: PackageServiceGroup): PackageUiService {
   const prefix = `${group.platform}-`;
   return group.service.code.startsWith(prefix)
@@ -112,6 +120,26 @@ export function findPackageUiSelectionByContext(
   ) ?? null;
 }
 
+export function resolvePackageUiSelection(params: {
+  platform?: string | null;
+  service?: string | null;
+  packageId?: string | null;
+  quantity?: number | null;
+}) {
+  const platform = normalize(params.platform);
+  const service = normalize(params.service);
+  const packageId = String(params.packageId ?? "").trim();
+  const quantity = Number(params.quantity ?? 0);
+
+  return getPackageUiSelections().find((selection) => {
+    const platformMatches = !platform || normalize(selection.platformId) === platform || normalize(selection.platform) === platform || (platform === "twitter" && selection.platformId === "x");
+    const serviceMatches = !service || normalize(selection.service) === service || normalize(selection.serviceCode) === service || normalize(selection.serviceCode).endsWith(`-${service}`);
+    const packageMatches = !packageId || selection.id === packageId;
+    const quantityMatches = !quantity || selection.quantity === quantity;
+    return platformMatches && serviceMatches && packageMatches && quantityMatches;
+  }) ?? null;
+}
+
 export function getPackageUiGroup(platform: PackageUiPlatform, service: PackageUiService) {
   return getPackageUiGroups().find(
     (group) => group.uiPlatform === platform && group.uiService === service,
@@ -135,6 +163,15 @@ export function getPackageUiUrl(selection: PackageUiSelection) {
     service: selection.serviceCode,
     package: selection.id,
   });
+  return `/packages?${params.toString()}`;
+}
+
+export function getPackageServiceUrl(platform: PackageUiPlatform, service?: PackageUiService) {
+  const params = new URLSearchParams({ platform: uiToPlatform[platform] });
+  if (service) {
+    const group = getPackageUiGroup(platform, service);
+    params.set("service", group?.service.code ?? service);
+  }
   return `/packages?${params.toString()}`;
 }
 
