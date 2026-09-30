@@ -95,6 +95,10 @@ Browsing and comparison remain open to signed-out visitors. `Buy Package` stores
 - Public/dashboard UI migration: next.
 - Production merge: not started.
 
+## Acceptance matrix
+
+The final verification matrix must cover all seven platform IDs from the active catalog. For each active service record, record whether it receives generated catalog tiers or a protected live-pricing state, then verify URL selection, package selection, target-link validation, checkout start and relevant wallet/auth handoffs. A service is not considered covered merely because its platform tab renders.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
