@@ -111,6 +111,10 @@ Service search, if needed after catalog rendering, filters only the already-acti
 
 Generated package identity is stable from service code plus tier id and quantity, rather than marketing copy. Display labels may evolve without breaking URL restoration. During migration, legacy package IDs are mapped only when their service and quantity still resolve to a valid active-service selection; stale IDs must fall back to the service view instead of silently purchasing another quantity.
 
+## No-price state
+
+When a service is active but its authoritative price is unavailable to the package browser, display the service name and a concise `Pricing available in order flow` state with an action to the protected order experience. Do not display `₹0`, a disabled price card that looks purchasable, an inferred rate, or a discount badge.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
