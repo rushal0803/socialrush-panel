@@ -68,6 +68,6 @@ Custom quantity appears after standard tiers only when browser-safe min/max/step
 
 The next code change should touch the shared package component only after mapping its current `BigPackage` dependencies to generated tier equivalents; this prevents a partial type migration from breaking checkout.
 
-No production merge is part of the current step.
+No production merge is part of the current step. Branch changes are isolated for review and verification.
 
 The canonical public package route remains crawlable without creating thin indexed filter pages.
