@@ -80,4 +80,6 @@ Phase 2 must not remove current wallet purchase logic merely to simplify the UI 
 
 The package component currently contains several BigPackage-specific helpers; migrate these through a small adapter rather than rewriting authentication/order behavior at the same time.
 
+Adapter output should include stable id, platform, service code/key, tier label, quantity, price in paise/rupees at the display edge, delivery/refill facts and recommendation state; legacy-only marketing badge text is excluded.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
