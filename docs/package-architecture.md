@@ -25,6 +25,6 @@ Generated catalog packages use four semantic tiers where the service range permi
 
 The initial catalog-generated tier price equals its mathematically computed regular price, so savings are zero. A future package promotion may pass a lower legitimate final price through the shared savings calculator; only then may the UI render an original price, amount saved, or percentage-off treatment.
 
-## Next integration
+## Migration rule
 
-Migrate the package UI away from manually duplicated package price definitions and onto `lib/package-engine.ts`, while preserving existing link validation, authentication, wallet checks, pending selection restoration and order APIs.
+`lib/big-packages.ts` remains temporarily available so the existing production purchase flow is not broken mid-migration. New package UI work should consume `lib/package-engine.ts`; the legacy definitions can be removed only after public packages, dashboard packages, pending-selection restoration and order creation have all migrated and passed build/flow verification.
