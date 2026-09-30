@@ -30,4 +30,6 @@ Verification covers all seven active platform IDs and every active service recor
 
 Current feature-branch status: shared catalog-driven package engine implemented; legacy order path intentionally retained; public/dashboard component migration and full verification still pending. Production main has not been changed by this package branch.
 
+Next implementation target: replace the package selector's `bigPackages`-driven service/package discovery with shared engine groups while preserving existing target-link validation, auth detection, wallet loading, pending-order storage and order API behavior.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
