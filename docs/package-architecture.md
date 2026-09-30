@@ -60,4 +60,6 @@ Public and dashboard package pages must ultimately consume the same generated se
 
 Phase 1 foundation is now coded on the feature branch. Phase 2 UI migration starts with service coverage and tier rendering; purchase handlers remain unchanged until generated selections are proven equivalent.
 
+UI migration must preserve the existing shareable `platform`, `service` and package-selection query behavior. Invalid or stale package selection falls back safely to the active service instead of auto-buying another tier.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
