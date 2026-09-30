@@ -31,6 +31,7 @@ jobs:
       - run: npm run test:crm-pipeline
       - run: npm run test:international-seo
       - run: npm run test:payment-confidence
+      - run: npm run test:phase12
       - run: npm run build
       - name: Install Chromium for smoke tests
         run: npx playwright install --with-deps chromium
