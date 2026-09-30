@@ -58,4 +58,6 @@ Release is blocked until production build checks pass and final UI is inspected.
 
 Public and dashboard package pages must ultimately consume the same generated service/tier model so adding an active catalog service does not require separately creating a second dashboard package definition.
 
+Phase 1 foundation is now coded on the feature branch. Phase 2 UI migration starts with service coverage and tier rendering; purchase handlers remain unchanged until generated selections are proven equivalent.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
