@@ -76,4 +76,6 @@ Once component migration is functional, use the existing deployment/preview work
 
 The package engine is intentionally pure and has no Supabase/browser dependency, keeping tier generation testable and reusable by both server-rendered public content and client purchase UI.
 
+Phase 2 must not remove current wallet purchase logic merely to simplify the UI rewrite; the new presentation adapts to the proven order flow first, then backend refactors can be considered separately.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
