@@ -66,4 +66,6 @@ For services with fewer than four meaningful supported quantities, render only u
 
 Custom quantity appears after standard tiers only when browser-safe min/max/step rules are available. Its computed total uses the same service pricing calculation and backend validation remains authoritative at order submission.
 
+The next code change should touch the shared package component only after mapping its current `BigPackage` dependencies to generated tier equivalents; this prevents a partial type migration from breaking checkout.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
