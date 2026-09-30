@@ -73,6 +73,10 @@ Platform and service controls must expose selected state, keyboard focus must re
 
 When authenticated, show wallet balance near the purchase decision. If the balance covers the selected final price, the primary action can be `Buy with Wallet`. If not, show package price, current balance and the exact shortfall, then use `Add Funds` as the primary action. The shortfall is derived from the same final price used for checkout and must never be independently hardcoded.
 
+## Public authentication handoff
+
+Browsing and comparison remain open to signed-out visitors. `Buy Package` stores the selected platform, service, tier/package identifier, quantity and displayed final price only as continuity context; authentication never becomes a prerequisite for comparing packages. The backend remains authoritative for price and availability when the restored selection is submitted.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
