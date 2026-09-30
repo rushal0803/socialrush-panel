@@ -1,4 +1,3 @@
-import type { BigPackage } from "./big-packages";
 import {
   getPackageServiceGroups,
   type PackageServiceGroup,
@@ -7,8 +6,8 @@ import {
 } from "./package-engine";
 import type { SmmPlatformId } from "./smm-service-catalog";
 
-export type PackageUiPlatform = BigPackage["platform"];
-export type PackageUiService = BigPackage["service"];
+export type PackageUiPlatform = "Instagram" | "YouTube" | "Facebook" | "LinkedIn" | "Telegram" | "TikTok" | "X";
+export type PackageUiService = string;
 
 export type PackageUiSelection = Readonly<{
   id: string;
@@ -41,10 +40,9 @@ const platformToUi: Record<SmmPlatformId, PackageUiPlatform> = {
 
 function serviceKey(group: PackageServiceGroup): PackageUiService {
   const prefix = `${group.platform}-`;
-  const code = group.service.code.startsWith(prefix)
+  return group.service.code.startsWith(prefix)
     ? group.service.code.slice(prefix.length)
     : group.service.code;
-  return code as PackageUiService;
 }
 
 export function packageSelectionId(serviceCode: string, tier: Pick<PackageTier, "id" | "quantity">) {
@@ -94,6 +92,10 @@ export function getPackageUiGroup(platform: PackageUiPlatform, service: PackageU
   return getPackageUiGroups().find(
     (group) => group.uiPlatform === platform && group.uiService === service,
   ) ?? null;
+}
+
+export function getPackageUiServices(platform: PackageUiPlatform) {
+  return getPackageUiGroups().filter((group) => group.uiPlatform === platform);
 }
 
 export function paiseToRupees(paise: number | null) {
