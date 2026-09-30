@@ -24,4 +24,6 @@ Implementation uses existing React, Tailwind, Lucide and current motion dependen
 
 Trust content is limited to facts already supported by the selected service configuration and existing product flow. Delivery/refill claims are never generalized across services.
 
+Rollout: integrate the shared engine alongside the legacy path, render all active service states, migrate selection identity, wire validated custom quantity, add wallet/auth continuity, verify any future promotion source, then test backend bundle semantics. Remove duplicated package definitions only after all flows pass verification.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
