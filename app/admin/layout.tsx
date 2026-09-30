@@ -23,10 +23,18 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <div className="admin-shell dashboard-shell relative flex min-h-screen text-[#D1D5DB]">
+      <a
+        href="#admin-main-content"
+        className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
+      >
+        Skip to admin content
+      </a>
       <AdminSidebar />
       <div className="min-w-0 flex-1">
         <AdminHeader name={profile.full_name} email={user.email || ""} />
-        {children}
+        <div id="admin-main-content" tabIndex={-1} className="outline-none">
+          {children}
+        </div>
       </div>
     </div>
   );
