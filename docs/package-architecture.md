@@ -102,4 +102,6 @@ Platform switching clears stale package selection and chooses only a valid servi
 
 Service switching likewise clears a tier/custom selection before rendering the newly selected service's valid choices.
 
+Phase 2 first visual milestone is complete service navigation: every active service should be selectable even before every purchase card has migrated, with protected services showing a deliberate state instead of disappearing.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
