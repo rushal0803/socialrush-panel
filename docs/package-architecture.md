@@ -52,4 +52,6 @@ Recommended-tier emphasis is independent from discounting: Growth may be visuall
 
 Package unit economics are displayed from integer paise calculations. Effective per-1K price is derived from the selected tier total and quantity, preventing a separate manually maintained rate from drifting out of sync.
 
+The first UI integration should be additive: import the engine, derive platform/service groups from it, and retain the current purchase handlers until equivalent generated selections can pass through them. This minimizes regression risk while expanding service coverage.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
