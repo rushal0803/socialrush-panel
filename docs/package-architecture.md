@@ -22,4 +22,6 @@ Only one tier receives the dominant recommendation treatment. Cards prioritize q
 
 Implementation uses existing React, Tailwind, Lucide and current motion dependencies rather than adding another heavy UI library. Platform/service switching stays local and noncritical content remains below the purchase decision.
 
+Trust content is limited to facts already supported by the selected service configuration and existing product flow. Delivery/refill claims are never generalized across services.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
