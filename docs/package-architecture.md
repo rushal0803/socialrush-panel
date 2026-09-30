@@ -94,4 +94,6 @@ Package cards should format prices at the display edge from paise and never perf
 
 Next checkpoint after UI adapter integration: run type/build checks before adding further CRO polish, so architecture errors are caught before visual complexity increases.
 
+A service can be active yet package-browser pricing-protected; active status controls discoverability, while pricingStatus controls whether cards can be generated. These states must not be conflated.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
