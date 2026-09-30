@@ -101,6 +101,22 @@ export function getPackageUiSelections(): readonly PackageUiSelection[] {
   return getPackageUiGroups().flatMap((group) => group.packages);
 }
 
+export function getPackageUiPlatformCount() {
+  return new Set(getPackageUiGroups().map((group) => group.platform)).size;
+}
+
+export function getPackageUiServiceCount() {
+  return getPackageUiGroups().length;
+}
+
+export function getPackageUiPlatformServices(platform: PackageUiPlatform) {
+  return getPackageUiGroups().filter((group) => group.uiPlatform === platform);
+}
+
+export function getFirstPackageUiService(platform: PackageUiPlatform): PackageUiService | null {
+  return getPackageUiPlatformServices(platform)[0]?.uiService ?? null;
+}
+
 export function findPackageUiSelection(id: string | null | undefined) {
   if (!id) return null;
   return getPackageUiSelections().find((selection) => selection.id === id) ?? null;
@@ -147,7 +163,7 @@ export function getPackageUiGroup(platform: PackageUiPlatform, service: PackageU
 }
 
 export function getPackageUiServices(platform: PackageUiPlatform) {
-  return getPackageUiGroups().filter((group) => group.uiPlatform === platform);
+  return getPackageUiPlatformServices(platform);
 }
 
 export function getPackageUiStartingPricePaise(platform: PackageUiPlatform, service: PackageUiService) {
