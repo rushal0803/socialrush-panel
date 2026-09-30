@@ -28,6 +28,16 @@ export type PackageUiSelection = Readonly<{
   recommended: boolean;
 }>;
 
+export type PackagePurchaseFacts = Readonly<{
+  packageId: string;
+  serviceCode: string;
+  quantity: number;
+  totalPriceINR: number;
+  fallbackPricePer1000INR: number;
+  fallbackName: string;
+  fallbackPlatform: SmmPlatformId;
+}>;
+
 const platformToUi: Record<SmmPlatformId, PackageUiPlatform> = {
   instagram: "Instagram",
   youtube: "YouTube",
@@ -130,4 +140,32 @@ export function getPackageUiUrl(selection: PackageUiSelection) {
 
 export function paiseToRupees(paise: number | null) {
   return paise === null ? null : paise / 100;
+}
+
+export function getPackagePurchaseFacts(selection: PackageUiSelection): PackagePurchaseFacts | null {
+  if (selection.pricePaise === null || selection.pricePaise <= 0 || selection.quantity <= 0) return null;
+  const totalPriceINR = paiseToRupees(selection.pricePaise);
+  if (totalPriceINR === null) return null;
+  const fallbackPricePer1000INR = Math.round((totalPriceINR / (selection.quantity / 1000)) * 10000) / 10000;
+  return {
+    packageId: selection.id,
+    serviceCode: selection.serviceCode,
+    quantity: selection.quantity,
+    totalPriceINR,
+    fallbackPricePer1000INR,
+    fallbackName: `${selection.platform === "X" ? "X / Twitter" : selection.platform} ${selection.serviceName}`,
+    fallbackPlatform: selection.platformId,
+  };
+}
+
+export function getWalletPackageState(selection: PackageUiSelection | null, walletBalance: number | null) {
+  const facts = selection ? getPackagePurchaseFacts(selection) : null;
+  if (!facts || walletBalance === null) {
+    return { hasEnoughBalance: false, amountNeeded: 0 } as const;
+  }
+  const amountNeeded = Math.max(0, Math.round((facts.totalPriceINR - walletBalance) * 100) / 100);
+  return {
+    hasEnoughBalance: walletBalance + 0.0001 >= facts.totalPriceINR,
+    amountNeeded,
+  } as const;
 }
