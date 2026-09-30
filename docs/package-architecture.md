@@ -53,6 +53,10 @@ Public package selection should remain encoded in shareable platform/service/pac
 
 Keep the canonical public packages route server-rendered and crawlable with meaningful headings and service content. Platform/service query state is a browsing aid, not a reason to generate hundreds of separately indexed thin URLs. Dashboard package routes continue to follow the site's private-page indexing policy.
 
+## Trust-content rule
+
+Trust messaging may render only facts already supported by the service configuration or existing product flow: secure checkout mechanics, order tracking, available support, actual delivery information, and refill eligibility when the selected service explicitly provides it. Never generalize a refill or delivery guarantee across services.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
