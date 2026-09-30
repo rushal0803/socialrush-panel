@@ -28,4 +28,6 @@ Rollout: integrate the shared engine alongside the legacy path, render all activ
 
 Verification covers all seven active platform IDs and every active service record, not merely each platform tab. For each service verify generated-tier or protected-pricing state, URL restoration, target-link rules, checkout start and relevant wallet/auth handoffs.
 
+Current feature-branch status: shared catalog-driven package engine implemented; legacy order path intentionally retained; public/dashboard component migration and full verification still pending. Production main has not been changed by this package branch.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
