@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 
 export default function AdminModal({
   label,
@@ -38,20 +39,31 @@ export default function AdminModal({
       >
         {label}
       </button>
-      {open ? (
-        <div className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-3 backdrop-blur-sm sm:p-4">
-          <button
-            type="button"
-            aria-label={`Close ${title}`}
-            onClick={() => setOpen(false)}
-            className="absolute inset-0 cursor-default"
-          />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-label={title}
-            className="admin-modal relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto p-4 text-[#D1D5DB] shadow-2xl sm:p-6"
+      <AnimatePresence initial={false}>
+        {open ? (
+          <motion.div
+            className="fixed inset-0 z-50 grid place-items-center bg-slate-950/50 p-3 backdrop-blur-sm sm:p-4"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 0.2 }}
           >
+            <button
+              type="button"
+              aria-label={`Close ${title}`}
+              onClick={() => setOpen(false)}
+              className="absolute inset-0 cursor-default"
+            />
+            <motion.div
+              role="dialog"
+              aria-modal="true"
+              aria-label={title}
+              initial={{ opacity: 0, y: 10, scale: 0.985 }}
+              animate={{ opacity: 1, y: 0, scale: 1 }}
+              exit={{ opacity: 0, y: 8, scale: 0.985 }}
+              transition={{ duration: 0.24, ease: [0.22, 1, 0.36, 1] }}
+              className="admin-modal relative z-10 max-h-[calc(100dvh-2rem)] w-full max-w-2xl overflow-y-auto p-4 text-[#D1D5DB] shadow-2xl sm:p-6"
+            >
             <div className="flex items-center justify-between">
               <h2 className="text-lg font-black text-white">{title}</h2>
               <button
@@ -64,9 +76,10 @@ export default function AdminModal({
               </button>
             </div>
             <div className="mt-6">{children}</div>
-          </div>
-        </div>
-      ) : null}
+            </motion.div>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </>
   );
 }
