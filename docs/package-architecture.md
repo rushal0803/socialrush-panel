@@ -40,4 +40,6 @@ Service search, if added, filters only the selected platform's already-active ca
 
 Empty/error states never render undefined values, NaN or zero-price purchase cards. Recoverable catalog/loading errors retain the selected platform/service context and offer retry or a safe route to the existing order experience.
 
+Dashboard Add Funds handoff preserves selected package context where supported. After funding, restoration must revalidate the service and price rather than trusting stale client state.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
