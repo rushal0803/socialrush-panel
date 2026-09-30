@@ -52,6 +52,8 @@ const uiToPlatform = Object.fromEntries(
   Object.entries(platformToUi).map(([id, label]) => [label, id]),
 ) as Record<PackageUiPlatform, SmmPlatformId>;
 
+const platformNamePattern = /^(Instagram|YouTube|Facebook|LinkedIn|Telegram|TikTok|Twitter \/ X|X)\s+/i;
+
 function normalize(value: string | null | undefined) {
   return String(value ?? "").trim().toLowerCase().replace(/\s+/g, "-");
 }
@@ -61,6 +63,10 @@ function serviceKey(group: PackageServiceGroup): PackageUiService {
   return group.service.code.startsWith(prefix)
     ? group.service.code.slice(prefix.length)
     : group.service.code;
+}
+
+function serviceLabel(name: string) {
+  return name.replace(platformNamePattern, "").trim();
 }
 
 export function packageSelectionId(serviceCode: string, tier: Pick<PackageTier, "id" | "quantity">) {
@@ -74,7 +80,7 @@ export function adaptPackageTier(group: PackageServiceGroup, tier: PackageTier):
     platformId: group.platform,
     service: serviceKey(group),
     serviceCode: group.service.code,
-    serviceName: group.service.name,
+    serviceName: serviceLabel(group.service.name),
     tierId: tier.id,
     tierLabel: tier.label,
     bestFor: tier.bestFor,
@@ -120,8 +126,7 @@ export function getFirstPackageUiService(platform: PackageUiPlatform): PackageUi
 export function getPackageUiServiceLabel(platform: PackageUiPlatform, service: PackageUiService) {
   const group = getPackageUiGroup(platform, service);
   if (!group) return service.split("-").map((part) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  const platformPattern = /^(Instagram|YouTube|Facebook|LinkedIn|Telegram|TikTok|Twitter \/ X|X)\s+/i;
-  return group.service.name.replace(platformPattern, "");
+  return serviceLabel(group.service.name);
 }
 
 export function getPackageUiServiceDescription(platform: PackageUiPlatform, service: PackageUiService) {
