@@ -12,4 +12,6 @@ On mobile, platform/service navigation must remain usable without page overflow,
 
 Signed-out visitors can browse packages. Selected platform, service, tier and quantity can be restored after authentication, while final availability and pricing remain backend-authoritative. Dashboard wallet UI derives sufficient-balance and shortfall states from the same selected final price.
 
+Package funnel analytics use stable events for view, platform selection, service selection, package selection, custom quantity, checkout start, add-funds click and purchase completion. Event properties are limited to non-sensitive package context.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
