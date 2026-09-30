@@ -36,4 +36,6 @@ No fake discount migration: legacy `discountBadge` strings are presentation meta
 
 Services that require protected live catalog facts remain visible in navigation but do not receive generated package cards from fallback data. Their package area routes customers into the authoritative order flow for current availability, limits and pricing.
 
+Service search, if added, filters only the selected platform's already-active catalog. Search text does not alter pricing/availability and does not create indexable URL variants; platform and service selection remain the durable shareable state.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
