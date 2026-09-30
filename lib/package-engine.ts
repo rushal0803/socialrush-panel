@@ -65,7 +65,9 @@ function tierQuantities(service: SmmService): number[] {
 }
 
 export function buildPackageTiers(service: SmmService): readonly PackageTier[] {
-  return tierQuantities(service).map((quantity, index) => {
+  const quantities = tierQuantities(service);
+  const recommendedIndex = quantities.length > 1 ? 1 : 0;
+  return quantities.map((quantity, index) => {
     const regularPricePaise = calculateServiceTotalPaise(service.code as ServiceCode, quantity);
     return {
       ...TIER_META[index],
@@ -75,7 +77,7 @@ export function buildPackageTiers(service: SmmService): readonly PackageTier[] {
       savingsPaise: 0,
       savingsPercent: 0,
       pricePer1000Paise: quantity > 0 ? Math.round((regularPricePaise * 1000) / quantity) : null,
-      recommended: index === Math.min(1, tierQuantities(service).length - 1),
+      recommended: index === recommendedIndex,
     };
   });
 }
