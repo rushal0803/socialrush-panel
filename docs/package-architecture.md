@@ -86,4 +86,6 @@ Adapter-generated selections still pass the canonical service code to order/link
 
 Wallet shortfall uses max(selected final price minus current balance, zero), displayed only for authenticated insufficient-balance states.
 
+The package page should never preselect a paid package merely to increase conversion; recommendation styling may guide comparison, while purchase selection remains an explicit user action.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
