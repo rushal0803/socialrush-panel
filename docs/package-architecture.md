@@ -34,4 +34,6 @@ Next implementation target: replace the package selector's `bigPackages`-driven 
 
 No fake discount migration: legacy `discountBadge` strings are presentation metadata only and are not carried into the shared engine. Until a legitimate promotion source is connected, generated tier price equals regular price and savings render as zero/hidden.
 
+Services that require protected live catalog facts remain visible in navigation but do not receive generated package cards from fallback data. Their package area routes customers into the authoritative order flow for current availability, limits and pricing.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
