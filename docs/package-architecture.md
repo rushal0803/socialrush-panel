@@ -14,4 +14,6 @@ Signed-out visitors can browse packages. Selected platform, service, tier and qu
 
 Package funnel analytics use stable events for view, platform selection, service selection, package selection, custom quantity, checkout start, add-funds click and purchase completion. Event properties are limited to non-sensitive package context.
 
+Generated package identity uses service code, tier and quantity rather than marketing copy. Legacy package IDs are mapped only when their service and quantity still resolve to a valid active-service selection; stale IDs fall back to the service view.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
