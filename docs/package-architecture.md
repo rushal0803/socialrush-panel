@@ -77,6 +77,17 @@ When authenticated, show wallet balance near the purchase decision. If the balan
 
 Browsing and comparison remain open to signed-out visitors. `Buy Package` stores the selected platform, service, tier/package identifier, quantity and displayed final price only as continuity context; authentication never becomes a prerequisite for comparing packages. The backend remains authoritative for price and availability when the restored selection is submitted.
 
+## Rollout sequence
+
+1. Integrate the shared engine into the package selector without deleting the legacy path.
+2. Render all active service states and generated tiers.
+3. Migrate selection/pending-order identifiers to the shared tier model.
+4. Wire custom quantity through existing validation/order APIs.
+5. Add wallet-aware dashboard presentation and authentication restoration.
+6. Add verified promotion support only when a legitimate discount source exists.
+7. Test bundle backend semantics before exposing bundles.
+8. Run full verification, then remove obsolete duplicated package definitions.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
