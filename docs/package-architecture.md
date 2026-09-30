@@ -78,4 +78,6 @@ The package engine is intentionally pure and has no Supabase/browser dependency,
 
 Phase 2 must not remove current wallet purchase logic merely to simplify the UI rewrite; the new presentation adapts to the proven order flow first, then backend refactors can be considered separately.
 
+The package component currently contains several BigPackage-specific helpers; migrate these through a small adapter rather than rewriting authentication/order behavior at the same time.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
