@@ -1,0 +1,101 @@
+import type { BigPackage } from "./big-packages";
+import {
+  getPackageServiceGroups,
+  type PackageServiceGroup,
+  type PackageTier,
+  type PackageTierId,
+} from "./package-engine";
+import type { SmmPlatformId } from "./smm-service-catalog";
+
+export type PackageUiPlatform = BigPackage["platform"];
+export type PackageUiService = BigPackage["service"];
+
+export type PackageUiSelection = Readonly<{
+  id: string;
+  platform: PackageUiPlatform;
+  platformId: SmmPlatformId;
+  service: PackageUiService;
+  serviceCode: string;
+  serviceName: string;
+  tierId: PackageTierId;
+  tierLabel: string;
+  bestFor: string;
+  quantity: number;
+  regularPricePaise: number | null;
+  pricePaise: number | null;
+  savingsPaise: number;
+  savingsPercent: number;
+  pricePer1000Paise: number | null;
+  recommended: boolean;
+}>;
+
+const platformToUi: Record<SmmPlatformId, PackageUiPlatform> = {
+  instagram: "Instagram",
+  youtube: "YouTube",
+  facebook: "Facebook",
+  linkedin: "LinkedIn",
+  telegram: "Telegram",
+  tiktok: "TikTok",
+  x: "X",
+};
+
+function serviceKey(group: PackageServiceGroup): PackageUiService {
+  const prefix = `${group.platform}-`;
+  const code = group.service.code.startsWith(prefix)
+    ? group.service.code.slice(prefix.length)
+    : group.service.code;
+  return code as PackageUiService;
+}
+
+export function packageSelectionId(serviceCode: string, tier: Pick<PackageTier, "id" | "quantity">) {
+  return `${serviceCode}:${tier.id}:${tier.quantity}`;
+}
+
+export function adaptPackageTier(group: PackageServiceGroup, tier: PackageTier): PackageUiSelection {
+  return {
+    id: packageSelectionId(group.service.code, tier),
+    platform: platformToUi[group.platform],
+    platformId: group.platform,
+    service: serviceKey(group),
+    serviceCode: group.service.code,
+    serviceName: group.service.name,
+    tierId: tier.id,
+    tierLabel: tier.label,
+    bestFor: tier.bestFor,
+    quantity: tier.quantity,
+    regularPricePaise: tier.regularPricePaise,
+    pricePaise: tier.pricePaise,
+    savingsPaise: tier.savingsPaise,
+    savingsPercent: tier.savingsPercent,
+    pricePer1000Paise: tier.pricePer1000Paise,
+    recommended: tier.recommended,
+  };
+}
+
+export function getPackageUiGroups() {
+  return getPackageServiceGroups().map((group) => ({
+    ...group,
+    uiPlatform: platformToUi[group.platform],
+    uiService: serviceKey(group),
+    packages: group.tiers.map((tier) => adaptPackageTier(group, tier)),
+  }));
+}
+
+export function getPackageUiSelections(): readonly PackageUiSelection[] {
+  return getPackageUiGroups().flatMap((group) => group.packages);
+}
+
+export function findPackageUiSelection(id: string | null | undefined) {
+  if (!id) return null;
+  return getPackageUiSelections().find((selection) => selection.id === id) ?? null;
+}
+
+export function getPackageUiGroup(platform: PackageUiPlatform, service: PackageUiService) {
+  return getPackageUiGroups().find(
+    (group) => group.uiPlatform === platform && group.uiService === service,
+  ) ?? null;
+}
+
+export function paiseToRupees(paise: number | null) {
+  return paise === null ? null : paise / 100;
+}
