@@ -20,4 +20,6 @@ Public and dashboard surfaces never calculate totals independently. Both consume
 
 Only one tier receives the dominant recommendation treatment. Cards prioritize quantity, final price, verified savings when present, effective rate, concise service facts and one primary action. Platform and service controls expose selected state and visible keyboard focus.
 
+Implementation uses existing React, Tailwind, Lucide and current motion dependencies rather than adding another heavy UI library. Platform/service switching stays local and noncritical content remains below the purchase decision.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
