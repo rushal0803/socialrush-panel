@@ -100,4 +100,6 @@ Platform counts and service counts shown in the UI should be derived from the ac
 
 Platform switching clears stale package selection and chooses only a valid service context; it must never carry a package quantity from one platform into another.
 
+Service switching likewise clears a tier/custom selection before rendering the newly selected service's valid choices.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
