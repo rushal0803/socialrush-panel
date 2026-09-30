@@ -107,6 +107,10 @@ Public and dashboard surfaces must never calculate package totals independently.
 
 Service search, if needed after catalog rendering, filters only the already-active catalog for the selected platform and never changes availability or pricing. Platform and service URL state remains the durable navigation mechanism; search text itself does not need to create indexable URL variants.
 
+## Selection identity
+
+Generated package identity is stable from service code plus tier id and quantity, rather than marketing copy. Display labels may evolve without breaking URL restoration. During migration, legacy package IDs are mapped only when their service and quantity still resolve to a valid active-service selection; stale IDs must fall back to the service view instead of silently purchasing another quantity.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
