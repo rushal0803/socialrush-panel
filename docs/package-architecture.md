@@ -74,4 +74,6 @@ Implementation checkpoint: `lib/package-engine.ts` is the first functional code 
 
 Once component migration is functional, use the existing deployment/preview workflow to inspect real rendering before any merge. Do not treat static code review as final UI verification.
 
+The package engine is intentionally pure and has no Supabase/browser dependency, keeping tier generation testable and reusable by both server-rendered public content and client purchase UI.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
