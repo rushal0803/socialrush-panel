@@ -18,4 +18,6 @@ Generated package identity uses service code, tier and quantity rather than mark
 
 Public and dashboard surfaces never calculate totals independently. Both consume the shared package price in paise, while final order creation continues to use backend validation. A display/backend mismatch blocks release.
 
+Only one tier receives the dominant recommendation treatment. Cards prioritize quantity, final price, verified savings when present, effective rate, concise service facts and one primary action. Platform and service controls expose selected state and visible keyboard focus.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
