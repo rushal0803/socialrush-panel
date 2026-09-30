@@ -65,6 +65,10 @@ Use a compact premium platform rail, then service chips/search, then the tier co
 
 Prefer existing React/Tailwind/Lucide primitives and the project's current motion dependency rather than adding another UI or animation package. Keep platform/service switching local, reserve layout space for cards and availability states to limit CLS, and defer noncritical educational content below the purchase decision.
 
+## Accessibility baseline
+
+Platform and service controls must expose selected state, keyboard focus must remain visible, touch targets should be comfortably tappable, pricing must not rely on color alone, and recommended/discount labels need text equivalents. Motion should respect the project's reduced-motion behavior where available.
+
 ## Verification gate
 
 Do not merge the migration merely because the new components render. Before merge: run lint/type/build checks available in the repository, verify every active platform and service state, exercise logged-out and logged-in package selection, test sufficient and insufficient wallet paths, confirm protected live-priced services cannot expose fallback prices, inspect narrow and desktop layouts, and check the browser console. Production `main` remains unchanged until this gate passes.
