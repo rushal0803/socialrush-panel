@@ -1,0 +1,21 @@
+name: Production readiness monitor
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "35 3 * * *"
+
+permissions:
+  contents: read
+
+jobs:
+  production-readiness:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Check live production health and critical routes
+        run: npm run release:check
