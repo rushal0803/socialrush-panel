@@ -1,0 +1,1 @@
+Dashboard packages now share the premium catalog-driven package experience with the public packages route. The dashboard wrapper preserves the authenticated dashboard shell while package checkout continues to use the existing wallet/order APIs.
