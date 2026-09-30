@@ -17,6 +17,10 @@ Public `/packages` and dashboard `/dashboard/packages` should consume the same p
 
 Every active service remains discoverable. Services whose protected live facts are required receive a professional availability state instead of a fake package, zero price, NaN, or unsupported checkout path.
 
+## Package ladder
+
+Generated catalog packages use four semantic tiers where the service range permits them: Starter, Growth, Pro and Scale. The engine selects supported quantities and never exceeds the service min/max or quantity step. Growth is the default visual recommendation when more than one tier exists; this is a UX emphasis, not a fabricated discount.
+
 ## Next integration
 
 Migrate the package UI away from manually duplicated package price definitions and onto `lib/package-engine.ts`, while preserving existing link validation, authentication, wallet checks, pending selection restoration and order APIs.
