@@ -21,6 +21,10 @@ Every active service remains discoverable. Services whose protected live facts a
 
 Generated catalog packages use four semantic tiers where the service range permits them: Starter, Growth, Pro and Scale. The engine selects supported quantities and never exceeds the service min/max or quantity step. Growth is the default visual recommendation when more than one tier exists; this is a UX emphasis, not a fabricated discount.
 
+## Discount contract
+
+The initial catalog-generated tier price equals its mathematically computed regular price, so savings are zero. A future package promotion may pass a lower legitimate final price through the shared savings calculator; only then may the UI render an original price, amount saved, or percentage-off treatment.
+
 ## Next integration
 
 Migrate the package UI away from manually duplicated package price definitions and onto `lib/package-engine.ts`, while preserving existing link validation, authentication, wallet checks, pending selection restoration and order APIs.
