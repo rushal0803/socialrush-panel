@@ -46,4 +46,6 @@ Package cards do not invent guarantees. Delivery, refill and quality text comes 
 
 Testing target widths: approximately 320, 375, 390, 430, 768, 1024 and 1440+ pixels, with no horizontal page overflow, clipped badges, unreadable prices or hidden primary actions.
 
+The shared engine deliberately generates no monetary discount by itself. A promotion adapter must provide both legitimate regular and final prices before savings UI can appear.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
