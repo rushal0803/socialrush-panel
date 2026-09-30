@@ -1,4 +1,4 @@
-import PackagesPageContent from "@/components/marketing/packages/PackagesPageContent";
+import PremiumPackagesPageContent from "@/components/marketing/packages/PremiumPackagesPageContent";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
@@ -19,12 +19,12 @@ const packagesFaqs = [
   {
     question: "What are SocialRUSH social media growth packages?",
     answer:
-      "SocialRUSH packages group platform, service type, quantity, delivery estimate and price so customers can compare growth options before checkout.",
+      "SocialRUSH packages group platform, service type, quantity and price so customers can compare growth options before checkout.",
   },
   {
     question: "Can I find Instagram, YouTube and Facebook packages on this page?",
     answer:
-      "Yes. The Packages page includes available packages for Instagram, YouTube, Facebook and other supported platforms, with current pricing displayed before checkout.",
+      "Yes. The Packages page includes package options for active supported platforms and services where fixed package pricing is available.",
   },
   {
     question: "Is the final package price shown before I place an order?",
@@ -60,7 +60,7 @@ export default function PackagesPage({ searchParams }: PackagesPageProps) {
           }),
         }}
       />
-      <PackagesPageContent
+      <PremiumPackagesPageContent
         initialPlatformParam={searchParams?.platform}
         initialServiceParam={searchParams?.service}
         initialPackageIdParam={searchParams?.package ?? searchParams?.packageId}
