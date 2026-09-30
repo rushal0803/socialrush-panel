@@ -62,4 +62,6 @@ Phase 1 foundation is now coded on the feature branch. Phase 2 UI migration star
 
 UI migration must preserve the existing shareable `platform`, `service` and package-selection query behavior. Invalid or stale package selection falls back safely to the active service instead of auto-buying another tier.
 
+For services with fewer than four meaningful supported quantities, render only unique valid tiers; never duplicate quantities merely to fill a four-card layout.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
