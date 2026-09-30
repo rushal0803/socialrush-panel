@@ -90,4 +90,6 @@ The package page should never preselect a paid package merely to increase conver
 
 Analytics package identifiers use the stable generated identity, not card position, so funnel history remains interpretable if visual ordering changes later.
 
+Package cards should format prices at the display edge from paise and never perform floating-point discount arithmetic in JSX.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
