@@ -98,4 +98,6 @@ A service can be active yet package-browser pricing-protected; active status con
 
 Platform counts and service counts shown in the UI should be derived from the active catalog rather than hardcoded numbers.
 
+Platform switching clears stale package selection and chooses only a valid service context; it must never carry a package quantity from one platform into another.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages.
