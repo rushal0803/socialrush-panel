@@ -48,4 +48,6 @@ Testing target widths: approximately 320, 375, 390, 430, 768, 1024 and 1440+ pix
 
 The shared engine deliberately generates no monetary discount by itself. A promotion adapter must provide both legitimate regular and final prices before savings UI can appear.
 
+Recommended-tier emphasis is independent from discounting: Growth may be visually recommended when multiple tiers exist because it is a middle decision point, but it cannot display `Best Value`, percentage savings or a crossed-out price without verified economics.
+
 The canonical public package route remains crawlable without creating thin indexed filter pages. Before merge, verify active services, authentication, wallet states, responsive layouts, protected pricing, console output, and repository build checks.
