@@ -59,6 +59,77 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+html:has(.service-money-page) { scroll-behavior: smooth; }
+
+@media (prefers-reduced-motion: reduce) {
+  html:has(.service-money-page) { scroll-behavior: auto; }
+}
+
+/* The India followers page keeps its server-rendered content intact while
+   making the supporting phone visual deliberately secondary on narrow screens. */
+@media (max-width: 639px) {
+  .service-money-page > section:first-child [aria-label="Illustrative Instagram profile preview"] {
+    width: 12rem;
+  }
+  .service-money-page > section:first-child [aria-label="Illustrative Instagram profile preview"] > div:first-child {
+    inset: -1.5rem;
+  }
+}
+
+/* India followers: keep the first mobile screen focused on the purchase path. */
+@media (max-width: 767px) {
+  .service-money-page > section:first-child {
+    padding-top: 1.25rem;
+    padding-bottom: 1.5rem;
+  }
+  .service-money-page > section:first-child [aria-label="Illustrative Instagram profile preview"] {
+    display: none;
+  }
+  .service-money-page > section:first-child nav {
+    margin-bottom: 1.25rem;
+  }
+  .service-money-page > section:first-child h1 {
+    margin-top: 1.25rem;
+  }
+  .service-money-page > section:first-child h1 + p {
+    margin-top: 1rem;
+    line-height: 1.65;
+  }
+  .service-money-page > section:first-child h1 + p + div {
+    margin-top: 1.25rem;
+  }
+  .service-money-page > section:first-child h1 + p + div > a:first-child {
+    width: 100%;
+    min-height: 3.5rem;
+    border-radius: 1rem;
+    font-size: .9375rem;
+  }
+  .service-money-page > section:first-child h1 + p + div > a:last-child {
+    min-height: 2.5rem;
+    border: 0;
+    background: transparent;
+    color: #FDBA74;
+    text-decoration: underline;
+    text-underline-offset: .25rem;
+  }
+  .service-money-page > section:first-child h1 + p + div + div {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: .5rem 1rem;
+    margin-top: 1rem;
+  }
+  .service-money-page > section:first-child h1 + p + div + div > span {
+    min-width: 0;
+    font-size: .6875rem;
+  }
+  .service-money-page > section:first-child h1 + p + div + div > span:last-child {
+    display: none;
+  }
+  .service-money-page > section:nth-child(2) {
+    display: none;
+  }
+}
+
 /* Shared storefront foundations.  These deliberately sit beneath route-level
    styling so established SEO pages can retain their content and composition
    while still reading as one product. */
