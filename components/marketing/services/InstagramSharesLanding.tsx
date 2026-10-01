@@ -42,7 +42,7 @@ export default function InstagramSharesLanding({ live }: Props) {
     ["Do shares guarantee more views or reach?", "No. This service does not guarantee recommendations, organic reach, virality, or any platform outcome."],
   ];
 
-  return <main className="overflow-hidden bg-[#090b11] text-[#f7f3ea]">
+  return <main className="instagram-cwv-page overflow-hidden bg-[#090b11] text-[#f7f3ea]">
     <section className="relative isolate border-b border-white/10 px-4 pb-16 pt-14 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
       <div className="pointer-events-none absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-500/20 blur-3xl" /><div className="pointer-events-none absolute right-0 top-12 h-80 w-80 rounded-full bg-fuchsia-700/15 blur-3xl" />
       <div className="relative mx-auto grid max-w-7xl gap-10 lg:grid-cols-[1.02fr_.98fr] lg:items-center">
