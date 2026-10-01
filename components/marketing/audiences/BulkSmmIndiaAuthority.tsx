@@ -10,7 +10,7 @@ export default function BulkSmmIndiaAuthority() {
       <div className="mx-auto max-w-7xl">
         <div className="grid gap-8 lg:grid-cols-[.8fr_1.2fr] lg:items-start">
           <div>
-            <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Bulk SMM orders India</p>
+            <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Bulk social media growth orders India</p>
             <h2 className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
               Plan larger social-media requirements without losing client-level control
             </h2>
