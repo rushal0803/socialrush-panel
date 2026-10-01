@@ -4,6 +4,7 @@ import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
+import InstagramInformationGainSection from "@/components/seo/InstagramInformationGainSection";
 
 const path = "/buy-instagram-saves-india";
 
@@ -19,5 +20,5 @@ export const metadata: Metadata = {
 
 export default async function BuyInstagramSavesIndiaPage() {
   const live = await getLiveServiceFacts("instagram", "Instagram Saves");
-  return <><IndiaCommercialServiceJsonLd code="instagram-saves" name="Instagram Saves" path={path} platform="Instagram" serviceType="Instagram saves service" /><InstagramSavesLanding live={live} canonicalUrl={`${SEO_SITE_URL}${path}`} /><MoneyPageAuthorityLinks platform="instagram" /></>;
+  return <><IndiaCommercialServiceJsonLd code="instagram-saves" name="Instagram Saves" path={path} platform="Instagram" serviceType="Instagram saves service" /><InstagramSavesLanding live={live} canonicalUrl={`${SEO_SITE_URL}${path}`} /><InstagramInformationGainSection serviceCode="instagram-saves" ratePer1000={live?.rate ?? null} minQuantity={live?.min ?? null} maxQuantity={live?.max ?? null} deliveryTime={live?.deliveryTime ?? null} refillPolicy={live?.refillPolicy ?? null} orderHref="/packages?platform=instagram&service=saves" /><MoneyPageAuthorityLinks platform="instagram" /></>;
 }
