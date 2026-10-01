@@ -263,6 +263,20 @@ svg {
   contain-intrinsic-size: auto 800px;
 }
 
+/* Phase 18: keep Instagram hero + order-critical content eager, but let the
+   browser skip layout/paint for deep SEO sections until they approach the
+   viewport. Content remains server-rendered/indexable in the HTML. */
+.instagram-cwv-page > section:nth-of-type(n + 4) {
+  content-visibility: auto;
+  contain-intrinsic-size: auto 760px;
+}
+
+@media (max-width: 767px) {
+  .instagram-cwv-page > section:nth-of-type(n + 4) {
+    contain-intrinsic-size: auto 920px;
+  }
+}
+
 h1,
 h2,
 h3,
