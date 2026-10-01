@@ -40,7 +40,8 @@ import { validateOrderLink } from "@/lib/order-link-validator";
 import { validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
-import ServiceHealthBadge from "@/components/ServiceHealthBadge";\nimport FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner";
+import ServiceHealthBadge from "@/components/ServiceHealthBadge";
+import FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
@@ -918,7 +919,8 @@ export default function NewOrderPage() {
                   </div>
                 </div>
               </section> : null}
-              <FirstOrderBonusBanner compact currentTotal={totalPrice} />\n              <div className="sr-order-live-preview mt-5 grid gap-3 sm:grid-cols-2"><div className="sr-motion-lift rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{priceIsReady ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {priceIsReady ? `${quantity.toLocaleString("en-IN")} selected` : "Choose a valid quantity"}</p>{priceIsReady && !targetLink.trim() ? <p className="mt-2 text-[10px] font-semibold text-orange-200">Starter quantity is preselected. Add your public link to continue.</p> : null}</div><div className="sr-motion-lift flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
+              <FirstOrderBonusBanner compact currentTotal={totalPrice} />
+              <div className="sr-order-live-preview mt-5 grid gap-3 sm:grid-cols-2"><div className="sr-motion-lift rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{priceIsReady ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {priceIsReady ? `${quantity.toLocaleString("en-IN")} selected` : "Choose a valid quantity"}</p>{priceIsReady && !targetLink.trim() ? <p className="mt-2 text-[10px] font-semibold text-orange-200">Starter quantity is preselected. Add your public link to continue.</p> : null}</div><div className="sr-motion-lift flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
   ? "No password required. Public poll link and answer number only."
   : requiresCustomComments
     ? "No password required. Public post link and custom comments only."
