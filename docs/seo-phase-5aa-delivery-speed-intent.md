@@ -4,7 +4,7 @@ Audit date: 1 October 2026.
 
 ## Goal
 
-Capture search demand around fast delivery and delivery-time questions for social media growth services while keeping SocialRUSH positioned as a social media growth platform rather than an SMM panel.
+Capture search demand around fast delivery and delivery-time questions for social media growth services while keeping SocialRUSH positioned consistently as a social media growth platform.
 
 ## Canonical decision
 
@@ -39,8 +39,6 @@ Visible copy uses SocialRUSH's preferred product language:
 - social media growth platform;
 - service catalog;
 - delivery estimate.
-
-It does not position the product as an SMM panel.
 
 This phase also does **not** claim:
 - every service starts instantly;
