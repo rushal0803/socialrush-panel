@@ -1,0 +1,1 @@
+The mobile checkout uses one canonical UPI URI for both the direct-app action and QR rendering, ensuring both methods carry the same selected amount and payment reference. QR is secondary on mobile because it is intended for scanning from another device. UTR submission remains the verification boundary.

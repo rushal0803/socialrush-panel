@@ -1,0 +1,1 @@
+Mobile Add Funds supports both direct UPI app payment and an optional QR code for another device. Both payment paths encode the selected INR amount into the UPI request. Customers still submit their UTR / transaction ID through the existing verification flow before wallet credit is applied.
