@@ -40,6 +40,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "How to grow Instagram followers organically in India", href: "/blog/how-to-grow-instagram-followers-organically-india" },
       { label: "Instagram followers vs likes for Indian creators", href: "/blog/instagram-followers-vs-likes-india" },
       { label: "Instagram follower pricing guide for India", href: "/blog/instagram-followers-price-in-india" },
+      { label: "Instagram views vs reach in 2026", href: "/blog/instagram-views-vs-reach" },
     ],
   },
   youtube: {

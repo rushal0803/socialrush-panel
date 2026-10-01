@@ -29,6 +29,7 @@ import { safeSmmOrderingCriteria, safeSmmOrderingKeywords } from "../../lib/seo/
 import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-intent.ts";
 import { affordableSmmCriteria, affordableSmmFaqs, affordableSmmIndiaKeywords } from "../../lib/seo/affordable-smm-intent.ts";
 import { bulkSmmDecisionPoints, bulkSmmFaqs, bulkSmmIndiaKeywords } from "../../lib/seo/bulk-smm-intent.ts";
+import { hasUniqueInstagramGapTargets, implementedInstagramContentGapTargets, instagramContentGapCandidates } from "../../lib/seo/instagram-content-gap.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -1114,4 +1115,55 @@ test("phase 5Z agency page exposes the bulk authority section and FAQ schema inp
   assert.match(component, /Bulk SMM orders India/);
   assert.match(component, /not a promise of a white-label child panel/i);
   assert.match(component, /Open bulk planner/);
+});
+
+
+test("phase 13 implements only distinct Instagram content gaps", () => {
+  assert.equal(hasUniqueInstagramGapTargets(), true);
+  assert.deepEqual(implementedInstagramContentGapTargets, ["/blog/instagram-views-vs-reach"]);
+
+  const implemented = instagramContentGapCandidates.filter((candidate) => candidate.decision === "implement");
+  assert.equal(implemented.length, 1);
+  assert.equal(implemented[0]?.cannibalizationRisk, "low");
+  assert.ok((implemented[0]?.uniqueInformationValue ?? 0) >= 4);
+  assert.ok((implemented[0]?.internalLinkValue ?? 0) >= 4);
+});
+
+test("phase 13 does not duplicate already-covered Instagram intents", () => {
+  for (const id of [
+    "followers-price-india",
+    "organic-followers-india",
+    "followers-vs-engagement",
+    "follower-drops",
+  ]) {
+    assert.equal(
+      instagramContentGapCandidates.find((candidate) => candidate.id === id)?.decision,
+      "covered",
+    );
+  }
+
+  assert.equal(
+    instagramContentGapCandidates.find((candidate) => candidate.id === "likes-vs-views")?.decision,
+    "defer",
+  );
+  assert.equal(
+    instagramContentGapCandidates.find((candidate) => candidate.id === "profile-optimization")?.decision,
+    "defer",
+  );
+});
+
+test("phase 13 Instagram gap target is published and linked from the authority cluster", () => {
+  assert.ok(articleSlugs.includes("instagram-views-vs-reach"));
+  assert.ok(
+    contentClusters.instagram.guideLinks.some(
+      (link) => link.href === "/blog/instagram-views-vs-reach",
+    ),
+  );
+
+  for (const target of implementedInstagramContentGapTargets) {
+    assert.ok(
+      articleSlugs.includes(target.replace("/blog/", "")),
+      `${target} must resolve to a published blog article`,
+    );
+  }
 });
