@@ -1174,15 +1174,15 @@ test("phase 5AA assigns fast and instant delivery intent to the services canonic
   const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/services");
   assert.ok(owner);
   for (const alias of [
-    "/fast-smm-panel-india",
-    "/instant-smm-panel-india",
-    "/smm-panel-instant-delivery-india",
+    "/fast-social-media-services-india",
+    "/fast-social-media-growth-services-india",
+    "/social-media-service-delivery-time-india",
   ]) {
     assert.ok(owner.aliases.includes(alias));
     assert.equal(commercialCanonicalRedirects[alias], "/services");
   }
-  assert.ok(fastDeliveryIndiaKeywords.includes("fast SMM panel India"));
-  assert.ok(fastDeliveryIndiaKeywords.includes("instant SMM panel India"));
+  assert.ok(fastDeliveryIndiaKeywords.includes("fast social media growth services India"));
+  assert.ok(fastDeliveryIndiaKeywords.includes("fast delivery social media services India"));
   assert.equal(searchFreshnessLastmod["/services"], "2026-10-01");
 });
 
@@ -1207,14 +1207,14 @@ test("phase 5AA services hub exposes visible speed guidance and release safeguar
 
   assert.match(servicesSource, /FastDeliveryIntentSection/);
   assert.match(servicesSource, /fastDeliveryIndiaKeywords/);
-  assert.match(sectionSource, /Fast SMM panel India/);
+  assert.match(sectionSource, /Fast social media growth services in India/);
   assert.match(sectionSource, /does not mean the full quantity completes instantly/i);
   assert.match(sectionSource, /live order status/i);
 
   for (const alias of [
-    "/fast-smm-panel-india",
-    "/instant-smm-panel-india",
-    "/smm-panel-instant-delivery-india",
+    "/fast-social-media-services-india",
+    "/fast-social-media-growth-services-india",
+    "/social-media-service-delivery-time-india",
   ]) {
     assert.ok(monitorSource.includes(`["${alias}", "/services"]`));
   }
