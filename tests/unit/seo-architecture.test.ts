@@ -30,6 +30,7 @@ import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-inten
 import { affordableSmmCriteria, affordableSmmFaqs, affordableSmmIndiaKeywords } from "../../lib/seo/affordable-smm-intent.ts";
 import { bulkSmmDecisionPoints, bulkSmmFaqs, bulkSmmIndiaKeywords } from "../../lib/seo/bulk-smm-intent.ts";
 import { hasUniqueInstagramGapTargets, implementedInstagramContentGapTargets, instagramContentGapCandidates } from "../../lib/seo/instagram-content-gap.ts";
+import { buildInstagramQuantityExamples, instagramDecisionRows } from "../../lib/seo/instagram-information-gain.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -1166,4 +1167,58 @@ test("phase 13 Instagram gap target is published and linked from the authority c
       `${target} must resolve to a published blog article`,
     );
   }
+});
+
+
+test("phase 14 Instagram decision guide keeps six distinct commercial signals", () => {
+  assert.equal(instagramDecisionRows.length, 6);
+  assert.equal(new Set(instagramDecisionRows.map((row) => row.code)).size, 6);
+  assert.equal(new Set(instagramDecisionRows.map((row) => row.href)).size, 6);
+  for (const row of instagramDecisionRows) {
+    assert.match(row.href, /^\//);
+    assert.equal(row.href.includes("?"), false);
+    assert.match(row.destination, /Public/i);
+    assert.match(row.limitation, /^Does not guarantee/i);
+  }
+});
+
+test("phase 14 quantity examples use current rate math without inventing discounts", () => {
+  assert.deepEqual(buildInstagramQuantityExamples(799, 100, 1000000), [
+    { quantity: 1000, total: 799 },
+    { quantity: 5000, total: 3995 },
+    { quantity: 10000, total: 7990 },
+  ]);
+  assert.deepEqual(buildInstagramQuantityExamples(1999, 100, 1000), [
+    { quantity: 1000, total: 1999 },
+  ]);
+  assert.deepEqual(buildInstagramQuantityExamples(null, 100, 10000), []);
+});
+
+test("phase 14 information gain is rendered on every Instagram money page", () => {
+  const sources = [
+    ["../../app/buy-instagram-followers-india/page.tsx", "instagram-followers"],
+    ["../../app/(india-seo-services)/buy-instagram-likes-india/page.tsx", "instagram-likes"],
+    ["../../app/(india-seo-services)/buy-instagram-views-india/page.tsx", "instagram-views"],
+    ["../../app/buy-instagram-comments-india/page.tsx", "instagram-comments"],
+    ["../../app/buy-instagram-saves-india/page.tsx", "instagram-saves"],
+  ] as const;
+
+  for (const [file, code] of sources) {
+    const source = readFileSync(new URL(file, import.meta.url), "utf8");
+    assert.match(source, new RegExp(`InstagramInformationGainSection[^>]+serviceCode=["']${code}["']`));
+  }
+
+  const sharedIndiaService = readFileSync(
+    new URL("../../components/marketing/services/IndiaServiceLandingPage.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.match(sharedIndiaService, /InstagramInformationGainSection serviceCode="instagram-shares"/);
+
+  const component = readFileSync(
+    new URL("../../components/seo/InstagramInformationGainSection.tsx", import.meta.url),
+    "utf8",
+  );
+  assert.doesNotMatch(component, /^["']use client["'];/);
+  assert.match(component, /<table/);
+  assert.match(component, /final checkout total remains authoritative/i);
 });
