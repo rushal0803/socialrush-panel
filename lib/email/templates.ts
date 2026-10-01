@@ -60,13 +60,13 @@ function firstOrderOfferCard(offer?:FirstOrderOffer){
 }
 
 export function firstOrderNudge2h(name?:string|null,userId?:string,offer?:FirstOrderOffer):EmailTemplate {
- const url=`${site()}/dashboard/new-order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const url=`${site()}/dashboard/new-order?source=email_recovery&campaign=first_order_2h`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
  const rewardText=offer?` Eligible first orders of ₹${offer.minimum.toLocaleString("en-IN")} or more also receive a ₹${offer.reward.toLocaleString("en-IN")} SocialRUSH wallet bonus after completion.`:"";
  return {subject:"Need help with your first SocialRUSH order?",html:frame({preheader:"Your SocialRUSH account is ready whenever you are.",headline:`Your account is ready, ${esc(first(name))}.`,body:`If you created your account to grow a social profile, you can place your first order in a few simple steps. Choose a platform, select a service, add your public link and review the price before confirming.${rewardText}`,card:firstOrderOfferCard(offer)||undefined,cta:"Choose My First Service",href:url,support:lifecycleSupport(unsubscribe,"Not sure which service or quantity to choose? Reply to this email and tell us your goal.")}),text:`Hi ${first(name)},\n\nYour SocialRUSH account is ready. Choose a platform, select a service, add your public link and review the price before confirming.${rewardText}\n\nStart here: ${url}\n\nNot sure what to choose? Reply to this email and tell us your goal.\n\nUnsubscribe: ${unsubscribe}`};
 }
 
 export function firstOrderTrust24h(name?:string|null,userId?:string,offer?:FirstOrderOffer):EmailTemplate {
- const url=`${site()}/dashboard/new-order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const url=`${site()}/dashboard/new-order?source=email_recovery&campaign=first_order_24h`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
  const steps=`<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#0C0E14;border:1px solid #2A2E39;border-radius:13px;"><tr><td style="padding:20px;color:#A8AFBD;font-size:14px;line-height:23px;"><strong style="color:#F8FAFC">1.</strong> Choose your platform and service<br><strong style="color:#F8FAFC">2.</strong> Enter quantity and the correct public link<br><strong style="color:#F8FAFC">3.</strong> Review the price and confirm your order</td></tr></table>`;
  const card=steps+firstOrderOfferCard(offer);
  const rewardText=offer?` Eligible first orders of ₹${offer.minimum.toLocaleString("en-IN")} or more receive a ₹${offer.reward.toLocaleString("en-IN")} wallet bonus after completion.`:"";
@@ -74,25 +74,25 @@ export function firstOrderTrust24h(name?:string|null,userId?:string,offer?:First
 }
 
 export function firstOrderReminder3d(name?:string|null,userId?:string,offer?:FirstOrderOffer):EmailTemplate {
- const url=`${site()}/dashboard/new-order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const url=`${site()}/dashboard/new-order?source=email_recovery&campaign=first_order_3d`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
  const rewardText=offer?` If your first order reaches ₹${offer.minimum.toLocaleString("en-IN")}, a ₹${offer.reward.toLocaleString("en-IN")} wallet bonus is added after completion.`:"";
  return {subject:"Still deciding? Start with the service you need most",html:frame({preheader:"You can start with one service and a quantity that fits your current goal.",headline:`Start with what you need most, ${esc(first(name))}.`,body:`You don’t need to plan everything at once. Pick the platform you want to grow first, choose the service that matches your goal, and start with a quantity you’re comfortable with.${rewardText}`,card:firstOrderOfferCard(offer)||undefined,cta:"Explore Services",href:url,support:lifecycleSupport(unsubscribe,"Want a recommendation? Reply with the platform you want to grow and we’ll point you in the right direction.")}),text:`Hi ${first(name)},\n\nYou don’t need to plan everything at once. Pick the platform you want to grow first and start with a quantity you’re comfortable with.${rewardText}\n\nExplore services: ${url}\n\nReply if you want help choosing.\n\nUnsubscribe: ${unsubscribe}`};
 }
 
 export function firstOrderFinal7d(name?:string|null,userId?:string,offer?:FirstOrderOffer):EmailTemplate {
- const url=`${site()}/dashboard/new-order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const url=`${site()}/dashboard/new-order?source=email_recovery&campaign=first_order_7d`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
  const rewardText=offer?` Your current first-order offer is a ₹${offer.reward.toLocaleString("en-IN")} wallet bonus after completing an eligible order of ₹${offer.minimum.toLocaleString("en-IN")} or more.`:"";
  return {subject:"Your SocialRUSH account is still ready when you are",html:frame({preheader:"A final first-order check-in from SocialRUSH.",headline:`Whenever you’re ready, ${esc(first(name))}.`,body:`This is our final first-order check-in. Your account is ready, and you can return anytime to choose a service and place an order from your dashboard.${rewardText}`,card:firstOrderOfferCard(offer)||undefined,cta:"Return to New Order",href:url,support:lifecycleSupport(unsubscribe,"If something stopped you from ordering—service choice, quantity, link or payment—reply and tell us. Your feedback helps us improve.")}),text:`Hi ${first(name)},\n\nThis is our final first-order check-in. Your SocialRUSH account is ready whenever you want to place an order.${rewardText}\n\nReturn to New Order: ${url}\n\nIf something stopped you from ordering, reply and tell us.\n\nUnsubscribe: ${unsubscribe}`};
 }
 
 export function neverOrderedReactivation(name?:string|null,userId?:string,offer?:FirstOrderOffer):EmailTemplate {
- const url=`${site()}/dashboard/new-order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const url=`${site()}/dashboard/new-order?source=email_recovery&campaign=never_ordered_reactivation`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
  const card=firstOrderOfferCard(offer);
  const rewardText=offer?` You’re also eligible for a ₹${offer.reward.toLocaleString("en-IN")} wallet bonus after completing a first order of ₹${offer.minimum.toLocaleString("en-IN")} or more.`:"";
  return {subject:offer?`Get ₹${offer.reward.toLocaleString("en-IN")} after your first SocialRUSH order`:"Your SocialRUSH account is ready for your first order",html:frame({preheader:offer?`Complete an eligible first order and receive ₹${offer.reward.toLocaleString("en-IN")} in your wallet.`:"You already have a SocialRUSH account. Your first order can be started anytime.",headline:`Still planning your first order, ${esc(first(name))}?`,body:`You already created a SocialRUSH account, but we haven’t seen a first order yet. If you still have a social growth goal, your dashboard is ready. Choose the platform and service that fits what you need now.${rewardText}`,card:card||undefined,cta:"Go to New Order",href:url,support:lifecycleSupport(unsubscribe,"If you registered earlier but weren’t sure what to order, reply with your platform and goal. We’ll help you choose.")}),text:`Hi ${first(name)},\n\nYou already created a SocialRUSH account, but we haven’t seen a first order yet. If you still have a social growth goal, your dashboard is ready.${rewardText}\n\nGo to New Order: ${url}\n\nReply with your platform and goal if you want help choosing.\n\nUnsubscribe: ${unsubscribe}`};
 }
 export function abandonedOrderReminder(name:string|null|undefined,userId:string|undefined,draft:{platform:string;serviceName:string;quantity:number},offer?:FirstOrderOffer):EmailTemplate {
- const url=`${site()}/dashboard/new-order?draft=1`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
+ const url=`${site()}/dashboard/new-order?draft=1&source=email_recovery&campaign=abandoned_order`,unsubscribe=userId?lifecycleUnsubscribe(userId):`${site()}/dashboard/settings`;
  const platform=esc(draft.platform), service=esc(draft.serviceName), quantity=Number(draft.quantity||0).toLocaleString("en-IN");
  const savedCard=`<table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#0C0E14;border:1px solid #2A2E39;border-radius:13px;"><tr><td style="padding:20px;"><p style="margin:0 0 8px;color:#F8FAFC;font-size:15px;line-height:22px;font-weight:700;">Your saved order</p><p style="margin:0;color:#A8AFBD;font-size:14px;line-height:22px;">${platform} · ${service}<br>Quantity: ${quantity}</p></td></tr></table>`;
  const card=savedCard+firstOrderOfferCard(offer);
