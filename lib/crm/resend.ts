@@ -2,7 +2,7 @@ import "server-only";
 import { Resend } from "resend";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { ingestInboundReply } from "./reply-ingestion";
-import { isLeadContactOutreachEligible } from "./outreach";
+import { getLeadContactOutreachBlockReason, isLeadContactOutreachEligible } from "./outreach";
 import { formatAutonomousOutreachEmail, formatOutreachEmail, renderOutreachSubject, renderOutreachText } from "./email-formatting";
 import type { CRMLead, CRMLeadContact, CRMOutreachSettings, CRMSuppressionEntry } from "./types";
 
@@ -206,7 +206,7 @@ export async function sendApprovedResendDraft(messageId: string) {
   ]);
   if (!contact || !lead || !settings || settings.provider !== "resend" || !settings.enabled || !isLeadContactOutreachEligible(contact as CRMLeadContact, lead as Pick<CRMLead, "status">, settings as CRMOutreachSettings, (suppressions || []) as CRMSuppressionEntry[])) throw new Error("This draft is not eligible for Resend delivery.");
   const personalization = { full_name: contact.full_name, business_name: lead.business_name, recommended_service: lead.recommended_service };
-  const formatted = formatOutreachEmail(message.body, personalization);
+  const formatted = formatAutonomousOutreachEmail(message.body, personalization);
   const response = await client().emails.send({ from: OUTREACH_FROM, replyTo: OUTREACH_REPLY_TO, to: [contact.email], subject: renderOutreachSubject(message.subject, personalization), text: formatted.text, html: formatted.html }, { idempotencyKey: `crm-outreach-${message.id}` });
   if (response.error || !response.data?.id) throw new Error(response.error?.message || "Resend could not accept the draft.");
   const now = new Date().toISOString();
@@ -289,7 +289,7 @@ export async function processCrmOutreachAutopilot() {
 
       const [
         {data:contact,error:contactError},{data:lead,error:leadError},{data:enrollment,error:enrollmentError},
-        {data:sequence,error:sequenceError},{data:score,error:scoreError},{data:suppression,error:suppressionError},
+        {data:sequence,error:sequenceError},{data:score,error:scoreError},
         {data:reply,error:replyError},{data:steps,error:stepsError}
       ]=await Promise.all([
         db.from("crm_lead_contacts").select("*").eq("id",message.contact_id).single(),
@@ -297,11 +297,10 @@ export async function processCrmOutreachAutopilot() {
         db.from("crm_lead_enrollments").select("*").eq("id",message.enrollment_id).single(),
         db.from("crm_outreach_sequences").select("*").eq("id",message.sequence_id).single(),
         db.from("crm_lead_scores").select("score,grade").eq("lead_id",message.lead_id).maybeSingle(),
-        db.from("crm_suppression_list").select("email").eq("email",cleanEmail(String(message.contact_id))).limit(1),
         db.from("crm_inbound_messages").select("id").eq("contact_id",message.contact_id).gte("received_at",message.created_at).limit(1).maybeSingle(),
         db.from("crm_outreach_sequence_steps").select("step_number,delay_days").eq("sequence_id",message.sequence_id).order("step_number"),
       ]);
-      if(contactError||leadError||enrollmentError||sequenceError||scoreError||suppressionError||replyError||stepsError||!contact||!lead||!enrollment||!sequence)throw new Error("Autopilot eligibility recheck failed.");
+      if(contactError||leadError||enrollmentError||sequenceError||scoreError||replyError||stepsError||!contact||!lead||!enrollment||!sequence)throw new Error("Autopilot eligibility recheck failed.");
 
       const {data:currentSettings,error:currentSettingsError}=await db.from("crm_outreach_settings").select("*").eq("id",1).single();
       if(currentSettingsError||!currentSettings)throw new Error("Autopilot settings recheck failed.");
@@ -312,33 +311,33 @@ export async function processCrmOutreachAutopilot() {
       }
 
       const {data:suppressed}=await db.from("crm_suppression_list").select("email").eq("email",cleanEmail(contact.email)).maybeSingle();
-      const block=isLeadContactOutreachEligible(contact as CRMLeadContact,lead as Pick<CRMLead,"status">,currentSettings as CRMOutreachSettings,suppressed?[suppressed as CRMSuppressionEntry]:[]);
-      if(!block){
-        const grade=String(score?.grade||"");
-        if(!score||Number(score.score)<Number(currentSettings.autopilot_min_score||60)||!["warm","hot"].includes(grade)){
-          await skipAutopilotMessage(db,message,"Skipped: lead score fell below Autopilot threshold");
-          outcomes.push({id:message.id,outcome:"skipped",detail:"score_below_threshold"});
-          continue;
-        }
-        if(!autopilotLeadStatuses.has(String(lead.status))){
-          await skipAutopilotMessage(db,message,"Skipped: lead status no longer allows cold follow-up",["replied","qualified"].includes(String(lead.status))?"replied":"paused");
-          outcomes.push({id:message.id,outcome:"skipped",detail:"lead_status_changed"});
-          continue;
-        }
-        if(reply){
-          await skipAutopilotMessage(db,message,"Skipped: prospect replied before send","replied");
-          outcomes.push({id:message.id,outcome:"skipped",detail:"reply_detected"});
-          continue;
-        }
-        if(sequence.status!=="active"||enrollment.status!=="active"){
-          await skipAutopilotMessage(db,message,"Skipped: sequence or enrollment is no longer active");
-          outcomes.push({id:message.id,outcome:"skipped",detail:"sequence_inactive"});
-          continue;
-        }
-      }else{
+      const suppressionRows=suppressed?[suppressed as CRMSuppressionEntry]:[];
+      const blockReason=getLeadContactOutreachBlockReason(contact as CRMLeadContact,lead as Pick<CRMLead,"status">,currentSettings as CRMOutreachSettings,suppressionRows);
+      if(blockReason){
         const status=contact.opted_out_at||lead.status==="do_not_contact"?"opted_out":contact.verification_status==="invalid"?"bounced":"paused";
-        await skipAutopilotMessage(db,message,`Skipped: ${block}`,status);
-        outcomes.push({id:message.id,outcome:"skipped",detail:block});
+        await skipAutopilotMessage(db,message,`Skipped: ${blockReason}`,status);
+        outcomes.push({id:message.id,outcome:"skipped",detail:blockReason});
+        continue;
+      }
+      const grade=String(score?.grade||"");
+      if(!score||Number(score.score)<Number(currentSettings.autopilot_min_score||60)||!["warm","hot"].includes(grade)){
+        await skipAutopilotMessage(db,message,"Skipped: lead score fell below Autopilot threshold");
+        outcomes.push({id:message.id,outcome:"skipped",detail:"score_below_threshold"});
+        continue;
+      }
+      if(!autopilotLeadStatuses.has(String(lead.status))){
+        await skipAutopilotMessage(db,message,"Skipped: lead status no longer allows cold follow-up",["replied","qualified"].includes(String(lead.status))?"replied":"paused");
+        outcomes.push({id:message.id,outcome:"skipped",detail:"lead_status_changed"});
+        continue;
+      }
+      if(reply){
+        await skipAutopilotMessage(db,message,"Skipped: prospect replied before send","replied");
+        outcomes.push({id:message.id,outcome:"skipped",detail:"reply_detected"});
+        continue;
+      }
+      if(sequence.status!=="active"||enrollment.status!=="active"){
+        await skipAutopilotMessage(db,message,"Skipped: sequence or enrollment is no longer active");
+        outcomes.push({id:message.id,outcome:"skipped",detail:"sequence_inactive"});
         continue;
       }
 
