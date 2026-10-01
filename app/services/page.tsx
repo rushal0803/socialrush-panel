@@ -68,7 +68,7 @@ const servicesFaqs = [
       "No. SocialRUSH services are designed around public profile, post, video, channel, page or group links. Passwords are not required.",
   },
   {
-    question: "Are SocialRUSH SMM services instant?",
+    question: "Are SocialRUSH social media growth services instant?",
     answer:
       "Delivery speed varies by service, platform, quantity and current conditions. Some services can start quickly, but SocialRUSH does not promise that every order completes instantly. Review the current service-specific delivery estimate before ordering and follow the live order status after checkout.",
   },
