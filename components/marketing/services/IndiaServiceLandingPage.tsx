@@ -38,6 +38,7 @@ import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSe
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules } from "@/lib/order-service-experience";
+import InstagramInformationGainSection from "@/components/seo/InstagramInformationGainSection";
 
 const trustCards: Array<{ title: string; icon: LucideIcon }> = [
   { title: "No Password Required", icon: LockKeyhole },
@@ -284,7 +285,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /></PublicShell>;
+    return <PublicShell>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /><InstagramInformationGainSection serviceCode="instagram-shares" ratePer1000={live?.rate ?? null} minQuantity={live?.min ?? null} maxQuantity={live?.max ?? null} deliveryTime={live?.deliveryTime ?? null} refillPolicy={live?.refillPolicy ?? null} orderHref="/packages?platform=instagram&service=shares" /></PublicShell>;
   }
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;
