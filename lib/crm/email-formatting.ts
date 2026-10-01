@@ -44,3 +44,12 @@ export function outreachTextToHtml(text: string) {
   return `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1" /></head><body style="margin:0;background:#ffffff;color:#1f2937;font-family:Arial,Helvetica,sans-serif;"><main style="max-width:600px;margin:0 auto;padding:28px 20px;font-size:16px;line-height:1.6;">${paragraphs}</main></body></html>`;
 }
 export function formatOutreachEmail(template: string | null | undefined, personalization: Personalization) { const text = renderOutreachText(template, personalization); return { text, html: outreachTextToHtml(text) }; }
+
+
+const autonomousOptOut = "If you'd rather not receive further emails from SocialRUSH, reply “unsubscribe” and we'll stop.";
+export function formatAutonomousOutreachEmail(template: string | null | undefined, personalization: Personalization) {
+  const base = formatOutreachEmail(template, personalization);
+  const text = `${base.text}\n\n${autonomousOptOut}`;
+  const footer = `<p style="margin:26px 0 0;color:#6b7280;font-size:12px;line-height:1.6;">${escapeHtml(autonomousOptOut)}</p>`;
+  return { text, html: base.html.replace("</main>", `${footer}</main>`) };
+}
