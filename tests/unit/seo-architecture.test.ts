@@ -29,6 +29,7 @@ import { safeSmmOrderingCriteria, safeSmmOrderingKeywords } from "../../lib/seo/
 import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-intent.ts";
 import { affordableSmmCriteria, affordableSmmFaqs, affordableSmmIndiaKeywords } from "../../lib/seo/affordable-smm-intent.ts";
 import { bulkSmmDecisionPoints, bulkSmmFaqs, bulkSmmIndiaKeywords } from "../../lib/seo/bulk-smm-intent.ts";
+import { fastDeliveryDecisionPoints, fastDeliveryIndiaKeywords, selectDeliverySpeedExamples } from "../../lib/seo/fast-delivery-intent.ts";
 import { hasUniqueInstagramGapTargets, implementedInstagramContentGapTargets, instagramContentGapCandidates } from "../../lib/seo/instagram-content-gap.ts";
 
 const redirectedServicePaths = new Set([
@@ -1166,4 +1167,56 @@ test("phase 13 Instagram gap target is published and linked from the authority c
       `${target} must resolve to a published blog article`,
     );
   }
+});
+
+
+test("phase 5AA assigns fast and instant delivery intent to the services canonical", () => {
+  const owner = transactionalQueryOwners.find((item) => item.canonicalPath === "/services");
+  assert.ok(owner);
+  for (const alias of [
+    "/fast-smm-panel-india",
+    "/instant-smm-panel-india",
+    "/smm-panel-instant-delivery-india",
+  ]) {
+    assert.ok(owner.aliases.includes(alias));
+    assert.equal(commercialCanonicalRedirects[alias], "/services");
+  }
+  assert.ok(fastDeliveryIndiaKeywords.includes("fast SMM panel India"));
+  assert.ok(fastDeliveryIndiaKeywords.includes("instant SMM panel India"));
+  assert.equal(searchFreshnessLastmod["/services"], "2026-10-01");
+});
+
+test("phase 5AA delivery speed model avoids universal instant guarantees", () => {
+  assert.equal(fastDeliveryDecisionPoints.length, 4);
+  const copy = fastDeliveryDecisionPoints.map((item) => item.copy).join(" ").toLowerCase();
+  assert.match(copy, /service|delivery/);
+  assert.match(copy, /start time/);
+  assert.doesNotMatch(copy, /guaranteed instant|instant completion|guaranteed completion/);
+
+  const examples = selectDeliverySpeedExamples(activeSmmServices, 4);
+  assert.ok(examples.length > 0);
+  assert.equal(new Set(examples.map((item) => item.platform)).size, examples.length);
+  assert.ok(examples.every((item) => item.deliveryTime.length > 0));
+});
+
+test("phase 5AA services hub exposes visible speed guidance and release safeguards", () => {
+  const servicesSource = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
+  const sectionSource = readFileSync(new URL("../../components/seo/FastDeliveryIntentSection.tsx", import.meta.url), "utf8");
+  const monitorSource = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const indexNowSource = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
+
+  assert.match(servicesSource, /FastDeliveryIntentSection/);
+  assert.match(servicesSource, /fastDeliveryIndiaKeywords/);
+  assert.match(sectionSource, /Fast SMM panel India/);
+  assert.match(sectionSource, /does not mean the full quantity completes instantly/i);
+  assert.match(sectionSource, /live order status/i);
+
+  for (const alias of [
+    "/fast-smm-panel-india",
+    "/instant-smm-panel-india",
+    "/smm-panel-instant-delivery-india",
+  ]) {
+    assert.ok(monitorSource.includes(`["${alias}", "/services"]`));
+  }
+  assert.match(indexNowSource, /"\/services"/);
 });
