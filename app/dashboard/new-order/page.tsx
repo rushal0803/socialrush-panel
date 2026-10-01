@@ -232,6 +232,10 @@ export default function NewOrderPage() {
   const inFlight = useRef(false);
   const requestId = useRef("");
   const funnelSignals = useRef(new Set<string>());
+  const recoveryCampaign = searchParams.get("source") === "email_recovery"
+    ? (searchParams.get("campaign") || "unknown").slice(0, 80)
+    : null;
+  const recoveryCampaignRef = useRef<string | null>(recoveryCampaign);
   const advanceTimer = useRef<number | null>(null);
   const platformRef = useRef<HTMLElement>(null);
   const serviceRef = useRef<HTMLElement>(null);
@@ -294,6 +298,12 @@ export default function NewOrderPage() {
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
+
+  useEffect(() => {
+    if (!recoveryCampaign) return;
+    recoveryCampaignRef.current = recoveryCampaign;
+    track("checkout_recovery_click", { campaign: recoveryCampaign });
+  }, [recoveryCampaign]);
 
   const services = useMemo(
     () => {
@@ -728,7 +738,7 @@ export default function NewOrderPage() {
       if (!intentResponse.ok || !intentResult.data?.id) {
         throw new Error(intentResult.error || "Unable to prepare your checkout right now.");
       }
-      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentResult.data.id, payment_path: "wallet" });
+      track("checkout_started", { service_code: selectedService.code, platform: selectedService.platform, checkout_intent_id: intentResult.data.id, payment_path: "wallet", recovery_campaign: recoveryCampaignRef.current });
 
       const response = await fetch("/api/orders", {
         method: "POST",
@@ -771,7 +781,7 @@ export default function NewOrderPage() {
     setCheckoutStage("Preparing UPI, Bank Transfer & USDT...");
     setError("");
     if (!requestId.current) requestId.current = crypto.randomUUID();
-    track("payment_started", { service_code: selectedService.code, platform: selectedService.platform, payment_path: "manual_direct" });
+    track("payment_started", { service_code: selectedService.code, platform: selectedService.platform, payment_path: "manual_direct", recovery_campaign: recoveryCampaignRef.current });
     try {
       const intentResponse = await fetch("/api/checkout/intent", {
         method: "POST",
@@ -796,6 +806,7 @@ export default function NewOrderPage() {
         platform: selectedService.platform,
         checkout_intent_id: intent.data.id,
         payment_path: "manual_direct",
+        recovery_campaign: recoveryCampaignRef.current,
       });
       router.push(`/dashboard/direct-upi?intent=${encodeURIComponent(intent.data.id)}`);
     } catch (cause) {
@@ -812,7 +823,7 @@ export default function NewOrderPage() {
     if (step === 3 && !selectedService) return;
     if (step === 4 && !formIsValid) return;
     setError("");
-    if (step === 4 && selectedService) track("order_details_completed", { service_code: selectedService.code, platform: selectedService.platform, quantity });
+    if (step === 4 && selectedService) track("order_details_completed", { service_code: selectedService.code, platform: selectedService.platform, quantity, recovery_campaign: recoveryCampaignRef.current });
     setCheckoutStep(step);
     const target = step === 1 ? platformRef : step === 2 ? serviceRef : step === 3 ? detailsRef : summaryRef;
     scrollTo(target);
