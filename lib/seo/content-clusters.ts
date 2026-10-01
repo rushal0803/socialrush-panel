@@ -74,6 +74,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Buy LinkedIn likes in India", href: "/linkedin-likes" },
     ],
     guideLinks: [
+      { label: "LinkedIn followers vs connections", href: "/blog/linkedin-followers-vs-connections" },
       { label: "LinkedIn followers price guide for India", href: "/blog/linkedin-followers-price-in-india" },
       { label: "LinkedIn growth tips for personal brands", href: "/blog/linkedin-growth-tips-personal-brands" },
       { label: "LinkedIn followers for business growth", href: "/blog/linkedin-followers-for-business-growth" },

@@ -30,6 +30,7 @@ import { smmApiCriteria, smmApiIndiaKeywords } from "../../lib/seo/smm-api-inten
 import { affordableSmmCriteria, affordableSmmFaqs, affordableSmmIndiaKeywords } from "../../lib/seo/affordable-smm-intent.ts";
 import { bulkSmmDecisionPoints, bulkSmmFaqs, bulkSmmIndiaKeywords } from "../../lib/seo/bulk-smm-intent.ts";
 import { hasUniqueInstagramGapTargets, implementedInstagramContentGapTargets, instagramContentGapCandidates } from "../../lib/seo/instagram-content-gap.ts";
+import { hasUniqueLinkedInGapTargets, implementedLinkedInContentGapTargets, linkedInContentGapCandidates } from "../../lib/seo/linkedin-content-gap.ts";
 
 const redirectedServicePaths = new Set([
   "/services/instagram-followers",
@@ -1166,4 +1167,59 @@ test("phase 13 Instagram gap target is published and linked from the authority c
       `${target} must resolve to a published blog article`,
     );
   }
+});
+
+
+test("phase 14 LinkedIn content gap keeps one distinct implemented target", () => {
+  assert.equal(hasUniqueLinkedInGapTargets(), true);
+  assert.deepEqual(implementedLinkedInContentGapTargets, ["/blog/linkedin-followers-vs-connections"]);
+
+  for (const id of ["followers-price-india", "followers-vs-engagement", "personal-brand-growth"]) {
+    assert.equal(
+      linkedInContentGapCandidates.find((candidate) => candidate.id === id)?.decision,
+      "covered",
+    );
+  }
+
+  assert.equal(
+    linkedInContentGapCandidates.find((candidate) => candidate.id === "profile-vs-company-page-followers")?.decision,
+    "defer",
+  );
+  assert.equal(
+    linkedInContentGapCandidates.find((candidate) => candidate.id === "linkedin-follow-button-strategy")?.decision,
+    "defer",
+  );
+});
+
+test("phase 14 LinkedIn gap target is published and linked from the authority cluster", () => {
+  assert.ok(articleSlugs.includes("linkedin-followers-vs-connections"));
+  assert.ok(
+    contentClusters.linkedin.guideLinks.some(
+      (link) => link.href === "/blog/linkedin-followers-vs-connections",
+    ),
+  );
+
+  for (const target of implementedLinkedInContentGapTargets) {
+    assert.ok(
+      articleSlugs.includes(target.replace("/blog/", "")),
+      `${target} must resolve to a published blog article`,
+    );
+  }
+});
+
+test("phase 14 LinkedIn guide strengthens existing canonicals without creating a transaction route", () => {
+  const guide = linkedInContentGapCandidates.find((candidate) => candidate.id === "followers-vs-connections");
+  assert.ok(guide);
+  assert.equal(guide.intent, "informational");
+  assert.equal(guide.cannibalizationRisk, "low");
+  assert.equal(guide.primaryTarget.startsWith("/blog/"), true);
+
+  const source = readFileSync(
+    new URL("../../components/marketing/blog/linkedinContentGapGuides.ts", import.meta.url),
+    "utf8",
+  );
+  assert.match(source, /LinkedIn followers in India/);
+  assert.match(source, /\/linkedin-followers/);
+  assert.match(source, /\/linkedin-growth-india/);
+  assert.match(source, /does not prove engagement|does not guarantee|do not assume/i);
 });
