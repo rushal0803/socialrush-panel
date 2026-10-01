@@ -507,22 +507,31 @@ export default function NewOrderPage() {
     return () => window.removeEventListener("wallet-balance-updated", updateBalance);
   }, []);
 
-  // Defer non-critical account data until the user actually reaches the service step.
+  // Load the lightweight first-order incentive immediately so a brand-new signup
+  // sees the reward before choosing a platform. Service/favourite data stays deferred.
   useEffect(() => {
-    if (checkoutStep < 2 || stepTwoDataLoaded.current) return;
-    stepTwoDataLoaded.current = true;
-    const db = createClient();
-
+    let active = true;
     void fetch("/api/rewards/first-order-offer", { credentials: "same-origin", cache: "no-store" })
       .then(async (response): Promise<{ eligible: boolean; reward?: number; minimum?: number }> =>
         response.ok ? await response.json() as { eligible: boolean; reward?: number; minimum?: number } : { eligible: false }
       )
       .then((data) => {
+        if (!active) return;
         const reward = Number(data.reward || 0);
         const minimum = Number(data.minimum || 0);
-        setFirstOrderOffer(data.eligible && reward > 0 && minimum > 0 ? { reward, minimum } : null);
+        const offer = data.eligible && reward > 0 && minimum > 0 ? { reward, minimum } : null;
+        setFirstOrderOffer(offer);
+        if (offer) track("first_order_bonus_view", { reward: offer.reward, minimum: offer.minimum, surface: "new_order_entry" });
       })
-      .catch(() => setFirstOrderOffer(null));
+      .catch(() => { if (active) setFirstOrderOffer(null); });
+    return () => { active = false; };
+  }, []);
+
+  // Defer non-critical account data until the user actually reaches the service step.
+  useEffect(() => {
+    if (checkoutStep < 2 || stepTwoDataLoaded.current) return;
+    stepTwoDataLoaded.current = true;
+    const db = createClient();
 
     void Promise.all([
       db.from("services").select("id,code").eq("status", "active"),
@@ -843,6 +852,18 @@ export default function NewOrderPage() {
           <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">New order</p><h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Build your campaign</h1></div>
           <p className="hidden text-right text-xs leading-5 text-[#9CA3AF] sm:block">Transparent pricing<br />Manual payment verification</p>
         </header>
+        {firstOrderOffer && currentStep === 1 ? <section className="mb-4 overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,rgba(16,185,129,.13),rgba(255,122,0,.08),rgba(11,11,15,.98))] p-4 shadow-[0_18px_46px_-34px_rgba(16,185,129,.85)]" aria-label="First order reward">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div className="min-w-0">
+              <p className="text-[10px] font-black uppercase tracking-[.16em] text-emerald-300">First order reward</p>
+              <p className="mt-1 text-base font-black text-white sm:text-lg">Get {formatCurrency(firstOrderOffer.reward, "INR")} wallet bonus on your first order</p>
+              <p className="mt-1 text-xs leading-5 text-slate-300">Place an eligible first order of {formatCurrency(firstOrderOffer.minimum, "INR")} or more. The bonus is added to your wallet after the order is completed.</p>
+            </div>
+            <button type="button" onClick={() => { track("first_order_bonus_click", { reward: firstOrderOffer.reward, minimum: firstOrderOffer.minimum, surface: "new_order_entry" }); scrollTo(platformRef); }} className="sr-motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 text-xs font-black text-white shadow-lg shadow-emerald-500/15">
+              Choose a platform <ArrowRight className="h-4 w-4" />
+            </button>
+          </div>
+        </section> : null}
         {hasAgencyContext ? <div className="mb-4 rounded-2xl border border-sky-400/20 bg-sky-500/[.06] px-4 py-3 text-xs leading-5 text-slate-300"><b className="text-sky-200">Agency context attached.</b> This order will stay linked to the selected {requestedCampaignId ? "campaign" : "client"} workspace after checkout. SocialRUSH verifies ownership before creating the checkout.</div> : null}
         {repeatRequested ? <div className="mb-4 flex items-start gap-3 rounded-2xl border border-orange-400/25 bg-orange-500/[.07] px-4 py-3 text-xs leading-5 text-slate-300"><RefreshCw className="mt-0.5 h-4 w-4 shrink-0 text-orange-300" /><div><b className="text-orange-200">Repeat campaign review required.</b> {repeatMode === "same_target" ? "The previous target and quantity were prefilled for convenience." : "The previous service and quantity were prefilled, but you must enter the new target."} Current service availability, limits and price are rechecked before checkout.</div></div> : null}
         <nav aria-label="Order progress" className="sr-motion-lift relative mb-5 grid grid-cols-4 gap-1 overflow-x-auto rounded-2xl border border-white/10 bg-[#101010]/95 p-1.5 backdrop-blur sm:mb-6 sm:gap-2 sm:p-2">
