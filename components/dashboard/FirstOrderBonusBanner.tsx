@@ -59,7 +59,7 @@ export default function FirstOrderBonusBanner({ compact=false,currentTotal=0 }: 
           </div> : null}
         </div>
       </div>
-      {compact ? <span className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 text-xs font-black text-emerald-200"><Wallet className="h-4 w-4" /> Bonus unlocked</span> : <Link href="/dashboard/new-order" onClick={()=>track("first_order_bonus_click",{reward:offer.reward,minimum:offer.minimum})} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-xs font-black text-[#04110b] shadow-lg shadow-emerald-500/15">
+      {compact ? <span className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl border border-emerald-300/20 bg-emerald-400/10 px-4 text-xs font-black text-emerald-200"><Wallet className="h-4 w-4" /> {remaining>0?`${formatCurrency(remaining,"INR")} to unlock`:"Bonus unlocked"}</span> : <Link href="/dashboard/new-order" onClick={()=>track("first_order_bonus_click",{reward:offer.reward,minimum:offer.minimum})} className="inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-emerald-400 px-4 text-xs font-black text-[#04110b] shadow-lg shadow-emerald-500/15">
         <Wallet className="h-4 w-4" /> Start First Order <ArrowRight className="h-4 w-4" />
       </Link>}
     </div>
