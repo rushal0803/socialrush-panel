@@ -1,10 +1,10 @@
 import type { SmmService } from "../smm-service-catalog";
 
 export const fastDeliveryIndiaKeywords = [
-  "fast SMM panel India",
-  "instant SMM panel India",
-  "SMM panel instant delivery India",
+  "fast social media growth services India",
   "fast delivery social media services India",
+  "quick social media growth services India",
+  "social media service delivery time India",
 ] as const;
 
 export const fastDeliveryDecisionPoints = [
