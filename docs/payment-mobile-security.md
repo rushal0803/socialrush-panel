@@ -1,0 +1,1 @@
+Displaying a QR or opening a UPI deep link is not treated as payment success. The existing server-side manual payment submission remains required, and the customer must provide a UTR / transaction ID for verification before wallet credit.
