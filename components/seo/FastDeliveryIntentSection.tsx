@@ -17,9 +17,9 @@ export default function FastDeliveryIntentSection({ serviceCatalog }: { serviceC
     <section aria-labelledby="fast-smm-delivery-india" className="border-y border-white/10 bg-[#0a0b0f] px-4 py-16 text-white sm:px-6 lg:px-8">
       <div className="mx-auto max-w-7xl">
         <div className="max-w-4xl">
-          <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Fast SMM delivery India</p>
+          <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Fast social media delivery India</p>
           <h2 id="fast-smm-delivery-india" className="mt-3 text-3xl font-black tracking-tight sm:text-4xl">
-            Fast SMM panel India: compare delivery estimates, not “instant everything” claims
+            Fast social media growth services in India: compare delivery estimates clearly
           </h2>
           <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">
             Social-media service speed is service-specific. Some campaigns can start quickly, while completion depends on the platform, quantity, destination and current service conditions. SocialRUSH shows the current delivery estimate for each available service and keeps the live order status visible after checkout.
