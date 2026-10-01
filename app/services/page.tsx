@@ -3,6 +3,7 @@ import ServicesPageContent from "@/components/marketing/services/ServicesPageCon
 import ServiceCompareStudio from "@/components/marketing/services/ServiceCompareStudio";
 import SocialMediaServicesIndiaAuthority from "@/components/marketing/services/SocialMediaServicesIndiaAuthority";
 import GrowthPlatformIndiaAuthority from "@/components/marketing/services/GrowthPlatformIndiaAuthority";
+import FastDeliveryIntentSection from "@/components/seo/FastDeliveryIntentSection";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
 import ConversionDecisionBar from "@/components/marketing/ConversionDecisionBar";
 import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
@@ -13,6 +14,7 @@ import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-service-catalog";
 import { socialMediaServicesIndiaKeywords } from "@/lib/seo/social-media-services-intent";
 import { growthPlatformIndiaKeywords } from "@/lib/seo/growth-platform-intent";
+import { fastDeliveryIndiaKeywords } from "@/lib/seo/fast-delivery-intent";
 
 export const dynamic = "force-dynamic";
 
@@ -30,6 +32,7 @@ export const metadata: Metadata = createPageMetadata({
     "YouTube growth services India",
     ...socialMediaServicesIndiaKeywords,
     ...growthPlatformIndiaKeywords,
+    ...fastDeliveryIndiaKeywords,
   ],
 });
 
@@ -63,6 +66,11 @@ const servicesFaqs = [
     question: "Do I need to share a password for any service?",
     answer:
       "No. SocialRUSH services are designed around public profile, post, video, channel, page or group links. Passwords are not required.",
+  },
+  {
+    question: "Are SocialRUSH SMM services instant?",
+    answer:
+      "Delivery speed varies by service, platform, quantity and current conditions. Some services can start quickly, but SocialRUSH does not promise that every order completes instantly. Review the current service-specific delivery estimate before ordering and follow the live order status after checkout.",
   },
 ];
 
@@ -122,6 +130,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
       />
       <GrowthPlatformIndiaAuthority />
       <SocialMediaServicesIndiaAuthority />
+      <FastDeliveryIntentSection serviceCatalog={serviceCatalog} />
       <ServiceCompareStudio serviceCatalog={serviceCatalog} />
       <ConversionDecisionBar />
       <IndiaGrowthDiscovery />
