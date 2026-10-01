@@ -28,6 +28,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - run: node --check scripts/seo-instagram-technical-check.mjs
+      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts
       - run: npm run test:crm-pipeline
       - run: npm run test:international-seo
       - run: npm run test:payment-confidence
