@@ -11,7 +11,9 @@ export function getLeadContactOutreachBlockReason(contact: CRMLeadContact | null
   if (contact.opted_out_at) return "Opted out";
   if (lead.status === "do_not_contact") return "Do Not Contact";
   if (settings?.require_verified_business_email !== false && contact.verification_status !== "valid") return "Email not verified";
+  if (settings?.require_verified_business_email !== false && contact.email_type !== "business") return "Verified business email required";
   if (settings?.require_compliance_eligible !== false && contact.compliance_status !== "eligible") return "Compliance review required";
+  if (settings?.require_compliance_eligible !== false && !["public_business_contact","existing_relationship","consent"].includes(contact.contact_basis)) return "Contact basis needs review";
   return null;
 }
 
