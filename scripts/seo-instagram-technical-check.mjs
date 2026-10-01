@@ -98,7 +98,7 @@ function hasNoindex(response, html) {
 
 function structuredType(html, type) {
   const safe = type.replace(/[.*+?^$()|[\]\\]/g, "\\$&");
-  return new RegExp('["\\']@type["\\']\\s*:\\s*["\\']' + safe + '["\\']', "i").test(html);
+  return new RegExp("[\\\"']@type[\\\"']\\\\s*:\\\\s*[\\\"']" + safe + "[\\\"']", "i").test(html);
 }
 
 function internalLinks(html) {
