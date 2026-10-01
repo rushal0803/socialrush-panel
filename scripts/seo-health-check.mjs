@@ -5,7 +5,7 @@ const REQUEST_TIMEOUT_MS = 30_000;
 const CONCURRENCY = 4;
 const PHASE5_LASTMOD = "2026-09-27";
 const PHASE5_SOCIAL_GROWTH_LASTMOD = "2026-09-28";
-const PHASE5_SOCIAL_SERVICES_LASTMOD = "2026-09-28";
+const PHASE5_SOCIAL_SERVICES_LASTMOD = "2026-10-01";
 const PHASE5_PLATFORM_SMM_LASTMOD = "2026-09-28";
 const PHASE5_PRICING_INTENT_LASTMOD = "2026-09-28";
 const PHASE5_SAFE_ORDERING_LASTMOD = "2026-09-28";
@@ -135,6 +135,9 @@ const legacyRedirects = [
   ["/best-smm-panel-india", "/services"],
   ["/reliable-smm-panel-india", "/services"],
   ["/trusted-smm-panel-india", "/services"],
+  ["/fast-smm-panel-india", "/services"],
+  ["/instant-smm-panel-india", "/services"],
+  ["/smm-panel-instant-delivery-india", "/services"],
   ["/smm-reseller-panel-india", "/for-agencies"],
   ["/smm-panel-api-india", "/for-agencies"],
   ["/smm-reseller-api-india", "/for-agencies"],
