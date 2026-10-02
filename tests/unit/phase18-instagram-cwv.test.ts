@@ -25,9 +25,9 @@ test("phase 18 keeps the Instagram commercial templates on the CWV containment p
   for (const path of cwvTemplates) {
     assert.match(read(path), /instagram-cwv-page/, path + " must opt into the Instagram CWV containment rules");
   }
-  assert.match(globals, /.instagram-cwv-page > section:nth-of-type(n + 4)/);
-  assert.match(globals, /content-visibility:s*auto/);
-  assert.match(globals, /contain-intrinsic-size:s*auto 760px/);
+  assert.ok(globals.includes(".instagram-cwv-page > section:nth-of-type(n + 4)"));
+  assert.ok(globals.includes("content-visibility: auto"));
+  assert.ok(globals.includes("contain-intrinsic-size: auto 760px"));
 });
 
 test("phase 18 keeps the primary Instagram money-page shells server rendered", () => {
@@ -47,7 +47,7 @@ test("phase 18 removes timer-driven React rendering from the Instagram Views pre
 
 test("phase 18 defers non-critical service-worker registration", () => {
   assert.match(pwa, /requestIdleCallback/);
-  assert.match(pwa, /setTimeout(registerServiceWorker,s*1500)/);
+  assert.ok(pwa.includes("setTimeout(registerServiceWorker, 1500)"));
   assert.match(pwa, /registerServiceWorker/);
 });
 
