@@ -41,26 +41,38 @@ export default function InteractiveHomepageShell({
   useEffect(() => {
     const root = rootRef.current;
     const updateScrollState = () => setShowTop(window.scrollY > 720);
-    const updatePointer = (event: PointerEvent) => {
-      if (reduceMotion || event.pointerType === "touch") return;
-      pointerX.set((event.clientX / window.innerWidth) * 100);
-      pointerY.set((event.clientY / window.innerHeight) * 100);
-    };
-    const tiltCard = (event: PointerEvent) => {
-      if (reduceMotion || event.pointerType === "touch") return;
-      const card = (event.target as Element).closest(
-        interactiveCardSelector,
-      ) as HTMLElement | null;
-      if (!card || !root?.contains(card)) return;
+    let pointerFrame: number | undefined;
+    let pendingPointer: { clientX: number; clientY: number; target: Element | null } | null = null;
+    const finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    const updatePointerEffects = (event: PointerEvent) => {
+      if (reduceMotion || !finePointer || event.pointerType === "touch") return;
+      pendingPointer = {
+        clientX: event.clientX,
+        clientY: event.clientY,
+        target: event.target instanceof Element ? event.target : null,
+      };
+      if (pointerFrame !== undefined) return;
 
-      const bounds = card.getBoundingClientRect();
-      const relativeX = (event.clientX - bounds.left) / bounds.width;
-      const relativeY = (event.clientY - bounds.top) / bounds.height;
-      card.style.setProperty("--sr-tilt-x", `${(0.5 - relativeY) * 5}deg`);
-      card.style.setProperty("--sr-tilt-y", `${(relativeX - 0.5) * 6}deg`);
-      card.style.setProperty("--sr-glow-x", `${relativeX * 100}%`);
-      card.style.setProperty("--sr-glow-y", `${relativeY * 100}%`);
-      card.dataset.srTiltActive = "true";
+      pointerFrame = window.requestAnimationFrame(() => {
+        pointerFrame = undefined;
+        const snapshot = pendingPointer;
+        pendingPointer = null;
+        if (!snapshot) return;
+
+        pointerX.set((snapshot.clientX / window.innerWidth) * 100);
+        pointerY.set((snapshot.clientY / window.innerHeight) * 100);
+
+        const card = snapshot.target?.closest(interactiveCardSelector) as HTMLElement | null;
+        if (!card || !root?.contains(card)) return;
+        const bounds = card.getBoundingClientRect();
+        const relativeX = (snapshot.clientX - bounds.left) / bounds.width;
+        const relativeY = (snapshot.clientY - bounds.top) / bounds.height;
+        card.style.setProperty("--sr-tilt-x", `${(0.5 - relativeY) * 5}deg`);
+        card.style.setProperty("--sr-tilt-y", `${(relativeX - 0.5) * 6}deg`);
+        card.style.setProperty("--sr-glow-x", `${relativeX * 100}%`);
+        card.style.setProperty("--sr-glow-y", `${relativeY * 100}%`);
+        card.dataset.srTiltActive = "true";
+      });
     };
     const resetCard = (event: PointerEvent) => {
       const card = (event.target as Element).closest(
@@ -77,8 +89,7 @@ export default function InteractiveHomepageShell({
 
     updateScrollState();
     window.addEventListener("scroll", updateScrollState, { passive: true });
-    window.addEventListener("pointermove", updatePointer, { passive: true });
-    root?.addEventListener("pointermove", tiltCard, { passive: true });
+    if (finePointer) root?.addEventListener("pointermove", updatePointerEffects, { passive: true });
     root?.addEventListener("pointerout", resetCard, { passive: true });
 
     const revealItems = root
@@ -118,9 +129,9 @@ export default function InteractiveHomepageShell({
 
     return () => {
       window.removeEventListener("scroll", updateScrollState);
-      window.removeEventListener("pointermove", updatePointer);
-      root?.removeEventListener("pointermove", tiltCard);
+      root?.removeEventListener("pointermove", updatePointerEffects);
       root?.removeEventListener("pointerout", resetCard);
+      if (pointerFrame !== undefined) window.cancelAnimationFrame(pointerFrame);
       observer?.disconnect();
     };
   }, [pointerX, pointerY, reduceMotion]);
