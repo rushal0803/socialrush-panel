@@ -8,6 +8,8 @@ type IdleWindow = Window & typeof globalThis & {
   cancelIdleCallback?: (handle: number) => void;
 };
 
+const Context = createContext<State | null>(null);
+
 const hasRate = (rates: CurrencyRates, currency: Currency) =>
   currency === "INR" || (Number.isFinite(rates[currency]) && Number(rates[currency]) > 0);
 
