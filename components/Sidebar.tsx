@@ -94,7 +94,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
         <p className="mb-1 px-3 text-[9px] font-black uppercase tracking-[.16em] text-[#6b7280]">{group}</p>
         <div className="space-y-1">{items.map((item) => {
           const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
-          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${active ? "text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"}`}>
+          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${active ? "text-white" : mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"}`}>
             {active && <motion.span layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"} className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]" transition={{ type: "spring", stiffness: 380, damping: 30 }} />}
             <span className="relative z-10"><NavIcon name={item.icon} /></span><span className="relative z-10">{item.label}</span>
           </Link>;
