@@ -8,6 +8,8 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { calculateServiceTotal, validateQuantity } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { buildQuantityMerchandising } from "@/lib/cro/quantity-merchandising";
+import { OrderBuilderView, OrderReadinessChecklist, QuantityDecisionGrid, trackOrderContinue } from "@/components/marketing/cro/InstagramOrderConversionKit";
 
 const service = getServiceById("instagram-likes");
 
@@ -20,7 +22,7 @@ export default function InstagramLikesOrderPanel() {
   const quantityError = service ? validateQuantity(quantity, service) : "Service unavailable";
   const linkError = link.trim() ? validateCampaignLink(link, linkRules["instagram-likes"]) : "";
   const total = calculateServiceTotal("instagram-likes", quantity);
-  const presets = useMemo(() => service ? [...new Set([service.minQuantity, 1000, 5000, 10000].filter((value) => value >= service.minQuantity && value <= service.maxQuantity))] : [], []);
+  const presets = useMemo(() => service ? buildQuantityMerchandising(service) : [], []);
   if (!service) return null;
 
   const setQuantity = (value: number) => {
@@ -36,6 +38,7 @@ export default function InstagramLikesOrderPanel() {
   const canContinue = Boolean(link.trim()) && !quantityError && !linkError;
 
   return <section id="packages" className="relative scroll-mt-24 overflow-hidden px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
+    <OrderBuilderView serviceCode="instagram-likes" />
     <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/10 blur-[130px]" />
     <div className="relative mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_390px]">
       <article className="rounded-[30px] border border-white/10 bg-[linear-gradient(145deg,rgba(28,28,30,.96),rgba(12,12,13,.98))] p-5 shadow-[0_32px_80px_-45px_rgba(255,122,0,.85)] sm:p-8">
@@ -43,7 +46,7 @@ export default function InstagramLikesOrderPanel() {
         <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">Build Your Instagram Likes Order</h2>
         <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Choose your quantity and see your total instantly.</p>
         <div className="mt-8 flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-xl bg-orange-500 text-xs font-black text-white">1</span><div><p className="text-sm font-black text-white">Choose Likes</p><p className="text-xs text-[#9CA3AF]">Select a valid amount or set a custom quantity.</p></div></div>
-        <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">{presets.map((value) => <button key={value} type="button" onClick={() => setQuantity(value)} className={`min-h-20 rounded-2xl border px-4 text-left transition motion-reduce:transition-none ${quantity === value ? "border-orange-400 bg-orange-500/15 text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.8)]" : "border-white/10 bg-white/[.03] text-[#D1D5DB] hover:-translate-y-0.5 hover:border-orange-400/55"}`}><span className="block text-lg font-black">{value.toLocaleString("en-IN")}</span><span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-orange-200">likes</span></button>)}</div>
+        <QuantityDecisionGrid serviceCode="instagram-likes" options={presets} selected={quantity} unitLabel="likes" onSelect={setQuantity} formatTotal={(value) => formatCurrency(calculateServiceTotal("instagram-likes", value), currency)} />
         <label className="mt-7 block text-sm font-black text-white">Custom quantity
           <span className="mt-2 flex overflow-hidden rounded-2xl border border-orange-400/25 bg-[#0B0B0F] focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-500/15">
             <button type="button" aria-label="Decrease quantity" onClick={() => setQuantity((Number(quantityInput) || service.minQuantity) - (service.quantityStep ?? 1))} className="grid min-h-14 w-14 place-items-center text-orange-300"><Minus className="h-4 w-4" /></button>
@@ -60,7 +63,8 @@ export default function InstagramLikesOrderPanel() {
         <div className="flex items-center justify-between"><div><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Live order summary</p><h3 className="mt-2 text-xl font-black text-white">Instagram Likes</h3></div><span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-orange-500 to-amber-400 text-lg text-white">♥</span></div>
         <dl className="mt-6 space-y-4 text-sm">{[["Quantity", quantity > 0 ? quantity.toLocaleString("en-IN") : "—"], ["Live rate", `${formatCurrency(service.pricePer1000, currency)} / 1K`], ["Delivery", service.deliveryTime], ["Refill", service.refillPolicy], ["Link status", link.trim() && !linkError ? "Ready" : "Add public link"]].map(([label, value]) => <div key={label} className="flex justify-between gap-4"><dt className="text-[#9CA3AF]">{label}</dt><dd className={`max-w-[60%] text-right font-bold ${label === "Link status" && value === "Ready" ? "text-emerald-300" : "text-white"}`}>{value}</dd></div>)}</dl>
         <div className="mt-6 border-t border-white/10 pt-5"><p className="text-xs font-bold text-[#D1D5DB]">Current Total</p><p className="mt-1 text-3xl font-black text-white">{quantityError ? "—" : formatCurrency(total, currency)}</p></div>
-        {canContinue ? <Link href={orderHref} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.75)]">Continue to Secure Order <ArrowRight className="h-4 w-4" /></Link> : <button type="button" onClick={() => setSubmitted(true)} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white">Continue to Secure Order <ArrowRight className="h-4 w-4" /></button>}
+        <OrderReadinessChecklist available quantityReady={!quantityError} linkReady={Boolean(link.trim()) && !linkError} destinationLabel="Public Instagram post/Reel link ready" />
+        {canContinue ? <Link href={orderHref} onClick={() => trackOrderContinue("instagram-likes", quantity)} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.75)]">Continue to Secure Order <ArrowRight className="h-4 w-4" /></Link> : <button type="button" onClick={() => setSubmitted(true)} className="mt-6 inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white">Continue to Secure Order <ArrowRight className="h-4 w-4" /></button>}
         <p className="mt-4 flex items-center gap-2 text-xs text-[#D1D5DB]"><LockKeyhole className="h-4 w-4 text-emerald-300" />No password required. Public link only.</p>
       </aside>
     </div>
