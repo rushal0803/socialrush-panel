@@ -280,8 +280,6 @@ export default async function IndiaServiceLandingPage({
       ["Do Instagram Shares guarantee more views or reach?", "No. This service does not guarantee organic reach, recommendations, virality, or platform outcomes."],
     ];
     const schemas = [
-      { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Services", item: `${SEO_SITE_URL}/services` }, { "@type": "ListItem", position: 3, name: "Instagram Shares", item: shareUrl }] },
-      { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
     return <PublicShell>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /></PublicShell>;
