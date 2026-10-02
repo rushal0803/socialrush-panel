@@ -1,5 +1,6 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { razorpayConfig, razorpayRequest, verifyHmac } from "@/lib/payments/razorpay";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 
@@ -23,8 +24,11 @@ export async function POST(request: NextRequest) {
     if (payment.order_id !== body.razorpay_order_id || payment.status !== "captured" || payment.currency !== "INR" || payment.amount !== Math.round(Number(transaction.amount) * 100)) {
       return NextResponse.json({ error: "Payment confirmation is still processing. Do not pay again; check Wallet or contact support with your payment reference." }, { status: 409 });
     }
-    const { data: balance, error } = await supabase.rpc("credit_verified_payment", { p_provider_order_id: body.razorpay_order_id, p_provider_payment_id: body.razorpay_payment_id });
+    const admin = createAdminClient();
+    const { error } = await admin.rpc("credit_wallet_payment_system", { p_provider_order_id: body.razorpay_order_id, p_provider_payment_id: body.razorpay_payment_id });
     if (error) return NextResponse.json({ error: "Payment confirmation is delayed. Do not pay again; check Wallet shortly or contact support." }, { status: 409 });
+    const { data: profile } = await admin.from("profiles").select("balance").eq("id", user.id).single();
+    const balance = Number(profile?.balance ?? 0);
     await recordTrustedEvent({eventName:"payment_completed",customerId:user.id,pagePath:"/dashboard/add-funds",eventId:`payment:${body.razorpay_payment_id}`,metadata:{method:"razorpay"}});
     await recordTrustedEvent({eventName:"wallet_topup_completed",customerId:user.id,pagePath:"/dashboard/wallet",eventId:`wallet_credit:${body.razorpay_payment_id}`,metadata:{method:"razorpay"}});
     return NextResponse.json({ data: { balance, paymentId: body.razorpay_payment_id } });

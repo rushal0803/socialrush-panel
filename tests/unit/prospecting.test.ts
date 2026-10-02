@@ -1,11 +1,12 @@
 import assert from "node:assert/strict";
 import test from "node:test";
-import { canPromoteCandidate, normalizeDomain, normalizeEmail, parseProspectingCsv } from "../../lib/crm/prospecting.ts";
+import { canPromoteCandidate, normalizeDomain, normalizeEmail, normalizeLeadCompanyType, parseProspectingCsv } from "../../lib/crm/prospecting.ts";
 import { getDiscoveryWebsite, isLowQualityDiscoveryResult } from "../../lib/crm/prospect-discovery-filters.ts";
 import { companySeedFromResult, extractCompanyNameFromLinkedInTitle, normalizeCompanyComparison, rankCompanySeeds, resolveOfficialWebsite, selectCompanySeeds } from "../../lib/crm/prospect-discovery-resolver.ts";
 import { istDateTimeInputToIso } from "../../lib/crm/operational.ts";
 
 test("normalizes domains and emails for duplicate lookup",()=>{assert.equal(normalizeDomain(" https://WWW.Acme.com/path "),"acme.com");assert.equal(normalizeEmail(" SALES@Acme.COM "),"sales@acme.com")});
+test("candidate company types map to crm_leads constraint values",()=>{assert.equal(normalizeLeadCompanyType("e-commerce business"),"business");assert.equal(normalizeLeadCompanyType("small business"),"business");assert.equal(normalizeLeadCompanyType("professional services business"),"business");assert.equal(normalizeLeadCompanyType("marketing agency"),"agency");assert.equal(normalizeLeadCompanyType("creator business"),"creator");assert.equal(normalizeLeadCompanyType("startup"),"startup");assert.equal(normalizeLeadCompanyType("unknown segment"),"other");assert.equal(normalizeLeadCompanyType(null),"business")});
 test("CSV aliases, blanks and invalid required rows are deterministic",()=>{const rows=parseProspectingCsv("company,website,email,country\nAcme,www.acme.com, SALES@ACME.COM ,US\n,,,");assert.equal(rows[0].data.business_name,"Acme");assert.equal(rows[0].data.domain,"acme.com");assert.equal(rows[0].data.business_email,"sales@acme.com");assert.equal(rows[1].data.country,null);assert.ok(rows[1].errors.length)});
 test("CSV rejects more than 500 rows",()=>assert.throws(()=>parseProspectingCsv(`business_name\n${Array(501).fill("Acme").join("\n")}`)));
 test("clean public-business candidate is promotion eligible",()=>assert.equal(canPromoteCandidate({business_email:"hi@acme.com",email_verification_status:"valid",compliance_status:"eligible"}).allowed,true));
