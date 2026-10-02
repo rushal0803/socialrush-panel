@@ -277,6 +277,45 @@ svg {
   }
 }
 
+
+/* Instagram Views preview: keep the play/pause interaction while moving the
+   continuous animation off React's render loop. This avoids timer-driven
+   state updates during playback and leaves the main thread freer for input. */
+.instagram-reel-progress {
+  transform: scaleX(.18);
+  transform-origin: left center;
+}
+
+.instagram-reel-progress[data-playing="true"] {
+  animation: instagram-reel-progress 7.2s linear infinite;
+}
+
+.instagram-reel-bar {
+  transform: scaleY(.68);
+  transform-origin: bottom center;
+}
+
+.instagram-reel-bar[data-playing="true"] {
+  animation: instagram-reel-bar 1.8s ease-in-out infinite;
+}
+
+@keyframes instagram-reel-progress {
+  0% { transform: scaleX(.18); }
+  100% { transform: scaleX(1); }
+}
+
+@keyframes instagram-reel-bar {
+  0%, 100% { transform: scaleY(.68); }
+  50% { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .instagram-reel-progress[data-playing="true"],
+  .instagram-reel-bar[data-playing="true"] {
+    animation: none;
+  }
+}
+
 h1,
 h2,
 h3,
