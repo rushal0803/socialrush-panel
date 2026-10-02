@@ -68,43 +68,43 @@ html:has(.service-money-page) { scroll-behavior: smooth; }
 /* The India followers page keeps its server-rendered content intact while
    making the supporting phone visual deliberately secondary on narrow screens. */
 @media (max-width: 639px) {
-  .service-money-page > section:first-child [aria-label="Illustrative Instagram profile preview"] {
+  .instagram-followers-mobile > section:first-child [aria-label="Illustrative Instagram profile preview"] {
     width: 12rem;
   }
-  .service-money-page > section:first-child [aria-label="Illustrative Instagram profile preview"] > div:first-child {
+  .instagram-followers-mobile > section:first-child [aria-label="Illustrative Instagram profile preview"] > div:first-child {
     inset: -1.5rem;
   }
 }
 
 /* India followers: keep the first mobile screen focused on the purchase path. */
 @media (max-width: 767px) {
-  .service-money-page > section:first-child {
+  .instagram-followers-mobile > section:first-child {
     padding-top: 1.25rem;
     padding-bottom: 1.5rem;
   }
-  .service-money-page > section:first-child [aria-label="Illustrative Instagram profile preview"] {
+  .instagram-followers-mobile > section:first-child [aria-label="Illustrative Instagram profile preview"] {
     display: none;
   }
-  .service-money-page > section:first-child nav {
+  .instagram-followers-mobile > section:first-child nav {
     margin-bottom: 1.25rem;
   }
-  .service-money-page > section:first-child h1 {
+  .instagram-followers-mobile > section:first-child h1 {
     margin-top: 1.25rem;
   }
-  .service-money-page > section:first-child h1 + p {
+  .instagram-followers-mobile > section:first-child h1 + p {
     margin-top: 1rem;
     line-height: 1.65;
   }
-  .service-money-page > section:first-child h1 + p + div {
+  .instagram-followers-mobile > section:first-child h1 + p + div {
     margin-top: 1.25rem;
   }
-  .service-money-page > section:first-child h1 + p + div > a:first-child {
+  .instagram-followers-mobile > section:first-child h1 + p + div > a:first-child {
     width: 100%;
     min-height: 3.5rem;
     border-radius: 1rem;
     font-size: .9375rem;
   }
-  .service-money-page > section:first-child h1 + p + div > a:last-child {
+  .instagram-followers-mobile > section:first-child h1 + p + div > a:last-child {
     min-height: 2.5rem;
     border: 0;
     background: transparent;
@@ -112,21 +112,63 @@ html:has(.service-money-page) { scroll-behavior: smooth; }
     text-decoration: underline;
     text-underline-offset: .25rem;
   }
-  .service-money-page > section:first-child h1 + p + div + div {
+  .instagram-followers-mobile > section:first-child h1 + p + div + div {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .5rem 1rem;
     margin-top: 1rem;
   }
-  .service-money-page > section:first-child h1 + p + div + div > span {
+  .instagram-followers-mobile > section:first-child h1 + p + div + div > span {
     min-width: 0;
     font-size: .6875rem;
   }
-  .service-money-page > section:first-child h1 + p + div + div > span:last-child {
+  .instagram-followers-mobile > section:first-child h1 + p + div + div > span:last-child {
     display: none;
   }
-  .service-money-page > section:nth-child(2) {
+  .instagram-followers-mobile > section:nth-child(2) {
     display: none;
+  }
+}
+
+
+/* Phase 19: shared mobile-first guardrails for canonical Instagram money pages.
+   These are intentionally scoped so existing non-Instagram service templates,
+   checkout logic, pricing, and SEO content remain untouched. */
+@media (max-width: 767px) {
+  .instagram-mobile-ux {
+    overflow-x: clip;
+    padding-bottom: calc(4.75rem + env(safe-area-inset-bottom));
+  }
+
+  .instagram-mobile-ux:not(.instagram-followers-mobile) > section:first-child {
+    padding-top: 1.75rem;
+    padding-bottom: 2.75rem;
+  }
+
+  .instagram-mobile-ux h1 {
+    font-size: clamp(2rem, 9vw, 2.5rem);
+    line-height: 1.05;
+    text-wrap: balance;
+  }
+
+  .instagram-mobile-ux :is(input, select, textarea) {
+    font-size: 16px;
+  }
+
+  .instagram-mobile-ux :is(#order, #packages, #pricing) {
+    scroll-margin-top: calc(5.5rem + env(safe-area-inset-top));
+  }
+
+  .instagram-mobile-ux :where(code, .font-mono) {
+    overflow-wrap: anywhere;
+    word-break: break-word;
+  }
+}
+
+@media (hover: none) and (pointer: coarse) {
+  .instagram-mobile-ux button,
+  .instagram-mobile-ux a[href^="#"] {
+    touch-action: manipulation;
   }
 }
 
