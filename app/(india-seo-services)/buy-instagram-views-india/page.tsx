@@ -7,10 +7,9 @@ import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderS
 import InstagramViewsInteractivePreview from "@/components/marketing/InstagramViewsInteractivePreview";
 import PlatformIcon from "@/components/PlatformIcon";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
-import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import { buildInstagramSerpMetadata } from "@/lib/seo/instagram-serp";
 import { getServiceById } from "@/lib/smm-service-catalog";
-const path="/instagram-views",url=`${SEO_SITE_URL}${path}`,service=getServiceById("instagram-views");
+const service=getServiceById("instagram-views");
 const faqs=[["Do I need to provide my Instagram password?","No. SocialRUSH only needs the exact public Instagram Reel, post, or supported video URL."],["Which Instagram link should I submit?","Submit the exact public Reel or video URL. Private, profile-only, or unsupported links cannot be used."],["Can I order views for a Reel?","Yes. Use the exact public Reel URL in the order builder."],["How is my price calculated?","The active Instagram Views catalog rate and your selected quantity calculate the total in your selected display currency."],["How long does delivery take?","The current active service delivery estimate is shown in the live order summary."],["Can I track my order?","Yes. Continue through SocialRUSH’s existing order flow, then follow it in your dashboard."],["Is refill/support available?","The current active-catalog refill or support terms are shown before you continue."],["What happens if I submit the wrong link?","The builder validates supported public Instagram content URLs before you can continue."]] as const;
 const trust=["No Password Required","Public Link Ordering","Live Pricing","Order Tracking","Secure Checkout","WhatsApp Support"]; const schema=(value:object)=>JSON.stringify(value).replace(/</g,"\\u003c");
 export const metadata:Metadata=buildInstagramSerpMetadata("views");
