@@ -8,6 +8,8 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { calculateServiceTotal, validateQuantity } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { buildQuantityMerchandising } from "@/lib/cro/quantity-merchandising";
+import { OrderBuilderView, OrderReadinessChecklist, QuantityDecisionGrid, trackOrderContinue } from "@/components/marketing/cro/InstagramOrderConversionKit";
 
 const service = getServiceById("instagram-followers");
 
@@ -19,10 +21,7 @@ export default function InstagramFollowersOrderPanel() {
   const qtyError = service ? validateQuantity(quantity, service) : "Service unavailable";
   const linkError = link.trim() ? validateCampaignLink(link, linkRules["instagram-followers"]) : "";
   const total = calculateServiceTotal("instagram-followers", quantity);
-  const choices = useMemo(() => {
-    if (!service) return [];
-    return [...new Set([service.minQuantity, 1000, 5000, 10000].filter((value) => value >= service.minQuantity && value <= service.maxQuantity))];
-  }, []);
+  const choices = useMemo(() => service ? buildQuantityMerchandising(service) : [], []);
   const orderHref = `/dashboard/new-order?platform=instagram&service=followers&resume=1&quantity=${quantity}&link=${encodeURIComponent(link.trim())}`;
   const canContinue = !qtyError && !linkError && Boolean(link.trim());
 
@@ -34,6 +33,7 @@ export default function InstagramFollowersOrderPanel() {
 
   return (
     <section id="packages" className="relative scroll-mt-24 overflow-hidden px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
+      <OrderBuilderView serviceCode="instagram-followers" />
       <div className="pointer-events-none absolute left-1/2 top-1/2 h-[28rem] w-[28rem] -translate-x-1/2 -translate-y-1/2 rounded-full bg-orange-500/10 blur-[130px]" />
       <div className="relative mx-auto grid max-w-7xl gap-6 lg:grid-cols-[minmax(0,1fr)_390px]">
         <article className="rounded-[32px] border border-white/10 bg-[linear-gradient(145deg,rgba(28,28,30,.96),rgba(12,12,13,.98))] p-5 shadow-[0_32px_80px_-45px_rgba(255,122,0,.85)] sm:p-8">
@@ -41,9 +41,7 @@ export default function InstagramFollowersOrderPanel() {
           <h2 className="mt-3 text-2xl font-black tracking-tight text-white sm:text-3xl">Build Your Instagram Followers Order</h2>
           <p className="mt-2 text-sm leading-7 text-[#D1D5DB]">Choose your quantity and see your total instantly.</p>
           <div className="mt-8 flex items-center gap-3"><span className="grid h-8 w-8 place-items-center rounded-xl bg-orange-500 text-xs font-black text-white">1</span><div><p className="text-sm font-black text-white">Choose Followers</p><p className="text-xs text-[#9CA3AF]">Select a quick amount or set a custom quantity.</p></div></div>
-          <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">
-            {choices.map((value) => <button key={value} type="button" aria-pressed={quantity === value} onClick={() => updateQuantity(value)} className={`group min-h-20 rounded-2xl border px-4 text-left transition duration-200 motion-reduce:transition-none focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-400/35 ${quantity === value ? "border-orange-400 bg-[linear-gradient(145deg,rgba(255,122,0,.26),rgba(255,176,0,.08))] text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.8)]" : "border-white/10 bg-white/[.03] text-[#D1D5DB] hover:-translate-y-0.5 hover:border-orange-400/55"}`}><span className="block text-lg font-black">{value.toLocaleString("en-IN")}</span><span className="mt-1 block text-[10px] font-bold uppercase tracking-wider text-orange-200">followers</span></button>)}
-          </div>
+          <QuantityDecisionGrid serviceCode="instagram-followers" options={choices} selected={quantity} unitLabel="followers" onSelect={updateQuantity} formatTotal={(value) => formatCurrency(calculateServiceTotal("instagram-followers", value), currency)} />
           <label className="mt-7 block text-sm font-black text-white">Custom quantity
             <span className="mt-2 flex overflow-hidden rounded-2xl border border-orange-400/25 bg-[#0B0B0F] focus-within:border-orange-400 focus-within:ring-4 focus-within:ring-orange-500/15">
               <button type="button" aria-label="Decrease quantity" onClick={() => updateQuantity(quantity - (service.quantityStep ?? 1))} className="grid min-h-14 w-14 place-items-center text-orange-300 transition hover:bg-white/[.04] focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-orange-300"><Minus className="h-4 w-4" /></button>
@@ -62,8 +60,9 @@ export default function InstagramFollowersOrderPanel() {
         <aside className="rounded-[32px] border border-orange-400/30 bg-[linear-gradient(160deg,#20150d_0%,#151515_42%,#101010_100%)] p-6 shadow-[0_32px_80px_-42px_rgba(255,122,0,.65)] lg:sticky lg:top-28 lg:h-fit">
           <div className="flex items-start justify-between"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Order summary</p><h3 className="mt-2 text-xl font-black text-white">Instagram Followers</h3></div><CheckCircle2 className="h-6 w-6 text-orange-300" /></div>
           <dl className="mt-6 space-y-3.5 text-sm"><Row label="Quantity" value={quantity.toLocaleString("en-IN")} /><Row label="Live rate" value={`${formatCurrency(service.pricePer1000, currency)} / 1K`} /><Row label="Delivery" value={service.deliveryTime} /><Row label="Refill" value={service.refillPolicy} /><Row label="Profile status" value={link.trim() && !linkError ? "Ready" : "Needed"} /></dl>
-          <div className="mt-6 rounded-2xl border border-orange-400/30 bg-[linear-gradient(135deg,rgba(255,122,0,.14),rgba(0,0,0,.3))] p-4"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-200">Your total</p><p className="mt-2 text-4xl font-black tracking-[-.04em] text-white">{formatCurrency(total, currency)}</p><p className="mt-1 text-xs font-semibold text-[#D1D5DB]">Live INR total for {quantity.toLocaleString("en-IN")} followers</p></div>
-          <Link href={canContinue ? orderHref : "#packages"} onClick={(event) => { if (!canContinue) { event.preventDefault(); setShowErrors(true); } }} aria-disabled={!canContinue} className={`mt-6 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl px-5 text-sm font-black shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-300/40 ${canContinue ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white hover:-translate-y-0.5 hover:brightness-110" : "bg-white/10 text-[#9CA3AF]"}`}>Continue to Secure Order <ArrowRight className="h-4 w-4" /></Link>
+          <div className="mt-6 rounded-2xl border border-orange-400/30 bg-[linear-gradient(135deg,rgba(255,122,0,.14),rgba(0,0,0,.3))] p-4"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-200">Your total</p><p className="mt-2 text-4xl font-black tracking-[-.04em] text-white">{formatCurrency(total, currency)}</p><p className="mt-1 text-xs font-semibold text-[#D1D5DB]">Live total for {quantity.toLocaleString("en-IN")} followers</p></div>
+          <OrderReadinessChecklist available quantityReady={!qtyError} linkReady={Boolean(link.trim()) && !linkError} destinationLabel="Public Instagram profile link ready" />
+          <Link href={canContinue ? orderHref : "#packages"} onClick={(event) => { if (!canContinue) { event.preventDefault(); setShowErrors(true); return; } trackOrderContinue("instagram-followers", quantity); }} aria-disabled={!canContinue} className={`mt-6 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl px-5 text-sm font-black shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition focus-visible:outline-none focus-visible:ring-4 focus-visible:ring-orange-300/40 ${canContinue ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white hover:-translate-y-0.5 hover:brightness-110" : "bg-white/10 text-[#9CA3AF]"}`}>Continue to Secure Order <ArrowRight className="h-4 w-4" /></Link>
           <p className="mt-4 flex items-center justify-center gap-2 text-center text-xs font-semibold text-[#D1D5DB]"><LockKeyhole className="h-4 w-4 text-orange-300" />Secure checkout · No password required</p>
         </aside>
       </div>

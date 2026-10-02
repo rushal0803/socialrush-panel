@@ -102,6 +102,11 @@ export function buildQuantityMerchandising(service: SmmService): QuantityMerchan
   return labelOptions([...chosen].map((index) => validValues[index]).sort((a, b) => a - b));
 }
 
+export function merchandiseQuantityValues(values: readonly number[]): QuantityMerchandisingOption[] {
+  const normalized = [...new Set(values.filter((value) => Number.isFinite(value) && value > 0))].sort((a, b) => a - b);
+  return labelOptions(normalized);
+}
+
 function labelOptions(values: readonly number[]): QuantityMerchandisingOption[] {
   if (!values.length) return [];
 
