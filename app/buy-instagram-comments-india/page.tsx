@@ -1,15 +1,12 @@
 import type { Metadata } from "next";
-import { getIndiaServiceMetadata } from "@/lib/seo/india-service-pages";
+import { buildInstagramSerpMetadata } from "@/lib/seo/instagram-serp";
 import PublicShell from "@/components/marketing/PublicShell";
 import InstagramCommentsLanding from "@/components/marketing/InstagramCommentsLanding";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 
-export const metadata: Metadata = getIndiaServiceMetadata(
-  "buy-instagram-comments-india",
-  "/buy-instagram-comments-india",
-);
+export const metadata: Metadata = buildInstagramSerpMetadata("comments");
 
 export default async function BuyInstagramCommentsIndiaPage() {
   const live = await getLiveServiceFacts("instagram", "Instagram Comments");
