@@ -272,7 +272,6 @@ export default async function IndiaServiceLandingPage({
     return <PublicShell tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /></PublicShell>;
   }
   if (slug === "buy-instagram-shares-india") {
-    const shareUrl = `${SEO_SITE_URL}${canonicalPath}`;
     const shareFaqs = [
       ["Do I need my Instagram password?", "No. SocialRUSH only requires the public Instagram post or Reel link. Never share a password, OTP, or recovery code."],
       ["Which Instagram URL should I use?", "Use the exact public Instagram post or Reel URL. A profile URL is not accepted for this service."],
