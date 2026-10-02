@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ArrowRight, LockKeyhole } from "lucide-react";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -24,7 +25,21 @@ export default function ServiceOrderStickyCta({
   available = true,
 }: ServiceOrderStickyCtaProps) {
   const { currency, rates } = usePreferredCurrency("INR");
-  if (!available) return null;
+  const [targetVisible, setTargetVisible] = useState(false);
+
+  useEffect(() => {
+    if (!href.startsWith("#")) return;
+    const target = document.querySelector<HTMLElement>(href);
+    if (!target) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setTargetVisible(entry.isIntersecting),
+      { threshold: 0.08, rootMargin: "-72px 0px -20% 0px" },
+    );
+    observer.observe(target);
+    return () => observer.disconnect();
+  }, [href]);
+
+  if (!available || targetVisible) return null;
 
   const price = typeof startingPrice === "number" && Number.isFinite(startingPrice)
     ? `From ${formatCurrency(startingPrice, currency, rates)}`
