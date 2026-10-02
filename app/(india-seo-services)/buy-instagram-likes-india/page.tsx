@@ -11,8 +11,6 @@ import { getServiceById } from "@/lib/smm-service-catalog";
 // This component is rendered by the canonical /instagram-likes route. The
 // legacy /buy-instagram-likes-india route is redirected by middleware, so all
 // visible structured data must reinforce the canonical commercial URL.
-const path = "/instagram-likes";
-const url = `${SEO_SITE_URL}${path}`;
 const service = getServiceById("instagram-likes");
 const trust = ["No Password Required", "Live Catalog Pricing", "Public Link Ordering", "Order Tracking", "Refill Information", "Secure Checkout"];
 const faqs = [
