@@ -20,6 +20,7 @@ import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
 import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { tiktokFollowersFaqs } from "@/lib/seo/tiktok-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { buildInstagramSerpMetadata } from "@/lib/seo/instagram-serp";
 import {
   canonicalIndiaServicePaths,
   getIndiaServiceFaqs,
@@ -48,6 +49,8 @@ export async function generateMetadata({
   const { service } = await params;
   const slug = serviceRoutes[service];
   if (!slug) return {};
+  if (slug === "buy-instagram-likes-india") return buildInstagramSerpMetadata("likes");
+  if (slug === "buy-instagram-views-india") return buildInstagramSerpMetadata("views");
   return getIndiaServiceMetadata(slug, `/${service}`);
 }
 
