@@ -11,7 +11,7 @@ import { OrderBuilderView, OrderReadinessChecklist, QuantityDecisionGrid, trackO
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import type { LiveServiceFacts } from "@/lib/seo/live-service";
 
-type Props = { live: LiveServiceFacts | null; canonicalUrl: string };
+type Props = { live: LiveServiceFacts | null };
 const money = (n: number) => `₹${n.toLocaleString("en-IN", { maximumFractionDigits: 2 })}`;
 const compact = (n: number) => n >= 1000 ? `${n / 1000}K` : String(n);
 
@@ -25,7 +25,7 @@ function PostPreview({ saved, onSave, activity = false }: { saved: boolean; onSa
   </div>;
 }
 
-export default function InstagramSavesLanding({ live, canonicalUrl }: Props) {
+export default function InstagramSavesLanding({ live }: Props) {
   const service = live?.available ? live : null;
   const min = service?.min ?? 0, max = service?.max ?? 0;
   const [quantity, setQuantity] = useState(min ? String(min) : "");
