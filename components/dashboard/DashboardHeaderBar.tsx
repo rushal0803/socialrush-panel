@@ -6,7 +6,7 @@ import { useEffect, useMemo, useRef, useState } from "react";
 import DashboardMobileMenu from "@/components/dashboard/DashboardMobileMenu";
 import NotificationBell from "@/components/dashboard/NotificationBell";
 import DashboardSearch from "@/components/dashboard/DashboardSearch";
-import Logo from "@/components/Logo";
+import Logo, { BrandMark } from "@/components/Logo";
 import { currencies } from "@/lib/currency";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -54,8 +54,8 @@ function CurrencySelector() {
         className="inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl border border-orange-400/25 bg-white/[.06] px-2 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 min-[360px]:px-3 sm:px-3.5"
       >
         <span className="min-[360px]:hidden">{active.symbol}</span>
-        <span className="hidden min-[360px]:inline sm:hidden">{active.symbol} {active.code}</span>
-        <span className="hidden sm:inline-flex items-center gap-2">
+        <span className="hidden min-[360px]:inline lg:hidden">{active.symbol} {active.code}</span>
+        <span className="hidden lg:inline-flex items-center gap-2">
           <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#9CA3AF]">Currency:</span>
           <span>{active.code} {active.symbol}</span>
         </span>
@@ -95,7 +95,8 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
   return (
     <header className="sticky top-0 z-[70] border-b border-white/[.08] bg-[#0c0e14]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4">
-        <Logo light compactOnMobile priority className="[&_img]:!h-10 [&_img]:!max-w-[112px] min-[360px]:[&_img]:!h-11 min-[360px]:[&_img]:!max-w-[132px] sm:[&_img]:!h-[3.25rem] sm:[&_img]:!max-w-[218px]" />
+        <BrandMark priority className="min-[430px]:hidden lg:hidden" />
+        <Logo light compactOnMobile priority className="hidden min-[430px]:inline-flex lg:hidden [&_img]:!h-11 [&_img]:!max-w-[132px]" />
 
         <div className="ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3">
           <CurrencySelector />
@@ -108,21 +109,21 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
           </Link>
           <Link
             href="/dashboard/add-funds"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7600] to-[#ff9a2e] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,118,0,.5)] transition hover:-translate-y-0.5 sm:w-auto sm:px-4"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7600] to-[#ff9a2e] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,118,0,.5)] transition hover:-translate-y-0.5 lg:w-auto lg:px-4"
           >
             <Wallet className="h-4 w-4" />
-            <span className="hidden sm:inline">Add Funds</span>
+            <span className="hidden lg:inline">Add Funds</span>
           </Link>
 
           <Link
             href="/dashboard/account"
             aria-label="Open profile"
-            className="hidden h-10 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-2.5 text-left shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 min-[430px]:inline-flex sm:px-3"
+            className="hidden h-10 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-3 text-left shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 lg:inline-flex"
           >
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]">
               {initials}
             </span>
-            <span className="hidden min-w-0 flex-col text-left sm:flex">
+            <span className="flex min-w-0 flex-col text-left">
               <span className="truncate text-sm font-bold text-white">{name}</span>
               <span className="truncate text-[11px] capitalize text-[#A8AFBD]">{role}</span>
             </span>

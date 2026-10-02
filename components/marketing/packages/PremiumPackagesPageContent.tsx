@@ -173,7 +173,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       </div>
     </section>
 
-    <section className="sticky top-0 z-30 border-b border-white/10 bg-[#080808]/95 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
+    <section className="sticky top-16 z-30 border-b border-white/10 bg-[#080808]/95 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto [scrollbar-width:none]">
         {platformOrder.filter((p) => groups.some((g) => g.uiPlatform === p)).map((p) => <button key={p} onClick={() => choosePlatform(p)} className={`min-h-11 shrink-0 rounded-xl border px-4 text-sm font-extrabold transition ${platform === p ? "border-orange-400 bg-orange-500 text-black shadow-[0_8px_24px_-12px_rgba(255,122,0,.9)]" : "border-white/10 bg-white/[.04] text-zinc-300 hover:border-orange-400/40 hover:text-white"}`}>{platformLabels[p]}</button>)}
       </div>
