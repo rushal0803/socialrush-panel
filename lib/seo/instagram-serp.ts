@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SEO_SITE_URL } from "@/lib/seo/metadata";
+import { SEO_SITE_URL } from "./metadata.ts";
 
 export type InstagramSerpKey =
   | "followers"
