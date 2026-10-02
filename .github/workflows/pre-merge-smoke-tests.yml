@@ -30,7 +30,7 @@ jobs:
       - run: npx tsc --noEmit
       - run: node --check scripts/seo-instagram-technical-check.mjs
       - run: node --check scripts/seo-instagram-sitemap-check.mjs
-      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts
+      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-instagram-serp-ctr.test.ts
       - run: npm run seo:instagram-sitemap
       - run: npm run test:crm-pipeline
       - run: npm run test:international-seo
