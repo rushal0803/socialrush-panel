@@ -7,10 +7,10 @@ const path = "/services/tiktok";
 const services = activeSmmServices.filter((service) => service.platform === "tiktok");
 
 export const metadata = createPageMetadata({
-  title: "TikTok Growth Services | Followers, Likes, Views & Comments | SocialRUSH",
-  description: "Explore all SocialRUSH TikTok growth services, including followers, likes, views, custom comments, story views and saves with clear ordering requirements.",
+  title: "TikTok Services Catalog | Likes, Views, Comments & Saves | SocialRUSH",
+  description: "Browse the SocialRUSH TikTok service catalog, including followers, likes, views, custom comments, story views and saves with clear ordering requirements.",
   path,
-  keywords: ["TikTok growth services", "TikTok followers India", "TikTok likes", "TikTok views", "TikTok comments", "TikTok saves"],
+  keywords: ["TikTok services catalog", "TikTok service options", "TikTok engagement services", "TikTok story views", "TikTok saves"],
 });
 
 export default function TikTokServicesPage() {
