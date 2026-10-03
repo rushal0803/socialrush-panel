@@ -14,11 +14,6 @@ import { searchFreshnessLastmod } from "@/lib/seo/search-freshness";
 export const revalidate = 21600;
 
 const supplementalServiceRoutes = [
-  "/services/tiktok-likes",
-  "/services/tiktok-views",
-  "/services/tiktok-custom-comments",
-  "/services/tiktok-saves",
-  "/services/tiktok-story-views",
   "/services/telegram-post-views",
   "/services/telegram-post-reactions",
   "/services/telegram-poll-votes",

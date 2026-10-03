@@ -11,10 +11,10 @@ const canonicalCorePaths: Record<string, string> = {
 };
 
 export const metadata = createPageMetadata({
-  title: "LinkedIn Growth Services | Followers, Likes & USA Options | SocialRUSH",
-  description: "Explore all SocialRUSH LinkedIn growth services in one place, including followers, likes, connections, reposts, endorsements, group members and USA-focused options.",
+  title: "LinkedIn Services Catalog | Followers, Likes & USA Options | SocialRUSH",
+  description: "Browse the SocialRUSH LinkedIn service catalog in one place, including followers, likes, connections, reposts, endorsements, group members and USA-focused options.",
   path,
-  keywords: ["LinkedIn growth services", "LinkedIn followers India", "LinkedIn likes", "LinkedIn USA followers", "LinkedIn connections service"],
+  keywords: ["LinkedIn services catalog", "LinkedIn service options", "LinkedIn USA services", "LinkedIn connections service"],
 });
 
 export default function LinkedInServicesPage() {

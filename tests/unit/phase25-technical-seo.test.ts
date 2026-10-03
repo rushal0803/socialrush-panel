@@ -4,11 +4,11 @@ import { readFileSync } from "node:fs";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
 
-test("Phase 25 keeps active Facebook Shares and TikTok Story Views discoverable", () => {
+test("Phase 25 keeps active canonical India service pages discoverable", () => {
   const sitemap = read("app/sitemap.xml/route.ts");
-  assert.match(sitemap, /"\/services\/tiktok-story-views"/);
   assert.doesNotMatch(sitemap, /excludedServiceSlugs/);
   assert.match(sitemap, /indiaServiceSlugs\.map\(sitemapServicePath\)/);
+  assert.doesNotMatch(sitemap, /"\/services\/tiktok-story-views"/);
 });
 
 test("Phase 25 full-sitemap audit rejects redirect and noindex leakage", () => {

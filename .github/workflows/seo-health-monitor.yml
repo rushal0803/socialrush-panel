@@ -23,6 +23,8 @@ jobs:
         run: node scripts/seo-health-check.mjs
       - name: Check full-sitemap technical SEO
         run: node scripts/seo-sitewide-technical-audit.mjs
+      - name: Check keyword ownership consistency
+        run: node --experimental-strip-types scripts/seo-keyword-ownership-check.ts
       - name: Check Phase 16 Instagram technical SEO
         run: node scripts/seo-instagram-technical-check.mjs
       - name: Check Phase 17 Instagram sitemap integrity

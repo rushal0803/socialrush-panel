@@ -8,10 +8,10 @@ const path = "/services/telegram";
 const services = activeSmmServices.filter((service) => service.platform === "telegram");
 
 export const metadata = createPageMetadata({
-  title: "Telegram Growth Services | Members, Views, Reactions & Poll Votes | SocialRUSH",
-  description: "Explore SocialRUSH Telegram growth services, including members, post views, reactions and poll votes with clear public-link requirements and dashboard tracking.",
+  title: "Telegram Services Catalog | Members, Views, Reactions & Poll Votes | SocialRUSH",
+  description: "Browse the SocialRUSH Telegram service catalog, including members, post views, reactions and poll votes with clear public-link requirements and dashboard tracking.",
   path,
-  keywords: ["Telegram growth services", "Telegram members India", "Telegram post views", "Telegram reactions", "Telegram poll votes", "Telegram SMM panel India", "SMM panel for Telegram India"],
+  keywords: ["Telegram services catalog", "Telegram service options", "Telegram post views", "Telegram reactions", "Telegram poll votes", "Telegram SMM panel India"],
 });
 
 export default function TelegramServicesPage() {
