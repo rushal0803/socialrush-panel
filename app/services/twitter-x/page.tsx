@@ -7,10 +7,10 @@ const path = "/services/twitter-x";
 const services = activeSmmServices.filter((service) => service.platform === "x");
 
 export const metadata = createPageMetadata({
-  title: "Twitter / X Growth Services | Followers, Likes, Views & Reposts | SocialRUSH",
-  description: "Explore all SocialRUSH Twitter / X growth services, including followers, likes, views, reposts and crypto-focused engagement options with clear ordering requirements.",
+  title: "Twitter / X Services Catalog | Likes, Views, Reposts & Crypto | SocialRUSH",
+  description: "Browse the SocialRUSH Twitter / X service catalog, including followers, likes, views, reposts and crypto-focused options with clear ordering requirements.",
   path,
-  keywords: ["Twitter growth services", "X growth services", "Twitter followers India", "Twitter likes", "Twitter views", "Twitter reposts"],
+  keywords: ["Twitter services catalog", "X services catalog", "Twitter engagement services", "X crypto services"],
 });
 
 export default function TwitterXServicesPage() {
