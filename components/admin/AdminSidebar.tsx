@@ -12,6 +12,7 @@ const links = [
   ["CRM", "/admin/crm", "users"],
   ["Command Center", "/admin/command-center", "grid"],
   ["SEO Indexation", "/admin/seo/indexation", "search"],
+  ["SEO Content", "/admin/seo/content", "layers"],
   ["Profitability", "/admin/profitability", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
   ["Incidents", "/admin/incidents", "support"],
