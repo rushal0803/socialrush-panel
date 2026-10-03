@@ -1,4 +1,4 @@
-import { canonicalIndiaServicePaths } from "./india-service-pages.ts";
+import { canonicalIndiaServicePaths } from "./canonical-india-services.ts";
 
 export type QueryOwner = Readonly<{
   id: string;
