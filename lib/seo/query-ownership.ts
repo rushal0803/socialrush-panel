@@ -249,36 +249,6 @@ export const transactionalQueryOwners: readonly QueryOwner[] = [
     aliases: [],
   },
   {
-    id: "tiktok-likes",
-    canonicalPath: "/services/tiktok-likes",
-    intent: "TikTok likes service",
-    aliases: [],
-  },
-  {
-    id: "tiktok-views",
-    canonicalPath: "/services/tiktok-views",
-    intent: "TikTok views service",
-    aliases: [],
-  },
-  {
-    id: "tiktok-custom-comments",
-    canonicalPath: "/services/tiktok-custom-comments",
-    intent: "TikTok custom comments service",
-    aliases: [],
-  },
-  {
-    id: "tiktok-story-views",
-    canonicalPath: "/services/tiktok-story-views",
-    intent: "TikTok story views service",
-    aliases: [],
-  },
-  {
-    id: "tiktok-saves",
-    canonicalPath: "/services/tiktok-saves",
-    intent: "TikTok saves service",
-    aliases: [],
-  },
-  {
     id: "twitter-likes",
     canonicalPath: "/services/twitter-likes",
     intent: "Twitter or X likes service",
