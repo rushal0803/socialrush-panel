@@ -21,6 +21,8 @@ jobs:
           node-version: 20
       - name: Check production SEO health
         run: node scripts/seo-health-check.mjs
+      - name: Check full-sitemap technical SEO
+        run: node scripts/seo-sitewide-technical-audit.mjs
       - name: Check Phase 16 Instagram technical SEO
         run: node scripts/seo-instagram-technical-check.mjs
       - name: Check Phase 17 Instagram sitemap integrity

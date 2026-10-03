@@ -18,6 +18,7 @@ const supplementalServiceRoutes = [
   "/services/tiktok-views",
   "/services/tiktok-custom-comments",
   "/services/tiktok-saves",
+  "/services/tiktok-story-views",
   "/services/telegram-post-views",
   "/services/telegram-post-reactions",
   "/services/telegram-poll-votes",
@@ -97,11 +98,6 @@ const publicRoutes = [
   "/tools/social-media-growth-planner",
 ] as const;
 
-// Keep unavailable/non-routable service definitions out of discovery surfaces.
-// Facebook Shares remains in the legacy SEO registry for compatibility, but
-// there is no live landing page or confirmed active service to advertise.
-const excludedServiceSlugs = new Set<string>(["buy-facebook-shares-india"]);
-
 function escapeXml(value: string) {
   return value
     .replaceAll("&", "&amp;")
@@ -142,9 +138,7 @@ async function getApprovedCaseStudies(): Promise<CaseStudySitemapEntry[]> {
 }
 
 export async function GET() {
-  const serviceRoutes = indiaServiceSlugs
-    .filter((slug) => !excludedServiceSlugs.has(slug))
-    .map(sitemapServicePath);
+  const serviceRoutes = indiaServiceSlugs.map(sitemapServicePath);
   const uniqueBlogArticles = uniqueArticlesBySlug(blogArticles);
   const blogRoutes = uniqueBlogArticles.map((article) => `/blog/${article.slug}`);
   const approvedCaseStudies = await getApprovedCaseStudies();
