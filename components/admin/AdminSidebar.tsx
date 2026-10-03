@@ -11,6 +11,7 @@ const links = [
   ["Orders", "/admin/orders", "cart"], ["Refills", "/admin/refills", "layers"], ["Users", "/admin/users", "users"], ["Payments", "/admin/payments", "wallet"],
   ["CRM", "/admin/crm", "users"],
   ["Command Center", "/admin/command-center", "grid"],
+  ["SEO Indexation", "/admin/seo/indexation", "search"],
   ["Profitability", "/admin/profitability", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
   ["Incidents", "/admin/incidents", "support"],
@@ -23,6 +24,7 @@ function NavIcon({ name }: { name: string }) {
     layers: <><path d="m12 2 9 5-9 5-9-5 9-5Z"/><path d="m3 12 9 5 9-5M3 17l9 5 9-5"/></>, tag: <><path d="m20 13-7 7L3 10V3h7l10 10Z"/><path d="M7.5 7.5h.01"/></>,
     cart: <><path d="M3 4h2l2.5 11h10l2-7H6"/><circle cx="9" cy="20" r="1"/><circle cx="18" cy="20" r="1"/></>, users: <><circle cx="9" cy="8" r="4"/><path d="M2 21a7 7 0 0 1 14 0M16 4a4 4 0 0 1 0 8M18 15a6 6 0 0 1 4 6"/></>,
     wallet: <><path d="M4 6h14a2 2 0 0 1 2 2v11H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h12"/><path d="M15 12h5"/></>, support: <><path d="M4 13a8 8 0 0 1 16 0v6h-4v-7h4M4 12v7h4v-7H4Z"/><path d="M16 19c0 2-2 3-4 3"/></>,
+    search: <><circle cx="11" cy="11" r="7"/><path d="m20 20-4-4M8.5 11h5M11 8.5v5"/></>,
     settings: <><circle cx="12" cy="12" r="3"/><path d="M19 12a7 7 0 0 0-.1-1l2-1.5-2-3.4-2.4 1A8 8 0 0 0 15 6l-.3-2.6h-4L10.4 6A8 8 0 0 0 9 7L6.6 6 4.5 9.5l2 1.5a7 7 0 0 0 0 2l-2 1.5L6.6 18 9 17a8 8 0 0 0 1.4 1l.3 2.6h4L15 18a8 8 0 0 0 1.5-1l2.4 1 2-3.4-2-1.5c.1-.4.1-.7.1-1Z"/></>,
   };
   return <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.7" strokeLinecap="round" strokeLinejoin="round">{paths[name]}</svg>;
