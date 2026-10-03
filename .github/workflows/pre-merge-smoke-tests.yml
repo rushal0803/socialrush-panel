@@ -31,9 +31,10 @@ jobs:
       - run: node --check scripts/seo-instagram-technical-check.mjs
       - run: node --check scripts/seo-instagram-sitemap-check.mjs
       - run: node --check scripts/seo-sitewide-technical-audit.mjs
-      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts
+      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts
       - run: npm run seo:instagram-sitemap
       - run: npm run seo:ownership
+      - run: npm run seo:content-engine
       - run: npm run test:crm-pipeline
       - run: npm run test:international-seo
       - run: npm run test:payment-confidence

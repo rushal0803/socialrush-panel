@@ -11,6 +11,7 @@
     "seo:check": "node scripts/seo-health-check.mjs",
     "seo:technical": "node scripts/seo-sitewide-technical-audit.mjs",
     "seo:ownership": "node --experimental-strip-types scripts/seo-keyword-ownership-check.ts",
+    "seo:content-engine": "node --experimental-strip-types scripts/seo-content-engine-check.ts",
     "test:unit": "node --experimental-strip-types --test tests/unit/prospecting.test.ts tests/unit/crm-outreach-autopilot.test.ts tests/unit/lifecycle.test.ts tests/unit/international-seo.test.ts tests/unit/international-authority.test.ts tests/unit/country-service-seo.test.ts tests/unit/seo-architecture.test.ts tests/unit/search-demand-guides.test.ts tests/unit/service-cost-calculator.test.ts tests/unit/pricing-authority.test.ts tests/unit/social-media-roi.test.ts tests/unit/social-ad-metrics.test.ts tests/unit/youtube-subscriber-growth.test.ts tests/unit/youtube-view-growth.test.ts tests/unit/youtube-engagement.test.ts tests/unit/instagram-story-engagement.test.ts tests/unit/instagram-engagement.test.ts tests/unit/linkedin-engagement.test.ts tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts",
     "test:currency": "node --experimental-strip-types --test tests/unit/currency-localization.test.ts",
     "test:international-seo": "node --experimental-strip-types --test tests/unit/international-seo.test.ts",
