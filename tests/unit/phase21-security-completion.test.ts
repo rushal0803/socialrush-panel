@@ -8,6 +8,7 @@ test("Phase 21 completion keeps privileged admin RPCs on the server-only service
   const adminActions = read("app/admin/actions.ts");
   const crmActions = read("app/admin/crm/actions.ts");
   const refundRoute = read("app/api/payments/razorpay/refund/route.ts");
+  const orderRoute = read("app/api/orders/route.ts");
 
   assert.match(adminActions, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(adminActions, /adminSupabase: createAdminClient\(\)/);
@@ -22,13 +23,16 @@ test("Phase 21 completion keeps privileged admin RPCs on the server-only service
   assert.match(crmActions, /adminSupabase\.rpc\("admin_run_crm_automation"/);
   assert.match(refundRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(refundRoute, /admin\.rpc\("admin_refund_wallet_payment"/);
+  assert.match(orderRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
+  assert.match(orderRoute, /saveInitialCount\(createAdminClient\(\),/);
 });
 
 test("Phase 21 completion does not move customer self-service RPCs to service role", () => {
   const adminActions = read("app/admin/actions.ts");
   const crmActions = read("app/admin/crm/actions.ts");
+  const orderRoute = read("app/api/orders/route.ts");
 
-  for (const source of [adminActions, crmActions]) {
+  for (const source of [adminActions, crmActions, orderRoute]) {
     assert.doesNotMatch(source, /adminSupabase\.rpc\("(?:place_order|create_support_ticket|create_wallet_payment|submit_verified_review|update_my_account)"/);
   }
 });
