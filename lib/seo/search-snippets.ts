@@ -5,5 +5,5 @@ export function buildCommercialSearchDescription({
   serviceName: string;
   destination: string;
 }) {
-  return `Buy ${serviceName} in India with live INR pricing and quantity totals. Use a ${destination}; no password required. Check delivery, refill and dashboard tracking.`;
+  return `Buy ${serviceName} in India with live INR pricing and quantity-based totals. ${destination}; no password required. Delivery, refill and dashboard tracking.`;
 }
