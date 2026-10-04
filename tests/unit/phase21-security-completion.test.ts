@@ -25,6 +25,7 @@ test("Phase 21 completion keeps privileged admin RPCs on the server-only service
   assert.match(refundRoute, /admin\.rpc\("admin_refund_wallet_payment"/);
   assert.match(orderRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(orderRoute, /saveInitialCount\(createAdminClient\(\),/);
+  assert.doesNotMatch(orderRoute, /saveInitialCount\(supabase,/);
 });
 
 test("Phase 21 completion does not move customer self-service RPCs to service role", () => {
