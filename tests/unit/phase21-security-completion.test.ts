@@ -47,3 +47,20 @@ test("Phase 21 completion preserves authenticated admin verification before serv
   assert.match(crmActions, /supabase\.auth\.getUser\(\)/);
   assert.match(crmActions, /p\?\.role!=="admin"/);
 });
+
+
+test("Phase 21 final rollout revokes privileged RPC execution from public client roles", () => {
+  const migration = read("supabase/migrations/20261004104600_phase21_revoke_privileged_rpc_execution.sql");
+  for (const signature of [
+    "admin_adjust_balance(uuid, numeric, text)",
+    "admin_credit_reward(uuid)",
+    "admin_refund_wallet_payment(uuid, text)",
+    "admin_review_payment(uuid, text)",
+    "admin_run_crm_automation()",
+    "admin_set_user_blocked(uuid, boolean)",
+    "set_initial_order_count(uuid, bigint, text, text, text, text)",
+  ]) {
+    assert.match(migration, new RegExp(`revoke execute on function public\\.${signature.replace(/[()]/g, "\\$&")} from public, anon, authenticated;`));
+    assert.match(migration, new RegExp(`grant execute on function public\\.${signature.replace(/[()]/g, "\\$&")} to service_role;`));
+  }
+});
