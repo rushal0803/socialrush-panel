@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { razorpayRequest } from "@/lib/payments/razorpay";
 
@@ -18,7 +19,8 @@ export async function POST(request: NextRequest) {
   if (Number(wallet?.balance ?? 0) < Number(transaction.amount)) return NextResponse.json({ error: "Wallet balance is below the refundable amount" }, { status: 409 });
   try {
     const refund = await razorpayRequest<Refund>(`/payments/${transaction.provider_payment_id}/refund`, { method: "POST", body: JSON.stringify({ amount: Math.round(Number(transaction.amount) * 100), notes: { transaction_id: transaction.id } }) });
-    const { error } = await supabase.rpc("admin_refund_wallet_payment", { p_transaction_id: transaction.id, p_provider_refund_id: refund.id });
+    const admin = createAdminClient();
+    const { error } = await admin.rpc("admin_refund_wallet_payment", { p_transaction_id: transaction.id, p_provider_refund_id: refund.id });
     if (error) return NextResponse.json({ error: error.message }, { status: 400 });
     return NextResponse.json({ data: { refundId: refund.id } });
   } catch (error) {
