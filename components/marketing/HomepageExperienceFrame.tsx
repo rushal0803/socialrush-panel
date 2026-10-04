@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { motion, useReducedMotion, useScroll } from "framer-motion";
 import { ArrowRight, Compass, LayoutDashboard, Search, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 import styles from "./HomepageExperienceFrame.module.css";
@@ -15,23 +14,16 @@ const quickLinks = [
 ] as const;
 
 export default function HomepageExperienceFrame({ children }: { children: ReactNode }) {
-  const { scrollYProgress } = useScroll();
-  const reduceMotion = useReducedMotion();
-
   const jumpTo = (href: string) => {
     const target = document.querySelector(href);
     if (!target) return;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     target.scrollIntoView({ behavior: reduceMotion ? "auto" : "smooth", block: "start" });
   };
 
   return (
     <div className={`${styles.experience} ${mobileStyles.mobilePolish} ${laptopStyles.laptopPolish}`}>
       <div className={`${styles.navigator} ${mobileStyles.mobileNavigator}`} aria-label="Homepage quick navigation">
-        <motion.div
-          aria-hidden="true"
-          className={styles.progress}
-          style={{ scaleX: scrollYProgress }}
-        />
         <div className={styles.navigatorInner}>
           <div className={styles.navigatorLabel}>
             <span className={styles.navigatorIcon}><Sparkles aria-hidden="true" /></span>
