@@ -69,3 +69,11 @@ test("Phase 23 lazily decodes external UPI QR images", () => {
   const lazyImages = source.match(/loading="lazy" decoding="async" referrerPolicy="no-referrer"/g) ?? [];
   assert.equal(lazyImages.length, 2);
 });
+
+
+test("Phase 23 service-health fallback stays non-fatal when the backing database is unavailable", () => {
+  const source = read("app/api/service-health/route.ts");
+  assert.match(source, /\{ data: \{\}, unavailable: true \}/);
+  assert.match(source, /\{ status: 200, headers: \{ "Cache-Control": "no-store" \} \}/);
+  assert.doesNotMatch(source, /status: 503/);
+});
