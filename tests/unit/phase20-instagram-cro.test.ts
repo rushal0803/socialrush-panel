@@ -13,13 +13,16 @@ const builders = [
   "components/marketing/services/InstagramSharesLanding.tsx",
 ];
 
-test("Phase 20 uses the same measurable CRO primitives across all six Instagram order journeys", () => {
+test("Phase 20 retains measurable CRO behavior across inline and shared Instagram order journeys", () => {
   for (const path of builders) {
     const source = read(path);
-    assert.match(source, /QuantityDecisionGrid/, path + " should expose clear quantity choices");
-    assert.match(source, /OrderReadinessChecklist/, path + " should expose order readiness");
-    assert.match(source, /OrderBuilderView/, path + " should track builder views");
-    assert.match(source, /trackOrderContinue/, path + " should track valid order handoff");
+    const delegates = /<ServiceOrderCard\s/.test(source);
+    if (delegates) assert.match(source, /import ServiceOrderCard from "@\/components\/marketing\/services\/ServiceOrderCard"/);
+    const implementation = delegates ? read("components/marketing/services/ServiceOrderCard.tsx") : source;
+    assert.match(implementation, /QuantityDecisionGrid|data-cro-quantity-grid/, path + " should expose clear quantity choices");
+    assert.match(implementation, /OrderReadinessChecklist|data-cro-readiness/, path + " should expose order readiness");
+    assert.match(implementation, /OrderBuilderView|track\("package_viewed"/, path + " should track builder views");
+    assert.match(implementation, /trackOrderContinue|track\("new_order_clicked"/, path + " should track valid order handoff");
   }
 });
 

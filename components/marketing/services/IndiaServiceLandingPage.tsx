@@ -17,7 +17,7 @@ import {
 } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
-import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
+import InteractiveHomepageShell from "@/components/marketing/services/ServiceExperienceFrame";
 import {
   getCanonicalIndiaServicePath,
   getIndiaServiceFaqs,
@@ -249,7 +249,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "Facebook Group Members India", serviceType: "Facebook Group Members service", url: pageUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock", url: pageUrl } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [["Do I need my Facebook password?", "No. Only the exact accessible Facebook Group URL is required. Never share a password, OTP, or recovery code."], ["Which Facebook Group URL should I submit?", "Submit the exact facebook.com/groups/... URL. Facebook Page, profile, and post URLs are not accepted."], ["Does the group need to be accessible?", "Keep the submitted Facebook Group accessible and do not change its privacy settings while the order is processing."], ["Do group members guarantee activity or engagement?", "No. The service does not guarantee discussions, engagement, reach, sales, retention, or other platform outcomes."]].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} /></PublicShell>;
+    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} /></PublicShell>;
   }
   if (slug === "buy-youtube-comments-india") {
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
@@ -269,7 +269,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /></PublicShell>;
+    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /></PublicShell>;
   }
   if (slug === "buy-instagram-shares-india") {
     const shareUrl = `${SEO_SITE_URL}${canonicalPath}`;
@@ -284,7 +284,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: SEO_SITE_URL }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /></PublicShell>;
+    return <PublicShell serviceExperience>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /></PublicShell>;
   }
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;
@@ -451,7 +451,7 @@ export default async function IndiaServiceLandingPage({
   };
 
   return (
-    <PublicShell tone="light3d">
+    <PublicShell serviceExperience tone="light3d">
       {[faqSchema, breadcrumbSchema, serviceSchema].map((schema, index) => (
         <script
           key={index}
@@ -465,7 +465,7 @@ export default async function IndiaServiceLandingPage({
       <section className="relative overflow-hidden px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24">
         <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-orange-200/45 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 top-20 h-80 w-80 rounded-full bg-amber-200/45 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.14fr_.86fr]">
+        <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.14fr_.86fr]">
           <div>
             {isTwitterFollowers ? (
               <nav aria-label="Breadcrumb" className="mb-5 flex flex-wrap items-center gap-2 text-xs font-bold text-[#4B5563]">
@@ -930,17 +930,17 @@ export default async function IndiaServiceLandingPage({
           </h2>
           <div className="mt-9 grid gap-4">
             {faqs.map((faq) => (
-              <article
+              <details
                 key={faq.question}
                 className="rounded-2xl border border-white/90 bg-white/85 p-5 shadow-[0_18px_42px_-32px_rgba(255, 159, 0, .5)] sm:p-6"
               >
-                <h3 className="text-base font-black text-[#0B0B0F]">
+                <summary><h3 className="text-base font-black text-[#0B0B0F]">
                   {faq.question}
-                </h3>
+                </h3></summary>
                 <p className="mt-3 text-sm leading-7 text-[#111827]">
                   {faq.answer}
                 </p>
-              </article>
+              </details>
             ))}
           </div>
         </div>
