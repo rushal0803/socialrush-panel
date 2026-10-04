@@ -1,6 +1,6 @@
-import { contentClusters, type ContentPlatform } from "./content-clusters";
-import { internationalAuthorityMarkets } from "./international-authority";
-import { canonicalOwnerForPath, isCommercialAliasPath } from "./query-ownership";
+import { contentClusters, type ContentPlatform } from "./content-clusters.ts";
+import { internationalAuthorityMarkets } from "./international-authority.ts";
+import { canonicalOwnerForPath, isCommercialAliasPath } from "./query-ownership.ts";
 
 export type AuthorityKind =
   | "hub"
