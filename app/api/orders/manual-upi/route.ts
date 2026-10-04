@@ -106,9 +106,19 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please contact support before paying again." }, { status: 409 });
   }
 
+  // Retry safety: if this checkout already created an order for the same client request,
+  // return it as a duplicate success before running global UTR collision checks.
+  const { data: existingByRequest } = await admin
+    .from("orders")
+    .select("id,public_order_id,status,payment_status")
+    .eq("user_id", user.id)
+    .eq("client_request_id", clientRequestId)
+    .maybeSingle();
+  if (existingByRequest) return NextResponse.json({ data: existingByRequest, duplicate: true });
+
   const { data: existingUtr, error: duplicateUtrError } = await admin
     .from("orders")
-    .select("id,user_id,public_order_id")
+    .select("id,user_id,public_order_id,client_request_id")
     .ilike("customer_note", `%UTR: ${utr}.%`)
     .limit(1)
     .maybeSingle();
@@ -117,6 +127,9 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unable to verify this transaction ID right now. Please try again." }, { status: 503 });
   }
   if (existingUtr) {
+    if (existingUtr.user_id === user.id && existingUtr.client_request_id === clientRequestId) {
+      return NextResponse.json({ data: existingUtr, duplicate: true });
+    }
     return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for another order." }, { status: 409 });
   }
 
@@ -138,14 +151,6 @@ export async function POST(request: NextRequest) {
   const unitPrice = Math.round((charge * 1000 / quantity) * 10000) / 10000;
   const methodLabel = paymentMethod === "bank_transfer" ? "Bank transfer (IMPS/NEFT)" : paymentMethod === "usdt_trc20" ? "USDT (TRC20)" : "UPI";
   const customerNote = `${methodLabel} payment submitted for verification. Payment Ref: ${paymentReference}. UTR: ${utr}.`;
-
-  const { data: existingByRequest } = await admin
-    .from("orders")
-    .select("id,public_order_id,status,payment_status")
-    .eq("user_id", user.id)
-    .eq("client_request_id", clientRequestId)
-    .maybeSingle();
-  if (existingByRequest) return NextResponse.json({ data: existingByRequest, duplicate: true });
 
   const { data: order, error: orderError } = await admin
     .from("orders")
