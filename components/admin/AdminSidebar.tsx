@@ -69,7 +69,7 @@ export function AdminNav({ mobile = false, onNavigate }: { mobile?: boolean; onN
 
 export default function AdminSidebar() {
   return (
-    <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col px-4 py-6 lg:sticky lg:top-0 lg:flex">
+    <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col overflow-y-auto overscroll-contain px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
         <Logo light />
       </div>
