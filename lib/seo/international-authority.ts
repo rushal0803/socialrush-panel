@@ -1,4 +1,4 @@
-import { internationalMarkets, publishedCountryServicePages } from "./international";
+import { internationalMarkets, publishedCountryServicePages } from "./international.ts";
 
 export type InternationalAuthorityMarket = {
   slug: string;
