@@ -7,6 +7,7 @@ const read = (path: string) => readFileSync(new URL("../../" + path, import.meta
 test("Phase 21 completion keeps privileged admin RPCs on the server-only service-role client", () => {
   const adminActions = read("app/admin/actions.ts");
   const crmActions = read("app/admin/crm/actions.ts");
+  const refundRoute = read("app/api/payments/razorpay/refund/route.ts");
 
   assert.match(adminActions, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(adminActions, /adminSupabase: createAdminClient\(\)/);
@@ -19,6 +20,8 @@ test("Phase 21 completion keeps privileged admin RPCs on the server-only service
   assert.match(crmActions, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(crmActions, /adminSupabase:createAdminClient\(\)/);
   assert.match(crmActions, /adminSupabase\.rpc\("admin_run_crm_automation"/);
+  assert.match(refundRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
+  assert.match(refundRoute, /admin\.rpc\("admin_refund_wallet_payment"/);
 });
 
 test("Phase 21 completion does not move customer self-service RPCs to service role", () => {
