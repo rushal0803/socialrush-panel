@@ -19,7 +19,7 @@ export const dynamic = "force-dynamic";
 export const metadata: Metadata = createPageMetadata({
   title: "SMM Panel India | Social Media Services & INR Pricing",
   description:
-    "Compare SocialRUSH social media services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with live INR pricing, UPI checkout, public-link ordering and dashboard tracking.",
+    "Compare SocialRUSH services in India for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with live INR pricing, UPI and dashboard tracking.",
   path: "/services",
   keywords: [
     "social media growth services India",
