@@ -1,5 +1,6 @@
 "use server";
 import { revalidatePath } from "next/cache";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import type { CrmPriority, FollowUpStatus, FollowUpType, LifecycleStage, LeadStatus, ReplyClassification } from "@/lib/crm/types";
 import { isLeadContactOutreachEligible } from "@/lib/crm/outreach";
@@ -10,7 +11,7 @@ const lifecycle = new Set<LifecycleStage>(["lead","new_customer","active","vip",
 const priorities = new Set<CrmPriority>(["low","normal","high"]);
 const followTypes = new Set<FollowUpType>(["general","sales","support","payment","refill","retention"]);
 const followStatuses = new Set<FollowUpStatus>(["pending","completed","cancelled"]);
-async function admin() { const supabase=await createClient(); const {data:{user}}=await supabase.auth.getUser(); if(!user) throw new Error("Authentication required"); const {data:p}=await supabase.from("profiles").select("role").eq("id",user.id).single(); if(p?.role!=="admin") throw new Error("Admin access required"); return {supabase,user}; }
+async function admin() { const supabase=await createClient(); const {data:{user}}=await supabase.auth.getUser(); if(!user) throw new Error("Authentication required"); const {data:p}=await supabase.from("profiles").select("role").eq("id",user.id).single(); if(p?.role!=="admin") throw new Error("Admin access required"); return {supabase,user,adminSupabase:createAdminClient()}; }
 const value=(d:FormData,n:string)=>String(d.get(n)||"").trim();
 const path=(id:string)=>`/admin/crm/customers/${id}`;
 export async function saveCustomerLifecycleSettings(d:FormData){const{supabase}=await admin();const enabled=d.get("lifecycle_enabled")==="on",first=Number(d.get("first_order_delay_hours")),inactive=Number(d.get("inactive_days")),limit=Number(d.get("lifecycle_daily_limit"));if(![first,inactive,limit].every(Number.isInteger)||first<1||first>720||inactive<1||inactive>365||limit<1||limit>500)throw new Error("Enter lifecycle values within the displayed limits.");const{error}=await supabase.from("customer_email_automation_config").update({lifecycle_enabled:enabled,first_order_delay_hours:first,inactive_days:inactive,lifecycle_daily_limit:limit,updated_at:new Date().toISOString()}).eq("id",true);if(error){console.error("[crm] lifecycle settings save failed",{error:error.name});throw new Error("Lifecycle settings could not be saved. Please try again.");}revalidatePath("/admin/crm/automations");}
@@ -36,7 +37,7 @@ export async function saveAutomationSettings(input: { enabled: boolean; newCusto
   if (error) throw new Error("Automation settings could not be saved."); refreshAutomation();
 }
 export async function runCrmAutomation() {
-  const { supabase } = await admin(); const { data, error } = await supabase.rpc("admin_run_crm_automation");
+  const { supabase, adminSupabase } = await admin(); const { data, error } = await adminSupabase.rpc("admin_run_crm_automation");
   if (error) throw new Error("Automation could not be started. Please try again.");
   const runId = typeof data === "string" ? data : null;
   const { data: run } = runId ? await supabase.from("crm_automation_runs").select("status,customers_scanned,tags_added,followups_created").eq("id", runId).maybeSingle() : { data: null };

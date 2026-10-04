@@ -1,4 +1,5 @@
 import { NextResponse, type NextRequest } from "next/server";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { revalidatePath } from "next/cache";
 import { detectPublicCount } from "@/lib/orders/count-detector";
@@ -6,7 +7,7 @@ import { recordTrustedEvent } from "@/lib/analytics/server";
 import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 
 async function saveInitialCount(
-  supabase: Awaited<ReturnType<typeof createClient>>,
+  supabase: ReturnType<typeof createAdminClient>,
   input: {
     orderId: string;
     link: string;
@@ -100,7 +101,7 @@ export async function POST(request: NextRequest) {
   if (checkout?.id && !checkout.duplicate) {
     await recordTrustedEvent({eventName:"wallet_order_completed",customerId:user.id,pagePath:"/dashboard/new-order",eventId:`wallet_order:${checkout.id}`,metadata:{order_id:checkout.id}});
     await recordTrustedEvent({eventName:"order_created",customerId:user.id,pagePath:"/dashboard/new-order",eventId:`order:${checkout.id}`,metadata:{order_id:checkout.id,method:"wallet"}});
-    await saveInitialCount(supabase, {
+    await saveInitialCount(createAdminClient(), {
       orderId: checkout.id,
       link: body.link,
       serviceCode: body.serviceCode,
