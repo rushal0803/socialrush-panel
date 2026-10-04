@@ -3,7 +3,7 @@ import HomepageExperienceFrame from "./HomepageExperienceFrame";
 import InteractiveHomepageShell from "./InteractiveHomepageShell";
 import PremiumHomepage from "./PremiumHomepage";
 import PublicShell from "./PublicShell";
-import PersonalizationShelf from "./cro/PersonalizationShelf";
+import DeferredPersonalizationShelf from "./cro/DeferredPersonalizationShelf";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
 
 export default function HomepageContent() {
@@ -12,7 +12,7 @@ export default function HomepageContent() {
       <InteractiveHomepageShell>
         <HomepageExperienceFrame>
           <PremiumHomepage />
-          <PersonalizationShelf catalog={activeSmmServices} />
+          <DeferredPersonalizationShelf catalog={activeSmmServices} />
           <PublicReviewsSection limit={4} />
         </HomepageExperienceFrame>
       </InteractiveHomepageShell>
