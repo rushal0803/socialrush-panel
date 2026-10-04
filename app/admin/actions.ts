@@ -2,6 +2,7 @@
 
 import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
 import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
 
@@ -11,14 +12,14 @@ async function requireAdmin() {
   if (!user) redirect("/login");
   const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
   if (profile?.role !== "admin") redirect("/dashboard");
-  return { supabase, user };
+  return { supabase, user, adminSupabase: createAdminClient() };
 }
 
 function text(formData: FormData, name: string) { return String(formData.get(name) || "").trim(); }
 function number(formData: FormData, name: string) { return Number(formData.get(name)); }
 
 export async function updateRewardRules(formData: FormData) { const {supabase,user}=await requireAdmin();const {error}=await supabase.from("reward_programme_rules").update({enabled:text(formData,"enabled")==="true",manual_approval:text(formData,"manual_approval")==="true",minimum_order_amount:number(formData,"minimum_order_amount"),referrer_reward:number(formData,"referrer_reward"),new_customer_reward:number(formData,"new_customer_reward"),referral_expiry_days:number(formData,"referral_expiry_days"),loyalty_spend_threshold:number(formData,"loyalty_spend_threshold")||null,loyalty_reward:number(formData,"loyalty_reward")||null,updated_by:user.id,updated_at:new Date().toISOString()}).eq("id",true);if(error)throw new Error(error.message);revalidatePath("/admin/rewards");revalidatePath("/dashboard/rewards") }
-export async function reviewReward(formData: FormData){const{supabase}=await requireAdmin();const id=text(formData,"id"),decision=text(formData,"decision");if(decision==="credit"){const{error}=await supabase.rpc("admin_credit_reward",{p_event:id});if(error)throw new Error(error.message)}else{await supabase.from("customer_reward_events").update({status:"rejected",internal_note:text(formData,"note"),updated_at:new Date().toISOString()}).eq("id",id)}revalidatePath("/admin/rewards");revalidatePath("/dashboard/rewards")}
+export async function reviewReward(formData: FormData){const{supabase,adminSupabase}=await requireAdmin();const id=text(formData,"id"),decision=text(formData,"decision");if(decision==="credit"){const{error}=await adminSupabase.rpc("admin_credit_reward",{p_event:id});if(error)throw new Error(error.message)}else{await supabase.from("customer_reward_events").update({status:"rejected",internal_note:text(formData,"note"),updated_at:new Date().toISOString()}).eq("id",id)}revalidatePath("/admin/rewards");revalidatePath("/dashboard/rewards")}
 
 export async function moderateReview(formData: FormData) {
   const { supabase, user } = await requireAdmin(); const id=text(formData,"id"); const status=text(formData,"status");
@@ -133,7 +134,7 @@ export async function deleteCategory(formData: FormData) {
 }
 
 export async function updateOrder(formData: FormData) {
-  const { supabase } = await requireAdmin();
+  const { supabase, adminSupabase } = await requireAdmin();
 
   const orderId = text(formData, "id");
   const nextStatus = text(formData, "status");
@@ -168,15 +169,15 @@ export async function updateOrder(formData: FormData) {
   const shouldRefund = refundStatuses.has(nextStatus) && !refundStatuses.has(currentOrder.status);
 
   if (shouldRefund) {
-    await refundOrderToWalletOnce(supabase, currentOrder);
+    await refundOrderToWalletOnce(adminSupabase, currentOrder);
   }
 
   revalidatePath("/admin/orders"); revalidatePath("/admin");
 }
 
 export async function adjustBalance(formData: FormData) {
-  const { supabase } = await requireAdmin();
-  await supabase.rpc("admin_adjust_balance", { p_user_id: text(formData, "user_id"), p_amount: number(formData, "amount"), p_operation: text(formData, "operation") });
+  const { adminSupabase } = await requireAdmin();
+  await adminSupabase.rpc("admin_adjust_balance", { p_user_id: text(formData, "user_id"), p_amount: number(formData, "amount"), p_operation: text(formData, "operation") });
   revalidatePath("/admin/users"); revalidatePath("/admin/transactions"); revalidatePath("/admin");
 }
 
@@ -189,8 +190,8 @@ export async function changeUserRole(formData: FormData) {
 }
 
 export async function setUserBlocked(formData: FormData) {
-  const { supabase } = await requireAdmin();
-  await supabase.rpc("admin_set_user_blocked", {
+  const { adminSupabase } = await requireAdmin();
+  await adminSupabase.rpc("admin_set_user_blocked", {
     p_user_id: text(formData, "user_id"),
     p_blocked: text(formData, "blocked") === "true",
   });
@@ -229,8 +230,8 @@ export async function deletePackage(formData: FormData) {
 }
 
 export async function reviewPayment(formData: FormData) {
-  const { supabase } = await requireAdmin();
-  await supabase.rpc("admin_review_payment", {
+  const { adminSupabase } = await requireAdmin();
+  await adminSupabase.rpc("admin_review_payment", {
     p_transaction_id: text(formData, "id"),
     p_decision: text(formData, "decision"),
   });
