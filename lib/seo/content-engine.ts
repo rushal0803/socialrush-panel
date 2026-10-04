@@ -3,6 +3,7 @@ import { getArticleWords, isValidDate, uniqueArticlesBySlug } from "@/lib/blog";
 import { contentClusters, type ContentPlatform } from "@/lib/seo/content-clusters";
 import { instagramContentGapCandidates } from "@/lib/seo/instagram-content-gap";
 import { linkedInContentGapCandidates } from "@/lib/seo/linkedin-content-gap";
+import { additionalPlatformContentGapSources, type AdditionalContentPlatform } from "@/lib/seo/platform-content-gaps";
 
 const REVIEW_AFTER_DAYS = 120;
 
@@ -37,7 +38,7 @@ export type ContentClusterHealth = {
 };
 
 export type ContentGapPlan = {
-  source: "Instagram" | "LinkedIn";
+  source: "Instagram" | "LinkedIn" | AdditionalContentPlatform;
   id: string;
   queryTheme: string;
   decision: "implement" | "defer" | "covered";
@@ -79,6 +80,9 @@ function buildGapPlans(articlePaths: Set<string>): ContentGapPlan[] {
   const sources = [
     ...instagramContentGapCandidates.map((candidate) => ({ source: "Instagram" as const, candidate })),
     ...linkedInContentGapCandidates.map((candidate) => ({ source: "LinkedIn" as const, candidate })),
+    ...additionalPlatformContentGapSources.flatMap(({ source, candidates }) =>
+      candidates.map((candidate) => ({ source, candidate })),
+    ),
   ];
 
   return sources.map(({ source, candidate }) => ({
