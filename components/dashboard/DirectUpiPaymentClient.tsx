@@ -74,6 +74,7 @@ export default function DirectUpiPaymentClient({
   const [copiedAmount, setCopiedAmount] = useState(false);
   const [cryptoCopied, setCryptoCopied] = useState(false);
   const [copiedBankField, setCopiedBankField] = useState("");
+  const [showQr, setShowQr] = useState(false);
   const utrInputRef = useRef<HTMLInputElement>(null);
   const returnTrackedRef = useRef(false);
   const paymentStateKey = `socialrush-direct-payment:${intentId}`;
@@ -94,6 +95,8 @@ export default function DirectUpiPaymentClient({
     });
     return `upi://pay?${params.toString()}`;
   }, [payeeName, reference, total, upiId]);
+
+  const qrUrl = useMemo(() => upiHref ? `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=${encodeURIComponent(upiHref)}` : "", [upiHref]);
 
   useEffect(() => {
     try {
@@ -207,7 +210,24 @@ export default function DirectUpiPaymentClient({
         error?: string;
       };
       if (!response.ok || !payload.data) {
-        throw new Error(payload.error || "Unable to confirm your order.");
+        const message = payload.error || "Unable to confirm your order.";
+        const normalized = message.toLowerCase();
+        const category =
+          response.status >= 500 ? "manual_payment_backend_unavailable" :
+          normalized.includes("expired") ? "manual_payment_session_expired" :
+          normalized.includes("already been submitted") ? "manual_payment_duplicate_transaction" :
+          normalized.includes("temporarily unavailable") ? "manual_payment_service_unavailable" :
+          normalized.includes("do not match") ? "manual_payment_checkout_mismatch" :
+          response.status === 422 ? "manual_payment_validation_error" :
+          "manual_payment_confirmation_failed";
+        track("checkout_error", {
+          service_code: serviceCode,
+          method: paymentMethod,
+          step: "verification",
+          error_category: category,
+          http_status: response.status,
+        });
+        throw new Error(message);
       }
 
       setSuccess({ public_order_id: payload.data.public_order_id });
@@ -215,11 +235,12 @@ export default function DirectUpiPaymentClient({
       window.setTimeout(() => router.push("/dashboard/orders"), 1800);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to confirm your order.");
+      // Specific API failures are tracked above. This fallback covers network/client failures.
       track("checkout_error", {
         service_code: serviceCode,
         method: paymentMethod,
         step: "verification",
-        error_category: "manual_payment_confirmation_failed",
+        error_category: "manual_payment_network_or_client_error",
       });
     } finally {
       setSubmitting(false);
@@ -410,28 +431,37 @@ export default function DirectUpiPaymentClient({
                   {["Google Pay","PhonePe","Paytm","BHIM","Amazon Pay","WhatsApp Pay"].map((app) => <span key={app} className="rounded-full border border-white/10 bg-white/[0.035] px-2.5 py-1.5">{app}</span>)}
                 </div>
 
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
-                  <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div className="min-w-0">
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Pay to UPI ID</p>
-                        <p className="mt-1 break-all text-base font-black text-white">{upiId}</p>
-                      </div>
-                      <button type="button" onClick={() => void copyUpiId()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-orange-200">
-                        <Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy"}
-                      </button>
-                    </div>
+                <div className="mt-4 grid gap-4 lg:grid-cols-[300px_1fr]">
+                  <div className="hidden rounded-2xl bg-white p-4 text-center lg:block">
+                    {qrUrl ? <img src={qrUrl} alt={`UPI QR to pay exactly ${amountLabel}`} width={268} height={268} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="mx-auto h-auto w-full max-w-[268px]" /> : null}
+                    <p className="mt-2 text-xs font-black text-slate-900">Scan to pay exactly {amountLabel}</p>
+                    <p className="mt-1 text-[11px] text-slate-600">Open any UPI app on your phone and scan this QR. The amount is already included.</p>
                   </div>
-                  <div className="rounded-2xl border border-orange-400/20 bg-orange-500/[0.06] p-4">
-                    <div className="flex items-center justify-between gap-3">
-                      <div>
-                        <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Exact amount</p>
-                        <p className="mt-1 text-lg font-black text-orange-200">{amountLabel}</p>
+                  <div className="space-y-3">
+                    <div className="rounded-2xl border border-white/10 bg-black/25 p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div className="min-w-0">
+                          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Pay to UPI ID</p>
+                          <p className="mt-1 break-all text-base font-black text-white">{upiId}</p>
+                        </div>
+                        <button type="button" onClick={() => void copyUpiId()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-white/10 bg-white/[0.04] px-3 text-xs font-black text-orange-200">
+                          <Copy className="h-4 w-4" /> {copied ? "Copied" : "Copy"}
+                        </button>
                       </div>
-                      <button type="button" onClick={() => void copyAmount()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-orange-400/20 bg-orange-500/[0.08] px-3 text-xs font-black text-orange-200">
-                        <Copy className="h-4 w-4" /> {copiedAmount ? "Copied" : "Copy"}
-                      </button>
                     </div>
+                    <div className="rounded-2xl border border-orange-400/20 bg-orange-500/[0.06] p-4">
+                      <div className="flex items-center justify-between gap-3">
+                        <div>
+                          <p className="text-[10px] font-black uppercase tracking-[0.18em] text-zinc-500">Exact amount</p>
+                          <p className="mt-1 text-lg font-black text-orange-200">{amountLabel}</p>
+                        </div>
+                        <button type="button" onClick={() => void copyAmount()} className="inline-flex min-h-10 shrink-0 items-center gap-2 rounded-xl border border-orange-400/20 bg-orange-500/[0.08] px-3 text-xs font-black text-orange-200">
+                          <Copy className="h-4 w-4" /> {copiedAmount ? "Copied" : "Copy"}
+                        </button>
+                      </div>
+                    </div>
+                    <button type="button" onClick={() => setShowQr((value) => !value)} className="min-h-11 w-full rounded-xl border border-white/15 bg-white/[0.03] px-4 text-sm font-black text-white lg:hidden">{showQr ? "Hide QR Code" : "Show QR Code"}</button>
+                    {showQr && qrUrl ? <div className="rounded-2xl bg-white p-4 text-center lg:hidden"><img src={qrUrl} alt={`UPI QR to pay exactly ${amountLabel}`} width={280} height={280} loading="lazy" decoding="async" referrerPolicy="no-referrer" className="mx-auto h-auto w-full max-w-[280px]" /><p className="mt-2 text-sm font-black text-slate-900">Pay exactly {amountLabel}</p></div> : null}
                   </div>
                 </div>
 
@@ -456,7 +486,7 @@ export default function DirectUpiPaymentClient({
 
                 <button type="button" onClick={() => { setPaymentStarted(true); returnTrackedRef.current = false; track("payment_returned", { service_code: serviceCode, method: "upi", surface: "already_paid_cta" }); window.setTimeout(() => utrInputRef.current?.focus(), 150); }} className="mt-3 min-h-11 w-full rounded-xl border border-orange-400/25 bg-orange-500/[0.06] px-4 text-sm font-black text-orange-200 transition hover:border-orange-400/50 hover:bg-orange-500/[0.1]">I already paid · Enter UTR</button>
 
-                <p className="mt-3 text-center text-xs leading-5 text-zinc-500">If the app chooser does not open, use Copy UPI ID + Copy Amount and pay from any UPI app. On desktop, use those same details on your phone.</p>
+                <p className="mt-3 text-center text-xs leading-5 text-zinc-500">On desktop, scan the QR with your phone. On mobile, open a UPI app directly. Copy UPI ID + amount remains available as a fallback.</p>
 
                 <div className="mt-4 flex items-start gap-2 rounded-xl border border-emerald-400/10 bg-emerald-500/[0.06] p-3 text-xs leading-5 text-emerald-100/80">
                   <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
