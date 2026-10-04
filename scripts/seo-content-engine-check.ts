@@ -3,6 +3,7 @@ import { join } from "node:path";
 import { contentClusters } from "../lib/seo/content-clusters.ts";
 import { instagramContentGapCandidates } from "../lib/seo/instagram-content-gap.ts";
 import { linkedInContentGapCandidates } from "../lib/seo/linkedin-content-gap.ts";
+import { additionalPlatformContentGapSources } from "../lib/seo/platform-content-gaps.ts";
 
 const failures: string[] = [];
 const blogDir = join(process.cwd(), "components", "marketing", "blog");
@@ -42,6 +43,9 @@ for (const cluster of Object.values(contentClusters)) {
 const gapCandidates = [
   ...instagramContentGapCandidates.map((candidate) => ({ source: "instagram", candidate })),
   ...linkedInContentGapCandidates.map((candidate) => ({ source: "linkedin", candidate })),
+  ...additionalPlatformContentGapSources.flatMap(({ source, candidates }) =>
+    candidates.map((candidate) => ({ source: source.toLowerCase(), candidate })),
+  ),
 ];
 
 for (const { source, candidate } of gapCandidates) {
