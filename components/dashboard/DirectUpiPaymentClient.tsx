@@ -193,6 +193,7 @@ export default function DirectUpiPaymentClient({
       step: "verification",
     });
 
+    let apiFailureTracked = false;
     try {
       const response = await fetch("/api/orders/manual-upi", {
         method: "POST",
@@ -227,6 +228,7 @@ export default function DirectUpiPaymentClient({
           error_category: category,
           http_status: response.status,
         });
+        apiFailureTracked = true;
         throw new Error(message);
       }
 
@@ -235,13 +237,14 @@ export default function DirectUpiPaymentClient({
       window.setTimeout(() => router.push("/dashboard/orders"), 1800);
     } catch (cause) {
       setError(cause instanceof Error ? cause.message : "Unable to confirm your order.");
-      // Specific API failures are tracked above. This fallback covers network/client failures.
-      track("checkout_error", {
-        service_code: serviceCode,
-        method: paymentMethod,
-        step: "verification",
-        error_category: "manual_payment_network_or_client_error",
-      });
+      if (!apiFailureTracked) {
+        track("checkout_error", {
+          service_code: serviceCode,
+          method: paymentMethod,
+          step: "verification",
+          error_category: "manual_payment_network_or_client_error",
+        });
+      }
     } finally {
       setSubmitting(false);
     }
