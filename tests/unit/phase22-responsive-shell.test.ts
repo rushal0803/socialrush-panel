@@ -45,3 +45,10 @@ test("Phase 22 keeps admin modals viewport-bounded and vertically scrollable", (
   assert.match(modal, /max-h-\[calc\(100dvh-2rem\)\]/);
   assert.match(modal, /w-full max-w-2xl overflow-y-auto/);
 });
+
+
+test("Phase 22 keeps admin login inputs at 16px on mobile to prevent browser zoom", () => {
+  const source = read("app/admin/login/AdminLoginForm.tsx");
+  const matches = source.match(/text-base text-white[^"]*sm:text-sm/g) ?? [];
+  assert.equal(matches.length, 2);
+});
