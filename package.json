@@ -19,7 +19,7 @@
     "test:topical-authority": "node --experimental-strip-types --test tests/unit/topical-authority.test.ts",
     "test:trust": "node --experimental-strip-types --test tests/unit/trust-content.test.ts",
     "test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts",
-    "test:cro": "node --experimental-strip-types --test tests/unit/cro-personalization.test.ts",
+    "test:cro": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/cro-personalization.test.ts",
     "test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts",
     "test:crm-pipeline": "node --experimental-strip-types --test tests/unit/sales-pipeline.test.ts tests/unit/crm-outreach-autopilot.test.ts",
     "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts",

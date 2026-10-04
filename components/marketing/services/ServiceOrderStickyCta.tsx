@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
-import { ArrowRight, LockKeyhole } from "lucide-react";
+import { ArrowRight, LockKeyhole, X } from "lucide-react";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 
@@ -26,6 +26,7 @@ export default function ServiceOrderStickyCta({
 }: ServiceOrderStickyCtaProps) {
   const { currency, rates } = usePreferredCurrency("INR");
   const [targetVisible, setTargetVisible] = useState(false);
+  const [dismissed, setDismissed] = useState(false);
 
   useEffect(() => {
     if (!href.startsWith("#")) return;
@@ -39,17 +40,17 @@ export default function ServiceOrderStickyCta({
     return () => observer.disconnect();
   }, [href]);
 
-  if (!available || targetVisible) return null;
+  if (!available || targetVisible || dismissed) return null;
 
   const price = typeof startingPrice === "number" && Number.isFinite(startingPrice)
-    ? `From ${formatCurrency(startingPrice, currency, rates)}`
+    ? `${formatCurrency(startingPrice, currency, rates)} / 1K`
     : "View live price";
 
   return (
-    <div className="fixed bottom-[calc(.75rem+env(safe-area-inset-bottom))] left-3 right-16 z-[60] lg:hidden">
+    <div data-service-mobile-action className="fixed bottom-[calc(.75rem+env(safe-area-inset-bottom))] left-3 right-16 z-[60] flex items-center rounded-2xl border border-white/20 bg-[#101217] shadow-lg lg:hidden">
       <Link
         href={href}
-        className="flex min-h-12 items-center justify-between gap-3 rounded-2xl border border-orange-400/30 bg-[#0B0B0F]/95 px-3 py-2 text-white shadow-[0_18px_45px_rgba(0,0,0,.35)] backdrop-blur-xl"
+        className="flex min-h-12 min-w-0 flex-1 items-center justify-between gap-2 rounded-l-2xl px-3 py-2 text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300"
       >
         <span className="min-w-0">
           <span className="block truncate text-xs font-black">{serviceName}</span>
@@ -59,10 +60,11 @@ export default function ServiceOrderStickyCta({
           </span>
           {currency !== "INR" && typeof startingPrice === "number" ? <span className="mt-0.5 block text-[9px] text-slate-300">Checkout charged in INR</span> : null}
         </span>
-        <span className="inline-flex min-h-9 shrink-0 items-center gap-1 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-3 text-xs font-black">
+        <span className="inline-flex min-h-11 shrink-0 items-center gap-1 rounded-xl bg-[#ff983e] px-2 text-xs font-black text-[#201309]">
           Start order <ArrowRight className="h-3.5 w-3.5" />
         </span>
       </Link>
+      <button type="button" onClick={() => setDismissed(true)} aria-label="Dismiss mobile order bar" className="grid min-h-11 w-11 shrink-0 place-items-center rounded-r-2xl text-slate-300 focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300"><X className="h-4 w-4" aria-hidden="true" /></button>
     </div>
   );
 }

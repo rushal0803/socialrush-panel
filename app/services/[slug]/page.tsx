@@ -675,7 +675,7 @@ export default async function ServiceSeoPage({
   };
 
   return (
-    <PublicShell tone="light3d">
+    <PublicShell serviceExperience tone="light3d">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}

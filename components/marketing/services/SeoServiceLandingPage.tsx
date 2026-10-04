@@ -19,7 +19,7 @@ import {
 import Link from "next/link";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
-import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
+import InteractiveHomepageShell from "@/components/marketing/services/ServiceExperienceFrame";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
 import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
@@ -167,7 +167,7 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
     .slice(0, 5);
 
   return (
-    <PublicShell tone="light3d">
+    <PublicShell serviceExperience tone="light3d">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schemas.breadcrumbs) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schemas.faq) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schemas.service) }} />
@@ -177,7 +177,7 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
       <section className="relative overflow-hidden px-4 pb-16 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24">
         <div className="pointer-events-none absolute -left-24 top-6 h-72 w-72 rounded-full bg-orange-200/45 blur-3xl" />
         <div className="pointer-events-none absolute -right-24 top-24 h-80 w-80 rounded-full bg-amber-200/50 blur-3xl" />
-        <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.18fr_.82fr]">
+        <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.18fr_.82fr]">
           <div>
             <div className="inline-flex items-center gap-2 rounded-full border border-white/90 bg-white/75 px-3 py-2 text-[10px] font-black uppercase tracking-[0.14em] text-[#111827] shadow-sm backdrop-blur-xl">
               <span className={`grid h-7 w-7 place-items-center rounded-full bg-gradient-to-br ${page.platform.gradient} text-white`}>
@@ -211,7 +211,7 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
             </div>
           </div>
 
-          <aside className="rounded-[2rem] border border-white/90 bg-white/78 p-5 shadow-[0_30px_70px_-35px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-7">
+          {!page.service.requiresLiveCatalogFacts ? <ServiceLandingOrderBuilder service={page.service} compact /> : <aside className="rounded-[2rem] border border-white/90 bg-white/78 p-5 shadow-[0_30px_70px_-35px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-7">
             <div className="flex items-center justify-between gap-4">
               <span className={`grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br ${page.platform.gradient} text-white shadow-lg`}>
                 <PlatformIcon platform={page.platform.icon} className="h-7 w-7" />
@@ -250,11 +250,50 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
             <Link href={packagesHref} className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-5 py-3 text-sm font-black text-[#FF9F00] transition hover:border-[#FF9F00] hover:bg-white">
               View latest price and packages
             </Link>
-          </aside>
+          </aside>}
         </div>
       </section>
 
-      {!page.service.requiresLiveCatalogFacts ? <ServiceLandingOrderBuilder service={page.service} /> : null}
+      {!page.service.requiresLiveCatalogFacts ? <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6"><aside className="rounded-[2rem] border border-white/90 bg-white/78 p-5 shadow-[0_30px_70px_-35px_rgba(255, 159, 0, .5)] backdrop-blur-2xl sm:p-7">
+            <div className="flex items-center justify-between gap-4">
+              <span className={`grid h-14 w-14 place-items-center rounded-2xl bg-gradient-to-br ${page.platform.gradient} text-white shadow-lg`}>
+                <PlatformIcon platform={page.platform.icon} className="h-7 w-7" />
+              </span>
+              <span className="rounded-full border border-emerald-200 bg-emerald-50 px-3 py-1.5 text-[10px] font-black uppercase tracking-wide text-emerald-700">
+                Available
+              </span>
+            </div>
+            <p className="mt-6 text-[10px] font-black uppercase tracking-[0.15em] text-[#111827]">Current catalog rate</p>
+            {formattedPrice ? (
+              <p className="mt-2 text-3xl font-black text-[#0B0B0F]">
+                {formattedPrice} <span className="text-sm text-[#111827]">per 1K</span>
+              </p>
+            ) : (
+              <p className="mt-2 text-2xl font-black text-[#0B0B0F]">View latest price</p>
+            )}
+            <p className="mt-3 text-xs leading-6 text-[#111827]">
+              {formattedPrice
+                ? "Your exact total is calculated from the quantity selected during checkout."
+                : "Open Packages to review the latest confirmed rate and exact checkout total."}
+            </p>
+            <dl className="mt-6 grid gap-3 border-t border-[#FFF8F1] pt-5 text-xs">
+              <div className="flex items-center justify-between gap-4">
+                <dt className="text-[#111827]">Delivery estimate</dt>
+                <dd className="text-right font-black text-[#0B0B0F]">{page.service.deliveryTime}</dd>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <dt className="text-[#111827]">Refill support</dt>
+                <dd className="text-right font-black text-[#0B0B0F]">{page.service.refillPolicy}</dd>
+              </div>
+              <div className="flex items-center justify-between gap-4">
+                <dt className="text-[#111827]">Required</dt>
+                <dd className="max-w-[60%] text-right font-black text-[#0B0B0F]">{page.destination}</dd>
+              </div>
+            </dl>
+            <Link href={packagesHref} className="mt-6 inline-flex min-h-12 w-full items-center justify-center rounded-xl border border-[#FFF3E0] bg-[#FFF8F1] px-5 py-3 text-sm font-black text-[#FF9F00] transition hover:border-[#FF9F00] hover:bg-white">
+              View latest price and packages
+            </Link>
+          </aside></section> : null}
 
       <SearchDemandPriceSection displayName={page.displayName} serviceCode={page.service.code} platform={page.service.platform} pricePer1000={page.confirmedPrice} destination={page.destination} packagesHref={packagesHref} />
 

@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { cashfreeCustomerPhone } from "../../lib/payments/cashfree-customer";
 
 test("direct Cashfree checkout keeps a saved valid phone when available", () => {

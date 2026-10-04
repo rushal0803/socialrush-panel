@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import PublicShell from "@/components/marketing/PublicShell";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
@@ -81,7 +82,7 @@ export default function YouTubeWatchHoursPage() {
   };
 
   return (
-    <>
+    <PublicShell serviceExperience>
       <BreadcrumbJsonLd
         items={[
           { name: "Home", path: "/" },
@@ -195,6 +196,6 @@ export default function YouTubeWatchHoursPage() {
       </main>
 
       <MoneyPageAuthorityLinks platform="youtube" />
-    </>
+    </PublicShell>
   );
 }

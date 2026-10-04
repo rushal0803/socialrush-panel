@@ -1,4 +1,5 @@
-import { expect, test, type Page } from "@playwright/test";
+import { expect, test } from "./fixtures";
+import type { Page } from "@playwright/test";
 
 const applicationError = /application error|something went wrong|internal server error/i;
 
@@ -66,6 +67,7 @@ test("production CSP retains required Supabase and Cashfree allowances without R
   expect(csp).toContain("connect-src 'self' https://*.supabase.co wss://*.supabase.co");
   expect(csp).toContain("style-src 'self' 'unsafe-inline'");
   expect(csp).toContain("https://sdk.cashfree.com");
+  expect(csp).toContain("upgrade-insecure-requests");
   expect(csp).not.toContain("razorpay.com");
 });
 

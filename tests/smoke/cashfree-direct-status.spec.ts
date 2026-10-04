@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 import { classifyCashfreeDirectVerification } from "../../lib/payments/cashfree-direct-status";
 
 test("failed Cashfree direct payment is terminal and does not look pending", () => {

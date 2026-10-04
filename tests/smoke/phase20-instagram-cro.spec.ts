@@ -1,4 +1,4 @@
-import { expect, test } from "@playwright/test";
+import { expect, test } from "./fixtures";
 
 const staticRoutes = [
   { path: "/buy-instagram-followers-india", target: "#packages", link: "https://instagram.com/socialrushcro" },

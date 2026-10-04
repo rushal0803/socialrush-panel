@@ -1,15 +1,19 @@
 import MarketingHeader from "./MarketingHeader";
 import MarketingFooter from "./MarketingFooter";
+import ServiceJourney from "./services/ServiceJourney";
+import serviceStyles from "./services/ServiceExperience.module.css";
 
 export default function PublicShell({
   children,
   tone = "default",
+  serviceExperience = false,
 }: {
   children: React.ReactNode;
   tone?: "default" | "light3d";
+  serviceExperience?: boolean;
 }) {
   return (
-    <div className="public-dark sr-page relative isolate min-h-screen overflow-x-clip bg-surface-page text-content-primary">
+    <div className={`public-dark sr-page relative isolate min-h-screen overflow-x-clip bg-surface-page text-content-primary ${serviceExperience ? serviceStyles.shell : ""}`}>
       <a
         href="#main-content"
         className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
@@ -23,8 +27,9 @@ export default function PublicShell({
       />
 
       <MarketingHeader tone={tone} />
-      <main id="main-content" className="relative min-h-[55vh]">
+      <main id="main-content" className={`relative min-h-[55vh] ${serviceExperience ? serviceStyles.page : ""}`}>
         {children}
+        {serviceExperience ? <ServiceJourney /> : null}
       </main>
       <div className="content-auto">
         <MarketingFooter tone={tone} />

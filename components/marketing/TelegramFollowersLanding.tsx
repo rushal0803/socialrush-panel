@@ -55,10 +55,10 @@ export default function TelegramFollowersLanding({ live }: { live: LiveServiceFa
   const updateQuantity = (value: number) => setQuantity(Math.max(min, Math.min(max, Math.round(Number.isFinite(value) ? value : min))));
   const formatQty = (value: number) => value >= 1000 ? `${value / 1000}K` : value.toLocaleString("en-IN");
 
-  return <PublicShell tone="light3d">
+  return <PublicShell serviceExperience tone="light3d">
     <section className="relative overflow-hidden bg-[#07080D] px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
       <div className="pointer-events-none absolute left-[-12rem] top-0 h-[32rem] w-[32rem] rounded-full bg-orange-500/15 blur-[130px]" /><div className="pointer-events-none absolute right-[-10rem] top-12 h-[28rem] w-[28rem] rounded-full bg-sky-500/15 blur-[130px]" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-10 lg:grid-cols-[1.05fr_.95fr]">
+      <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.05fr_.95fr]">
         <div><span className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-[10px] font-black tracking-[.16em] text-sky-100"><Send className="h-3.5 w-3.5" /> TELEGRAM MEMBERS SERVICE</span>
           <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.04] tracking-[-.05em] text-white sm:text-6xl">Buy Telegram <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Members</span> in India</h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">SocialRUSH provides Telegram growth services for India. Choose a member package, order online with transparent INR pricing, and submit only the public channel or group link required by the service—never your Telegram password.</p>

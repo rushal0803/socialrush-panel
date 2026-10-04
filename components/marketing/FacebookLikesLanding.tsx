@@ -41,10 +41,10 @@ export default function FacebookLikesLanding() {
   }, [playing]);
   if (!service) return null;
   const price = formatCurrency(service.pricePer1000, currency);
-  return <PublicShell tone="light3d"><main className="overflow-hidden bg-[#0b0d12] text-white">
+  return <PublicShell serviceExperience tone="light3d"><main className="overflow-hidden bg-[#0b0d12] text-white">
     <section className="relative border-b border-white/10 px-4 pb-14 pt-12 sm:px-6 lg:px-8 lg:pb-20 lg:pt-16">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_88%_13%,rgba(24,119,242,.2),transparent_25%),radial-gradient(circle_at_14%_8%,rgba(255,151,34,.18),transparent_25%)]" />
-      <div className="relative mx-auto grid max-w-7xl items-center gap-9 lg:grid-cols-[.94fr_1.06fr]"><div>
+      <div className="relative mx-auto grid max-w-7xl items-start gap-9 lg:grid-cols-[.94fr_1.06fr]"><div>
         <span className="inline-flex items-center gap-2 rounded-full border border-[#1877f2]/35 bg-[#1877f2]/10 px-3 py-2 text-[10px] font-black tracking-[.16em] text-blue-100"><Facebook className="h-4 w-4 fill-current" />FACEBOOK LIKES SERVICE</span>
         <h1 className="mt-5 max-w-3xl text-4xl font-black leading-[1.04] tracking-[-.055em] sm:text-5xl lg:text-6xl">Buy Facebook Likes <span className="bg-gradient-to-r from-orange-300 to-amber-200 bg-clip-text text-transparent">in India</span></h1>
         <p className="mt-5 max-w-xl text-base leading-7 text-slate-300 sm:text-lg">Order Likes for a public Facebook post, see transparent live pricing, and follow delivery details from your SocialRUSH dashboard.</p>
