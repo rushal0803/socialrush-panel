@@ -26,3 +26,22 @@ test("Phase 22 keeps package platform tabs below the public sticky header", () =
   const source = read("components/marketing/packages/PremiumPackagesPageContent.tsx");
   assert.match(source, /sticky top-16 z-30/);
 });
+
+
+test("Phase 22 keeps expanded admin navigation scrollable on shorter desktops", () => {
+  const sidebar = read("components/admin/AdminSidebar.tsx");
+  assert.match(sidebar, /overflow-y-auto overscroll-contain/);
+});
+
+test("Phase 22 constrains long admin identity text instead of crowding the header", () => {
+  const header = read("components/admin/AdminHeader.tsx");
+  assert.match(header, /max-w-40/);
+  assert.match(header, /truncate text-xs font-bold/);
+  assert.match(header, /truncate text-\[10px\]/);
+});
+
+test("Phase 22 keeps admin modals viewport-bounded and vertically scrollable", () => {
+  const modal = read("components/admin/AdminModal.tsx");
+  assert.match(modal, /max-h-\[calc\(100dvh-2rem\)\]/);
+  assert.match(modal, /w-full max-w-2xl overflow-y-auto/);
+});
