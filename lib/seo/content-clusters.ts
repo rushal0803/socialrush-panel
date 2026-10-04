@@ -136,7 +136,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Why public-link ordering is safer", href: "/blog/why-public-link-ordering-is-safer" },
       { label: "Social media growth strategy for Indian creators", href: "/blog/social-media-growth-strategy-indian-creators" },
       { label: "Social media campaign mistakes to avoid", href: "/blog/social-media-campaign-mistakes-to-avoid" },
-      { label: "Telegram member safety & spam-risk guide", href: "/blog/is-it-safe-to-buy-telegram-members" },
+      { label: "Compare growth services for Indian creators", href: "/blog/best-social-media-growth-services-for-indian-creators" },
     ],
   },
   telegram: {
