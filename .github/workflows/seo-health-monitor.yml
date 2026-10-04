@@ -27,6 +27,8 @@ jobs:
         run: node --experimental-strip-types scripts/seo-keyword-ownership-check.ts
       - name: Check SEO content engine consistency
         run: node --experimental-strip-types scripts/seo-content-engine-check.ts
+      - name: Check SERP snippet CTR health
+        run: node scripts/seo-serp-ctr-audit.mjs
       - name: Check Phase 16 Instagram technical SEO
         run: node scripts/seo-instagram-technical-check.mjs
       - name: Check Phase 17 Instagram sitemap integrity
