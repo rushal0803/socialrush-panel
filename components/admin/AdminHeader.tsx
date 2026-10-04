@@ -34,9 +34,9 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
           <span className="hidden rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-bold text-emerald-300 sm:block">
             ● System online
           </span>
-          <div className="hidden text-right sm:block">
-            <p className="text-xs font-bold text-white">{name || "Administrator"}</p>
-            <p className="mt-0.5 text-[10px] text-[#9CA3AF]">{email}</p>
+          <div className="hidden min-w-0 max-w-40 text-right sm:block xl:max-w-56">
+            <p className="truncate text-xs font-bold text-white">{name || "Administrator"}</p>
+            <p className="mt-0.5 truncate text-[10px] text-[#9CA3AF]" title={email}>{email}</p>
           </div>
           <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .35)]">
             {initials}
