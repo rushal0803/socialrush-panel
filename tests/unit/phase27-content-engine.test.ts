@@ -40,3 +40,26 @@ test("Phase 27 validates cluster guides and approved gap targets", () => {
   assert.match(checker, /candidate\.decision === "defer"/);
   assert.match(checker, /unrelated Telegram guide leaked into the TikTok content cluster/);
 });
+
+
+test("Phase 27 covers every supported platform with an explicit content-gap decision map", () => {
+  const gaps = read("lib/seo/platform-content-gaps.ts");
+  const engine = read("lib/seo/content-engine.ts");
+  for (const source of ["YouTube", "Facebook", "X / Twitter", "TikTok", "Telegram"]) {
+    assert.match(gaps, new RegExp(`source: "${source.replace("/", "\\/")}"`));
+  }
+  assert.match(engine, /additionalPlatformContentGapSources/);
+  assert.match(engine, /AdditionalContentPlatform/);
+});
+
+test("Phase 27 does not manufacture new platform articles without verified evidence", () => {
+  const gaps = read("lib/seo/platform-content-gaps.ts");
+  assert.match(gaps, /verified query evidence/);
+  assert.doesNotMatch(gaps, /current search volume|monthly searches|ranking opportunity/i);
+});
+
+test("Phase 27 content checker validates the additional platform gap maps", () => {
+  const checker = read("scripts/seo-content-engine-check.ts");
+  assert.match(checker, /additionalPlatformContentGapSources/);
+  assert.match(checker, /source: source\.toLowerCase\(\)/);
+});
