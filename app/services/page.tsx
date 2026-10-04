@@ -17,9 +17,9 @@ import { growthPlatformIndiaKeywords } from "@/lib/seo/growth-platform-intent";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "Social Media Growth Services India | SocialRUSH",
+  title: "SMM Panel India | Social Media Services & INR Pricing",
   description:
-    "Compare SocialRUSH social media growth services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with INR pricing, UPI checkout, public-link ordering and dashboard tracking.",
+    "Compare SocialRUSH social media services in India across Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with live INR pricing, UPI checkout, public-link ordering and dashboard tracking.",
   path: "/services",
   keywords: [
     "social media growth services India",
