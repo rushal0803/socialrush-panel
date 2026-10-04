@@ -82,7 +82,7 @@ export default function AdminLoginForm({ initialError = "" }: { initialError?: s
               autoComplete="email"
               value={email}
               onChange={(event) => setEmail(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+              className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15 sm:text-sm"
             />
           </label>
           <label className="block text-xs font-bold text-[#D1D5DB]">
@@ -93,7 +93,7 @@ export default function AdminLoginForm({ initialError = "" }: { initialError?: s
               autoComplete="current-password"
               value={password}
               onChange={(event) => setPassword(event.target.value)}
-              className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-sm text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15"
+              className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-4 py-3.5 text-base text-white outline-none placeholder:text-[#9CA3AF] focus:border-orange-500 focus:ring-4 focus:ring-orange-500/15 sm:text-sm"
             />
           </label>
           {error ? (
