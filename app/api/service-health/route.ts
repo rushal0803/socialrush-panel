@@ -34,6 +34,9 @@ export async function GET() {
     }));
     return NextResponse.json({ data: health }, { headers: { "Cache-Control": "public, max-age=30, stale-while-revalidate=60" } });
   } catch {
-    return NextResponse.json({ error: "Service health is unavailable." }, { status: 503, headers: { "Cache-Control": "no-store" } });
+    return NextResponse.json(
+      { data: {}, unavailable: true },
+      { status: 200, headers: { "Cache-Control": "no-store" } },
+    );
   }
 }
