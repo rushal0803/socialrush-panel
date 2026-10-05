@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { getPackageChoicePresentation } from "../../lib/cro/package-psychology.ts";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
 
@@ -44,4 +45,41 @@ test("Phase 33 legacy merchandising also avoids unsupported popularity and value
   assert.doesNotMatch(merchandising, /Most Popular|Best Value/);
   assert.match(bigPackages, /discountBadge:index===1\?"Balanced Choice"/);
   assert.doesNotMatch(bigPackages, /discountBadge:index===1\?"Popular"/);
+});
+
+
+test("Phase 33 recommendation is positional, not popularity evidence", () => {
+  const packages = [
+    { tierId: "starter" as const, recommended: false, pricePer1000Paise: 79900, savingsPaise: 0, savingsPercent: 0 },
+    { tierId: "growth" as const, recommended: true, pricePer1000Paise: 79900, savingsPaise: 0, savingsPercent: 0 },
+    { tierId: "pro" as const, recommended: false, pricePer1000Paise: 79900, savingsPaise: 0, savingsPercent: 0 },
+    { tierId: "scale" as const, recommended: false, pricePer1000Paise: 79900, savingsPaise: 0, savingsPercent: 0 },
+  ];
+  const balanced = getPackageChoicePresentation(packages[1], packages);
+  const starter = getPackageChoicePresentation(packages[0], packages);
+  assert.equal(balanced.badge, "Balanced choice");
+  assert.equal(balanced.featured, true);
+  assert.match(balanced.unitRateNote ?? "", /Same catalog rate per 1K/);
+  assert.equal(balanced.savingsNote, null);
+  assert.equal(starter.featured, false);
+});
+
+test("Phase 33 only describes a saving when a real lower final price exists", () => {
+  const discounted = {
+    tierId: "growth" as const,
+    recommended: true,
+    pricePer1000Paise: 72000,
+    savingsPaise: 7900,
+    savingsPercent: 10,
+  };
+  const regular = {
+    tierId: "starter" as const,
+    recommended: false,
+    pricePer1000Paise: 79900,
+    savingsPaise: 0,
+    savingsPercent: 0,
+  };
+  const presentation = getPackageChoicePresentation(discounted, [regular, discounted]);
+  assert.match(presentation.savingsNote ?? "", /Verified saving: 10%/);
+  assert.match(presentation.unitRateNote ?? "", /Lowest verified unit rate/);
 });
