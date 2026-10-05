@@ -382,9 +382,9 @@ export default function PackagesPageContent({
     [activeService, hasServiceSelection, selectedPlatform],
   );
   const visibleCategoryPackages = showAllPackages ? activeCategoryPackages : activeCategoryPackages.slice(0, 6);
-  const bestValuePackageId = activeCategoryPackages.find(
-    (pkg) => pkg.discountBadge?.toLowerCase() === "best value",
-  )?.packageId;
+  const balancedPackageId = activeCategoryPackages.length > 1
+    ? activeCategoryPackages[1]?.packageId
+    : undefined;
   const linkRule = selectedPackage ? getPackageLinkRule(selectedPackage) : null;
   const currentLinkError = linkRule && (targetLink.trim() || showLinkError) ? validateCampaignLink(targetLink, linkRule) : "";
   const canSubmitLink = Boolean(selectedPackage && targetLink.trim() && !currentLinkError);
@@ -1005,7 +1005,7 @@ export default function PackagesPageContent({
                               <IconBadge label={pkg.platform}>
                                 <PlatformIcon platform={pkg.platform} className="h-6 w-6" />
                               </IconBadge>
-                              {pkg.packageId === bestValuePackageId ? (
+                              {pkg.packageId === balancedPackageId ? (
                                 <span className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-orange-200">
                                   Best Value
                                 </span>
