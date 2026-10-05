@@ -15,6 +15,7 @@ const links = [
   ["SEO Content", "/admin/seo/content", "layers"],
   ["SEO CTR", "/admin/seo/ctr", "search"],
   ["SEO Authority", "/admin/seo/authority", "layers"],
+  ["SEO Competitors", "/admin/seo/competitors", "search"],
   ["Profitability", "/admin/profitability", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
   ["Incidents", "/admin/incidents", "support"],
