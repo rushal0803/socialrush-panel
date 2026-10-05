@@ -729,7 +729,7 @@ const generatedPackages: BigPackage[]=activeSmmServices
       quantity,
       quantityLabel:quantity.toLocaleString("en-IN"),
       basePriceINR:calculateServiceTotal(service.code,quantity),
-      discountBadge:index===1?"Popular":index===3?"High Volume":undefined,
+      discountBadge:index===1?"Balanced Choice":index===3?"High Volume":undefined,
       deliveryTime:service.deliveryTime,
       description:service.description,
       bestFor:index===0?"Growth campaigns":index===1?"Scaling campaigns":index===2?"High-volume campaigns":"Agency-scale campaigns",
