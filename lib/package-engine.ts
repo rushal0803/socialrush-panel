@@ -25,10 +25,10 @@ export type PackageServiceGroup = Readonly<{
 }>;
 
 const TIER_META: ReadonlyArray<Readonly<{ id: PackageTierId; label: string; bestFor: string }>> = [
-  { id: "starter", label: "Starter", bestFor: "Testing the service" },
-  { id: "growth", label: "Growth", bestFor: "Growing creators" },
-  { id: "pro", label: "Pro", bestFor: "Brands and serious creators" },
-  { id: "scale", label: "Scale", bestFor: "Larger campaigns" },
+  { id: "starter", label: "Starter", bestFor: "Lower-commitment campaigns" },
+  { id: "growth", label: "Balanced", bestFor: "Ongoing campaigns" },
+  { id: "pro", label: "Scale", bestFor: "Fewer repeat orders" },
+  { id: "scale", label: "High Volume", bestFor: "Larger campaign requirements" },
 ];
 
 function clamp(value: number, min: number, max: number) {
