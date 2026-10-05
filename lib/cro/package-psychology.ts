@@ -1,4 +1,12 @@
-import type { PackageUiSelection } from "@/lib/package-ui-adapter";
+export type PackagePsychologyTierId = "starter" | "growth" | "pro" | "scale";
+
+export type PackagePsychologyInput = Readonly<{
+  tierId: PackagePsychologyTierId;
+  recommended: boolean;
+  pricePer1000Paise: number | null;
+  savingsPaise: number;
+  savingsPercent: number;
+}>;
 
 export type PackageChoiceBadge = "Low commitment" | "Balanced choice" | "Scale" | "High volume";
 
@@ -10,14 +18,14 @@ export type PackageChoicePresentation = Readonly<{
   savingsNote: string | null;
 }>;
 
-function sameUnitRate(packages: readonly PackageUiSelection[]) {
+function sameUnitRate(packages: readonly PackagePsychologyInput[]) {
   const rates = packages
     .map((pkg) => pkg.pricePer1000Paise)
     .filter((rate): rate is number => rate !== null && rate > 0);
   return rates.length > 1 && new Set(rates).size === 1;
 }
 
-function lowestUnitRate(packages: readonly PackageUiSelection[]) {
+function lowestUnitRate(packages: readonly PackagePsychologyInput[]) {
   const rates = packages
     .map((pkg) => pkg.pricePer1000Paise)
     .filter((rate): rate is number => rate !== null && rate > 0);
@@ -27,22 +35,23 @@ function lowestUnitRate(packages: readonly PackageUiSelection[]) {
 /**
  * Phase 33 package psychology.
  *
- * This intentionally avoids popularity, scarcity and "best value" claims
- * unless checkout data proves a real saving. The highlighted package is a
- * neutral middle-ground recommendation, not a claim about customer behavior.
+ * This deliberately avoids popularity, scarcity and "best value" claims
+ * unless real checkout pricing proves a saving. The highlighted tier is a
+ * neutral middle-ground recommendation based on package position, not on
+ * customer behavior or conversion data.
  */
 export function getPackageChoicePresentation(
-  pkg: PackageUiSelection,
-  packages: readonly PackageUiSelection[],
+  pkg: PackagePsychologyInput,
+  packages: readonly PackagePsychologyInput[],
 ): PackageChoicePresentation {
-  const badgeByTier: Record<PackageUiSelection["tierId"], PackageChoiceBadge> = {
+  const badgeByTier: Record<PackagePsychologyTierId, PackageChoiceBadge> = {
     starter: "Low commitment",
     growth: "Balanced choice",
     pro: "Scale",
     scale: "High volume",
   };
 
-  const rationaleByTier: Record<PackageUiSelection["tierId"], string> = {
+  const rationaleByTier: Record<PackagePsychologyTierId, string> = {
     starter: "Smaller quantity when you want to start with less commitment.",
     growth: "A middle-ground quantity for ongoing campaigns without jumping to the largest tier.",
     pro: "Higher quantity when you want fewer repeat orders for the same service.",
@@ -66,7 +75,7 @@ export function getPackageChoicePresentation(
 
   return {
     badge: badgeByTier[pkg.tierId],
-    featured: pkg.tierId === "growth",
+    featured: pkg.recommended && pkg.tierId === "growth",
     rationale: rationaleByTier[pkg.tierId],
     unitRateNote,
     savingsNote,
