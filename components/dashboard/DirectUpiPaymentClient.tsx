@@ -43,7 +43,7 @@ export default function DirectUpiPaymentClient(props: Props) {
       const payload = await response.json() as { data?: { public_order_id: string }; error?: string };
       if (!response.ok || !payload.data) throw new Error(payload.error || "Unable to confirm your order.");
       setSuccess(payload.data.public_order_id);
-      track("payment_submitted", { service_code: serviceCode, method, value: total, wallet_applied: walletApplied, order_total: orderTotal });
+      track("utr_submitted", { service_code: serviceCode, method, value: total, wallet_applied: walletApplied, order_total: orderTotal });
       window.setTimeout(() => router.push("/dashboard/orders"), 1600);
     } catch (e) { setError(e instanceof Error ? e.message : "Unable to confirm your order."); }
     finally { setSubmitting(false); }
