@@ -1007,7 +1007,7 @@ export default function PackagesPageContent({
                               </IconBadge>
                               {pkg.packageId === balancedPackageId ? (
                                 <span className="rounded-full border border-orange-400/20 bg-orange-500/10 px-3 py-1 text-[10px] font-bold uppercase tracking-[0.1em] text-orange-200">
-                                  Best Value
+                                  Balanced Choice
                                 </span>
                               ) : null}
                             </div>
