@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowRight, CheckCircle2, Copy, ExternalLink, LoaderCircle, LockKeyhole, ShieldCheck } from "lucide-react";
 import { track } from "@/lib/analytics/events";
@@ -26,6 +26,17 @@ export default function DirectUpiPaymentClient(props: Props) {
   const [success, setSuccess] = useState<string | null>(null);
   const [copied, setCopied] = useState("");
 
+  const submissionInFlight = useRef(false);
+  const confirmationRef = useRef<HTMLFormElement>(null);
+  const [showPaymentDock, setShowPaymentDock] = useState(true);
+  useEffect(() => {
+    const form = confirmationRef.current;
+    if (!form) return;
+    const observer = new IntersectionObserver(([entry]) => setShowPaymentDock(!entry.isIntersecting), { rootMargin: "0px 0px -140px 0px" });
+    observer.observe(form);
+    return () => observer.disconnect();
+  }, []);
+
   const payableLabel = money(total);
   const upiHref = useMemo(() => {
     const params = new URLSearchParams({ pa: upiId, pn: payeeName || "SocialRUSH", am: total.toFixed(2), cu: "INR", tn: `SocialRUSH ${reference}`.slice(0, 80) });
@@ -33,10 +44,15 @@ export default function DirectUpiPaymentClient(props: Props) {
   }, [upiId, payeeName, total, reference]);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=${encodeURIComponent(upiHref)}`;
 
-  async function copy(label: string, value: string) { await navigator.clipboard.writeText(value).catch(() => undefined); setCopied(label); window.setTimeout(() => setCopied(""), 1200); }
+  async function copy(label: string, value: string) {
+    try { await navigator.clipboard.writeText(value); setCopied(label); window.setTimeout(() => setCopied(""), 1600); }
+    catch { setError("Clipboard unavailable. Select and copy the value manually."); }
+  }
   async function submit() {
+    if (submissionInFlight.current) return;
     const clean = utr.trim().replace(/\s+/g, "");
     if (!/^[A-Za-z0-9-]{8,80}$/.test(clean)) { setError(method === "usdt_trc20" ? "Enter a valid transaction hash / TxID." : "Enter a valid UTR / Transaction ID."); return; }
+    submissionInFlight.current = true;
     setSubmitting(true); setError("");
     try {
       const response = await fetch("/api/orders/manual-upi", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId, paymentReference: reference, paymentMethod: method, utr: clean, expectedWalletApplied: walletApplied }) });
@@ -46,26 +62,49 @@ export default function DirectUpiPaymentClient(props: Props) {
       track("utr_submitted", { service_code: serviceCode, method, value: total, wallet_applied: walletApplied, order_total: orderTotal });
       window.setTimeout(() => router.push("/dashboard/orders"), 1600);
     } catch (e) { setError(e instanceof Error ? e.message : "Unable to confirm your order."); }
-    finally { setSubmitting(false); }
+    finally { submissionInFlight.current = false; setSubmitting(false); }
   }
 
   if (success) return <section className="mx-auto max-w-2xl rounded-[28px] border border-emerald-400/20 bg-[#0d1118] p-8 text-center text-white"><CheckCircle2 className="mx-auto h-12 w-12 text-emerald-300"/><h1 className="mt-4 text-2xl font-black">Payment submitted</h1><p className="mt-2 text-zinc-300">Order {success} has been received for verification. Do not pay again.</p></section>;
 
-  return <section className="mx-auto max-w-3xl overflow-hidden rounded-[28px] border border-orange-400/20 bg-[#0b0f15] text-white shadow-2xl">
-    <div className="border-b border-white/10 p-5 sm:p-8"><div className="flex items-center justify-between gap-3"><div><p className="text-[10px] font-black uppercase tracking-[.22em] text-orange-300">Final step · Payment</p><h1 className="mt-2 text-3xl font-black">Pay {payableLabel}</h1></div><span className="flex items-center gap-2 rounded-full bg-emerald-500/10 px-3 py-2 text-xs font-bold text-emerald-200"><LockKeyhole className="h-4 w-4"/>Secure checkout</span></div></div>
-    <div className="space-y-5 p-4 sm:p-6 lg:p-8">
-      <div className="rounded-2xl border border-white/10 bg-white/[.035] p-5"><p className="text-xs font-black uppercase tracking-wider text-zinc-500">Order summary</p><h2 className="mt-1 text-lg font-black">{serviceName}</h2><div className="mt-4 space-y-2 border-t border-white/10 pt-4 text-sm"><div className="flex justify-between"><span className="text-zinc-400">Order total</span><strong>{money(orderTotal)}</strong></div><div className="flex justify-between text-emerald-300"><span>Wallet balance applied</span><strong>− {money(walletApplied)}</strong></div><div className="flex justify-between border-t border-white/10 pt-3 text-base"><span className="font-black">Pay now</span><strong className="text-orange-300">{payableLabel}</strong></div></div><div className="mt-4 grid gap-3 text-xs text-zinc-400 sm:grid-cols-2"><p>Quantity: <strong className="text-white">{quantity.toLocaleString("en-IN")}</strong></p><p>Reference: <strong className="text-white">{reference}</strong></p><p className="break-all sm:col-span-2">Link: {link}</p></div></div>
+  const paymentLinkClass = "flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-3 text-sm font-black text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300";
+  const copyButton = "inline-flex min-h-11 shrink-0 items-center justify-center gap-1 rounded-lg px-2 text-xs font-bold text-orange-300 focus-visible:outline focus-visible:outline-orange-300";
+  const startPayment = () => track("payment_started", { service_code: serviceCode, method: "upi", value: total });
 
-      <div className="grid grid-cols-3 gap-2">{([['upi','UPI'],['bank_transfer','Bank Transfer'],['usdt_trc20','USDT TRC20']] as const).map(([value,label]) => <button key={value} type="button" disabled={(value==='bank_transfer'&&!bankTransfer.enabled)||(value==='usdt_trc20'&&!usdtAmount)} onClick={()=>{setMethod(value);setError('');track('payment_method_selected',{service_code:serviceCode,method:value});}} className={`min-h-12 rounded-xl border px-2 text-xs font-black ${method===value?'border-orange-400 bg-orange-500/10 text-orange-200':'border-white/10 text-zinc-300'} disabled:opacity-40`}>{label}</button>)}</div>
-
-      {method === "upi" && <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-5"><h3 className="text-lg font-black">Pay exactly {payableLabel}</h3><p className="mt-1 text-sm text-zinc-400">Your ₹{walletApplied.toLocaleString('en-IN')} wallet credit is already deducted from the amount below.</p><div className="mt-4 grid gap-4 sm:grid-cols-[220px_1fr]"><div className="rounded-xl bg-white p-3"><img src={qrUrl} alt={`UPI QR for ${payableLabel}`} className="w-full"/></div><div className="space-y-3"><div className="rounded-xl border border-white/10 p-4"><p className="text-xs text-zinc-500">UPI ID</p><p className="mt-1 break-all font-black">{upiId}</p><button onClick={()=>void copy('upi',upiId)} className="mt-2 text-xs font-bold text-orange-300"><Copy className="mr-1 inline h-3 w-3"/>{copied==='upi'?'Copied':'Copy UPI ID'}</button></div><div className="rounded-xl border border-orange-400/20 p-4"><p className="text-xs text-zinc-500">Exact amount</p><p className="mt-1 text-xl font-black text-orange-300">{payableLabel}</p><button onClick={()=>void copy('amount',total.toFixed(2))} className="mt-2 text-xs font-bold text-orange-300"><Copy className="mr-1 inline h-3 w-3"/>{copied==='amount'?'Copied':'Copy amount'}</button></div></div></div><a href={upiHref} onClick={()=>track('payment_started',{service_code:serviceCode,method:'upi',value:total})} className="mt-4 flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 font-black text-black">Pay {payableLabel} · Open UPI <ExternalLink className="h-4 w-4"/></a></div>}
-
-      {method === "bank_transfer" && <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-5"><h3 className="text-lg font-black">Transfer exactly {payableLabel}</h3><div className="mt-4 space-y-2 text-sm">{[["Account",bankTransfer.accountName],["Bank",bankTransfer.bankName],["Account number",bankTransfer.accountNumber],["IFSC",bankTransfer.ifsc],["Branch",bankTransfer.branch]].map(([k,v])=><div key={k} className="flex justify-between gap-3 border-b border-white/5 py-2"><span className="text-zinc-500">{k}</span><strong className="text-right">{v}</strong></div>)}</div></div>}
-
-      {method === "usdt_trc20" && <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-5"><h3 className="text-lg font-black">Send {usdtAmount?.toFixed(2)} USDT</h3><p className="mt-2 text-xs font-bold text-red-200">TRC20 ONLY. Do not use ERC20, BEP20 or another network.</p><p className="mt-4 break-all rounded-xl border border-white/10 p-4 font-mono text-sm">{usdtTrc20Address}</p></div>}
-
-      <div className="rounded-2xl border border-white/10 bg-[#0e131b] p-5"><h3 className="font-black">After payment, enter your transaction reference</h3><p className="mt-1 text-sm text-zinc-400">We verify the external payment before processing. Your wallet portion will be applied once only.</p><div className="mt-4 flex gap-2"><input value={utr} onChange={e=>setUtr(e.target.value.slice(0,80))} placeholder={method==='usdt_trc20'?'Transaction hash / TxID':'UTR / Transaction ID'} className="min-h-14 min-w-0 flex-1 rounded-2xl border border-white/10 bg-black/30 px-4 outline-none focus:border-orange-400"/><button type="button" onClick={async()=>{const value=await navigator.clipboard.readText().catch(()=>"");setUtr(value.trim().replace(/\s+/g,'').slice(0,80));}} className="rounded-xl border border-white/10 px-4 text-xs font-black">Paste</button></div>{error&&<p className="mt-3 rounded-xl bg-red-500/10 p-3 text-xs text-red-200">{error}</p>}<button disabled={submitting} onClick={()=>void submit()} className="mt-4 flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-orange-500 to-amber-400 font-black text-black disabled:opacity-60">{submitting?<><LoaderCircle className="h-4 w-4 animate-spin"/>Submitting...</>:<>Submit & Place Order <ArrowRight className="h-4 w-4"/></>}</button></div>
-      <div className="flex items-start gap-2 rounded-xl bg-emerald-500/[.06] p-3 text-xs text-emerald-100"><ShieldCheck className="h-4 w-4 shrink-0"/>Pay only {payableLabel}. Never share your UPI PIN, OTP or banking password.</div>
+  return <section className="mx-auto max-w-3xl rounded-2xl border border-orange-400/20 bg-[#0b0f15] text-white shadow-2xl sm:rounded-3xl">
+    <header className="border-b border-white/10 px-3 py-3 sm:px-6 sm:py-5">
+      <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Final step · Payment</p>
+      <div className="mt-1 flex flex-wrap items-center justify-between gap-2"><h1 className="text-3xl font-black tracking-tight sm:text-4xl">Pay {payableLabel}</h1><span className="inline-flex items-center gap-1 rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-200"><LockKeyhole className="h-3 w-3" aria-hidden="true"/>Secure checkout</span></div>
+    </header>
+    <div className="space-y-3 p-3 sm:space-y-4 sm:p-6">
+      <div className="rounded-xl border border-white/10 bg-white/[.035] px-3 py-2 sm:p-4">
+        <dl className="space-y-1 text-sm tabular-nums"><div className="flex justify-between gap-2"><dt className="text-zinc-400">Order total</dt><dd className="font-bold">{money(orderTotal)}</dd></div><div className="flex justify-between gap-2 text-emerald-300"><dt>Wallet applied</dt><dd className="font-bold">−{money(walletApplied)}</dd></div><div className="flex items-center justify-between gap-2 border-t border-white/10 pt-2"><dt className="font-black">Pay now</dt><dd className="text-xl font-black text-orange-300">{payableLabel}</dd></div></dl>
+        <details className="mt-2 border-t border-white/10 text-xs"><summary className="flex min-h-11 cursor-pointer items-center justify-between gap-2 text-zinc-300"><span className="min-w-0 truncate">{serviceName} · {quantity.toLocaleString("en-IN")}</span><span className="shrink-0 text-orange-300">Details +</span></summary><div className="space-y-2 pb-2"><p className="break-words">Reference: <strong>{reference}</strong></p><div className="flex min-w-0 items-center gap-1"><span className="min-w-0 flex-1 truncate" title={link}>{link}</span><button type="button" className={copyButton} onClick={()=>void copy("link",link)} aria-label="Copy order link">{copied==="link"?"Copied":"Copy link"}</button></div><details><summary className="min-h-11 cursor-pointer py-3 text-orange-300">View full link</summary><p className="break-all text-zinc-400">{link}</p></details></div></details>
+      </div>
+      <div role="group" aria-label="Payment method" className="grid grid-cols-3 gap-1.5">{([["upi","UPI"],["bank_transfer","Bank Transfer"],["usdt_trc20","USDT TRC20"]] as const).map(([value,label])=><button key={value} id={`tab-${value}`} aria-pressed={method===value} aria-controls="payment-method-panel" type="button" disabled={submitting||(value==="bank_transfer"&&!bankTransfer.enabled)||(value==="usdt_trc20"&&!usdtAmount)} onClick={()=>{setMethod(value);setError("");track("payment_method_selected",{service_code:serviceCode,method:value});}} className={`min-h-11 rounded-xl border px-1 text-[11px] font-black focus-visible:outline focus-visible:outline-orange-300 sm:text-sm ${method===value?"border-orange-400 bg-orange-500/15 text-orange-200":"border-white/10 text-zinc-300"} disabled:opacity-40`}>{label}</button>)}</div>
+      <div id="payment-method-panel" role="region" aria-labelledby={`tab-${method}`} className="rounded-xl border border-white/10 bg-[#0e131b] p-3 sm:p-5">
+        {method==="upi"&&<>
+          <div className="flex items-center justify-between gap-2"><h2 className="text-sm font-black">Scan to pay</h2><button type="button" onClick={()=>void copy("amount",total.toFixed(2))} className={copyButton} aria-label="Copy amount"><span className="text-lg tabular-nums">{payableLabel}</span>{copied==="amount"?<span className="text-[10px]">Copied</span>:<Copy className="h-3.5 w-3.5" aria-hidden="true"/>}</button></div>
+          <div className="mt-1 grid items-center gap-3 sm:grid-cols-[minmax(220px,280px)_1fr] sm:gap-5">
+            <div className="mx-auto aspect-square w-[220px] max-w-full rounded-xl bg-white p-2 min-[390px]:w-[240px] sm:w-full"><img src={qrUrl} width={320} height={320} alt={`UPI QR for ${payableLabel}`} className="aspect-square h-full w-full"/></div>
+            <div className="min-w-0 space-y-2"><div className="flex items-center gap-2 rounded-lg border border-white/10 px-2"><div className="min-w-0 flex-1"><p className="text-[10px] text-zinc-400">UPI ID</p><p className="break-all text-xs font-bold sm:text-sm">{upiId}</p></div><button type="button" onClick={()=>void copy("upi",upiId)} className={copyButton} aria-label="Copy UPI ID"><Copy className="h-3.5 w-3.5" aria-hidden="true"/>{copied==="upi"?"Copied":"Copy"}</button></div>
+              <a href={upiHref} onClick={startPayment} className={paymentLinkClass}>Pay {payableLabel} · Open UPI <ExternalLink className="h-4 w-4 shrink-0" aria-hidden="true"/></a><p className="text-center text-[11px] text-zinc-400">Use any UPI app, or scan from another device.</p>
+            </div>
+          </div>
+        </>}
+        {method==="bank_transfer"&&<><h2 className="font-black">Transfer exactly <span className="text-orange-300">{payableLabel}</span></h2><dl className="mt-3 space-y-1 text-sm">{[["Account",bankTransfer.accountName],["Bank",bankTransfer.bankName],["Account number",bankTransfer.accountNumber],["IFSC",bankTransfer.ifsc],["Branch",bankTransfer.branch]].map(([k,v])=><div key={k} className="flex justify-between gap-3 border-b border-white/5 py-2"><dt className="text-zinc-400">{k}</dt><dd className="min-w-0 break-words text-right font-bold">{v}</dd></div>)}</dl></>}
+        {method==="usdt_trc20"&&<><h2 className="font-black">Send <span className="text-orange-300">{usdtAmount?.toFixed(2)} USDT</span></h2><p className="mt-2 text-xs font-bold text-red-200">TRC20 ONLY. Do not use another network.</p><p className="mt-3 break-all rounded-lg border border-white/10 p-3 font-mono text-sm">{usdtTrc20Address}</p></>}
+      </div>
+      <form ref={confirmationRef} onSubmit={e=>{e.preventDefault();if(!submitting)void submit();}} className="rounded-xl border border-white/10 bg-[#0e131b] p-3 sm:p-5">
+        <h2 className="font-black">Already paid?</h2><p className="mt-1 text-xs leading-5 text-zinc-400">Enter your transaction reference after payment so we can verify it.</p>
+        <label htmlFor="payment-utr" className="mt-3 block text-xs font-bold text-zinc-300">{method==="usdt_trc20"?"Transaction hash / TxID":"UTR / Transaction ID"}</label>
+        <div className="mt-2 flex gap-2"><input id="payment-utr" value={utr} disabled={submitting} onChange={e=>setUtr(e.target.value.slice(0,80))} aria-describedby={error?"payment-error":undefined} aria-invalid={Boolean(error)} autoComplete="off" autoCapitalize="none" spellCheck={false} placeholder="Enter transaction reference" className="min-h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-black/30 px-3 text-base outline-none focus:border-orange-400"/><button type="button" disabled={submitting} onClick={async()=>{try{const value=await navigator.clipboard.readText();setUtr(value.trim().replace(/\s+/g,"").slice(0,80));}catch{setError("Clipboard unavailable. Paste your reference into the field.");}}} className="min-h-12 rounded-xl border border-white/10 px-3 text-xs font-black">Paste</button></div>
+        {error&&<p id="payment-error" role="alert" className="mt-3 rounded-lg bg-red-500/10 p-3 text-xs text-red-200">{error}</p>}
+        <button type="submit" disabled={submitting} className={`${paymentLinkClass} mt-3 w-full disabled:opacity-60`}>{submitting?<><LoaderCircle className="h-4 w-4 animate-spin"/>Submitting...</>:<>Submit payment <ArrowRight className="h-4 w-4" aria-hidden="true"/></>}</button>
+      </form>
+      <p role="status" aria-live="polite" className="sr-only">{copied ? "Copied to clipboard" : ""}</p>
+      <div className="flex items-start gap-2 px-1 text-[11px] leading-5 text-emerald-100"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true"/>Pay only {payableLabel}. Never share your UPI PIN or OTP.</div>
     </div>
+    {method==="upi"&&showPaymentDock&&!submitting&&<div data-payment-dock className="fixed inset-x-0 bottom-[calc(4rem+env(safe-area-inset-bottom))] z-[64] border-t border-orange-400/20 bg-[#0b0f15]/95 px-3 py-2 backdrop-blur md:hidden"><a href={upiHref} onClick={startPayment} className={`${paymentLinkClass} mx-auto max-w-lg`}>Pay {payableLabel} with UPI <ExternalLink className="h-4 w-4" aria-hidden="true"/></a></div>}
   </section>;
 }

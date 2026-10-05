@@ -25,7 +25,8 @@ export default function FloatingWhatsAppButton() {
   const isCheckoutRoute =
     pathname.includes("order-summary") ||
     pathname.includes("/checkout") ||
-    pathname === "/dashboard/new-order";
+    pathname === "/dashboard/new-order" ||
+    pathname === "/dashboard/direct-upi";
   const isWalletRoute =
     pathname === "/dashboard/wallet" ||
     pathname === "/dashboard/add-funds";
