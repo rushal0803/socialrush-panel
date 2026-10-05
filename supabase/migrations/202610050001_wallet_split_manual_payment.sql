@@ -9,37 +9,42 @@ create or replace function public.apply_wallet_to_manual_checkout(
 returns jsonb
 language plpgsql
 security definer
-set search_path=public
+set search_path=public,pg_temp
 as $$
 declare
   v_user uuid:=auth.uid();
-  v_intent checkout_intents%rowtype;
+  v_intent public.checkout_intents%rowtype;
   v_balance numeric;
   v_total numeric;
   v_applied numeric;
   v_remaining numeric;
-  v_existing transactions%rowtype;
+  v_existing public.transactions%rowtype;
 begin
   if v_user is null then raise exception 'authentication required'; end if;
   if p_expected_wallet is null or p_expected_wallet < 0 then raise exception 'invalid wallet amount'; end if;
 
-  select * into v_intent from checkout_intents
-  where id=p_intent_id and user_id=v_user and client_request_id=p_client_request_id
+  select * into v_intent from public.checkout_intents
+  where id=p_intent_id and user_id=v_user and client_request_id=p_client_request_id::text
   for update;
   if not found then raise exception 'checkout intent not found'; end if;
   if v_intent.status<>'created' then raise exception 'checkout intent conflict'; end if;
   if v_intent.expires_at<=now() then raise exception 'checkout intent expired'; end if;
 
+  if v_intent.currency<>'INR' or v_intent.total_paise<=0 then raise exception 'checkout amount invalid'; end if;
+  if exists(select 1 from public.orders where user_id=v_user and client_request_id=p_client_request_id) then
+    raise exception 'checkout request already has an order';
+  end if;
   v_total:=v_intent.total_paise::numeric/100;
-  select * into v_existing from transactions
+  select * into v_existing from public.transactions
   where user_id=v_user and provider_payment_id='wallet-split:'||p_intent_id::text limit 1;
   if found then
     v_applied:=abs(coalesce(v_existing.amount,0));
     return jsonb_build_object('wallet_applied',v_applied,'remaining',greatest(v_total-v_applied,0),'duplicate',true);
   end if;
 
-  select greatest(coalesce(wallet_balance,0),0) into v_balance
-  from profiles where id=v_user for update;
+  select greatest(coalesce(balance,0),0) into v_balance
+  from public.profiles where id=v_user for update;
+  if not found then raise exception 'wallet profile not found'; end if;
   v_applied:=least(v_balance,v_total);
 
   if round(v_applied,2) <> round(p_expected_wallet,2) then
@@ -47,10 +52,14 @@ begin
   end if;
 
   v_remaining:=greatest(v_total-v_applied,0);
+  -- Do not debit here when the caller must use the wallet-only order flow.
+  if v_remaining<=0 then
+    return jsonb_build_object('wallet_applied',v_applied,'remaining',0,'duplicate',false);
+  end if;
   if v_applied>0 then
-    update profiles set wallet_balance=wallet_balance-v_applied,updated_at=now() where id=v_user;
-    insert into transactions(user_id,type,amount,status,description,provider_payment_id)
-    values(v_user,'debit',-v_applied,'completed','Wallet applied to split order payment','wallet-split:'||p_intent_id::text);
+    update public.profiles set balance=balance-v_applied,updated_at=now() where id=v_user;
+    insert into public.transactions(user_id,type,amount,status,description,provider_payment_id)
+    values(v_user,'debit',v_applied,'completed','Wallet applied to split order payment','wallet-split:'||p_intent_id::text);
   end if;
   return jsonb_build_object('wallet_applied',v_applied,'remaining',v_remaining,'duplicate',false);
 end;

@@ -26,10 +26,18 @@ export default async function DirectUpiPage({ searchParams: searchParamsPromise 
   }
 
   const orderTotal = Number(intent.total_paise) / 100;
-  const { data: profile } = await admin.from("profiles").select("wallet_balance").eq("id", user.id).maybeSingle();
-  const walletBalance = Math.max(Number(profile?.wallet_balance || 0), 0);
-  const walletApplied = Math.min(walletBalance, orderTotal);
-  const payableNow = Math.max(orderTotal - walletApplied, 0);
+  const { data: profile, error: profileError } = await admin.from("profiles").select("balance").eq("id", user.id).single();
+  if (profileError || !profile || !Number.isFinite(Number(profile.balance))) {
+    throw new Error("Unable to load wallet balance. Please refresh checkout before paying.");
+  }
+  const walletBalance = Math.max(Number(profile.balance), 0);
+  // A retry must keep the split already debited for this intent, even after a top-up.
+  const { data: reservedWallet, error: reservedWalletError } = await admin.from("transactions")
+    .select("amount").eq("user_id", user.id)
+    .eq("provider_payment_id", `wallet-split:${intent.id}`).maybeSingle();
+  if (reservedWalletError) throw new Error("Unable to verify wallet application. Please refresh checkout before paying.");
+  const walletApplied = reservedWallet ? Math.abs(Number(reservedWallet.amount)) : Math.min(walletBalance, orderTotal);
+  const payableNow = Math.max(Math.round((orderTotal - walletApplied) * 100) / 100, 0);
 
   // A fully wallet-covered order should use the normal wallet order flow; never show a zero-value manual payment.
   if (payableNow <= 0) redirect(`/dashboard/new-order?intent=${encodeURIComponent(intent.id)}&wallet=1`);
