@@ -639,6 +639,8 @@ export default async function ServiceSeoPage({
   }
   const seo = getSeoData(params.slug);
   if (!seo) notFound();
+  const catalogService = activeSmmServices.find((service) => service.code === params.slug);
+  const cro = catalogService ? getServicePageCroConfig(catalogService) : null;
   const hasBasePrice =
     "pricePer1000INR" in seo && typeof seo.pricePer1000INR === "number";
 
@@ -735,10 +737,11 @@ export default async function ServiceSeoPage({
             ) : null}
             <div className="mt-7 flex flex-wrap gap-3">
               <Link
-                href="/packages"
+                href={cro?.primaryHref ?? "/packages"}
+                data-service-primary-cta={cro?.mode ?? "packages"}
                 className="inline-flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 py-3 text-sm font-bold text-white"
               >
-                View Packages
+                {cro?.primaryLabel ?? "View Packages"}
               </Link>
               <Link
                 href="/pricing"
@@ -754,6 +757,37 @@ export default async function ServiceSeoPage({
               </Link>
             </div>
           </section>
+
+          {catalogService && cro ? (
+            cro.mode === "inline-builder" ? (
+              <section className="rounded-[28px] border border-[#2A2A2F] bg-[#0E0E12] p-3 shadow-[0_24px_54px_-34px_rgba(15,23,42,.5)] sm:p-5" data-service-cro-mode="inline-builder">
+                <ServiceLandingOrderBuilder service={catalogService} compact />
+              </section>
+            ) : (
+              <section id="order-builder" data-service-cro-mode="live-dashboard" className="scroll-mt-24 rounded-[28px] border border-orange-200 bg-[#FFF8F1] p-6 sm:p-8">
+                <p className="text-[10px] font-black uppercase tracking-[0.16em] text-[#FF7A00]">Live order flow</p>
+                <h2 className="mt-2 text-2xl font-black text-[#0B0B0F]">Review current service facts before checkout</h2>
+                <p className="mt-3 max-w-3xl text-sm leading-7 text-[#374151]">
+                  This service uses protected live catalog facts. The current rate, quantity limits, delivery estimate and refill/support terms load in the secure order builder before payment.
+                </p>
+                {catalogService.importantInstruction ? (
+                  <p className="mt-4 rounded-xl border border-orange-200 bg-white p-4 text-sm leading-6 text-[#374151]">
+                    <strong className="text-[#0B0B0F]">Before you continue:</strong> {catalogService.importantInstruction}
+                  </p>
+                ) : null}
+                <div className="mt-5 flex flex-wrap gap-3 text-xs font-bold text-[#374151]">
+                  <span>No password required</span>
+                  <span>•</span>
+                  <span>Final INR total before payment</span>
+                  <span>•</span>
+                  <span>Dashboard tracking</span>
+                </div>
+                <Link href={cro.primaryHref} data-service-live-handoff className="mt-6 inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 text-sm font-black text-white">
+                  {cro.primaryLabel}
+                </Link>
+              </section>
+            )
+          ) : null}
 
           <section className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
             {seo.benefits.map((item) => (
@@ -861,11 +895,19 @@ export default async function ServiceSeoPage({
               ))}
             </div>
           </section>
-          {activeSmmServices.some((service) => service.code === params.slug) ? (
+          {catalogService ? (
             <CrossSellRecommendations serviceCode={params.slug} />
           ) : null}
         </div>
       </main>
+      {catalogService && cro ? (
+        <ServiceOrderStickyCta
+          href={cro.primaryHref}
+          serviceName={catalogService.name}
+          startingPrice={cro.canShowStaticPrice ? catalogService.pricePer1000 : null}
+          available
+        />
+      ) : null}
     </PublicShell>
   );
 }
