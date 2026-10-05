@@ -1,6 +1,6 @@
 import type { BigPackage } from "./big-packages";
 
-export type PackageTier = "Starter" | "Popular" | "Best Value" | "Pro";
+export type PackageTier = "Starter" | "Balanced" | "Scale" | "High Volume";
 
 export type PackageMerchandising = {
   tier: PackageTier;
@@ -25,35 +25,35 @@ export function getPackageMerchandising(
   if (index === 0) {
     return {
       tier: "Starter",
-      badge: "Easy Start",
+      badge: "Low Commitment",
       featured: false,
-      benefit: "A lower-commitment option to start your campaign.",
+      benefit: "A lower-commitment option when you want to start with a smaller quantity.",
     };
   }
 
   if (index === 1 || (safeTotal === 2 && index === safeTotal - 1)) {
     return {
-      tier: "Popular",
-      badge: "Most Popular",
+      tier: "Balanced",
+      badge: "Balanced Choice",
       featured: true,
-      benefit: "Balanced quantity for creators and growing accounts.",
+      benefit: "A middle-ground quantity between the entry and higher-volume options.",
     };
   }
 
   if (ratio < 0.85) {
     return {
-      tier: "Best Value",
-      badge: "Best Value",
-      featured: true,
-      benefit: "Built for larger campaigns with fewer repeat orders.",
+      tier: "Scale",
+      badge: "Scale",
+      featured: false,
+      benefit: "A larger fixed quantity when you want fewer repeat orders.",
     };
   }
 
   return {
-    tier: "Pro",
+    tier: "High Volume",
     badge: "High Volume",
     featured: false,
-    benefit: "High-volume option for brands, agencies and scaled campaigns.",
+    benefit: "The largest fixed option for higher-volume campaign requirements.",
   };
 }
 
