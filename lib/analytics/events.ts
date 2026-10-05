@@ -45,6 +45,7 @@ export const clientAnalyticsEvents = [
   "repeat_growth_path_click",
   "dashboard_repeat_scale_click",
   "package_growth_path_click",
+  "homepage_conversion_path_click",
   "agency_bulk_form_view",
   "agency_bulk_form_incomplete",
   "agency_bulk_form_error",
