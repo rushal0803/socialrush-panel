@@ -11,7 +11,7 @@ test("reference order validates input and preserves selection through login", as
   await expect(card.locator('strong[aria-live="polite"]')).toHaveText("\u20b979.90");
   await proceed.click();
   await expect(card.locator('[aria-invalid="true"]')).toHaveCount(1);
-  await card.getByRole("button", { name: /^1,000/ }).click();
+  await card.getByLabel("Custom quantity").fill("1000");
   await card.getByLabel(/Enter your Instagram/).fill("https://youtube.com/watch?v=wrong");
   await proceed.click();
   await expect(card.locator('[role="alert"]')).toContainText(/Instagram/);
