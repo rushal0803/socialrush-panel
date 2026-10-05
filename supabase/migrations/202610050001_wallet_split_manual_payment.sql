@@ -38,8 +38,9 @@ begin
     return jsonb_build_object('wallet_applied',v_applied,'remaining',greatest(v_total-v_applied,0),'duplicate',true);
   end if;
 
-  select greatest(coalesce(wallet_balance,0),0) into v_balance
+  select greatest(coalesce(balance,0),0) into v_balance
   from profiles where id=v_user for update;
+  if not found then raise exception 'wallet profile not found'; end if;
   v_applied:=least(v_balance,v_total);
 
   if round(v_applied,2) <> round(p_expected_wallet,2) then
@@ -47,10 +48,14 @@ begin
   end if;
 
   v_remaining:=greatest(v_total-v_applied,0);
+  -- Do not debit here when the caller must use the wallet-only order flow.
+  if v_remaining<=0 then
+    return jsonb_build_object('wallet_applied',v_applied,'remaining',0,'duplicate',false);
+  end if;
   if v_applied>0 then
-    update profiles set wallet_balance=wallet_balance-v_applied,updated_at=now() where id=v_user;
+    update profiles set balance=balance-v_applied,updated_at=now() where id=v_user;
     insert into transactions(user_id,type,amount,status,description,provider_payment_id)
-    values(v_user,'debit',-v_applied,'completed','Wallet applied to split order payment','wallet-split:'||p_intent_id::text);
+    values(v_user,'debit',v_applied,'completed','Wallet applied to split order payment','wallet-split:'||p_intent_id::text);
   end if;
   return jsonb_build_object('wallet_applied',v_applied,'remaining',v_remaining,'duplicate',false);
 end;
