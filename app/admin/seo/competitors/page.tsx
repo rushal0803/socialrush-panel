@@ -23,7 +23,7 @@ export default function SeoCompetitorsPage() {
           <p className="text-xs font-black uppercase tracking-[.2em] text-orange-300">Phase 30 · Competitor Intelligence</p>
           <h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">Competitor Intelligence Command Center</h1>
           <p className="mt-2 max-w-3xl text-sm leading-6 text-[#A8AFBD]">
-            Maintain source-backed observations about competitor positioning, package presentation, checkout, trust and content without turning estimates into facts.
+            Maintain internal research notes with source-backed observations about competitor positioning, package presentation, checkout, trust and content without turning estimates into facts.
           </p>
         </div>
         <Link
