@@ -1,4 +1,11 @@
-import type { SmmService } from "@/lib/smm-service-catalog";
+export type ServicePageCroInput = {
+  platform: string;
+  code: string;
+  pricePer1000: number;
+  minQuantity: number;
+  maxQuantity: number;
+  requiresLiveCatalogFacts?: boolean;
+};
 
 export type ServicePageCroMode = "inline-builder" | "live-dashboard";
 
@@ -9,7 +16,7 @@ export type ServicePageCroConfig = {
   canShowStaticPrice: boolean;
 };
 
-export function getServicePageCroConfig(service: SmmService): ServicePageCroConfig {
+export function getServicePageCroConfig(service: ServicePageCroInput): ServicePageCroConfig {
   const requiresLiveOrder =
     Boolean(service.requiresLiveCatalogFacts) ||
     !Number.isFinite(service.pricePer1000) ||
