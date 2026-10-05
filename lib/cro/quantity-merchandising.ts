@@ -1,12 +1,14 @@
 import type { SmmService } from "@/lib/smm-service-catalog";
 
+export type QuantityMerchandisingService = Pick<SmmService, "minQuantity" | "maxQuantity" | "quantityStep" | "pricePer1000">;
+
 export type QuantityMerchandisingOption = {
   value: number;
   label: "Starter" | "Balanced" | "Scale" | null;
   emphasis: "standard" | "balanced" | "scale";
 };
 
-function validForService(service: SmmService, value: number) {
+function validForService(service: QuantityMerchandisingService, value: number) {
   const step = service.quantityStep ?? 1;
   return value >= service.minQuantity && value <= service.maxQuantity && (value - service.minQuantity) % step === 0;
 }
@@ -27,7 +29,7 @@ function closestIndex(values: readonly number[], target: number, blocked = new S
   return bestIndex;
 }
 
-function orderTotal(service: SmmService, quantity: number) {
+function orderTotal(service: QuantityMerchandisingService, quantity: number) {
   return Math.round((quantity * service.pricePer1000 * 100) / 1000) / 100;
 }
 
@@ -35,7 +37,7 @@ function orderTotal(service: SmmService, quantity: number) {
  * Returns the smallest valid service quantity whose rounded checkout total
  * reaches the requested spend. This never changes the underlying service rate.
  */
-export function quantityForMinimumSpend(service: SmmService, minimumTotal: number): number | null {
+export function quantityForMinimumSpend(service: QuantityMerchandisingService, minimumTotal: number): number | null {
   if (!Number.isFinite(minimumTotal) || minimumTotal <= 0 || !Number.isFinite(service.pricePer1000) || service.pricePer1000 <= 0) return null;
   const step = service.quantityStep ?? 1;
   const rawTarget = Math.max(service.minQuantity, Math.ceil((minimumTotal * 1000) / service.pricePer1000));
@@ -51,7 +53,7 @@ export function quantityForMinimumSpend(service: SmmService, minimumTotal: numbe
  * is a merchandising position, not a claim about customer popularity.
  * Pricing, service limits and checkout validation remain unchanged.
  */
-export function buildQuantityMerchandising(service: SmmService): QuantityMerchandisingOption[] {
+export function buildQuantityMerchandising(service: QuantityMerchandisingService): QuantityMerchandisingOption[] {
   const candidates = [
     service.minQuantity,
     500,
