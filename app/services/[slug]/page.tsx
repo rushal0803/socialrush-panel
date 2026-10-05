@@ -9,6 +9,9 @@ import { getGrowthService, growthServices } from "@/lib/growth-services";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
+import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
+import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
+import { getServicePageCroConfig } from "@/lib/cro/service-page-cro";
 import LinkedInUsaAuthorityLinks from "@/components/seo/LinkedInUsaAuthorityLinks";
 import LinkedInUsaConnectionsLanding from "@/components/marketing/LinkedInUsaConnectionsLanding";
 import LinkedInUsaPostLikesLanding from "@/components/marketing/LinkedInUsaPostLikesLanding";
@@ -247,18 +250,23 @@ function getSeoData(slug: string) {
   if (smmService) {
     const platform = platformMeta[smmService.platform];
     const title = `${routeTitle(slug)} | SocialRUSH`;
-    const price = formatInr(smmService.pricePer1000);
+    const cro = getServicePageCroConfig(smmService);
+    const price = cro.canShowStaticPrice
+      ? formatInr(smmService.pricePer1000)
+      : "Live pricing in secure order";
     return {
       title,
-      description: `Buy ${smmService.name.toLowerCase()} from SocialRUSH with transparent pricing, dashboard tracking, and support for India-focused growth campaigns.`,
+      description: cro.canShowStaticPrice
+        ? `Buy ${smmService.name.toLowerCase()} from SocialRUSH with transparent pricing, dashboard tracking, and support for India-focused growth campaigns.`
+        : `Order ${smmService.name.toLowerCase()} from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.`,
       headline: smmService.name,
       intro: `${smmService.description} SocialRUSH gives you a clean ordering flow, live tracking, and support for campaign management across India and global audiences.`,
       price,
-      pricePer1000INR: smmService.pricePer1000,
+      ...(cro.canShowStaticPrice ? { pricePer1000INR: smmService.pricePer1000 } : {}),
       delivery: smmService.deliveryTime,
       audience: ["Creators", "Agencies", "Brands", "Marketing teams"],
       benefits: [
-        "Transparent starting price",
+        cro.canShowStaticPrice ? "Transparent starting price" : "Current facts loaded before checkout",
         `Delivery: ${smmService.deliveryTime}`,
         `Refill: ${smmService.refillPolicy}`,
         `Quality: ${smmService.qualityType}`,
