@@ -40,11 +40,15 @@ test("Phase 33 public and dashboard package UI share evidence-based choice archi
 test("Phase 33 legacy merchandising also avoids unsupported popularity and value badges", () => {
   const merchandising = read("lib/package-merchandising.ts");
   const bigPackages = read("lib/big-packages.ts");
+  const legacyPage = read("components/marketing/packages/PackagesPageContent.tsx");
   assert.match(merchandising, /Balanced Choice/);
   assert.match(merchandising, /tier: "Scale"/);
   assert.doesNotMatch(merchandising, /Most Popular|Best Value/);
   assert.match(bigPackages, /discountBadge:index===1\?"Balanced Choice"/);
+  assert.match(bigPackages, /discountBadge:undefined/);
   assert.doesNotMatch(bigPackages, /discountBadge:index===1\?"Popular"/);
+  assert.match(legacyPage, /Balanced Choice/);
+  assert.doesNotMatch(legacyPage, /Best Value/);
 });
 
 
