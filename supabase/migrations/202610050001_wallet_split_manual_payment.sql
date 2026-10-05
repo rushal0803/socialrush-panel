@@ -42,7 +42,6 @@ begin
   from profiles where id=v_user for update;
   v_applied:=least(v_balance,v_total);
 
-  -- Require the same wallet contribution that was displayed before payment.
   if round(v_applied,2) <> round(p_expected_wallet,2) then
     raise exception 'wallet balance changed; refresh checkout';
   end if;
@@ -57,5 +56,6 @@ begin
 end;
 $$;
 
-revoke all on function public.apply_wallet_to_manual_checkout(uuid,uuid,numeric) from public;
+revoke execute on function public.apply_wallet_to_manual_checkout(uuid,uuid,numeric) from public;
+revoke execute on function public.apply_wallet_to_manual_checkout(uuid,uuid,numeric) from anon;
 grant execute on function public.apply_wallet_to_manual_checkout(uuid,uuid,numeric) to authenticated;
