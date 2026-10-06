@@ -8,6 +8,7 @@ import BlogShell from "@/components/marketing/blog/BlogShell";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import { createClient } from "@/lib/supabase/client";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
+import { getPackageChoicePresentation, packageChoiceGuide } from "@/lib/cro/package-psychology";
 import {
   getPackagePurchaseFacts,
   getPackageUiGroups,
@@ -65,6 +66,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
   const activeGroup = groups.find((g) => g.uiPlatform === platform && g.uiService === service) ?? platformGroups[0] ?? null;
   const packages = activeGroup?.packages ?? [];
   const selected = packages.find((p) => p.id === selectedId) ?? null;
+  const selectedChoice = selected ? getPackageChoicePresentation(selected, packages) : null;
   const purchaseFacts = selected ? getPackagePurchaseFacts(selected) : null;
   const wallet = getWalletPackageState(selected, walletBalance);
   const rule = selected ? linkRules[selected.serviceCode] ?? null : null;
@@ -163,12 +165,12 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,122,0,.16),transparent_42%)]" />
       <div className="relative mx-auto max-w-7xl">
         <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-orange-300"><Sparkles className="h-3.5 w-3.5" /> Premium growth packages</span>
-        <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Pick your platform. Compare real value. Start growing.</h1>
+        <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Pick your platform. Compare real prices. Choose your campaign size.</h1>
         <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">One clean buying experience for every active SocialRUSH service. Prices come from the same service catalog used by the ordering system.</p>
         <div className="mt-7 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
           <Metric value={String(new Set(groups.map((g) => g.platform)).size)} label="Platforms" />
           <Metric value={String(groups.length)} label="Active services" />
-          <Metric value="4" label="Package tiers" />
+          <Metric value="Up to 4" label="Package tiers" />
         </div>
       </div>
     </section>
@@ -187,12 +189,15 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       </aside>
 
       <div className="min-w-0">
-        <div className="mb-5"><p className="text-xs font-bold uppercase tracking-[.14em] text-orange-300">Step 2</p><h2 className="mt-1 text-2xl font-black sm:text-3xl">{activeGroup ? getPackageUiServiceLabel(platform, activeGroup.uiService) : "Packages"}</h2><p className="mt-2 text-sm leading-6 text-zinc-400">{activeGroup?.service.description ?? "Choose another active service to continue."}</p></div>
-        {packages.length ? <div className={`grid gap-4 ${packages.length >= 4 ? "md:grid-cols-2 xl:grid-cols-4" : packages.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>{packages.map((pkg) => <PackageCard key={pkg.id} pkg={pkg} selected={selectedId === pkg.id} onSelect={() => choosePackage(pkg)} />)}</div> : <div className="rounded-3xl border border-dashed border-white/15 bg-white/[.025] p-8 text-center"><h3 className="text-xl font-black">No fixed packages are currently available</h3><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-zinc-400">This active service requires live pricing or different order parameters. Use the standard order flow instead of showing an unsupported or ₹0 package.</p><Link href="/dashboard/new-order" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-5 text-sm font-black text-black">Open standard order</Link></div>}
+        <div className="mb-5"><p className="text-xs font-bold uppercase tracking-[.14em] text-orange-300">Step 2</p><h2 className="mt-1 text-2xl font-black sm:text-3xl">{activeGroup ? getPackageUiServiceLabel(platform, activeGroup.uiService) : "Packages"}</h2><p className="mt-2 text-sm leading-6 text-zinc-400">{activeGroup?.service.description ?? "Choose another active service to continue."}</p>
+          {packages.length > 1 && <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4" data-package-choice-guide>{packageChoiceGuide.slice(0, packages.length).map((item) => <div key={item.label} className="rounded-xl border border-white/10 bg-white/[.025] px-3 py-2.5"><p className="text-[10px] font-black uppercase tracking-[.1em] text-orange-300">{item.label}</p><p className="mt-1 text-xs text-zinc-500">{item.text}</p></div>)}</div>}
+          {activeGroup && <p className="mt-3 text-xs text-zinc-500">The highlighted tier is a middle-ground recommendation, not a popularity claim. Need another quantity? <Link href={`/dashboard/new-order?service=${encodeURIComponent(activeGroup.service.code)}`} className="font-bold text-orange-200 hover:text-orange-100">Use the standard order flow.</Link></p>}
+        </div>
+        {packages.length ? <div className={`grid gap-4 ${packages.length >= 4 ? "md:grid-cols-2 xl:grid-cols-4" : packages.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>{packages.map((pkg) => <PackageCard key={pkg.id} pkg={pkg} packages={packages} selected={selectedId === pkg.id} onSelect={() => choosePackage(pkg)} />)}</div> : <div className="rounded-3xl border border-dashed border-white/15 bg-white/[.025] p-8 text-center"><h3 className="text-xl font-black">No fixed packages are currently available</h3><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-zinc-400">This active service requires live pricing or different order parameters. Use the standard order flow instead of showing an unsupported or ₹0 package.</p><Link href="/dashboard/new-order" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-5 text-sm font-black text-black">Open standard order</Link></div>}
 
         {selected && purchaseFacts && <section id="package-checkout" className="mt-8 rounded-[28px] border border-orange-400/30 bg-gradient-to-b from-orange-500/[.10] to-white/[.035] p-5 shadow-[0_28px_70px_-45px_rgba(255,122,0,.8)] sm:p-7">
           <div className="grid gap-6 lg:grid-cols-[1fr_340px]">
-            <div><p className="text-xs font-bold uppercase tracking-[.14em] text-orange-300">Step 3 · Review & start</p><h3 className="mt-2 text-2xl font-black">{pkgTitle(selected)}</h3><div className="mt-4 flex flex-wrap gap-2"><Pill>{quantity(selected.quantity)} {getPackageUiServiceLabel(platform, selected.service)}</Pill><Pill>{selected.tierLabel}</Pill>{selected.recommended && <Pill>Most popular</Pill>}</div>
+            <div><p className="text-xs font-bold uppercase tracking-[.14em] text-orange-300">Step 3 · Review & start</p><h3 className="mt-2 text-2xl font-black">{pkgTitle(selected)}</h3><div className="mt-4 flex flex-wrap gap-2"><Pill>{quantity(selected.quantity)} {getPackageUiServiceLabel(platform, selected.service)}</Pill><Pill>{selected.tierLabel}</Pill>{selectedChoice && <Pill>{selectedChoice.badge}</Pill>}</div>{selectedChoice && <p className="mt-3 max-w-2xl text-sm leading-6 text-zinc-400">{selectedChoice.rationale}</p>}
               {rule ? <div className="mt-6"><label htmlFor="package-link" className="text-sm font-extrabold">Public destination link</label><input id="package-link" value={targetLink} onChange={(e) => { setTargetLink(e.target.value); setMessage(""); }} placeholder={rule.placeholder} className={`mt-2 min-h-12 w-full rounded-xl border bg-black/35 px-4 text-sm outline-none transition ${linkError ? "border-red-400/60" : "border-white/15 focus:border-orange-400"}`} /><p className={`mt-2 text-xs ${linkError ? "text-red-300" : "text-zinc-500"}`}>{linkError || rule.helper}</p></div> : <div className="mt-6 rounded-xl border border-amber-400/20 bg-amber-500/10 p-3 text-sm text-amber-100">Use the standard order flow for this service’s destination requirements.</div>}
               {message && <p role="alert" className="mt-4 rounded-xl border border-orange-400/20 bg-black/25 p-3 text-sm text-orange-100">{message}</p>}
             </div>
@@ -206,19 +211,21 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       </div>
     </div></section>
 
-    <section className="px-4 pb-10 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-3 sm:grid-cols-3"><Trust title="Transparent pricing" text="No fake crossed-out prices. Savings only appear when the package engine has a genuine discount." /><Trust title="Catalog-driven" text="Active platforms and services come from the same SocialRUSH service catalog." /><Trust title="Purchase continuity" text="Package selection is preserved through login and Add Funds where technically supported." /></div></section>
+    <section className="px-4 pb-10 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-3 sm:grid-cols-3"><Trust title="Evidence-based choices" text="No fake popularity, scarcity or invented best-value badge. The highlighted tier is simply the middle-ground option." /><Trust title="Transparent pricing" text="Savings appear only when the package engine has a genuine checkout-backed discount." /><Trust title="Purchase continuity" text="Package selection is preserved through login and Add Funds where technically supported." /></div></section>
 
     {selected && purchaseFacts && <div className="fixed inset-x-0 bottom-0 z-40 border-t border-white/10 bg-[#0b0b0b]/95 p-3 backdrop-blur-xl lg:hidden"><div className="mx-auto flex max-w-xl items-center gap-3"><div className="min-w-0 flex-1"><p className="truncate text-xs text-zinc-400">{selected.tierLabel} · {quantity(selected.quantity)}</p><p className="text-lg font-black">{money(selected.pricePaise)}</p></div><button onClick={() => document.getElementById("package-checkout")?.scrollIntoView({ behavior: "smooth", block: "center" })} className="min-h-11 rounded-xl bg-orange-500 px-5 text-sm font-black text-black">Continue</button></div></div>}
   </main></InteractiveHomepageShell></BlogShell>;
 }
 
-function PackageCard({ pkg, selected, onSelect }: { pkg: PackageUiSelection; selected: boolean; onSelect: () => void }) {
-  return <article className={`relative flex min-h-[320px] flex-col rounded-[24px] border p-5 transition duration-200 ${pkg.recommended ? "border-orange-400/60 bg-orange-500/[.08] shadow-[0_24px_60px_-40px_rgba(255,122,0,.9)]" : "border-white/10 bg-white/[.035] hover:border-white/20"} ${selected ? "ring-2 ring-orange-400 ring-offset-2 ring-offset-[#080808]" : ""}`}>
-    {pkg.recommended && <span className="absolute -top-3 left-4 rounded-full bg-orange-500 px-3 py-1 text-[10px] font-black uppercase tracking-[.12em] text-black">Most popular</span>}
+function PackageCard({ pkg, packages, selected, onSelect }: { pkg: PackageUiSelection; packages: readonly PackageUiSelection[]; selected: boolean; onSelect: () => void }) {
+  const choice = getPackageChoicePresentation(pkg, packages);
+  return <article data-package-choice={choice.badge} data-package-featured={choice.featured ? "true" : "false"} className={`relative flex min-h-[350px] flex-col rounded-[24px] border p-5 transition duration-200 ${choice.featured ? "border-orange-400/60 bg-orange-500/[.08] shadow-[0_24px_60px_-40px_rgba(255,122,0,.9)]" : "border-white/10 bg-white/[.035] hover:border-white/20"} ${selected ? "ring-2 ring-orange-400 ring-offset-2 ring-offset-[#080808]" : ""}`}>
+    <span className={`absolute -top-3 left-4 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[.12em] ${choice.featured ? "bg-orange-500 text-black" : "border border-white/10 bg-[#171717] text-zinc-300"}`}>{choice.badge}</span>
     <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[.12em] text-zinc-500">{pkg.tierLabel}</p><h3 className="mt-2 text-3xl font-black">{quantity(pkg.quantity)}</h3><p className="mt-1 text-sm text-zinc-400">{pkg.bestFor}</p></div>{selected && <span className="grid h-7 w-7 place-items-center rounded-full bg-orange-500 text-black"><Check className="h-4 w-4" /></span>}</div>
-    <div className="mt-6"><div className="flex items-baseline gap-2"><strong className="text-3xl font-black">{money(pkg.pricePaise)}</strong>{pkg.savingsPaise > 0 && <span className="text-sm text-zinc-500 line-through">{money(pkg.regularPricePaise)}</span>}</div>{pkg.savingsPaise > 0 ? <p className="mt-2 text-xs font-bold text-emerald-300">Save {money(pkg.savingsPaise)} · {pkg.savingsPercent}% OFF</p> : <p className="mt-2 text-xs text-zinc-500">Current catalog price</p>}{pkg.pricePer1000Paise !== null && <p className="mt-2 text-xs text-zinc-500">≈ {money(pkg.pricePer1000Paise)} per 1K</p>}</div>
-    <ul className="mt-5 space-y-2 text-xs text-zinc-400"><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Clear package quantity</li><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Dashboard order tracking</li></ul>
-    <button onClick={onSelect} className={`mt-auto min-h-11 rounded-xl px-4 text-sm font-black transition ${pkg.recommended ? "bg-orange-500 text-black hover:bg-orange-400" : "border border-white/15 bg-white/[.05] text-white hover:border-orange-400/50"}`}>{selected ? "Selected" : "Choose package"}</button>
+    <div className="mt-6"><div className="flex items-baseline gap-2"><strong className="text-3xl font-black">{money(pkg.pricePaise)}</strong>{pkg.savingsPaise > 0 && <span className="text-sm text-zinc-500 line-through">{money(pkg.regularPricePaise)}</span>}</div>{choice.savingsNote ? <p className="mt-2 text-xs font-bold text-emerald-300">{choice.savingsNote}</p> : <p className="mt-2 text-xs text-zinc-500">Current catalog price</p>}{pkg.pricePer1000Paise !== null && <p className="mt-2 text-xs text-zinc-500">≈ {money(pkg.pricePer1000Paise)} per 1K</p>}{choice.unitRateNote && <p className="mt-1 text-[11px] leading-5 text-zinc-600">{choice.unitRateNote}</p>}</div>
+    <p className="mt-4 text-xs leading-5 text-zinc-400">{choice.rationale}</p>
+    <ul className="mt-4 space-y-2 text-xs text-zinc-400"><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Clear package quantity</li><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Dashboard order tracking</li></ul>
+    <button onClick={onSelect} className={`mt-auto min-h-11 rounded-xl px-4 text-sm font-black transition ${choice.featured ? "bg-orange-500 text-black hover:bg-orange-400" : "border border-white/15 bg-white/[.05] text-white hover:border-orange-400/50"}`}>{selected ? "Selected" : choice.featured ? "Choose balanced" : "Choose package"}</button>
   </article>;
 }
 
