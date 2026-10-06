@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { resolveFirstOrderConversionMode } from "../../lib/cro/first-order-conversion.ts";
+import { buildFirstOrderContext, isQualifyingFirstOrderState, resolveFirstOrderConversionMode } from "../../lib/cro/first-order-conversion.ts";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
 
@@ -50,4 +50,47 @@ test("Phase 34 does not change first-order reward amounts or payment calculation
   assert.match(builder, /firstOrderOffer\.minimum/);
   assert.match(builder, /walletApplied/);
   assert.match(builder, /remainingToPay/);
+});
+
+
+test("Phase 34 keeps failed, cancelled and refunded attempts inside the first-order journey", () => {
+  assert.equal(isQualifyingFirstOrderState({ status: "failed", payment_status: "failed" }), false);
+  assert.equal(isQualifyingFirstOrderState({ status: "cancelled", payment_status: "paid" }), false);
+  assert.equal(isQualifyingFirstOrderState({ status: "refunded", payment_status: "refunded" }), false);
+  assert.equal(isQualifyingFirstOrderState({ status: "pending", payment_status: null }), true);
+
+  const context = buildFirstOrderContext(
+    { enabled: true, manual_approval: false, minimum_order_amount: 500, new_customer_reward: 100 },
+    [{ status: "failed", payment_status: "failed" }],
+  );
+  assert.deepEqual(context, { firstOrder: true, eligible: true, reward: 100, minimum: 500 });
+});
+
+test("Phase 34 exposes first-order context even when no reward is active", () => {
+  const context = buildFirstOrderContext(
+    { enabled: false, manual_approval: false, minimum_order_amount: 500, new_customer_reward: 100 },
+    [],
+  );
+  assert.deepEqual(context, { firstOrder: true, eligible: false });
+
+  const api = read("app/api/rewards/first-order-offer/route.ts");
+  assert.match(api, /buildFirstOrderContext/);
+  assert.match(api, /firstOrder: false, eligible: false/);
+});
+
+test("Phase 34 keeps dashboard and builder on the same first-order path", () => {
+  const dashboard = read("app/dashboard/page.tsx");
+  const overview = read("components/dashboard/DashboardOverviewContent.tsx");
+  const cards = read("components/dashboard/OrderConversionCards.tsx");
+  const builder = read("app/dashboard/new-order/page.tsx");
+
+  assert.match(dashboard, /FIRST_ORDER_NON_QUALIFYING_STATES/);
+  assert.match(dashboard, /const qualifyingOrders = count\(18\)/);
+  assert.match(dashboard, /const firstOrder = !failed\(18\) && qualifyingOrders === 0/);
+  assert.match(overview, /source=first_order_dashboard/);
+  assert.match(cards, /source=first_order_dashboard/);
+  assert.match(builder, /const \[firstOrder, setFirstOrder\]/);
+  assert.match(builder, /firstOrder && currentStep === 1/);
+  assert.match(builder, /Start with a clear four-step order review/);
+  assert.match(builder, /step: "first_order_entry"/);
 });
