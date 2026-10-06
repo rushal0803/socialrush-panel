@@ -12,9 +12,10 @@ const getCachedPublicReviews = unstable_cache(
     const db = createAdminClient();
     const { data, error } = await db
       .from("customer_reviews")
-      .select("id,rating,title,message,display_name,published_at,orders(platform,service_name)")
+      .select("id,rating,title,message,display_name,published_at,orders!inner(platform,service_name,status)")
       .eq("moderation_status", "approved")
       .eq("public_permission", true)
+      .eq("orders.status", "completed")
       .is("removal_requested_at", null)
       .order("featured", { ascending: false })
       .order("published_at", { ascending: false })

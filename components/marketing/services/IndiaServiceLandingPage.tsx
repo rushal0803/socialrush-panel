@@ -4,16 +4,12 @@ import {
   BadgeIndianRupee,
   BarChart3,
   BriefcaseBusiness,
-  Clock3,
-  Headphones,
   Link2,
-  LockKeyhole,
   RefreshCw,
   ShieldCheck,
   Sparkles,
   Users,
   WalletCards,
-  type LucideIcon,
 } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
@@ -38,15 +34,7 @@ import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSe
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules } from "@/lib/order-service-experience";
-
-const trustCards: Array<{ title: string; icon: LucideIcon }> = [
-  { title: "No Password Required", icon: LockKeyhole },
-  { title: "Real-time Order Tracking", icon: Clock3 },
-  { title: "Refill Support If Eligible", icon: RefreshCw },
-  { title: "Secure Checkout", icon: ShieldCheck },
-  { title: "WhatsApp Support", icon: Headphones },
-  { title: "Transparent Pricing", icon: BadgeIndianRupee },
-];
+import TrustEvidencePanel from "@/components/marketing/trust/TrustEvidencePanel";
 
 const relatedBlogMap: Record<string, string[]> = {
   instagram: [
@@ -585,21 +573,7 @@ export default async function IndiaServiceLandingPage({
         </section>
       ) : null}
 
-      <section className="bg-white/65 px-4 py-14 sm:px-6 lg:px-8">
-        <div className="mx-auto grid max-w-7xl grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
-          {trustCards.map(({ title, icon: Icon }) => (
-            <article
-              key={title}
-              className="rounded-2xl border border-[#FFF8F1] bg-white p-4 text-center shadow-[0_16px_34px_-28px_rgba(255, 159, 0, .45)]"
-            >
-              <Icon className="mx-auto h-5 w-5 text-[#FF9F00]" />
-              <h3 className="mt-3 text-xs font-black leading-5 text-[#0B0B0F]">
-                {title}
-              </h3>
-            </article>
-          ))}
-        </div>
-      </section>
+      <TrustEvidencePanel tone="light" compact />
 
       <section className="px-4 py-16 sm:px-6 lg:px-8 lg:py-24">
         <div className="mx-auto max-w-7xl">

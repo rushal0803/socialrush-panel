@@ -1,4 +1,5 @@
 import PublicReviewsSection from "@/components/reviews/PublicReviewsSection";
+import TrustEvidencePanel from "@/components/marketing/trust/TrustEvidencePanel";
 import HomepageExperienceFrame from "./HomepageExperienceFrame";
 import InteractiveHomepageShell from "./InteractiveHomepageShell";
 import PremiumHomepage from "./PremiumHomepage";
@@ -12,6 +13,7 @@ export default function HomepageContent() {
       <InteractiveHomepageShell>
         <HomepageExperienceFrame>
           <PremiumHomepage />
+          <TrustEvidencePanel />
           <DeferredPersonalizationShelf catalog={activeSmmServices} />
           <PublicReviewsSection limit={4} />
         </HomepageExperienceFrame>
