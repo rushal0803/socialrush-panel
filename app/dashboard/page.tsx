@@ -1,9 +1,9 @@
 import DashboardOverviewContent from "@/components/dashboard/DashboardOverviewContent";
-import RepeatScaleModule from "@/components/dashboard/RepeatScaleModule";
-import ReactivationRecoveryPanel from "@/components/dashboard/ReactivationRecoveryPanel";
+import RetentionNextActionCard from "@/components/dashboard/RetentionNextActionCard";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { customerOrderServices } from "@/lib/order-service-experience";
-import { buildRepeatOrderHref } from "@/lib/cro/repeat-order";
+import { buildFrequentRepeatPatterns, buildRepeatOrderHref } from "@/lib/cro/repeat-order";
+import { buildRetentionDecision } from "@/lib/retention/engine";
 import { FIRST_ORDER_NON_QUALIFYING_STATES } from "@/lib/cro/first-order-conversion";
 import { redirect } from "next/navigation";
 import styles from "./phase7-command-center.module.css";
@@ -40,13 +40,14 @@ export default async function DashboardPage() {
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("payment_status", "verification_pending"),
     supabase.from("services").select("code,name,platform,rate,min,status,is_active,accepts_new_orders").in("code", ["instagram-likes", "facebook-followers", "instagram-followers"]),
     supabase.from("checkout_intents").select("id,service_code,quantity,destination_link,total_paise,created_at,expires_at").eq("user_id", userId).eq("status", "created").is("order_id", null).gte("created_at", new Date(Date.now()-7*864e5).toISOString()).order("created_at", { ascending: false }).limit(1).maybeSingle(),
-    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).eq("status", "completed").order("created_at", { ascending: false }).limit(1),
+    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).eq("status", "completed").order("created_at", { ascending: false }).limit(10),
     supabase.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id", true).maybeSingle(),
     supabase.from("orders")
       .select("id", { count: "exact", head: true })
       .eq("user_id", userId)
       .not("status", "in", `(${FIRST_ORDER_NON_QUALIFYING_STATES.join(",")})`)
       .or(`payment_status.is.null,payment_status.not.in.(${FIRST_ORDER_NON_QUALIFYING_STATES.join(",")})`),
+    supabase.from("order_refill_requests").select("id", { count: "exact", head: true }).eq("customer_id", userId).not("status", "in", "(completed,rejected,cancelled)"),
   ]);
   const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
   const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
@@ -105,7 +106,20 @@ export default async function DashboardPage() {
   const firstOrder = !failed(18) && qualifyingOrders === 0;
   const pendingOrders = count(12);
   const paymentChecks = count(13);
-  const latestCompletedOrder = value<RawOrder[]>(16, [])[0];
+  const completedOrderHistory = value<RawOrder[]>(16, []);
+  const latestCompletedOrder = completedOrderHistory[0];
+  const frequentRepeat = buildFrequentRepeatPatterns(
+    completedOrderHistory.map((row) => ({
+      serviceName: row.service_name || "Growth service",
+      platform: row.platform || "other",
+      quantity: Number(row.quantity || 0),
+      link: row.link || "",
+      createdAt: row.created_at,
+    })),
+    customerOrderServices,
+    2,
+    1,
+  )[0] ?? null;
   const rewardRules = value<{ enabled: boolean; manual_approval: boolean; minimum_order_amount: number | string | null; new_customer_reward: number | string | null } | null>(17, null);
   const rewardAmount = Number(rewardRules?.new_customer_reward || 0);
   const rewardMinimum = Number(rewardRules?.minimum_order_amount || 0);
@@ -113,8 +127,31 @@ export default async function DashboardPage() {
     ? { reward: rewardAmount, minimum: rewardMinimum }
     : null;
   const latestRepeatOrder = latestCompletedOrder ? mapOrder(latestCompletedOrder) : null;
+  const activeRefills = count(19);
+  const preferredRepeat = frequentRepeat ?? (latestRepeatOrder?.repeatHref ? {
+    href: latestRepeatOrder.repeatHref,
+    serviceName: latestRepeatOrder.serviceName,
+    quantity: latestRepeatOrder.quantity,
+    count: 1,
+  } : null);
+  const retentionDecision = buildRetentionDecision({
+    completedOrders,
+    activeOrders: count(1),
+    pendingOrders,
+    paymentChecks,
+    openTickets: count(5),
+    activeRefills,
+    hasCheckoutRecovery: Boolean(checkoutRecovery),
+    hasDraft: Boolean(draft),
+    latestCompletedAt: latestCompletedOrder?.created_at ?? null,
+    repeatHref: preferredRepeat?.href ?? null,
+    repeatServiceName: preferredRepeat?.serviceName ?? null,
+    repeatQuantity: preferredRepeat?.quantity ?? null,
+    repeatCount: preferredRepeat?.count ?? 0,
+    signalsReliable: ![1, 2, 5, 8, 12, 13, 15, 16, 19].some(failed),
+  });
 
   const hour = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Kolkata" }).format(new Date()));
   const greeting = hour < 5 ? "Welcome back" : hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  return <div className={styles.commandCenter}><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={totalOrders} activeOrders={count(1)} completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} checkoutRecovery={checkoutRecovery} firstOrderOffer={firstOrderOffer} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10) || failed(18), payments: failed(3) || failed(13), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><ReactivationRecoveryPanel completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RepeatScaleModule completedOrders={completedOrders} latestRepeat={latestRepeatOrder?.repeatHref ? { href: latestRepeatOrder.repeatHref, serviceName: latestRepeatOrder.serviceName, quantity: latestRepeatOrder.quantity } : null} /></div></div>;
+  return <div className={styles.commandCenter}><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={totalOrders} activeOrders={count(1)} completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} checkoutRecovery={checkoutRecovery} firstOrderOffer={firstOrderOffer} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10) || failed(18), payments: failed(3) || failed(13), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RetentionNextActionCard decision={retentionDecision} /></div></div>;
 }
