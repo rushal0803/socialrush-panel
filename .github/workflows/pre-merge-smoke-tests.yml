@@ -54,7 +54,10 @@ jobs:
         with:
           name: playwright-smoke-diagnostics
           path: |
-            test-results/
-            artifacts/service-final/
+            test-results/seo-q4*320x700-chromium*/
+            test-results/seo-q4*out-of-sitemap-chromium*/
+            test-results/seo-q4*/error-context.md
+            artifacts/service-final/chromium.log
+            artifacts/service-final/smoke-server.log
           retention-days: 7
           if-no-files-found: warn

@@ -85,16 +85,36 @@ async function load(page: Page, path: string) {
 }
 
 test.describe("Q4 Phase 1 SEO browser release gate", () => {
+  test.use({ trace: "on" });
   test.afterEach(async ({ page }, info) => {
-    if (info.status !== info.expectedStatus) {
+    if (info.status !== info.expectedStatus || info.title.endsWith("320x700")) {
       await info.attach("release-gate-screenshot", { body: await page.screenshot({ fullPage: true }), contentType: "image/png" });
     }
   });
 
   for (const viewport of viewports) {
-    test(`growth planner interaction ${viewport.width}x${viewport.height}`, async ({ page }) => {
+    test(`growth planner interaction ${viewport.width}x${viewport.height}`, async ({ page, request, baseURL }) => {
       await page.setViewportSize(viewport);
       const errors = collectErrors(page);
+      const loopback = baseURL?.startsWith("http://") && ["localhost", "127.0.0.1"].includes(new URL(baseURL).hostname);
+      const prefetchResponses: { url: string; status: number; csp: string }[] = [];
+      page.on("response", response => {
+        if (response.request().headers()["rsc"] === "1" && /\/(dashboard\/new-order|login)(\?|$)/.test(response.url())) {
+          prefetchResponses.push({ url: response.url(), status: response.status(), csp: response.headers()["content-security-policy"] || "" });
+        }
+      });
+      if (loopback) {
+        // APIRequestContext is not routed by the browser fixture. Verify the
+        // real security policy and HTTP auth redirect are still intact.
+        const raw = await request.get("/dashboard/new-order?platform=instagram&service=instagram-followers&quantity=1000&prefill=1", {
+          headers: { RSC: "1", "Next-Router-Prefetch": "1" }, maxRedirects: 0,
+        });
+        expect(raw.status()).toBe(307);
+        const destination = new URL(raw.headers()["location"]);
+        expect(destination.origin).toBe(new URL(baseURL!).origin);
+        expect(destination.pathname).toBe("/login");
+        expect(raw.headers()["content-security-policy"]).toContain("upgrade-insecure-requests");
+      }
       const response = await load(page, planner);
       const html = await response.text();
       expect(html).toContain("Smart Goal &amp; Budget Planner");
@@ -151,6 +171,14 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
       }
       await usableControl(cta);
       await readableContent(page);
+      if (loopback) {
+        expect(prefetchResponses.length, "Real RSC auth prefetch must execute").toBeGreaterThan(0);
+        for (const response of prefetchResponses) {
+          expect(response.status).toBeLessThan(400);
+          expect(response.csp).not.toContain("upgrade-insecure-requests");
+        }
+        await test.info().attach("loopback-prefetch-responses", { body: JSON.stringify(prefetchResponses, null, 2), contentType: "application/json" });
+      }
       expect(errors, errors.join("\n")).toEqual([]);
       // Do not click an ordering CTA or submit a payment/order.
     });
@@ -172,7 +200,8 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
         const navigation = route.cta ? page.getByRole("link", { name: route.cta, exact: true })
           : page.locator('main a[href="/tools"]').first();
         await expect(navigation).toHaveAttribute("href", /.+/);
-        if (route.cta) await usableControl(navigation);
+        await usableControl(navigation);
+        if (route.cta) await expect(navigation).toBeInViewport();
         else {
           await navigation.scrollIntoViewIfNeeded();
           await expect(navigation).toBeInViewport();
@@ -197,6 +226,7 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
         await expect(link).toBeVisible();
         await expect(link).toHaveAttribute("href", calculator);
         await usableControl(page.getByRole("link", { name: "Choose a package", exact: true }));
+        await usableControl(page.getByRole("link", { name: "Continue to Secure Order", exact: true }));
         await noOverflow(page);
         expect(errors, errors.join("\n")).toEqual([]);
       });
@@ -207,7 +237,7 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
     const response = await page.goto("/tools/social-media-growth-goal-planner");
     expect(response?.status()).toBe(404);
     await expect(page.locator('link[rel="canonical"][href$="/tools/social-media-growth-goal-planner"]')).toHaveCount(0);
-    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
+    await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(1);
     const sitemap = await request.get("/sitemap.xml");
     expect(sitemap.ok()).toBe(true);
     const xml = await sitemap.text();
