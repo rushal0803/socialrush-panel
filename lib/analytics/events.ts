@@ -52,6 +52,8 @@ export const clientAnalyticsEvents = [
   "agency_bulk_form_incomplete",
   "agency_bulk_form_error",
   "agency_revenue_path_click",
+  "agency_growth_next_action_view",
+  "agency_growth_next_action_click",
   "web_vital",
   "experiment_exposure",
   "first_order_bonus_view",
