@@ -44,7 +44,7 @@ export default async function DirectUpiPage({ searchParams: searchParamsPromise 
 
   const service = getServiceById(intent.service_code);
   const serviceName = service?.name || intent.service_code.split("-").map((part: string) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  const upiId = "8860330771@pthdfc";
+  const upiId = "8860330771@ybl";
   const payeeName = "Rushal";
   const usdtTrc20Address = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
   let usdtAmount: number | null = null;
