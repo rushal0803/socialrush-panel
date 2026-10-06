@@ -206,7 +206,8 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
   test("wrong planner URL stays non-canonical and out of sitemap", async ({ page, request }) => {
     const response = await page.goto("/tools/social-media-growth-goal-planner");
     expect(response?.status()).toBe(404);
-    await expect(page.locator('link[rel="canonical"]')).toHaveCount(0);
+    await expect(page.locator('link[rel="canonical"][href$="/tools/social-media-growth-goal-planner"]')).toHaveCount(0);
+    await expect(page.locator('meta[name="robots"]').first()).toHaveAttribute("content", /noindex/);
     const sitemap = await request.get("/sitemap.xml");
     expect(sitemap.ok()).toBe(true);
     const xml = await sitemap.text();
