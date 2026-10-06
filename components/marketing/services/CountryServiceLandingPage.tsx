@@ -5,7 +5,8 @@ import MarketCurrencyInitializer from "@/components/marketing/MarketCurrencyInit
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import ServiceLandingOrderBuilder from "./ServiceLandingOrderBuilder";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
-import { countryServiceAlternates, publishedCountryServicePages, type PublishedCountryServicePage } from "@/lib/seo/international";
+import { publishedCountryServicePages, type PublishedCountryServicePage } from "@/lib/seo/international";
+import { getCountryServiceMarketLinks } from "@/lib/seo/international-integrity";
 import { createCountryServiceFaqs, createCountryServiceSchema } from "@/lib/seo/country-service-schema";
 
 export default function CountryServiceLandingPage({ page }: { page: PublishedCountryServicePage }) {
@@ -14,6 +15,7 @@ export default function CountryServiceLandingPage({ page }: { page: PublishedCou
   const faqs = createCountryServiceFaqs(page, service);
   const schema = createCountryServiceSchema(page, service);
   const relatedMarketPages = publishedCountryServicePages.filter((item) => item.market.slug === page.market.slug && item.serviceSlug !== page.serviceSlug).slice(0, 6);
+  const equivalentMarketLinks = getCountryServiceMarketLinks(page);
   const intentTool = page.catalogServiceCode === "youtube-subscribers"
     ? { href: "/tools/youtube-subscriber-growth-rate-calculator", label: "Subscriber growth calculator" }
     : page.catalogServiceCode === "youtube-views"
@@ -28,6 +30,6 @@ export default function CountryServiceLandingPage({ page }: { page: PublishedCou
     <section className="px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-5 lg:grid-cols-2"><article><h2 className="text-3xl font-black">What to know before ordering</h2><p className="mt-4 text-sm leading-7 text-slate-300">{page.copy.consideration} Choose a quantity within the listed limits, then use the public destination requested by the form. The total is calculated from the existing INR catalog price; local currency is display-only.</p></article><article className="rounded-3xl border border-white/10 bg-[#101219] p-6"><h2 className="text-2xl font-black">How it works</h2><ol className="mt-4 space-y-3 text-sm leading-6 text-slate-300"><li>1. Select a valid quantity.</li><li>2. Add the correct public {service.platform} link.</li><li>3. Review the total and continue to the existing secure order flow.</li></ol></article></div></section>
     <section className="bg-[#0b0d13] px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto max-w-5xl"><h2 className="text-3xl font-black">Frequently asked questions</h2><div className="mt-7 grid gap-4">{faqs.map(([question, answer]) => <details key={question} className="rounded-2xl border border-white/10 bg-[#101219] p-5"><summary><h3 className="font-black">{question}</h3></summary><p className="mt-3 text-sm leading-7 text-slate-300">{answer}</p></details>)}</div></div></section>
     <section className="px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">{page.market.name} service cluster</p><h2 className="mt-3 text-3xl font-black">Explore more services in {page.market.name}</h2><p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">Compare related SocialRUSH services for the same market before choosing the campaign that best matches your goal.</p><div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{relatedMarketPages.map((item) => <Link key={item.serviceSlug} href={`/${item.market.slug}/${item.serviceSlug}`} className="flex min-h-14 items-center justify-between rounded-2xl border border-white/10 bg-white/[.03] px-4 py-3 text-sm font-bold hover:border-orange-400/40"><span>{item.h1}</span><span className="text-orange-300">→</span></Link>)}</div></div></section>
-    <section className="px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><h2 className="text-3xl font-black">Available in other markets</h2><div className="mt-6 flex flex-wrap gap-3">{Object.entries(countryServiceAlternates(page)).map(([locale, href]) => <Link key={locale} href={href} className="rounded-xl border border-white/10 px-4 py-3 text-sm font-bold">{locale}</Link>)}</div></div></section></div></InteractiveHomepageShell>
+    <section className="px-5 py-16 sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl"><h2 className="text-3xl font-black">Available in other markets</h2><p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">Switch only to published equivalents for this same service. Unsupported market/service combinations are not generated.</p><div className="mt-6 flex flex-wrap gap-3">{equivalentMarketLinks.map((item) => <Link key={item.hreflang} href={item.href} hrefLang={item.hreflang} className="rounded-xl border border-white/10 px-4 py-3 text-sm font-bold">{item.marketName}</Link>)}</div></div></section></div></InteractiveHomepageShell>
   </PublicShell>;
 }
