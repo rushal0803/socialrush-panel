@@ -141,7 +141,7 @@ export default function OrderSummaryPage() {
                     placeholder="https://instagram.com/yourprofile"
                     aria-invalid={Boolean(error)}
                     aria-describedby="order-summary-link-help"
-                    className={`w-full rounded-2xl border bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:ring-2 focus:ring-amber-400/20 ${error ? "border-red-400/70" : "border-slate-800 focus:border-amber-400"}`}
+                    className={`w-full rounded-2xl border bg-slate-900 px-4 py-3 text-base text-white outline-none transition focus:ring-2 focus:ring-amber-400/20 sm:text-sm ${error ? "border-red-400/70" : "border-slate-800 focus:border-amber-400"}`}
                   />
                   <p id="order-summary-link-help" className="text-sm text-slate-400">
                     Use the exact public destination required by the service: profile for followers, content link for likes and views.
