@@ -4,16 +4,12 @@ import {
   BadgeIndianRupee,
   BarChart3,
   BriefcaseBusiness,
-  Clock3,
-  Headphones,
   Link2,
-  LockKeyhole,
   RefreshCw,
   ShieldCheck,
   Sparkles,
   Users,
   WalletCards,
-  type LucideIcon,
 } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
