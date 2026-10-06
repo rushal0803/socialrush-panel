@@ -13,8 +13,8 @@ import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import CrossSellRecommendations from "@/components/marketing/CrossSellRecommendations";
+import { checkoutQuantityOptions, clampCheckoutQuantity } from "@/lib/cro/checkout-optimization";
 export const dynamic = "force-dynamic";
-const quantityOptions = [1000, 5000, 10000];
 
 export default function OrderSummaryPage() {
   const router = useRouter();
@@ -34,10 +34,7 @@ export default function OrderSummaryPage() {
 
   useEffect(() => {
     if (!service) return;
-    const match = activeSmmServices.find((item) => item.code === serviceSlug);
-    if (match) {
-      setQuantity(1000);
-    }
+    setQuantity((current) => clampCheckoutQuantity(current || service.minQuantity, service.minQuantity, service.maxQuantity));
   }, [service, serviceSlug]);
 
   useEffect(() => {
@@ -65,6 +62,7 @@ export default function OrderSummaryPage() {
     );
   }
 
+  const quantityOptions = checkoutQuantityOptions(service.minQuantity, service.maxQuantity);
   const totalPrice = calculateServiceTotal(service.code, quantity);
   const formattedTotal = formatCurrency(totalPrice, currency);
 
@@ -143,7 +141,7 @@ export default function OrderSummaryPage() {
                     placeholder="https://instagram.com/yourprofile"
                     aria-invalid={Boolean(error)}
                     aria-describedby="order-summary-link-help"
-                    className={`w-full rounded-2xl border bg-slate-900 px-4 py-3 text-sm text-white outline-none transition focus:ring-2 focus:ring-amber-400/20 ${error ? "border-red-400/70" : "border-slate-800 focus:border-amber-400"}`}
+                    className={`w-full rounded-2xl border bg-slate-900 px-4 py-3 text-base text-white outline-none transition focus:ring-2 focus:ring-amber-400/20 sm:text-sm ${error ? "border-red-400/70" : "border-slate-800 focus:border-amber-400"}`}
                   />
                   <p id="order-summary-link-help" className="text-sm text-slate-400">
                     Use the exact public destination required by the service: profile for followers, content link for likes and views.
@@ -155,11 +153,15 @@ export default function OrderSummaryPage() {
                       <input
                         type="number"
                         value={quantity}
-                        min={100}
-                        step={100}
-                        onChange={(event) => setQuantity(Math.max(100, Number(event.target.value) || 100))}
-                        className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-sm text-white outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20"
+                        min={service.minQuantity}
+                        max={service.maxQuantity}
+                        step={1}
+                        onChange={(event) => setQuantity(clampCheckoutQuantity(Number(event.target.value), service.minQuantity, service.maxQuantity))}
+                        className="mt-2 w-full rounded-xl border border-slate-800 bg-slate-950 px-3 py-2 text-base text-white outline-none focus:border-amber-400 focus:ring-2 focus:ring-amber-400/20 sm:text-sm"
                       />
+                      <span className="mt-2 block text-[11px] text-slate-500">
+                        Allowed range: {service.minQuantity.toLocaleString("en-IN")}–{service.maxQuantity.toLocaleString("en-IN")}
+                      </span>
                     </label>
                     {quantityOptions.map((option) => (
                       <button

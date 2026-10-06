@@ -1,7 +1,9 @@
 "use client";
 
 import { useMemo, useRef, useState } from "react";
+import { useSearchParams } from "next/navigation";
 import Link from "next/link";
+import { checkoutAmountPrefill, safeCheckoutReturnPath } from "@/lib/cro/checkout-optimization";
 
 const UPI_ID = "8860330771@pthdfc";
 const PAYEE = "Rushal";
@@ -15,7 +17,10 @@ function makeReference() {
 }
 
 export default function DesktopUpiQrCheckout() {
-  const [amountText, setAmountText] = useState("1000");
+  const searchParams = useSearchParams();
+  const requestedAmount = checkoutAmountPrefill(searchParams.get("amount"));
+  const returnPath = safeCheckoutReturnPath(searchParams.get("next"));
+  const [amountText, setAmountText] = useState(() => requestedAmount ? requestedAmount.toFixed(2).replace(/\.00$/, "") : "1000");
   const [reference] = useState(makeReference);
   const [showMobileQr, setShowMobileQr] = useState(false);
   const [paymentStarted, setPaymentStarted] = useState(false);
@@ -72,10 +77,10 @@ export default function DesktopUpiQrCheckout() {
     }
   }
 
-  if (success) return <section className="mx-auto max-w-2xl px-4 py-10"><div className="rounded-3xl border border-emerald-500/25 bg-[#101510] p-7 text-center shadow-2xl"><div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-2xl text-emerald-300">✓</div><p className="mt-5 text-xs font-bold uppercase tracking-[.18em] text-emerald-300">Payment submitted</p><h1 className="mt-2 text-2xl font-black text-white">₹{success.amount.toLocaleString("en-IN")} is being verified</h1><p className="mt-3 text-sm text-slate-400">Do not pay again. Your wallet will be credited after verification.</p><div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-3 text-left"><p className="text-[10px] font-bold uppercase text-slate-500">Reference</p><p className="mt-1 font-mono text-sm text-white">{reference}</p></div><Link href="/dashboard/wallet" className="mt-6 inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black">Back to Wallet</Link></div></section>;
+  if (success) return <section className="mx-auto max-w-2xl px-4 py-10"><div className="rounded-3xl border border-emerald-500/25 bg-[#101510] p-7 text-center shadow-2xl"><div className="mx-auto flex h-14 w-14 items-center justify-center rounded-full bg-emerald-500/15 text-2xl text-emerald-300">✓</div><p className="mt-5 text-xs font-bold uppercase tracking-[.18em] text-emerald-300">Payment submitted</p><h1 className="mt-2 text-2xl font-black text-white">₹{success.amount.toLocaleString("en-IN")} is being verified</h1><p className="mt-3 text-sm text-slate-400">Do not pay again. Your wallet will be credited after verification.</p><div className="mt-5 rounded-xl border border-white/10 bg-black/20 p-3 text-left"><p className="text-[10px] font-bold uppercase text-slate-500">Reference</p><p className="mt-1 font-mono text-sm text-white">{reference}</p></div><Link href={returnPath || "/dashboard/wallet"} className="mt-6 inline-flex w-full justify-center rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-5 py-4 text-sm font-black text-black">{returnPath ? "Return to Checkout" : "Back to Wallet"}</Link></div></section>;
 
   return <main className="mx-auto max-w-5xl px-4 py-6 pb-24 sm:py-10">
-    <header className="mb-6"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-400">SocialRUSH Wallet</p><h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">Complete your payment</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">Choose an amount. SocialRUSH creates a UPI payment request with that exact amount already filled in.</p></header>
+    <header className="mb-6"><p className="text-xs font-black uppercase tracking-[.2em] text-orange-400">SocialRUSH Wallet</p><h1 className="mt-2 text-3xl font-black text-white sm:text-4xl">Complete your payment</h1><p className="mt-2 max-w-2xl text-sm leading-6 text-slate-400">{requestedAmount ? <>The amount is prefilled from your checkout shortfall. Review it before paying; you can adjust it if needed.</> : <>Choose an amount. SocialRUSH creates a UPI payment request with that exact amount already filled in.</>}</p>{returnPath ? <p className="mt-2 text-xs font-semibold text-orange-200">After submitting your payment reference, you can return to the checkout you came from.</p> : null}</header>
     <div className="mb-5 grid grid-cols-3 gap-2 text-center text-[10px] font-bold uppercase tracking-wider sm:text-xs"><div className={`rounded-xl border px-2 py-3 ${!paymentStarted ? "border-orange-400 bg-orange-500/10 text-orange-300" : "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"}`}>1 · Amount</div><div className={`rounded-xl border px-2 py-3 ${paymentStarted ? "border-orange-400 bg-orange-500/10 text-orange-300" : "border-white/10 text-slate-500"}`}>2 · Pay</div><div className="rounded-xl border border-white/10 px-2 py-3 text-slate-500">3 · Verify</div></div>
     <section className="rounded-3xl border border-orange-400/20 bg-[#11141c] p-5 shadow-2xl sm:p-7">
       {!paymentStarted ? <>
