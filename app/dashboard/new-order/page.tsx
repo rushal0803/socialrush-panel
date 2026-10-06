@@ -41,7 +41,6 @@ import { validateQuantity } from "@/lib/service-pricing";
 import PlatformIcon from "@/components/PlatformIcon";
 import IconBadge from "@/components/IconBadge";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
-import FirstOrderBonusBanner from "@/components/dashboard/FirstOrderBonusBanner";
 import { useServiceHealth } from "@/lib/use-service-health";
 import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
@@ -54,14 +53,14 @@ type SavedProfile = { id: string; label: string; platform: string; public_url: s
 type ServiceRecord = { id: number; code: string | null };
 type FirstOrderOffer = { reward: number; minimum: number };
 const platformOrder: PlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
-const popularServiceRank = new Map<string, number>([
+const starterServiceRank = new Map<string, number>([
   ["instagram-followers", 1],
   ["youtube-subscribers", 2],
   ["instagram-views", 3],
   ["instagram-likes", 4],
   ["facebook-followers", 5],
 ]);
-const popularServiceLabel = (code: string) => code === "instagram-followers" ? "Most selected" : code === "youtube-subscribers" ? "Popular choice" : null;
+const starterServiceLabel = (code: string) => code === "instagram-followers" ? "Quick start" : code === "youtube-subscribers" ? "Starter option" : null;
 const protectedLiveServiceDefinitions = [
   { code: "youtube-comments", name: "YouTube Comments", platform: "youtube", description: "Build visible conversation and engagement around your YouTube videos with comment activity." },
   { code: "youtube-watch-hours", name: "YouTube Watch Hours", platform: "youtube", description: "Build extended viewing activity around your public YouTube content with transparent watch-hour packages and dashboard tracking." },
@@ -220,6 +219,7 @@ export default function NewOrderPage() {
   });
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
   const [firstOrderOffer, setFirstOrderOffer] = useState<FirstOrderOffer | null>(null);
+  const [firstOrder, setFirstOrder] = useState(false);
   const [walletLoading, setWalletLoading] = useState(true);
   const [walletError, setWalletError] = useState("");
   const [submitting, setSubmitting] = useState(false);
@@ -310,7 +310,7 @@ export default function NewOrderPage() {
       if (!platform) return [];
       return mergeCustomerOrderServices(liveServices)
         .filter((service) => service.platform === platform)
-        .sort((a, b) => (popularServiceRank.get(a.code) ?? 999) - (popularServiceRank.get(b.code) ?? 999));
+        .sort((a, b) => (starterServiceRank.get(a.code) ?? 999) - (starterServiceRank.get(b.code) ?? 999));
     },
     [liveServices, platform],
   );
@@ -514,18 +514,34 @@ export default function NewOrderPage() {
   useEffect(() => {
     let active = true;
     void fetch("/api/rewards/first-order-offer", { credentials: "same-origin", cache: "no-store" })
-      .then(async (response): Promise<{ eligible: boolean; reward?: number; minimum?: number }> =>
-        response.ok ? await response.json() as { eligible: boolean; reward?: number; minimum?: number } : { eligible: false }
+      .then(async (response): Promise<{ firstOrder: boolean; eligible: boolean; reward?: number; minimum?: number }> =>
+        response.ok
+          ? await response.json() as { firstOrder: boolean; eligible: boolean; reward?: number; minimum?: number }
+          : { firstOrder: false, eligible: false }
       )
       .then((data) => {
         if (!active) return;
+        const isFirstOrder = Boolean(data.firstOrder);
         const reward = Number(data.reward || 0);
         const minimum = Number(data.minimum || 0);
         const offer = data.eligible && reward > 0 && minimum > 0 ? { reward, minimum } : null;
+        setFirstOrder(isFirstOrder);
         setFirstOrderOffer(offer);
+        if (isFirstOrder && !funnelSignals.current.has("first-order-context")) {
+          funnelSignals.current.add("first-order-context");
+          track("order_started", {
+            step: "first_order_entry",
+            first_order: true,
+            source: (searchParams.get("source") || "direct").slice(0, 80),
+          });
+        }
         if (offer) track("first_order_bonus_view", { reward: offer.reward, minimum: offer.minimum, surface: "new_order_entry" });
       })
-      .catch(() => { if (active) setFirstOrderOffer(null); });
+      .catch(() => {
+        if (!active) return;
+        setFirstOrder(false);
+        setFirstOrderOffer(null);
+      });
     return () => { active = false; };
   }, []);
 
@@ -858,14 +874,14 @@ export default function NewOrderPage() {
           <div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">New order</p><h1 className="mt-1 text-2xl font-black tracking-tight sm:text-3xl">Build your campaign</h1></div>
           <p className="hidden text-right text-xs leading-5 text-[#9CA3AF] sm:block">Transparent pricing<br />Manual payment verification</p>
         </header>
-        {firstOrderOffer && currentStep === 1 ? <section className="mb-4 overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,rgba(16,185,129,.13),rgba(255,122,0,.08),rgba(11,11,15,.98))] p-4 shadow-[0_18px_46px_-34px_rgba(16,185,129,.85)]" aria-label="First order reward">
+        {firstOrder && currentStep === 1 ? <section className="mb-4 overflow-hidden rounded-2xl border border-emerald-400/25 bg-[linear-gradient(135deg,rgba(16,185,129,.13),rgba(255,122,0,.08),rgba(11,11,15,.98))] p-4 shadow-[0_18px_46px_-34px_rgba(16,185,129,.85)]" aria-label="First order guidance">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div className="min-w-0">
-              <p className="text-[10px] font-black uppercase tracking-[.16em] text-emerald-300">First order reward</p>
-              <p className="mt-1 text-base font-black text-white sm:text-lg">Get {formatCurrency(firstOrderOffer.reward, "INR")} wallet bonus on your first order</p>
-              <p className="mt-1 text-xs leading-5 text-slate-300">Place an eligible first order of {formatCurrency(firstOrderOffer.minimum, "INR")} or more. The bonus is added to your wallet after the order is completed.</p>
+              <p className="text-[10px] font-black uppercase tracking-[.16em] text-emerald-300">{firstOrderOffer ? "First order reward" : "Your first order"}</p>
+              <p className="mt-1 text-base font-black text-white sm:text-lg">{firstOrderOffer ? <>Get {formatCurrency(firstOrderOffer.reward, "INR")} wallet bonus on your first order</> : "Start with a clear four-step order review"}</p>
+              <p className="mt-1 text-xs leading-5 text-slate-300">{firstOrderOffer ? <>Place an eligible first order of {formatCurrency(firstOrderOffer.minimum, "INR")} or more. The bonus is added to your wallet after the order is completed.</> : "Choose a platform and service, add the correct public link, then review the exact price before payment. No password is required."}</p>
             </div>
-            <button type="button" onClick={() => { track("first_order_bonus_click", { reward: firstOrderOffer.reward, minimum: firstOrderOffer.minimum, surface: "new_order_entry" }); scrollTo(platformRef); }} className="sr-motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 text-xs font-black text-white shadow-lg shadow-emerald-500/15">
+            <button type="button" onClick={() => { if (firstOrderOffer) track("first_order_bonus_click", { reward: firstOrderOffer.reward, minimum: firstOrderOffer.minimum, surface: "new_order_entry" }); else track("new_order_clicked", { step: "first_order_entry", surface: "new_order_builder" }); scrollTo(platformRef); }} className="sr-motion-press inline-flex min-h-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-emerald-500 to-teal-500 px-4 text-xs font-black text-white shadow-lg shadow-emerald-500/15">
               Choose a platform <ArrowRight className="h-4 w-4" />
             </button>
           </div>
@@ -916,7 +932,7 @@ export default function NewOrderPage() {
                   const experience = serviceExperience[service.code];
                   const ServiceGlyph = service.code.includes("likes") ? Heart : service.code.includes("views") ? Eye : service.code.includes("shares") ? ThumbsUp : Users;
                   return <article key={service.code} className={`rounded-2xl border p-4 transition ${active ? "border-orange-400/80 bg-orange-500/10 shadow-[0_18px_34px_-24px_rgba(255,122,0,.85)]" : "border-white/10 bg-[#0B0B0F] hover:border-white/25"} ${unavailable ? "opacity-55" : ""}`}>
-                    <div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><IconBadge size="sm" label={platformMeta[service.platform].label} className={`bg-gradient-to-br ${platformAccent(service.platform)}`}><PlatformIcon platform={platformMeta[service.platform].label} /></IconBadge><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="truncate text-sm font-black text-white">{experience.name}</h3>{popularServiceLabel(service.code) ? <span className="rounded-full border border-orange-400/25 bg-orange-500/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-orange-200">{popularServiceLabel(service.code)}</span> : null}</div><p className="mt-1 text-xs text-[#9CA3AF]">{service.description}</p></div></div><div className="flex shrink-0 items-center gap-2"><button type="button" aria-label={`${isFavourite ? "Remove" : "Save"} ${experience.name} ${isFavourite ? "from" : "to"} favourites`} aria-pressed={isFavourite} disabled={!serviceId || favouriteUpdating} onClick={(event) => { event.stopPropagation(); void toggleFavourite(service); }} onPointerDown={(event) => event.stopPropagation()} className={`grid h-10 w-10 place-items-center rounded-xl border transition disabled:cursor-not-allowed disabled:opacity-45 ${isFavourite ? "border-orange-300 bg-orange-500/20 text-orange-200" : "border-white/15 bg-white/[.04] text-[#B5B5B5] hover:border-orange-400/60 hover:text-orange-200"}`}><Heart className={`h-5 w-5 ${isFavourite ? "fill-current" : ""}`} /></button>{active ? <Check className="h-5 w-5 text-emerald-400" /> : <ServiceGlyph className="h-5 w-5 text-orange-300" />}</div></div>
+                    <div className="flex items-start justify-between gap-3"><div className="flex min-w-0 items-center gap-3"><IconBadge size="sm" label={platformMeta[service.platform].label} className={`bg-gradient-to-br ${platformAccent(service.platform)}`}><PlatformIcon platform={platformMeta[service.platform].label} /></IconBadge><div className="min-w-0"><div className="flex flex-wrap items-center gap-2"><h3 className="truncate text-sm font-black text-white">{experience.name}</h3>{starterServiceLabel(service.code) ? <span className="rounded-full border border-orange-400/25 bg-orange-500/10 px-2 py-0.5 text-[9px] font-black uppercase tracking-wide text-orange-200">{starterServiceLabel(service.code)}</span> : null}</div><p className="mt-1 text-xs text-[#9CA3AF]">{service.description}</p></div></div><div className="flex shrink-0 items-center gap-2"><button type="button" aria-label={`${isFavourite ? "Remove" : "Save"} ${experience.name} ${isFavourite ? "from" : "to"} favourites`} aria-pressed={isFavourite} disabled={!serviceId || favouriteUpdating} onClick={(event) => { event.stopPropagation(); void toggleFavourite(service); }} onPointerDown={(event) => event.stopPropagation()} className={`grid h-10 w-10 place-items-center rounded-xl border transition disabled:cursor-not-allowed disabled:opacity-45 ${isFavourite ? "border-orange-300 bg-orange-500/20 text-orange-200" : "border-white/15 bg-white/[.04] text-[#B5B5B5] hover:border-orange-400/60 hover:text-orange-200"}`}><Heart className={`h-5 w-5 ${isFavourite ? "fill-current" : ""}`} /></button>{active ? <Check className="h-5 w-5 text-emerald-400" /> : <ServiceGlyph className="h-5 w-5 text-orange-300" />}</div></div>
                     <div className="mt-3 grid grid-cols-3 gap-2 text-xs"><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Live rate</span><strong className="mt-1 block text-white">{formatCurrency(service.pricePer1000, currency)} / 1K</strong></div><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Minimum total</span><strong className="mt-1 block text-white">{formatCurrency(Math.round((service.minQuantity * service.pricePer1000 * 100) / 1000) / 100, currency)}</strong></div><div className="rounded-xl bg-white/[.035] p-2.5"><span className="text-[#777]">Delivery</span><strong className="mt-1 block text-white">{service.deliveryTime}</strong></div></div>
                     <div className="mt-3 flex flex-wrap gap-2"><span className="rounded-full bg-emerald-500/10 px-2 py-1 text-[10px] font-bold text-emerald-300">{service.refillPolicy}</span><ServiceHealthBadge health={health} /></div>
                     <details className="mt-3 rounded-xl border border-white/10 bg-white/[.025]" aria-label={`Service details for ${experience.name}`}><summary className="cursor-pointer list-none px-3 py-2.5 text-xs font-bold text-[#D6D9DF]">Service details <span className="float-right text-orange-300">+</span></summary><div className="border-t border-white/10 px-3 py-3 text-xs leading-5 text-[#9CA3AF]"><p>Min {service.minQuantity.toLocaleString("en-IN")} · Max {service.maxQuantity.toLocaleString("en-IN")}</p><p className="mt-1">{service.importantInstruction}</p></div></details>
@@ -957,7 +973,6 @@ export default function NewOrderPage() {
                   </div>
                 </div>
               </section> : null}
-              <FirstOrderBonusBanner currentTotal={totalPrice} />
               <div className="sr-order-live-preview mt-5 grid gap-3 sm:grid-cols-2"><div className="sr-motion-lift rounded-2xl border border-orange-400/25 bg-[linear-gradient(135deg,#241505,#0b0b0b)] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-orange-300">Live order preview</p><p className="mt-2 text-2xl font-black">{priceIsReady ? formatCurrency(totalPrice, currency) : "—"}</p><p className="mt-1 text-xs text-[#aaa]">{serviceExperience[selectedService.code].name} · {priceIsReady ? `${quantity.toLocaleString("en-IN")} selected` : "Choose a valid quantity"}</p>{priceIsReady && !targetLink.trim() ? <p className="mt-2 text-[10px] font-semibold text-orange-200">Starter quantity is preselected. Add your public link to continue.</p> : null}</div><div className="sr-motion-lift flex items-center gap-3 rounded-2xl border border-emerald-400/25 bg-emerald-500/5 p-4 text-sm font-bold text-emerald-100"><LockKeyhole className="h-5 w-5 shrink-0 text-emerald-300" />{requiresPollAnswerNumber
   ? "No password required. Public poll link and answer number only."
   : requiresCustomComments
