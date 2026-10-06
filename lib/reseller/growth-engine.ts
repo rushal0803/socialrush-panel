@@ -60,7 +60,7 @@ export function buildAgencyGrowthDecision(
       stageNumber: 2,
       totalStages: 5,
       eyebrow: "Clean client attribution",
-      title: \`\${signals.unassignedOrders} order\${signals.unassignedOrders === 1 ? " is" : "s are"} not linked to a client.\`,
+      title: `${signals.unassignedOrders} order${signals.unassignedOrders === 1 ? " is" : "s are"} not linked to a client.`,
       description:
         "Link existing work to the right client workspace before building recurring plans so portfolio and renewal reporting stay accurate.",
       href: "/dashboard/clients",
@@ -92,7 +92,7 @@ export function buildAgencyGrowthDecision(
       stageNumber: 4,
       totalStages: 5,
       eyebrow: "Renewal priority",
-      title: \`\${signals.renewalsDueNow} saved plan\${signals.renewalsDueNow === 1 ? " needs" : "s need"} review now.\`,
+      title: `${signals.renewalsDueNow} saved plan${signals.renewalsDueNow === 1 ? " needs" : "s need"} review now.`,
       description:
         "Review current fulfillment cost and the saved client quote before starting the next cycle. No renewal is submitted automatically.",
       href: "/dashboard/reseller/portfolio",
@@ -142,7 +142,7 @@ export function buildAgencyGrowthDecision(
     title: "Your reseller workflow is ready for larger multi-client planning.",
     description:
       signals.plannedMonthlyValue > 0
-        ? \`You currently have ₹\${Math.round(signals.plannedMonthlyValue).toLocaleString("en-IN")} in saved monthly client quotes. Use the bulk planner to organize more jobs without bypassing normal checkout controls.\`
+        ? `You currently have ₹${Math.round(signals.plannedMonthlyValue).toLocaleString("en-IN")} in saved monthly client quotes. Use the bulk planner to organize more jobs without bypassing normal checkout controls.`
         : "Use the bulk planner to organize more client jobs without bypassing normal checkout controls.",
     href: "/dashboard/reseller/bulk-planner",
     cta: "Open bulk planner",
