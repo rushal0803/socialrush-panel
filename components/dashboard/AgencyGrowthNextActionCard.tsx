@@ -34,7 +34,7 @@ export default function AgencyGrowthNextActionCard({
 
   if (!decision) return null;
   const Icon = iconByKind[decision.kind];
-  const progress = \`\${(decision.stageNumber / decision.totalStages) * 100}%\`;
+  const progress = `${(decision.stageNumber / decision.totalStages) * 100}%`;
 
   return (
     <section className="mt-5 overflow-hidden rounded-2xl border border-orange-400/20 bg-[linear-gradient(130deg,rgba(255,122,0,.09),rgba(255,255,255,.02))] p-5 sm:p-6" aria-labelledby="agency-growth-next-action">
@@ -52,7 +52,7 @@ export default function AgencyGrowthNextActionCard({
             </div>
             <h2 id="agency-growth-next-action" className="mt-2 text-xl font-black text-white">{decision.title}</h2>
             <p className="mt-2 max-w-3xl text-sm leading-6 text-slate-400">{decision.description}</p>
-            <div className="mt-4 h-1.5 w-full max-w-xl overflow-hidden rounded-full bg-white/[.06]" aria-label={\`Agency growth stage \${decision.stageNumber} of \${decision.totalStages}\`}>
+            <div className="mt-4 h-1.5 w-full max-w-xl overflow-hidden rounded-full bg-white/[.06]" aria-label={`Agency growth stage ${decision.stageNumber} of ${decision.totalStages}`}>
               <div className="h-full rounded-full bg-gradient-to-r from-orange-500 to-amber-400" style={{ width: progress }} />
             </div>
           </div>
