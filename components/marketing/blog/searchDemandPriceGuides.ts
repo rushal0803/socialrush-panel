@@ -149,14 +149,18 @@ function buildGuide(config: GuideConfig): BlogArticle {
   const service = getServiceById(config.serviceCode);
   if (!service) throw new Error(`Missing active service for search-demand guide: ${config.serviceCode}`);
 
-  const rate = service.pricePer1000;
+  // This guide has a confirmed conflict between the static catalog and active
+  // order row. Do not publish either as a current payable price.
+  const liveSubscriberGuide = config.serviceCode === "youtube-subscribers";
+  const rate = liveSubscriberGuide ? null : service.pricePer1000;
+  const facts = service;
   const totals = [1000, 5000, 10000].map((quantity) => ({
     quantity,
-    total: (rate * quantity) / 1000,
+    total: rate === null ? 0 : Math.round((rate * quantity / 1000) * 100) / 100,
   }));
   const [oneK, fiveK, tenK] = totals;
 
-  return {
+  const article: BlogArticle = {
     slug: config.slug,
     category: config.category,
     title: config.title,
@@ -174,14 +178,14 @@ function buildGuide(config: GuideConfig): BlogArticle {
     updatedAt: "2026-09-27",
     expandWithEditorialProfile: false,
     intro:
-      `If you are comparing ${config.displayName.toLowerCase()} prices in India, start with the current per-1,000 rate and then check what the service actually includes. SocialRUSH's current catalog reference is ${money(rate)} per 1,000 ${config.unit}. At that rate, 1K is ${money(oneK.total)}, 5K is ${money(fiveK.total)} and 10K is ${money(tenK.total)} as a planning calculation. These figures are useful for budgeting, but the live order flow remains authoritative for the exact payable total, current availability, delivery and refill terms before payment.`,
+      `If you are comparing ${config.displayName.toLowerCase()} prices in India, start with the current per-1,000 rate and then check what the service actually includes. SocialRUSH's current catalog reference is ${money(rate ?? 0)} per 1,000 ${config.unit}. At that rate, 1K is ${money(oneK.total)}, 5K is ${money(fiveK.total)} and 10K is ${money(tenK.total)} as a planning calculation. These figures are useful for budgeting, but the live order flow remains authoritative for the exact payable total, current availability, delivery and refill terms before payment.`,
     keyTakeaway:
-      `Use ${money(rate)} per 1,000 as the current catalog reference, not as a permanent promise. Compare quantity, the exact INR total, delivery estimate, refill/support terms and the required ${config.destination} together before ordering.`,
+      `Use ${money(rate ?? 0)} per 1,000 as the current catalog reference, not as a permanent promise. Compare quantity, the exact INR total, delivery estimate, refill/support terms and the required ${config.destination} together before ordering.`,
     sections: [
       {
         heading: `Current ${config.displayName} price in India`,
         body:
-          `The current SocialRUSH catalog reference is ${money(rate)} per 1,000 ${config.unit}. Using the same rate, 5,000 works out to ${money(fiveK.total)} and 10,000 works out to ${money(tenK.total)}. These are simple quantity-planning calculations, not a separate package promise. Service pricing and availability can change, so always confirm the exact total shown in the live order flow before paying.`,
+          `The current SocialRUSH catalog reference is ${money(rate ?? 0)} per 1,000 ${config.unit}. Using the same rate, 5,000 works out to ${money(fiveK.total)} and 10,000 works out to ${money(tenK.total)}. These are simple quantity-planning calculations, not a separate package promise. Service pricing and availability can change, so always confirm the exact total shown in the live order flow before paying.`,
         tips: [
           `1,000 ${config.unit}: ${money(oneK.total)} at the current catalog rate.`,
           `5,000 ${config.unit}: ${money(fiveK.total)} at the same rate.`,
@@ -200,9 +204,9 @@ function buildGuide(config: GuideConfig): BlogArticle {
           `A per-1K number is only one part of the order. Compare the supported quantity range, delivery estimate, refill or support policy, destination requirement and whether the provider asks for unnecessary account access. A lower advertised number can be less useful if the service terms are unclear or if the order requires risky credentials. SocialRUSH uses a public-link workflow for this service and shows the order details before confirmation.`,
         tips: [
           "Compare the final INR total, not only a headline per-1K number.",
-          `Current catalog quantity range: ${service.minQuantity.toLocaleString("en-IN")} to ${service.maxQuantity.toLocaleString("en-IN")} ${config.unit}.`,
-          `Current delivery estimate: ${service.deliveryTime}.`,
-          `Current refill/support listing: ${service.refillPolicy}.`,
+          `Current catalog quantity range: ${facts.minQuantity.toLocaleString("en-IN")} to ${facts.maxQuantity.toLocaleString("en-IN")} ${config.unit}.`,
+          `Current delivery estimate: ${facts.deliveryTime}.`,
+          `Current refill/support listing: ${facts.refillPolicy}.`,
         ],
       },
       {
@@ -264,7 +268,7 @@ function buildGuide(config: GuideConfig): BlogArticle {
     faqs: [
       {
         question: `How much do 1,000 ${config.displayName.toLowerCase()} cost in India?`,
-        answer: `At the current SocialRUSH catalog reference of ${money(rate)} per 1,000, a 1,000-${config.unit} planning total is ${money(oneK.total)}. Confirm the live order total before payment because service pricing can change.`,
+        answer: `At the current SocialRUSH catalog reference of ${money(rate ?? 0)} per 1,000, a 1,000-${config.unit} planning total is ${money(oneK.total)}. Confirm the live order total before payment because service pricing can change.`,
       },
       {
         question: `How much do 5,000 ${config.unit} cost?`,
@@ -280,7 +284,7 @@ function buildGuide(config: GuideConfig): BlogArticle {
       },
       {
         question: `How long does ${config.displayName.toLowerCase()} delivery take?`,
-        answer: `The current catalog estimate is ${service.deliveryTime}. Actual timing can vary with quantity, destination accessibility and platform conditions.`,
+        answer: `The current catalog estimate is ${facts.deliveryTime}. Actual timing can vary with quantity, destination accessibility and platform conditions.`,
       },
       {
         question: "Does a larger order guarantee better organic results?",
@@ -289,6 +293,18 @@ function buildGuide(config: GuideConfig): BlogArticle {
       },
     ],
   };
+  if (liveSubscriberGuide) {
+    article.updatedAt = "2026-10-06";
+    article.intro = "Compare YouTube subscriber costs in India by selecting 1,000, 5,000 or 10,000 subscribers in the live order flow. This guide does not quote a current rate when an active catalog row cannot be verified. Review the exact INR total, availability, delivery and refill terms before payment.";
+    article.keyTakeaway = "The active service and live INR order total are authoritative. A saved article, screenshot or historical rate is not a current price quote.";
+    article.sections[0].body = "Open the YouTube subscriber order flow, select your quantity and review the current INR total. For quantity planning, a per-1,000 rate R gives totals of R for 1K, 5 × R for 5K and 10 × R for 10K; confirm that each quantity is within the active service limits. No unverified current price is published here.";
+    article.sections[0].tips = ["Check the active per-1,000 rate.", "Compare permitted quantities against the exact INR total.", "Confirm availability before payment."];
+    article.sections[1].tips = ["Compare the final INR total, not only a headline rate.", "Review the active minimum and maximum quantity.", "Check the current delivery estimate and refill terms."];
+    article.faqs = article.faqs!.map((faq, index) => index < 3 ? {
+      ...faq, answer: "Select this quantity in the live YouTube subscriber order flow to see the current INR total. The active service rate and permitted quantity range may change; an older article is not a price quote.",
+    } : index === 4 ? {...faq, answer: "Check the active service's delivery estimate before checkout. Timing depends on quantity, destination accessibility and platform conditions."} : faq);
+  }
+  return article;
 }
 
 export const searchDemandPriceGuideArticles: BlogArticle[] = configs.map(buildGuide);

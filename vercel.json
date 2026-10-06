@@ -16,5 +16,10 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "regions": [
     "syd1"
-  ]
+  ],
+  "git": {
+    "deploymentEnabled": {
+      "seo/q4-phase2-gsc-ranking-sprint": false
+    }
+  }
 }
