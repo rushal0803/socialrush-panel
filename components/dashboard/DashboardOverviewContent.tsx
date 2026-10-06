@@ -58,7 +58,7 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
-              href={draft ? "/dashboard/new-order?draft=1" : "/dashboard/new-order"}
+              href={draft ? "/dashboard/new-order?draft=1" : firstOrder ? "/dashboard/new-order?source=first_order_dashboard" : "/dashboard/new-order"}
               className="btn-dashboard-primary min-h-12 gap-2 px-5 text-sm"
             >
               {draft ? <Clock3 className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
