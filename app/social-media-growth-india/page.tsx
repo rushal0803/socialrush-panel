@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, BarChart3, BookOpenCheck, BriefcaseBusiness, CheckCircle2, Layers3, ShieldCheck, TrendingUp, Users2, type LucideIcon } from "lucide-react";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
+import IndiaRegionalExpansion from "@/components/marketing/IndiaRegionalExpansion";
 import PublicShell from "@/components/marketing/PublicShell";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { socialEngagementIntentKeywords, socialEngagementServiceGroups } from "@/lib/seo/social-engagement-intent";
@@ -71,6 +72,7 @@ const faq = [
   ["Is SocialRUSH a social media management agency?", "No. SocialRUSH provides order-based social media growth services and campaign tools. It does not include monthly content creation, posting calendars, community management or ad-management retainers unless a separate service explicitly says so."],
   ["Can an agency use SocialRUSH for repeat client campaigns?", "Yes. Agencies can review the multi-platform catalog and use the agency workflow for recurring requirements. Each order still follows the current service terms and normal checkout process."],
   ["Do these services guarantee reach, leads or sales?", "No. Followers, subscribers, views or engagement services do not guarantee organic reach, platform ranking, monetization, leads or sales. They should be considered alongside useful content and a broader marketing strategy."],
+  ["Does SocialRUSH have separate city pricing for Delhi, Mumbai, Bengaluru or other Indian locations?", "No. SocialRUSH uses the same live national service catalog. Regional discovery helps users find the right India service path, but city or state does not create a separate price, delivery promise, local office claim or service rule."],
 ] as const;
 
 function jsonLd(value: object) {
@@ -241,6 +243,8 @@ export default function SocialMediaGrowthIndiaPage() {
         </section>
 
         <IndiaGrowthDiscovery compact />
+
+        <IndiaRegionalExpansion />
 
         <section className="mx-auto max-w-5xl px-4 py-12 sm:px-6 lg:px-8"><div className="rounded-3xl border border-white/10 bg-[#101116] p-6 sm:p-8"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Helpful answers</p><h2 className="mt-2 text-2xl font-black">India growth services FAQ</h2><div className="mt-6 divide-y divide-white/10">{faq.map(([question, answer]) => <details key={question} className="group py-4"><summary className="cursor-pointer list-none pr-6 text-sm font-black">{question}</summary><p className="mt-3 max-w-3xl text-sm leading-6 text-slate-400">{answer}</p></details>)}</div></div></section>
       </div>
