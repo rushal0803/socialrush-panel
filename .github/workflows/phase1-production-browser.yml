@@ -1,0 +1,32 @@
+name: Phase 1 live production browser smoke
+on:
+  pull_request:
+    branches: [validation/seo-phase1-production-base]
+permissions:
+  contents: read
+jobs:
+  production-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      PLAYWRIGHT_BASE_URL: https://www.getsocialrush.com
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: mkdir -p artifacts/service-final
+      - run: npx playwright install --with-deps chromium
+      - name: Existing focused tests against live production (no orders)
+        run: npm run test:smoke -- tests/smoke/seo-q4-phase1-release.spec.ts --workers=2
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: production-browser-evidence
+          path: |
+            test-results/seo-q4*320x700-chromium*/
+            test-results/seo-q4*/error-context.md
+            artifacts/service-final/chromium.log
+          retention-days: 7
