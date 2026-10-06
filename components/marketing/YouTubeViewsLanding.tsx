@@ -9,6 +9,7 @@ import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSe
 import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
 import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
 import SafetyIntentSection from "@/components/seo/SafetyIntentSection";
+import IndiaSearchDemandSection from "@/components/seo/IndiaSearchDemandSection";
 import InteractiveHomepageShell from "@/components/marketing/services/ServiceExperienceFrame";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
@@ -50,6 +51,7 @@ export default function YouTubeViewsLanding() {
     <DeliveryRefillIntentSection serviceName="YouTube Views" deliveryTime={service?.deliveryTime ?? "Current estimate shown before checkout"} refillPolicy={service?.refillPolicy ?? "Current terms shown before checkout"} destination="public YouTube video or Short URL" orderHref="#packages" tone="dark" />
     <OrderRequirementsIntentSection serviceName="YouTube Views" minQuantity={service?.minQuantity ?? 100} maxQuantity={service?.maxQuantity ?? 1000000} quantityStep={service?.quantityStep ?? 1} destination="public YouTube video or Short URL" pricePer1000={service?.pricePer1000 ?? null} orderHref="#packages" tone="dark" />
     <SafetyIntentSection serviceName="YouTube Views" platform="youtube" destination="public YouTube video or Short URL" guideHref="/blog/is-it-safe-to-buy-youtube-views" orderHref="#order" tone="dark" />
+    <IndiaSearchDemandSection serviceCode="youtube-views" unitLabel="views" platformLabel="YouTube" liveRatePer1000={service?.pricePer1000 ?? null} liveMinQuantity={service?.minQuantity ?? null} liveMaxQuantity={service?.maxQuantity ?? null} />
     <section className="px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
       <div className="mx-auto max-w-7xl rounded-[2rem] border border-white/10 bg-white/[.035] p-6 sm:p-8">
         <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Before you order</p>
