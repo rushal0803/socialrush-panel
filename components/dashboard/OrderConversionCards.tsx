@@ -85,7 +85,7 @@ export default function OrderConversionCards({
         <div className="grid gap-2 sm:grid-cols-3">
           {shortcuts.map((service) => <Link
             key={service.code}
-            href={`/dashboard/new-order?platform=${service.platform}&service=${service.code}&quantity=${service.minQuantity}&prefill=1`}
+            href={`/dashboard/new-order?platform=${service.platform}&service=${service.code}&quantity=${service.minQuantity}&prefill=1&source=first_order_dashboard`}
             onClick={() => track("service_selected", { service_code: service.code, platform: service.platform, step: "first_order_shortcut" })}
             className="sr-smart-service rounded-xl border border-white/10 bg-black/20 p-3 transition hover:border-orange-400/50 hover:bg-orange-500/10 focus:outline-none focus:ring-4 focus:ring-orange-400/20"
           >
@@ -98,7 +98,7 @@ export default function OrderConversionCards({
       </div> : null}
 
       <div className="mt-5 flex flex-wrap items-center gap-3">
-        <Link href="/dashboard/new-order" onClick={() => track("new_order_clicked", { step: "first_order_cta", surface: "dashboard_conversion" })} className="btn-dashboard-primary gap-2 px-5 text-sm">
+        <Link href="/dashboard/new-order?source=first_order_dashboard" onClick={() => track("new_order_clicked", { step: "first_order_cta", surface: "dashboard_conversion" })} className="btn-dashboard-primary gap-2 px-5 text-sm">
           Start Your First Order <ArrowRight className="h-4 w-4" />
         </Link>
         <span className="inline-flex items-center gap-2 text-xs font-semibold text-slate-400"><CheckCircle2 className="h-4 w-4 text-emerald-300" />Exact price shown before payment</span>
