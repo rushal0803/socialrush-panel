@@ -15,7 +15,7 @@ export default function CountryServiceLandingPage({ page }: { page: PublishedCou
   const schema = createCountryServiceSchema(page, service);
   const relatedMarketPages = publishedCountryServicePages.filter((item) => item.market.slug === page.market.slug && item.serviceSlug !== page.serviceSlug).slice(0, 6);
   const intentTool = page.catalogServiceCode === "youtube-subscribers"
-    ? { href: "/tools/youtube-subscriber-growth-calculator", label: "Subscriber growth calculator" }
+    ? { href: "/tools/youtube-subscriber-growth-rate-calculator", label: "Subscriber growth calculator" }
     : page.catalogServiceCode === "youtube-views"
       ? { href: "/tools/youtube-view-growth-rate-calculator", label: "View growth rate calculator" }
       : page.catalogServiceCode === "linkedin-followers"
