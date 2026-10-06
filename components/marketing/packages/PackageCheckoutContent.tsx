@@ -23,6 +23,7 @@ import { getPackageById, type BigPackage } from "@/lib/big-packages";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { createClient } from "@/lib/supabase/client";
+import { checkoutShortfall } from "@/lib/cro/checkout-optimization";
 
 type ApiOrderData = {
   id: string;
@@ -180,8 +181,10 @@ export default function PackageCheckoutContent() {
   }
 
   const hasEnoughBalance = isLoggedIn && walletBalance !== null && walletBalance + 0.0001 >= pkg.basePriceINR;
+  const shortfall = checkoutShortfall(pkg.basePriceINR, walletBalance);
   const platformLabel = pkg.platform === "X" ? "X / Twitter" : pkg.platform;
   const checkoutPath = `/packages/checkout?packageId=${encodeURIComponent(pkg.packageId)}`;
+  const addFundsHref = `/dashboard/add-funds?amount=${encodeURIComponent(shortfall.toFixed(2))}&next=${encodeURIComponent(checkoutPath)}`;
 
   function savePendingCheckout() {
     window.localStorage.setItem(
@@ -208,7 +211,7 @@ export default function PackageCheckoutContent() {
     }
 
     if (!hasEnoughBalance) {
-      setError("Insufficient wallet balance. Add funds to place this order.");
+      setError(`Your wallet is short by ${formatCurrency(shortfall, currency)}. Add that amount, then return to this checkout.`);
       return;
     }
 
@@ -380,6 +383,8 @@ export default function PackageCheckoutContent() {
                     isLoggedIn={isLoggedIn}
                     hasEnoughBalance={hasEnoughBalance}
                     walletLoadError={walletLoadError}
+                    addFundsHref={addFundsHref}
+                    shortfall={shortfall}
                     onRefresh={() => void refreshWalletBalance()}
                   />
                 </div>
@@ -397,7 +402,7 @@ export default function PackageCheckoutContent() {
                     </button>
                   ) : isLoggedIn && !hasEnoughBalance ? (
                     <>
-                    <Link href="/dashboard/wallet" className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
+                    <Link href={addFundsHref} className="inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-6 py-3.5 text-sm font-black text-white shadow-[0_18px_34px_-14px_rgba(255,196,0,.7)] transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98] sm:w-auto">
                       <WalletCards className="h-4 w-4" />
                       Add Funds
                     </Link>
@@ -431,6 +436,8 @@ export default function PackageCheckoutContent() {
                     isLoggedIn={isLoggedIn}
                     hasEnoughBalance={hasEnoughBalance}
                     walletLoadError={walletLoadError}
+                    addFundsHref={addFundsHref}
+                    shortfall={shortfall}
                     onRefresh={() => void refreshWalletBalance()}
                   />
                 </div>
@@ -517,6 +524,8 @@ function CheckoutSummary({
   isLoggedIn,
   hasEnoughBalance,
   walletLoadError,
+  addFundsHref,
+  shortfall,
   onRefresh,
 }: {
   pkg: BigPackage;
@@ -526,6 +535,8 @@ function CheckoutSummary({
   isLoggedIn: boolean;
   hasEnoughBalance: boolean;
   walletLoadError: string;
+  addFundsHref: string;
+  shortfall: number;
   onRefresh: () => void;
 }) {
   const platformLabel = pkg.platform === "X" ? "X / Twitter" : pkg.platform;
@@ -598,8 +609,8 @@ function CheckoutSummary({
           <div className="mt-6 rounded-2xl border border-amber-400/35 bg-amber-500/10 p-4 shadow-sm">
             <p className="flex items-center gap-2 text-[10px] font-black uppercase tracking-[0.12em] text-amber-300"><WalletCards className="h-4 w-4" />Balance required</p>
             <p className="mt-2 break-words text-xl font-black text-white">Wallet Balance: {formatCurrency(walletBalance ?? 0, currency)}</p>
-            <p className="mt-1 text-xs font-semibold leading-5 text-[#D1D5DB]">Insufficient wallet balance. Please add funds to continue.</p>
-            <Link href="/dashboard/wallet" className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98]">
+            <p className="mt-1 text-xs font-semibold leading-5 text-[#D1D5DB]">Your wallet is short by <strong className="text-white">{formatCurrency(shortfall, currency)}</strong>. Add that amount, then return here to place the package order.</p>
+            <Link href={addFundsHref} className="mt-3 inline-flex min-h-10 w-full items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-4 py-2.5 text-xs font-black text-white transition-all duration-200 ease-out hover:-translate-y-0.5 active:scale-[.98]">
               Add Funds
             </Link>
             <button type="button" onClick={onRefresh} className="mt-2 inline-flex min-h-10 w-full items-center justify-center gap-2 rounded-xl border border-amber-400/35 bg-[#151515] px-4 py-2.5 text-xs font-black text-white transition-all duration-200 ease-out hover:border-orange-400 active:scale-[.98]">
