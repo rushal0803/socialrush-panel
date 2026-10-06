@@ -1,6 +1,8 @@
 import Link from "next/link";
 import { ArrowRight, BookmarkCheck, BriefcaseBusiness, CalendarClock, CircleDollarSign, FolderKanban, PackageCheck, Repeat2, Users, WalletCards } from "lucide-react";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
+import AgencyGrowthNextActionCard from "@/components/dashboard/AgencyGrowthNextActionCard";
+import { buildAgencyGrowthDecision } from "@/lib/reseller/growth-engine";
 import { renewalStatus } from "@/lib/reseller/portfolio";
 
 const workflow = [
@@ -19,7 +21,12 @@ export default async function ResellerHubPage() {
   const { supabase, user } = await getDashboardContext();
   const since30 = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000).toISOString();
   const today = new Date().toISOString().slice(0,10);
-  const [{ data: clients }, { data: campaigns }, { data: orders }, { data: plans }] = await Promise.all([
+  const [
+    { data: clients, error: clientsError },
+    { data: campaigns, error: campaignsError },
+    { data: orders, error: ordersError },
+    { data: plans, error: plansError },
+  ] = await Promise.all([
     supabase.from("customer_clients").select("id,name,archived_at").eq("user_id", user!.id).is("archived_at", null),
     supabase.from("campaigns").select("id,status").eq("user_id", user!.id),
     supabase.from("orders").select("id,client_id,status,charge,created_at").eq("user_id", user!.id).order("created_at", { ascending: false }).limit(500),
@@ -44,6 +51,18 @@ export default async function ResellerHubPage() {
     ["Renewals due now", renewalsDueNow.toLocaleString("en-IN")],
   ] as const;
 
+  const agencyGrowthDecision = buildAgencyGrowthDecision({
+    activeClients: (clients || []).length,
+    completedOrders: completedOrders.length,
+    unassignedOrders,
+    repeatClients,
+    savedMonthlyPlans: (plans || []).length,
+    renewalsDueNow,
+    activeCampaigns,
+    plannedMonthlyValue,
+    signalsReliable: !clientsError && !campaignsError && !ordersError && !plansError,
+  });
+
   return (
     <main className="dashboard-premium-page mx-auto w-full max-w-[1500px] px-4 pb-12 pt-5 text-white sm:px-6 lg:px-8">
       <section className="overflow-hidden rounded-[1.6rem] border border-orange-400/20 bg-[radial-gradient(circle_at_top_right,rgba(255,153,0,.18),transparent_34%),linear-gradient(125deg,#17150f,#0f1117_62%)] p-5 sm:p-7 lg:p-8">
@@ -66,6 +85,8 @@ export default async function ResellerHubPage() {
       </section>
 
       <section className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-4">{metrics.map(([label, value]) => <article key={label} className="rounded-2xl border border-white/10 bg-[#101116] p-5"><p className="text-[10px] font-black uppercase tracking-[.13em] text-slate-500">{label}</p><p className="mt-2 text-2xl font-black text-white">{value}</p></article>)}</section>
+
+      <AgencyGrowthNextActionCard decision={agencyGrowthDecision} />
 
       <section className="mt-5 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         {workflow.map(({ title, text, href, icon: Icon }, index) => <Link key={title} href={href} className="group rounded-2xl border border-white/10 bg-[#101116] p-5 transition hover:-translate-y-0.5 hover:border-orange-400/30 hover:bg-orange-500/[.05]"><div className="flex items-center justify-between"><span className="grid h-10 w-10 place-items-center rounded-xl bg-orange-500/10 text-orange-300"><Icon className="h-5 w-5" /></span><span className="text-[10px] font-black text-slate-500">0{index + 1}</span></div><h2 className="mt-4 text-lg font-black">{title}</h2><p className="mt-2 text-sm leading-6 text-slate-400">{text}</p><span className="mt-4 inline-flex items-center gap-1 text-xs font-black text-orange-300">Open <ArrowRight className="h-3.5 w-3.5 transition group-hover:translate-x-0.5" /></span></Link>)}
