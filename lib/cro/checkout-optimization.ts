@@ -49,3 +49,22 @@ export function checkoutFundingMessage({
       "No wallet balance is being applied to this checkout. Use one payment method below and submit its transaction reference once.",
   };
 }
+
+
+export function checkoutShortfall(total: number, walletBalance: number | null) {
+  if (!Number.isFinite(total) || total <= 0) return 0;
+  if (walletBalance === null || !Number.isFinite(walletBalance)) return total;
+  return Math.max(0, Math.round((total - Math.max(0, walletBalance)) * 100) / 100);
+}
+
+export function safeCheckoutReturnPath(value: string | null | undefined) {
+  const path = String(value || "").trim();
+  if (!path.startsWith("/") || path.startsWith("//") || path.includes("\\") || /[\r\n]/.test(path)) return null;
+  return path;
+}
+
+export function checkoutAmountPrefill(value: string | null | undefined) {
+  const amount = Number(value);
+  if (!Number.isFinite(amount) || amount < 100 || amount > 500000) return null;
+  return Math.ceil(amount * 100) / 100;
+}
