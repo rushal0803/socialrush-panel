@@ -1,6 +1,8 @@
 import { test, expect } from "./fixtures";
 import type { Locator, Page } from "@playwright/test";
 
+test.use({ trace: "on" });
+
 const viewports = [
   { width: 320, height: 700 }, { width: 360, height: 760 },
   { width: 375, height: 812 }, { width: 390, height: 844 },
@@ -85,7 +87,6 @@ async function load(page: Page, path: string) {
 }
 
 test.describe("Q4 Phase 1 SEO browser release gate", () => {
-  test.use({ trace: "on" });
   test.afterEach(async ({ page }, info) => {
     if (info.status !== info.expectedStatus || info.title.endsWith("320x700")) {
       await info.attach("release-gate-screenshot", { body: await page.screenshot({ fullPage: true }), contentType: "image/png" });
