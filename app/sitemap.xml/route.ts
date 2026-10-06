@@ -41,6 +41,7 @@ const publicRoutes = [
   "/support",
   "/help-center",
   "/partners",
+  "/press",
   "/faq",
   "/case-studies",
   "/reviews",
