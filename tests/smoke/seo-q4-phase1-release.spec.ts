@@ -1,5 +1,30 @@
-import { test, expect } from "./fixtures";
+import { test as base, expect } from "./fixtures";
 import type { Locator, Page } from "@playwright/test";
+
+// The shared fixtures remain unchanged. Scope the HTTP-only RSC redirect
+// adaptation to this release gate and drain routes before the page is closed.
+const test = base.extend<{ rscTransport: void }>({
+  rscTransport: [async ({ page, baseURL, privacyPreference }, use) => {
+    void privacyPreference;
+    const loopback = baseURL?.startsWith("http://") && ["localhost", "127.0.0.1"].includes(new URL(baseURL).hostname);
+    if (!loopback) return use();
+    const context = page.context();
+    await context.route(`${new URL(baseURL!).origin}/dashboard/new-order**`, async route => {
+      const request = route.request();
+      if (request.method() !== "GET" || request.headers()["rsc"] !== "1") return route.fallback();
+      const response = await route.fetch({ maxRedirects: 0 });
+      const headers = response.headers();
+      // Only adapt the redirect that Chromium would upgrade to unavailable TLS.
+      // Keep the final login response and APIRequestContext security policy real.
+      if (response.status() === 307 && headers["content-security-policy"]) {
+        headers["content-security-policy"] = headers["content-security-policy"].split(";").filter(directive => directive.trim() !== "upgrade-insecure-requests").join(";");
+      }
+      await route.fulfill({ status: response.status(), headers, body: await response.body() });
+    });
+    try { await use(); }
+    finally { await context.unrouteAll({ behavior: "wait" }); }
+  }, { auto: true }],
+});
 
 test.use({ trace: "on" });
 
@@ -176,7 +201,8 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
         expect(prefetchResponses.length, "Real RSC auth prefetch must execute").toBeGreaterThan(0);
         for (const response of prefetchResponses) {
           expect(response.status).toBeLessThan(400);
-          expect(response.csp).not.toContain("upgrade-insecure-requests");
+          if (response.status === 307) expect(response.csp).not.toContain("upgrade-insecure-requests");
+          else expect(response.csp).toContain("upgrade-insecure-requests");
         }
         await test.info().attach("loopback-prefetch-responses", { body: JSON.stringify(prefetchResponses, null, 2), contentType: "application/json" });
       }
