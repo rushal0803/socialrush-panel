@@ -2,7 +2,7 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { ArrowRight, CheckCircle2, Copy, ExternalLink, LoaderCircle, LockKeyhole, ShieldCheck } from "lucide-react";
+import { ArrowRight, CheckCircle2, Copy, ExternalLink, LoaderCircle, LockKeyhole, MessageCircle, ShieldCheck } from "lucide-react";
 import { track } from "@/lib/analytics/events";
 
 type BankTransferDetails = { enabled: boolean; accountName: string; bankName: string; accountType: string; accountNumber: string; ifsc: string; branch: string };
@@ -43,6 +43,8 @@ export default function DirectUpiPaymentClient(props: Props) {
     return `upi://pay?${params.toString()}`;
   }, [upiId, payeeName, total, reference]);
   const qrUrl = `https://api.qrserver.com/v1/create-qr-code/?size=320x320&margin=12&data=${encodeURIComponent(upiHref)}`;
+  const whatsappMessage = `Hi SocialRUSH, I need help completing my payment.\n\nReference: ${reference}\nService: ${serviceName}\nQuantity: ${quantity.toLocaleString("en-IN")}\nOrder total: ${money(orderTotal)}\nWallet applied: ${money(walletApplied)}\nRemaining payment: ${payableLabel}\n\nPlease help me complete this order.`;
+  const whatsappHref = `https://wa.me/918860330771?text=${encodeURIComponent(whatsappMessage)}`;
 
   async function copy(label: string, value: string) {
     try { await navigator.clipboard.writeText(value); setCopied(label); window.setTimeout(() => setCopied(""), 1600); }
@@ -102,6 +104,7 @@ export default function DirectUpiPaymentClient(props: Props) {
         {error&&<p id="payment-error" role="alert" className="mt-3 rounded-lg bg-red-500/10 p-3 text-xs text-red-200">{error}</p>}
         <button type="submit" disabled={submitting} className={`${paymentLinkClass} mt-3 w-full disabled:opacity-60`}>{submitting?<><LoaderCircle className="h-4 w-4 animate-spin"/>Submitting...</>:<>Submit payment <ArrowRight className="h-4 w-4" aria-hidden="true"/></>}</button>
       </form>
+      <section className="rounded-xl border border-orange-400/20 bg-orange-500/[.04] p-3 sm:p-5" aria-labelledby="payment-help-title"><div className="flex items-start gap-3"><MessageCircle className="mt-0.5 h-5 w-5 shrink-0 text-orange-300" aria-hidden="true"/><div className="min-w-0 flex-1"><h2 id="payment-help-title" className="font-black">Having trouble completing payment?</h2><p className="mt-1 text-xs leading-5 text-zinc-300">Your order details are saved. You don't need to start again. If money was deducted, don't pay twice.</p><div className="mt-3 grid gap-2 sm:grid-cols-2"><button type="button" onClick={()=>{setMethod(method==="upi"?"bank_transfer":"upi");setError("");track("payment_recovery_method_selected",{service_code:serviceCode,from_method:method});document.getElementById("payment-method-panel")?.scrollIntoView({behavior:"smooth",block:"center"});}} className="min-h-12 rounded-xl border border-white/10 px-3 text-sm font-black text-white">Try another payment method</button><a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={()=>track("payment_support_whatsapp",{service_code:serviceCode,method,value:total,wallet_applied:walletApplied})} className="flex min-h-12 items-center justify-center gap-2 rounded-xl bg-emerald-500 px-3 text-sm font-black text-black"><MessageCircle className="h-4 w-4" aria-hidden="true"/>Get help on WhatsApp</a></div><p className="mt-2 text-[11px] leading-5 text-zinc-400">Not sure if payment went through? Check your UPI or bank app first. If you were charged, submit the transaction reference above or contact us.</p></div></div></section>
       <p role="status" aria-live="polite" className="sr-only">{copied ? "Copied to clipboard" : ""}</p>
       <div className="flex items-start gap-2 px-1 text-[11px] leading-5 text-emerald-100"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true"/>Pay only {payableLabel}. Never share your UPI PIN or OTP.</div>
     </div>
