@@ -1,8 +1,12 @@
 export const linkedInFollowersFaqs = [
   {
+    question: "Can I buy LinkedIn followers for a company page?",
+    answer: "A company page and a personal profile are different destinations. The current catalog lists LinkedIn Profile Followers and requests a public profile URL. Do not assume this covers a company page; confirm company-page support and the correct service with SocialRUSH before paying.",
+  },
+  {
     question: "How can I buy LinkedIn followers in India?",
     answer:
-      "Choose a follower quantity, provide a public LinkedIn profile or company page URL, review the live INR total, and continue through the secure SocialRUSH order flow.",
+      "Choose a follower quantity, provide the public LinkedIn profile URL supported by the active service, review the live INR total, and continue through the secure SocialRUSH order flow.",
   },
   {
     question: "How much do LinkedIn followers cost in India?",
@@ -12,7 +16,7 @@ export const linkedInFollowersFaqs = [
   {
     question: "Which LinkedIn URL should I provide?",
     answer:
-      "Provide a public linkedin.com/in/ profile or linkedin.com/company/ page URL, and confirm that it opens publicly before ordering.",
+      "The current LinkedIn Profile Followers service requests a public linkedin.com/in/ profile URL. A linkedin.com/company/ page is a different destination; confirm company-page eligibility in the active instructions or with support before ordering.",
   },
   {
     question: "Is a LinkedIn password required?",
