@@ -17,7 +17,8 @@ test("Phase 33 uses neutral package tiers instead of popularity claims", () => {
 test("Phase 33 package psychology explains the recommendation without fake social proof", () => {
   const psychology = read("lib/cro/package-psychology.ts");
   assert.match(psychology, /Balanced choice/);
-  assert.match(psychology, /neutral middle-ground recommendation based on package position/);\n  assert.match(psychology, /customer behavior or conversion data/);
+  assert.match(psychology, /neutral middle-ground recommendation based on package position/);
+  assert.match(psychology, /customer behavior or conversion data/);
   assert.match(psychology, /Same catalog rate per 1K across these tiers/);
   assert.match(psychology, /Lowest verified unit rate in this package set/);
   assert.match(psychology, /Verified saving/);
