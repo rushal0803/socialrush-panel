@@ -32,12 +32,13 @@ jobs:
       - run: node --check scripts/seo-instagram-sitemap-check.mjs
       - run: node --check scripts/seo-sitewide-technical-audit.mjs
       - run: node --check scripts/seo-serp-ctr-audit.mjs
-      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts
+      - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts
       - run: npm run seo:instagram-sitemap
       - run: npm run seo:ownership
       - run: npm run seo:content-engine
       - run: npm run seo:authority
       - run: npm run seo:competitors
+      - run: npm run seo:india-expansion
       - run: npm run trust:audit
       - run: npm run test:crm-pipeline
       - run: npm run test:international-seo
