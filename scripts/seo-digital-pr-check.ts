@@ -34,7 +34,10 @@ for (const asset of digitalPrAssets) {
 
   if (asset.path.startsWith("/blog/")) {
     const slug = asset.path.replace("/blog/", "");
-    if (!new RegExp(`\\bslug:\\s*["']${slug.replace(/[.*+?^$\{\}()|[\\]\\]/g, "\\$&")}["']`).test(blogSources)) {
+    const hasSlug =
+      blogSources.includes(`slug: "${slug}"`) ||
+      blogSources.includes(`slug: '${slug}'`);
+    if (!hasSlug) {
       failures.push(`${asset.id}: blog asset is not backed by a published article slug (${asset.path})`);
     }
   } else if (!sitemapSource.includes(`"${asset.path}"`)) {
