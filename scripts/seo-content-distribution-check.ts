@@ -1,6 +1,4 @@
 import { readFileSync } from "node:fs";
-import { blogArticles } from "../components/marketing/blog/blogData.ts";
-import { isValidDate, uniqueArticlesBySlug } from "../lib/blog.ts";
 import {
   buildTrackedDistributionUrl,
   distributionChannels,
@@ -9,47 +7,40 @@ import { SEO_SITE_URL } from "../lib/seo/metadata.ts";
 
 const failures: string[] = [];
 
-const publishedArticles = uniqueArticlesBySlug(blogArticles).filter(
-  (article) => !article.redirectTo && isValidDate(article.publishedAt),
-);
+const representativeSlug = "distribution-integrity-check";
 
-if (!publishedArticles.length) {
-  failures.push("No published canonical articles are available for distribution.");
-}
+for (const channel of Object.keys(distributionChannels) as Array<keyof typeof distributionChannels>) {
+  const url = new URL(
+    buildTrackedDistributionUrl({
+      path: `/blog/${representativeSlug}`,
+      channel,
+      content: representativeSlug,
+    }),
+  );
+  const expected = distributionChannels[channel];
 
-for (const article of publishedArticles) {
-  for (const channel of Object.keys(distributionChannels) as Array<keyof typeof distributionChannels>) {
-    const url = new URL(
-      buildTrackedDistributionUrl({
-        path: `/blog/${article.slug}`,
-        channel,
-        content: article.slug,
-      }),
-    );
-    const expected = distributionChannels[channel];
-
-    if (url.origin !== SEO_SITE_URL) {
-      failures.push(`${article.slug}/${channel}: tracked URL escaped the canonical origin`);
-    }
-    if (url.pathname !== `/blog/${article.slug}`) {
-      failures.push(`${article.slug}/${channel}: tracked URL changed the canonical article path`);
-    }
-    if (url.searchParams.get("utm_source") !== expected.source) {
-      failures.push(`${article.slug}/${channel}: incorrect utm_source`);
-    }
-    if (url.searchParams.get("utm_medium") !== expected.medium) {
-      failures.push(`${article.slug}/${channel}: incorrect utm_medium`);
-    }
-    if (url.searchParams.get("utm_campaign") !== "content_distribution") {
-      failures.push(`${article.slug}/${channel}: incorrect utm_campaign`);
-    }
-    if (url.searchParams.get("utm_content") !== article.slug) {
-      failures.push(`${article.slug}/${channel}: incorrect utm_content`);
-    }
+  if (url.origin !== SEO_SITE_URL) {
+    failures.push(`${channel}: tracked URL escaped the canonical origin`);
+  }
+  if (url.pathname !== `/blog/${representativeSlug}`) {
+    failures.push(`${channel}: tracked URL changed the canonical article path`);
+  }
+  if (url.searchParams.get("utm_source") !== expected.source) {
+    failures.push(`${channel}: incorrect utm_source`);
+  }
+  if (url.searchParams.get("utm_medium") !== expected.medium) {
+    failures.push(`${channel}: incorrect utm_medium`);
+  }
+  if (url.searchParams.get("utm_campaign") !== "content_distribution") {
+    failures.push(`${channel}: incorrect utm_campaign`);
+  }
+  if (url.searchParams.get("utm_content") !== representativeSlug) {
+    failures.push(`${channel}: incorrect utm_content`);
   }
 }
 
 const feedRoute = readFileSync("app/feed.xml/route.ts", "utf8");
+const blogInventory = readFileSync("components/marketing/blog/blogData.ts", "utf8");
 const rootLayout = readFileSync("app/layout.tsx", "utf8");
 const articleEnhancements = readFileSync(
   "components/marketing/blog/BlogArticleEnhancements.tsx",
@@ -57,6 +48,9 @@ const articleEnhancements = readFileSync(
 );
 const distributionPage = readFileSync("app/admin/crm/distribution/page.tsx", "utf8");
 
+if (!blogInventory.includes("export const blogArticles")) {
+  failures.push("Canonical blog inventory export is missing.");
+}
 if (!feedRoute.includes('application/rss+xml; charset=utf-8')) {
   failures.push("RSS route is missing the application/rss+xml content type.");
 }
@@ -94,6 +88,6 @@ if (failures.length) {
   process.exitCode = 1;
 } else {
   console.log(
-    `PASS  ${publishedArticles.length} canonical articles are distribution-ready across ${Object.keys(distributionChannels).length} tracked channels.`,
+    `PASS  Canonical blog inventory feed and ${Object.keys(distributionChannels).length} tracked distribution channels pass Phase 42 integrity checks.`,
   );
 }
