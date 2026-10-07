@@ -26,6 +26,7 @@ export default function DirectUpiPaymentClient(props: Props) {
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<string | null>(null);
   const [copied, setCopied] = useState("");
+  const [lastErrorStatus, setLastErrorStatus] = useState<number | null>(null);
 
   const submissionInFlight = useRef(false);
   const confirmationRef = useRef<HTMLFormElement>(null);
@@ -61,15 +62,34 @@ export default function DirectUpiPaymentClient(props: Props) {
     try {
       const response = await fetch("/api/orders/manual-upi", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ intentId, clientRequestId, paymentReference: reference, paymentMethod: method, utr: clean, expectedWalletApplied: walletApplied }) });
       const payload = await response.json() as { data?: { public_order_id: string }; error?: string };
-      if (!response.ok || !payload.data) throw new Error(payload.error || "Unable to confirm your order.");
+      if (!response.ok || !payload.data) {
+        setLastErrorStatus(response.status);
+        throw new Error(payload.error || "Unable to confirm your order.");
+      }
+      setLastErrorStatus(null);
       setSuccess(payload.data.public_order_id);
       track("utr_submitted", { service_code: serviceCode, method, value: total, wallet_applied: walletApplied, order_total: orderTotal });
       window.setTimeout(() => router.push("/dashboard/orders"), 1600);
-    } catch (e) { setError(e instanceof Error ? e.message : "Unable to confirm your order."); }
+    } catch (e) {
+      const message=e instanceof Error ? e.message : "Unable to confirm your order.";
+      const lower=message.toLowerCase();
+      const errorCategory=lower.includes("expired")?"expired_checkout":lower.includes("wallet")?"wallet_changed":lower.includes("already been submitted")?"duplicate_reference":lower.includes("transaction id")||lower.includes("utr")?"transaction_reference":"confirmation_failed";
+      track("checkout_error",{service_code:serviceCode,step:"verification",method,error_category:errorCategory,status:lastErrorStatus});
+      setError(message);
+    }
     finally { submissionInFlight.current = false; setSubmitting(false); }
   }
 
   if (success) return <section className="mx-auto max-w-2xl rounded-[28px] border border-emerald-400/20 bg-[#0d1118] p-8 text-center text-white"><CheckCircle2 className="mx-auto h-12 w-12 text-emerald-300"/><h1 className="mt-4 text-2xl font-black">Payment submitted</h1><p className="mt-2 text-zinc-300">Order {success} has been received for verification. Do not pay again.</p></section>;
+
+  const errorLower=error.toLowerCase();
+  const refreshCheckout=errorLower.includes("expired")||errorLower.includes("wallet balance")||errorLower.includes("wallet amount")||errorLower.includes("checkout session");
+  const duplicateReference=errorLower.includes("already been submitted");
+  const referenceHelp=method==="usdt_trc20"
+    ? "Open your exchange or wallet withdrawal history, choose the successful TRC20 transfer, and copy the TxID / transaction hash."
+    : method==="bank_transfer"
+      ? "Open your bank transaction history, choose the successful IMPS/NEFT transfer, and copy the UTR / bank reference number."
+      : "Open your UPI app transaction history, choose the successful payment, and copy the UTR / transaction ID shown in the payment details.";
 
   const paymentLinkClass = "flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-3 text-sm font-black text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300";
   const copyButton = "inline-flex min-h-11 shrink-0 items-center justify-center gap-1 rounded-lg px-2 text-xs font-bold text-orange-300 focus-visible:outline focus-visible:outline-orange-300";
@@ -113,9 +133,10 @@ export default function DirectUpiPaymentClient(props: Props) {
       </div>
       <form ref={confirmationRef} onSubmit={e=>{e.preventDefault();if(!submitting)void submit();}} className="rounded-xl border border-white/10 bg-[#0e131b] p-3 sm:p-5">
         <h2 className="font-black">Already paid?</h2><p className="mt-1 text-xs leading-5 text-zinc-400">Enter your transaction reference after payment so we can verify it.</p>
+        <details className="mt-2 rounded-lg border border-white/10 bg-white/[.025] px-3 text-xs"><summary className="flex min-h-10 cursor-pointer items-center justify-between gap-2 font-bold text-orange-200">Where do I find this reference?<span>+</span></summary><p className="pb-3 leading-5 text-zinc-400">{referenceHelp}</p></details>
         <label htmlFor="payment-utr" className="mt-2 block text-[11px] font-bold text-zinc-300 sm:mt-3 sm:text-xs">{method==="usdt_trc20"?"Transaction hash / TxID":"UTR / Transaction ID"}</label>
         <div className="mt-2 flex gap-2"><input id="payment-utr" value={utr} disabled={submitting} onChange={e=>setUtr(e.target.value.slice(0,80))} aria-describedby={error?"payment-error":undefined} aria-invalid={Boolean(error)} autoComplete="off" autoCapitalize="none" spellCheck={false} placeholder="Enter transaction reference" className="min-h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-black/30 px-3 text-base outline-none focus:border-orange-400"/><button type="button" disabled={submitting} onClick={async()=>{try{const value=await navigator.clipboard.readText();setUtr(value.trim().replace(/\s+/g,"").slice(0,80));}catch{setError("Clipboard unavailable. Paste your reference into the field.");}}} className="min-h-12 rounded-xl border border-white/10 px-3 text-xs font-black">Paste</button></div>
-        {error&&<p id="payment-error" role="alert" className="mt-3 rounded-lg bg-red-500/10 p-3 text-xs text-red-200">{error}</p>}
+        {error&&<div id="payment-error" role="alert" className="mt-3 rounded-lg border border-red-400/15 bg-red-500/10 p-3 text-xs text-red-100"><p>{error}</p><div className="mt-3 flex flex-wrap gap-2">{refreshCheckout ? <button type="button" onClick={()=>router.push("/dashboard/new-order?draft=1&recovery=payment_retry")} className="min-h-10 rounded-lg bg-orange-500 px-3 font-black text-black">Refresh checkout amount</button> : <button type="button" onClick={()=>{setError("");setLastErrorStatus(null);document.getElementById("payment-utr")?.focus();}} className="min-h-10 rounded-lg border border-white/15 px-3 font-black text-white">Check reference & retry</button>}{duplicateReference ? <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center rounded-lg border border-emerald-400/20 bg-emerald-500/10 px-3 font-black text-emerald-200">Ask support to check payment</a> : null}</div></div>}
         <button type="submit" disabled={submitting} className={`${paymentLinkClass} mt-3 w-full disabled:opacity-60`}>{submitting?<><LoaderCircle className="h-4 w-4 animate-spin"/>Submitting...</>:<>Submit payment <ArrowRight className="h-4 w-4" aria-hidden="true"/></>}</button>
       </form>
       <section className="rounded-xl border border-white/10 bg-white/[.025] p-3 sm:border-orange-400/20 sm:bg-orange-500/[.04] sm:p-5" aria-labelledby="payment-help-title"><div className="flex items-start gap-3"><MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-orange-300 sm:h-5 sm:w-5" aria-hidden="true"/><div className="min-w-0 flex-1"><h2 id="payment-help-title" className="text-sm font-black sm:text-base">Payment issue?</h2><p className="mt-1 text-[11px] leading-4 text-zinc-400 sm:text-xs sm:leading-5 sm:text-zinc-300">Your order is saved. Money deducted? Do not pay again.</p><div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3"><button type="button" onClick={()=>{setMethod(method==="upi"?"bank_transfer":"upi");setError("");track("payment_method_selected",{service_code:serviceCode,method:method==="upi"?"bank_transfer":"upi"});document.getElementById("payment-method-panel")?.scrollIntoView({behavior:"smooth",block:"center"});}} className="min-h-11 rounded-xl border border-white/10 px-2 text-xs font-black text-white sm:min-h-12 sm:px-3 sm:text-sm">Change method</button><a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={()=>track("payment_started",{service_code:serviceCode,method:"whatsapp_support",value:total})} className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-2 text-xs font-black text-black sm:min-h-12 sm:gap-2 sm:px-3 sm:text-sm"><MessageCircle className="h-4 w-4" aria-hidden="true"/>WhatsApp us</a></div><p className="mt-2 text-[10px] leading-4 text-zinc-500 sm:text-[11px] sm:leading-5 sm:text-zinc-400">Not sure? Check your UPI or bank app first. If charged, submit the transaction reference above.</p></div></div></section>
