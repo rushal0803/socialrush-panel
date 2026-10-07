@@ -1,4 +1,4 @@
-import { SEO_SITE_URL } from "../seo/metadata";
+import { SEO_SITE_URL } from "../seo/metadata.ts";
 
 export type DistributionChannel = "linkedin" | "x" | "whatsapp" | "community";
 
