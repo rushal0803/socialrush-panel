@@ -29,13 +29,54 @@ export default function DirectUpiPaymentClient(props: Props) {
 
   const submissionInFlight = useRef(false);
   const confirmationRef = useRef<HTMLFormElement>(null);
+  const funnelStage = useRef("page_viewed");
+  const methodRef = useRef<"upi" | "bank_transfer" | "usdt_trc20">("upi");
+  const successRef = useRef(false);
+  const referenceReached = useRef(false);
+
+  const recordPaymentStep = (step: string, selectedMethod = methodRef.current, action?: string) => {
+    funnelStage.current = step;
+    track("payment_funnel_step", {
+      service_code: serviceCode,
+      method: selectedMethod,
+      step,
+      value: total,
+      ...(action ? { action } : {}),
+    });
+  };
+
+  useEffect(() => {
+    methodRef.current = method;
+    track("payment_funnel_step", { service_code: serviceCode, method, step: "instructions_viewed", value: total });
+  }, [method, serviceCode, total]);
+
+  useEffect(() => {
+    funnelStage.current = "page_viewed";
+    track("payment_funnel_step", { service_code: serviceCode, method: "upi", step: "page_viewed", value: total });
+    const handlePageHide = () => {
+      if (successRef.current) return;
+      track("payment_exit", {
+        service_code: serviceCode,
+        method: methodRef.current,
+        step: funnelStage.current,
+        value: total,
+      });
+    };
+    window.addEventListener("pagehide", handlePageHide);
+    return () => window.removeEventListener("pagehide", handlePageHide);
+  }, [serviceCode, total]);
   const [showPaymentDock, setShowPaymentDock] = useState(true);
   useEffect(() => {
     const form = confirmationRef.current;
     if (!form) return;
-    const observer = new IntersectionObserver(([entry]) => setShowPaymentDock(!entry.isIntersecting), { rootMargin: "0px 0px -140px 0px" });
+    const observer = new IntersectionObserver(([entry]) => {
+      setShowPaymentDock(!entry.isIntersecting);
+      if (entry.isIntersecting && !successRef.current) recordPaymentStep("verification_form_viewed");
+    }, { rootMargin: "0px 0px -140px 0px" });
     observer.observe(form);
     return () => observer.disconnect();
+  // recordPaymentStep reads refs so the observer does not need to restart when the method changes.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const payableLabel = money(total);
@@ -49,13 +90,23 @@ export default function DirectUpiPaymentClient(props: Props) {
   const whatsappHref = `https://wa.me/918860330771?text=${encodeURIComponent(whatsappMessage)}`;
 
   async function copy(label: string, value: string) {
-    try { await navigator.clipboard.writeText(value); setCopied(label); window.setTimeout(() => setCopied(""), 1600); }
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(label);
+      recordPaymentStep("instructions_engaged", methodRef.current, `copy_${label.toLowerCase().replace(/\s+/g, "_")}`);
+      window.setTimeout(() => setCopied(""), 1600);
+    }
     catch { setError("Clipboard unavailable. Select and copy the value manually."); }
   }
   async function submit() {
     if (submissionInFlight.current) return;
     const clean = utr.trim().replace(/\s+/g, "");
-    if (!/^[A-Za-z0-9-]{8,80}$/.test(clean)) { setError(method === "usdt_trc20" ? "Enter a valid transaction hash / TxID." : "Enter a valid UTR / Transaction ID."); return; }
+    if (!/^[A-Za-z0-9-]{8,80}$/.test(clean)) {
+      recordPaymentStep("reference_invalid");
+      setError(method === "usdt_trc20" ? "Enter a valid transaction hash / TxID." : "Enter a valid UTR / Transaction ID.");
+      return;
+    }
+    recordPaymentStep("submit_clicked");
     submissionInFlight.current = true;
     setSubmitting(true); setError("");
     try {
@@ -64,13 +115,18 @@ export default function DirectUpiPaymentClient(props: Props) {
       if (!response.ok || !payload.data) {
         throw new Error(payload.error || "Unable to confirm your order.");
       }
+      successRef.current = true;
+      funnelStage.current = "submission_accepted";
       setSuccess(payload.data.public_order_id);
+      track("payment_funnel_step", { service_code: serviceCode, method, step: "submission_accepted", value: total });
       track("utr_submitted", { service_code: serviceCode, method, value: total, wallet_applied: walletApplied, order_total: orderTotal });
       window.setTimeout(() => router.push("/dashboard/orders"), 1600);
     } catch (e) {
       const message=e instanceof Error ? e.message : "Unable to confirm your order.";
       const lower=message.toLowerCase();
       const errorCategory=lower.includes("expired")?"expired_checkout":lower.includes("wallet")?"wallet_changed":lower.includes("already been submitted")?"duplicate_reference":lower.includes("transaction id")||lower.includes("utr")?"transaction_reference":"confirmation_failed";
+      funnelStage.current = "submission_error";
+      track("payment_funnel_step",{service_code:serviceCode,step:"submission_error",method,error_category:errorCategory,value:total});
       track("checkout_error",{service_code:serviceCode,step:"verification",method,error_category:errorCategory});
       setError(message);
     }
@@ -90,7 +146,10 @@ export default function DirectUpiPaymentClient(props: Props) {
 
   const paymentLinkClass = "flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-3 text-sm font-black text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300";
   const copyButton = "inline-flex min-h-11 shrink-0 items-center justify-center gap-1 rounded-lg px-2 text-xs font-bold text-orange-300 focus-visible:outline focus-visible:outline-orange-300";
-  const startPayment = () => track("payment_started", { service_code: serviceCode, method: "upi", value: total });
+  const startPayment = () => {
+    recordPaymentStep("payment_initiated", "upi", "open_upi_app");
+    track("payment_started", { service_code: serviceCode, method: "upi", value: total });
+  };
 
   return <section className="mx-auto max-w-3xl rounded-2xl border border-orange-400/20 bg-[#0b0f15] text-white shadow-2xl sm:rounded-3xl">
     <header className="border-b border-white/10 px-3 py-3 sm:px-6 sm:py-5">
@@ -114,7 +173,7 @@ export default function DirectUpiPaymentClient(props: Props) {
         </div>
         <span className="shrink-0 rounded-full bg-orange-500/10 px-2 py-1 text-[10px] font-black text-orange-200">Pay {payableLabel}</span>
       </div>
-      <div role="group" aria-label="Payment method" className="grid grid-cols-3 gap-1.5">{([["upi","UPI"],["bank_transfer","Bank Transfer"],["usdt_trc20","USDT TRC20"]] as const).map(([value,label])=><button key={value} id={`tab-${value}`} aria-pressed={method===value} aria-controls="payment-method-panel" type="button" disabled={submitting||(value==="bank_transfer"&&!bankTransfer.enabled)||(value==="usdt_trc20"&&!usdtAmount)} onClick={()=>{setMethod(value);setError("");track("payment_method_selected",{service_code:serviceCode,method:value});}} className={`min-h-11 rounded-xl border px-1 text-[11px] font-black focus-visible:outline focus-visible:outline-orange-300 sm:text-sm ${method===value?"border-orange-400 bg-orange-500/15 text-orange-200":"border-white/10 text-zinc-300"} disabled:opacity-40`}>{label}</button>)}</div>
+      <div role="group" aria-label="Payment method" className="grid grid-cols-3 gap-1.5">{([["upi","UPI"],["bank_transfer","Bank Transfer"],["usdt_trc20","USDT TRC20"]] as const).map(([value,label])=><button key={value} id={`tab-${value}`} aria-pressed={method===value} aria-controls="payment-method-panel" type="button" disabled={submitting||(value==="bank_transfer"&&!bankTransfer.enabled)||(value==="usdt_trc20"&&!usdtAmount)} onClick={()=>{setMethod(value);methodRef.current=value;setError("");funnelStage.current="method_selected";track("payment_method_selected",{service_code:serviceCode,method:value});track("payment_funnel_step",{service_code:serviceCode,method:value,step:"method_selected",value:total});}} className={`min-h-11 rounded-xl border px-1 text-[11px] font-black focus-visible:outline focus-visible:outline-orange-300 sm:text-sm ${method===value?"border-orange-400 bg-orange-500/15 text-orange-200":"border-white/10 text-zinc-300"} disabled:opacity-40`}>{label}</button>)}</div>
       <div id="payment-method-panel" role="region" aria-labelledby={`tab-${method}`} className="rounded-xl border border-white/10 bg-[#0e131b] p-3 sm:p-5">
         {method==="upi"&&<>
           <div className="flex items-center justify-between gap-2"><h2 className="text-sm font-black">Scan to pay</h2><button type="button" onClick={()=>void copy("amount",total.toFixed(2))} className={copyButton} aria-label="Copy amount"><span className="text-lg tabular-nums">{payableLabel}</span>{copied==="amount"?<span className="text-[10px]">Copied</span>:<Copy className="h-3.5 w-3.5" aria-hidden="true"/>}</button></div>
@@ -132,11 +191,11 @@ export default function DirectUpiPaymentClient(props: Props) {
         <h2 className="font-black">Already paid?</h2><p className="mt-1 text-xs leading-5 text-zinc-400">Enter your transaction reference after payment so we can verify it.</p>
         <details className="mt-2 rounded-lg border border-white/10 bg-white/[.025] px-3 text-xs"><summary className="flex min-h-10 cursor-pointer items-center justify-between gap-2 font-bold text-orange-200">Where do I find this reference?<span>+</span></summary><p className="pb-3 leading-5 text-zinc-400">{referenceHelp}</p></details>
         <label htmlFor="payment-utr" className="mt-2 block text-[11px] font-bold text-zinc-300 sm:mt-3 sm:text-xs">{method==="usdt_trc20"?"Transaction hash / TxID":"UTR / Transaction ID"}</label>
-        <div className="mt-2 flex gap-2"><input id="payment-utr" value={utr} disabled={submitting} onChange={e=>setUtr(e.target.value.slice(0,80))} aria-describedby={error?"payment-error":undefined} aria-invalid={Boolean(error)} autoComplete="off" autoCapitalize="none" spellCheck={false} placeholder="Enter transaction reference" className="min-h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-black/30 px-3 text-base outline-none focus:border-orange-400"/><button type="button" disabled={submitting} onClick={async()=>{try{const value=await navigator.clipboard.readText();setUtr(value.trim().replace(/\s+/g,"").slice(0,80));}catch{setError("Clipboard unavailable. Paste your reference into the field.");}}} className="min-h-12 rounded-xl border border-white/10 px-3 text-xs font-black">Paste</button></div>
-        {error&&<div id="payment-error" role="alert" className="mt-3 rounded-lg border border-red-400/15 bg-red-500/10 p-3 text-xs text-red-100"><p>{error}</p><div className="mt-3 flex flex-wrap gap-2">{refreshCheckout ? <button type="button" onClick={()=>router.push("/dashboard/new-order?draft=1&recovery=payment_retry")} className="min-h-10 rounded-lg bg-orange-500 px-3 font-black text-black">Refresh checkout amount</button> : <button type="button" onClick={()=>{setError("");document.getElementById("payment-utr")?.focus();}} className="min-h-10 rounded-lg border border-white/15 px-3 font-black text-white">Check reference & retry</button>}{duplicateReference ? <a href={whatsappHref} target="_blank" rel="noopener noreferrer" className="inline-flex min-h-10 items-center rounded-lg border border-emerald-400/20 bg-emerald-500/10 px-3 font-black text-emerald-200">Ask support to check payment</a> : null}</div></div>}
+        <div className="mt-2 flex gap-2"><input id="payment-utr" value={utr} disabled={submitting} onChange={e=>{const next=e.target.value.slice(0,80);setUtr(next);if(!referenceReached.current&&next.trim().replace(/\s+/g,"").length>=8){referenceReached.current=true;recordPaymentStep("reference_entered");}}} aria-describedby={error?"payment-error":undefined} aria-invalid={Boolean(error)} autoComplete="off" autoCapitalize="none" spellCheck={false} placeholder="Enter transaction reference" className="min-h-12 min-w-0 flex-1 rounded-xl border border-white/10 bg-black/30 px-3 text-base outline-none focus:border-orange-400"/><button type="button" disabled={submitting} onClick={async()=>{try{const value=await navigator.clipboard.readText();const next=value.trim().replace(/\s+/g,"").slice(0,80);setUtr(next);if(next.length>=8){referenceReached.current=true;recordPaymentStep("reference_entered",methodRef.current,"paste_reference");}}catch{setError("Clipboard unavailable. Paste your reference into the field.");}}} className="min-h-12 rounded-xl border border-white/10 px-3 text-xs font-black">Paste</button></div>
+        {error&&<div id="payment-error" role="alert" className="mt-3 rounded-lg border border-red-400/15 bg-red-500/10 p-3 text-xs text-red-100"><p>{error}</p><div className="mt-3 flex flex-wrap gap-2">{refreshCheckout ? <button type="button" onClick={()=>{track("payment_help_clicked",{service_code:serviceCode,method,action:"refresh_checkout",step:funnelStage.current});router.push("/dashboard/new-order?draft=1&recovery=payment_retry");}} className="min-h-10 rounded-lg bg-orange-500 px-3 font-black text-black">Refresh checkout amount</button> : <button type="button" onClick={()=>{track("payment_help_clicked",{service_code:serviceCode,method,action:"retry_reference",step:funnelStage.current});setError("");document.getElementById("payment-utr")?.focus();}} className="min-h-10 rounded-lg border border-white/15 px-3 font-black text-white">Check reference & retry</button>}{duplicateReference ? <a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={()=>track("payment_help_clicked",{service_code:serviceCode,method,action:"duplicate_reference_support",step:funnelStage.current})} className="inline-flex min-h-10 items-center rounded-lg border border-emerald-400/20 bg-emerald-500/10 px-3 font-black text-emerald-200">Ask support to check payment</a> : null}</div></div>}
         <button type="submit" disabled={submitting} className={`${paymentLinkClass} mt-3 w-full disabled:opacity-60`}>{submitting?<><LoaderCircle className="h-4 w-4 animate-spin"/>Submitting...</>:<>Submit payment <ArrowRight className="h-4 w-4" aria-hidden="true"/></>}</button>
       </form>
-      <section className="rounded-xl border border-white/10 bg-white/[.025] p-3 sm:border-orange-400/20 sm:bg-orange-500/[.04] sm:p-5" aria-labelledby="payment-help-title"><div className="flex items-start gap-3"><MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-orange-300 sm:h-5 sm:w-5" aria-hidden="true"/><div className="min-w-0 flex-1"><h2 id="payment-help-title" className="text-sm font-black sm:text-base">Payment issue?</h2><p className="mt-1 text-[11px] leading-4 text-zinc-400 sm:text-xs sm:leading-5 sm:text-zinc-300">Your order is saved. Money deducted? Do not pay again.</p><div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3"><button type="button" onClick={()=>{setMethod(method==="upi"?"bank_transfer":"upi");setError("");track("payment_method_selected",{service_code:serviceCode,method:method==="upi"?"bank_transfer":"upi"});document.getElementById("payment-method-panel")?.scrollIntoView({behavior:"smooth",block:"center"});}} className="min-h-11 rounded-xl border border-white/10 px-2 text-xs font-black text-white sm:min-h-12 sm:px-3 sm:text-sm">Change method</button><a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={()=>track("payment_started",{service_code:serviceCode,method:"whatsapp_support",value:total})} className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-2 text-xs font-black text-black sm:min-h-12 sm:gap-2 sm:px-3 sm:text-sm"><MessageCircle className="h-4 w-4" aria-hidden="true"/>WhatsApp us</a></div><p className="mt-2 text-[10px] leading-4 text-zinc-500 sm:text-[11px] sm:leading-5 sm:text-zinc-400">Not sure? Check your UPI or bank app first. If charged, submit the transaction reference above.</p></div></div></section>
+      <section className="rounded-xl border border-white/10 bg-white/[.025] p-3 sm:border-orange-400/20 sm:bg-orange-500/[.04] sm:p-5" aria-labelledby="payment-help-title"><div className="flex items-start gap-3"><MessageCircle className="mt-0.5 h-4 w-4 shrink-0 text-orange-300 sm:h-5 sm:w-5" aria-hidden="true"/><div className="min-w-0 flex-1"><h2 id="payment-help-title" className="text-sm font-black sm:text-base">Payment issue?</h2><p className="mt-1 text-[11px] leading-4 text-zinc-400 sm:text-xs sm:leading-5 sm:text-zinc-300">Your order is saved. Money deducted? Do not pay again.</p><div className="mt-2 grid grid-cols-2 gap-2 sm:mt-3"><button type="button" onClick={()=>{const nextMethod=method==="upi"?"bank_transfer":"upi";setMethod(nextMethod);methodRef.current=nextMethod;setError("");track("payment_help_clicked",{service_code:serviceCode,method,action:"change_method",step:funnelStage.current});track("payment_method_selected",{service_code:serviceCode,method:nextMethod});track("payment_funnel_step",{service_code:serviceCode,method:nextMethod,step:"method_selected",value:total});document.getElementById("payment-method-panel")?.scrollIntoView({behavior:"smooth",block:"center"});}} className="min-h-11 rounded-xl border border-white/10 px-2 text-xs font-black text-white sm:min-h-12 sm:px-3 sm:text-sm">Change method</button><a href={whatsappHref} target="_blank" rel="noopener noreferrer" onClick={()=>track("payment_help_clicked",{service_code:serviceCode,method,action:"whatsapp_support",step:funnelStage.current})} className="flex min-h-11 items-center justify-center gap-1.5 rounded-xl bg-emerald-500 px-2 text-xs font-black text-black sm:min-h-12 sm:gap-2 sm:px-3 sm:text-sm"><MessageCircle className="h-4 w-4" aria-hidden="true"/>WhatsApp us</a></div><p className="mt-2 text-[10px] leading-4 text-zinc-500 sm:text-[11px] sm:leading-5 sm:text-zinc-400">Not sure? Check your UPI or bank app first. If charged, submit the transaction reference above.</p></div></div></section>
       <p role="status" aria-live="polite" className="sr-only">{copied ? "Copied to clipboard" : ""}</p>
       <div className="flex items-start gap-2 px-1 text-[11px] leading-5 text-emerald-100"><ShieldCheck className="mt-0.5 h-4 w-4 shrink-0" aria-hidden="true"/>Pay only {payableLabel}. Never share your UPI PIN or OTP.</div>
     </div>
