@@ -37,6 +37,8 @@ jobs:
         run: node --experimental-strip-types scripts/seo-international-integrity-check.ts
       - name: Check Digital PR asset and outreach guardrails
         run: node --experimental-strip-types scripts/seo-digital-pr-check.ts
+      - name: Check content distribution integrity
+        run: node --experimental-strip-types --import ./scripts/test-path-aliases.mjs scripts/seo-content-distribution-check.ts
       - name: Check SERP snippet CTR health
         run: node scripts/seo-serp-ctr-audit.mjs
       - name: Check Phase 16 Instagram technical SEO
