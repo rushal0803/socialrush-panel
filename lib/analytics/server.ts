@@ -57,6 +57,10 @@ export async function recordTrustedEvent(input: {
     if (typeof landingPath === "string" && landingPath.startsWith("/")) {
       metadata.landing_path = landingPath.slice(0, 300);
     }
+    const recoveryCampaign = attribution?.safe_metadata?.recovery_campaign;
+    if (typeof recoveryCampaign === "string" && recoveryCampaign.trim()) {
+      metadata.recovery_campaign = recoveryCampaign.trim().slice(0, 80);
+    }
     if (attribution?.source) {
       metadata.attribution_model = "first_touch_inherited";
     }
