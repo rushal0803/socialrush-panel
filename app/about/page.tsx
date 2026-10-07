@@ -7,9 +7,9 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "About the SocialRUSH Platform",
+  title: "About SocialRUSH | Social Media Growth Platform India",
   description:
-    "Learn how SocialRUSH brings social media growth service discovery, transparent pricing, public-link ordering and campaign tracking into one focused workspace.",
+    "Learn how SocialRUSH helps creators, businesses and agencies compare social media services, review INR pricing, place public-link orders and track campaigns.",
   path: "/about",
   keywords: ["SocialRUSH", "social media growth platform India", "social media marketing services", "Instagram growth services", "YouTube growth services"],
 });
@@ -83,7 +83,7 @@ export default function AboutPage() {
       <div className="relative mx-auto grid max-w-7xl items-center gap-12 lg:grid-cols-[.95fr_1.05fr] lg:gap-16">
         <div>
           <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-400/[.08] px-3.5 py-2 text-[10px] font-black uppercase tracking-[.16em] text-orange-200"><MarketingIcon name="sparkles" className="h-3.5 w-3.5" />About SocialRUSH</span>
-          <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.03] tracking-[-.06em] text-white sm:text-6xl lg:text-7xl">Social media growth,<br /><span className="bg-gradient-to-r from-orange-300 via-amber-200 to-orange-400 bg-clip-text text-transparent">made clearer.</span></h1>
+          <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.03] tracking-[-.06em] text-white sm:text-6xl lg:text-7xl">About SocialRUSH:<br /><span className="bg-gradient-to-r from-orange-300 via-amber-200 to-orange-400 bg-clip-text text-transparent">social media growth made clearer.</span></h1>
           <p className="mt-6 max-w-xl text-base leading-8 text-[#B9C0CC] sm:text-lg">SocialRUSH gives you one focused place to explore social media growth services, compare current pricing, place public-link orders and follow campaign activity across supported platforms.</p>
           <div className="mt-8 flex flex-col gap-3 min-[420px]:flex-row"><Link href="/services" className="group inline-flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#FF6200] to-[#FF9A00] px-5 py-3 text-sm font-black text-white shadow-[0_18px_38px_-18px_rgba(255,118,0,.8)] transition hover:-translate-y-0.5">Explore Services <MarketingIcon name="arrow" className="h-4 w-4 transition group-hover:translate-x-1" /></Link><Link href="/packages" className="inline-flex min-h-12 items-center justify-center rounded-xl border border-white/15 bg-white/[.045] px-5 py-3 text-sm font-black text-white transition hover:border-orange-400/45 hover:bg-orange-400/[.08]">View Packages</Link></div>
           <p className="mt-6 text-xs font-semibold text-[#8F96A3]">Transparent pricing <span className="mx-1.5 text-orange-400">•</span> Public-link ordering <span className="mx-1.5 text-orange-400">•</span> Dashboard tracking</p>
