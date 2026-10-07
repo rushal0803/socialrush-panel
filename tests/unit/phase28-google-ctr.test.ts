@@ -25,7 +25,7 @@ test("Phase 28 aligns Services and Packages snippets with their owned search int
   assert.match(services, /Compare live SocialRUSH services in India/);
   assert.match(services, /INR pricing, UPI and dashboard tracking/);
   assert.match(packages, /Social Media Growth Packages India \| Prices & Delivery/);
-  assert.match(packages, /clear pricing, quantities, delivery estimates and refill information/);
+  assert.match(packages, /by platform, service, quantity and price/);
 });
 
 test("Phase 28 exposes a SERP command center without claiming measured Google CTR", () => {
