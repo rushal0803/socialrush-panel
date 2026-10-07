@@ -130,7 +130,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
   async function buy() {
     setMessage("");
     if (!selected || !purchaseFacts) return;
-    if (!rule) { setMessage("This service is available, but package checkout needs the standard order flow for its destination-link requirements."); return; }
+    if (!rule) { setMessage("This service needs the standard order flow for its destination requirements."); return; }
     const validation = validateCampaignLink(targetLink, rule);
     if (validation) { setMessage(validation); return; }
     if (!loggedIn) {
@@ -143,16 +143,21 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
     if (!wallet.hasEnoughBalance) {
       persist();
       track("add_funds_clicked", { platform: selected.platformId, service: selected.serviceCode, package: selected.tierId, quantity: selected.quantity, price: purchaseFacts.totalPriceINR });
-      router.push(`/dashboard/wallet?amount=${encodeURIComponent(String(wallet.amountNeeded))}&returnTo=${encodeURIComponent(getPackageUiUrl(selected))}`);
+      router.push(`/dashboard/add-funds?amount=${encodeURIComponent(String(wallet.amountNeeded))}&next=${encodeURIComponent(getPackageUiUrl(selected))}`);
       return;
     }
     if (!requestId.current) requestId.current = crypto.randomUUID();
+    const payload = { serviceCode: purchaseFacts.serviceCode, quantity: purchaseFacts.quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageId: selected.id };
     setSubmitting(true);
     try {
-      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: purchaseFacts.serviceCode, serviceId: 0, quantity: purchaseFacts.quantity, link: targetLink.trim(), requestId: requestId.current, notes: null, fallbackPrice: purchaseFacts.fallbackPricePer1000INR, fallbackName: purchaseFacts.fallbackName, fallbackPlatform: purchaseFacts.fallbackPlatform, fallbackMin: purchaseFacts.quantity, fallbackMax: purchaseFacts.quantity }) });
+      const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const intentResult = await intentResponse.json() as { data?: { id?: string }; error?: string };
+      if (!intentResponse.ok || !intentResult.data?.id) { setMessage(intentResult.error || "Unable to prepare checkout right now."); return; }
+      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...payload, intentId: intentResult.data.id }) });
       const result = await response.json() as { data?: ApiOrderData; error?: string };
       if (!response.ok || !result.data) { setMessage(result.error || "Unable to place this order right now."); return; }
       window.localStorage.removeItem(PENDING_KEY);
+      setWalletBalance(Number(result.data.balance));
       track("package_purchase_completed", { platform: selected.platformId, service: selected.serviceCode, package: selected.tierId, quantity: selected.quantity, price: purchaseFacts.totalPriceINR });
       router.push("/dashboard/orders");
       router.refresh();
@@ -160,14 +165,14 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
     finally { setSubmitting(false); }
   }
 
-  return <BlogShell><InteractiveHomepageShell><main className="min-h-screen overflow-x-hidden bg-[#080808] pb-32 text-white">
-    <section className="relative border-b border-white/10 px-4 py-12 sm:px-6 lg:px-8 lg:py-16">
+  return <BlogShell><InteractiveHomepageShell><main className="min-h-screen overflow-x-hidden bg-[#080808] pb-28 text-white antialiased">
+    <section className="relative border-b border-white/10 px-4 py-8 sm:px-6 sm:py-11 lg:px-8 lg:py-14">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,122,0,.16),transparent_42%)]" />
       <div className="relative mx-auto max-w-7xl">
         <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-orange-300"><Sparkles className="h-3.5 w-3.5" /> Premium growth packages</span>
-        <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Social media packages in India—compare platform, quantity and price.</h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">Compare preset campaign sizes for active SocialRUSH services. Package totals are shown before checkout. Need a custom quantity instead? <Link href="/pricing" className="font-bold text-orange-300 underline decoration-orange-300/40 underline-offset-4 hover:text-orange-200">Compare live service rates</Link>.</p>
-        <div className="mt-7 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
+        <h1 className="mt-4 max-w-4xl text-[2rem] font-black leading-[1.08] tracking-[-0.035em] text-white sm:text-5xl lg:text-6xl">Social media packages in India—compare platform, quantity and price.</h1>
+        <p className="mt-4 max-w-2xl text-sm leading-6 text-zinc-300 sm:text-base sm:leading-7">Compare preset campaign sizes for active SocialRUSH services. Package totals are shown before checkout. Need a custom quantity instead? <Link href="/pricing" className="font-bold text-orange-300 underline decoration-orange-300/40 underline-offset-4 hover:text-orange-200">Compare live service rates</Link>.</p>
+        <div className="mt-6 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
           <Metric value={String(new Set(groups.map((g) => g.platform)).size)} label="Platforms" />
           <Metric value={String(groups.length)} label="Active services" />
           <Metric value="Up to 4" label="Package tiers" />
@@ -175,22 +180,22 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       </div>
     </section>
 
-    <section className="sticky top-16 z-30 border-b border-white/10 bg-[#080808]/95 px-4 py-3 backdrop-blur-xl sm:px-6 lg:px-8">
+    <section className="sticky top-16 z-30 border-b border-white/10 bg-[#080808]/95 px-4 py-2.5 backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex max-w-7xl gap-2 overflow-x-auto [scrollbar-width:none]">
         {platformOrder.filter((p) => groups.some((g) => g.uiPlatform === p)).map((p) => <button key={p} onClick={() => choosePlatform(p)} className={`min-h-11 shrink-0 rounded-xl border px-4 text-sm font-extrabold transition ${platform === p ? "border-orange-400 bg-orange-500 text-black shadow-[0_8px_24px_-12px_rgba(255,122,0,.9)]" : "border-white/10 bg-white/[.04] text-zinc-300 hover:border-orange-400/40 hover:text-white"}`}>{platformLabels[p]}</button>)}
       </div>
     </section>
 
-    <section className="px-4 py-8 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
-      <aside className="rounded-3xl border border-white/10 bg-white/[.035] p-4 lg:sticky lg:top-20 lg:h-fit">
+    <section className="px-4 py-6 sm:px-6 sm:py-8 lg:px-8"><div className="mx-auto grid max-w-7xl gap-6 lg:grid-cols-[280px_minmax(0,1fr)]">
+      <aside className="rounded-2xl border border-white/10 bg-white/[.035] p-4 lg:sticky lg:top-20 lg:h-fit lg:rounded-3xl">
         <div className="mb-4 flex items-center justify-between"><div><p className="text-xs font-bold uppercase tracking-[.14em] text-orange-300">Step 1</p><h2 className="mt-1 text-xl font-black">Choose service</h2></div><span className="rounded-full bg-white/5 px-2.5 py-1 text-xs text-zinc-400">{platformGroups.length}</span></div>
         {platformGroups.length > 7 && <label className="mb-3 flex min-h-11 items-center gap-2 rounded-xl border border-white/10 bg-black/30 px-3"><Search className="h-4 w-4 text-zinc-500" /><input value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Search services..." className="w-full bg-transparent text-sm outline-none placeholder:text-zinc-600" /></label>}
-        <div className="flex gap-2 overflow-x-auto lg:block lg:space-y-1.5 lg:overflow-visible">{filteredServices.map((g) => <button key={g.service.code} onClick={() => chooseService(g.uiService)} className={`min-h-11 shrink-0 rounded-xl px-3.5 text-left text-sm font-bold transition lg:flex lg:w-full lg:items-center lg:justify-between ${activeGroup?.service.code === g.service.code ? "bg-orange-500 text-black" : "bg-white/[.04] text-zinc-300 hover:bg-white/[.08]"}`}><span>{getPackageUiServiceLabel(platform, g.uiService)}</span><ChevronRight className="hidden h-4 w-4 lg:block" /></button>)}</div>
+        <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 lg:block lg:space-y-1.5">{filteredServices.map((g) => <button key={g.service.code} onClick={() => chooseService(g.uiService)} className={`min-h-11 min-w-0 rounded-xl px-3 text-center text-xs font-bold transition sm:text-sm lg:flex lg:w-full lg:items-center lg:justify-between lg:px-3.5 lg:text-left ${activeGroup?.service.code === g.service.code ? "bg-orange-500 text-black" : "bg-white/[.04] text-zinc-300 hover:bg-white/[.08]"}`}><span>{getPackageUiServiceLabel(platform, g.uiService)}</span><ChevronRight className="hidden h-4 w-4 lg:block" /></button>)}</div>
       </aside>
 
       <div className="min-w-0">
         <div className="mb-5"><p className="text-xs font-bold uppercase tracking-[.14em] text-orange-300">Step 2</p><h2 className="mt-1 text-2xl font-black sm:text-3xl">{activeGroup ? getPackageUiServiceLabel(platform, activeGroup.uiService) : "Packages"}</h2><p className="mt-2 text-sm leading-6 text-zinc-400">{activeGroup?.service.description ?? "Choose another active service to continue."}</p>
-          {packages.length > 1 && <div className="mt-4 grid gap-2 sm:grid-cols-2 xl:grid-cols-4" data-package-choice-guide>{packageChoiceGuide.slice(0, packages.length).map((item) => <div key={item.label} className="rounded-xl border border-white/10 bg-white/[.025] px-3 py-2.5"><p className="text-[10px] font-black uppercase tracking-[.1em] text-orange-300">{item.label}</p><p className="mt-1 text-xs text-zinc-500">{item.text}</p></div>)}</div>}
+          {packages.length > 1 && <div className="mt-4 flex snap-x gap-2 overflow-x-auto pb-1 [scrollbar-width:none] xl:grid xl:grid-cols-4 xl:overflow-visible" data-package-choice-guide>{packageChoiceGuide.slice(0, packages.length).map((item) => <div key={item.label} className="min-w-[155px] snap-start rounded-xl border border-white/10 bg-white/[.025] px-3 py-2.5 xl:min-w-0"><p className="text-[10px] font-black uppercase tracking-[.1em] text-orange-300">{item.label}</p><p className="mt-1 text-xs text-zinc-500">{item.text}</p></div>)}</div>}
           {activeGroup && <p className="mt-3 text-xs text-zinc-500">The highlighted tier is a middle-ground recommendation, not a popularity claim. Need another quantity? <Link href={`/dashboard/new-order?service=${encodeURIComponent(activeGroup.service.code)}`} className="font-bold text-orange-200 hover:text-orange-100">Use the standard order flow.</Link></p>}
         </div>
         {packages.length ? <div className={`grid gap-4 ${packages.length >= 4 ? "md:grid-cols-2 xl:grid-cols-4" : packages.length === 3 ? "md:grid-cols-3" : "md:grid-cols-2"}`}>{packages.map((pkg) => <PackageCard key={pkg.id} pkg={pkg} packages={packages} selected={selectedId === pkg.id} onSelect={() => choosePackage(pkg)} />)}</div> : <div className="rounded-3xl border border-dashed border-white/15 bg-white/[.025] p-8 text-center"><h3 className="text-xl font-black">No fixed packages are currently available</h3><p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-zinc-400">This active service requires live pricing or different order parameters. Use the standard order flow instead of showing an unsupported or ₹0 package.</p><Link href="/dashboard/new-order" className="mt-5 inline-flex min-h-11 items-center rounded-xl bg-orange-500 px-5 text-sm font-black text-black">Open standard order</Link></div>}
@@ -219,17 +224,17 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
 
 function PackageCard({ pkg, packages, selected, onSelect }: { pkg: PackageUiSelection; packages: readonly PackageUiSelection[]; selected: boolean; onSelect: () => void }) {
   const choice = getPackageChoicePresentation(pkg, packages);
-  return <article data-package-choice={choice.badge} data-package-featured={choice.featured ? "true" : "false"} className={`relative flex min-h-[350px] flex-col rounded-[24px] border p-5 transition duration-200 ${choice.featured ? "border-orange-400/60 bg-orange-500/[.08] shadow-[0_24px_60px_-40px_rgba(255,122,0,.9)]" : "border-white/10 bg-white/[.035] hover:border-white/20"} ${selected ? "ring-2 ring-orange-400 ring-offset-2 ring-offset-[#080808]" : ""}`}>
+  return <article data-package-choice={choice.badge} data-package-featured={choice.featured ? "true" : "false"} className={`relative flex min-h-[300px] flex-col rounded-[22px] border p-4 transition duration-200 sm:min-h-[330px] sm:p-5 ${choice.featured ? "border-orange-400/60 bg-orange-500/[.08] shadow-[0_24px_60px_-40px_rgba(255,122,0,.9)]" : "border-white/10 bg-white/[.035] hover:border-white/20"} ${selected ? "ring-2 ring-orange-400 ring-offset-2 ring-offset-[#080808]" : ""}`}>
     <span className={`absolute -top-3 left-4 rounded-full px-3 py-1 text-[10px] font-black uppercase tracking-[.12em] ${choice.featured ? "bg-orange-500 text-black" : "border border-white/10 bg-[#171717] text-zinc-300"}`}>{choice.badge}</span>
     <div className="flex items-start justify-between gap-3"><div><p className="text-xs font-bold uppercase tracking-[.12em] text-zinc-500">{pkg.tierLabel}</p><h3 className="mt-2 text-3xl font-black">{quantity(pkg.quantity)}</h3><p className="mt-1 text-sm text-zinc-400">{pkg.bestFor}</p></div>{selected && <span className="grid h-7 w-7 place-items-center rounded-full bg-orange-500 text-black"><Check className="h-4 w-4" /></span>}</div>
-    <div className="mt-6"><div className="flex items-baseline gap-2"><strong className="text-3xl font-black">{money(pkg.pricePaise)}</strong>{pkg.savingsPaise > 0 && <span className="text-sm text-zinc-500 line-through">{money(pkg.regularPricePaise)}</span>}</div>{choice.savingsNote ? <p className="mt-2 text-xs font-bold text-emerald-300">{choice.savingsNote}</p> : <p className="mt-2 text-xs text-zinc-500">Current catalog price</p>}{pkg.pricePer1000Paise !== null && <p className="mt-2 text-xs text-zinc-500">≈ {money(pkg.pricePer1000Paise)} per 1K</p>}{choice.unitRateNote && <p className="mt-1 text-[11px] leading-5 text-zinc-600">{choice.unitRateNote}</p>}</div>
-    <p className="mt-4 text-xs leading-5 text-zinc-400">{choice.rationale}</p>
-    <ul className="mt-4 space-y-2 text-xs text-zinc-400"><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Clear package quantity</li><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Dashboard order tracking</li></ul>
+    <div className="mt-5"><div className="flex flex-wrap items-baseline gap-2"><strong className="text-[1.75rem] font-black sm:text-3xl">{money(pkg.pricePaise)}</strong>{pkg.savingsPaise > 0 && <span className="text-sm text-zinc-500 line-through">{money(pkg.regularPricePaise)}</span>}</div>{choice.savingsNote ? <p className="mt-2 text-xs font-bold text-emerald-300">{choice.savingsNote}</p> : <p className="mt-2 text-xs text-zinc-500">Current catalog price</p>}{pkg.pricePer1000Paise !== null && <p className="mt-2 text-xs text-zinc-500">≈ {money(pkg.pricePer1000Paise)} per 1K</p>}{choice.unitRateNote && <p className="mt-1 text-[11px] leading-5 text-zinc-600">{choice.unitRateNote}</p>}</div>
+    <p className="mt-3 text-xs leading-5 text-zinc-300">{choice.rationale}</p>
+    <ul className="mt-3 space-y-2 text-xs text-zinc-300"><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Clear package quantity</li><li className="flex gap-2"><Check className="h-4 w-4 text-orange-300" /> Dashboard order tracking</li></ul>
     <button onClick={onSelect} className={`mt-auto min-h-11 rounded-xl px-4 text-sm font-black transition ${choice.featured ? "bg-orange-500 text-black hover:bg-orange-400" : "border border-white/15 bg-white/[.05] text-white hover:border-orange-400/50"}`}>{selected ? "Selected" : choice.featured ? "Choose balanced" : "Choose package"}</button>
   </article>;
 }
 
-function Metric({ value, label }: { value: string; label: string }) { return <div className="rounded-2xl border border-white/10 bg-white/[.04] p-3 sm:p-4"><strong className="block text-xl font-black sm:text-2xl">{value}</strong><span className="mt-1 block text-[10px] font-bold uppercase tracking-[.1em] text-zinc-500">{label}</span></div>; }
+function Metric({ value, label }: { value: string; label: string }) { return <div className="rounded-xl border border-white/10 bg-white/[.04] p-2.5 sm:rounded-2xl sm:p-4"><strong className="block text-xl font-black sm:text-2xl">{value}</strong><span className="mt-1 block text-[9px] font-bold uppercase tracking-[.08em] text-zinc-400 sm:text-[10px]">{label}</span></div>; }
 function Pill({ children }: { children: React.ReactNode }) { return <span className="rounded-full border border-white/10 bg-white/[.05] px-3 py-1.5 text-xs font-bold text-zinc-300">{children}</span>; }
 function Trust({ title, text }: { title: string; text: string }) { return <div className="rounded-2xl border border-white/10 bg-white/[.03] p-5"><h3 className="font-black">{title}</h3><p className="mt-2 text-sm leading-6 text-zinc-500">{text}</p></div>; }
 function pkgTitle(pkg: PackageUiSelection) { return `${platformLabels[pkg.platform]} ${pkg.serviceName}`; }

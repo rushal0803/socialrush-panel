@@ -24,11 +24,11 @@ export type PackageServiceGroup = Readonly<{
   pricingStatus: "catalog" | "live-required";
 }>;
 
-const TIER_META: ReadonlyArray<Readonly<{ id: PackageTierId; label: string; bestFor: string }>> = [
-  { id: "starter", label: "Starter", bestFor: "Lower-commitment campaigns" },
-  { id: "growth", label: "Balanced", bestFor: "Ongoing campaigns" },
-  { id: "pro", label: "Scale", bestFor: "Fewer repeat orders" },
-  { id: "scale", label: "High Volume", bestFor: "Larger campaign requirements" },
+const TIER_META: ReadonlyArray<Readonly<{ id: PackageTierId; label: string; bestFor: string; discountPercent: number }>> = [
+  { id: "starter", label: "Starter", bestFor: "Lower-commitment campaigns", discountPercent: 0 },
+  { id: "growth", label: "Balanced", bestFor: "Ongoing campaigns", discountPercent: 3 },
+  { id: "pro", label: "Scale", bestFor: "Fewer repeat orders", discountPercent: 5 },
+  { id: "scale", label: "High Volume", bestFor: "Larger campaign requirements", discountPercent: 8 },
 ];
 
 function clamp(value: number, min: number, max: number) {
@@ -69,14 +69,19 @@ export function buildPackageTiers(service: SmmService): readonly PackageTier[] {
   const recommendedIndex = quantities.length > 1 ? 1 : 0;
   return quantities.map((quantity, index) => {
     const regularPricePaise = calculateServiceTotalPaise(service.code as ServiceCode, quantity);
+    const discountPercent = TIER_META[index].discountPercent;
+    const pricePaise = Math.max(1, Math.round(regularPricePaise * (100 - discountPercent) / 100));
+    const { savingsPaise, savingsPercent } = calculatePackageSavings(regularPricePaise, pricePaise);
     return {
-      ...TIER_META[index],
+      id: TIER_META[index].id,
+      label: TIER_META[index].label,
+      bestFor: TIER_META[index].bestFor,
       quantity,
       regularPricePaise,
-      pricePaise: regularPricePaise,
-      savingsPaise: 0,
-      savingsPercent: 0,
-      pricePer1000Paise: quantity > 0 ? Math.round((regularPricePaise * 1000) / quantity) : null,
+      pricePaise,
+      savingsPaise,
+      savingsPercent,
+      pricePer1000Paise: quantity > 0 ? Math.round((pricePaise * 1000) / quantity) : null,
       recommended: index === recommendedIndex,
     };
   });

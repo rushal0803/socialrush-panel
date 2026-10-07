@@ -5,6 +5,7 @@ import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
+import { findPackageUiSelection } from "@/lib/package-ui-adapter";
 
 type IntentRow = {
   id: string;
@@ -64,6 +65,7 @@ export async function POST(request: NextRequest) {
     link?: string;
     clientRequestId?: string;
     packageName?: string | null;
+    packageId?: string | null;
     notes?: string | null;
     pollAnswerNumber?: string;
     endorsementSkillName?: string;
@@ -75,6 +77,7 @@ export async function POST(request: NextRequest) {
   const link = typeof body?.link === "string" ? body.link.trim() : "";
   const clientRequestId = typeof body?.clientRequestId === "string" ? body.clientRequestId.trim() : "";
   const requestedNotes = typeof body?.notes === "string" && body.notes.trim() ? body.notes.trim() : null;
+  const requestedPackageId = typeof body?.packageId === "string" && body.packageId.trim() ? body.packageId.trim() : null;
   const pollAnswerNumber = body?.pollAnswerNumber;
   const endorsementSkillName = typeof body?.endorsementSkillName === "string" ? body.endorsementSkillName.trim() : "";
   const quantity = body?.quantity;
@@ -101,6 +104,11 @@ export async function POST(request: NextRequest) {
   if (!service.isActive && !liveCatalogServiceCodes.has(service.code)) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
+  const packageSelection = requestedPackageId ? findPackageUiSelection(requestedPackageId) : null;
+  if (requestedPackageId && (!packageSelection || packageSelection.serviceCode !== service.code || packageSelection.quantity !== quantity)) {
+    return NextResponse.json({ error: "This package selection is invalid or has changed. Please choose the package again." }, { status: 409 });
+  }
+  const checkoutPackageName = packageSelection ? `Package:${packageSelection.id}` : "Custom";
   let notes: string | null = null;
   if (service.code === "twitter-crypto-custom-comments") {
     if (!requestedNotes || requestedNotes.split(/\r?\n/).some((line) => !line.trim()) || requestedNotes.length > 10000) {
@@ -205,6 +213,9 @@ export async function POST(request: NextRequest) {
     if (liveQuantityError) return NextResponse.json({ error: liveQuantityError }, { status: 400 });
     totalPaise = Math.round((requestedQuantity * Number(matchedService.rate) * 100) / 1000);
   }
+  if (packageSelection?.pricePaise && !liveCatalogServiceCodes.has(service.code) && !cryptoServiceCodes.has(service.code)) {
+    totalPaise = packageSelection.pricePaise;
+  }
   if (!Number.isSafeInteger(totalPaise) || totalPaise <= 0) {
     return NextResponse.json({ error: "Calculated total is invalid for this quantity." }, { status: 400 });
   }
@@ -227,7 +238,7 @@ export async function POST(request: NextRequest) {
       existing.service_code === service.code &&
       Number(existing.quantity) === requestedQuantity &&
       existing.destination_link === link &&
-      existing.package_name === "Custom" &&
+      existing.package_name === checkoutPackageName &&
       existing.notes === notes &&
       existing.client_id === clientId &&
       existing.campaign_id === campaignId;
@@ -255,7 +266,7 @@ export async function POST(request: NextRequest) {
       service_code: service.code,
       quantity: requestedQuantity,
       destination_link: link,
-      package_name: "Custom",
+      package_name: checkoutPackageName,
       notes,
       total_paise: totalPaise,
       currency: "INR",
@@ -279,7 +290,7 @@ export async function POST(request: NextRequest) {
           raced.service_code === service.code &&
           Number(raced.quantity) === requestedQuantity &&
           raced.destination_link === link &&
-          raced.package_name === "Custom" &&
+          raced.package_name === checkoutPackageName &&
           raced.notes === notes &&
           raced.client_id === clientId &&
           raced.campaign_id === campaignId;
