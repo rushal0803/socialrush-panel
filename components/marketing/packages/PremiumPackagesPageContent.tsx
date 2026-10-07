@@ -165,8 +165,8 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(255,122,0,.16),transparent_42%)]" />
       <div className="relative mx-auto max-w-7xl">
         <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/10 px-3 py-1.5 text-xs font-bold uppercase tracking-[.14em] text-orange-300"><Sparkles className="h-3.5 w-3.5" /> Premium growth packages</span>
-        <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Pick your platform. Compare real prices. Choose your campaign size.</h1>
-        <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">One clean buying experience for every active SocialRUSH service. Prices come from the same service catalog used by the ordering system.</p>
+        <h1 className="mt-5 max-w-4xl text-4xl font-black tracking-tight sm:text-5xl lg:text-6xl">Social media packages in India—compare platform, quantity and price.</h1>
+        <p className="mt-5 max-w-2xl text-base leading-7 text-zinc-400 sm:text-lg">Compare preset campaign sizes for active SocialRUSH services. Package totals are shown before checkout. Need a custom quantity instead? <Link href="/pricing" className="font-bold text-orange-300 underline decoration-orange-300/40 underline-offset-4 hover:text-orange-200">Compare live service rates</Link>.</p>
         <div className="mt-7 grid max-w-2xl grid-cols-3 gap-2 sm:gap-3">
           <Metric value={String(new Set(groups.map((g) => g.platform)).size)} label="Platforms" />
           <Metric value={String(groups.length)} label="Active services" />
