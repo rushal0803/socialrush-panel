@@ -17,9 +17,9 @@ import { growthPlatformIndiaKeywords } from "@/lib/seo/growth-platform-intent";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "SMM Panel India | Social Media Services & INR Pricing",
+  title: "SMM Panel India | Compare Social Media Services & INR Plans",
   description:
-    "Compare SocialRUSH services in India for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with live INR pricing, UPI and dashboard tracking.",
+    "Compare live SocialRUSH services in India for Instagram, YouTube, Facebook, LinkedIn, Telegram, TikTok and X with INR pricing, UPI and dashboard tracking.",
   path: "/services",
   keywords: [
     "social media growth services India",
@@ -34,6 +34,11 @@ export const metadata: Metadata = createPageMetadata({
 });
 
 const servicesFaqs = [
+  {
+    question: "What is an SMM panel?",
+    answer:
+      "An SMM panel is a dashboard for comparing and ordering supported social media growth services from one place. On SocialRUSH, you can review the current service, quantity, INR price, public-link requirement and delivery details before checkout.",
+  },
   {
     question: "Which social media growth services are available in India?",
     answer:
