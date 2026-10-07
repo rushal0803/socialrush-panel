@@ -11,15 +11,16 @@ import {
 } from "lucide-react";
 
 import PublicShell from "@/components/marketing/PublicShell";
+import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import PlatformSmmIntentSection from "@/components/seo/PlatformSmmIntentSection";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createPageMetadata({
-  title: "YouTube Growth Services India | Subscribers, Views & More",
+  title: "YouTube Growth Services India | Subscribers, Views & Watch Hours",
   description:
-    "Compare YouTube growth services in India for subscribers, views, likes, comments and watch hours. Match each option to your goal and review live details before ordering.",
+    "Compare YouTube growth services in India for subscribers, views, likes, comments and watch hours. Choose by goal, review live details and compare the right service before ordering.",
   path: "/youtube-growth-india",
   keywords: ["YouTube growth services India", "YouTube channel growth India", "YouTube engagement services India"],
 });
@@ -107,9 +108,21 @@ const faq = [
   },
 ];
 
+const faqSchema = JSON.stringify({
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faq.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+}).replace(/</g, "\\u003c");
+
 export default function YouTubeGrowthIndiaPage() {
   return (
     <PublicShell>
+      <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "YouTube Growth India", path: "/youtube-growth-india" }]} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: faqSchema }} />
       <InteractiveHomepageShell><div className="service-money-page bg-[#050505] text-white">
         <section className="relative overflow-hidden px-5 py-16 sm:px-6 lg:px-8 lg:py-24">
           <div className="absolute inset-0 -z-10 bg-[radial-gradient(circle_at_18%_10%,rgba(255,122,0,.22),transparent_30%),radial-gradient(circle_at_85%_20%,rgba(255,176,0,.12),transparent_28%),linear-gradient(#050505,#090a0f)]" />
@@ -122,7 +135,7 @@ export default function YouTubeGrowthIndiaPage() {
               </div>
 
               <h1 className="mt-6 text-4xl font-black tracking-[-.05em] sm:text-6xl lg:text-7xl">
-                Compare YouTube growth services in India by goal.
+                YouTube Growth Services India: compare subscribers, views and watch hours.
               </h1>
 
               <p className="mt-6 max-w-3xl text-base leading-8 text-slate-300 sm:text-lg">
@@ -141,10 +154,10 @@ export default function YouTubeGrowthIndiaPage() {
                 </Link>
 
                 <Link
-                  href="/services"
+                  href="/youtube-views"
                   className="inline-flex min-h-12 items-center rounded-xl border border-white/15 bg-white/[.04] px-5 text-sm font-bold"
                 >
-                  Browse All Services
+                  Compare YouTube Views
                 </Link>
               </div>
             </div>
