@@ -23,9 +23,9 @@ test("YouTube subscribers-vs-views article matches the observed question intent"
 });
 
 test("YouTube growth hub is clearly a service-comparison hub and links to the comparison guide", () => {
-  assert.match(youtubeGrowth, /title: "YouTube Growth Services India \| Subscribers, Views & More"/);
+  assert.match(youtubeGrowth, /title: "YouTube Growth Services India \| Subscribers, Views & Watch Hours"/);
   assert.match(youtubeGrowth, /Compare YouTube growth services in India for subscribers, views, likes, comments and watch hours/);
-  assert.match(youtubeGrowth, /Compare YouTube growth services in India by goal\./);
+  assert.match(youtubeGrowth, /YouTube Growth Services India: compare subscribers, views and watch hours\./);
   assert.match(youtubeGrowth, /href="\/blog\/youtube-subscribers-vs-views-india"/);
 });
 
