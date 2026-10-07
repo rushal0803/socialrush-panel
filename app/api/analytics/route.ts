@@ -22,6 +22,14 @@ const safeKeys = new Set([
   "referrer_type",
   "landing_path",
   "attribution_model",
+  "campaign",
+  "recovery_campaign",
+  "http_status",
+  "action",
+  "reward",
+  "minimum",
+  "quantity",
+  "total",
 ]);
 const trim = (value: unknown, length: number) =>
   typeof value === "string" ? value.trim().slice(0, length) || null : null;
