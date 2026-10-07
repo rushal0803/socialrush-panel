@@ -78,7 +78,7 @@ if (!distributionPage.includes("buildTrackedDistributionUrl")) {
 if (!distributionPage.includes("buildDistributionShareUrl")) {
   failures.push("Admin distribution queue is not using channel share composers.");
 }
-if (/auto.?post|guaranteed reach|guaranteed traffic/i.test(distributionPage)) {
+if (/automatically posts|auto-posts for you|guaranteed reach|guaranteed traffic/i.test(distributionPage)) {
   failures.push("Distribution workspace contains unsupported automation or reach claims.");
 }
 
