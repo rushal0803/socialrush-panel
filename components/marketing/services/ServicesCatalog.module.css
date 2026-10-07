@@ -43,13 +43,13 @@
 .results p { font-size:13px; color:#d1d5db; }
 .results button { min-height:44px; padding:8px; color:#ffbf79; font-size:13px; }
 .grid { display:grid; gap:12px; }
-.card { min-width:0; padding:16px; border:1px solid #ffffff14; border-radius:14px; background:#101010; display:flex; flex-direction:column; }
+.card { min-width:0; padding:14px; border:1px solid #ffffff14; border-radius:14px; background:#101010; display:flex; flex-direction:column; }
 .cardHeading { display:flex; align-items:center; gap:10px; }
 .icon { display:grid; place-items:center; width:34px; height:34px; flex-shrink:0; color:#ffbf79; background:#1c1c1c; border-radius:9px; }
 .card h3 { font-size:16px; font-weight:700; line-height:1.3; overflow-wrap:anywhere; }
 .health { margin-top:8px; }
 .description { font-size:13px; line-height:1.5; color:#d1d5db; margin-top:8px; display:-webkit-box; -webkit-line-clamp:1; -webkit-box-orient:vertical; overflow:hidden; }
-.price { margin:14px 0 12px; }
+.price { margin:12px 0 10px; }
 .price>span { color:#9ca3af; font-size:12px; }
 .price p { font-size:13px; color:#d1d5db; line-height:1.5; }
 .price strong { color:#fff; font-size:26px; font-weight:750; letter-spacing:-.035em; }

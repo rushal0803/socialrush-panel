@@ -40,6 +40,8 @@ The 600px grid remains one column to prevent narrow cards. Two columns start at 
 
 The initial broad browser run passed 101 of 106 tests. Three existing matrix cases hit browser setup/transport failures during concurrent execution and passed on a single-worker rerun. QA also found and corrected narrow 600px cards and a search field whose accessible name changed when its clear button appeared.
 
+The first GitHub CI run passed 218 of 219 browser checks. Linux font wrapping made the first 320px card 444px tall, above the unchanged 440px compact-card limit. Card and price spacing were reduced while preserving font sizes and 44px touch targets. The updated production build and all 26 directory tests passed locally; the final GitHub CI outcome is recorded in the PR description.
+
 Standalone whole-repository `npx eslint . --quiet` reports 10 pre-existing errors in generated `next-env.d.ts`, `tests/unit/related-services.test.ts`, and `tests/unit/sales-pipeline.test.ts`. These files were not changed to address unrelated lint debt.
 
 ## Screenshots
