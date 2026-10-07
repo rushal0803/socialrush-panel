@@ -130,7 +130,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
   async function buy() {
     setMessage("");
     if (!selected || !purchaseFacts) return;
-    if (!rule) { setMessage("This service is available, but package checkout needs the standard order flow for its destination-link requirements."); return; }
+    if (!rule) { setMessage("This service needs the standard order flow for its destination requirements."); return; }
     const validation = validateCampaignLink(targetLink, rule);
     if (validation) { setMessage(validation); return; }
     if (!loggedIn) {
@@ -143,16 +143,21 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
     if (!wallet.hasEnoughBalance) {
       persist();
       track("add_funds_clicked", { platform: selected.platformId, service: selected.serviceCode, package: selected.tierId, quantity: selected.quantity, price: purchaseFacts.totalPriceINR });
-      router.push(`/dashboard/wallet?amount=${encodeURIComponent(String(wallet.amountNeeded))}&returnTo=${encodeURIComponent(getPackageUiUrl(selected))}`);
+      router.push(`/dashboard/add-funds?amount=${encodeURIComponent(String(wallet.amountNeeded))}&next=${encodeURIComponent(getPackageUiUrl(selected))}`);
       return;
     }
     if (!requestId.current) requestId.current = crypto.randomUUID();
+    const payload = { serviceCode: purchaseFacts.serviceCode, quantity: purchaseFacts.quantity, link: targetLink.trim(), clientRequestId: requestId.current };
     setSubmitting(true);
     try {
-      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ serviceCode: purchaseFacts.serviceCode, serviceId: 0, quantity: purchaseFacts.quantity, link: targetLink.trim(), requestId: requestId.current, notes: null, fallbackPrice: purchaseFacts.fallbackPricePer1000INR, fallbackName: purchaseFacts.fallbackName, fallbackPlatform: purchaseFacts.fallbackPlatform, fallbackMin: purchaseFacts.quantity, fallbackMax: purchaseFacts.quantity }) });
+      const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
+      const intentResult = await intentResponse.json() as { data?: { id?: string }; error?: string };
+      if (!intentResponse.ok || !intentResult.data?.id) { setMessage(intentResult.error || "Unable to prepare checkout right now."); return; }
+      const response = await fetch("/api/orders", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ ...payload, intentId: intentResult.data.id }) });
       const result = await response.json() as { data?: ApiOrderData; error?: string };
       if (!response.ok || !result.data) { setMessage(result.error || "Unable to place this order right now."); return; }
       window.localStorage.removeItem(PENDING_KEY);
+      setWalletBalance(Number(result.data.balance));
       track("package_purchase_completed", { platform: selected.platformId, service: selected.serviceCode, package: selected.tierId, quantity: selected.quantity, price: purchaseFacts.totalPriceINR });
       router.push("/dashboard/orders");
       router.refresh();
