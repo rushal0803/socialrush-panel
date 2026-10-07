@@ -538,10 +538,10 @@ export default function NewOrderPage() {
   useEffect(() => {
     let active = true;
     void fetch("/api/rewards/first-order-offer", { credentials: "same-origin", cache: "no-store" })
-      .then(async (response): Promise<{ firstOrder: boolean; eligible: boolean; reward?: number; minimum?: number }> =>
+      .then(async (response): Promise<{ firstOrder: boolean; eligible: boolean; reward?: number; minimum?: number; variant?: string }> =>
         response.ok
-          ? await response.json() as { firstOrder: boolean; eligible: boolean; reward?: number; minimum?: number }
-          : { firstOrder: false, eligible: false }
+          ? await response.json() as { firstOrder: boolean; eligible: boolean; reward?: number; minimum?: number; variant?: string }
+          : { firstOrder: false, eligible: false, variant: "unknown" }
       )
       .then((data) => {
         if (!active) return;
@@ -557,6 +557,14 @@ export default function NewOrderPage() {
             step: "first_order_entry",
             first_order: true,
             source: (searchParams.get("source") || "direct").slice(0, 80),
+          });
+        }
+        if (isFirstOrder && data.variant && !funnelSignals.current.has(`first-order-experiment:${data.variant}`)) {
+          funnelSignals.current.add(`first-order-experiment:${data.variant}`);
+          track("experiment_exposure", {
+            experiment: "first_order_wallet_bonus",
+            variant: data.variant,
+            surface: "new_order_entry",
           });
         }
         if (offer) track("first_order_bonus_view", { reward: offer.reward, minimum: offer.minimum, surface: "new_order_entry" });
