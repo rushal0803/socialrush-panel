@@ -20,6 +20,9 @@ export const metadata: Metadata = {
     "Explore transparent social media growth services, secure ordering, refill information and clear order tracking through the SocialRUSH dashboard.",
   alternates: {
     canonical: "/",
+    types: {
+      "application/rss+xml": "/feed.xml",
+    },
   },
   robots: {
     index: true,
