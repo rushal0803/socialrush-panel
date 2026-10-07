@@ -14,7 +14,7 @@ export default async function CrmOverviewPage(){
   const draftSince=new Date(Date.now()-7*864e5).toISOString();
   const funnelSince=new Date(Date.now()-7*864e5).toISOString();
 
-  const [pr,or,cr,fr,sr,rr,dr,rw,rules,ar]=await Promise.all([
+  const [pr,or,cr,fr,sr,rr,dr,rw,rules,ar,exp]=await Promise.all([
     s.from("profiles").select("id,full_name,email,created_at").neq("role","admin").order("created_at",{ascending:false}).limit(1000),
     s.from("orders").select("user_id,charge,status,payment_status,platform,created_at").order("created_at",{ascending:false}).limit(10000),
     s.from("crm_customer_profiles").select("customer_id,lifecycle_stage,priority"),
@@ -25,6 +25,7 @@ export default async function CrmOverviewPage(){
     s.from("customer_reward_events").select("user_id,amount,status,source,created_at").eq("source","first_order_bonus").limit(2000),
     s.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id",true).maybeSingle(),
     s.from("analytics_events").select("event_name,customer_id,device_category,safe_metadata,created_at").gte("created_at",funnelSince).in("event_name",["service_selected","payment_started","checkout_started","checkout_error"]).limit(5000),
+    s.from("first_order_bonus_experiment_assignments").select("variant,converted_at,credited_at,assigned_at").limit(5000),
   ]);
 
   const profiles=(pr.data||[])as any[];
@@ -53,6 +54,15 @@ export default async function CrmOverviewPage(){
   const rewardTotal=creditedRewards.reduce((n,x)=>n+Number(x.amount||0),0);
   const rewardRule=rules.data as any;
   const analytics=(ar.data||[]) as any[];
+  const experiment=(exp.data||[]) as any[];
+  const experimentStats=(variant:string)=>{
+    const rows=experiment.filter(x=>x.variant===variant);
+    const converted=rows.filter(x=>x.converted_at).length;
+    return {assigned:rows.length,converted,rate:rows.length?Math.round(converted/rows.length*1000)/10:0};
+  };
+  const bonusExperiment=experimentStats("bonus");
+  const controlExperiment=experimentStats("control");
+  const experimentLive=bonusExperiment.assigned+controlExperiment.assigned>0;
   const uniqueCustomers=(eventName:string)=>new Set(analytics.filter(x=>x.event_name===eventName&&x.customer_id).map(x=>x.customer_id)).size;
   const serviceSelected=uniqueCustomers("service_selected");
   const paymentStarted=uniqueCustomers("payment_started");
@@ -133,6 +143,10 @@ export default async function CrmOverviewPage(){
       <div className="mt-5 grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
         {conversion.map(([label,value,helper])=><article key={String(label)} className="rounded-xl border border-white/10 bg-[#0B0B0F] p-4"><div className="flex items-center justify-between gap-2"><p className="text-[10px] font-black uppercase tracking-wider text-[#8F949D]">{label}</p>{String(label).includes("Draft")?<ShoppingCart className="h-4 w-4 text-orange-300"/>:<Users className="h-4 w-4 text-emerald-300"/>}</div><b className="mt-2 block text-2xl text-white">{value}</b><p className="mt-1 text-[11px] leading-5 text-[#8F949D]">{helper}</p></article>)}
       </div>
+      {experimentLive?<div className="mt-4 grid gap-3 sm:grid-cols-2">
+        <article className="rounded-xl border border-emerald-400/20 bg-emerald-500/[.06] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-emerald-300">₹100 bonus cohort</p><b className="mt-2 block text-2xl text-white">{bonusExperiment.rate}%</b><p className="mt-1 text-[11px] text-[#9CA3AF]">{bonusExperiment.converted} of {bonusExperiment.assigned} assigned users placed a first qualifying order.</p></article>
+        <article className="rounded-xl border border-white/10 bg-white/[.025] p-4"><p className="text-[10px] font-black uppercase tracking-wider text-[#B8BDC6]">Control cohort</p><b className="mt-2 block text-2xl text-white">{controlExperiment.rate}%</b><p className="mt-1 text-[11px] text-[#9CA3AF]">{controlExperiment.converted} of {controlExperiment.assigned} assigned users placed a first qualifying order.</p></article>
+      </div>:<p className="mt-4 rounded-xl border border-white/10 bg-black/20 p-3 text-xs text-[#9CA3AF]">A/B measurement starts with new signups after this rollout. Existing eligible users remain grandfathered into the original bonus promise.</p>}
       <div className="mt-4 flex flex-wrap gap-2">
         <Link href="/admin/crm/customers?filter=never_ordered" className="rounded-xl bg-emerald-500 px-4 py-2.5 text-xs font-black text-[#04110b]">Open Never-Ordered Users</Link>
         <Link href="/admin/crm/customers?filter=never_ordered_no_draft" className="rounded-xl border border-sky-400/30 bg-sky-500/[.07] px-4 py-2.5 text-xs font-bold text-sky-100">Open No-Draft Users</Link>
