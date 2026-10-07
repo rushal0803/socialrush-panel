@@ -21,8 +21,9 @@ test("Phase 28 commercial descriptions front-load pricing, planning, safety and 
 test("Phase 28 aligns Services and Packages snippets with their owned search intent", () => {
   const services = read("app/services/page.tsx");
   const packages = read("app/packages/page.tsx");
-  assert.match(services, /SMM Panel India \| Social Media Services & INR Pricing/);
-  assert.match(services, /live INR pricing, UPI and dashboard tracking/);
+  assert.match(services, /SMM Panel India \| Compare Social Media Services & INR Plans/);
+  assert.match(services, /Compare live SocialRUSH services in India/);
+  assert.match(services, /INR pricing, UPI and dashboard tracking/);
   assert.match(packages, /Social Media Growth Packages India \| Prices & Delivery/);
   assert.match(packages, /clear pricing, quantities, delivery estimates and refill information/);
 });
