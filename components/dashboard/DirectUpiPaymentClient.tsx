@@ -33,6 +33,7 @@ export default function DirectUpiPaymentClient(props: Props) {
   const methodRef = useRef<"upi" | "bank_transfer" | "usdt_trc20">("upi");
   const successRef = useRef(false);
   const referenceReached = useRef(false);
+  const externalPaymentHandoff = useRef(false);
 
   const recordPaymentStep = (step: string, selectedMethod = methodRef.current, action?: string) => {
     funnelStage.current = step;
@@ -54,7 +55,7 @@ export default function DirectUpiPaymentClient(props: Props) {
     funnelStage.current = "page_viewed";
     track("payment_funnel_step", { service_code: serviceCode, method: "upi", step: "page_viewed", value: total });
     const handlePageHide = () => {
-      if (successRef.current) return;
+      if (successRef.current || externalPaymentHandoff.current) return;
       track("payment_exit", {
         service_code: serviceCode,
         method: methodRef.current,
@@ -62,8 +63,29 @@ export default function DirectUpiPaymentClient(props: Props) {
         value: total,
       });
     };
+    const handleVisibility = () => {
+      if (document.visibilityState !== "visible" || !externalPaymentHandoff.current || successRef.current) return;
+      externalPaymentHandoff.current = false;
+      funnelStage.current = "payment_returned";
+      track("payment_returned", {
+        service_code: serviceCode,
+        method: methodRef.current,
+        step: "payment_returned",
+        value: total,
+      });
+      track("payment_funnel_step", {
+        service_code: serviceCode,
+        method: methodRef.current,
+        step: "payment_returned",
+        value: total,
+      });
+    };
     window.addEventListener("pagehide", handlePageHide);
-    return () => window.removeEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibility);
+    return () => {
+      window.removeEventListener("pagehide", handlePageHide);
+      document.removeEventListener("visibilitychange", handleVisibility);
+    };
   }, [serviceCode, total]);
   const [showPaymentDock, setShowPaymentDock] = useState(true);
   useEffect(() => {
@@ -147,6 +169,7 @@ export default function DirectUpiPaymentClient(props: Props) {
   const paymentLinkClass = "flex min-h-12 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-orange-500 to-amber-400 px-3 text-sm font-black text-black focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-orange-300";
   const copyButton = "inline-flex min-h-11 shrink-0 items-center justify-center gap-1 rounded-lg px-2 text-xs font-bold text-orange-300 focus-visible:outline focus-visible:outline-orange-300";
   const startPayment = () => {
+    externalPaymentHandoff.current = true;
     recordPaymentStep("payment_initiated", "upi", "open_upi_app");
     track("payment_started", { service_code: serviceCode, method: "upi", value: total });
   };
