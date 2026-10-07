@@ -48,6 +48,7 @@ export default async function DashboardPage() {
       .not("status", "in", `(${FIRST_ORDER_NON_QUALIFYING_STATES.join(",")})`)
       .or(`payment_status.is.null,payment_status.not.in.(${FIRST_ORDER_NON_QUALIFYING_STATES.join(",")})`),
     supabase.from("order_refill_requests").select("id", { count: "exact", head: true }).eq("customer_id", userId).not("status", "in", "(completed,rejected,cancelled)"),
+    supabase.from("first_order_bonus_experiment_assignments").select("variant").eq("user_id", userId).maybeSingle(),
   ]);
   const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
   const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
@@ -123,7 +124,9 @@ export default async function DashboardPage() {
   const rewardRules = value<{ enabled: boolean; manual_approval: boolean; minimum_order_amount: number | string | null; new_customer_reward: number | string | null } | null>(17, null);
   const rewardAmount = Number(rewardRules?.new_customer_reward || 0);
   const rewardMinimum = Number(rewardRules?.minimum_order_amount || 0);
-  const firstOrderOffer = firstOrder && rewardRules?.enabled && !rewardRules.manual_approval && rewardAmount > 0 && rewardMinimum > 0
+  const experiment = value<{ variant: string } | null>(20, null);
+  const bonusVariant = ["bonus", "legacy_bonus"].includes(String(experiment?.variant || ""));
+  const firstOrderOffer = firstOrder && bonusVariant && rewardRules?.enabled && !rewardRules.manual_approval && rewardAmount > 0 && rewardMinimum > 0
     ? { reward: rewardAmount, minimum: rewardMinimum }
     : null;
   const latestRepeatOrder = latestCompletedOrder ? mapOrder(latestCompletedOrder) : null;
