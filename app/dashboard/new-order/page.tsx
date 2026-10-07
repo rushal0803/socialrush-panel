@@ -295,6 +295,22 @@ export default function NewOrderPage() {
     if (repeatRequested) setRepeatConfirmed(false);
   }, [repeatRequested, selectedService?.code, targetLink, quantityInput]);
 
+  // A checkout request ID represents one exact order configuration.
+  // If the customer edits material order details, generate a fresh ID on the next submit
+  // instead of reusing an intent identity that belongs to the previous configuration.
+  useEffect(() => {
+    if (!inFlight.current) requestId.current = "";
+  }, [
+    selectedService?.code,
+    quantityInput,
+    targetLink,
+    customComments,
+    pollAnswerNumber,
+    endorsementSkillName,
+    requestedClientId,
+    requestedCampaignId,
+  ]);
+
   useEffect(() => () => {
     if (advanceTimer.current) window.clearTimeout(advanceTimer.current);
   }, []);
@@ -821,6 +837,8 @@ export default function NewOrderPage() {
     setError("");
     if (!requestId.current) requestId.current = crypto.randomUUID();
     track("payment_started", { service_code: selectedService.code, platform: selectedService.platform, payment_path: "manual_direct", recovery_campaign: recoveryCampaignRef.current });
+    let intentStatus: number | null = null;
+    let intentErrorCategory = "request_failed";
     try {
       const intentResponse = await fetch("/api/checkout/intent", {
         method: "POST",
@@ -838,8 +856,20 @@ export default function NewOrderPage() {
           endorsementSkillName: requiresEndorsementSkill ? endorsementSkillName.trim() : undefined,
         }),
       });
+      intentStatus = intentResponse.status;
       const intent = await intentResponse.json() as { data?: { id?: string }; error?: string };
-      if (!intentResponse.ok || !intent.data?.id) throw new Error(intent.error || "Unable to prepare manual payment.");
+      if (!intentResponse.ok || !intent.data?.id) {
+        intentErrorCategory = intentResponse.status === 409
+          ? "request_conflict"
+          : intentResponse.status === 422
+            ? "validation_rejected"
+            : intentResponse.status === 401
+              ? "authentication_required"
+              : intentResponse.status >= 500
+                ? "server_unavailable"
+                : "intent_rejected";
+        throw new Error(intent.error || "Unable to prepare manual payment.");
+      }
       track("checkout_started", {
         service_code: selectedService.code,
         platform: selectedService.platform,
@@ -849,7 +879,14 @@ export default function NewOrderPage() {
       });
       router.push(`/dashboard/direct-upi?intent=${encodeURIComponent(intent.data.id)}`);
     } catch (cause) {
-      track("checkout_error", { step: "manual_intent", service_code: selectedService.code, platform: selectedService.platform, payment_path: "manual_direct" });
+      track("checkout_error", {
+        step: "manual_intent",
+        service_code: selectedService.code,
+        platform: selectedService.platform,
+        payment_path: "manual_direct",
+        http_status: intentStatus,
+        error_category: intentErrorCategory,
+      });
       setError(cause instanceof Error ? cause.message : "Unable to prepare manual payment.");
       setCheckoutStage("");
       setSubmitting(false);
