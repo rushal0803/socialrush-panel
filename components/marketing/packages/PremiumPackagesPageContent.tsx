@@ -147,7 +147,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
       return;
     }
     if (!requestId.current) requestId.current = crypto.randomUUID();
-    const payload = { serviceCode: purchaseFacts.serviceCode, quantity: purchaseFacts.quantity, link: targetLink.trim(), clientRequestId: requestId.current };
+    const payload = { serviceCode: purchaseFacts.serviceCode, quantity: purchaseFacts.quantity, link: targetLink.trim(), clientRequestId: requestId.current, packageId: selected.id };
     setSubmitting(true);
     try {
       const intentResponse = await fetch("/api/checkout/intent", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
