@@ -1,13 +1,13 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { abandonedCheckoutReminder, abandonedOrderReminder, firstOrderFinal7d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate, type FirstOrderOffer } from "@/lib/email/templates";
+import { abandonedCheckoutReminder, abandonedOrderReminder, firstOrderFinal7d, firstOrderHelp14d, firstOrderNudge2h, firstOrderReminder, firstOrderReminder3d, firstOrderTrust24h, inactive7d, inactivePlatform, inactivePremium, neverOrderedReactivation, orderCompleted, orderCreated, type EmailTemplate, type FirstOrderOffer } from "@/lib/email/templates";
 import { canSendPromotional, hasActiveRefill, hasUnresolvedSupport, inactiveEmailKind, lifecycleEligibility, promotionalEvent, recipientMatchesProfile } from "@/lib/email/lifecycle";
 
 type Event={
  id:string;
  user_id:string;
  order_id:string|null;
- event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"never_ordered_reactivation"|"abandoned_checkout_reminder"|"abandoned_order_reminder"|"inactive_7d";
+ event_type:"signup_no_order"|"order_created"|"order_completed"|"first_order_reminder"|"first_order_nudge_2h"|"first_order_trust_24h"|"first_order_reminder_3d"|"first_order_final_7d"|"first_order_help_14d"|"never_ordered_reactivation"|"abandoned_checkout_reminder"|"abandoned_order_reminder"|"inactive_7d";
  recipient:string;
  provider_message_id:string|null;
  attempt_count:number;
@@ -100,7 +100,7 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
 
    let orders:LifecycleOrderContext[]=[],crm:{lifecycle_stage:string|null}|null=null,tagRows:CrmTagRow[]=[],draft:DraftContext|null=null,checkout:CheckoutContext|null=null,offer:FirstOrderOffer|undefined;
    if(promotional){
-    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError},{data:draftRow,error:draftError},{data:checkoutRow,error:checkoutError},{data:rewardRules,error:rewardError}]=await Promise.all([
+    const [{data:suppression,error:suppressionError},{data:orderRows,error:ordersError},{data:config,error:configError},{data:tickets,error:ticketsError},{data:refills,error:refillsError},{data:crmRow,error:crmError},{data:crmTagRows,error:tagsError},{data:draftRow,error:draftError},{data:checkoutRow,error:checkoutError},{data:rewardRules,error:rewardError},{data:experiment,error:experimentError}]=await Promise.all([
      db.from("crm_suppression_list").select("email").eq("email",event.recipient.trim().toLowerCase()).maybeSingle(),
      db.from("orders").select("user_id,created_at,status,payment_status,platform,charge").eq("user_id",event.user_id),
      db.from("customer_email_automation_config").select("lifecycle_enabled,first_order_delay_hours,inactive_days,lifecycle_activation_at,first_order_sequence_activation_at,abandoned_order_enabled,abandoned_order_delay_hours,abandoned_order_max_age_days,abandoned_order_activation_at").eq("id",true).single(),
@@ -110,13 +110,14 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
      db.from("crm_customer_tags").select("crm_tags(name)").eq("customer_id",event.user_id),
      db.from("order_drafts").select("platform,service_code,quantity,updated_at").eq("user_id",event.user_id).maybeSingle(),
      db.from("checkout_intents").select("id,service_code,quantity,total_paise,created_at,expires_at,status,order_id").eq("user_id",event.user_id).eq("status","created").is("order_id",null).lt("expires_at",new Date().toISOString()).gte("created_at",new Date(Date.now()-7*86400000).toISOString()).order("created_at",{ascending:false}).limit(1).maybeSingle(),
-     db.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id",true).maybeSingle()
+     db.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id",true).maybeSingle(),
+     db.from("first_order_bonus_experiment_assignments").select("variant").eq("user_id",event.user_id).maybeSingle()
     ]);
-    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||draftError||checkoutError||rewardError||!config)throw new Error("Lifecycle eligibility lookup failed");
+    if(suppressionError||ordersError||configError||ticketsError||refillsError||crmError||tagsError||draftError||checkoutError||rewardError||experimentError||!config)throw new Error("Lifecycle eligibility lookup failed");
     orders=orderRows||[];crm=crmRow;tagRows=crmTagRows||[];draft=(draftRow||null) as DraftContext|null;checkout=(checkoutRow||null) as CheckoutContext|null;
     const hasPriorQualifyingOrder=orders.some(order=>!["cancelled","refunded","failed"].includes(String(order.status||"").toLowerCase())&&!["cancelled","refunded","failed"].includes(String(order.payment_status||"paid").toLowerCase()));
     const reward=Number(rewardRules?.new_customer_reward||0),minimum=Number(rewardRules?.minimum_order_amount||0);
-    if(!hasPriorQualifyingOrder&&rewardRules?.enabled&&!rewardRules.manual_approval&&reward>0&&minimum>0)offer={reward,minimum};
+    if(!hasPriorQualifyingOrder&&["bonus","legacy_bonus"].includes(String(experiment?.variant||""))&&rewardRules?.enabled&&!rewardRules.manual_approval&&reward>0&&minimum>0)offer={reward,minimum};
     if(!config.lifecycle_enabled){
      await patchEvent(db,event.id,{status:"queued",processing_started_at:null,error_message:"Deferred: lifecycle disabled",updated_at:new Date().toISOString()});
      outcomes.push({id:event.id,eventType:event.event_type,outcome:"skipped",detail:"lifecycle_disabled"});
@@ -170,7 +171,7 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
       !hasLaterOrder(draftUpdated)
     );
     const recentDraft=Boolean(draft && Date.parse(draft.updated_at)>=Date.now()-7*86400000);
-    const firstOrderEvent=["first_order_reminder","first_order_nudge_2h","first_order_trust_24h","first_order_reminder_3d","first_order_final_7d"].includes(event.event_type);
+    const firstOrderEvent=["first_order_reminder","first_order_nudge_2h","first_order_trust_24h","first_order_reminder_3d","first_order_final_7d","first_order_help_14d"].includes(event.event_type);
     const eligible=isCheckoutAbandoned
       ? checkoutEligible
       : isAbandoned
@@ -197,6 +198,8 @@ export async function processCustomerEmailEvents(limit=5):Promise<CustomerEmailP
     template=firstOrderReminder3d(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="first_order_final_7d"){
     template=firstOrderFinal7d(profile?.full_name,event.user_id,offer);
+   }else if(event.event_type==="first_order_help_14d"){
+    template=firstOrderHelp14d(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="never_ordered_reactivation"){
     template=neverOrderedReactivation(profile?.full_name,event.user_id,offer);
    }else if(event.event_type==="abandoned_checkout_reminder"){
