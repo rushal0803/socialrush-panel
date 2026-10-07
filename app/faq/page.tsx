@@ -7,9 +7,9 @@ import SupportJourney from "@/components/support/SupportJourney";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Social Media Growth Services FAQ",
+  title: "SocialRUSH FAQ | Pricing, Delivery, Refill & Payments",
   description:
-    "Find answers about SocialRUSH service pricing, delivery, refill support, UPI payments, order tracking and social media growth services in India.",
+    "Find answers about SocialRUSH pricing, delivery, refill support, payments, order tracking, service links and account support in one help center.",
   path: "/faq",
   keywords: ["social media growth FAQ", "SocialRUSH service support"],
 });
