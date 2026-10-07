@@ -30,6 +30,6 @@ test("YouTube growth hub is clearly a service-comparison hub and links to the co
 });
 
 test("Growth Library snippet names the platforms and guide intent directly", () => {
-  assert.match(blogHub, /title: "Social Media Growth Guides India \| Instagram, YouTube & More"/);
-  assert.match(blogHub, /Read practical India-focused guides for Instagram, YouTube, Facebook and LinkedIn growth, pricing, safety, strategy and campaign planning from SocialRUSH\./);
+  assert.match(blogHub, /title: "Social Media Growth Guides India \| Instagram, YouTube & SEO"/);
+  assert.match(blogHub, /Read practical India-focused guides for Instagram, YouTube, Facebook, LinkedIn and SEO, covering growth strategy, pricing, safety and campaign planning\./);
 });
