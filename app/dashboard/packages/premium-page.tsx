@@ -1,11 +1,2 @@
-"use client";
-
-import PremiumPackagesPageContent from "@/components/marketing/packages/PremiumPackagesPageContent";
-
-export default function PremiumDashboardPackagesPage() {
-  return (
-    <div className="min-h-screen bg-[#070707]">
-      <PremiumPackagesPageContent />
-    </div>
-  );
-}
+// Compatibility export; the server page supplies the shared live catalogue.
+export { default } from "./page";

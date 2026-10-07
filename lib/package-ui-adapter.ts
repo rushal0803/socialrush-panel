@@ -3,7 +3,7 @@ import {
   type PackageServiceGroup,
   type PackageTier,
   type PackageTierId,
-} from "./package-engine";
+} from "./package-engine.ts";
 import type { SmmPlatformId } from "./smm-service-catalog";
 
 export type PackageUiPlatform = "Instagram" | "YouTube" | "Facebook" | "LinkedIn" | "Telegram" | "TikTok" | "X";
@@ -94,8 +94,8 @@ export function adaptPackageTier(group: PackageServiceGroup, tier: PackageTier):
   };
 }
 
-export function getPackageUiGroups() {
-  return getPackageServiceGroups().map((group) => ({
+export function getPackageUiGroups(groups: readonly PackageServiceGroup[] = getPackageServiceGroups()) {
+  return groups.map((group) => ({
     ...group,
     uiPlatform: platformToUi[group.platform],
     uiService: serviceKey(group),

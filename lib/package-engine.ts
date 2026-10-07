@@ -1,5 +1,6 @@
-import { activeSmmServices, platformMeta, type SmmPlatformId, type SmmService } from "./smm-service-catalog";
-import { calculateServiceTotalPaise, type ServiceCode } from "./service-pricing";
+import { activeSmmServices, platformMeta, type SmmPlatformId, type SmmService } from "./smm-service-catalog.ts";
+import { calculateServiceTotalPaise, type ServiceCode } from "./service-pricing.ts";
+import { PACKAGE_DISCOUNTS } from "./package-discounts.ts";
 
 export type PackageTierId = "starter" | "growth" | "pro" | "scale";
 
@@ -24,13 +25,6 @@ export type PackageServiceGroup = Readonly<{
   pricingStatus: "catalog" | "live-required";
 }>;
 
-const TIER_META: ReadonlyArray<Readonly<{ id: PackageTierId; label: string; bestFor: string; discountPercent: number }>> = [
-  { id: "starter", label: "Starter", bestFor: "Lower-commitment campaigns", discountPercent: 0 },
-  { id: "growth", label: "Balanced", bestFor: "Ongoing campaigns", discountPercent: 3 },
-  { id: "pro", label: "Scale", bestFor: "Fewer repeat orders", discountPercent: 5 },
-  { id: "scale", label: "High Volume", bestFor: "Larger campaign requirements", discountPercent: 8 },
-];
-
 function clamp(value: number, min: number, max: number) {
   return Math.min(Math.max(value, min), max);
 }
@@ -52,30 +46,30 @@ function niceQuantity(value: number, service: SmmService) {
 }
 
 function tierQuantities(service: SmmService): number[] {
-  if (service.requiresLiveCatalogFacts || service.pricePer1000 <= 0 || service.minQuantity <= 0 || service.maxQuantity <= 0) return [];
+  if (service.pricePer1000 <= 0 || service.minQuantity <= 0 || service.maxQuantity <= 0) return [];
   const min = service.minQuantity;
   const max = service.maxQuantity;
   const candidates = [
-    niceQuantity(Math.max(min, 1000), service),
-    niceQuantity(Math.max(min, 5000), service),
-    niceQuantity(Math.max(min, 10000), service),
-    niceQuantity(Math.max(min, 50000), service),
+    min,
+    niceQuantity(min * Math.pow(Math.min(max / min, 500), 1 / 3), service),
+    niceQuantity(min * Math.pow(Math.min(max / min, 500), 2 / 3), service),
+    niceQuantity(Math.min(max, min * 500), service),
   ].filter((quantity) => quantity >= min && quantity <= max);
   return [...new Set(candidates)].slice(0, 4);
 }
 
-export function buildPackageTiers(service: SmmService): readonly PackageTier[] {
+export function buildPackageTiers(service: SmmService, useLiveRate = false): readonly PackageTier[] {
   const quantities = tierQuantities(service);
   const recommendedIndex = quantities.length > 1 ? 1 : 0;
   return quantities.map((quantity, index) => {
-    const regularPricePaise = calculateServiceTotalPaise(service.code as ServiceCode, quantity);
-    const discountPercent = TIER_META[index].discountPercent;
+    const regularPricePaise = useLiveRate ? Math.round(quantity * service.pricePer1000 * 100 / 1000) : calculateServiceTotalPaise(service.code as ServiceCode, quantity);
+    const discountPercent = PACKAGE_DISCOUNTS[index].discountPercent;
     const pricePaise = Math.max(1, Math.round(regularPricePaise * (100 - discountPercent) / 100));
     const { savingsPaise, savingsPercent } = calculatePackageSavings(regularPricePaise, pricePaise);
     return {
-      id: TIER_META[index].id,
-      label: TIER_META[index].label,
-      bestFor: TIER_META[index].bestFor,
+      id: PACKAGE_DISCOUNTS[index].id,
+      label: PACKAGE_DISCOUNTS[index].label,
+      bestFor: PACKAGE_DISCOUNTS[index].bestFor,
       quantity,
       regularPricePaise,
       pricePaise,

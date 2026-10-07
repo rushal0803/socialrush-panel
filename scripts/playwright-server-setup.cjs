@@ -11,7 +11,7 @@ module.exports = async function setup() {
   catch (error) { if (error.message.startsWith('Test port already')) throw error; }
   fs.mkdirSync('artifacts/service-final', { recursive: true });
   const output = fs.openSync(path.resolve('artifacts/service-final/smoke-server.log'), 'w');
-  const server = spawn(process.execPath, [require.resolve('next/dist/bin/next'), 'start', '--hostname', '127.0.0.1', '--port', String(port)], {
+  const server = spawn(process.execPath, ['--require', path.resolve('scripts/packages-test-backend.cjs'), require.resolve('next/dist/bin/next'), 'start', '--hostname', '127.0.0.1', '--port', String(port)], {
     shell: false, stdio: ['ignore', output, output],
     env: { ...process.env, SUPABASE_SERVICE_ROLE_KEY: 'smoke-service-role-key' },
   });
