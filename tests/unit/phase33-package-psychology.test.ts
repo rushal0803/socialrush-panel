@@ -6,11 +6,11 @@ import { getPackageChoicePresentation } from "../../lib/cro/package-psychology.t
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
 
 test("Phase 33 uses neutral package tiers instead of popularity claims", () => {
-  const engine = read("lib/package-engine.ts");
+  const engine = read("lib/package-discounts.ts");
   assert.match(engine, /label: "Starter"/);
-  assert.match(engine, /label: "Balanced"/);
+  assert.match(engine, /label: "Growth"/);
   assert.match(engine, /label: "Scale"/);
-  assert.match(engine, /label: "High Volume"/);
+  assert.match(engine, /label: "Pro"/);
   assert.doesNotMatch(engine, /Most Popular|Best Seller|Limited Time/i);
 });
 
@@ -25,17 +25,15 @@ test("Phase 33 package psychology explains the recommendation without fake socia
   assert.doesNotMatch(psychology, /most popular|best seller|only \d+ left|limited time/i);
 });
 
-test("Phase 33 public and dashboard package UI share evidence-based choice architecture", () => {
+test("Public and dashboard packages share compact accessible selection", () => {
   const page = read("components/marketing/packages/PremiumPackagesPageContent.tsx");
-  const dashboard = read("app/dashboard/packages/premium-page.tsx");
-  assert.match(page, /data-package-choice-guide/);
-  assert.match(page, /data-package-featured/);
-  assert.match(page, /The highlighted tier is a middle-ground recommendation, not a popularity claim/);
-  assert.match(page, /Evidence-based choices/);
-  assert.match(page, /No fake popularity, scarcity or invented best-value badge/);
-  assert.match(page, /Choose balanced/);
-  assert.doesNotMatch(page, />Most popular</i);
+  const dashboard = read("app/dashboard/packages/page.tsx");
+  assert.match(page, /data-package-card/);
+  assert.match(page, /aria-pressed/);
+  assert.match(page, /Choose your package/);
+  assert.doesNotMatch(page, /Verified saving|Most popular|absolute -top/);
   assert.match(dashboard, /PremiumPackagesPageContent/);
+  assert.match(dashboard, /variant="dashboard"/);
 });
 
 test("Phase 33 legacy merchandising also avoids unsupported popularity and value badges", () => {

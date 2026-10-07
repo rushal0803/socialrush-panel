@@ -1,111 +1,31 @@
-# SocialRUSH package architecture
+# SocialRUSH Packages v2
 
-Package availability follows the active service catalog.
+The public and dashboard pages fetch customer-safe package facts on the server and share `PremiumPackagesPageContent`. Only the public variant renders marketing navigation and the footer. The dashboard uses its native header, sidebar and bottom navigation. Package navigation stays on the current surface through selection, login and Add Funds.
 
-Catalog-priced services can generate supported Starter, Growth, Pro and Scale quantities from current min/max rules. Services requiring live catalog facts do not expose fallback or zero pricing as purchasable packages. Savings are calculated mathematically and displayed only when a legitimate final price is below the regular computed price.
+## Catalogue and eligibility
 
-Public and dashboard package surfaces share the same package model. The existing legacy package definitions remain temporarily available during migration so working order flows are not removed before verification.
+`lib/package-catalog.server.ts` reads active services with `is_active=true`, `accepts_new_orders=true`, a positive rate, valid whole-number min/max and non-paused health. Identities must match a checkout-supported catalogue service by code, or an exact platform/name match for legacy rows without codes. The fallback name match enables the active Facebook Group Members row without inventing a code or altering the database.
 
-Custom quantity must reuse existing minimum, maximum and quantity-step validation. Cross-service bundles remain gated until backend fulfillment is verified.
+A live audit on 7 October 2026 found 61 active rows: 42 coded services, one supported legacy Facebook Group Members row, and 18 remaining legacy rows without supported checkout identity (including zero-rate and duplicate campaign definitions). The Packages experience offers the 43 supported identities across Instagram, YouTube, Facebook, LinkedIn, X, TikTok and Telegram. Legacy `other` records cannot safely use the existing code-based checkout. They are excluded; no service or rate is fabricated. Catalogue failures show an unavailable state, never a stale price.
 
-On mobile, platform/service navigation must remain usable without page overflow, cards collapse cleanly, and a sticky purchase action appears only after a valid explicit selection. Active services without browser-safe pricing render a clear order-flow state instead of an empty grid.
+## Quantities and pricing
 
-Signed-out visitors can browse packages. Selected platform, service, tier and quantity can be restored after authentication, while final availability and pricing remain backend-authoritative. Dashboard wallet UI derives sufficient-balance and shortfall states from the same selected final price.
+`lib/package-discounts.ts` is the single tier policy: Starter 0%, Growth 3%, Pro 5%, Scale 8%. Quantities start at the real minimum and grow geometrically up to the smaller of the maximum and 500 times the minimum, with nice-number rounding, quantity-step snapping and deduplication. Narrow ranges yield fewer tiers.
 
-Package funnel analytics use stable events for view, platform selection, service selection, package selection, custom quantity, checkout start, add-funds click and purchase completion. Event properties are limited to non-sensitive package context.
+Both surfaces receive server-generated integer-paise prices. Checkout intents independently reload current catalogue facts, validate package identity, service and quantity, resolve the real service row, recheck availability/limits and apply the configured tier discount to its current selling rate. Client-supplied amounts are ignored. A changed final total stops the order request and asks the customer to refresh and review. Existing order RPCs, wallet deductions, idempotency and payment methods are retained.
 
-Generated package identity uses service code, tier and quantity rather than marketing copy. Legacy package IDs are mapped only when their service and quantity still resolve to a valid active-service selection; stale IDs fall back to the service view.
+Discounts are capped at 8% of the configured selling rate. The catalogue exposes no provider-cost data: these small discounts do **not** prove a minimum profit margin. Business margins must be reviewed before releasing the draft PR; percentages can be reduced centrally without UI changes.
 
-Public and dashboard surfaces never calculate totals independently. Both consume the shared package price in paise, while final order creation continues to use backend validation. A display/backend mismatch blocks release.
+## Experience
 
-Only one tier receives the dominant recommendation treatment. Cards prioritize quantity, final price, verified savings when present, effective rate, concise service facts and one primary action. Platform and service controls expose selected state and visible keyboard focus.
+The four-step journey uses wrapping platform buttons, searchable service choices, compact cards and a review area. Recommendations describe a campaign-size choice, never popularity. Savings compare the discounted package with the same service/quantity at its current regular rate. Refill terms come from the live row; no delivery estimates, reviews or scarcity are invented. Extra inputs support custom comments, poll answers and endorsement skills. Browser storage preserves these inputs through sign-in and Add Funds.
 
-Implementation uses existing React, Tailwind, Lucide and current motion dependencies rather than adding another heavy UI library. Platform/service switching stays local and noncritical content remains below the purchase decision.
+Badges remain in normal flow. The package flow adds no sticky action bar; the dashboard bottom navigation retains reserved space. Explicit pale CTA backgrounds avoid legacy global CSS changing white buttons into black-on-black controls. Visible focus, pressed states, labels and link validation remain accessible. Public metadata, canonical, breadcrumb and matching visible FAQ/schema are retained, with crawlable package-service links.
 
-Trust content is limited to facts already supported by the selected service configuration and existing product flow. Delivery/refill claims are never generalized across services.
+## Verification
 
-Rollout: integrate the shared engine alongside the legacy path, render all active service states, migrate selection identity, wire validated custom quantity, add wallet/auth continuity, verify any future promotion source, then test backend bundle semantics. Remove duplicated package definitions only after all flows pass verification.
+Run `node --experimental-strip-types --test tests/unit/packages-v2.test.ts tests/unit/phase33-package-psychology.test.ts`, `npx tsc --noEmit`, `npm run lint`, `npm run build` and `git diff --check`.
 
-Verification covers all seven active platform IDs and every active service record, not merely each platform tab. For each service verify generated-tier or protected-pricing state, URL restoration, target-link rules, checkout start and relevant wallet/auth handoffs.
+The Playwright setup starts the production build with `scripts/packages-test-backend.cjs`, an isolated Supabase transport backed by a recorded customer-catalogue fixture. It also isolates middleware transport. No application authorization is bypassed and paid RPCs are blocked. The fixture is test-only and is never imported by production code. A running test server can be supplied through `PLAYWRIGHT_BASE_URL`; use `http://localhost:<port>` to match Next's local API origin.
 
-Current feature-branch status: shared catalog-driven package engine implemented; legacy order path intentionally retained; public/dashboard component migration and full verification still pending. Production main has not been changed by this package branch.
-
-Next implementation target: replace the package selector's `bigPackages`-driven service/package discovery with shared engine groups while preserving existing target-link validation, auth detection, wallet loading, pending-order storage and order API behavior.
-
-No fake discount migration: legacy `discountBadge` strings are presentation metadata only and are not carried into the shared engine. Until a legitimate promotion source is connected, generated tier price equals regular price and savings render as zero/hidden.
-
-Services that require protected live catalog facts remain visible in navigation but do not receive generated package cards from fallback data. Their package area routes customers into the authoritative order flow for current availability, limits and pricing.
-
-Service search, if added, filters only the selected platform's already-active catalog. Search text does not alter pricing/availability and does not create indexable URL variants; platform and service selection remain the durable shareable state.
-
-Empty/error states never render undefined values, NaN or zero-price purchase cards. Recoverable catalog/loading errors retain the selected platform/service context and offer retry or a safe route to the existing order experience.
-
-Dashboard Add Funds handoff preserves selected package context where supported. After funding, restoration must revalidate the service and price rather than trusting stale client state.
-
-Package cards do not invent guarantees. Delivery, refill and quality text comes from the selected service configuration; when protected live facts are required, those details are deferred to the authoritative order flow.
-
-Testing target widths: approximately 320, 375, 390, 430, 768, 1024 and 1440+ pixels, with no horizontal page overflow, clipped badges, unreadable prices or hidden primary actions.
-
-The shared engine deliberately generates no monetary discount by itself. A promotion adapter must provide both legitimate regular and final prices before savings UI can appear.
-
-Recommended-tier emphasis is independent from discounting: Growth may be visually recommended when multiple tiers exist because it is a middle decision point, but it cannot display `Best Value`, percentage savings or a crossed-out price without verified economics.
-
-Package unit economics are displayed from integer paise calculations. Effective per-1K price is derived from the selected tier total and quantity, preventing a separate manually maintained rate from drifting out of sync.
-
-The first UI integration should be additive: import the engine, derive platform/service groups from it, and retain the current purchase handlers until equivalent generated selections can pass through them. This minimizes regression risk while expanding service coverage.
-
-Release is blocked until production build checks pass and final UI is inspected. The branch is intentionally not merged or deployed while component migration remains incomplete.
-
-Public and dashboard package pages must ultimately consume the same generated service/tier model so adding an active catalog service does not require separately creating a second dashboard package definition.
-
-Phase 1 foundation is now coded on the feature branch. Phase 2 UI migration starts with service coverage and tier rendering; purchase handlers remain unchanged until generated selections are proven equivalent.
-
-UI migration must preserve the existing shareable `platform`, `service` and package-selection query behavior. Invalid or stale package selection falls back safely to the active service instead of auto-buying another tier.
-
-For services with fewer than four meaningful supported quantities, render only unique valid tiers; never duplicate quantities merely to fill a four-card layout.
-
-Custom quantity appears after standard tiers only when browser-safe min/max/step rules are available. Its computed total uses the same service pricing calculation and backend validation remains authoritative at order submission.
-
-The next code change should touch the shared package component only after mapping its current `BigPackage` dependencies to generated tier equivalents; this prevents a partial type migration from breaking checkout.
-
-No production merge is part of the current step. Branch changes are isolated for review and verification.
-
-Implementation checkpoint: `lib/package-engine.ts` is the first functional code addition; documentation records the release invariants. The existing package UI still runs unchanged until the integration step is complete.
-
-Once component migration is functional, use the existing deployment/preview workflow to inspect real rendering before any merge. Do not treat static code review as final UI verification.
-
-The package engine is intentionally pure and has no Supabase/browser dependency, keeping tier generation testable and reusable by both server-rendered public content and client purchase UI.
-
-Phase 2 must not remove current wallet purchase logic merely to simplify the UI rewrite; the new presentation adapts to the proven order flow first, then backend refactors can be considered separately.
-
-The package component currently contains several BigPackage-specific helpers; migrate these through a small adapter rather than rewriting authentication/order behavior at the same time.
-
-Adapter output should include stable id, platform, service code/key, tier label, quantity, price in paise/rupees at the display edge, delivery/refill facts and recommendation state; legacy-only marketing badge text is excluded.
-
-Adapter-generated selections still pass the canonical service code to order/link validation so new catalog services do not lose their service-specific URL rules.
-
-Wallet shortfall uses max(selected final price minus current balance, zero), displayed only for authenticated insufficient-balance states.
-
-The package page should never preselect a paid package merely to increase conversion; recommendation styling may guide comparison, while purchase selection remains an explicit user action.
-
-Analytics package identifiers use the stable generated identity, not card position, so funnel history remains interpretable if visual ordering changes later.
-
-Package cards should format prices at the display edge from paise and never perform floating-point discount arithmetic in JSX.
-
-Next checkpoint after UI adapter integration: run type/build checks before adding further CRO polish, so architecture errors are caught before visual complexity increases.
-
-A service can be active yet package-browser pricing-protected; active status controls discoverability, while pricingStatus controls whether cards can be generated. These states must not be conflated.
-
-Platform counts and service counts shown in the UI should be derived from the active catalog rather than hardcoded numbers.
-
-Platform switching clears stale package selection and chooses only a valid service context; it must never carry a package quantity from one platform into another.
-
-Service switching likewise clears a tier/custom selection before rendering the newly selected service's valid choices.
-
-Phase 2 first visual milestone is complete service navigation: every active service should be selectable even before every purchase card has migrated, with protected services showing a deliberate state instead of disappearing.
-
-The service navigation should use the catalog's canonical service code in URL state where practical, while continuing to accept existing legacy short service params for backwards compatibility.
-
-A service with a small maximum quantity may naturally produce one or two tiers; card-grid styling adapts to the tier count rather than implying missing content.
-
-The canonical public package route remains crawlable without creating thin indexed filter pages.
+`tests/smoke/packages-v2.spec.ts` checks public and authenticated dashboard layouts at 320, 360, 375, 390, 412, 430, 768, 1024, 1280 and 1440 pixels; package selection, review reachability, overflow, CTA contrast, runtime/console errors, every platform, live-priced services, login continuity, wallet shortfalls, intent-first checkout, tampered prices/quantities and idempotency. Screenshots are written to `artifacts/packages-v2`. Authenticated tests use a local test identity, not a production customer account. Real catalogue access is separately verified with the read-only audit script. No real paid order is submitted.

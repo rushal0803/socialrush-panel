@@ -1,6 +1,9 @@
 import PremiumPackagesPageContent from "@/components/marketing/packages/PremiumPackagesPageContent";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
+import { getLivePackageGroups } from "@/lib/package-catalog.server";
+
+export const dynamic = "force-dynamic";
 
 export const metadata = createPageMetadata({
   title: "Social Media Packages India | Compare Prices & Quantities",
@@ -16,21 +19,9 @@ export const metadata = createPageMetadata({
 });
 
 const packagesFaqs = [
-  {
-    question: "What are SocialRUSH social media growth packages?",
-    answer:
-      "SocialRUSH packages group platform, service type, quantity and price so customers can compare growth options before checkout.",
-  },
-  {
-    question: "Can I find Instagram, YouTube and Facebook packages on this page?",
-    answer:
-      "Yes. The Packages page includes package options for active supported platforms and services where fixed package pricing is available.",
-  },
-  {
-    question: "Is the final package price shown before I place an order?",
-    answer:
-      "Yes. SocialRUSH shows the selected package price and order details before checkout so you can review the total before confirming.",
-  },
+  { question: "What is included?", answer: "Each package includes the displayed quantity for one service and one destination link." },
+  { question: "How do savings work?", answer: "Larger tiers receive the displayed discount. Review your total before placing an order." },
+  { question: "Where can I track my order?", answer: "Sign in to view progress in your dashboard. Check service details for link requirements and refill terms." },
 ];
 
 type PackagesPageProps = {
@@ -42,7 +33,8 @@ type PackagesPageProps = {
   };
 };
 
-export default function PackagesPage({ searchParams }: PackagesPageProps) {
+export default async function PackagesPage({ searchParams }: PackagesPageProps) {
+  const groups = await getLivePackageGroups();
   return (
     <>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Packages", path: "/packages" }]} />
@@ -61,10 +53,19 @@ export default function PackagesPage({ searchParams }: PackagesPageProps) {
         }}
       />
       <PremiumPackagesPageContent
+        initialGroups={groups}
         initialPlatformParam={searchParams?.platform}
         initialServiceParam={searchParams?.service}
         initialPackageIdParam={searchParams?.package ?? searchParams?.packageId}
       />
+      <nav aria-label="Explore service packages" className="bg-[#070707] px-4 pb-8 text-white">
+        <details className="mx-auto max-w-7xl rounded-xl border border-white/15 p-4">
+          <summary className="cursor-pointer text-sm font-semibold">Explore package services</summary>
+          <ul className="mt-4 grid gap-3 sm:grid-cols-3">
+            {groups.map((group) => <li key={group.service.code}><a href={`/packages?platform=${group.platform}&service=${group.service.code}`} className="text-sm text-orange-200 underline">{group.service.name} packages</a></li>)}
+          </ul>
+        </details>
+      </nav>
     </>
   );
 }

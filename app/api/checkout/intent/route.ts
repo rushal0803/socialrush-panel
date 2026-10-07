@@ -5,7 +5,8 @@ import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
-import { findPackageUiSelection } from "@/lib/package-ui-adapter";
+import { getLivePackageGroups } from "@/lib/package-catalog.server";
+import { PACKAGE_DISCOUNTS } from "@/lib/package-discounts";
 
 type IntentRow = {
   id: string;
@@ -104,7 +105,8 @@ export async function POST(request: NextRequest) {
   if (!service.isActive && !liveCatalogServiceCodes.has(service.code)) {
     return NextResponse.json({ error: "This service is not currently available." }, { status: 400 });
   }
-  const packageSelection = requestedPackageId ? findPackageUiSelection(requestedPackageId) : null;
+  const packageGroup = requestedPackageId ? (await getLivePackageGroups()).find((group) => group.packages.some((pkg) => pkg.id === requestedPackageId)) : null;
+  const packageSelection = packageGroup?.packages.find((pkg) => pkg.id === requestedPackageId);
   if (requestedPackageId && (!packageSelection || packageSelection.serviceCode !== service.code || packageSelection.quantity !== quantity)) {
     return NextResponse.json({ error: "This package selection is invalid or has changed. Please choose the package again." }, { status: 409 });
   }
@@ -140,7 +142,7 @@ export async function POST(request: NextRequest) {
 
   const requestedQuantity = quantity as number;
   // Live-catalog services use their active Supabase rows for limits and rate.
-  const quantityError = liveCatalogServiceCodes.has(service.code) ? null : validateQuantity(requestedQuantity, service);
+  const quantityError = packageSelection || liveCatalogServiceCodes.has(service.code) ? null : validateQuantity(requestedQuantity, service);
   if (quantityError) return NextResponse.json({ error: quantityError }, { status: 400 });
 
   let parsedLink: URL;
@@ -193,10 +195,10 @@ export async function POST(request: NextRequest) {
     .from("services")
     .select("id, rate, min, max, accepts_new_orders, health_status")
     .eq("status", "active")
-    .eq("code", service.code)
     .order("id", { ascending: true })
     .limit(1);
-  if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", databasePlatform).eq("is_active", true).eq("accepts_new_orders", true);
+  matchedServiceQuery = packageGroup ? matchedServiceQuery.eq("id", packageGroup.databaseServiceId) : matchedServiceQuery.eq("code", service.code);
+  if (packageGroup || liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) matchedServiceQuery = matchedServiceQuery.eq("platform", databasePlatform).eq("is_active", true).eq("accepts_new_orders", true);
   const { data: matchedService } = await matchedServiceQuery.maybeSingle();
   const serviceId = matchedService?.id ? Number(matchedService.id) : null;
   if (matchedService && (!matchedService.accepts_new_orders || matchedService.health_status === "paused")) {
@@ -204,7 +206,7 @@ export async function POST(request: NextRequest) {
   }
 
   let totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
-  if (liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) {
+  if (packageSelection || liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) {
     if (!matchedService) return NextResponse.json({ error: `${service.name} is not currently available.` }, { status: 409 });
     const liveQuantityError = validateQuantity(requestedQuantity, {
       minQuantity: Number(matchedService.min),
@@ -213,8 +215,9 @@ export async function POST(request: NextRequest) {
     if (liveQuantityError) return NextResponse.json({ error: liveQuantityError }, { status: 400 });
     totalPaise = Math.round((requestedQuantity * Number(matchedService.rate) * 100) / 1000);
   }
-  if (packageSelection?.pricePaise && !liveCatalogServiceCodes.has(service.code) && !cryptoServiceCodes.has(service.code)) {
-    totalPaise = packageSelection.pricePaise;
+  if (packageSelection?.pricePaise) {
+    const policy = PACKAGE_DISCOUNTS.find((tier) => tier.id === packageSelection.tierId)!;
+    totalPaise = Math.round(totalPaise * (100 - policy.discountPercent) / 100);
   }
   if (!Number.isSafeInteger(totalPaise) || totalPaise <= 0) {
     return NextResponse.json({ error: "Calculated total is invalid for this quantity." }, { status: 400 });

@@ -17,9 +17,9 @@ function articleSlice(slug: string) {
 test("packages owns preset campaign and quantity comparison intent", () => {
   assert.match(packages, /title: "Social Media Packages India \| Compare Prices & Quantities"/);
   assert.match(packages, /by platform, service, quantity and price/);
-  assert.match(packageContent, /Social media packages in India—compare platform, quantity and price\./);
-  assert.match(packageContent, /href="\/pricing"/);
-  assert.match(packageContent, /Compare live service rates/);
+  assert.match(packageContent, /compare quantities and save on larger orders/);
+  assert.match(packageContent, /"\/pricing"/);
+  assert.match(packageContent, /Need a custom quantity/);
 });
 
 test("pricing keeps live rate intent separate from preset packages", () => {

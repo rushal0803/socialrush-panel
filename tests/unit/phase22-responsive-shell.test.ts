@@ -22,9 +22,10 @@ test("Phase 22 preserves access to notifications in the mobile navigation", () =
   assert.match(source, /label:"Notifications",href:"\/dashboard\/notifications"/);
 });
 
-test("Phase 22 keeps package platform tabs below the public sticky header", () => {
+test("Packages keep platform controls in a wrapping document-flow grid", () => {
   const source = read("components/marketing/packages/PremiumPackagesPageContent.tsx");
-  assert.match(source, /sticky top-16 z-30/);
+  assert.match(source, /grid-cols-2 gap-2 min-\[375px\]:grid-cols-3/);
+  assert.doesNotMatch(source, /sticky top-16 z-30/);
 });
 
 
