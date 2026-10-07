@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 
 const services = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
 const servicesContent = readFileSync(new URL("../../components/marketing/services/ServicesPageContent.tsx", import.meta.url), "utf8");
+const servicesHero = readFileSync(new URL("../../components/marketing/services/ServicesCatalog.tsx", import.meta.url), "utf8");
 const blog = readFileSync(new URL("../../components/marketing/blog/blogData.ts", import.meta.url), "utf8");
 
 function articleSlice(slug: string) {
@@ -16,7 +17,9 @@ function articleSlice(slug: string) {
 test("services page keeps SMM intent while clarifying comparison intent", () => {
   assert.match(services, /title: "SMM Panel India \| Compare Social Media Services & INR Plans"/);
   assert.match(services, /question: "What is an SMM panel\?"/);
-  assert.match(servicesContent, /SMM Panel India: compare social media growth services/);
+  assert.match(servicesContent, /<ServicesHero/);
+  assert.match(servicesHero, /<h1>Social Media Growth Services<\/h1>/);
+  assert.match(servicesHero, /Compare live services and current pricing/);
 });
 
 test("Instagram follower-drop guide matches exact question intent and is refreshed", () => {

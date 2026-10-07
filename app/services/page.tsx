@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
-import ServiceCompareStudio from "@/components/marketing/services/ServiceCompareStudio";
 import SocialMediaServicesIndiaAuthority from "@/components/marketing/services/SocialMediaServicesIndiaAuthority";
 import GrowthPlatformIndiaAuthority from "@/components/marketing/services/GrowthPlatformIndiaAuthority";
 import IndiaGrowthDiscovery from "@/components/marketing/IndiaGrowthDiscovery";
@@ -124,14 +123,14 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialTypeParam={searchParams?.type ?? searchParams?.service}
         initialSearchParam={searchParams?.q ?? searchParams?.search}
         serviceCatalog={serviceCatalog}
-      />
-      <GrowthPlatformIndiaAuthority />
-      <SocialMediaServicesIndiaAuthority />
-      <ServiceCompareStudio serviceCatalog={serviceCatalog} />
-      <ConversionDecisionBar />
-      <IndiaGrowthDiscovery />
-      <InternationalMarketAuthorityLinks />
-      <CrawlPriorityLinks />
+      >
+        <GrowthPlatformIndiaAuthority />
+        <SocialMediaServicesIndiaAuthority />
+        <ConversionDecisionBar />
+        <IndiaGrowthDiscovery />
+        <InternationalMarketAuthorityLinks />
+        <CrawlPriorityLinks />
+      </ServicesPageContent>
     </>
   );
 }
