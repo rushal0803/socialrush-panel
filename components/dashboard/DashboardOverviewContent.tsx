@@ -27,6 +27,15 @@ function SectionError() { return <p role="status" className="mt-4 rounded-xl bor
 export default function DashboardOverviewContent({ greeting, userName, walletBalance, orders, activeCampaigns, totalOrders, activeOrders, completedOrders, pendingOrders, paymentChecks, transactions, ticket, openTickets, rewardBalance, savedProfiles, favourites, firstOrder, draft, shortcuts, checkoutRecovery, firstOrderOffer, errors }: { greeting: string; userName: string; walletBalance: number; orders: Order[]; activeCampaigns: Order[]; totalOrders: number; activeOrders: number; completedOrders: number; pendingOrders: number; paymentChecks: number; transactions: Transaction[]; ticket: TicketData; openTickets: number; rewardBalance: number; savedProfiles: Profile[]; favourites: Favourite[]; firstOrder: boolean; draft: DraftSummary | null; shortcuts: ServiceShortcut[]; checkoutRecovery: CheckoutRecoverySummary | null; firstOrderOffer: { reward: number; minimum: number } | null; errors: Record<string, boolean> }) {
   const money = (amount: number) => formatCurrency(amount, "INR");
   const failedPayment = transactions.find((transaction) => transaction.status === "failed");
+  const checkoutRecoveryHref = checkoutRecovery ? (() => {
+    const params = new URLSearchParams();
+    params.set("service", checkoutRecovery.serviceCode);
+    params.set("quantity", String(checkoutRecovery.quantity));
+    params.set("prefill", "1");
+    params.set("source", "dashboard_checkout_recovery");
+    if (checkoutRecovery.target) params.set("link", checkoutRecovery.target);
+    return `/dashboard/new-order?${params.toString()}`;
+  })() : null;
   const attention = Boolean(openTickets || paymentChecks || failedPayment || orders.some((order) => actionStatuses.has(order.status)));
   const metrics = [
     ["Wallet balance", money(walletBalance), "Add funds", Wallet, "/dashboard/add-funds", "text-orange-300"],
@@ -46,23 +55,25 @@ export default function DashboardOverviewContent({ greeting, userName, walletBal
           <h1 className="mt-4 text-3xl font-black leading-[1.05] tracking-tight text-white sm:text-5xl">
             {greeting}{userName ? `, ${userName}` : ""}
             <span className="mt-1 block bg-gradient-to-r from-orange-300 via-amber-200 to-orange-300 bg-clip-text text-transparent">
-              {draft ? "Your saved campaign is ready to continue." : firstOrder ? "Ready for your first campaign?" : "Ready for your next campaign?"}
+              {checkoutRecovery ? "Your checkout is ready to finish." : draft ? "Your saved campaign is ready to continue." : firstOrder ? "Ready for your first campaign?" : "Ready for your next campaign?"}
             </span>
           </h1>
           <p className="mt-4 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base">
-            {draft
-              ? "You already started an order. Continue from your saved configuration, review the current price and finish when you’re ready."
-              : firstOrder
-                ? "Choose a platform and service, see the exact price before payment, and place your first order without sharing any password."
-                : "Manage orders, wallet activity, saved profiles and support from one focused workspace."}
+            {checkoutRecovery
+              ? "You already reached checkout. Rebuild that order with current pricing and finish it before starting another campaign."
+              : draft
+                ? "You already started an order. Continue from your saved configuration, review the current price and finish when you’re ready."
+                : firstOrder
+                  ? "Choose a platform and service, see the exact price before payment, and place your first order without sharing any password."
+                  : "Manage orders, wallet activity, saved profiles and support from one focused workspace."}
           </p>
           <div className="mt-6 flex flex-col gap-3 sm:flex-row">
             <Link
-              href={draft ? "/dashboard/new-order?draft=1" : firstOrder ? "/dashboard/new-order?source=first_order_dashboard" : "/dashboard/new-order"}
+              href={checkoutRecoveryHref || (draft ? "/dashboard/new-order?draft=1" : firstOrder ? "/dashboard/new-order?source=first_order_dashboard" : "/dashboard/new-order")}
               className="btn-dashboard-primary min-h-12 gap-2 px-5 text-sm"
             >
-              {draft ? <Clock3 className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
-              {draft ? "Continue Saved Order" : firstOrder ? "Place Your First Order" : "Start New Campaign"}
+              {checkoutRecovery ? <CreditCard className="h-4 w-4" /> : draft ? <Clock3 className="h-4 w-4" /> : <Plus className="h-4 w-4" />}
+              {checkoutRecovery ? "Finish Your Checkout" : draft ? "Continue Saved Order" : firstOrder ? "Place Your First Order" : "Start New Campaign"}
             </Link>
             <Link href={firstOrder ? "/dashboard/support" : "/dashboard/orders"} className="btn-dashboard-secondary min-h-12 gap-2 px-5 text-sm">
               {firstOrder ? <CircleHelp className="h-4 w-4" /> : <LayoutList className="h-4 w-4" />}
