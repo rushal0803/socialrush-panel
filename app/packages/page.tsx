@@ -3,9 +3,9 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
 
 export const metadata = createPageMetadata({
-  title: "Social Media Growth Packages India | Prices & Delivery",
+  title: "Social Media Packages India | Compare Prices & Quantities",
   description:
-    "Compare available SocialRUSH social media packages in India with clear pricing, quantities, delivery estimates and refill information before you order.",
+    "Compare SocialRUSH social media packages in India by platform, service, quantity and price. Review delivery, refill details and the final package total before checkout.",
   path: "/packages",
   keywords: [
     "social media growth packages India",
