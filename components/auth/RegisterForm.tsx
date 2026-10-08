@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useState, type FormEvent } from "react";
+import { useEffect, useState, type FormEvent } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { createClient } from "@/lib/supabase/client";
 import { track } from "@/lib/analytics/events";
+import { normalizeReferralCode } from "@/lib/referrals/code";
 import {
   DEFAULT_CUSTOMER_DESTINATION,
   getSafeCustomerDestination,
@@ -15,11 +16,18 @@ export default function RegisterForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const customerDestination = getSafeCustomerDestination(searchParams.get("next"));
+  const referralCode = normalizeReferralCode(searchParams.get("ref"));
   const [error, setError] = useState("");
   const [attempted, setAttempted] = useState(false);
   const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+
+  useEffect(() => {
+    if (referralCode) {
+      track("referral_landing_view", { referral_code_present: true });
+    }
+  }, [referralCode]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -46,6 +54,7 @@ export default function RegisterForm() {
       const supabase = createClient();
       const callbackUrl = new URL("/auth/callback", window.location.origin);
       callbackUrl.searchParams.set("next", customerDestination || DEFAULT_CUSTOMER_DESTINATION);
+      if (referralCode) callbackUrl.searchParams.set("ref", referralCode);
       const { data, error: signupError } = await supabase.auth.signUp({
         email,
         password,
@@ -64,6 +73,16 @@ export default function RegisterForm() {
       if (data.session) {
         // Account creation is confirmed by Supabase; no credentials are tracked.
         void fetch("/api/analytics/auth-completed", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "sign_up_completed" }) });
+        if (referralCode) {
+          const referralResponse = await fetch("/api/referrals/claim", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ code: referralCode }),
+          }).catch(() => null);
+          if (referralResponse?.ok) {
+            track("referral_signup_attributed", { referral_code_present: true });
+          }
+        }
         router.replace(customerDestination);
       } else {
         router.replace(`/verify-email?email=${encodeURIComponent(email)}`);

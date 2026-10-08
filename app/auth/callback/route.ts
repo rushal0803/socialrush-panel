@@ -2,6 +2,8 @@ import { createServerClient } from "@supabase/ssr";
 import { NextResponse, type NextRequest } from "next/server";
 import { ensureUserProfile } from "@/lib/auth/ensure-profile";
 import { getSupabaseConfig } from "@/lib/supabase/config";
+import { claimReferralForUser } from "@/lib/referrals/claim-referral";
+import { normalizeReferralCode } from "@/lib/referrals/code";
 import {
   ADMIN_DESTINATION,
   getSafeCustomerDestination,
@@ -34,6 +36,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = requestUrl;
   const code = searchParams.get("code");
   const isPasswordReset = searchParams.get("next") === "/reset-password";
+  const referralCode = normalizeReferralCode(searchParams.get("ref"));
   const customerDestination = getSafeCustomerDestination(
     searchParams.get("next"),
   );
@@ -60,6 +63,13 @@ export async function GET(request: NextRequest) {
     if (!error) {
       const { data: { user } } = await supabase.auth.getUser();
       if (user && !isPasswordReset) {
+        if (referralCode) {
+          await claimReferralForUser({
+            userId: user.id,
+            userCreatedAt: user.created_at,
+            code: referralCode,
+          }).catch(() => null);
+        }
         const profile = await ensureUserProfile(supabase, user).catch(() => null);
         if (profile?.role === "admin") {
           destination.pathname = ADMIN_DESTINATION;
