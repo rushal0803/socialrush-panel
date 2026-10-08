@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { ArrowRight, BarChart3, Check, ChevronDown, CircleCheck, Link2, LockKeyhole, MessageCircle, Minus, Pause, Play, Plus, ShieldCheck, Users, WalletCards } from "lucide-react";
 import { FaFacebookF as Facebook } from "react-icons/fa6";
 import PublicShell from "@/components/marketing/PublicShell";
+import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import { formatCurrency } from "@/lib/currency";
@@ -45,6 +46,7 @@ export default function FacebookViewsLanding() {
       </div><HeroDashboard price={price} progress={progress} /></div>
     </section>
     <section className="border-b border-white/10 bg-[#11141b] px-4 py-4 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold text-slate-300">{[[LockKeyhole,"No password required"],[Link2,"Public video link"],[WalletCards,"Secure checkout"],[BarChart3,"Dashboard tracking"],[ShieldCheck,"Live service details"]].map(([Icon,label]) => { const I = Icon as typeof LockKeyhole; return <span className="flex items-center gap-2" key={label as string}><I className="h-4 w-4 text-orange-300" />{label as string}</span>; })}</div></section>
+    <SearchDemandPriceSection displayName="Facebook Views" serviceCode="facebook-views" platform="facebook" pricePer1000={service.pricePer1000} destination="public Facebook video or post URL" packagesHref="/packages?platform=facebook&service=views" tone="dark" />
     <OrderBuilder />
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">Preview the Facebook video experience</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original interface-only video preview. Play controls animate sample activity only, not customer performance or results.</p><button type="button" onClick={() => setPlaying(x => !x)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#1877f2]/35 bg-[#1877f2]/10 px-4 text-sm font-black text-blue-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause Preview" : "Play Preview"}</button></div><VideoPreview playing={playing} progress={progress} /></div></section>
     <Content price={price} progress={progress} />
