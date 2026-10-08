@@ -310,9 +310,7 @@ export function getSeoServiceStructuredData(slug: SeoServiceSlug) {
       description: page.overview,
       url,
       provider: {
-        "@type": "Organization",
-        name: "SocialRUSH",
-        url: SEO_SITE_URL,
+        "@id": `${SEO_SITE_URL}/#organization`,
       },
       areaServed: "IN",
       ...(page.confirmedPrice !== null
