@@ -14,6 +14,7 @@ import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSectio
 import SafetyIntentSection from "@/components/seo/SafetyIntentSection";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
+import AeoQuickAnswer from "@/components/seo/AeoQuickAnswer";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -34,6 +35,7 @@ export default function YouTubeSubscribersLanding() {
       <YouTubeSubscribersOrderPanel compact /></div></section>
     <section className="border-y border-white/10 bg-[#101116] px-4 py-4 sm:px-6 lg:px-8"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3">{[[LockKeyhole,"No Password Required"],[Link2,"Public Channel Link"],[CreditCard,"Live Pricing"],[BarChart3,"Order Tracking"],[ShieldCheck,"Refill Information"],[Headphones,"Secure Checkout"]].map(([Icon,label]) => { const C=Icon as typeof LockKeyhole; return <span key={String(label)} className="flex items-center gap-2 text-xs font-bold text-slate-300"><C className="h-4 w-4 text-orange-300" />{String(label)}</span>})}</div></section>
     <section className="mx-auto max-w-7xl px-4 py-6 sm:px-6"><HeroDashboard price={price} active={playing} progress={progress} /></section>
+    <AeoQuickAnswer serviceName="YouTube Subscribers" destination="public YouTube channel link" pricePer1000={service?.pricePer1000 ?? null} deliveryTime={service?.deliveryTime ?? "Current estimate shown before checkout"} refillPolicy={service?.refillPolicy ?? "Current terms shown before checkout"} minQuantity={service?.minQuantity ?? 0} />
     <IndiaSearchDemandSection serviceCode="youtube-subscribers" unitLabel="subscribers" platformLabel="YouTube" /><SearchDemandPriceSection displayName="YouTube Subscribers" serviceCode="youtube-subscribers" platform="youtube" pricePer1000={service?.pricePer1000 ?? null} destination="public YouTube channel URL" packagesHref="/packages?platform=youtube" tone="dark" /><IndiaPaymentIntentSection serviceName="YouTube Subscribers" destination="public YouTube channel link" orderHref="#order" tone="dark" /><DeliveryRefillIntentSection serviceName="YouTube Subscribers" deliveryTime={service?.deliveryTime ?? "Current estimate shown before checkout"} refillPolicy={service?.refillPolicy ?? "Current terms shown before checkout"} destination="public YouTube channel link" orderHref="#order" tone="dark" /><OrderRequirementsIntentSection serviceName="YouTube Subscribers" minQuantity={service?.minQuantity ?? 100} maxQuantity={service?.maxQuantity ?? 1000000} quantityStep={service?.quantityStep ?? 1} destination="public YouTube channel link" pricePer1000={service?.pricePer1000 ?? null} orderHref="#order" tone="dark" />
     <SafetyIntentSection serviceName="YouTube Subscribers" platform="youtube" destination="public YouTube channel link" guideHref="/blog/is-it-safe-to-buy-youtube-subscribers" orderHref="#order" tone="dark" />
     <BuyerGuidance />
