@@ -20,12 +20,6 @@ begin
     return new;
   end if;
 
-  if tg_op = 'UPDATE'
-     and old.status = 'completed'
-     and coalesce(old.payment_status, 'paid') in ('paid', 'completed') then
-    return new;
-  end if;
-
   select *
   into v_ref
   from public.referral_attributions
