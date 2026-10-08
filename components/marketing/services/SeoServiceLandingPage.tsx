@@ -26,6 +26,7 @@ import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection"
 import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
+import AeoQuickAnswer from "@/components/seo/AeoQuickAnswer";
 import {
   getSeoServiceFaqs,
   getSeoServicePage,
@@ -294,6 +295,15 @@ export default function SeoServiceLandingPage({ slug }: { slug: SeoServiceSlug }
               View latest price and packages
             </Link>
           </aside></section> : null}
+
+      <AeoQuickAnswer
+        serviceName={page.displayName}
+        destination={page.destination}
+        pricePer1000={page.confirmedPrice}
+        deliveryTime={page.service.deliveryTime}
+        refillPolicy={page.service.refillPolicy}
+        minQuantity={page.service.minQuantity}
+      />
 
       <SearchDemandPriceSection displayName={page.displayName} serviceCode={page.service.code} platform={page.service.platform} pricePer1000={page.confirmedPrice} destination={page.destination} packagesHref={packagesHref} />
 
