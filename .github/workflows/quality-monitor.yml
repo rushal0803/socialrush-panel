@@ -1,0 +1,31 @@
+name: Production quality monitor
+
+on:
+  schedule:
+    # Every 6 hours, offset from the top of the hour to avoid shared runner spikes.
+    - cron: "23 */6 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  production-quality:
+    name: Check production quality signals
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - name: Run read-only production quality monitor
+        run: node --experimental-strip-types scripts/quality-production-check.ts
+      - name: Retain quality report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: production-quality-report
+          path: artifacts/quality-monitor/report.json
+          retention-days: 14
+          if-no-files-found: warn
