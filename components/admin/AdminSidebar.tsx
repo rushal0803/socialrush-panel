@@ -24,6 +24,7 @@ const links = [
   ["Profitability", "/admin/profitability", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
   ["Incidents", "/admin/incidents", "support"],
+  ["Quality Monitor", "/admin/quality", "grid"],
   ["Case Studies", "/admin/case-studies", "layers"], ["Rewards", "/admin/rewards", "wallet"], ["Settings", "/admin/settings", "settings"],
 ] as const;
 
