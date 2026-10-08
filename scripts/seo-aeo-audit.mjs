@@ -9,7 +9,7 @@ const serviceTargets = [
   "/youtube-subscribers",
   "/linkedin-followers",
   "/twitter-followers",
-  "/facebook-followers",
+  "/buy-facebook-followers-india",
   "/telegram-members",
 ];
 
