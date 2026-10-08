@@ -154,6 +154,38 @@ export default async function TrafficGrowthPage() {
         </article>
       </section>
 
+      <section className="mt-5 grid gap-4 xl:grid-cols-2">
+        <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#111111]">
+          <div className="border-b border-white/10 p-5">
+            <h2 className="font-bold text-white">Tracked campaigns</h2>
+            <p className="mt-1 text-xs text-[#8B93A1]">UTM-attributed first-touch visitors only.</p>
+          </div>
+          <div className="divide-y divide-white/10">
+            {dashboard.campaigns.length ? dashboard.campaigns.map((row) => (
+              <div key={`${row.campaign}-${row.source}`} className="flex items-center justify-between gap-4 p-4">
+                <div><p className="font-bold text-white">{row.campaign}</p><p className="text-[11px] text-[#737B8B]">{row.source}</p></div>
+                <b className="text-white">{number(row.visitors)}</b>
+              </div>
+            )) : <p className="p-5 text-sm text-[#8B93A1]">No campaign-attributed visitors yet.</p>}
+          </div>
+        </article>
+
+        <article className="overflow-hidden rounded-2xl border border-white/10 bg-[#111111]">
+          <div className="border-b border-white/10 p-5">
+            <h2 className="font-bold text-white">Recent daily tracked visitors</h2>
+            <p className="mt-1 text-xs text-[#8B93A1]">Asia/Kolkata daily unique first-party identities.</p>
+          </div>
+          <div className="divide-y divide-white/10">
+            {dashboard.daily.length ? dashboard.daily.slice(-10).map((row) => (
+              <div key={row.date} className="flex items-center justify-between gap-4 p-4">
+                <p className="text-sm font-semibold text-white">{row.date}</p>
+                <b className="text-white">{number(row.visitors)}</b>
+              </div>
+            )) : <p className="p-5 text-sm text-[#8B93A1]">No daily traffic data yet.</p>}
+          </div>
+        </article>
+      </section>
+
       <section className="mt-5 overflow-hidden rounded-2xl border border-white/10 bg-[#111111]">
         <div className="border-b border-white/10 p-5">
           <div className="flex items-center gap-2"><Share2 className="h-5 w-5 text-orange-300" /><h2 className="font-bold text-white">Next traffic actions</h2></div>
