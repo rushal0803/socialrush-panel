@@ -5,6 +5,7 @@ import { SERVICE_PRICES } from "@/lib/service-pricing";
 import { paymentIntentFaq, paymentIntentKeywords } from "@/lib/seo/payment-intent";
 import { deliveryRefillIntentKeywords } from "@/lib/seo/delivery-refill-intent";
 import { orderRequirementIntentKeywords } from "@/lib/seo/order-requirements-intent";
+import { canonicalOwnerForPath } from "@/lib/seo/query-ownership";
 
 export type SeoServiceSlug =
   | "instagram-followers"
@@ -251,6 +252,11 @@ export function getSeoServicePage(slug: SeoServiceSlug) {
   };
 }
 
+export function getSeoServiceCanonicalPath(slug: SeoServiceSlug) {
+  const candidatePath = `/${slug}`;
+  return canonicalOwnerForPath(candidatePath)?.canonicalPath ?? candidatePath;
+}
+
 export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
   const page = getSeoServicePage(slug);
   const descriptions: Partial<Record<SeoServiceSlug, string>> = {
@@ -265,7 +271,7 @@ export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
     description:
       descriptions[slug] ??
       `${page.keyword} with SocialRUSH. View transparent pricing, delivery guidance, refill availability, secure checkout and easy order tracking.`,
-    path: `/${page.slug}`,
+    path: getSeoServiceCanonicalPath(slug),
     keywords: [
       page.keyword,
       `${page.displayName} price India`,
@@ -282,7 +288,7 @@ export function getSeoServiceMetadata(slug: SeoServiceSlug): Metadata {
 
 export function getSeoServiceStructuredData(slug: SeoServiceSlug) {
   const page = getSeoServicePage(slug);
-  const url = `${SEO_SITE_URL}/${page.slug}`;
+  const url = `${SEO_SITE_URL}${getSeoServiceCanonicalPath(slug)}`;
   const faqs = getSeoServiceFaqs(slug);
 
   return {
