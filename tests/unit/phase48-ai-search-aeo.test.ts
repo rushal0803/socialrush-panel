@@ -7,7 +7,7 @@ const read = (path: string) => readFileSync(new URL("../../" + path, import.meta
 test("Phase 48 explicitly allows OAI-SearchBot while protecting private routes", () => {
   const robots = read("app/robots.txt/route.ts");
   assert.match(robots, /User-agent: OAI-SearchBot/);
-  assert.match(robots, /Allow: //);
+  assert.match(robots, /Allow: \\//);
   for (const path of ["/dashboard", "/admin", "/api/"]) {
     assert.ok(robots.includes(`Disallow: ${path}`));
   }
