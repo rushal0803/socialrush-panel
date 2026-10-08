@@ -20,6 +20,7 @@ const links = [
   ["SEO Digital PR", "/admin/seo/digital-pr", "search"],
   ["Content Distribution", "/admin/crm/distribution", "layers"],
   ["100K Traffic", "/admin/growth/traffic", "grid"],
+  ["₹5L Revenue", "/admin/growth/revenue", "wallet"],
   ["Profitability", "/admin/profitability", "wallet"],
   ["Support", "/admin/support", "support"], ["Analytics", "/admin/analytics", "grid"], ["Reviews", "/admin/reviews", "users"],
   ["Incidents", "/admin/incidents", "support"],
