@@ -1,5 +1,6 @@
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
 export const clientAnalyticsEvents = [
+  "page_viewed",
   "sign_up_started",
   "service_viewed",
   "service_selected",
