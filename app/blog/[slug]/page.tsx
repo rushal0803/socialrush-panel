@@ -159,15 +159,15 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
     wordCount: articleWordCount,
     inLanguage: "en-IN",
     ...(articleAuthor
-      ? { author: { "@type": articleAuthor === "SocialRUSH Editorial Team" ? "Organization" : "Person", name: articleAuthor } }
+      ? {
+          author:
+            articleAuthor === "SocialRUSH Editorial Team"
+              ? { "@id": `${SEO_SITE_URL}/#organization` }
+              : { "@type": "Person", name: articleAuthor },
+        }
       : {}),
     publisher: {
-      "@type": "Organization",
-      name: "SocialRUSH",
-      logo: {
-        "@type": "ImageObject",
-        url: new URL("/images/brand/socialrush-logo-transparent.png", SEO_SITE_URL).toString(),
-      },
+      "@id": `${SEO_SITE_URL}/#organization`,
     },
   };
   const faqSchema = articleFaqs.length
