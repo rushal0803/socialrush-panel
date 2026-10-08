@@ -49,7 +49,7 @@ export default function LinkedInFollowersLanding() {
       <div className="mx-auto max-w-7xl">
         <p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Plan the destination first</p>
         <h2 className="mt-3 text-3xl font-black">Useful LinkedIn growth guides</h2>
-        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">A follower order works best when the public profile or company page already gives professionals a clear reason to follow. Use these guides to prepare your positioning, content and measurement plan.</p>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">A follower order works best when the public profile or company page already gives professionals a clear reason to follow. Use these guides to prepare your positioning, content and measurement plan.</p><p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300">Not sure which metric fits the goal? Compare <Link href="/blog/linkedin-followers-vs-connections" className="font-bold text-orange-200 underline decoration-orange-400/50 underline-offset-4">LinkedIn followers vs connections</Link> and <Link href="/blog/linkedin-followers-vs-engagement-india" className="font-bold text-orange-200 underline decoration-orange-400/50 underline-offset-4">followers vs engagement</Link> before choosing a campaign.</p>
       <div className="mt-6 grid gap-4 md:grid-cols-2 lg:grid-cols-3">
           <Link href="/blog/linkedin-followers-for-business-growth" className="group rounded-2xl border border-[#0a66c2]/25 bg-[#0a66c2]/[.06] p-5 transition hover:-translate-y-1">
             <h3 className="font-black">LinkedIn followers for business growth</h3>
