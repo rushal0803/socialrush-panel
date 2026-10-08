@@ -1,8 +1,5 @@
-import PremiumCatalogServiceLanding from "@/components/marketing/services/PremiumCatalogServiceLanding";
-import { createCatalogServiceMetadata } from "@/lib/seo/catalog-service-metadata";
-
-export const metadata = createCatalogServiceMetadata("tiktok-followers");
+import { permanentRedirect } from "next/navigation";
 
 export default function Page() {
-  return <PremiumCatalogServiceLanding serviceCode="tiktok-followers" />;
+  permanentRedirect("/tiktok-followers");
 }

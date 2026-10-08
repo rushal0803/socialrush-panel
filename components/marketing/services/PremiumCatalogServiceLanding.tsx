@@ -15,7 +15,7 @@ function safeJson(value: object) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
 }
 
-const twitterServiceCopy: Record<string, { headline: string; faqName: string; intro: string; target: string; terminology?: string }> = {
+const serviceIntentCopy: Record<string, { headline: string; faqName: string; intro: string; target: string; terminology?: string }> = {
   "twitter-likes": { headline: "Buy Twitter (X) Likes", faqName: "Twitter (X) likes", intro: "Add likes to an eligible public X post using its direct post link. Review the current rate, quantity range, delivery estimate and refill terms before ordering.", target: "public X post", terminology: "X is the platform formerly known as Twitter, so this page uses both names where they help describe the same likes service." },
   "twitter-views": { headline: "Buy Twitter (X) Views", faqName: "Twitter (X) views", intro: "Order views for an eligible public X post. Check the current rate, quantity limits, delivery estimate and service requirements before checkout.", target: "public X post", terminology: "People still commonly search for Twitter views even though Twitter is now called X; both terms refer to the same platform here." },
   "twitter-retweets": { headline: "Buy Twitter Retweets / X Reposts", faqName: "Twitter retweets / X reposts", intro: "Order repost activity for an eligible public X post. Retweets are now called reposts on X; review the current rate, quantity limits and service conditions before checkout.", target: "public X post", terminology: "Twitter called this action a retweet. X now calls it a repost, so both terms are used naturally on this page." },
@@ -23,20 +23,27 @@ const twitterServiceCopy: Record<string, { headline: string; faqName: string; in
   "twitter-crypto-likes": { headline: "Twitter (X) Crypto Likes", faqName: "Twitter (X) crypto likes", intro: "A specialist likes option for eligible public X posts in the crypto niche. Review the current rate, limits and delivery details before ordering.", target: "public X post" },
   "twitter-crypto-retweets": { headline: "Twitter Crypto Retweets / X Crypto Reposts", faqName: "Twitter crypto retweets / X crypto reposts", intro: "A specialist repost option for eligible public X posts in the crypto niche. Twitter retweets are now called reposts on X; check current service details before ordering.", target: "public X post" },
   "twitter-crypto-custom-comments": { headline: "Twitter (X) Crypto Custom Comments", faqName: "Twitter (X) crypto custom comments", intro: "Add customer-supplied custom comment text to an eligible public X post using the required post link. Review formatting, quantity and current service requirements before checkout.", target: "public X post" },
+  "tiktok-followers": {
+    headline: "Buy TikTok Followers in India",
+    faqName: "TikTok followers",
+    intro: "Compare TikTok follower campaigns in India for an eligible public profile. Review the current live INR rate, quantity range, delivery estimate and refill terms before ordering.",
+    target: "public TikTok profile",
+  },
 };
 
-export default async function PremiumCatalogServiceLanding({ serviceCode }: { serviceCode: string }) {
+export default async function PremiumCatalogServiceLanding({ serviceCode, canonicalPath }: { serviceCode: string; canonicalPath?: string }) {
   const catalog = activeSmmServices.find((service) => service.code === serviceCode);
   if (!catalog) return null;
   const live = catalog.requiresLiveCatalogFacts ? await getLiveServiceFacts(catalog.platform, catalog.name, catalog.code) : null;
   const service = live?.available ? { ...catalog, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } : catalog;
   const platform = platformMeta[service.platform];
   const orderHref = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
-  const canonical = `${SEO_SITE_URL}/services/${service.code}`;
+  const resolvedCanonicalPath = canonicalPath ?? `/services/${service.code}`;
+  const canonical = `${SEO_SITE_URL}${resolvedCanonicalPath}`;
   const authorityPlatform = service.platform === "x" ? "twitter" : service.platform;
   const supportsAuthorityCluster = ["instagram", "youtube", "facebook", "linkedin", "tiktok", "twitter", "telegram"].includes(authorityPlatform);
   const isTwitterService = authorityPlatform === "twitter";
-  const intentCopy = twitterServiceCopy[service.code];
+  const intentCopy = serviceIntentCopy[service.code];
   const headline = intentCopy?.headline ?? service.name;
   const faqName = intentCopy?.faqName ?? service.name;
   const target = intentCopy?.target ?? `public ${platform.label} destination`;
