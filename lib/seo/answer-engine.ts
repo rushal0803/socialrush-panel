@@ -1,5 +1,5 @@
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
-import { getSeoServicePage, seoServiceSlugs, type SeoServiceSlug } from "@/lib/seo/service-landing-pages";
+import { getSeoServiceCanonicalPath, getSeoServicePage, seoServiceSlugs } from "@/lib/seo/service-landing-pages";
 
 export type AeoTarget = Readonly<{
   path: string;
@@ -22,15 +22,11 @@ const privatePaths = [
   "/billing",
 ] as const;
 
-function canonicalServicePath(slug: SeoServiceSlug) {
-  return slug === "instagram-followers" ? "/buy-instagram-followers-india" : `/${slug}`;
-}
-
 export const aeoTargets: readonly AeoTarget[] = [
   ...seoServiceSlugs.map((slug) => {
     const page = getSeoServicePage(slug);
     return {
-      path: canonicalServicePath(slug),
+      path: getSeoServiceCanonicalPath(slug),
       label: page.displayName,
       kind: "service" as const,
       answerReady: true,
