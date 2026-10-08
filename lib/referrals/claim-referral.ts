@@ -1,8 +1,8 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { normalizeReferralCode } from "@/lib/referrals/code";
 
 export const REFERRAL_CLAIM_WINDOW_DAYS = 7;
-const REFERRAL_CODE_PATTERN = /^SR[A-Z0-9]{10}$/;
 
 export type ReferralClaimStatus =
   | "claimed"
@@ -11,11 +11,6 @@ export type ReferralClaimStatus =
   | "self_referral"
   | "ineligible"
   | "unavailable";
-
-export function normalizeReferralCode(value: string | null | undefined) {
-  const code = value?.trim().toUpperCase() ?? "";
-  return REFERRAL_CODE_PATTERN.test(code) ? code : null;
-}
 
 export async function claimReferralForUser(input: {
   userId: string;
