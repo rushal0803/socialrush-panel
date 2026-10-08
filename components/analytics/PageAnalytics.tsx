@@ -9,6 +9,7 @@ export default function PageAnalytics() {
 
   useEffect(() => {
     primeAttribution();
+    track("page_viewed");
     let event: ClientAnalyticsEvent | null = null;
     if (path.startsWith("/blog/")) event = "blog_article_viewed";
     const market = path.match(/^\/(us|uk|ca|au|ae|sg)$/)?.[1];
