@@ -30,9 +30,7 @@ export default function IndiaCommercialServiceJsonLd({
       name: "India",
     },
     provider: {
-      "@type": "Organization",
-      name: "SocialRUSH",
-      url: SEO_SITE_URL,
+      "@id": `${SEO_SITE_URL}/#organization`,
     },
     ...(service && service.pricePer1000 > 0
       ? {

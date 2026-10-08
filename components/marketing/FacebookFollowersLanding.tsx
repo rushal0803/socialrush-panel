@@ -10,6 +10,7 @@ import SearchDemandPriceSection from "@/components/seo/SearchDemandPriceSection"
 import IndiaPaymentIntentSection from "@/components/seo/IndiaPaymentIntentSection";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
 import OrderRequirementsIntentSection from "@/components/seo/OrderRequirementsIntentSection";
+import AeoQuickAnswer from "@/components/seo/AeoQuickAnswer";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { calculateServiceTotal } from "@/lib/service-pricing";
 import { formatCurrency } from "@/lib/currency";
@@ -68,6 +69,7 @@ export default function FacebookFollowersLanding() {
       </section>
       <section className="border-b border-white/10 bg-[#11141b] px-4 py-4 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold text-slate-300">{trustStrip.map(([Icon,label]) => <span className="flex items-center gap-2" key={label}><Icon className="h-4 w-4 text-orange-300" />{label}</span>)}</div></section>
       <section className="mx-auto max-w-7xl px-4 py-10 sm:px-6"><HeroDashboard price={price} playing={playing} pulse={pulse} /></section>
+      <AeoQuickAnswer serviceName="Facebook Followers" destination="public Facebook page or profile URL" pricePer1000={service.pricePer1000} deliveryTime={service.deliveryTime} refillPolicy={service.refillPolicy} minQuantity={service.minQuantity} />
       <IndiaSearchDemandSection serviceCode="facebook-followers" unitLabel="followers" platformLabel="Facebook" />
       <SearchDemandPriceSection displayName="Facebook Followers" serviceCode="facebook-followers" platform="facebook" pricePer1000={service.pricePer1000} destination="public Facebook page or profile URL" packagesHref="/packages?platform=facebook" tone="dark" />
       <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">See how your Facebook order stays clear</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original, interface-only previewâ€”not a customer page or performance result. Play controls animate demo activity only.</p><button type="button" onClick={() => setPlaying(x => !x)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#1877f2]/35 bg-[#1877f2]/10 px-4 text-sm font-black text-blue-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause preview" : "Play preview"}</button></div><FacebookPreview playing={playing} pulse={pulse} /></div></section>

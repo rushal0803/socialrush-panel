@@ -18,6 +18,7 @@ const links = [
   ["SEO Competitors", "/admin/seo/competitors", "search"],
   ["SEO International", "/admin/seo/international", "search"],
   ["SEO Digital PR", "/admin/seo/digital-pr", "search"],
+  ["SEO AEO", "/admin/seo/aeo", "search"],
   ["Content Distribution", "/admin/crm/distribution", "layers"],
   ["100K Traffic", "/admin/growth/traffic", "grid"],
   ["₹5L Revenue", "/admin/growth/revenue", "wallet"],
