@@ -71,9 +71,22 @@ export function extractCompanyNameFromLinkedInTitle(title: string | undefined) {
 }
 
 export function companySeedFromResult(result: DiscoveryResult): CompanySeed | null {
-  if (!result.url || !isLinkedInCompanyUrl(result.url)) return null;
-  const companyName = extractCompanyNameFromLinkedInTitle(result.title);
-  return companyName ? { companyName, title: result.title || "", url: result.url, description: result.description } : null;
+  if (!result.url) return null;
+  if (isLinkedInCompanyUrl(result.url)) {
+    const companyName = extractCompanyNameFromLinkedInTitle(result.title);
+    return companyName ? { companyName, title: result.title || "", url: result.url, description: result.description } : null;
+  }
+  const website = getDiscoveryWebsite(result.url);
+  if (!website || isLowQualityDiscoveryResult(result)) return null;
+  const rawTitle=(result.title || "")
+    .replace(/\s+(?:\||–|—)\s+.*$/,"")
+    .replace(/\s+-\s+(?:official(?:\s+website)?|home|homepage).*$/i,"")
+    .replace(/\s+/g," ")
+    .trim();
+  if (!rawTitle || rawTitle.length > 80 || HARD_REJECT_PATTERN.test(rawTitle) || ARTICLE_PATTERN.test(rawTitle)) return null;
+  const resolution=resolveOfficialWebsite(rawTitle,result);
+  if (!resolution || resolution.website.domain !== website.domain) return null;
+  return { companyName: rawTitle, title: result.title || "", url: result.url, description: result.description };
 }
 
 export function resolveOfficialWebsite(companyName: string, result: DiscoveryResult): OfficialResolution | null {
