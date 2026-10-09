@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, BookOpen } from "lucide-react";
 
-import { getPlatformAuthorityTargets } from "@/lib/seo/authority-graph";
+import { getGuideAuthorityTargets } from "@/lib/seo/authority-graph";
 import type { ContentPlatform } from "@/lib/seo/content-clusters";
 
 type Props = { platform?: string | null; articleSlug: string };
@@ -15,7 +15,7 @@ function toPlatform(value?: string | null): ContentPlatform | null {
 }
 
 export default function ContentAuthorityBridge({ platform, articleSlug }: Props) {
-  const targets = getPlatformAuthorityTargets(toPlatform(platform)).slice(0, 3);
+  const targets = getGuideAuthorityTargets(toPlatform(platform), `/blog/${articleSlug}`).slice(0, 3);
 
   return (
     <aside

@@ -50,6 +50,19 @@ export const organicAuthorityExcludedPaths = [
   "/services/tiktok-saves",
 ] as const;
 
+export const guideServiceAuthorityMap: Readonly<Record<string, readonly string[]>> = {
+  "/blog/instagram-followers-vs-likes-india": ["/buy-instagram-followers-india", "/instagram-likes"],
+  "/blog/instagram-followers-vs-engagement": ["/buy-instagram-followers-india", "/instagram-likes", "/instagram-views"],
+  "/blog/instagram-views-vs-reach": ["/instagram-views"],
+  "/blog/youtube-subscribers-vs-views-india": ["/youtube-subscribers", "/youtube-views"],
+  "/blog/youtube-views-price-in-india": ["/youtube-views"],
+  "/blog/is-it-safe-to-buy-youtube-views": ["/youtube-views"],
+  "/blog/linkedin-followers-vs-engagement-india": ["/linkedin-followers", "/linkedin-likes"],
+  "/blog/facebook-followers-vs-engagement-india": ["/buy-facebook-followers-india", "/facebook-likes", "/facebook-views"],
+  "/blog/twitter-followers-price-in-india": ["/twitter-followers"],
+  "/blog/telegram-members-price-in-india": ["/telegram-members"],
+} as const;
+
 const excluded = new Set<string>(organicAuthorityExcludedPaths);
 
 function cleanPath(path: string) {
@@ -103,6 +116,41 @@ export function getPlatformAuthorityTargets(platform: ContentPlatform | null): r
   ]);
 }
 
+export function getGuideAuthorityServiceHrefs(platform: ContentPlatform, guidePath: string): readonly string[] {
+  const cluster = contentClusters[platform];
+  const mapped = guideServiceAuthorityMap[canonicalAuthorityPath(guidePath)] ?? [];
+  const clusterServices = new Map(
+    cluster.serviceLinks.map((service) => [canonicalAuthorityPath(service.href), service.href]),
+  );
+  const validMapped = mapped
+    .map((href) => canonicalAuthorityPath(href))
+    .filter((href) => clusterServices.has(href));
+
+  if (validMapped.length) return [...new Set(validMapped)];
+
+  const primary = cluster.serviceLinks[0];
+  return primary ? [canonicalAuthorityPath(primary.href)] : [];
+}
+
+export function getGuideAuthorityTargets(
+  platform: ContentPlatform | null,
+  guidePath: string,
+): readonly AuthorityTarget[] {
+  if (!platform) return getPlatformAuthorityTargets(null);
+
+  const cluster = contentClusters[platform];
+  const serviceHrefs = new Set(getGuideAuthorityServiceHrefs(platform, guidePath));
+
+  return uniqueAuthorityTargets([
+    { label: cluster.hubLabel, href: cluster.hubPath, kind: "hub" },
+    ...cluster.serviceLinks
+      .filter((service) => serviceHrefs.has(canonicalAuthorityPath(service.href)))
+      .map((service) => ({ label: service.label, href: service.href, kind: "service" as const })),
+    { label: "Compare current pricing", href: "/pricing", kind: "pricing" },
+    { label: "Estimate a service cost", href: "/tools/social-media-service-cost-calculator", kind: "tool" },
+  ]);
+}
+
 export function getMoneyPageAuthorityTargets(platform: ContentPlatform): readonly AuthorityTarget[] {
   const cluster = contentClusters[platform];
   const guideTargets = cluster.guideLinks.slice(0, 2).map((guide) => ({
@@ -135,7 +183,7 @@ function pushEdge(edges: AuthorityEdge[], edge: AuthorityEdge) {
 export function buildInternalAuthorityEdges(): readonly AuthorityEdge[] {
   const edges: AuthorityEdge[] = [];
 
-  for (const cluster of Object.values(contentClusters)) {
+  for (const [platform, cluster] of Object.entries(contentClusters) as Array<[ContentPlatform, (typeof contentClusters)[ContentPlatform]]>) {
     for (const service of cluster.serviceLinks) {
       pushEdge(edges, { from: cluster.hubPath, to: service.href, relation: "hub-to-service" });
       pushEdge(edges, { from: service.href, to: cluster.hubPath, relation: "money-to-hub" });
@@ -153,9 +201,8 @@ export function buildInternalAuthorityEdges(): readonly AuthorityEdge[] {
     for (const guide of cluster.guideLinks) {
       pushEdge(edges, { from: cluster.hubPath, to: guide.href, relation: "hub-to-guide" });
       pushEdge(edges, { from: guide.href, to: cluster.hubPath, relation: "guide-to-hub" });
-      const primaryService = cluster.serviceLinks[0];
-      if (primaryService) {
-        pushEdge(edges, { from: guide.href, to: primaryService.href, relation: "guide-to-service" });
+      for (const serviceHref of getGuideAuthorityServiceHrefs(platform, guide.href)) {
+        pushEdge(edges, { from: guide.href, to: serviceHref, relation: "guide-to-service" });
       }
     }
   }
