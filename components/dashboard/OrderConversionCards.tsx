@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { useEffect, useState } from "react";
 import { ArrowRight, CheckCircle2, Clock3, CreditCard, Gift, Trash2 } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
@@ -16,6 +17,40 @@ const readinessSteps = [
   ["2", "Add a public link", "Use the requested public profile, post, video or group link. No password required."],
   ["3", "Review exact total", "Confirm quantity, current price and payment details before anything is placed."],
 ] as const;
+
+const blockerOptions = [
+  ["price", "Price / budget"],
+  ["service", "Not sure which service"],
+  ["payment", "Payment question"],
+  ["trust", "Need more confidence"],
+] as const;
+type BlockerReason = (typeof blockerOptions)[number][0];
+const blockerHelp: Record<BlockerReason, { title: string; body: string; href: string; action: string }> = {
+  price: {
+    title: "Start smaller and review the total first",
+    body: "SocialRUSH preselects a starter quantity where possible. You can edit it and see the exact total before any payment.",
+    href: "/dashboard/new-order?source=first_order_blocker&campaign=price",
+    action: "View starter options",
+  },
+  service: {
+    title: "Tell us what you want to grow",
+    body: "If you are unsure which service fits your goal, support can help you choose without placing an order first.",
+    href: "/dashboard/support",
+    action: "Ask for a recommendation",
+  },
+  payment: {
+    title: "Review payment options before ordering",
+    body: "Your wallet is applied first. If there is a shortfall, the checkout shows the remaining amount and available payment methods before submission.",
+    href: "/dashboard/new-order?source=first_order_blocker&campaign=payment",
+    action: "Review payment flow",
+  },
+  trust: {
+    title: "Check everything before you confirm",
+    body: "No password is required. You review the service, public target, quantity, current price and payment details before the order is placed.",
+    href: "/dashboard/support",
+    action: "Ask a question first",
+  },
+};
 
 export default function OrderConversionCards({
   firstOrder,
@@ -35,6 +70,26 @@ export default function OrderConversionCards({
     hasDraft: Boolean(draft),
     hasCheckoutRecovery: Boolean(checkoutRecovery),
   });
+  const [blocker, setBlocker] = useState<BlockerReason | null>(null);
+
+  useEffect(() => {
+    if (mode !== "first_order") return;
+    try {
+      const saved = window.localStorage.getItem("sr_first_order_blocker_v1");
+      if (blockerOptions.some(([key]) => key === saved)) setBlocker(saved as BlockerReason);
+    } catch {
+      // Optional convenience state only.
+    }
+  }, [mode]);
+
+  const selectBlocker = (reason: BlockerReason) => {
+    setBlocker(reason);
+    try { window.localStorage.setItem("sr_first_order_blocker_v1", reason); } catch {}
+    track("retention_next_action_click", {
+      surface: "first_order_blocker",
+      action: `blocker_${reason}`,
+    });
+  };
 
   if (!mode) return null;
 
@@ -96,6 +151,31 @@ export default function OrderConversionCards({
           </Link>)}
         </div>
       </div> : null}
+
+      <section className="mt-5 rounded-2xl border border-white/10 bg-white/[.025] p-4" aria-label="First order help">
+        <p className="text-xs font-black text-white">What is stopping you from placing your first order?</p>
+        <p className="mt-1 text-[11px] leading-5 text-slate-400">Choose the closest reason. We’ll show the simplest next step.</p>
+        <div className="mt-3 flex flex-wrap gap-2">
+          {blockerOptions.map(([key, label]) => <button
+            key={key}
+            type="button"
+            aria-pressed={blocker === key}
+            onClick={() => selectBlocker(key)}
+            className={`min-h-10 rounded-full border px-3 text-xs font-bold transition ${blocker === key ? "border-orange-400 bg-orange-500/15 text-orange-100" : "border-white/10 bg-black/20 text-slate-300 hover:border-orange-400/35 hover:text-white"}`}
+          >{label}</button>)}
+        </div>
+        {blocker ? <div className="mt-4 rounded-xl border border-orange-400/20 bg-orange-500/[.06] p-3">
+          <p className="text-xs font-black text-orange-100">{blockerHelp[blocker].title}</p>
+          <p className="mt-1 text-[11px] leading-5 text-slate-300">{blockerHelp[blocker].body}</p>
+          <Link
+            href={blockerHelp[blocker].href}
+            onClick={() => track("retention_next_action_click", { surface: "first_order_blocker_help", action: `${blocker}_cta` })}
+            className="mt-3 inline-flex min-h-10 items-center gap-1.5 rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 text-xs font-black text-orange-200 hover:bg-orange-500/15"
+          >
+            {blockerHelp[blocker].action} <ArrowRight className="h-3.5 w-3.5" />
+          </Link>
+        </div> : null}
+      </section>
 
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <Link href="/dashboard/new-order?source=first_order_dashboard" onClick={() => track("new_order_clicked", { step: "first_order_cta", surface: "dashboard_conversion" })} className="btn-dashboard-primary gap-2 px-5 text-sm">
