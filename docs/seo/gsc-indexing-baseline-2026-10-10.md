@@ -17,7 +17,8 @@ Evidence: owner-exported Google Search Console page-indexing drilldowns (10 Octo
 
 1. Fix the currently broken static blog image reference in `blogData.ts`: `instagram-followers-price-in-india.png` is absent from `public/images/blog/`; the existing `instagram-followers-price-india.png` file is referenced instead.
 2. Guard against repeated regressions by checking the static `/images/blog/...` references in blog source files during weekly SEO monitoring.
-3. No edits to service pricing, checkout, customer accounts, payment, wallet, Supabase, canonicals, redirects, robots.txt, or sitemap generation.
+3. Add direct, readable links from the existing public Services hub to four canonical commercial URLs in the 'Discovered – currently not indexed' export: YouTube Watch Hours, YouTube Comments, Instagram Comments, and Facebook Group Members. These links are for useful service navigation and may help discovery, but do not guarantee a crawl or indexing.
+4. No edits to service pricing, checkout, customer accounts, payment, wallet, Supabase, canonicals, redirects, robots.txt, or sitemap generation.
 
 ## Next evidence-led tasks (separate PRs)
 
