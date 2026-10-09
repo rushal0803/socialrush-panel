@@ -8,7 +8,7 @@ import CrawlPriorityLinks from "@/components/seo/CrawlPriorityLinks";
 import InternationalMarketAuthorityLinks from "@/components/seo/InternationalMarketAuthorityLinks";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { createPageMetadata } from "@/lib/seo/metadata";
-import { getLiveServiceFacts } from "@/lib/seo/live-service";
+import { getLiveServiceFactsBatch } from "@/lib/seo/live-service";
 import { activeSmmServices, getServiceById, type SmmService } from "@/lib/smm-service-catalog";
 import { socialMediaServicesIndiaKeywords } from "@/lib/seo/social-media-services-intent";
 import { growthPlatformIndiaKeywords } from "@/lib/seo/growth-platform-intent";
@@ -83,10 +83,14 @@ type ServicesPageProps = {
 export default async function ServicesPage({ searchParams }: ServicesPageProps) {
   const liveOnlyCodes = ["instagram-followers", "instagram-saves", "instagram-shares", "youtube-comments", "youtube-watch-hours", "facebook-group-members", "linkedin-followers", "linkedin-usa-connections", "linkedin-usa-post-likes", "linkedin-usa-endorsements", "linkedin-usa-followers", "linkedin-usa-group-members", "linkedin-usa-custom-comments", "linkedin-usa-reposts", "x-followers", "twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"] as const;
   const databaseNames: Partial<Record<(typeof liveOnlyCodes)[number], string>> = { "instagram-followers": "Instagram Real Followers", "linkedin-followers": "LinkedIn Profile Followers" };
-  const resolvedLiveServices = await Promise.all(liveOnlyCodes.map(async (code) => {
+  const liveFacts = await getLiveServiceFactsBatch(liveOnlyCodes.flatMap(code => {
+    const service = getServiceById(code);
+    return service ? [{ platform: service.platform, name: databaseNames[code] ?? service.name, code }] : [];
+  }));
+  const resolvedLiveServices = liveOnlyCodes.map((code) => {
     const fallback = getServiceById(code);
     if (!fallback) return null;
-    const live = await getLiveServiceFacts(fallback.platform, databaseNames[code] ?? fallback.name, code);
+    const live = liveFacts.get(code);
     if (!live?.available || !Number.isFinite(live.rate) || live.rate <= 0 || live.min <= 0 || live.max < live.min) return null;
     return {
       ...fallback,
@@ -98,7 +102,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
       qualityType: live.qualityType,
       importantInstruction: live.importantInstruction,
     } satisfies SmmService;
-  }));
+  });
   const liveServices = resolvedLiveServices.filter((service): service is SmmService => service !== null);
   const serviceCatalog = activeSmmServices.map((service) => liveServices.find((live) => live.code === service.code) ?? service).filter((service) => !service.requiresLiveCatalogFacts || liveServices.some((live) => live.code === service.code));
   return (
