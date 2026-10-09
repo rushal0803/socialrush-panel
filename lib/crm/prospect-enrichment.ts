@@ -65,7 +65,7 @@ function normalizeDomain(value: string) {
 function domainMatches(candidate: string, businessDomain: string) {
   const emailDomain = normalizeDomain(candidate);
   const root = normalizeDomain(businessDomain);
-  return emailDomain === root || emailDomain.endsWith(\`.\${root}\`);
+  return emailDomain === root || emailDomain.endsWith(`.${root}`);
 }
 
 function cleanEmail(value: string) {
