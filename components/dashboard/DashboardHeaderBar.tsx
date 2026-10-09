@@ -118,12 +118,13 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
           <Link
             href="/dashboard/account"
             aria-label="Open profile"
-            className="hidden h-10 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-3 text-left shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 lg:inline-flex"
+            title={name}
+            className="hidden min-h-11 shrink-0 items-center gap-2 rounded-xl border border-orange-400/20 bg-white/[.06] px-3 text-left shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 lg:inline-flex"
           >
             <span className="grid h-8 w-8 shrink-0 place-items-center rounded-lg bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .3)]">
               {initials}
             </span>
-            <span className="flex min-w-0 flex-col text-left">
+            <span className="hidden min-w-0 max-w-32 flex-col text-left xl:flex">
               <span className="truncate text-sm font-bold text-white">{name}</span>
               <span className="truncate text-[11px] capitalize text-[#A8AFBD]">{role}</span>
             </span>

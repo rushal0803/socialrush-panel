@@ -305,7 +305,7 @@ export default function ProfessionalUpiCheckout() {
 
       {open && intent ? (
         <div className="fixed inset-0 z-[100] flex items-end justify-center bg-black/75 sm:items-center sm:p-4">
-          <div className="max-h-[94vh] w-full overflow-y-auto rounded-t-3xl border border-orange-400/20 bg-[#0f131a] p-5 text-white shadow-2xl sm:max-w-xl sm:rounded-3xl sm:p-6">
+          <div className="max-h-[94dvh] min-w-0 w-full overflow-y-auto rounded-t-3xl border border-orange-400/20 bg-[#0f131a] p-5 text-white shadow-2xl sm:max-w-xl sm:rounded-3xl sm:p-6">
             {successOrder ? (
               <div className="py-7 text-center">
                 <div className="mx-auto grid h-16 w-16 place-items-center rounded-full bg-emerald-500/15 text-3xl">✓</div>
@@ -319,9 +319,9 @@ export default function ProfessionalUpiCheckout() {
                 <div className="flex items-start justify-between gap-4">
                   <div>
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-orange-300">Secure UPI Checkout</p>
-                    <h2 className="mt-2 text-3xl font-black">Pay {amountLabel}</h2>
+                    <h2 className="mt-2 break-words text-2xl font-black sm:text-3xl">Pay {amountLabel}</h2>
                   </div>
-                  <button type="button" onClick={() => setOpen(false)} className="rounded-xl border border-white/10 px-3 py-2 text-sm font-bold text-zinc-300">Close</button>
+                  <button type="button" onClick={() => setOpen(false)} className="min-h-11 shrink-0 rounded-xl border border-white/10 px-3 py-2 text-sm font-bold text-zinc-300">Close</button>
                 </div>
 
                 <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.04] p-4 text-sm">
@@ -370,7 +370,7 @@ export default function ProfessionalUpiCheckout() {
                     <p className="text-xs font-bold uppercase tracking-[0.18em] text-emerald-300">Complete your order</p>
                     <h2 className="mt-2 text-2xl font-black">Payment completed? ✓</h2>
                   </div>
-                  <button type="button" onClick={() => setOpen(false)} className="rounded-xl border border-white/10 px-3 py-2 text-sm font-bold text-zinc-300">Close</button>
+                  <button type="button" onClick={() => setOpen(false)} className="min-h-11 shrink-0 rounded-xl border border-white/10 px-3 py-2 text-sm font-bold text-zinc-300">Close</button>
                 </div>
                 <p className="mt-3 text-sm leading-6 text-zinc-300">Enter the UTR / Transaction ID from your UPI app to confirm your order.</p>
                 <div className="mt-5 rounded-2xl border border-white/10 bg-white/[0.03] p-4">

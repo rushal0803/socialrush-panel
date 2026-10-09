@@ -337,7 +337,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
 
             <form onSubmit={submitSearch} className="mt-4 flex items-center gap-2 rounded-xl border border-sr-border bg-surface-secondary px-3">
               <Search className="h-4 w-4 shrink-0 text-orange-300" aria-hidden="true" />
-              <input value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search services..." className="min-h-11 min-w-0 flex-1 bg-transparent text-sm font-semibold text-white outline-none placeholder:text-content-muted" />
+              <input aria-label="Search services" value={searchQuery} onChange={(event) => setSearchQuery(event.target.value)} placeholder="Search services..." className="min-h-11 min-w-0 flex-1 bg-transparent text-base font-semibold text-white outline-none placeholder:text-content-muted" />
             </form>
 
             <nav className="mt-3 grid gap-1" aria-label="Mobile navigation">

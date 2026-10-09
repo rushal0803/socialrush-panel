@@ -23,7 +23,7 @@ const variantClasses: Record<ButtonVariant, string> = {
 };
 
 const sizeClasses: Record<ButtonSize, string> = {
-  sm: "min-h-9 rounded-lg px-3 py-2 text-xs",
+  sm: "min-h-11 rounded-lg px-3 py-2 text-xs sm:min-h-9",
   md: "min-h-11 rounded-sr-control px-5 py-3 text-sm",
   lg: "min-h-12 rounded-sr-control px-6 py-3.5 text-sm",
 };
@@ -48,7 +48,7 @@ export function Button({
       disabled={isDisabled}
       aria-busy={loading || undefined}
       className={[
-        "inline-flex items-center justify-center gap-2 font-bold sr-motion-press",
+        "inline-flex min-w-0 max-w-full items-center justify-center gap-2 whitespace-normal font-bold sr-motion-press",
         "transition-[transform,box-shadow,border-color,background-color,color,opacity] duration-normal ease-sr-out",
         "active:translate-y-0 active:scale-[0.985]",
         "focus-visible:outline-none focus-visible:shadow-sr-focus",
@@ -70,7 +70,7 @@ export function Button({
       ) : (
         leftIcon
       )}
-      <span>{children}</span>
+      <span className="min-w-0 [overflow-wrap:anywhere]">{children}</span>
       {!loading && rightIcon}
     </button>
   );

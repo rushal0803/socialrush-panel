@@ -95,7 +95,7 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en-IN">
-      <body className="overflow-x-clip bg-[#07080D] text-white">
+      <body className="bg-[#07080D] text-white">
         <ClientProviders>
           <script
             type="application/ld+json"

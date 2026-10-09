@@ -40,9 +40,9 @@
 
   .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > h1) {
     margin-top: 1rem;
-    font-size: clamp(2.35rem, 11vw, 3rem);
-    line-height: 0.98;
-    letter-spacing: -0.05em;
+    font-size: clamp(2rem, 9vw, 2.75rem);
+    line-height: 1.08;
+    letter-spacing: -0.035em;
   }
 
   .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > p:nth-of-type(2)) {
@@ -84,14 +84,14 @@
 
   .mobilePolish :global(.premium-homepage > section:first-child > .relative > div:first-child > div:nth-of-type(2) > a) {
     display: inline-flex;
-    min-height: 34px;
+    min-height: 44px;
     align-items: center;
     justify-content: center;
     border: 1px solid rgba(255, 255, 255, 0.08);
     border-radius: 10px;
     background: rgba(255, 255, 255, 0.035);
     padding-inline: 0.65rem;
-    font-size: 10px;
+    font-size: 12px;
     line-height: 1.25;
     text-align: center;
   }

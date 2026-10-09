@@ -1,0 +1,38 @@
+[
+  {
+    "route": "/",
+    "zoom": 2,
+    "beforeWidth": 1262,
+    "width": 631,
+    "height": 432,
+    "scroll": 631,
+    "pixelRatio": 2
+  },
+  {
+    "route": "/services",
+    "zoom": 2,
+    "beforeWidth": 1262,
+    "width": 631,
+    "height": 432,
+    "scroll": 631,
+    "pixelRatio": 2
+  },
+  {
+    "route": "/packages",
+    "zoom": 2,
+    "beforeWidth": 1262,
+    "width": 631,
+    "height": 432,
+    "scroll": 631,
+    "pixelRatio": 2
+  },
+  {
+    "route": "/login",
+    "zoom": 2,
+    "beforeWidth": 1262,
+    "width": 631,
+    "height": 432,
+    "scroll": 631,
+    "pixelRatio": 2
+  }
+]

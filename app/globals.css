@@ -27,6 +27,10 @@
   --sr-shadow-card: 0 18px 46px rgba(0, 0, 0, 0.24);
   --sr-shadow-button: 0 12px 26px rgba(255, 118, 0, 0.18);
   --sr-content-width: 80rem;
+  --sr-page-gutter: clamp(1rem, 3vw, 2rem);
+  --sr-section-space: clamp(2.5rem, 5vw, 5rem);
+  --sr-heading-page: clamp(1.875rem, 1.25rem + 3vw, 3.75rem);
+  --sr-heading-section: clamp(1.5rem, 1.125rem + 2vw, 2.5rem);
   --brand-orange: var(--sr-orange);
   --brand-orange-bright: var(--sr-orange-bright);
   --brand-gold: var(--sr-gold);
@@ -53,7 +57,6 @@ body {
     sans-serif;
   font-feature-settings: "cv02", "cv03", "cv04", "cv11";
   line-height: 1.6;
-  overflow-x: hidden;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
@@ -713,21 +716,21 @@ p {
   color: #d1d5db !important;
 }
 
-.dashboard-shell [class*="text-slate-700"],
-.dashboard-shell [class*="text-slate-600"] {
+.dashboard-shell [class*="text-slate-700"]:not([data-qr-plate] *),
+.dashboard-shell [class*="text-slate-600"]:not([data-qr-plate] *) {
   color: #d1d5db !important;
 }
 
-.dashboard-shell [class*="text-slate-500"],
-.dashboard-shell [class*="text-slate-400"],
+.dashboard-shell [class*="text-slate-500"]:not([data-qr-plate] *),
+.dashboard-shell [class*="text-slate-400"]:not([data-qr-plate] *),
 .dashboard-shell [class*="text-white/40"],
 .dashboard-shell [class*="text-white/50"] {
   color: #9ca3af !important;
   opacity: 1 !important;
 }
 
-.dashboard-shell [class*="bg-white/"],
-.dashboard-shell [class~="bg-white"] {
+.dashboard-shell [class*="bg-white/"]:not([data-qr-plate]),
+.dashboard-shell [class~="bg-white"]:not([data-qr-plate]) {
   background-color: rgba(17, 17, 17, 0.94) !important;
 }
 
@@ -1394,7 +1397,6 @@ p {
 
   body {
     min-width: 0;
-    overflow-x: clip;
   }
 
   main,
@@ -1614,10 +1616,18 @@ p {
 @media(prefers-reduced-motion:reduce){.ticker-content,.float-card,.status-dot{animation:none!important}}
 
 /* Responsive guardrails shared by public and customer-facing surfaces. */
-html { overflow-x: clip; }
+html { scroll-padding-top: 6rem; }
 main, section, article, aside, form, header, footer { min-width: 0; }
 button, a, input, select, textarea { max-width: 100%; }
 input, select, textarea { font-size: max(16px, 1em); }
+@media (max-width: 767px) {
+  /* Scope above utility specificity so text-sm cannot undo mobile input sizing.
+     A rem-based lower bound also respects increased browser font settings. */
+  .public-dark :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea),
+  .dashboard-shell :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) {
+    font-size: max(1rem, 16px);
+  }
+}
 .sr-primary, .sr-secondary { min-height: 44px; }
 
 @media (min-width: 1024px) {

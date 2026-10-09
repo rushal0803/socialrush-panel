@@ -13,7 +13,7 @@ export default function PublicShell({
   serviceExperience?: boolean;
 }) {
   return (
-    <div className={`public-dark sr-page relative isolate min-h-screen overflow-x-clip bg-surface-page text-content-primary ${serviceExperience ? serviceStyles.shell : ""}`}>
+    <div className={`public-dark sr-page relative isolate min-h-screen bg-surface-page text-content-primary ${serviceExperience ? serviceStyles.shell : ""}`}>
       <a
         href="#main-content"
         className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"

@@ -945,7 +945,7 @@ export default function NewOrderPage() {
           <span aria-hidden="true" className="absolute left-[12%] right-[12%] top-[1.65rem] h-px bg-white/10" />
           {[[1, "Platform"], [2, "Service"], [3, "Details"], [4, "Review & Pay"]].map(([number, title]) => <button key={number} type="button" onClick={() => moveTo(Number(number))} disabled={Number(number) > currentStep} className="min-w-0 disabled:cursor-default"><ProgressItem number={Number(number)} title={String(title)} state={progressState(Number(number), currentStep)} /></button>)}
         </nav>
-        <div className="grid gap-6 lg:grid-cols-[minmax(0,1fr)_290px]">
+        <div className="grid gap-6 xl:grid-cols-[minmax(0,1fr)_290px]">
           <section className="rounded-3xl border border-white/10 bg-[#111111] p-4 shadow-[0_28px_70px_-45px_rgba(0,0,0,.9)] sm:p-6">
             {currentStep === 1 ? <div>
               <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 1 of 4</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a platform</h2><p className="mt-2 text-sm text-[#9CA3AF]">Select where you want your campaign to run.</p>

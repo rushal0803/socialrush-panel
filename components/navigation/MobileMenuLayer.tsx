@@ -35,6 +35,18 @@ export default function MobileMenuLayer({
   useEffect(() => {
     if (!open) return;
 
+    // A CSS-hidden dialog must not leave the document locked after rotation,
+    // browser zoom, or resizing across the desktop navigation breakpoint.
+    const desktop = window.matchMedia(`(min-width: ${hiddenFrom === "xl" ? 1280 : 1024}px)`);
+    const closeOnDesktop = () => { if (desktop.matches) onClose(); };
+    closeOnDesktop();
+    desktop.addEventListener("change", closeOnDesktop);
+    return () => desktop.removeEventListener("change", closeOnDesktop);
+  }, [hiddenFrom, onClose, open]);
+
+  useEffect(() => {
+    if (!open) return;
+
     const handleEscape = (event: KeyboardEvent) => {
       if (event.key === "Escape") onClose();
     };
@@ -85,20 +97,19 @@ export default function MobileMenuLayer({
   };
 
   const trapFocus = (event: ReactKeyboardEvent<HTMLDivElement>) => {
-    if (variant !== "drawer" || event.key !== "Tab") return;
-    const focusable = dialogRef.current?.querySelectorAll<HTMLElement>(
-      'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])',
-    );
+    if (event.key !== "Tab") return;
+    const focusable = Array.from(dialogRef.current?.querySelectorAll<HTMLElement>(
+      'a[href], button:not([disabled]), input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]',
+    ) ?? []).filter(element => element.tabIndex >= 0 && !element.matches(':disabled') && element.getClientRects().length > 0 && !element.closest('[inert], [aria-hidden="true"]'));
     if (!focusable?.length) return;
-    const first = focusable[0];
-    const last = focusable[focusable.length - 1];
-    if (event.shiftKey && document.activeElement === first) {
-      event.preventDefault();
-      last.focus();
-    } else if (!event.shiftKey && document.activeElement === last) {
-      event.preventDefault();
-      first.focus();
-    }
+    // Explicit traversal also contains focus when Safari's native Tab behavior
+    // skips links that are part of this dialog's keyboard navigation.
+    const activeIndex = focusable.indexOf(document.activeElement as HTMLElement);
+    const nextIndex = activeIndex < 0
+      ? (event.shiftKey ? focusable.length - 1 : 0)
+      : (activeIndex + (event.shiftKey ? -1 : 1) + focusable.length) % focusable.length;
+    event.preventDefault();
+    focusable[nextIndex].focus();
   };
 
   const visibilityClass = hiddenFrom === "xl" ? "xl:hidden" : "lg:hidden";

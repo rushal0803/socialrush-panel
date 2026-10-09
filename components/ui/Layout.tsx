@@ -22,7 +22,7 @@ export function Container({
   return (
     <div
       className={[
-        "mx-auto w-full px-4 sm:px-6 lg:px-8",
+        "mx-auto min-w-0 w-full px-[var(--sr-page-gutter)]",
         sizeClasses[size],
         className,
       ].filter(Boolean).join(" ")}
@@ -40,7 +40,7 @@ export type SectionProps = HTMLAttributes<HTMLElement> & {
 export function Section({ className = "", children, ...props }: SectionProps) {
   return (
     <section
-      className={["py-14 sm:py-16 lg:py-24", className].filter(Boolean).join(" ")}
+      className={["py-[var(--sr-section-space)]", className].filter(Boolean).join(" ")}
       {...props}
     >
       {children}

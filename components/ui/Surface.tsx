@@ -26,7 +26,7 @@ export function Surface({
   return (
     <div
       className={[
-        "rounded-sr-card border shadow-sr-card",
+        "min-w-0 rounded-sr-card border shadow-sr-card",
         interactive ? "sr-motion-lift sr-motion-shimmer" : "",
         toneClasses[tone],
         interactive
