@@ -15,6 +15,11 @@ export const searchPriorityTargets: readonly SearchPriorityTarget[] = [
   { slug: "buy-telegram-members-india", label: "Telegram Members India", intent: "member pricing and public-link ordering" },
   { slug: "buy-instagram-likes-india", label: "Instagram Likes India", intent: "post and Reel like pricing" },
   { slug: "buy-youtube-views-india", label: "YouTube Views India", intent: "video view pricing" },
+  // Public commercial URLs discovered but not yet crawled in the 10 Oct 2026 GSC export.
+  { slug: "buy-youtube-watch-hours-india", label: "YouTube Watch Hours India", intent: "public-video watch-hour requirements" },
+  { slug: "buy-youtube-comments-india", label: "YouTube Comments India", intent: "video comment service details" },
+  { slug: "buy-instagram-comments-india", label: "Instagram Comments India", intent: "post comment service details" },
+  { slug: "buy-facebook-group-members-india", label: "Facebook Group Members India", intent: "community member service requirements" },
 ] as const;
 
 export const crawlPriorityServiceLinks = searchPriorityTargets.map((target) => ({
