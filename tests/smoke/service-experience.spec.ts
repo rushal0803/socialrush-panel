@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { expectControlsSeparated, expectUnobscuredControl } from './support-layout';
 import fs from "node:fs";
 import os from "node:os";
 import path from "node:path";
@@ -53,11 +54,19 @@ test("mobile order action clears support and can be dismissed", async ({ page })
   await page.locator("footer").scrollIntoViewIfNeeded();
   const bar = page.locator("[data-service-mobile-action]");
   await expect(bar).toBeVisible();
-  const barRect = await bar.boundingBox();
-  const supportRect = await page.getByRole("link", { name: "Open SocialRUSH WhatsApp support" }).boundingBox();
-  if (supportRect && barRect) expect(barRect.x + barRect.width).toBeLessThanOrEqual(supportRect.x);
+  const support = page.getByRole("link", { name: "Open SocialRUSH WhatsApp support" });
+  await expect(support).toBeVisible();
+  await expectControlsSeparated(bar, support);
+  await support.scrollIntoViewIfNeeded();
+  await expectControlsSeparated(bar, support);
+  await expectUnobscuredControl(support);
+  await expectUnobscuredControl(bar.getByRole('link', { name: /Start order/ }));
+  await expectUnobscuredControl(bar.getByRole('button', { name: 'Dismiss mobile order bar' }));
+  await expect(support).toHaveAttribute('href', /^https:\/\/wa\.me\//);
+  await page.screenshot({ path: 'artifacts/premium-responsive/ci622-service-support-after.png' });
   await bar.getByRole("button", { name: "Dismiss mobile order bar" }).click();
   await expect(bar).toHaveCount(0);
+  await expectUnobscuredControl(support);
 });
 
 for (const service of [

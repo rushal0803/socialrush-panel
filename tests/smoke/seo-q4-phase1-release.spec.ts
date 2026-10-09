@@ -136,7 +136,7 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
           headers: { RSC: "1", "Next-Router-Prefetch": "1" }, maxRedirects: 0,
         });
         expect(raw.status()).toBe(307);
-        const destination = new URL(raw.headers()["location"]);
+        const destination = new URL(raw.headers()["location"], baseURL);
         expect(destination.origin).toBe(new URL(baseURL!).origin);
         expect(destination.pathname).toBe("/login");
         expect(raw.headers()["content-security-policy"]).toContain("upgrade-insecure-requests");

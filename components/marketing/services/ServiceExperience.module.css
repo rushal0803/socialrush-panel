@@ -85,6 +85,9 @@
 .journeySupport { margin-top: 32px; padding-top: 20px; border-top: 1px solid #ffffff15; font-size: 13px; line-height: 1.7; color: #b9c1cd; }
 .journeySupport a { color: #ffb16a; text-decoration: underline; text-underline-offset: 4px; }
 @media (max-width: 1023px) {
+  /* Inline support must remain above the fixed order bar at the document end,
+     including its extra currency note and the device's bottom safe area. */
+  :global(body):has(.shell) :global(a[aria-label="Open SocialRUSH WhatsApp support"]) { margin-bottom: calc(7rem + env(safe-area-inset-bottom)); }
 .shell.shell { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
   .page.page :global(.service-money-page > section:first-of-type) { padding-top: 24px; padding-bottom: 32px; }
   .page.page :global([class*="grid-cols-"] > *) { overflow-wrap: anywhere; }

@@ -109,10 +109,11 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
           </Link>
           <Link
             href="/dashboard/add-funds"
-            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7600] to-[#ff9a2e] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,118,0,.5)] transition hover:-translate-y-0.5 lg:w-auto lg:px-4"
+            aria-label="Add Funds"
+            className="inline-flex h-11 w-11 shrink-0 items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-[#ff7600] to-[#ff9a2e] text-sm font-black text-white shadow-[0_14px_30px_-16px_rgba(255,118,0,.5)] transition hover:-translate-y-0.5 xl:w-auto xl:px-4"
           >
             <Wallet className="h-4 w-4" />
-            <span className="hidden lg:inline">Add Funds</span>
+            <span className="hidden xl:inline">Add Funds</span>
           </Link>
 
           <Link

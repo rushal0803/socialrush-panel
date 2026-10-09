@@ -9,11 +9,13 @@ test("Phase 22 keeps dashboard mobile drawer links readable outside dashboard sh
   assert.ok(source.includes('mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white"'));
 });
 
-test("Phase 22 compacts the dashboard header below the desktop sidebar breakpoint", () => {
+test("Phase 22 compacts the dashboard header through the sidebar's narrow desktop widths", () => {
   const source = read("components/dashboard/DashboardHeaderBar.tsx");
   assert.match(source, /BrandMark priority className="min-\[430px\]:hidden lg:hidden"/);
   assert.match(source, /hidden min-\[430px\]:inline-flex lg:hidden/);
-  assert.match(source, /hidden lg:inline">Add Funds<\/span>/);
+  assert.match(source, /hidden xl:inline">Add Funds<\/span>/);
+  assert.match(source, /aria-label="Add Funds"/);
+  assert.match(source, /h-11 w-11 shrink-0/);
   assert.match(source, /lg:inline-flex/);
 });
 

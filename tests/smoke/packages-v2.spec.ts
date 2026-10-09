@@ -48,7 +48,8 @@ for (const width of [320,360,375,390,412,430,768,1024,1280,1440]) {
       const checkLayout = async () => {
         const result = await page.evaluate(() => {
           const root = document.querySelector(".package-experience")!;
-          return { overflow: document.documentElement.scrollWidth > innerWidth, outside: [...root.querySelectorAll("button,input,article")].filter(el => { const rect = el.getBoundingClientRect(); return rect.width && (rect.left < -1 || rect.right > innerWidth+1); }).map(el => el.textContent?.slice(0,60)) };
+          const controls = [...root.querySelectorAll("button,input,article"), ...document.querySelectorAll('.dashboard-shell header a, .dashboard-shell header button')];
+          return { overflow: document.documentElement.scrollWidth > innerWidth, outside: controls.filter(el => { const rect = el.getBoundingClientRect(); return rect.width && (rect.left < -1 || rect.right > innerWidth+1); }).map(el => el.textContent?.slice(0,60)) };
         });
         expect(result).toEqual({ overflow: false, outside: [] });
         const contrast = await page.locator("[data-package-card] button").evaluateAll(buttons => {
@@ -61,6 +62,13 @@ for (const width of [320,360,375,390,412,430,768,1024,1280,1440]) {
         for (const ratio of contrast) expect(ratio).toBeGreaterThanOrEqual(4.5);
       };
       await checkLayout();
+      if (variant === "dashboard" && width === 1024) {
+        // Wider fallback fonts reproduced the header overflow locally. Keep
+        // checking the full document and header controls, without root clipping.
+        const fallback = await page.addStyleTag({ content: 'body { font-family: Verdana, sans-serif !important; }' });
+        await checkLayout();
+        await fallback.evaluate(element => element.parentNode?.removeChild(element));
+      }
       await page.screenshot({ path: `artifacts/packages-v2/${variant}-${width}-top.png`, fullPage: true });
       await page.getByRole("button", { name: "Choose Growth package" }).click();
       await expect(page.locator("#package-checkout")).toBeVisible();
