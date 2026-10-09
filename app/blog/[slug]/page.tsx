@@ -11,7 +11,7 @@ import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import TrackedLink from "@/components/analytics/TrackedLink";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
 import { getContentCluster } from "@/lib/seo/content-clusters";
-import { getPlatformAuthorityTargets } from "@/lib/seo/authority-graph";
+import { getGuideAuthorityTargets } from "@/lib/seo/authority-graph";
 
 const whatsappUrl =
   "https://wa.me/918860330771?text=Hi%20SocialRUSH%2C%20I%20need%20help%20choosing%20a%20social%20media%20growth%20service";
@@ -129,7 +129,7 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const articleWordCount = getArticleWords(article);
   const articlePlatform = getBlogPlatform(article);
   const contentCluster = getContentCluster(articlePlatform);
-  const authorityTargets = getPlatformAuthorityTargets(articlePlatform);
+  const authorityTargets = getGuideAuthorityTargets(articlePlatform, `/blog/${article.slug}`);
   const authorityTargetHrefs = new Set(authorityTargets.map((target) => target.href));
   const relatedArticles = uniqueArticlesBySlug(blogArticles)
     .filter((candidate) => candidate.slug !== article.slug)
