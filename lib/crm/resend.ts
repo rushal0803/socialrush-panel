@@ -265,11 +265,14 @@ export async function processCrmOutreachAutopilot() {
   const healthPause=await pauseAutopilotForHealth(db,typedSettings);
   if(healthPause)return {status:"auto_paused",reason:healthPause,processed:0,enrolled:0,queued:0,outcomes:[] as AutopilotOutcome[]};
 
-  const [{data:enrolled,error:enrollError},{data:queued,error:queueError}]=await Promise.all([
-    db.rpc("refresh_crm_outreach_autopilot"),
-    db.rpc("enqueue_due_crm_outreach_messages"),
-  ]);
+  // Refresh discovery-derived lead state before enrollment. These calls are
+  // deliberately sequential: a newly promoted/scored lead must exist before
+  // enrollment, and a new enrollment must exist before its first message is queued.
+  const {data:promoted,error:pipelineError}=await db.rpc("refresh_crm_prospecting_pipeline");
+  if(pipelineError)throw pipelineError;
+  const {data:enrolled,error:enrollError}=await db.rpc("refresh_crm_outreach_autopilot");
   if(enrollError)throw enrollError;
+  const {data:queued,error:queueError}=await db.rpc("enqueue_due_crm_outreach_messages");
   if(queueError)throw queueError;
 
   const outcomes:AutopilotOutcome[]=[];
@@ -381,5 +384,5 @@ export async function processCrmOutreachAutopilot() {
       outcomes.push({id:message.id,outcome:"failed",detail});
     }
   }
-  return {status:"ok",processed:outcomes.length,enrolled:Number(enrolled||0),queued:Number(queued||0),outcomes};
+  return {status:"ok",processed:outcomes.length,promoted:Number(promoted||0),enrolled:Number(enrolled||0),queued:Number(queued||0),outcomes};
 }
