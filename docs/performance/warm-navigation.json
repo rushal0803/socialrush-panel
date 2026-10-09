@@ -1,0 +1,247 @@
+{
+  "note": "After-only, destination HTTP cache warmed by prior visits, real Link clicks, synthetic server. Does not establish before/after improvement.",
+  "samples": [
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "run": 0,
+      "ms": 250.17540000000008,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "run": 1,
+      "ms": 174.7479000000003,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "run": 2,
+      "ms": 203.39680000000044,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "run": 3,
+      "ms": 181.3153999999995,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "run": 4,
+      "ms": 320.5188999999991,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/packages",
+      "run": 0,
+      "ms": 156.67879999999786,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/packages",
+      "run": 1,
+      "ms": 133.54499999999825,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/packages",
+      "run": 2,
+      "ms": 120.48549999999886,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/packages",
+      "run": 3,
+      "ms": 116.96509999999762,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/packages",
+      "run": 4,
+      "ms": 119.08910000000105,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/login",
+      "run": 0,
+      "ms": 661.2703999999976,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/login",
+      "run": 1,
+      "ms": 635.2656999999999,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/login",
+      "run": 2,
+      "ms": 641.3912999999993,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/login",
+      "run": 3,
+      "ms": 654.241399999999,
+      "clientNavigation": true
+    },
+    {
+      "profile": "desktop",
+      "route": "/login",
+      "run": 4,
+      "ms": 643.1271000000015,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "run": 0,
+      "ms": 2709.5587000000014,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "run": 1,
+      "ms": 2284.852399999996,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "run": 2,
+      "ms": 2056.5962,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "run": 3,
+      "ms": 2009.6979000000065,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "run": 4,
+      "ms": 2006.3270000000048,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "run": 0,
+      "ms": 1837.0383000000002,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "run": 1,
+      "ms": 1447.4952000000048,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "run": 2,
+      "ms": 1449.9465000000055,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "run": 3,
+      "ms": 1500.205700000006,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "run": 4,
+      "ms": 1467.3034000000043,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/login",
+      "run": 0,
+      "ms": 1605.5589000000036,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/login",
+      "run": 1,
+      "ms": 1372.9903999999951,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/login",
+      "run": 2,
+      "ms": 1348.6837999999989,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/login",
+      "run": 3,
+      "ms": 1317.6977999999945,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/login",
+      "run": 4,
+      "ms": 1534.9096999999892,
+      "clientNavigation": true
+    }
+  ],
+  "summary": [
+    {
+      "key": "desktop|/services",
+      "median": 203.39680000000044,
+      "p75": 250.17540000000008
+    },
+    {
+      "key": "desktop|/packages",
+      "median": 120.48549999999886,
+      "p75": 133.54499999999825
+    },
+    {
+      "key": "desktop|/login",
+      "median": 643.1271000000015,
+      "p75": 654.241399999999
+    },
+    {
+      "key": "mobile-4g|/services",
+      "median": 2056.5962,
+      "p75": 2284.852399999996
+    },
+    {
+      "key": "mobile-4g|/packages",
+      "median": 1467.3034000000043,
+      "p75": 1500.205700000006
+    },
+    {
+      "key": "mobile-4g|/login",
+      "median": 1372.9903999999951,
+      "p75": 1534.9096999999892
+    }
+  ]
+}

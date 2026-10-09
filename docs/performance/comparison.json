@@ -1,0 +1,2199 @@
+{
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "browser": "151.0.7922.34",
+    "mobile": "390x844, 1.6Mbps down, 750Kbps up, 150ms RTT, 4x CPU",
+    "privateData": "isolated synthetic backend; not production API latency",
+    "observationMs": 3000,
+    "serviceWorker": "blocked",
+    "analytics": "DNT enabled",
+    "note": "Cold browser cache, warm server cache. LCP/CLS lab samples are not field p75 or INP. No hydration estimate inferred from load time."
+  },
+  "comparison": [
+    {
+      "key": "desktop|/|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 327.80000019073486,
+          "p75": 328.90000009536743
+        },
+        "after": {
+          "median": 327.69999980926514,
+          "p75": 332.40000009536743
+        },
+        "medianChange": -0.10000038146972656,
+        "percentChange": 0
+      },
+      "fcp": {
+        "before": {
+          "median": 628,
+          "p75": 668
+        },
+        "after": {
+          "median": 640,
+          "p75": 880
+        },
+        "medianChange": 12,
+        "percentChange": 1.9
+      },
+      "lcp": {
+        "before": {
+          "median": 628,
+          "p75": 668
+        },
+        "after": {
+          "median": 640,
+          "p75": 880
+        },
+        "medianChange": 12,
+        "percentChange": 1.9
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 339517,
+          "p75": 339517
+        },
+        "after": {
+          "median": 328120,
+          "p75": 328120
+        },
+        "medianChange": -11397,
+        "percentChange": -3.4
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 39,
+          "p75": 39
+        },
+        "after": {
+          "median": 41,
+          "p75": 41
+        },
+        "medianChange": 2,
+        "percentChange": 5.1
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 8.400000095367432,
+          "p75": 11
+        },
+        "after": {
+          "median": 8.299999952316284,
+          "p75": 9.700000047683716
+        },
+        "medianChange": -0.10000014305114746,
+        "percentChange": -1.2
+      },
+      "fcp": {
+        "before": {
+          "median": 192,
+          "p75": 200
+        },
+        "after": {
+          "median": 212,
+          "p75": 216
+        },
+        "medianChange": 20,
+        "percentChange": 10.4
+      },
+      "lcp": {
+        "before": {
+          "median": 192,
+          "p75": 200
+        },
+        "after": {
+          "median": 212,
+          "p75": 216
+        },
+        "medianChange": 20,
+        "percentChange": 10.4
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 38,
+          "p75": 38
+        },
+        "after": {
+          "median": 40,
+          "p75": 40
+        },
+        "medianChange": 2,
+        "percentChange": 5.3
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/ -> /services|warm-transition",
+      "count": 5,
+      "ttfb": null,
+      "fcp": null,
+      "lcp": null,
+      "cls": null,
+      "jsBytes": null,
+      "imageBytes": null,
+      "requestCount": null,
+      "transitionMs": {
+        "before": {
+          "median": 724.8868000000002,
+          "p75": 734.2900000000081
+        },
+        "after": {
+          "median": 693.0714000000007,
+          "p75": 856.6669000000002
+        },
+        "medianChange": -31.8153999999995,
+        "percentChange": -4.4
+      }
+    },
+    {
+      "key": "desktop|/services|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 363.7999999523163,
+          "p75": 371.7999999523163
+        },
+        "after": {
+          "median": 363.60000014305115,
+          "p75": 373.5
+        },
+        "medianChange": -0.19999980926513672,
+        "percentChange": -0.1
+      },
+      "fcp": {
+        "before": {
+          "median": 624,
+          "p75": 664
+        },
+        "after": {
+          "median": 592,
+          "p75": 608
+        },
+        "medianChange": -32,
+        "percentChange": -5.1
+      },
+      "lcp": {
+        "before": {
+          "median": 624,
+          "p75": 664
+        },
+        "after": {
+          "median": 592,
+          "p75": 608
+        },
+        "medianChange": -32,
+        "percentChange": -5.1
+      },
+      "cls": {
+        "before": {
+          "median": 0.002308824159807956,
+          "p75": 0.002308824159807956
+        },
+        "after": {
+          "median": 0.002308824159807956,
+          "p75": 0.002308824159807956
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 524667,
+          "p75": 524667
+        },
+        "after": {
+          "median": 291024,
+          "p75": 291024
+        },
+        "medianChange": -233643,
+        "percentChange": -44.5
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 56,
+          "p75": 56
+        },
+        "after": {
+          "median": 40,
+          "p75": 40
+        },
+        "medianChange": -16,
+        "percentChange": -28.6
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/services|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 61.299999952316284,
+          "p75": 64.90000009536743
+        },
+        "after": {
+          "median": 56.09999990463257,
+          "p75": 57.299999952316284
+        },
+        "medianChange": -5.200000047683716,
+        "percentChange": -8.5
+      },
+      "fcp": {
+        "before": {
+          "median": 240,
+          "p75": 252
+        },
+        "after": {
+          "median": 224,
+          "p75": 264
+        },
+        "medianChange": -16,
+        "percentChange": -6.7
+      },
+      "lcp": {
+        "before": {
+          "median": 240,
+          "p75": 252
+        },
+        "after": {
+          "median": 224,
+          "p75": 264
+        },
+        "medianChange": -16,
+        "percentChange": -6.7
+      },
+      "cls": {
+        "before": {
+          "median": 0.002308824159807956,
+          "p75": 0.002308824159807956
+        },
+        "after": {
+          "median": 0.002308824159807956,
+          "p75": 0.002308824159807956
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 55,
+          "p75": 55
+        },
+        "after": {
+          "median": 39,
+          "p75": 39
+        },
+        "medianChange": -16,
+        "percentChange": -29.1
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/packages|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 351.90000009536743,
+          "p75": 354.39999985694885
+        },
+        "after": {
+          "median": 364.7000000476837,
+          "p75": 373.89999985694885
+        },
+        "medianChange": 12.799999952316284,
+        "percentChange": 3.6
+      },
+      "fcp": {
+        "before": {
+          "median": 524,
+          "p75": 532
+        },
+        "after": {
+          "median": 520,
+          "p75": 544
+        },
+        "medianChange": -4,
+        "percentChange": -0.8
+      },
+      "lcp": {
+        "before": {
+          "median": 524,
+          "p75": 532
+        },
+        "after": {
+          "median": 520,
+          "p75": 544
+        },
+        "medianChange": -4,
+        "percentChange": -0.8
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 299826,
+          "p75": 299826
+        },
+        "after": {
+          "median": 288429,
+          "p75": 288429
+        },
+        "medianChange": -11397,
+        "percentChange": -3.8
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 35,
+          "p75": 35
+        },
+        "after": {
+          "median": 37,
+          "p75": 37
+        },
+        "medianChange": 2,
+        "percentChange": 5.7
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/packages|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 44.700000047683716,
+          "p75": 44.799999952316284
+        },
+        "after": {
+          "median": 37.39999985694885,
+          "p75": 53.09999990463257
+        },
+        "medianChange": -7.300000190734863,
+        "percentChange": -16.3
+      },
+      "fcp": {
+        "before": {
+          "median": 160,
+          "p75": 164
+        },
+        "after": {
+          "median": 168,
+          "p75": 184
+        },
+        "medianChange": 8,
+        "percentChange": 5
+      },
+      "lcp": {
+        "before": {
+          "median": 160,
+          "p75": 164
+        },
+        "after": {
+          "median": 168,
+          "p75": 184
+        },
+        "medianChange": 8,
+        "percentChange": 5
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 34,
+          "p75": 34
+        },
+        "after": {
+          "median": 36,
+          "p75": 36
+        },
+        "medianChange": 2,
+        "percentChange": 5.9
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/dashboard|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 348.2999999523163,
+          "p75": 352.09999990463257
+        },
+        "after": {
+          "median": 352,
+          "p75": 395.7000000476837
+        },
+        "medianChange": 3.700000047683716,
+        "percentChange": 1.1
+      },
+      "fcp": {
+        "before": {
+          "median": 588,
+          "p75": 624
+        },
+        "after": {
+          "median": 588,
+          "p75": 604
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "lcp": {
+        "before": {
+          "median": 588,
+          "p75": 628
+        },
+        "after": {
+          "median": 604,
+          "p75": 612
+        },
+        "medianChange": 16,
+        "percentChange": 2.7
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320368,
+          "p75": 320368
+        },
+        "after": {
+          "median": 324242,
+          "p75": 324242
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 50,
+          "p75": 50
+        },
+        "after": {
+          "median": 54,
+          "p75": 54
+        },
+        "medianChange": 4,
+        "percentChange": 8
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/dashboard|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 43.09999990463257,
+          "p75": 43.200000047683716
+        },
+        "after": {
+          "median": 38.299999952316284,
+          "p75": 57.30000019073486
+        },
+        "medianChange": -4.799999952316284,
+        "percentChange": -11.1
+      },
+      "fcp": {
+        "before": {
+          "median": 348,
+          "p75": 384
+        },
+        "after": {
+          "median": 380,
+          "p75": 384
+        },
+        "medianChange": 32,
+        "percentChange": 9.2
+      },
+      "lcp": {
+        "before": {
+          "median": 348,
+          "p75": 384
+        },
+        "after": {
+          "median": 380,
+          "p75": 384
+        },
+        "medianChange": 32,
+        "percentChange": 9.2
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320368,
+          "p75": 320368
+        },
+        "after": {
+          "median": 324242,
+          "p75": 324242
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 49,
+          "p75": 49
+        },
+        "after": {
+          "median": 53,
+          "p75": 53
+        },
+        "medianChange": 4,
+        "percentChange": 8.2
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/dashboard/wallet|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 346.90000009536743,
+          "p75": 350.7000000476837
+        },
+        "after": {
+          "median": 347,
+          "p75": 361.30000019073486
+        },
+        "medianChange": 0.09999990463256836,
+        "percentChange": 0
+      },
+      "fcp": {
+        "before": {
+          "median": 528,
+          "p75": 528
+        },
+        "after": {
+          "median": 536,
+          "p75": 548
+        },
+        "medianChange": 8,
+        "percentChange": 1.5
+      },
+      "lcp": {
+        "before": {
+          "median": 900,
+          "p75": 904
+        },
+        "after": {
+          "median": 912,
+          "p75": 912
+        },
+        "medianChange": 12,
+        "percentChange": 1.3
+      },
+      "cls": {
+        "before": {
+          "median": 0.010266332304526749,
+          "p75": 0.010266332304526749
+        },
+        "after": {
+          "median": 0.010266332304526749,
+          "p75": 0.010266332304526749
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320676,
+          "p75": 320676
+        },
+        "after": {
+          "median": 321947,
+          "p75": 321947
+        },
+        "medianChange": 1271,
+        "percentChange": 0.4
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 46,
+          "p75": 46
+        },
+        "after": {
+          "median": 49,
+          "p75": 49
+        },
+        "medianChange": 3,
+        "percentChange": 6.5
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/dashboard/wallet|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 32.5,
+          "p75": 43.799999952316284
+        },
+        "after": {
+          "median": 34.299999952316284,
+          "p75": 48.799999952316284
+        },
+        "medianChange": 1.7999999523162842,
+        "percentChange": 5.5
+      },
+      "fcp": {
+        "before": {
+          "median": 272,
+          "p75": 276
+        },
+        "after": {
+          "median": 264,
+          "p75": 272
+        },
+        "medianChange": -8,
+        "percentChange": -2.9
+      },
+      "lcp": {
+        "before": {
+          "median": 592,
+          "p75": 600
+        },
+        "after": {
+          "median": 576,
+          "p75": 624
+        },
+        "medianChange": -16,
+        "percentChange": -2.7
+      },
+      "cls": {
+        "before": {
+          "median": 0.010266332304526749,
+          "p75": 0.010266332304526749
+        },
+        "after": {
+          "median": 0.010266332304526749,
+          "p75": 0.010266332304526749
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320676,
+          "p75": 320676
+        },
+        "after": {
+          "median": 321947,
+          "p75": 321947
+        },
+        "medianChange": 1271,
+        "percentChange": 0.4
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 45,
+          "p75": 45
+        },
+        "after": {
+          "median": 48,
+          "p75": 48
+        },
+        "medianChange": 3,
+        "percentChange": 6.7
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fperformance_qa%2F|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 335.59999990463257,
+          "p75": 342.59999990463257
+        },
+        "after": {
+          "median": 350.40000009536743,
+          "p75": 356.7000000476837
+        },
+        "medianChange": 14.800000190734863,
+        "percentChange": 4.4
+      },
+      "fcp": {
+        "before": {
+          "median": 524,
+          "p75": 536
+        },
+        "after": {
+          "median": 544,
+          "p75": 552
+        },
+        "medianChange": 20,
+        "percentChange": 3.8
+      },
+      "lcp": {
+        "before": {
+          "median": 768,
+          "p75": 788
+        },
+        "after": {
+          "median": 764,
+          "p75": 780
+        },
+        "medianChange": -4,
+        "percentChange": -0.5
+      },
+      "cls": {
+        "before": {
+          "median": 0.00001063903892318244,
+          "p75": 0.00001063903892318244
+        },
+        "after": {
+          "median": 0.00001063903892318244,
+          "p75": 0.00001063903892318244
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 326607,
+          "p75": 326607
+        },
+        "after": {
+          "median": 330481,
+          "p75": 330481
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 49,
+          "p75": 49
+        },
+        "after": {
+          "median": 53,
+          "p75": 53
+        },
+        "medianChange": 4,
+        "percentChange": 8.2
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fperformance_qa%2F|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 32.799999952316284,
+          "p75": 33.90000009536743
+        },
+        "after": {
+          "median": 28.5,
+          "p75": 32.40000009536743
+        },
+        "medianChange": -4.299999952316284,
+        "percentChange": -13.1
+      },
+      "fcp": {
+        "before": {
+          "median": 232,
+          "p75": 256
+        },
+        "after": {
+          "median": 212,
+          "p75": 284
+        },
+        "medianChange": -20,
+        "percentChange": -8.6
+      },
+      "lcp": {
+        "before": {
+          "median": 256,
+          "p75": 484
+        },
+        "after": {
+          "median": 460,
+          "p75": 496
+        },
+        "medianChange": 204,
+        "percentChange": 79.7
+      },
+      "cls": {
+        "before": {
+          "median": 0.00001063903892318244,
+          "p75": 0.00001063903892318244
+        },
+        "after": {
+          "median": 0.00001063903892318244,
+          "p75": 0.00001063903892318244
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 326607,
+          "p75": 326607
+        },
+        "after": {
+          "median": 330481,
+          "p75": 330481
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 48,
+          "p75": 48
+        },
+        "after": {
+          "median": 52,
+          "p75": 52
+        },
+        "medianChange": 4,
+        "percentChange": 8.3
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 317.09999990463257,
+          "p75": 320.2000000476837
+        },
+        "after": {
+          "median": 319,
+          "p75": 323.40000009536743
+        },
+        "medianChange": 1.9000000953674316,
+        "percentChange": 0.6
+      },
+      "fcp": {
+        "before": {
+          "median": 2800,
+          "p75": 2808
+        },
+        "after": {
+          "median": 2680,
+          "p75": 2744
+        },
+        "medianChange": -120,
+        "percentChange": -4.3
+      },
+      "lcp": {
+        "before": {
+          "median": 2800,
+          "p75": 2808
+        },
+        "after": {
+          "median": 2680,
+          "p75": 2744
+        },
+        "medianChange": -120,
+        "percentChange": -4.3
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 294521,
+          "p75": 296662
+        },
+        "after": {
+          "median": 283124,
+          "p75": 285265
+        },
+        "medianChange": -11397,
+        "percentChange": -3.9
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 31,
+          "p75": 32
+        },
+        "after": {
+          "median": 33,
+          "p75": 34
+        },
+        "medianChange": 2,
+        "percentChange": 6.5
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 6.599999904632568,
+          "p75": 7
+        },
+        "after": {
+          "median": 5.300000190734863,
+          "p75": 6.5
+        },
+        "medianChange": -1.299999713897705,
+        "percentChange": -19.7
+      },
+      "fcp": {
+        "before": {
+          "median": 344,
+          "p75": 368
+        },
+        "after": {
+          "median": 344,
+          "p75": 344
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "lcp": {
+        "before": {
+          "median": 592,
+          "p75": 824
+        },
+        "after": {
+          "median": 616,
+          "p75": 616
+        },
+        "medianChange": 24,
+        "percentChange": 4.1
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 2141
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 32,
+          "p75": 32
+        },
+        "after": {
+          "median": 33,
+          "p75": 34
+        },
+        "medianChange": 1,
+        "percentChange": 3.1
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/ -> /services|warm-transition",
+      "count": 5,
+      "ttfb": null,
+      "fcp": null,
+      "lcp": null,
+      "cls": null,
+      "jsBytes": null,
+      "imageBytes": null,
+      "requestCount": null,
+      "transitionMs": {
+        "before": {
+          "median": 4245.525499999989,
+          "p75": 4412.080599999987
+        },
+        "after": {
+          "median": 3760.530400000047,
+          "p75": 3838.703199999989
+        },
+        "medianChange": -484.9950999999419,
+        "percentChange": -11.4
+      }
+    },
+    {
+      "key": "mobile-4g|/services|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 361.7000000476837,
+          "p75": 376
+        },
+        "after": {
+          "median": 346.19999980926514,
+          "p75": 358.59999990463257
+        },
+        "medianChange": -15.500000238418579,
+        "percentChange": -4.3
+      },
+      "fcp": {
+        "before": {
+          "median": 2520,
+          "p75": 2612
+        },
+        "after": {
+          "median": 2384,
+          "p75": 2444
+        },
+        "medianChange": -136,
+        "percentChange": -5.4
+      },
+      "lcp": {
+        "before": {
+          "median": 2520,
+          "p75": 2612
+        },
+        "after": {
+          "median": 2384,
+          "p75": 2444
+        },
+        "medianChange": -136,
+        "percentChange": -5.4
+      },
+      "cls": {
+        "before": {
+          "median": 0.001793125284005992,
+          "p75": 0.001793125284005992
+        },
+        "after": {
+          "median": 0.001793125284005992,
+          "p75": 0.001793125284005992
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 406729,
+          "p75": 406729
+        },
+        "after": {
+          "median": 291024,
+          "p75": 291024
+        },
+        "medianChange": -115705,
+        "percentChange": -28.4
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 38,
+          "p75": 38
+        },
+        "after": {
+          "median": 36,
+          "p75": 36
+        },
+        "medianChange": -2,
+        "percentChange": -5.3
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/services|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 64.70000004768372,
+          "p75": 65.59999990463257
+        },
+        "after": {
+          "median": 30.09999990463257,
+          "p75": 32.40000009536743
+        },
+        "medianChange": -34.60000014305115,
+        "percentChange": -53.5
+      },
+      "fcp": {
+        "before": {
+          "median": 324,
+          "p75": 512
+        },
+        "after": {
+          "median": 364,
+          "p75": 536
+        },
+        "medianChange": 40,
+        "percentChange": 12.3
+      },
+      "lcp": {
+        "before": {
+          "median": 540,
+          "p75": 616
+        },
+        "after": {
+          "median": 536,
+          "p75": 552
+        },
+        "medianChange": -4,
+        "percentChange": -0.7
+      },
+      "cls": {
+        "before": {
+          "median": 0.001793125284005992,
+          "p75": 0.001793125284005992
+        },
+        "after": {
+          "median": 0.001793125284005992,
+          "p75": 0.001793125284005992
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 37,
+          "p75": 37
+        },
+        "after": {
+          "median": 35,
+          "p75": 35
+        },
+        "medianChange": -2,
+        "percentChange": -5.4
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/packages|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 336.39999985694885,
+          "p75": 338.5
+        },
+        "after": {
+          "median": 342.7999999523163,
+          "p75": 344
+        },
+        "medianChange": 6.400000095367432,
+        "percentChange": 1.9
+      },
+      "fcp": {
+        "before": {
+          "median": 1888,
+          "p75": 2096
+        },
+        "after": {
+          "median": 2004,
+          "p75": 2116
+        },
+        "medianChange": 116,
+        "percentChange": 6.1
+      },
+      "lcp": {
+        "before": {
+          "median": 1888,
+          "p75": 2096
+        },
+        "after": {
+          "median": 2004,
+          "p75": 2116
+        },
+        "medianChange": 116,
+        "percentChange": 6.1
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 299826,
+          "p75": 299826
+        },
+        "after": {
+          "median": 288429,
+          "p75": 288429
+        },
+        "medianChange": -11397,
+        "percentChange": -3.8
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 33,
+          "p75": 33
+        },
+        "after": {
+          "median": 35,
+          "p75": 35
+        },
+        "medianChange": 2,
+        "percentChange": 6.1
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/packages|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 30.5,
+          "p75": 33
+        },
+        "after": {
+          "median": 28.899999856948853,
+          "p75": 31.899999856948853
+        },
+        "medianChange": -1.6000001430511475,
+        "percentChange": -5.2
+      },
+      "fcp": {
+        "before": {
+          "median": 312,
+          "p75": 316
+        },
+        "after": {
+          "median": 324,
+          "p75": 368
+        },
+        "medianChange": 12,
+        "percentChange": 3.8
+      },
+      "lcp": {
+        "before": {
+          "median": 496,
+          "p75": 508
+        },
+        "after": {
+          "median": 504,
+          "p75": 536
+        },
+        "medianChange": 8,
+        "percentChange": 1.6
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 32,
+          "p75": 32
+        },
+        "after": {
+          "median": 34,
+          "p75": 34
+        },
+        "medianChange": 2,
+        "percentChange": 6.3
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/dashboard|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 345.40000009536743,
+          "p75": 350.7000000476837
+        },
+        "after": {
+          "median": 340.19999980926514,
+          "p75": 348.7999999523163
+        },
+        "medianChange": -5.200000286102295,
+        "percentChange": -1.5
+      },
+      "fcp": {
+        "before": {
+          "median": 1624,
+          "p75": 1648
+        },
+        "after": {
+          "median": 1544,
+          "p75": 1560
+        },
+        "medianChange": -80,
+        "percentChange": -4.9
+      },
+      "lcp": {
+        "before": {
+          "median": 2456,
+          "p75": 2576
+        },
+        "after": {
+          "median": 2316,
+          "p75": 2328
+        },
+        "medianChange": -140,
+        "percentChange": -5.7
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320368,
+          "p75": 320368
+        },
+        "after": {
+          "median": 324242,
+          "p75": 324242
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 42,
+          "p75": 42
+        },
+        "after": {
+          "median": 46,
+          "p75": 46
+        },
+        "medianChange": 4,
+        "percentChange": 9.5
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/dashboard|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 35.700000047683716,
+          "p75": 35.90000009536743
+        },
+        "after": {
+          "median": 32.299999952316284,
+          "p75": 34.200000047683716
+        },
+        "medianChange": -3.4000000953674316,
+        "percentChange": -9.5
+      },
+      "fcp": {
+        "before": {
+          "median": 1904,
+          "p75": 1916
+        },
+        "after": {
+          "median": 1848,
+          "p75": 1856
+        },
+        "medianChange": -56,
+        "percentChange": -2.9
+      },
+      "lcp": {
+        "before": {
+          "median": 2388,
+          "p75": 2412
+        },
+        "after": {
+          "median": 2332,
+          "p75": 2364
+        },
+        "medianChange": -56,
+        "percentChange": -2.3
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320368,
+          "p75": 320368
+        },
+        "after": {
+          "median": 324242,
+          "p75": 324242
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 41,
+          "p75": 41
+        },
+        "after": {
+          "median": 45,
+          "p75": 45
+        },
+        "medianChange": 4,
+        "percentChange": 9.8
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/dashboard/wallet|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 334.2000000476837,
+          "p75": 336.30000019073486
+        },
+        "after": {
+          "median": 338.90000009536743,
+          "p75": 341.09999990463257
+        },
+        "medianChange": 4.700000047683716,
+        "percentChange": 1.4
+      },
+      "fcp": {
+        "before": {
+          "median": 1524,
+          "p75": 1616
+        },
+        "after": {
+          "median": 1504,
+          "p75": 1560
+        },
+        "medianChange": -20,
+        "percentChange": -1.3
+      },
+      "lcp": {
+        "before": {
+          "median": 2464,
+          "p75": 2500
+        },
+        "after": {
+          "median": 2400,
+          "p75": 2404
+        },
+        "medianChange": -64,
+        "percentChange": -2.6
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320676,
+          "p75": 320676
+        },
+        "after": {
+          "median": 321947,
+          "p75": 321947
+        },
+        "medianChange": 1271,
+        "percentChange": 0.4
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 38,
+          "p75": 38
+        },
+        "after": {
+          "median": 41,
+          "p75": 41
+        },
+        "medianChange": 3,
+        "percentChange": 7.9
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/dashboard/wallet|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 28.5,
+          "p75": 42.5
+        },
+        "after": {
+          "median": 39,
+          "p75": 44.80000019073486
+        },
+        "medianChange": 10.5,
+        "percentChange": 36.8
+      },
+      "fcp": {
+        "before": {
+          "median": 1872,
+          "p75": 1968
+        },
+        "after": {
+          "median": 1832,
+          "p75": 1952
+        },
+        "medianChange": -40,
+        "percentChange": -2.1
+      },
+      "lcp": {
+        "before": {
+          "median": 2352,
+          "p75": 2456
+        },
+        "after": {
+          "median": 2300,
+          "p75": 2460
+        },
+        "medianChange": -52,
+        "percentChange": -2.2
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 320676,
+          "p75": 320676
+        },
+        "after": {
+          "median": 321947,
+          "p75": 321947
+        },
+        "medianChange": 1271,
+        "percentChange": 0.4
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 37,
+          "p75": 37
+        },
+        "after": {
+          "median": 40,
+          "p75": 40
+        },
+        "medianChange": 3,
+        "percentChange": 8.1
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fperformance_qa%2F|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 336.7999999523163,
+          "p75": 339.89999985694885
+        },
+        "after": {
+          "median": 323.60000014305115,
+          "p75": 326.5
+        },
+        "medianChange": -13.199999809265137,
+        "percentChange": -3.9
+      },
+      "fcp": {
+        "before": {
+          "median": 2216,
+          "p75": 2264
+        },
+        "after": {
+          "median": 1704,
+          "p75": 1724
+        },
+        "medianChange": -512,
+        "percentChange": -23.1
+      },
+      "lcp": {
+        "before": {
+          "median": 2888,
+          "p75": 2936
+        },
+        "after": {
+          "median": 2240,
+          "p75": 2268
+        },
+        "medianChange": -648,
+        "percentChange": -22.4
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 326607,
+          "p75": 326607
+        },
+        "after": {
+          "median": 330481,
+          "p75": 330481
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 41,
+          "p75": 41
+        },
+        "after": {
+          "median": 45,
+          "p75": 45
+        },
+        "medianChange": 4,
+        "percentChange": 9.8
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fperformance_qa%2F|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 24,
+          "p75": 30.600000143051147
+        },
+        "after": {
+          "median": 19.5,
+          "p75": 19.899999856948853
+        },
+        "medianChange": -4.5,
+        "percentChange": -18.7
+      },
+      "fcp": {
+        "before": {
+          "median": 1984,
+          "p75": 1992
+        },
+        "after": {
+          "median": 1812,
+          "p75": 1816
+        },
+        "medianChange": -172,
+        "percentChange": -8.7
+      },
+      "lcp": {
+        "before": {
+          "median": 2332,
+          "p75": 2376
+        },
+        "after": {
+          "median": 2156,
+          "p75": 2164
+        },
+        "medianChange": -176,
+        "percentChange": -7.5
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 326607,
+          "p75": 326607
+        },
+        "after": {
+          "median": 330481,
+          "p75": 330481
+        },
+        "medianChange": 3874,
+        "percentChange": 1.2
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 40,
+          "p75": 40
+        },
+        "after": {
+          "median": 44,
+          "p75": 44
+        },
+        "medianChange": 4,
+        "percentChange": 10
+      },
+      "transitionMs": null
+    }
+  ],
+  "regressions": [],
+  "invalidTransitions": []
+}
