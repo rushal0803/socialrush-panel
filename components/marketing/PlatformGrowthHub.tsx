@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import PublicShell from "@/components/marketing/PublicShell";
 import PlatformAuthorityLinks from "@/components/marketing/PlatformAuthorityLinks";
 import PlatformSmmIntentSection from "@/components/seo/PlatformSmmIntentSection";
+import TwitterIntentGuide from "@/components/seo/TwitterIntentGuide";
 import type { ContentPlatform } from "@/lib/seo/content-clusters";
 import { contentClusters } from "@/lib/seo/content-clusters";
 
@@ -85,6 +86,7 @@ export default function PlatformGrowthHub({ platform }: { platform: ContentPlatf
             </section>
           </section>
 
+          {platform === "twitter" && <TwitterIntentGuide />}
           <PlatformSmmIntentSection platform={platform} />
           <PlatformAuthorityLinks platform={platform} />
         </div>
