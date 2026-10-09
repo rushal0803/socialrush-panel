@@ -31,7 +31,7 @@ jobs:
       - name: Package quantities, discount authority and wallet states
         run: node --experimental-strip-types --test tests/unit/packages-v2.test.ts
       - name: Focused Q4 SEO regression tests
-        run: node --experimental-strip-types --test tests/unit/seo-q4-phase2.test.ts tests/unit/seo-q4-phase3.test.ts tests/unit/seo-q4-phase4.test.ts tests/unit/seo-q4-phase5.test.ts tests/unit/seo-q4-phase6.test.ts tests/unit/seo-q4-phase7.test.ts tests/unit/seo-q4-phase8.test.ts tests/unit/seo-q4-phase9.test.ts tests/unit/seo-q4-phase10.test.ts tests/unit/seo-q4-phase11.test.ts tests/unit/seo-q4-phase12.test.ts tests/unit/seo-q4-phase13.test.ts tests/unit/seo-q4-phase14.test.ts tests/unit/search-demand-guides.test.ts tests/unit/order-requirements-intent.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/linkedin-service-seo.test.ts
+        run: node --experimental-strip-types --test tests/unit/seo-q4-phase2.test.ts tests/unit/seo-q4-phase3.test.ts tests/unit/seo-q4-phase4.test.ts tests/unit/seo-q4-phase5.test.ts tests/unit/seo-q4-phase6.test.ts tests/unit/seo-q4-phase7.test.ts tests/unit/seo-q4-phase8.test.ts tests/unit/seo-q4-phase9.test.ts tests/unit/seo-q4-phase10.test.ts tests/unit/seo-q4-phase11.test.ts tests/unit/seo-q4-phase12.test.ts tests/unit/seo-q4-phase13.test.ts tests/unit/seo-q4-phase14.test.ts tests/unit/seo-q4-phase15.test.ts tests/unit/search-demand-guides.test.ts tests/unit/order-requirements-intent.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/linkedin-service-seo.test.ts
       - run: node --check scripts/seo-instagram-technical-check.mjs
       - run: node --check scripts/seo-instagram-sitemap-check.mjs
       - run: node --check scripts/seo-sitewide-technical-audit.mjs
