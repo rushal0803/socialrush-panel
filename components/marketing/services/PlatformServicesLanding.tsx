@@ -2,6 +2,7 @@ import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock3, Search, ShieldCheck } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import PublicShell from "@/components/marketing/PublicShell";
+import TwitterIntentGuide from "@/components/seo/TwitterIntentGuide";
 import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 
 const canonicalServicePaths: Record<string, string> = {
@@ -137,6 +138,8 @@ export default function PlatformServicesLanding({ platform }: { platform: "linke
             {pageCopy.benefits.map((benefit) => <div key={benefit} className="rounded-2xl border border-white/10 bg-white/[.035] p-5"><CheckCircle2 className="h-5 w-5 text-orange-300" /><p className="mt-3 text-sm font-black">{benefit}</p></div>)}
           </div>
         </section>
+
+        {platform === "x" && <TwitterIntentGuide />}
 
         {platform === "linkedin" && (
           <section className="relative px-4 pb-10 sm:px-6 lg:px-8" aria-labelledby="linkedin-guides-title">
