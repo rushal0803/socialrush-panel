@@ -1,7 +1,7 @@
 "use client";
 
 import type { ReactNode } from "react";
-import { MotionConfig } from "framer-motion";
+import { LazyMotion, domAnimation, MotionConfig } from "framer-motion";
 import WebVitalsReporter from "@/components/analytics/WebVitalsReporter";
 import { CurrencyProvider } from "@/lib/currency/use-currency";
 import type { Currency, CurrencyRates } from "@/lib/currency";
@@ -9,10 +9,12 @@ import type { Currency, CurrencyRates } from "@/lib/currency";
 export default function ClientProviders({ children, initialCurrency, rates }: { children: ReactNode; initialCurrency?: Currency; rates?: CurrencyRates }) {
   return (
     <MotionConfig reducedMotion="user">
-      <CurrencyProvider initialCurrency={initialCurrency} rates={rates}>
-        {children}
-        <WebVitalsReporter />
-      </CurrencyProvider>
+      <LazyMotion features={domAnimation}>
+        <CurrencyProvider initialCurrency={initialCurrency} rates={rates}>
+          {children}
+          <WebVitalsReporter />
+        </CurrencyProvider>
+      </LazyMotion>
     </MotionConfig>
   );
 }

@@ -39,12 +39,12 @@ export function ServiceCard({ service, currency, health, detailHref }: { service
   const orderHref = `/dashboard/new-order?${new URLSearchParams({ platform: service.platform, service: service.code, quantity: String(service.minQuantity), resume: "1" })}`;
   const category = serviceCategory(service.code);
   return <article className={styles.card} data-catalog-service={service.code}>
-    <div className={styles.cardHeading}><span className={styles.icon}><PlatformIcon platform={platformMeta[service.platform].icon} className="h-5 w-5" /></span><h3><Link href={detailHref}>{service.name}</Link></h3></div>
+    <div className={styles.cardHeading}><span className={styles.icon}><PlatformIcon platform={platformMeta[service.platform].icon} className="h-5 w-5" /></span><h3><Link href={detailHref} prefetch={false}>{service.name}</Link></h3></div>
     {health && <div className={styles.health}><ServiceHealthBadge health={health} /></div>}
     <p className={styles.description}>{service.description}</p>
     <div className={styles.price}><span>Starting at</span><p><strong>{formatCurrency(service.pricePer1000, currency)}</strong> / 1K</p><small>Min. {service.minQuantity.toLocaleString("en-IN")} · from {formatCurrency(service.pricePer1000 * service.minQuantity / 1000, currency)} total</small></div>
     <dl className={styles.meta}><div><dt>Delivery</dt><dd>{service.deliveryTime || "Confirm before ordering"}</dd></div><div><dt>Refill / support</dt><dd>{/^no refill$/i.test(service.refillPolicy.trim()) ? "Not included" : service.refillPolicy || "Confirm before ordering"}</dd></div></dl>
-    <div className={styles.cardActions}>{unavailable ? <span className={styles.unavailable}>Currently unavailable</span> : <Link className={styles.primary} href={orderHref}>Order {category === "other" ? "service" : categoryLabel(category).toLowerCase()}<ArrowRight size={15} aria-hidden="true" /></Link>}<Link className={styles.detail} href={detailHref}>View details</Link></div>
+    <div className={styles.cardActions}>{unavailable ? <span className={styles.unavailable}>Currently unavailable</span> : <Link className={styles.primary} href={orderHref}>Order {category === "other" ? "service" : categoryLabel(category).toLowerCase()}<ArrowRight size={15} aria-hidden="true" /></Link>}<Link className={styles.detail} href={detailHref} prefetch={false}>View details</Link></div>
     <details className={styles.requirements}><summary>Before you order<ChevronDown size={15} aria-hidden="true" /></summary><p>{service.importantInstruction}</p><p>Quantity: {service.minQuantity.toLocaleString("en-IN")}–{service.maxQuantity.toLocaleString("en-IN")}</p></details>
   </article>;
 }

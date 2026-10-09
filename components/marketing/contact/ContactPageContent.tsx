@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { AnimatePresence, motion } from "framer-motion";
+import { AnimatePresence, m as motion } from "framer-motion";
 import { type FormEvent, useId, useState } from "react";
 import { track } from "@/lib/analytics/events";
 import { ArrowRight, Check, ChevronDown, CircleHelp, CreditCard, ExternalLink, Mail, MessageCircle, Package, ShieldCheck, Sparkles, UserRound, UsersRound } from "lucide-react";
