@@ -46,13 +46,17 @@ export async function classifyLeadReply(input: { subject?: string|null; bodyText
   return { classification:"other", confidence:0, reason:"No configured AI provider; non-obvious replies require an admin decision.", suggested_next_action:"Review and classify this reply.", needsAdminReview:true, source:"rules" };
 }
 
-export function safeReplyDraft(classification: ReplyClassification, name?: string|null) {
+export function safeReplyDraft(classification: ReplyClassification, name?: string|null, context?: { businessName?: string|null; recommendedService?: string|null }) {
   const greeting=name ? `Hi ${name},` : "Hello,";
+  const service=context?.recommendedService?.trim();
+  const business=context?.businessName?.trim();
+  const fit=service ? ` around ${service}` : "";
+  const company=business ? ` for ${business}` : "";
   const drafts: Partial<Record<ReplyClassification,string>> = {
-    interested:`${greeting}\n\nThanks for getting back to us. We’d be glad to discuss how SocialRUSH may support your goals. What would be most useful to explore first?`,
-    needs_information:`${greeting}\n\nThanks for your reply. We can share information about the SocialRUSH services that are relevant to your goals. Please let us know what you’d like clarified.`,
-    meeting_request:`${greeting}\n\nThanks for getting back to us. We’d be happy to arrange a conversation. Please share a few times that work well for you.`,
-    not_now:`${greeting}\n\nThanks for letting us know. We understand, and we’ll be happy to reconnect when the timing is better for you.`
+    interested:`${greeting}\n\nThanks for getting back to us. We’d be glad to explore how SocialRUSH can support your growth${fit}${company}. If you share your main goal and the platform you want to prioritize, we can suggest the most suitable starting option.`,
+    needs_information:`${greeting}\n\nThanks for your reply. Happy to share more details${fit}. Tell us what you’d like to know—pricing, delivery, recommended quantity, or how the service works—and we’ll keep the answer specific to your goal.`,
+    meeting_request:`${greeting}\n\nThanks for getting back to us. We’d be happy to discuss your growth goals${company}. Please share a few times that work well for you, and we’ll coordinate the next step.`,
+    not_now:`${greeting}\n\nThanks for letting us know. No problem—we’ll pause here. When the timing is better, you can reply to this email and we’ll pick the conversation back up.`
   };
   return drafts[classification] || null;
 }
