@@ -3,7 +3,7 @@ import Link from "next/link";
 export function PageHeader({ title, description, action, variant = "light" }: { title: string; description: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
   return (
     <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-      <div>
+      <div className="min-w-0 [overflow-wrap:anywhere]">
         <h1 className={`text-2xl font-black tracking-tight ${variant === "dark" ? "text-[#FFF8F1]" : "text-[#0B0B0F]"}`}>{title}</h1>
         <p className={`mt-1.5 text-sm ${variant === "dark" ? "text-[#FF9F00]" : "text-[#111827]"}`}>{description}</p>
       </div>
@@ -44,8 +44,8 @@ export function EmptyAction({ href, children }: { href: string; children: React.
 
 export function SectionTitle({ title, description, action, variant = "light" }: { title: string; description?: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
   return (
-    <div className={`flex items-center justify-between border-b ${variant === "dark" ? "border-[#0B0B0F]" : "border-[#FFF8F1]"} px-5 py-4 sm:px-6`}>
-      <div>
+    <div className={`flex flex-col gap-3 border-b sm:flex-row sm:items-center sm:justify-between ${variant === "dark" ? "border-[#0B0B0F]" : "border-[#FFF8F1]"} px-4 py-4 sm:px-6`}>
+      <div className="min-w-0 [overflow-wrap:anywhere]">
         <h2 className={`text-sm font-bold ${variant === "dark" ? "text-[#FFF8F1]" : "text-[#0B0B0F]"}`}>{title}</h2>
         {description && <p className={`mt-1 text-xs ${variant === "dark" ? "text-[#FF9F00]" : "text-[#111827]"}`}>{description}</p>}
       </div>

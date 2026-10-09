@@ -11,6 +11,9 @@ export const test = base.extend<{ privacyPreference: void }>({
       await context.route(`${new URL(baseURL).origin}/**`, async route => {
         if (route.request().resourceType() !== "document" || route.request().method() !== "GET") return route.continue();
         const response = await route.fetch({ maxRedirects: 0 });
+        // Windows WebKit cannot fulfill an intercepted redirect response.
+        // Let the browser follow the real redirect; intercept its final document.
+        if (response.status() >= 300 && response.status() < 400) return route.continue();
         const headers = response.headers();
         if (headers["content-security-policy"]) headers["content-security-policy"] = headers["content-security-policy"].split(";").filter(directive => directive.trim() !== "upgrade-insecure-requests").join(";");
         await route.fulfill({ response, headers });

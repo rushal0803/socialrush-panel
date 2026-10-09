@@ -6,6 +6,9 @@ const intents = new Map();
 const user = { id: '11111111-1111-4111-8111-111111111111', email: 'packages-test@example.invalid', role: 'authenticated', app_metadata: {}, user_metadata: {}, aud: 'authenticated', created_at: '2026-01-01T00:00:00Z' };
 globalThis.fetch = async (input, init) => {
   const url = new URL(typeof input === 'string' ? input : input.url || input.toString());
+  if (process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' && url.hostname === 'api.frankfurter.app') {
+    return new Response(JSON.stringify({ rates: { INR: 100 } }), { headers: { 'Content-Type': 'application/json' } });
+  }
   const backendOrigin = process.env.NEXT_PUBLIC_SUPABASE_URL ? new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin : null;
   const backendPath = url.pathname.startsWith('/auth/v1/') || url.pathname.startsWith('/rest/v1/');
   if (!backendPath || (!url.hostname.endsWith('.supabase.co') && url.origin !== backendOrigin)) return originalFetch(input, init);
@@ -24,8 +27,11 @@ globalThis.fetch = async (input, init) => {
     }
     return json(headers.get('accept')?.includes('object') ? found[0] || null : found);
   }
-  if (url.pathname.endsWith('/rest/v1/profiles')) return json({ ...user, full_name: 'Package QA', balance: 100000, is_blocked: false });
+  if (url.pathname.endsWith('/rest/v1/profiles')) return json({ ...user, full_name: 'Package QA', balance: process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' ? 0 : 100000, is_blocked: false });
   if (url.pathname.endsWith('/rest/v1/checkout_intents')) {
+    if (process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' && url.searchParams.get('id') === 'eq.33333333-3333-4333-8333-333333333333' && (!init?.method || init.method === 'GET')) {
+      return json({ id: '33333333-3333-4333-8333-333333333333', user_id: user.id, client_request_id: '44444444-4444-4444-8444-444444444444', service_code: 'instagram-followers', quantity: 1000, destination_link: 'https://www.instagram.com/responsive_qa/', total_paise: 79900, currency: 'INR', status: 'created', expires_at: new Date(Date.now() + 3600000).toISOString() });
+    }
     if ((init?.method || 'GET') === 'POST') {
       const body = JSON.parse(init.body);
       const row = { ...body, id: '22222222-2222-4222-8222-222222222222', created_at: new Date().toISOString() };

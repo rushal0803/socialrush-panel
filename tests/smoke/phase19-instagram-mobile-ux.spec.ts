@@ -1,4 +1,5 @@
 import { expect, test } from "./fixtures";
+import { expectControlsSeparated, expectUnobscuredControl } from './support-layout';
 
 const viewports = [320, 360, 390, 430] as const;
 const routes = [
@@ -35,16 +36,17 @@ test.describe("Phase 19 Instagram mobile-first UX", () => {
     await expect(dock).toBeVisible();
     await expect(whatsapp).toBeVisible();
 
-    const dockBox = await dock.boundingBox();
-    const whatsappBox = await whatsapp.boundingBox();
-    expect(dockBox).not.toBeNull();
-    expect(whatsappBox).not.toBeNull();
-    if (dockBox && whatsappBox) {
-      expect(dockBox.x + dockBox.width).toBeLessThanOrEqual(whatsappBox.x);
-      expect(dockBox.height).toBeGreaterThanOrEqual(44);
-      expect(whatsappBox.height).toBeGreaterThanOrEqual(44);
-    }
-
+    await expectControlsSeparated(dock, whatsapp);
+    await expectUnobscuredControl(dock);
+    // Support is intentionally inline: inspect it at the document end, where
+    // the fixed dock could otherwise cover it despite clearing the hero.
+    await whatsapp.scrollIntoViewIfNeeded();
+    await expect(dock).toBeVisible();
+    await expectControlsSeparated(dock, whatsapp);
+    await expectUnobscuredControl(whatsapp);
+    await expectUnobscuredControl(dock);
+    await expect(whatsapp).toHaveAttribute('href', /^https:\/\/wa\.me\//);
+    await page.screenshot({ path: 'artifacts/premium-responsive/ci622-instagram-support-after.png' });
     await dock.click();
     await expect(page.locator("#packages")).toBeInViewport();
     await expect(dock).toBeHidden();

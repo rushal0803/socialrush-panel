@@ -145,16 +145,14 @@ export default function InteractiveHomepageShell({
           style={{ scaleX: reduceMotion ? scrollYProgress : progress }}
         />
 
-        {!reduceMotion ? (
-          <m.div
-            aria-hidden="true"
-            className="pointer-events-none fixed inset-0 -z-10 hidden opacity-70 lg:block"
-            style={{ background: glowBackground }}
-          />
-        ) : null}
+        <m.div
+          aria-hidden="true"
+          className="pointer-events-none fixed inset-0 -z-10 hidden opacity-70 lg:block motion-reduce:!hidden"
+          style={{ background: glowBackground }}
+        />
 
         <m.div
-          initial={reduceMotion ? false : { opacity: 0, y: 14 }}
+          initial={false}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.55, ease: [0.22, 1, 0.36, 1] }}
         >

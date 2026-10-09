@@ -142,7 +142,7 @@ export default function Sidebar({
   }, [userId]);
 
   return (
-    <aside className="dashboard-sidebar hidden h-screen w-[17.5rem] shrink-0 flex-col px-4 py-5 lg:sticky lg:top-0 lg:flex">
+    <aside className="dashboard-sidebar hidden h-screen w-[17.5rem] shrink-0 flex-col overflow-y-auto overscroll-contain px-4 py-5 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
         <Logo light />
       </div>
