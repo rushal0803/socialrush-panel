@@ -4,7 +4,7 @@ type Personalization = Pick<CRMLead, "business_name" | "recommended_service"> & 
 const signature = ["Thanks,", "SocialRUSH Team", "Social Media Growth Solutions", "getsocialrush.com"];
 const placeholder = /{{\s*(first_name|business_name|recommended_service)\s*}}/gi;
 
-function firstName(fullName: string | null | undefined) { return fullName?.trim().split(/\s+/)[0] || ""; }
+function firstName(fullName: string | null | undefined) { return fullName?.trim().split(/\s+/)[0] || "there"; }
 
 /** Converts only single literal escaped CR/LF sequences; double-escaped text remains literal. */
 export function normalizeEscapedLineBreaks(value: string | null | undefined) {
