@@ -26,7 +26,7 @@ export default function SupportPage() {
     <PublicShell>
       <BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Support", path: "/support" }]} />
       <section className="relative overflow-hidden px-4 pb-14 pt-14 sm:px-6 sm:pb-20 sm:pt-20 lg:px-8 lg:pb-24">
-        <div className="pointer-events-none absolute left-1/2 top-0 h-[30rem] w-[54rem] -translate-x-1/2 rounded-full bg-orange-500/[.14] blur-[110px]" />
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-44 bg-[radial-gradient(ellipse_at_top,rgba(255,118,0,.10),transparent_67%)]" />
         <div className="relative mx-auto max-w-4xl text-center">
           <span className="inline-flex items-center gap-2 rounded-full border border-orange-400/30 bg-orange-500/[.09] px-4 py-2 text-[10px] font-black uppercase tracking-[.16em] text-orange-200"><MarketingIcon name="message" className="h-4 w-4" />SocialRUSH help centre</span>
           <h1 className="mt-5 text-4xl font-black tracking-[-.05em] text-white sm:text-5xl">Clear help, whenever you need it.</h1>
@@ -39,7 +39,7 @@ export default function SupportPage() {
 
       <section className="border-y border-white/[.07] bg-[#0C0E14] px-4 py-14 sm:px-6 lg:px-8 lg:py-20">
         <div className="mx-auto max-w-7xl"><div className="max-w-2xl"><p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Find your answer</p><h2 className="mt-3 text-3xl font-black text-white">Support built around the customer journey.</h2></div>
-          <div className="mt-8 grid gap-3 sm:grid-cols-2 lg:grid-cols-3">{topics.map((topic) => <Link key={topic.title} href={topic.href} className="group rounded-2xl border border-white/[.09] bg-[#101219] p-5 transition hover:-translate-y-1 hover:border-orange-400/45"><span className="grid h-11 w-11 place-items-center rounded-xl border border-orange-400/20 bg-orange-500/[.08] text-orange-300"><MarketingIcon name={topic.icon} className="h-5 w-5" /></span><h3 className="mt-5 text-lg font-black text-white">{topic.title}</h3><p className="mt-2 text-sm leading-6 text-[#A8AFBD]">{topic.text}</p><span className="mt-5 inline-flex text-sm font-bold text-orange-300 transition group-hover:translate-x-1">Explore help →</span></Link>)}</div>
+          <div className="mt-8 grid gap-3 lg:grid-cols-2">{topics.map((topic, index) => <Link key={topic.title} href={topic.href} className="group flex min-w-0 items-start gap-4 rounded-2xl border border-white/10 bg-[#101219] p-5 transition-colors hover:border-orange-400/45 hover:bg-[#151821] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF7600] sm:p-6"><span aria-hidden="true" className="grid h-12 w-12 shrink-0 place-items-center rounded-xl border border-orange-400/20 bg-orange-500/[.08] text-orange-300"><MarketingIcon name={topic.icon} className="h-5 w-5" /></span><span className="min-w-0 flex-1"><span className="text-xs font-bold tracking-[.12em] text-[#FF9A2E]">{String(index + 1).padStart(2, "0")}</span><h3 className="mt-1 text-lg font-bold text-white">{topic.title}</h3><p className="mt-2 text-sm leading-7 text-[#C4CBD5]">{topic.text}</p><span className="mt-3 inline-flex min-h-9 items-center text-sm font-bold text-[#FF9A2E]">Explore help →</span></span></Link>)}</div>
         </div>
       </section>
 
