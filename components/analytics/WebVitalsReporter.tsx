@@ -18,7 +18,13 @@ export default function WebVitalsReporter() {
       value,
       release: releaseId,
       page_template: webVitalPageTemplate(window.location.pathname),
-      navigation_type: webVitalNavigationType("navigationType" in metric ? metric.navigationType : undefined),
+      // Next metrics may not expose navigationType. Fall back to the browser's
+      // document navigation kind; this is not a client-side route timer.
+      navigation_type: webVitalNavigationType(
+        "navigationType" in metric && typeof metric.navigationType === "string"
+          ? metric.navigationType
+          : (performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming | undefined)?.type,
+      ),
     });
   });
 
