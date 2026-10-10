@@ -26,19 +26,16 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
           <Logo light priority />
         </div>
         <div className="hidden lg:block">
-          <p className="text-[10px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Admin workspace</p>
+          <p className="text-xs font-bold uppercase tracking-[.12em] text-[#FF9A2E]">Admin workspace</p>
           <p className="mt-1 text-sm font-bold text-white">SocialRUSH operations</p>
         </div>
 
         <div className="flex items-center gap-3">
-          <span className="hidden rounded-full border border-emerald-400/25 bg-emerald-500/10 px-3 py-1.5 text-[10px] font-bold text-emerald-300 sm:block">
-            ● System online
-          </span>
           <div className="hidden min-w-0 max-w-40 text-right sm:block xl:max-w-56">
             <p className="truncate text-xs font-bold text-white">{name || "Administrator"}</p>
-            <p className="mt-0.5 truncate text-[10px] text-[#9CA3AF]" title={email}>{email}</p>
+            <p className="mt-0.5 truncate text-xs text-[#A8AFBD]" title={email}>{email}</p>
           </div>
-          <span className="grid h-10 w-10 place-items-center rounded-xl bg-gradient-to-br from-[#FF7A00] to-[#FFB000] text-xs font-black text-white shadow-[0_10px_24px_rgba(255, 196, 0, .35)]">
+          <span className="grid h-10 w-10 place-items-center rounded-xl border border-[#FF7600]/30 bg-[#FF7600]/15 text-sm font-bold text-[#FF9A2E]">
             {initials}
           </span>
           <button
@@ -75,9 +72,9 @@ export default function AdminHeader({ name, email }: { name: string; email: stri
               </button>
             </div>
             <div className="mt-5 rounded-2xl border border-orange-400/20 bg-orange-500/10 p-4">
-              <p className="text-[10px] font-black uppercase tracking-[.16em] text-[#FF9F00]">Admin workspace</p>
+              <p className="text-xs font-bold uppercase tracking-[.12em] text-[#FF9A2E]">Admin workspace</p>
               <p className="mt-1 text-sm font-bold text-white">{name || "Administrator"}</p>
-              <p className="mt-0.5 break-all text-[10px] text-[#9CA3AF]">{email}</p>
+              <p className="mt-0.5 break-all text-xs text-[#A8AFBD]">{email}</p>
             </div>
             <div className="mt-5">
               <AdminNav mobile onNavigate={() => setMenuOpen(false)} />

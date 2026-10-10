@@ -61,19 +61,31 @@ jobs:
         run: npx playwright install --with-deps chromium
       - run: npm run test:smoke
       - name: Capture brand-correct screenshots of the real current PR code (local fixture only)
-        if: ${{ github.event.pull_request.number == 630 && success() }}
+        if: ${{ (github.event.pull_request.number == 630 || github.event.pull_request.number == 632) && success() }}
         timeout-minutes: 3
         env:
           PREMIUM_REVIEW_ROUTES: '["/","/services","/packages","/login","/register"]'
         run: node scripts/premium-design-review.cjs brand-current
       - name: Attach current dark-orange visual-review screenshots
-        if: ${{ github.event.pull_request.number == 630 && always() }}
+        if: ${{ (github.event.pull_request.number == 630 || github.event.pull_request.number == 632) && always() }}
         uses: actions/upload-artifact@v4
         with:
           name: socialrush-pr630-brand-current-screenshots
           path: artifacts/premium-design/brand-current/
           if-no-files-found: warn
           retention-days: 14
+      - name: Capture combined-phase support, reviews, tools and legal screenshots
+        if: ${{ github.event.pull_request.number == 632 && success() }}
+        timeout-minutes: 4
+        run: node scripts/phase2-design-review.cjs
+      - name: Attach combined Phase 2 public visual evidence
+        if: ${{ github.event.pull_request.number == 632 && always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialrush-integration-phase2-visual-review
+          path: artifacts/phase2-design/
+          retention-days: 14
+          if-no-files-found: warn
       - name: Retain Playwright release-gate diagnostics
         if: always()
         uses: actions/upload-artifact@v4

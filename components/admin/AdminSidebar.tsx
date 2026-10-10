@@ -2,7 +2,6 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { motion } from "framer-motion";
 import Logo from "@/components/Logo";
 import { logout } from "@/app/auth/actions";
 
@@ -43,52 +42,55 @@ function NavIcon({ name }: { name: string }) {
 
 export function AdminNav({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const groups = [
+    { name: "Manage", items: links.slice(0, 9) },
+    { name: "Growth & SEO", items: links.slice(9, 21) },
+    { name: "Customers & settings", items: links.slice(21) },
+  ] as const;
   return (
-    <nav className={mobile ? "grid gap-1" : "space-y-1"}>
-      {links.map(([label, href, icon]) => {
-        const active = href === "/admin/dashboard" ? pathname === href || pathname === "/admin" : pathname.startsWith(href);
-        return (
-          <Link
-            key={href}
-            href={href}
-            onClick={() => {
-              if (mobile) onNavigate?.();
-            }}
-            className={`relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 text-sm font-semibold transition ${
-              active ? "text-white" : "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white"
-            }`}
-          >
-            {active && (
-              <motion.span
-                layoutId={mobile ? "mobile-admin-active" : "admin-active"}
-                className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]"
-                transition={{ type: "spring", stiffness: 380, damping: 30 }}
-              />
-            )}
-            <span className="relative z-10">
-              <NavIcon name={icon} />
-            </span>
-            <span className="relative z-10">{label}</span>
-          </Link>
-        );
-      })}
+    <nav aria-label={mobile ? "Admin sections on mobile" : "Admin sections"} className="grid gap-5">
+      {groups.map((group) => (
+        <div key={group.name}>
+          <h2 className="mb-2 px-3 text-[11px] font-bold uppercase tracking-[.12em] text-[#A8AFBD]">{group.name}</h2>
+          <ul className="grid gap-0.5">
+            {group.items.map(([label, href, icon]) => {
+              const active = href === "/admin/dashboard"
+                ? pathname === href || pathname === "/admin"
+                : pathname === href || pathname.startsWith(href + "/");
+              return (
+                <li key={href}>
+                  <Link href={href} aria-current={active ? "page" : undefined}
+                    onClick={() => { if (mobile) onNavigate?.(); }}
+                    className={`group relative flex min-h-11 items-center gap-3 rounded-xl border-l-[3px] px-3 py-2.5 text-sm font-semibold outline-none transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#FF7600] ${
+                      active
+                        ? "border-l-[#FF7600] bg-[#FF7600]/10 text-white"
+                        : "border-l-transparent text-[#D1D5DB] hover:bg-white/[.05] hover:text-white"
+                    }`}>
+                    <span aria-hidden="true" className={active ? "text-[#FF9A2E]" : "text-[#A8AFBD] group-hover:text-[#FF9A2E]"}><NavIcon name={icon} /></span>
+                    <span>{label}</span>
+                  </Link>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      ))}
     </nav>
   );
 }
 
 export default function AdminSidebar() {
   return (
-    <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col overflow-y-auto overscroll-contain px-4 py-6 lg:sticky lg:top-0 lg:flex">
+    <aside className="dashboard-sidebar hidden h-screen w-72 shrink-0 flex-col overflow-y-auto overscroll-contain border-r border-white/10 bg-[#0C0E14] px-4 py-6 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
         <Logo light />
       </div>
 
       <div className="admin-workspace-card mx-2 mt-7 px-3.5 py-3">
-        <p className="text-[9px] font-black uppercase tracking-[.16em] text-[#FFB15D]">Admin workspace</p>
+        <p className="text-[11px] font-bold uppercase tracking-[.12em] text-[#FF9A2E]">Admin workspace</p>
         <p className="mt-1 text-xs font-semibold text-white">SocialRUSH control center</p>
       </div>
 
-      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[.18em] text-[#737B8B]">Workspace</p>
       <AdminNav />
 
       <div className="mt-auto">
