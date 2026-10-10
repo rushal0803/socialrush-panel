@@ -28,6 +28,7 @@ test("deployment attribution accepts only a git SHA and never sends arbitrary va
 test("navigation attribution uses a bounded, non-identifying set of values", () => {
   assert.equal(webVitalNavigationType("back-forward"), "back-forward");
   assert.equal(webVitalNavigationType("reload"), "reload");
+  assert.equal(webVitalNavigationType("back_forward"), "back-forward");
   assert.equal(webVitalNavigationType("user:/dashboard/orders/123"), "unknown");
   assert.equal(webVitalNavigationType(undefined), "unknown");
 });
