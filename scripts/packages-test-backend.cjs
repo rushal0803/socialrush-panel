@@ -27,7 +27,7 @@ globalThis.fetch = async (input, init) => {
     }
     return json(headers.get('accept')?.includes('object') ? found[0] || null : found);
   }
-  if (url.pathname.endsWith('/rest/v1/profiles')) return json({ ...user, full_name: 'Package QA', balance: process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' ? 0 : 100000, is_blocked: false });
+  if (url.pathname.endsWith('/rest/v1/profiles')) return json({ ...user, full_name: process.env.ADMIN_QA_FIXTURE === '1' ? 'Admin QA' : 'Package QA', ...(process.env.ADMIN_QA_FIXTURE === '1' ? { role: 'admin' } : {}), balance: process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' ? 0 : 100000, is_blocked: false });
   if (url.pathname.endsWith('/rest/v1/checkout_intents')) {
     if (process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' && url.searchParams.get('id') === 'eq.33333333-3333-4333-8333-333333333333' && (!init?.method || init.method === 'GET')) {
       return json({ id: '33333333-3333-4333-8333-333333333333', user_id: user.id, client_request_id: '44444444-4444-4444-8444-444444444444', service_code: 'instagram-followers', quantity: 1000, destination_link: 'https://www.instagram.com/responsive_qa/', total_paise: 79900, currency: 'INR', status: 'created', expires_at: new Date(Date.now() + 3600000).toISOString() });

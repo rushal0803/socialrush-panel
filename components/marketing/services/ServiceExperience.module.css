@@ -1,4 +1,4 @@
-.orderCard { --accent: #ff9b45; min-width: 0; border: 1px solid #3c3530; border-radius: 24px; background: #15171c; padding: clamp(18px, 2.5vw, 28px); box-shadow: 0 20px 60px #0003; color: #f8fafc; text-align: left; }
+.orderCard { --accent: #ff9b45; min-width: 0; border: 1px solid #46463e; border-top: 3px solid var(--accent); border-radius: 16px; background: #191b18; padding: clamp(18px, 2.5vw, 28px); box-shadow: 0 16px 40px #0002; color: #f8fafc; text-align: left; }
 .orderCard[data-platform="youtube"] { --accent: #ff8b8b; }
 .orderCard[data-platform="linkedin"], .orderCard[data-platform="facebook"] { --accent: #8cbcff; }
 .orderCard[data-platform="telegram"] { --accent: #79d5f5; }
@@ -48,12 +48,20 @@
 :global(body):has(.shell) :global(a[aria-label="Open SocialRUSH WhatsApp support"]) { position: static; display: flex; width: max-content; min-width: 44px; margin: 16px 12px 24px auto; }
 .shell.shell > :global(.content-auto) { content-visibility: visible; contain-intrinsic-size: none; }
 .page.page { background: #0c0e13; color: #f8fafc; }
+.page { --service-accent:#ffb17a; }
+.page[data-platform="youtube"],.page:has(.orderCard[data-platform="youtube"]) { --service-accent:#ffaaaa; }
+.page[data-platform="linkedin"],.page[data-platform="facebook"],.page:has(.orderCard[data-platform="linkedin"]),.page:has(.orderCard[data-platform="facebook"]) { --service-accent:#9dc7ff; }
+.page[data-platform="telegram"],.page:has(.orderCard[data-platform="telegram"]) { --service-accent:#93d9ed; }
+.page[data-platform="tiktok"],.page:has(.orderCard[data-platform="tiktok"]) { --service-accent:#9be0cf; }
+.page.page .orderCard { border-top-color:var(--accent) !important; border-top-width:3px; border-radius:16px; }
+.page.page :global(.service-money-page > section:first-child),.page.page :global(.service-money-page > div > section:first-of-type) { border-top:1px solid var(--service-accent); }
+.page.page :global(.service-money-page > section:first-child h1),.page.page :global(.service-money-page > div > section:first-of-type h1) { max-width:800px; font-weight:650; }
 .page.page :global(h1) { font-size: clamp(32px, 4.5vw, 58px); font-weight: 750; line-height: 1.12; letter-spacing: -.04em; }
 .page.page :global(h2) { line-height: 1.25; letter-spacing: -.025em; }
 .page.page :global(nav[aria-label="Breadcrumb"]) { line-height: 1.7; }
 .page.page :global(nav ol) { flex-wrap: wrap; }
 .page.page :global(article), .page.page :global(aside), .page.page :global(details) { border-color: #ffffff20 !important; box-shadow: 0 8px 24px #0002 !important; border-radius: 20px; }
-.page.page :global(article), .page.page :global(aside) { background-color: #14171e !important; background-image: none !important; transform: none !important; }
+.page.page :global(article), .page.page :global(aside) { background-color: #191b18 !important; background-image: none !important; transform: none !important; }
 .page.page :global([class*="grid-cols-"] > *) { min-width: 0; overflow-wrap: anywhere; }
 .page.page :global([class*="text-[#9CA3AF]"]), .page.page :global([class*="text-slate-500"]), .page.page :global([class*="text-zinc-500"]) { color: #a2adbd !important; }
 .page.page :global(section > .pointer-events-none) { opacity: .18; }

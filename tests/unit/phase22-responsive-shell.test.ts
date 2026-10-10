@@ -40,7 +40,8 @@ test("Phase 22 constrains long admin identity text instead of crowding the heade
   const header = read("components/admin/AdminHeader.tsx");
   assert.match(header, /max-w-40/);
   assert.match(header, /truncate text-xs font-bold/);
-  assert.match(header, /truncate text-\[10px\]/);
+  assert.match(header, /truncate text-xs text-\[#A8AFBD\]/);
+  assert.doesNotMatch(header, /truncate text-\[10px\]/);
 });
 
 test("Phase 22 keeps admin modals viewport-bounded and vertically scrollable", () => {

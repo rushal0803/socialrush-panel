@@ -1,0 +1,396 @@
+{
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "browser": "151.0.7922.34",
+    "mobile": "390x844, 1.6Mbps down, 750Kbps up, 150ms RTT, 4x CPU",
+    "privateData": "isolated synthetic backend; not production API latency",
+    "observationMs": 3000,
+    "serviceWorker": "blocked",
+    "analytics": "DNT enabled",
+    "note": "Cold browser cache, warm server cache. LCP/CLS lab samples are not field p75 or INP. No hydration estimate inferred from load time."
+  },
+  "comparison": [
+    {
+      "key": "desktop|/|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 334.90000009536743,
+          "p75": 337.7000000476837
+        },
+        "after": {
+          "median": 333.60000014305115,
+          "p75": 337.2999999523163
+        },
+        "medianChange": -1.2999999523162842,
+        "percentChange": -0.4
+      },
+      "fcp": {
+        "before": {
+          "median": 820,
+          "p75": 908
+        },
+        "after": {
+          "median": 788,
+          "p75": 804
+        },
+        "medianChange": -32,
+        "percentChange": -3.9
+      },
+      "lcp": {
+        "before": {
+          "median": 820,
+          "p75": 908
+        },
+        "after": {
+          "median": 788,
+          "p75": 804
+        },
+        "medianChange": -32,
+        "percentChange": -3.9
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 277689,
+          "p75": 277689
+        },
+        "after": {
+          "median": 277743,
+          "p75": 277743
+        },
+        "medianChange": 54,
+        "percentChange": 0
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 39,
+          "p75": 39
+        },
+        "after": {
+          "median": 39,
+          "p75": 39
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 15,
+          "p75": 15.100000143051147
+        },
+        "after": {
+          "median": 11.100000143051147,
+          "p75": 13.299999952316284
+        },
+        "medianChange": -3.8999998569488525,
+        "percentChange": -26
+      },
+      "fcp": {
+        "before": {
+          "median": 316,
+          "p75": 336
+        },
+        "after": {
+          "median": 236,
+          "p75": 268
+        },
+        "medianChange": -80,
+        "percentChange": -25.3
+      },
+      "lcp": {
+        "before": {
+          "median": 316,
+          "p75": 336
+        },
+        "after": {
+          "median": 236,
+          "p75": 268
+        },
+        "medianChange": -80,
+        "percentChange": -25.3
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 38,
+          "p75": 38
+        },
+        "after": {
+          "median": 38,
+          "p75": 38
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/ -> /services|warm-transition",
+      "count": 5,
+      "ttfb": null,
+      "fcp": null,
+      "lcp": null,
+      "cls": null,
+      "jsBytes": null,
+      "imageBytes": null,
+      "requestCount": null,
+      "transitionMs": {
+        "before": {
+          "median": 803.1720999999998,
+          "p75": 860.5987000000023
+        },
+        "after": {
+          "median": 987.2726999999995,
+          "p75": 1116.1163000000015
+        },
+        "medianChange": 184.10059999999976,
+        "percentChange": 22.9
+      }
+    },
+    {
+      "key": "desktop|/services|cold",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 365.2999999523163,
+          "p75": 383
+        },
+        "after": {
+          "median": 408.7000000476837,
+          "p75": 427.60000014305115
+        },
+        "medianChange": 43.40000009536743,
+        "percentChange": 11.9
+      },
+      "fcp": {
+        "before": {
+          "median": 672,
+          "p75": 696
+        },
+        "after": {
+          "median": 780,
+          "p75": 820
+        },
+        "medianChange": 108,
+        "percentChange": 16.1
+      },
+      "lcp": {
+        "before": {
+          "median": 672,
+          "p75": 696
+        },
+        "after": {
+          "median": 780,
+          "p75": 820
+        },
+        "medianChange": 108,
+        "percentChange": 16.1
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 279914,
+          "p75": 279914
+        },
+        "after": {
+          "median": 279968,
+          "p75": 279968
+        },
+        "medianChange": 54,
+        "percentChange": 0
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 38,
+          "p75": 38
+        },
+        "after": {
+          "median": 38,
+          "p75": 38
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/services|warm",
+      "count": 5,
+      "ttfb": {
+        "before": {
+          "median": 62.60000014305115,
+          "p75": 67
+        },
+        "after": {
+          "median": 79.90000009536743,
+          "p75": 105.20000004768372
+        },
+        "medianChange": 17.299999952316284,
+        "percentChange": 27.6
+      },
+      "fcp": {
+        "before": {
+          "median": 248,
+          "p75": 272
+        },
+        "after": {
+          "median": 268,
+          "p75": 316
+        },
+        "medianChange": 20,
+        "percentChange": 8.1
+      },
+      "lcp": {
+        "before": {
+          "median": 248,
+          "p75": 272
+        },
+        "after": {
+          "median": 268,
+          "p75": 316
+        },
+        "medianChange": 20,
+        "percentChange": 8.1
+      },
+      "cls": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "jsBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "imageBytes": {
+        "before": {
+          "median": 0,
+          "p75": 0
+        },
+        "after": {
+          "median": 0,
+          "p75": 0
+        },
+        "medianChange": 0,
+        "percentChange": null
+      },
+      "requestCount": {
+        "before": {
+          "median": 37,
+          "p75": 37
+        },
+        "after": {
+          "median": 37,
+          "p75": 37
+        },
+        "medianChange": 0,
+        "percentChange": 0
+      },
+      "transitionMs": null
+    }
+  ],
+  "regressions": [],
+  "invalidTransitions": []
+}

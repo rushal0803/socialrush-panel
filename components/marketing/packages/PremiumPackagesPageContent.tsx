@@ -6,6 +6,7 @@ import { Check, ChevronRight, LoaderCircle, Search, ShieldCheck, WalletCards } f
 import { useEffect, useMemo, useRef, useState } from "react";
 import MarketingHeader from "@/components/marketing/MarketingHeader";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
+import premiumStyles from "../PremiumSystem.module.css";
 import { createClient } from "@/lib/supabase/client";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 
@@ -182,7 +183,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
     finally { setSubmitting(false); }
   }
 
-  const experience = <main className="package-experience min-w-0 bg-[#070707] px-4 pt-6 pb-24 lg:pb-8 text-white antialiased sm:px-6 lg:px-8"><div className="mx-auto max-w-7xl">
+  const experience = <main className={`package-experience min-w-0 bg-[#070707] px-4 pt-6 pb-24 lg:pb-8 text-white antialiased sm:px-6 lg:px-8 ${premiumStyles.packages}`}><div className="mx-auto max-w-7xl">
     <header className="mb-4"><p className="text-xs font-bold uppercase tracking-[.16em] text-orange-300">SocialRUSH packages</p><h1 className="mt-2 max-w-2xl text-3xl font-bold leading-tight tracking-tight sm:text-5xl">Your next campaign.<br />A package that fits.</h1><p className="mt-3 text-sm leading-6 text-zinc-300 sm:text-base">Choose your platform, compare quantities and save on larger orders.</p><Link href={variant === "dashboard" ? "/dashboard/new-order" : "/pricing"} className="mt-2 inline-flex min-h-8 items-center text-sm font-semibold text-orange-300">Need a custom quantity?</Link></header>
     <ol aria-label="Order steps" className="mb-5 grid grid-cols-4 gap-2 text-xs font-semibold text-zinc-200">{["Platform", "Service", "Package", "Review"].map((label, index) => <li key={label} className="flex min-h-12 flex-col items-center justify-center gap-1 rounded-lg bg-[#151515] px-1 py-2 sm:flex-row sm:gap-2"><span className="grid h-5 w-5 shrink-0 place-items-center rounded-full border border-orange-300/40 text-orange-300">{index+1}</span>{label}</li>)}</ol>
     <section aria-labelledby="platform-title" className="mb-5"><h2 id="platform-title" className="mb-3 text-base font-bold">1. Choose platform</h2><div className="grid grid-cols-2 gap-2 min-[375px]:grid-cols-3 sm:grid-cols-4 lg:grid-cols-7">{platformOrder.filter((p) => groups.some((g) => g.uiPlatform === p)).map((p) => <button key={p} aria-pressed={platform === p} onClick={() => choosePlatform(p)} className={`min-h-12 min-w-0 rounded-xl border px-2 text-sm font-bold transition ${platform === p ? "border-orange-300 bg-orange-300 text-black" : "border-white/15 bg-[#151515] text-zinc-200 hover:border-orange-300"}`}>{platformLabels[p]}{platform === p && <Check className="ml-1 inline h-3 w-3" />}</button>)}</div></section>

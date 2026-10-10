@@ -1,0 +1,2068 @@
+{
+  "generatedAt": "2026-10-10T15:55:29.279Z",
+  "sourceCommit": "8f31015136283741c690bd89382e5d34e3dd1c23",
+  "buildId": "l9i1hINfTh-ln2MbwbXGc",
+  "base": "http://localhost:3001",
+  "runs": 5,
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "browser": "151.0.7922.34",
+    "mobile": "390x844, 1.6Mbps down, 750Kbps up, 150ms RTT, 4x CPU",
+    "privateData": "isolated synthetic backend; not production API latency",
+    "observationMs": 3000,
+    "serviceWorker": "blocked",
+    "analytics": "DNT enabled",
+    "note": "Cold browser cache, warm server cache. LCP/CLS lab samples are not field p75 or INP. No hydration estimate inferred from load time."
+  },
+  "summary": [
+    {
+      "key": "desktop|/|cold",
+      "count": 5,
+      "ttfb": {
+        "median": 334.90000009536743,
+        "p75": 337.7000000476837
+      },
+      "fcp": {
+        "median": 820,
+        "p75": 908
+      },
+      "lcp": {
+        "median": 820,
+        "p75": 908
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 277689,
+        "p75": 277689
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 39,
+        "p75": 39
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/|warm",
+      "count": 5,
+      "ttfb": {
+        "median": 15,
+        "p75": 15.100000143051147
+      },
+      "fcp": {
+        "median": 316,
+        "p75": 336
+      },
+      "lcp": {
+        "median": 316,
+        "p75": 336
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 38,
+        "p75": 38
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/ -> /services|warm-transition",
+      "count": 5,
+      "ttfb": null,
+      "fcp": null,
+      "lcp": null,
+      "cls": null,
+      "jsBytes": null,
+      "imageBytes": null,
+      "requestCount": null,
+      "transitionMs": {
+        "median": 803.1720999999998,
+        "p75": 860.5987000000023
+      }
+    },
+    {
+      "key": "desktop|/services|cold",
+      "count": 5,
+      "ttfb": {
+        "median": 365.2999999523163,
+        "p75": 383
+      },
+      "fcp": {
+        "median": 672,
+        "p75": 696
+      },
+      "lcp": {
+        "median": 672,
+        "p75": 696
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 279914,
+        "p75": 279914
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 38,
+        "p75": 38
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/services|warm",
+      "count": 5,
+      "ttfb": {
+        "median": 62.60000014305115,
+        "p75": 67
+      },
+      "fcp": {
+        "median": 248,
+        "p75": 272
+      },
+      "lcp": {
+        "median": 248,
+        "p75": 272
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 37,
+        "p75": 37
+      },
+      "transitionMs": null
+    }
+  ],
+  "samples": [
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "cold",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 352.90000009536743,
+      "fcp": 1044,
+      "lcp": 1044,
+      "cls": 0,
+      "longTasks": [
+        155
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 1044,
+        "loadTime": 0
+      },
+      "jsBytes": 277689,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 229.79999995231628,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 258.10000014305115,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 342.7999999523163,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 271.90000009536743,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 315.90000009536743,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 286.89999985694885,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 349.40000009536743,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 300.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 510.7000000476837,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-6e66e7fa020781ad.js",
+          "ms": 349,
+          "bytes": 9043
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 202.09999990463257
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 39.299999952316284
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "warm",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 15,
+      "fcp": 316,
+      "lcp": 316,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 316,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 112.20000004768372,
+          "bytes": 3787
+        },
+        {
+          "url": "/services",
+          "ms": 37.200000047683716,
+          "bytes": 454
+        },
+        {
+          "url": "/dashboard",
+          "ms": 39,
+          "bytes": 450
+        },
+        {
+          "url": "/case-studies",
+          "ms": 104.69999980926514,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 102.5,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 103.5,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 103.10000014305115,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 9
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 0,
+      "transitionMs": 707.5631000000012,
+      "clickMs": 180.38280000000123,
+      "clientNavigation": true,
+      "renderMs": 555.2000000476837,
+      "navigationResources": [
+        {
+          "path": "/services",
+          "ms": 133.5,
+          "bytes": 37660
+        },
+        {
+          "path": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 31,
+          "bytes": 9718
+        },
+        {
+          "path": "/_next/static/chunks/app/services/page-2532da582e4de0f7.js",
+          "ms": 27.399999856948853,
+          "bytes": 1688
+        },
+        {
+          "path": "/api/service-health",
+          "ms": 1.2000000476837158,
+          "bytes": 0
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "cold",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 334.90000009536743,
+      "fcp": 764,
+      "lcp": 764,
+      "cls": 0,
+      "longTasks": [
+        60
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 764,
+        "loadTime": 0
+      },
+      "jsBytes": 277689,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 41.5,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 66.59999990463257,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 138.20000004768372,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 78.09999990463257,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 115.79999995231628,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 91.29999995231628,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 162.90000009536743,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 100.40000009536743,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 18.40000009536743,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-6e66e7fa020781ad.js",
+          "ms": 157.09999990463257,
+          "bytes": 9043
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 39.299999952316284
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 9.5
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "warm",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 13.400000095367432,
+      "fcp": 264,
+      "lcp": 264,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 264,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 103.09999990463257,
+          "bytes": 3787
+        },
+        {
+          "url": "/services",
+          "ms": 50.700000047683716,
+          "bytes": 454
+        },
+        {
+          "url": "/dashboard",
+          "ms": 55,
+          "bytes": 450
+        },
+        {
+          "url": "/case-studies",
+          "ms": 98.10000014305115,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 102.10000014305115,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 97.20000004768372,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 98.09999990463257,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 2.200000047683716
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 1,
+      "transitionMs": 803.1720999999998,
+      "clickMs": 82.42589999999836,
+      "clientNavigation": true,
+      "renderMs": 729.7000000476837,
+      "navigationResources": [
+        {
+          "path": "/services",
+          "ms": 212.60000014305115,
+          "bytes": 37661
+        },
+        {
+          "path": "/services",
+          "ms": 53,
+          "bytes": 433
+        },
+        {
+          "path": "/dashboard/new-order",
+          "ms": 50.200000047683716,
+          "bytes": 496
+        },
+        {
+          "path": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 34.700000047683716,
+          "bytes": 9718
+        },
+        {
+          "path": "/_next/static/chunks/app/services/page-2532da582e4de0f7.js",
+          "ms": 35.90000009536743,
+          "bytes": 1688
+        },
+        {
+          "path": "/api/service-health",
+          "ms": 1.1000001430511475,
+          "bytes": 0
+        },
+        {
+          "path": "/packages",
+          "ms": 11.599999904632568,
+          "bytes": 433
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "cold",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 325.60000014305115,
+      "fcp": 820,
+      "lcp": 820,
+      "cls": 0,
+      "longTasks": [
+        235,
+        78
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 820,
+        "loadTime": 0
+      },
+      "jsBytes": 277689,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 31.799999952316284,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 81.39999985694885,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 162.79999995231628,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 99.59999990463257,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 137.70000004768372,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 111.20000004768372,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 211.40000009536743,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 121.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 10.400000095367432,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-6e66e7fa020781ad.js",
+          "ms": 197.90000009536743,
+          "bytes": 9043
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 85.70000004768372
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 10.600000143051147
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "warm",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 15.100000143051147,
+      "fcp": 336,
+      "lcp": 336,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 336,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 90.79999995231628,
+          "bytes": 3787
+        },
+        {
+          "url": "/services",
+          "ms": 40.799999952316284,
+          "bytes": 454
+        },
+        {
+          "url": "/dashboard",
+          "ms": 50.799999952316284,
+          "bytes": 450
+        },
+        {
+          "url": "/case-studies",
+          "ms": 77.59999990463257,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 75.29999995231628,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 74,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 78,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 0.9000000953674316
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 2,
+      "transitionMs": 1057.3482000000004,
+      "clickMs": 121.79289999999673,
+      "clientNavigation": true,
+      "renderMs": 970.6000001430511,
+      "navigationResources": [
+        {
+          "path": "/services",
+          "ms": 215.40000009536743,
+          "bytes": 37662
+        },
+        {
+          "path": "/services",
+          "ms": 121,
+          "bytes": 433
+        },
+        {
+          "path": "/dashboard/new-order",
+          "ms": 137.60000014305115,
+          "bytes": 496
+        },
+        {
+          "path": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 41.59999990463257,
+          "bytes": 9718
+        },
+        {
+          "path": "/_next/static/chunks/app/services/page-2532da582e4de0f7.js",
+          "ms": 39.700000047683716,
+          "bytes": 1688
+        },
+        {
+          "path": "/api/service-health",
+          "ms": 2.9000000953674316,
+          "bytes": 0
+        },
+        {
+          "path": "/packages",
+          "ms": 17.700000047683716,
+          "bytes": 433
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "cold",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 337.7000000476837,
+      "fcp": 908,
+      "lcp": 908,
+      "cls": 0,
+      "longTasks": [
+        102,
+        53
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 908,
+        "loadTime": 0
+      },
+      "jsBytes": 277689,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 33.700000047683716,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 61,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 151.59999990463257,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 77.09999990463257,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 121.70000004768372,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 93.5,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 190.90000009536743,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 107.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 10.100000143051147,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-6e66e7fa020781ad.js",
+          "ms": 182.20000004768372,
+          "bytes": 9043
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 69.39999985694885
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 29.600000143051147
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "warm",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 26,
+      "fcp": 388,
+      "lcp": 388,
+      "cls": 0,
+      "longTasks": [
+        72
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 388,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 110.09999990463257,
+          "bytes": 3787
+        },
+        {
+          "url": "/services",
+          "ms": 33.5,
+          "bytes": 454
+        },
+        {
+          "url": "/dashboard",
+          "ms": 37,
+          "bytes": 450
+        },
+        {
+          "url": "/case-studies",
+          "ms": 101.09999990463257,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 101.70000004768372,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 100.29999995231628,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 101.5,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 4.400000095367432
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 3,
+      "transitionMs": 676.8337000000029,
+      "clickMs": 63.72820000000502,
+      "clientNavigation": true,
+      "renderMs": 618.2000000476837,
+      "navigationResources": [
+        {
+          "path": "/services",
+          "ms": 112.79999995231628,
+          "bytes": 37659
+        },
+        {
+          "path": "/services",
+          "ms": 30.399999856948853,
+          "bytes": 433
+        },
+        {
+          "path": "/dashboard/new-order",
+          "ms": 51.59999990463257,
+          "bytes": 496
+        },
+        {
+          "path": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 23.40000009536743,
+          "bytes": 9718
+        },
+        {
+          "path": "/_next/static/chunks/app/services/page-2532da582e4de0f7.js",
+          "ms": 27.90000009536743,
+          "bytes": 1688
+        },
+        {
+          "path": "/api/service-health",
+          "ms": 1,
+          "bytes": 0
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "cold",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 328.59999990463257,
+      "fcp": 712,
+      "lcp": 712,
+      "cls": 0,
+      "longTasks": [
+        161
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 712,
+        "loadTime": 0
+      },
+      "jsBytes": 277689,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 22.5,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 43.30000019073486,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 103.20000004768372,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 55.700000047683716,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 84.5,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 65.10000014305115,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 127.09999990463257,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 73.19999980926514,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 6.299999952316284,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-6e66e7fa020781ad.js",
+          "ms": 121.20000004768372,
+          "bytes": 9043
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 128.09999990463257
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 25.90000009536743
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/",
+      "cache": "warm",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 7.6000001430511475,
+      "fcp": 244,
+      "lcp": 244,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social media growth, made simple.",
+        "size": 92732,
+        "renderTime": 244,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 59.200000047683716,
+          "bytes": 3787
+        },
+        {
+          "url": "/services",
+          "ms": 20.199999809265137,
+          "bytes": 454
+        },
+        {
+          "url": "/dashboard",
+          "ms": 21.300000190734863,
+          "bytes": 450
+        },
+        {
+          "url": "/case-studies",
+          "ms": 53.5,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 54.09999990463257,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 53.299999952316284,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 53.80000019073486,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.2000000476837158
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 4,
+      "transitionMs": 860.5987000000023,
+      "clickMs": 55.90860000000248,
+      "clientNavigation": true,
+      "renderMs": 809.0999999046326,
+      "navigationResources": [
+        {
+          "path": "/services",
+          "ms": 107.20000004768372,
+          "bytes": 37662
+        },
+        {
+          "path": "/services",
+          "ms": 32.299999952316284,
+          "bytes": 433
+        },
+        {
+          "path": "/dashboard/new-order",
+          "ms": 42.10000014305115,
+          "bytes": 496
+        },
+        {
+          "path": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 22.299999952316284,
+          "bytes": 9718
+        },
+        {
+          "path": "/_next/static/chunks/app/services/page-2532da582e4de0f7.js",
+          "ms": 17.399999856948853,
+          "bytes": 1688
+        },
+        {
+          "path": "/api/service-health",
+          "ms": 1.1000001430511475,
+          "bytes": 0
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 383,
+      "fcp": 760,
+      "lcp": 760,
+      "cls": 0,
+      "longTasks": [
+        265,
+        51
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 760,
+        "loadTime": 0
+      },
+      "jsBytes": 279914,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 51.700000047683716,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 79.29999995231628,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 189.10000014305115,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 95.39999985694885,
+          "bytes": 46516
+        },
+        {
+          "url": "/",
+          "ms": 84,
+          "bytes": 16969
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 154.60000014305115,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 121.40000009536743,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 228.5,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 134.59999990463257,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 230.40000009536743,
+          "bytes": 9718
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 16.700000047683716
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 16.200000047683716
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 60.700000047683716,
+      "fcp": 248,
+      "lcp": 248,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 248,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 74.39999985694885,
+          "bytes": 456
+        },
+        {
+          "url": "/case-studies",
+          "ms": 75.59999990463257,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 77,
+          "bytes": 433
+        },
+        {
+          "url": "/packages",
+          "ms": 24,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 75.39999985694885,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 76.09999990463257,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-b7a4def81adf7272.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 361.90000009536743,
+      "fcp": 616,
+      "lcp": 616,
+      "cls": 0,
+      "longTasks": [
+        148
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 616,
+        "loadTime": 0
+      },
+      "jsBytes": 279914,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 50.700000047683716,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 78.70000004768372,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 143.59999990463257,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 90.40000009536743,
+          "bytes": 46516
+        },
+        {
+          "url": "/",
+          "ms": 47.799999952316284,
+          "bytes": 16969
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 124.09999990463257,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 104.70000004768372,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 167.79999995231628,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 111.90000009536743,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 171.40000009536743,
+          "bytes": 9718
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 8
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 13
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 62.60000014305115,
+      "fcp": 232,
+      "lcp": 232,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 232,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 41.5,
+          "bytes": 456
+        },
+        {
+          "url": "/case-studies",
+          "ms": 47.40000009536743,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 56.200000047683716,
+          "bytes": 433
+        },
+        {
+          "url": "/packages",
+          "ms": 28.799999952316284,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 46.700000047683716,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 47.90000009536743,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-b7a4def81adf7272.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.4000000953674316
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 388.2999999523163,
+      "fcp": 636,
+      "lcp": 636,
+      "cls": 0,
+      "longTasks": [
+        129
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 636,
+        "loadTime": 0
+      },
+      "jsBytes": 279914,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 54.40000009536743,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 79.60000014305115,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 135.20000004768372,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 87.29999995231628,
+          "bytes": 46516
+        },
+        {
+          "url": "/",
+          "ms": 40.5,
+          "bytes": 16969
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 117.80000019073486,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 97.59999990463257,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 162.69999980926514,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 106.10000014305115,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 161.5,
+          "bytes": 9718
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 8.5
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 25.799999952316284
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 47.5,
+      "fcp": 216,
+      "lcp": 216,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 216,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 34.09999990463257,
+          "bytes": 456
+        },
+        {
+          "url": "/case-studies",
+          "ms": 55.700000047683716,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 57.200000047683716,
+          "bytes": 433
+        },
+        {
+          "url": "/packages",
+          "ms": 17.59999990463257,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 55.60000014305115,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 56.200000047683716,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-b7a4def81adf7272.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 0.8999998569488525
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 358.5,
+      "fcp": 696,
+      "lcp": 696,
+      "cls": 0,
+      "longTasks": [
+        223,
+        54
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 696,
+        "loadTime": 0
+      },
+      "jsBytes": 279914,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 48.299999952316284,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 79.70000004768372,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 235,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 91.30000019073486,
+          "bytes": 46516
+        },
+        {
+          "url": "/",
+          "ms": 42.700000047683716,
+          "bytes": 16969
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 150.79999995231628,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 112.79999995231628,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 256.7999999523163,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 127.90000009536743,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 263.19999980926514,
+          "bytes": 9718
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 10.700000047683716
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 19.799999952316284
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 67,
+      "fcp": 272,
+      "lcp": 272,
+      "cls": 0,
+      "longTasks": [],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 272,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 54.10000014305115,
+          "bytes": 456
+        },
+        {
+          "url": "/case-studies",
+          "ms": 68.69999980926514,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 86.29999995231628,
+          "bytes": 433
+        },
+        {
+          "url": "/packages",
+          "ms": 37.700000047683716,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 65.39999985694885,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 69,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-b7a4def81adf7272.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 0.7999999523162842
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 365.2999999523163,
+      "fcp": 672,
+      "lcp": 672,
+      "cls": 0,
+      "longTasks": [
+        195,
+        70
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 672,
+        "loadTime": 0
+      },
+      "jsBytes": 279914,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 47,
+          "bytes": 63216
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 74,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 141.29999995231628,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 84.89999985694885,
+          "bytes": 46516
+        },
+        {
+          "url": "/",
+          "ms": 50.5,
+          "bytes": 16969
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 120.20000004768372,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 98.40000009536743,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/app/page-4cb03e5176b76c09.js",
+          "ms": 184,
+          "bytes": 12823
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 107,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/1260-1fb3b3bb17fb21c1.js",
+          "ms": 190.20000004768372,
+          "bytes": 9718
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 89.79999995231628
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 43.10000014305115
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 67.39999985694885,
+      "fcp": 368,
+      "lcp": 368,
+      "cls": 0,
+      "longTasks": [
+        59
+      ],
+      "lcpElement": {
+        "tag": "H1",
+        "text": "Social Media Growth Services",
+        "size": 46299,
+        "renderTime": 368,
+        "loadTime": 0
+      },
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 84.70000004768372,
+          "bytes": 456
+        },
+        {
+          "url": "/case-studies",
+          "ms": 90.69999980926514,
+          "bytes": 436
+        },
+        {
+          "url": "/register",
+          "ms": 94.39999985694885,
+          "bytes": 433
+        },
+        {
+          "url": "/packages",
+          "ms": 21.100000143051147,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 87.29999995231628,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 91.20000004768372,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/119e56179d5027b1.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/cabe24adcbbba7a5.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-b7a4def81adf7272.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 0.9000000953674316
+        }
+      ]
+    }
+  ]
+}

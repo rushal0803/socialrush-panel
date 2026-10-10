@@ -69,9 +69,9 @@ function DesktopDropdown({
   children: React.ReactNode;
 }) {
   return (
-    <details className="group relative nav-2-dropdown">
+    <details className="group relative shrink-0 nav-2-dropdown">
       <summary
-        className={`flex min-h-10 cursor-pointer list-none items-center gap-1 rounded-sr-control px-3 py-2 outline-none transition duration-fast ease-sr-out hover:bg-white/[0.05] hover:text-content-primary focus-visible:shadow-sr-focus [&::-webkit-details-marker]:hidden ${
+        className={`flex min-h-10 cursor-pointer list-none items-center gap-1 whitespace-nowrap rounded-sr-control px-2.5 py-2 outline-none transition duration-fast ease-sr-out hover:bg-white/[0.05] hover:text-content-primary focus-visible:shadow-sr-focus [&::-webkit-details-marker]:hidden ${
           active ? "bg-white/[0.06] text-content-primary" : "text-content-secondary"
         }`}
       >
@@ -157,7 +157,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </span>
         </div>
 
-        <nav className="hidden items-center gap-0.5 text-[13px] font-semibold xl:flex" aria-label="Primary navigation">
+        <nav className="hidden shrink-0 items-center gap-0 text-[13px] font-semibold xl:flex" aria-label="Primary navigation">
           <DesktopDropdown label="Services" active={servicesActive}>
             <div className="nav-2-panel absolute left-0 top-[calc(100%+.65rem)] z-30 w-[28rem] overflow-hidden rounded-2xl border border-sr-border-strong bg-surface-elevated/98 p-2.5 shadow-[0_28px_70px_-28px_rgba(0,0,0,.9)] backdrop-blur-xl">
               <Link
@@ -193,7 +193,7 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
                 key={href}
                 href={href}
                 aria-current={active ? "page" : undefined}
-                className={`relative rounded-sr-control px-3 py-2 text-content-secondary outline-none transition duration-fast ease-sr-out hover:bg-white/[0.05] hover:text-content-primary focus-visible:shadow-sr-focus ${
+                className={`relative shrink-0 whitespace-nowrap rounded-sr-control px-2.5 py-2 text-content-secondary outline-none transition duration-fast ease-sr-out hover:bg-white/[0.05] hover:text-content-primary focus-visible:shadow-sr-focus ${
                   active ? "bg-white/[0.06] text-content-primary" : ""
                 }`}
               >
@@ -225,14 +225,14 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
           </DesktopDropdown>
         </nav>
 
-        <div className="hidden items-center gap-1.5 xl:flex">
+        <div className="hidden shrink-0 items-center gap-1 xl:flex">
           <button type="button" onClick={() => setSearchOpen(true)} className="grid h-10 w-10 place-items-center rounded-sr-control border border-transparent text-content-muted outline-none transition hover:border-sr-border hover:bg-white/[.04] hover:text-content-primary focus-visible:shadow-sr-focus" aria-label="Search SocialRUSH services">
             <Search className="h-4 w-4" aria-hidden="true" />
           </button>
           <CurrencyDropdown compact tone={tone} />
           {isLoggedIn ? (
             <>
-              <Link href="/dashboard/account" className="inline-flex min-h-10 items-center gap-2 rounded-sr-control border border-sr-border bg-surface-secondary px-3.5 py-2 text-sm font-bold text-content-primary outline-none transition hover:border-sr-border-strong hover:bg-white/[.05] focus-visible:shadow-sr-focus">
+              <Link href="/dashboard/account" className="inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-sr-control border border-sr-border bg-surface-secondary px-3 py-2 text-sm font-bold text-content-primary outline-none transition hover:border-sr-border-strong hover:bg-white/[.05] focus-visible:shadow-sr-focus">
                 <UserRound className="h-4 w-4" aria-hidden="true" />
                 Profile
               </Link>
@@ -242,11 +242,11 @@ export default function MarketingHeader({ tone = "default" }: { tone?: "default"
             </>
           ) : (
             <>
-              <Link href="/login" className="inline-flex min-h-10 items-center rounded-sr-control px-3.5 py-2 text-sm font-bold text-content-secondary outline-none transition hover:bg-white/[.04] hover:text-content-primary focus-visible:shadow-sr-focus">Login</Link>
-              <Link href="/register" className="inline-flex min-h-10 items-center rounded-sr-control border border-sr-border bg-surface-secondary px-3.5 py-2 text-sm font-bold text-content-primary outline-none transition hover:border-sr-border-strong hover:bg-white/[.05] focus-visible:shadow-sr-focus">Sign Up</Link>
+              <Link href="/login" className="inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-sr-control px-3 py-2 text-sm font-bold text-content-secondary outline-none transition hover:bg-white/[.04] hover:text-content-primary focus-visible:shadow-sr-focus">Login</Link>
+              <Link href="/register" className="inline-flex min-h-10 shrink-0 items-center whitespace-nowrap rounded-sr-control border border-sr-border bg-surface-secondary px-3 py-2 text-sm font-bold text-content-primary outline-none transition hover:border-sr-border-strong hover:bg-white/[.05] focus-visible:shadow-sr-focus">Sign Up</Link>
             </>
           )}
-          <PortalCTA className="group inline-flex min-h-10 items-center gap-2 rounded-sr-control bg-sr-brand px-4 py-2 text-sm font-black text-white shadow-sr-button outline-none transition duration-normal ease-sr-out hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(255,118,0,.28)] focus-visible:shadow-sr-focus motion-reduce:transform-none">
+          <PortalCTA className="group inline-flex min-h-10 shrink-0 items-center gap-2 whitespace-nowrap rounded-sr-control bg-sr-brand px-3 py-2 text-sm font-black text-white shadow-sr-button outline-none transition duration-normal ease-sr-out hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(255,118,0,.28)] focus-visible:shadow-sr-focus motion-reduce:transform-none">
             Start Order
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-0.5" aria-hidden="true" />
           </PortalCTA>

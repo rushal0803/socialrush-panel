@@ -119,6 +119,19 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
   const articleImage = getArticleImage(article.image);
   const articleAuthor = article.author;
+  // These shared heroes have small pre-encoded assets so cold image optimization
+  // cannot hold up guide navigation. Keep the original SEO images above.
+  const preoptimizedHero = [
+    "/images/blog/instagram-followers-vs-engagement.png",
+    "/images/blog/best-time-instagram-india.png",
+    "/images/blog/instagram-followers-price-india.png",
+    "/images/blog/grow-instagram-followers-india-practical-plan.png",
+    "/images/blog/linkedin-followers-business-growth-india.png",
+    "/images/blog/promote-new-youtube-channel-india.png",
+    "/images/blog/facebook-page-growth-india.png",
+    "/images/blog/social-media-growth-strategy-indian-creators.png",
+  ].includes(articleImage);
+  const heroImage = preoptimizedHero ? articleImage.replace(/\.png$/i, ".webp") : articleImage;
   const breadcrumbTitle = article.breadcrumbTitle ?? article.title;
   const articleSections = getArticleSections(article);
   const articleSectionIds = getUniqueSectionIds(articleSections);
@@ -237,7 +250,8 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
             <div className="mt-7 grid gap-4 lg:grid-cols-[1.15fr_.85fr]">
               <div className="relative aspect-[16/8] overflow-hidden rounded-2xl bg-[#090B12]">
                 <SafeImage
-                  src={articleImage}
+                  src={heroImage}
+                  unoptimized={preoptimizedHero}
                   fallbackSrc={articleImage.replace(/\.(png|jpg|jpeg)$/i, ".webp")}
                   alt={article.imageAlt ?? article.title}
                   fill
