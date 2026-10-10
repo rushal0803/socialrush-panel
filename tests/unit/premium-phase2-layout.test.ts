@@ -60,3 +60,21 @@ test("Phase 2 admin navigation remains complete and only cosmetic", () => {
   assert.match(nav, /aria-current/);
   assert.doesNotMatch(header, /System online/);
 });
+
+
+test("Phase 2 actual Terms, Privacy and Refund routes retain copy and dark brand surfaces", () => {
+  const terms = read("components/marketing/TermsCenter.tsx");
+  const privacy = read("app/privacy-policy/page.tsx");
+  const refunds = read("components/marketing/RefundPolicyPage.tsx");
+  assert.match(terms, /const sections:/);
+  assert.match(terms, /sections\.map/);
+  assert.match(terms, /bg-\[#07080D\]/);
+  assert.match(privacy, /export const metadata = createPageMetadata/);
+  assert.match(privacy, /path: "\/privacy-policy"/);
+  assert.match(privacy, /bg-\[#0C0E14\]/);
+  assert.match(refunds, /function RefundPolicyPage/);
+  assert.match(refunds, /bg-\[#07080D\]/);
+  for (const page of [terms, privacy, refunds]) {
+    assert.doesNotMatch(page, /bg-\[#eeeae0\]|bg-\[#eeeadf\]|bg-\[#eae4d7\]/i);
+  }
+});
