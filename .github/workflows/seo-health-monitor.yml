@@ -19,6 +19,8 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: 20
+      - name: Check local blog image assets
+        run: node scripts/seo-blog-assets-check.mjs
       - name: Check production SEO health
         run: node scripts/seo-health-check.mjs
       - name: Check full-sitemap technical SEO
