@@ -16,7 +16,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "git": {
     "deploymentEnabled": {
-      "feat/socialrush-premium-design-transformation": false
+      "feat/socialrush-premium-design-transformation": false,
+      "review/socialrush-premium-phases-1-2-integration": false
     }
   },
   "regions": [
