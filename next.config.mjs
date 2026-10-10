@@ -62,6 +62,12 @@ const nextConfig = {
         permanent: true,
       },
       {
+        // Search Console discovered this older calculator slug. Keep one canonical tool.
+        source: "/tools/social-media-growth-goal-planner",
+        destination: "/tools/creator-growth-goal-planner",
+        permanent: true,
+      },
+      {
         source: "/buy-instagram-followers",
         destination: "/buy-instagram-followers-india",
         permanent: true,

@@ -19,6 +19,9 @@ export const searchPriorityTargets: readonly SearchPriorityTarget[] = [
   { slug: "buy-youtube-comments-india", label: "YouTube Comments India", intent: "video comment service details" },
   { slug: "buy-instagram-comments-india", label: "Instagram Comments India", intent: "post comment service details" },
   { slug: "buy-facebook-group-members-india", label: "Facebook Group Members India", intent: "community member service requirements" },
+  { slug: "buy-instagram-saves-india", label: "Instagram Saves India", intent: "public post and Reel save campaigns" },
+  { slug: "buy-instagram-shares-india", label: "Instagram Shares India", intent: "public post and Reel share campaigns" },
+  { slug: "buy-facebook-views-india", label: "Facebook Views India", intent: "public video view service details" },
 ] as const;
 
 export const crawlPriorityServiceLinks = searchPriorityTargets.map((target) => ({
