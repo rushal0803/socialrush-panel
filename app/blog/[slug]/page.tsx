@@ -122,6 +122,11 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   // These shared heroes have small pre-encoded assets so cold image optimization
   // cannot hold up guide navigation. Keep the original SEO images above.
   const preoptimizedHero = [
+    "/images/blog/instagram-followers-vs-engagement.png",
+    "/images/blog/best-time-instagram-india.png",
+    "/images/blog/instagram-followers-price-india.png",
+    "/images/blog/grow-instagram-followers-india-practical-plan.png",
+    "/images/blog/linkedin-followers-business-growth-india.png",
     "/images/blog/promote-new-youtube-channel-india.png",
     "/images/blog/facebook-page-growth-india.png",
     "/images/blog/social-media-growth-strategy-indian-creators.png",

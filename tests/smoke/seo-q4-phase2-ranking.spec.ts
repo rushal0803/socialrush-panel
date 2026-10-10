@@ -78,6 +78,11 @@ for (const [slug, target] of guides) {
     expect(response?.status()).toBe(200);
     await expect(page.locator(`#article-body a[href="${target}"]`).first()).toBeVisible();
     const preencodedHeroes: Record<string, { asset: string; alt: string }> = {
+      "instagram-followers-vs-likes-india": { asset: "instagram-followers-vs-engagement", alt: "Comparison of Instagram follower growth and likes for Indian creators" },
+      "best-time-to-post-on-instagram-india": { asset: "best-time-instagram-india", alt: "Instagram posting schedule in India with audience activity times and content planning" },
+      "instagram-followers-price-in-india": { asset: "instagram-followers-price-india", alt: "Comparing Instagram follower prices, quality, delivery and support in India" },
+      "how-to-grow-instagram-followers-in-india": { asset: "grow-instagram-followers-india-practical-plan", alt: "Practical Instagram follower growth plan for creators in India" },
+      "linkedin-followers-for-business-growth": { asset: "linkedin-followers-business-growth-india", alt: "LinkedIn business growth dashboard for Indian companies with follower and lead growth" },
       "youtube-channel-readiness-checklist": { asset: "promote-new-youtube-channel-india", alt: "Creator reviewing a YouTube channel readiness checklist before a promotion" },
       "facebook-page-growth-tips-for-local-businesses": { asset: "facebook-page-growth-india", alt: "Facebook page growth strategy for Indian local businesses and customer trust" },
       "twitter-followers-price-in-india": { asset: "social-media-growth-strategy-indian-creators", alt: "Twitter X followers price in India planning guide" },
