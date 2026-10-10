@@ -13,7 +13,7 @@ export type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
 
 const variantClasses: Record<ButtonVariant, string> = {
   primary:
-    "border border-action-gold/20 bg-sr-brand text-white shadow-sr-button hover:-translate-y-0.5 hover:shadow-[0_16px_34px_rgba(255,118,0,0.28)]",
+    "border border-orange-200/20 bg-[#ff9950] text-[#221307] hover:bg-[#ffb67f]",
   secondary:
     "border border-sr-border bg-surface-secondary text-content-primary hover:-translate-y-0.5 hover:border-sr-border-strong hover:bg-action/10",
   ghost:

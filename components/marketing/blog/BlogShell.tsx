@@ -4,6 +4,7 @@ import { usePathname } from "next/navigation";
 import dynamic from "next/dynamic";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingHeader from "@/components/marketing/MarketingHeader";
+import styles from "../PremiumSystem.module.css";
 
 // The bridge imports the complete editorial catalog. Discovery and package
 // pages share this shell but never render it; keep that catalog off their path.
@@ -18,7 +19,7 @@ export default function BlogShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <main className="public-dark min-h-screen overflow-x-clip bg-[#07080D] text-white">
+    <main className={`public-dark min-h-screen overflow-x-clip bg-[#07080D] text-white ${styles.public} ${pathname.startsWith("/blog") ? styles.editorial : ""}`}>
       <MarketingHeader />
       {children}
       {pathname.startsWith("/blog/") ? <BlogRevenueBridge /> : null}

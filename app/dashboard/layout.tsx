@@ -9,6 +9,7 @@ import ProfessionalUpiCheckout from "@/components/dashboard/ProfessionalUpiCheck
 import DirectUpiCheckoutBridge from "@/components/dashboard/DirectUpiCheckoutBridge";
 import AbandonedCheckoutRecovery from "@/components/dashboard/AbandonedCheckoutRecovery";
 import CheckoutFunnelTracker from "@/components/analytics/CheckoutFunnelTracker";
+import styles from "@/components/dashboard/PremiumWorkspace.module.css";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -37,7 +38,7 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
   if (context.profile.is_blocked) redirect("/login?error=account_blocked");
 
   return (
-    <div className="dashboard-shell relative flex min-h-screen">
+    <div className={`dashboard-shell relative flex min-h-screen ${styles.workspace}`}>
       <a
         href="#dashboard-main-content"
         className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"

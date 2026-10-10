@@ -1,23 +1,21 @@
 import PublicReviewsSection from "@/components/reviews/PublicReviewsSection";
 import TrustEvidencePanel from "@/components/marketing/trust/TrustEvidencePanel";
-import HomepageExperienceFrame from "./HomepageExperienceFrame";
-import InteractiveHomepageShell from "./InteractiveHomepageShell";
 import PremiumHomepage from "./PremiumHomepage";
+import PremiumHomeHero from "./PremiumHomeHero";
 import PublicShell from "./PublicShell";
 import DeferredPersonalizationShelf from "./cro/DeferredPersonalizationShelf";
 import { activeSmmServices } from "@/lib/smm-service-catalog";
+import styles from "./PremiumSystem.module.css";
 
 export default function HomepageContent() {
   return (
     <PublicShell>
-      <InteractiveHomepageShell>
-        <HomepageExperienceFrame>
-          <PremiumHomepage />
-          <TrustEvidencePanel />
-          <DeferredPersonalizationShelf catalog={activeSmmServices} />
-          <PublicReviewsSection limit={4} />
-        </HomepageExperienceFrame>
-      </InteractiveHomepageShell>
+      <div className={styles.home}>
+        <PremiumHomepage hero={<PremiumHomeHero />} />
+        <TrustEvidencePanel />
+        <DeferredPersonalizationShelf catalog={activeSmmServices} />
+        <PublicReviewsSection limit={4} />
+      </div>
     </PublicShell>
   );
 }

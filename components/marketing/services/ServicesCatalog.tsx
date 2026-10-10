@@ -18,13 +18,13 @@ export function categoryLabel(category: string) {
   return category === "watch-hours" ? "Watch hours" : category[0].toUpperCase() + category.slice(1);
 }
 export function ServicesHero() {
-  return <header className={styles.hero}>
+  return <header className={styles.hero}><div>
     <p className={styles.eyebrow}>SOCIALRUSH SERVICES</p>
     <h1>Social Media Growth Services</h1>
     <p className={styles.intro}>Compare live services and current pricing across Instagram, YouTube, LinkedIn, Facebook and more.</p>
     <div className={styles.actions}><a className={styles.primary} href="#discovery-heading">Browse Services <ArrowRight size={16} aria-hidden="true" /></a><Link className={styles.secondary} href="/dashboard/new-order">Start Order</Link></div>
     <ul className={styles.trust}>{["No password required", "Transparent pricing", "Dashboard tracking", "Secure checkout"].map(item => <li key={item}><Check size={15} aria-hidden="true" />{item}</li>)}</ul>
-  </header>;
+  </div><aside className={styles.discoveryGuide} aria-label="Service selection guide"><span className={styles.guideNumber}>01 — 03</span><h2>Find your next<br />growth service.</h2><ol><li><span>01</span><div><strong>Choose your platform</strong><p>Start with the account or content you want to grow.</p></div></li><li><span>02</span><div><strong>Compare the details</strong><p>Review rates, delivery and refill terms together.</p></div></li><li><span>03</span><div><strong>Make it your campaign</strong><p>Set your quantity and review before checkout.</p></div></li></ol><Link href="/packages">Prefer a set quantity? Explore packages <ArrowRight size={16} aria-hidden="true" /></Link></aside></header>;
 }
 export function PlatformSelector({ platforms, platform, counts, onSelect }: { platforms: SmmPlatformId[]; platform: SmmPlatformId; counts: Record<SmmPlatformId, number>; onSelect: (platform: SmmPlatformId) => void }) {
   return <section className={styles.platforms} aria-labelledby="discovery-heading"><h2 id="discovery-heading">Choose a platform</h2><div className={styles.rail} aria-label="Platforms">{platforms.map(id => <button key={id} type="button" aria-pressed={platform === id} className={styles.platform} onClick={() => onSelect(id)}><PlatformIcon platform={platformMeta[id].icon} className="h-5 w-5 shrink-0" /><span><strong>{platformMeta[id].label}</strong><small>{counts[id]} {counts[id] === 1 ? "service" : "services"}</small></span>{platform === id && <Check size={15} aria-hidden="true" />}</button>)}</div></section>;

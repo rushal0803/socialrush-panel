@@ -67,7 +67,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode, canoni
   const faqSchema = { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) };
 
   return (
-    <PublicShell serviceExperience tone="default">
+    <PublicShell serviceExperience servicePlatform={service.platform} tone="default">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(serviceSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(breadcrumbSchema) }} />
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: safeJson(faqSchema) }} />

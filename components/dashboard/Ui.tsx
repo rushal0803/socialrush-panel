@@ -1,8 +1,9 @@
 import Link from "next/link";
+import styles from "./PremiumWorkspace.module.css";
 
 export function PageHeader({ title, description, action, variant = "light" }: { title: string; description: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
   return (
-    <div className="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+    <div className={`flex flex-col justify-between gap-4 sm:flex-row sm:items-center ${styles.pageHeader}`}>
       <div className="min-w-0 [overflow-wrap:anywhere]">
         <h1 className={`text-2xl font-black tracking-tight ${variant === "dark" ? "text-[#FFF8F1]" : "text-[#0B0B0F]"}`}>{title}</h1>
         <p className={`mt-1.5 text-sm ${variant === "dark" ? "text-[#FF9F00]" : "text-[#111827]"}`}>{description}</p>
@@ -27,7 +28,7 @@ const badgeStyles: Record<Status, string> = {
 
 export function StatusBadge({ status }: { status: Status }) {
   return (
-    <span className={`inline-flex items-center gap-1.5 rounded-full px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset ${badgeStyles[status]}`}>
+    <span className={`inline-flex items-center gap-1.5 px-2.5 py-1 text-[11px] font-semibold ring-1 ring-inset ${styles.badge} ${badgeStyles[status]}`}>
       <i className="h-1.5 w-1.5 rounded-full bg-current" />
       {status}
     </span>
@@ -44,7 +45,7 @@ export function EmptyAction({ href, children }: { href: string; children: React.
 
 export function SectionTitle({ title, description, action, variant = "light" }: { title: string; description?: string; action?: React.ReactNode; variant?: "light" | "dark" }) {
   return (
-    <div className={`flex flex-col gap-3 border-b sm:flex-row sm:items-center sm:justify-between ${variant === "dark" ? "border-[#0B0B0F]" : "border-[#FFF8F1]"} px-4 py-4 sm:px-6`}>
+    <div className={`flex flex-col gap-3 border-b sm:flex-row sm:items-center sm:justify-between ${styles.sectionTitle} px-4 py-4 sm:px-6`}>
       <div className="min-w-0 [overflow-wrap:anywhere]">
         <h2 className={`text-sm font-bold ${variant === "dark" ? "text-[#FFF8F1]" : "text-[#0B0B0F]"}`}>{title}</h2>
         {description && <p className={`mt-1 text-xs ${variant === "dark" ? "text-[#FF9F00]" : "text-[#111827]"}`}>{description}</p>}

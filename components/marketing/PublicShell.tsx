@@ -2,18 +2,21 @@ import MarketingHeader from "./MarketingHeader";
 import MarketingFooter from "./MarketingFooter";
 import ServiceJourney from "./services/ServiceJourney";
 import serviceStyles from "./services/ServiceExperience.module.css";
+import premiumStyles from "./PremiumSystem.module.css";
 
 export default function PublicShell({
   children,
   tone = "default",
   serviceExperience = false,
+  servicePlatform,
 }: {
   children: React.ReactNode;
   tone?: "default" | "light3d";
   serviceExperience?: boolean;
+  servicePlatform?: string;
 }) {
   return (
-    <div className={`public-dark sr-page relative isolate min-h-screen bg-surface-page text-content-primary ${serviceExperience ? serviceStyles.shell : ""}`}>
+    <div className={`public-dark sr-page relative isolate min-h-screen bg-surface-page text-content-primary ${premiumStyles.public} ${serviceExperience ? serviceStyles.shell : ""}`}>
       <a
         href="#main-content"
         className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
@@ -27,7 +30,7 @@ export default function PublicShell({
       />
 
       <MarketingHeader tone={tone} />
-      <main id="main-content" className={`relative min-h-[55vh] ${serviceExperience ? serviceStyles.page : ""}`}>
+      <main id="main-content" data-platform={servicePlatform} className={`relative min-h-[55vh] ${serviceExperience ? serviceStyles.page : ""}`}>
         {children}
         {serviceExperience ? <ServiceJourney /> : null}
       </main>
