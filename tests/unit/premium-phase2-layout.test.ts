@@ -15,7 +15,8 @@ test("Phase 2 policy layout renders static crawlable headings and complete secti
   assert.match(page, /tableOfContentsItems\.map/g);
   assert.match(page, /#07080D/);
   assert.match(page, /#FF7600/);
-  assert.doesNotMatch(page, /bg-white\/|bg-amber-200|bg-orange-200/);
+  // Low-opacity white hover affordances are intentional on dark surfaces; prohibit light panels.
+  assert.doesNotMatch(page, /bg-white\/(?:[6-9][0-9]|100)|bg-(?:amber|orange)-200/);
 });
 
 test("Phase 2 public reviews never invent entries or hide the empty state", () => {
