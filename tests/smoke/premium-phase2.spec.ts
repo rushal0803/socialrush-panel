@@ -23,7 +23,8 @@ for (const width of [320, 390, 1440]) {
 test("support navigation and reviews empty-state remain truthful", async ({ page }) => {
   await page.goto("/support");
   for (const route of ["/faq#delivery", "/faq#payments", "/refund-policy", "/trust", "/services", "/contact"]) {
-    await expect(page.locator(`a[href="${route}"]`).first()).toBeVisible();
+    // Restrict to visible destinations: the global navigation also contains hidden menu links.
+    await expect(page.locator(`a[href="${route}"]:visible`).first()).toBeVisible();
   }
   await page.goto("/reviews");
   await expect(page.getByRole("heading", { name: "Reviews from completed orders" })).toBeVisible();
