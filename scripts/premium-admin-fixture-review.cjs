@@ -52,7 +52,7 @@ async function main() {
         const toggle=page.getByRole("button",{name:"Open admin menu"});
         await toggle.click();
         await page.getByRole("navigation",{name:"Admin sections on mobile"}).waitFor({timeout:10000});
-        await page.getByRole("button",{name:"Close menu"}).click();
+        await page.getByRole("button",{name:"Close menu",exact:true}).click();
       }
       const audit=await page.evaluate(() => ({
         heading:document.querySelector("h1")?.textContent?.trim()??null,
