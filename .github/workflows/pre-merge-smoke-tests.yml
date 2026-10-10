@@ -90,3 +90,36 @@ jobs:
             artifacts/packages-v2/
           retention-days: 7
           if-no-files-found: warn
+
+  perf-evidence:
+    name: PR 630 mobile/desktop performance evidence (non-release)
+    if: ${{ github.event.pull_request.number == 630 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:3001
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: smoke-test-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: smoke-test-service-role-key
+      PERF_ROUTES: '["/","/services"]'
+      PERF_PROFILES: desktop,mobile-4g
+      PERF_RUNS: 3
+      PERF_OUTPUT: artifacts/perf-pr630/current-branch.json
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - run: npx playwright install --with-deps chromium
+      - name: Measure the real branch build using isolated fixture data
+        run: node scripts/performance-benchmark.cjs
+      - name: Retain raw lab samples; not comparable to the previous Windows host
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialrush-pr630-current-branch-performance
+          path: artifacts/perf-pr630/
+          if-no-files-found: warn
+          retention-days: 14
