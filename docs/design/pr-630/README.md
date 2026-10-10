@@ -1,24 +1,54 @@
-# PR #630 visual review
+# PR #630 — Historical visual evidence (archived)
 
-Original-to-final desktop and mobile viewport comparisons from local production builds with the same viewport and synthetic backend. Original baseline: `4f968b5235a40e1554945d2b84d54ccd198dad8a`. Card-detail before images are from Phase 1 before this follow-up; after images include the readability refinements. All images are committed lossless PNGs with descriptive alternative text. Open images for their native resolution; they do not depend on local artifact paths or preview authentication.
+> **IMPORTANT — These are NOT screenshots of the current proposed redesign.**
+> They were captured **before** the SocialRUSH brand-palette correction on PR #630.
+> Their cream/ivory mockup panels were rejected because they do not match the existing
+> SocialRUSH website identity. Do not use them as final "after" images or
+> visual approval evidence.
 
-| View | Before | After |
-| --- | --- | --- |
-| home / mobile (390px) | ![home before redesign at 390 CSS pixels](before-home-390.png) | ![home after readability refinement at 390 CSS pixels](after-home-390.png) |
-| home / desktop (1440px) | ![home before redesign at 1440 CSS pixels](before-home-1440.png) | ![home after readability refinement at 1440 CSS pixels](after-home-1440.png) |
-| services / mobile (390px) | ![services before redesign at 390 CSS pixels](before-services-390.png) | ![services after readability refinement at 390 CSS pixels](after-services-390.png) |
-| services / desktop (1440px) | ![services before redesign at 1440 CSS pixels](before-services-1440.png) | ![services after readability refinement at 1440 CSS pixels](after-services-1440.png) |
-| login / mobile (390px) | ![login before redesign at 390 CSS pixels](before-login-390.png) | ![login after readability refinement at 390 CSS pixels](after-login-390.png) |
-| login / desktop (1440px) | ![login before redesign at 1440 CSS pixels](before-login-1440.png) | ![login after readability refinement at 1440 CSS pixels](after-login-1440.png) |
-| register / mobile (390px) | ![register before redesign at 390 CSS pixels](before-register-390.png) | ![register after readability refinement at 390 CSS pixels](after-register-390.png) |
-| register / desktop (1440px) | ![register before redesign at 1440 CSS pixels](before-register-1440.png) | ![register after readability refinement at 1440 CSS pixels](after-register-1440.png) |
-| service-card detail / 390px | ![Service card before this readability follow-up at 390 CSS pixels](before-cards-390.png) | ![Service card after larger description and requirement text at 390 CSS pixels](after-cards-390.png) |
-| service-card detail / 1440px | ![Service card before this readability follow-up at 1440 CSS pixels](before-cards-1440.png) | ![Service card after larger description and requirement text at 1440 CSS pixels](after-cards-1440.png) |
+## Approved brand reference (source of truth)
 
-No real accounts, paid orders or payment submissions were used. The existing Vercel preview remains on the previous revision because this follow-up must not deploy. Phase 2 remains deferred until Phase 1 approval.
+The active `app/globals.css` design tokens define the original SocialRUSH brand:
 
-Full workspace detail (sample data):
+| Token | Colour |
+| --- | --- |
+| Main background | `#07080D` |
+| Section surface | `#0C0E14` |
+| Elevated surface | `#101219` |
+| Secondary surface | `#151821` |
+| Signature orange | `#FF7600` |
+| Orange highlight | `#FF9A2E` |
+| Primary text | `#F8FAFC` |
+| Secondary text | `#A8AFBD` |
 
-![Readable workspace labels and stacked status rows at 390px](workspace-390.png)
+The newest code uses **these dark surfaces and orange accents** on the hero
+workspace, Services guide, authentication panel and final CTA. No cream,
+ivory or pastel panels should appear in the proposed visual design.
 
-![Readable workspace labels and statuses at 1440px](workspace-1440.png)
+## Retired screenshots — provenance only
+
+The files below remain in Git history for honest before/after auditability.
+They are **not** current-version previews. In particular, retired "after"
+screenshots show the superseded cream panels.
+
+- Original baseline: [home desktop](before-home-1440.png), [home mobile](before-home-390.png), [Services desktop](before-services-1440.png), [Services mobile](before-services-390.png)
+- Retired interim redesign (not approved): [home desktop](after-home-1440.png), [home mobile](after-home-390.png), [workspace desktop](workspace-1440.png), [workspace mobile](workspace-390.png)
+- Retired interim supporting layouts: [Services desktop](after-services-1440.png), [Services mobile](after-services-390.png), [service-card desktop](after-cards-1440.png), [service-card mobile](after-cards-390.png), [login desktop](after-login-1440.png), [login mobile](after-login-390.png), [register desktop](after-register-1440.png), [register mobile](after-register-390.png)
+
+## Required brand-correct visual review before approval
+
+Capture **new screenshots from the latest reviewed branch build**, not from the
+older Vercel preview or archived files:
+
+- Homepage 390px and 1440px, showing the actual dark workspace mockup.
+- Services 390px and 1440px, showing the updated charcoal/orange guide and cards.
+- Login and register 390px and 1440px, showing the dark account-feature panel.
+- Packages and checkout-adjacent review screens at mobile/desktop widths.
+- Verify actual computed styles, text contrast, tap targets, no overflow and full
+  rendered SEO content; repeat comparable speed checks before approval.
+
+Only after new renders have been inspected may this gallery again identify
+screenshots as current "after" evidence.
+
+**PR stays draft.** No merge or production deployment is authorized by this
+gallery change.
