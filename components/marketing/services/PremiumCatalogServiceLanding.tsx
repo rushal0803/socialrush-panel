@@ -10,6 +10,7 @@ import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 
 import ServiceOrderCard from "./ServiceOrderCard";
+import { canStartServiceOrder } from "@/lib/cro/service-live-availability";
 
 function safeJson(value: object) {
   return JSON.stringify(value).replace(/</g, "\\u003c");
@@ -35,12 +36,7 @@ export default async function PremiumCatalogServiceLanding({ serviceCode, canoni
   const catalog = activeSmmServices.find((service) => service.code === serviceCode);
   if (!catalog) return null;
   const live = catalog.requiresLiveCatalogFacts ? await getLiveServiceFacts(catalog.platform, catalog.name, catalog.code) : null;
-const canStartOrder = !catalog.requiresLiveCatalogFacts || (
-  Boolean(live?.available) &&
-  Number.isFinite(live?.rate) && Number(live?.rate) > 0 &&
-  Number.isFinite(live?.min) && Number(live?.min) > 0 &&
-  Number.isFinite(live?.max) && Number(live?.max) >= Number(live?.min)
-);
+const canStartOrder = canStartServiceOrder(Boolean(catalog.requiresLiveCatalogFacts), live);
   const service = live?.available ? { ...catalog, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } : catalog;
   const platform = platformMeta[service.platform];
   const orderHref = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
