@@ -78,9 +78,22 @@ test("Services hub directly links key commercial pages awaiting Google's first c
     "/buy-youtube-comments-india",
     "/buy-instagram-comments-india",
     "/buy-facebook-group-members-india",
+    "/buy-instagram-saves-india",
+    "/buy-instagram-shares-india",
+    "/facebook-views",
   ]) {
     assert.ok(linkedPaths.has(href), `${href} must be linked from Services without redirect aliases`);
   }
+});
+
+test("legacy growth planner URL redirects permanently to the published canonical tool", () => {
+  const config = readFileSync(new URL("../../next.config.mjs", import.meta.url), "utf8");
+  const catalog = readFileSync(new URL("../../lib/tools/catalog.ts", import.meta.url), "utf8");
+  assert.match(
+    config,
+    /source: "\/tools\/social-media-growth-goal-planner"[\s\S]{0,140}destination: "\/tools\/creator-growth-goal-planner"[\s\S]{0,70}permanent: true/,
+  );
+  assert.match(catalog, /slug: "creator-growth-goal-planner"/);
 });
 
 test("platform hubs link to published, unique authority guides", () => {
