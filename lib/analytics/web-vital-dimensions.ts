@@ -28,5 +28,6 @@ export function webVitalReleaseId(raw: string | undefined): string {
 
 export function webVitalNavigationType(raw: unknown): string {
   const allowed = ["navigate", "reload", "back-forward", "back-forward-cache", "prerender", "restore"];
+  if (raw === "back_forward") return "back-forward";
   return typeof raw === "string" && allowed.includes(raw) ? raw : "unknown";
 }
