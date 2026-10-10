@@ -77,5 +77,11 @@ for (const [slug, target] of guides) {
     const response = await page.goto(`/blog/${slug}`);
     expect(response?.status()).toBe(200);
     await expect(page.locator(`#article-body a[href="${target}"]`).first()).toBeVisible();
+    if (slug === "youtube-channel-readiness-checklist") {
+      const hero = page.locator('img[src="/images/blog/promote-new-youtube-channel-india.webp"]');
+      await expect(hero).toBeVisible();
+      expect(await hero.evaluate((image: HTMLImageElement) => image.complete && image.naturalWidth > 0)).toBe(true);
+      await expect(page.locator('meta[property="og:image"]')).toHaveAttribute("content", "https://www.getsocialrush.com/images/blog/promote-new-youtube-channel-india.png");
+    }
   });
 }

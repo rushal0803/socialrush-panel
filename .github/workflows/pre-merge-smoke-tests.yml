@@ -70,6 +70,7 @@ jobs:
             test-results/seo-q4*out-of-sitemap-chromium*/
             test-results/seo-q4*/error-context.md
             test-results/seo-q4-phase2*/
+            test-results/services-v2*/
             artifacts/service-final/chromium.log
             artifacts/service-final/smoke-server.log
             artifacts/packages-v2/

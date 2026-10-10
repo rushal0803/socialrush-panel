@@ -79,15 +79,19 @@ Final matched desktop experiment: five runs per cache/route, 1440x900 Chromium 1
 
 | Desktop metric | Before follow-up | Final after | Change |
 | --- | ---: | ---: | ---: |
-| Home cold LCP | 820 ms | 692 ms | -15.6% |
-| Home warm LCP | 316 ms | 220 ms | -30.4% |
-| Services cold LCP | 672 ms | 760 ms | +13.1% |
-| Home → services median transition | 803 ms | 820 ms | +2.1% |
-| Home → services sampled p75 transition | 861 ms | 936 ms | +8.7% |
-| Home cold JS transfer | 277689 bytes | 277742 bytes | +53 bytes |
+| Home cold LCP | 820 ms | 788 ms | -3.9% |
+| Home warm LCP | 316 ms | 236 ms | -25.3% |
+| Services cold LCP | 672 ms | 780 ms | +16.1% |
+| Home → services median transition | 803 ms | 987 ms | +22.9% |
+| Home → services sampled p75 transition | 861 ms | 1116 ms | +29.7% |
+| Home cold JS transfer | 277689 bytes | 277743 bytes | +54 bytes |
 
-CLS remains zero on both routes; all measured transitions retained the client document. LCP attribution identifies the static H1, not an image. Transition records distinguish browser-click/render timing and fresh route resources. Navigation is not consistently faster: a candidate run before the final health-label correction measured 718 ms median, while the final repeat measured 820 ms. Timings are host-load-sensitive; retain the final result and slower-tail samples. The original three-run pre-redesign comparison is above and should not be mixed with this five-run experiment to claim a precise speedup. No field p75/INP claim or claim that all desktop regressions are solved.
+CLS remains zero on both routes; all measured transitions retained the client document. LCP attribution identifies the static H1, not an image. Transition records distinguish browser-click/render timing and fresh route resources. Navigation is not consistently faster: a candidate run before the final health-label correction measured 718 ms median, an earlier repeat measured 820 ms, and the final CI-fix build measured 987 ms. Timings are host-load-sensitive; retain the final result and slower-tail samples. The original three-run pre-redesign comparison is above and should not be mixed with this five-run experiment to claim a precise speedup. No field p75/INP claim or claim that all desktop regressions are solved.
 
 Phase 2 is deferred until Phase 1 approval. It will be a separate effort for admin, tools, support, reviews and legal templates, with readable task-specific layouts rather than repeated generic card grids. No Phase 2 branch or PR has been created.
 
+CI follow-up: run 38067594051 passed all build/unit/SEO/CRM gates but exposed two catalogue height failures on Linux (320px and 1024px) and a guide navigation timeout. Card padding and inter-row spacing were reduced without reducing font sizes, touch targets or the existing 440px assertion. The guide document returned HTTP 200 promptly; the trace isolated a pending cold Next image-optimizer request for the shared YouTube hero PNG. A 106KB pre-encoded WebP now renders that same visual directly, while original Open Graph, Twitter and Article schema image URLs remain unchanged. No test timeout, navigation wait condition, assertion or skip was loosened. CI now retains service-card traces as well.
+
 Known unrelated check: an exploratory all-file unit invocation found a pre-existing `topical-authority.test.ts` six-platform expectation while `content-clusters.ts` includes Telegram. Those files match main and this test is outside the configured PR CI commands. It was not altered or suppressed to make this PR green. The exploratory command also omitted the path-alias loader; the configured 200-test invocation with its required loader passed.
+
+Final CI-fix production build qCY3yQx2TSF4-F4WjsxVj: 73 affected browser checks and 14 targeted checkout/guide checks passed locally. All 22 review images and the 10-document rendered SEO comparison were regenerated from this build. The final five-run comparison supersedes earlier after-build numbers. Median browser click time was approximately unchanged (82→80ms), but observed render wait rose 730→915ms. The /services route-resource median rose only 134→148ms; the same two client chunks and existing router prefetch paths appear in both versions. This narrows the observation to render/post-response work without proving a causal root or estimating hydration time. No runtime instrumentation, animation or client dependency was added.
