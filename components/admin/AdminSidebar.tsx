@@ -75,7 +75,9 @@ export function AdminNav({ mobile = false, onNavigate }: { mobile?: boolean; onN
           </ul>
         </div>
       ))}
-    </nav>}
+    </nav>
+  );
+}
 
 export default function AdminSidebar() {
   return (
