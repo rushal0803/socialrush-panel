@@ -29,3 +29,10 @@ The target is a standalone Phase 2 **draft PR against main**, not a stacked depe
 - CI required: TypeScript, production build, unit + SEO + payment regressions, browser smoke.
 - New desktop/mobile screenshots and before/after speed evidence must be captured and reviewed before approval. Authenticated admin visuals require safe test fixtures; do **not** use customer sessions or live transactions.
 - No release or production deployment is authorized.
+
+## Follow-up: live legal routes and browser regression correction
+
+- In addition to the shared policy layout, the live `/terms-and-conditions`, `/privacy-policy` and `/refund-policy` templates now receive **palette-only** changes to align with the original dark/orange brand. All legal clauses, section IDs, metadata, navigation destinations and refund business rules are untouched.
+- A Phase 2 browser test initially selected the hidden desktop-navigation `/services` link rather than a visible Support topic card. It now checks the visible link, maintaining the functional assertion.
+- Existing layout test `phase22-responsive-shell` was updated to validate the intentionally larger admin email font without losing truncation.
+- Final screenshot and full smoke evidence must be produced for the last commit; earlier failing CI runs do not establish a release pass. Keep the PR draft pending visual review and comparable performance checks.
