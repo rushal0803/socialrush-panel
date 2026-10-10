@@ -1,9 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
+import dynamic from "next/dynamic";
 import MarketingFooter from "@/components/marketing/MarketingFooter";
 import MarketingHeader from "@/components/marketing/MarketingHeader";
-import BlogRevenueBridge from "@/components/marketing/blog/BlogRevenueBridge";
+
+// The bridge imports the complete editorial catalog. Discovery and package
+// pages share this shell but never render it; keep that catalog off their path.
+// Retain SSR for article links and SEO content.
+const BlogRevenueBridge = dynamic(() => import("./BlogRevenueBridge"));
 
 /**
  * Shared frame for service discovery and editorial pages. These used to ship
@@ -13,11 +18,11 @@ export default function BlogShell({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   return (
-    <main key={pathname} className="public-dark min-h-screen overflow-x-clip bg-[#07080D] text-white">
+    <main className="public-dark min-h-screen overflow-x-clip bg-[#07080D] text-white">
       <MarketingHeader />
       {children}
-      <BlogRevenueBridge />
-      <MarketingFooter />
+      {pathname.startsWith("/blog/") ? <BlogRevenueBridge /> : null}
+      <div className={pathname === "/services" ? "content-auto" : undefined}><MarketingFooter /></div>
     </main>
   );
 }

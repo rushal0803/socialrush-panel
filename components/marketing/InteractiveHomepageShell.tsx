@@ -2,8 +2,6 @@
 
 import type { ReactNode } from "react";
 import {
-  LazyMotion,
-  domAnimation,
   m,
   useMotionTemplate,
   useMotionValue,
@@ -137,7 +135,6 @@ export default function InteractiveHomepageShell({
   }, [pointerX, pointerY, reduceMotion]);
 
   return (
-    <LazyMotion features={domAnimation}>
       <div ref={rootRef} className="relative isolate">
         <m.div
           aria-hidden="true"
@@ -232,6 +229,5 @@ export default function InteractiveHomepageShell({
           }
         `}</style>
       </div>
-    </LazyMotion>
   );
 }

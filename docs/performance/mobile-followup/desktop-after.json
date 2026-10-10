@@ -1,0 +1,859 @@
+{
+  "generatedAt": "2026-10-10T09:25:14.887Z",
+  "sourceCommit": "734ce7322a517741c594bb62bd031528c9e6def7",
+  "buildId": "UwfYKu9aBGMx_9znNYki8",
+  "base": "http://localhost:3001",
+  "runs": 5,
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "browser": "151.0.7922.34",
+    "mobile": "390x844, 1.6Mbps down, 750Kbps up, 150ms RTT, 4x CPU",
+    "privateData": "isolated synthetic backend; not production API latency",
+    "observationMs": 3000,
+    "serviceWorker": "blocked",
+    "analytics": "DNT enabled",
+    "note": "Cold browser cache, warm server cache. LCP/CLS lab samples are not field p75 or INP. No hydration estimate inferred from load time."
+  },
+  "summary": [
+    {
+      "key": "desktop|/services|cold",
+      "count": 5,
+      "ttfb": {
+        "median": 383.89999985694885,
+        "p75": 405.2000000476837
+      },
+      "fcp": {
+        "median": 624,
+        "p75": 656
+      },
+      "lcp": {
+        "median": 624,
+        "p75": 656
+      },
+      "cls": {
+        "median": 0.002308824159807956,
+        "p75": 0.002308824159807956
+      },
+      "jsBytes": {
+        "median": 288163,
+        "p75": 288163
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 39,
+        "p75": 39
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "desktop|/services|warm",
+      "count": 5,
+      "ttfb": {
+        "median": 52.299999952316284,
+        "p75": 54
+      },
+      "fcp": {
+        "median": 228,
+        "p75": 232
+      },
+      "lcp": {
+        "median": 228,
+        "p75": 232
+      },
+      "cls": {
+        "median": 0.002308824159807956,
+        "p75": 0.002308824159807956
+      },
+      "jsBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 38,
+        "p75": 38
+      },
+      "transitionMs": null
+    }
+  ],
+  "samples": [
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 448.59999990463257,
+      "fcp": 736,
+      "lcp": 736,
+      "cls": 0.002308824159807956,
+      "longTasks": [
+        152,
+        61
+      ],
+      "jsBytes": 288163,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 77.10000014305115,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 128.09999990463257,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 192,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 137.59999990463257,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 224.79999995231628,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 170.29999995231628,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 150.79999995231628,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 57.10000014305115,
+          "bytes": 12149
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 158.70000004768372,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 242.40000009536743,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 82.70000004768372
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 61.700000047683716
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 54,
+      "fcp": 228,
+      "lcp": 228,
+      "cls": 0.002308824159807956,
+      "longTasks": [],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 52.299999952316284,
+          "bytes": 457
+        },
+        {
+          "url": "/case-studies",
+          "ms": 61.299999952316284,
+          "bytes": 437
+        },
+        {
+          "url": "/register",
+          "ms": 62.30000019073486,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 61.10000014305115,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 61.89999985694885,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-71605a9055c25ceb.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.2000000476837158
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 405.2000000476837,
+      "fcp": 624,
+      "lcp": 624,
+      "cls": 0.002308824159807956,
+      "longTasks": [
+        124
+      ],
+      "jsBytes": 288163,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 39.200000047683716,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 61.200000047683716,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 112.59999990463257,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 68.59999990463257,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 141.5,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 94.89999985694885,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 79.70000004768372,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 33.59999990463257,
+          "bytes": 12149
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 85.79999995231628,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 49.700000047683716,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 58.299999952316284
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 35.69999980926514
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 48.10000014305115,
+      "fcp": 220,
+      "lcp": 220,
+      "cls": 0.002308824159807956,
+      "longTasks": [],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 61.299999952316284,
+          "bytes": 457
+        },
+        {
+          "url": "/case-studies",
+          "ms": 64.10000014305115,
+          "bytes": 437
+        },
+        {
+          "url": "/register",
+          "ms": 65.79999995231628,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 63.19999980926514,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 64.60000014305115,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-71605a9055c25ceb.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 0.7000000476837158
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 357,
+      "fcp": 604,
+      "lcp": 604,
+      "cls": 0.002308824159807956,
+      "longTasks": [
+        146
+      ],
+      "jsBytes": 288163,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 44.299999952316284,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 65.69999980926514,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 129,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 77.79999995231628,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 161.39999985694885,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 110.59999990463257,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 92.40000009536743,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 37.90000009536743,
+          "bytes": 12149
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 98.59999990463257,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 52.200000047683716,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 7.900000095367432
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 15.699999809265137
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 52.299999952316284,
+      "fcp": 236,
+      "lcp": 236,
+      "cls": 0.002308824159807956,
+      "longTasks": [],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 43.09999990463257,
+          "bytes": 457
+        },
+        {
+          "url": "/case-studies",
+          "ms": 48.5,
+          "bytes": 437
+        },
+        {
+          "url": "/register",
+          "ms": 49.59999990463257,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 48.40000009536743,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 48.799999952316284,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-71605a9055c25ceb.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 0.7999999523162842
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 383.89999985694885,
+      "fcp": 656,
+      "lcp": 656,
+      "cls": 0.002308824159807956,
+      "longTasks": [
+        160
+      ],
+      "jsBytes": 288163,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 51,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 72.30000019073486,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 139.09999990463257,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 81.90000009536743,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 174.5,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 115.60000014305115,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 93.70000004768372,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 44,
+          "bytes": 12149
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 102.69999980926514,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 58.799999952316284,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 10.699999809265137
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 9.799999952316284
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 36.799999952316284,
+      "fcp": 208,
+      "lcp": 208,
+      "cls": 0.002308824159807956,
+      "longTasks": [],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 20.59999990463257,
+          "bytes": 457
+        },
+        {
+          "url": "/case-studies",
+          "ms": 23.799999952316284,
+          "bytes": 437
+        },
+        {
+          "url": "/register",
+          "ms": 25.300000190734863,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 23.5,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 24.40000009536743,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-71605a9055c25ceb.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.2999999523162842
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "cold",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 350.10000014305115,
+      "fcp": 564,
+      "lcp": 564,
+      "cls": 0.002308824159807956,
+      "longTasks": [
+        98
+      ],
+      "jsBytes": 288163,
+      "imageBytes": 0,
+      "requestCount": 39,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 30.300000190734863,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 49.700000047683716,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 98.20000004768372,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 57.299999952316284,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 128.70000004768372,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 81.89999985694885,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 65.79999995231628,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 46,
+          "bytes": 12149
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 72.70000004768372,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 38.39999985694885,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 6.1000001430511475
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 29.59999990463257
+        }
+      ]
+    },
+    {
+      "profile": "desktop",
+      "route": "/services",
+      "cache": "warm",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 54.90000009536743,
+      "fcp": 232,
+      "lcp": 232,
+      "cls": 0.002308824159807956,
+      "longTasks": [],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 38,
+      "resources": [
+        {
+          "url": "/dashboard/new-order",
+          "ms": 44.299999952316284,
+          "bytes": 457
+        },
+        {
+          "url": "/case-studies",
+          "ms": 42,
+          "bytes": 437
+        },
+        {
+          "url": "/register",
+          "ms": 48.5,
+          "bytes": 433
+        },
+        {
+          "url": "/pricing",
+          "ms": 41.799999952316284,
+          "bytes": 432
+        },
+        {
+          "url": "/login",
+          "ms": 42.10000014305115,
+          "bytes": 430
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-71605a9055c25ceb.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1
+        }
+      ]
+    }
+  ]
+}

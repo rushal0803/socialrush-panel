@@ -1,0 +1,143 @@
+[
+  {
+    "revision": "before",
+    "longestWallMs": 829.797,
+    "longestThreadMs": 157.164,
+    "children": [
+      {
+        "name": "Layout",
+        "wallMs": 597.435,
+        "threadMs": 112.632
+      },
+      {
+        "name": "UpdateLayoutTree",
+        "wallMs": 156.996,
+        "threadMs": 31.5
+      },
+      {
+        "name": "Paint",
+        "wallMs": 35.51,
+        "threadMs": 5.562
+      },
+      {
+        "name": "PrePaint",
+        "wallMs": 23.528,
+        "threadMs": 3.941
+      },
+      {
+        "name": "Layerize",
+        "wallMs": 2.606,
+        "threadMs": 0.538
+      },
+      {
+        "name": "PaintImage",
+        "wallMs": 1.625,
+        "threadMs": 0.187
+      },
+      {
+        "name": "Commit",
+        "wallMs": 1.23,
+        "threadMs": 0.288
+      },
+      {
+        "name": "Paint",
+        "wallMs": 1.023,
+        "threadMs": 0.247
+      }
+    ]
+  },
+  {
+    "revision": "intermediate",
+    "longestWallMs": 482.611,
+    "longestThreadMs": 112.446,
+    "children": [
+      {
+        "name": "Layout",
+        "wallMs": 362.626,
+        "threadMs": 84.21
+      },
+      {
+        "name": "UpdateLayoutTree",
+        "wallMs": 74.333,
+        "threadMs": 19.716
+      },
+      {
+        "name": "Paint",
+        "wallMs": 28.965,
+        "threadMs": 4.83
+      },
+      {
+        "name": "PrePaint",
+        "wallMs": 4.185,
+        "threadMs": 1.089
+      },
+      {
+        "name": "IntersectionObserverController::computeIntersections",
+        "wallMs": 3.206,
+        "threadMs": 0.39
+      },
+      {
+        "name": "Layerize",
+        "wallMs": 1.848,
+        "threadMs": 0.458
+      },
+      {
+        "name": "Paint",
+        "wallMs": 1.227,
+        "threadMs": 0.298
+      },
+      {
+        "name": "Commit",
+        "wallMs": 0.665,
+        "threadMs": 0.18
+      }
+    ]
+  },
+  {
+    "revision": "after",
+    "longestWallMs": 382.599,
+    "longestThreadMs": 70.646,
+    "children": [
+      {
+        "name": "Layout",
+        "wallMs": 289.943,
+        "threadMs": 54.033
+      },
+      {
+        "name": "UpdateLayoutTree",
+        "wallMs": 63.985,
+        "threadMs": 10.878
+      },
+      {
+        "name": "Paint",
+        "wallMs": 9.066,
+        "threadMs": 2.106
+      },
+      {
+        "name": "PrePaint",
+        "wallMs": 4.64,
+        "threadMs": 1.009
+      },
+      {
+        "name": "Commit",
+        "wallMs": 2.098,
+        "threadMs": 0.329
+      },
+      {
+        "name": "Layerize",
+        "wallMs": 1.603,
+        "threadMs": 0.375
+      },
+      {
+        "name": "IntersectionObserverController::computeIntersections",
+        "wallMs": 1.23,
+        "threadMs": 0.208
+      },
+      {
+        "name": "Paint",
+        "wallMs": 0.825,
+        "threadMs": 0.207
+      }
+    ]
+  }
+]

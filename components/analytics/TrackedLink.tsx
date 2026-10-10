@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/marketing/PublicCodeLink";
 import type { ComponentProps } from "react";
 import { track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
 

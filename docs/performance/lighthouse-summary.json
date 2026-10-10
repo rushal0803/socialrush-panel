@@ -1,0 +1,27 @@
+{
+  "note": "One after-only services run, Lighthouse default mobile simulated throttling. Separate from paired five-run CDP benchmarks; no baseline Lighthouse score or field metric claim.",
+  "version": "13.0.1",
+  "performanceScore": 0.69,
+  "metrics": {
+    "first-contentful-paint": 1517.4009999999998,
+    "largest-contentful-paint": 3888.1014999999993,
+    "total-blocking-time": 716.0000000000009,
+    "cumulative-layout-shift": 0.001015912202366213,
+    "speed-index": 3651.775838035488
+  },
+  "diagnostics": [
+    {
+      "id": "mainthread-work-breakdown",
+      "title": "Minimize main-thread work",
+      "value": 3128.195999999997,
+      "display": "3.1 s"
+    },
+    {
+      "id": "bootup-time",
+      "title": "Reduce JavaScript execution time",
+      "value": 1588.7999999999975,
+      "display": "1.6 s"
+    }
+  ],
+  "warnings": []
+}

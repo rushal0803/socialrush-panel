@@ -308,6 +308,13 @@ svg {
   contain-intrinsic-size: auto 800px;
 }
 
+@media (max-width: 767px) {
+  .premium-homepage > section:nth-of-type(n + 3) {
+    content-visibility: auto;
+    contain-intrinsic-block-size: auto 1000px;
+  }
+}
+
 /* Phase 18: keep Instagram hero + order-critical content eager, but let the
    browser skip layout/paint for deep SEO sections until they approach the
    viewport. Content remains server-rendered/indexable in the HTML. */

@@ -80,3 +80,8 @@
 .supporting :global(.text-slate-900) { color:#fff; }
 .supporting :global(.bg-orange-500) { background:#ff9b36; color:#171008; }
 .supporting :is(h2) { font-size:clamp(22px,3vw,30px); }
+/* Keep the live catalogue eager; skip layout of the following mobile SEO sections. */
+@media (max-width: 767px) {
+  .catalog > section { content-visibility: auto; contain-intrinsic-block-size: auto 800px; }
+  .supporting { content-visibility: auto; contain-intrinsic-block-size: auto 3000px; }
+}

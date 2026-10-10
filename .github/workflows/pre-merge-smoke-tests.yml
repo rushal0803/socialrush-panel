@@ -28,6 +28,10 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: Complete unit regressions and live catalogue equivalence
+        run: npm run test:unit && npm run test:live-service-facts
+      - name: Verify PR 624 blog image assets
+        run: node scripts/seo-blog-assets-check.mjs
       - name: Package quantities, discount authority and wallet states
         run: node --experimental-strip-types --test tests/unit/packages-v2.test.ts
       - name: Focused Q4 SEO regression tests

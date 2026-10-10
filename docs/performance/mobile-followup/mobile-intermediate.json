@@ -1,0 +1,2706 @@
+{
+  "generatedAt": "2026-10-10T05:34:50.617Z",
+  "sourceCommit": "ab938bae08585a9c2be9500487b78825b22e9fbc",
+  "buildId": "6HOgXLf_uK5o2Dy8HzRUd",
+  "base": "http://localhost:3001",
+  "runs": 5,
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "browser": "151.0.7922.34",
+    "mobile": "390x844, 1.6Mbps down, 750Kbps up, 150ms RTT, 4x CPU",
+    "privateData": "isolated synthetic backend; not production API latency",
+    "observationMs": 3000,
+    "serviceWorker": "blocked",
+    "analytics": "DNT enabled",
+    "note": "Cold browser cache, warm server cache. LCP/CLS lab samples are not field p75 or INP. No hydration estimate inferred from load time."
+  },
+  "summary": [
+    {
+      "key": "mobile-4g|/|cold",
+      "count": 5,
+      "ttfb": {
+        "median": 329.2999999523163,
+        "p75": 331.2000000476837
+      },
+      "fcp": {
+        "median": 3004,
+        "p75": 3288
+      },
+      "lcp": {
+        "median": 3004,
+        "p75": 3288
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 286320,
+        "p75": 286320
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 35,
+        "p75": 35
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/|warm",
+      "count": 5,
+      "ttfb": {
+        "median": 12,
+        "p75": 14.5
+      },
+      "fcp": {
+        "median": 384,
+        "p75": 564
+      },
+      "lcp": {
+        "median": 636,
+        "p75": 664
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 34,
+        "p75": 34
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/ -> /services|warm-transition",
+      "count": 5,
+      "ttfb": null,
+      "fcp": null,
+      "lcp": null,
+      "cls": null,
+      "jsBytes": null,
+      "imageBytes": null,
+      "requestCount": null,
+      "transitionMs": {
+        "median": 4020.525099999999,
+        "p75": 4026.207699999999
+      }
+    },
+    {
+      "key": "mobile-4g|/services|cold",
+      "count": 5,
+      "ttfb": {
+        "median": 380.69999980926514,
+        "p75": 403.40000009536743
+      },
+      "fcp": {
+        "median": 2372,
+        "p75": 2604
+      },
+      "lcp": {
+        "median": 2372,
+        "p75": 2604
+      },
+      "cls": {
+        "median": 0.001793125284005992,
+        "p75": 0.001793125284005992
+      },
+      "jsBytes": {
+        "median": 292044,
+        "p75": 292044
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 37,
+        "p75": 37
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/services|warm",
+      "count": 5,
+      "ttfb": {
+        "median": 72.20000004768372,
+        "p75": 76.20000004768372
+      },
+      "fcp": {
+        "median": 552,
+        "p75": 628
+      },
+      "lcp": {
+        "median": 612,
+        "p75": 628
+      },
+      "cls": {
+        "median": 0.001793125284005992,
+        "p75": 0.001793125284005992
+      },
+      "jsBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 36,
+        "p75": 36
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/packages|cold",
+      "count": 5,
+      "ttfb": {
+        "median": 375.2999999523163,
+        "p75": 378.90000009536743
+      },
+      "fcp": {
+        "median": 2356,
+        "p75": 2476
+      },
+      "lcp": {
+        "median": 2356,
+        "p75": 2476
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 289525,
+        "p75": 289525
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 35,
+        "p75": 35
+      },
+      "transitionMs": null
+    },
+    {
+      "key": "mobile-4g|/packages|warm",
+      "count": 5,
+      "ttfb": {
+        "median": 55.299999952316284,
+        "p75": 56.90000009536743
+      },
+      "fcp": {
+        "median": 516,
+        "p75": 632
+      },
+      "lcp": {
+        "median": 520,
+        "p75": 632
+      },
+      "cls": {
+        "median": 0,
+        "p75": 0
+      },
+      "jsBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "imageBytes": {
+        "median": 0,
+        "p75": 0
+      },
+      "requestCount": {
+        "median": 34,
+        "p75": 34
+      },
+      "transitionMs": null
+    }
+  ],
+  "samples": [
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "cold",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 335.2999999523163,
+      "fcp": 3704,
+      "lcp": 3704,
+      "cls": 0,
+      "longTasks": [
+        90,
+        843,
+        285,
+        154,
+        106,
+        100,
+        115,
+        55,
+        100,
+        52
+      ],
+      "jsBytes": 286320,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 711.8000001907349,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1475.5,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2111.5999999046326,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1396.4000000953674,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2124.2999999523163,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1487.5999999046326,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1062.2000000476837,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1172.2000000476837,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 922.2000000476837,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-ad423264a778033f.js",
+          "ms": 2046.5999999046326,
+          "bytes": 9089
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 189.29999995231628
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 172.70000004768372
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "warm",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 27.700000047683716,
+      "fcp": 384,
+      "lcp": 584,
+      "cls": 0,
+      "longTasks": [
+        157,
+        64,
+        59,
+        51,
+        74
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 187.40000009536743,
+          "bytes": 3764
+        },
+        {
+          "url": "/login",
+          "ms": 170.5,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/6c12cf5f426232e6.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 3
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 0,
+      "transitionMs": 3781.9671000000017,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "cold",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 329.2999999523163,
+      "fcp": 3288,
+      "lcp": 3288,
+      "cls": 0,
+      "longTasks": [
+        88,
+        114,
+        604,
+        232,
+        80,
+        162,
+        64,
+        99,
+        89,
+        56
+      ],
+      "jsBytes": 286320,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 788.3999998569489,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1501.2999999523163,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2052.7999999523163,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1389,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2061.2999999523163,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1480.5,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1119,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1171.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 667.4000000953674,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-ad423264a778033f.js",
+          "ms": 1922.1000001430511,
+          "bytes": 9089
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 192.29999995231628
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 167.39999985694885
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "warm",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 12,
+      "fcp": 372,
+      "lcp": 636,
+      "cls": 0,
+      "longTasks": [
+        55,
+        123,
+        71,
+        59
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 202.59999990463257,
+          "bytes": 3764
+        },
+        {
+          "url": "/login",
+          "ms": 176.59999990463257,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/6c12cf5f426232e6.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.7999999523162842
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 1,
+      "transitionMs": 4020.525099999999,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "cold",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 331.2000000476837,
+      "fcp": 2936,
+      "lcp": 2936,
+      "cls": 0,
+      "longTasks": [
+        96,
+        78,
+        548,
+        230,
+        137,
+        70,
+        102,
+        117,
+        75,
+        55
+      ],
+      "jsBytes": 286320,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 755.5999999046326,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1502.7999999523163,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2039.5,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1408.2000000476837,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2064.0999999046326,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1518.5999999046326,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1108.5,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1169.2000000476837,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 684.7999999523163,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-ad423264a778033f.js",
+          "ms": 1972.2000000476837,
+          "bytes": 9089
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 215.19999980926514
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 178.5
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "warm",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 10.799999952316284,
+      "fcp": 564,
+      "lcp": 664,
+      "cls": 0,
+      "longTasks": [
+        119,
+        123,
+        55,
+        53,
+        85,
+        55
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 199.20000004768372,
+          "bytes": 3764
+        },
+        {
+          "url": "/login",
+          "ms": 172.79999995231628,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/6c12cf5f426232e6.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 2.299999952316284
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 2,
+      "transitionMs": 3808.876199999999,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "cold",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 314.2999999523163,
+      "fcp": 2820,
+      "lcp": 2820,
+      "cls": 0,
+      "longTasks": [
+        163,
+        78,
+        472,
+        158,
+        179,
+        70,
+        144,
+        83,
+        119,
+        62,
+        82
+      ],
+      "jsBytes": 286320,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 715,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1478,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2076.7999999523163,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1367.7000000476837,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2069.199999809265,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1477.3999998569489,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1131.1000001430511,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1142.5999999046326,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 687.5999999046326,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-ad423264a778033f.js",
+          "ms": 1944.7999999523163,
+          "bytes": 9089
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 180.60000014305115
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "warm",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 14.5,
+      "fcp": 708,
+      "lcp": 708,
+      "cls": 0,
+      "longTasks": [
+        115,
+        58,
+        59,
+        50
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 200.20000004768372,
+          "bytes": 3764
+        },
+        {
+          "url": "/login",
+          "ms": 171.89999985694885,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/6c12cf5f426232e6.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 2.8999998569488525
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 3,
+      "transitionMs": 4026.207699999999,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "cold",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 316.5,
+      "fcp": 3004,
+      "lcp": 3004,
+      "cls": 0,
+      "longTasks": [
+        563,
+        208,
+        137,
+        82,
+        91,
+        139,
+        75,
+        61
+      ],
+      "jsBytes": 286320,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 869.5999999046326,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1531.7999999523163,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2058.2000000476837,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1453.5,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2119.2999999523163,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1497.7000000476837,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1064.9000000953674,
+          "bytes": 13424
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1188.5999999046326,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 669.3999998569489,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/chunks/2262-ad423264a778033f.js",
+          "ms": 2075.899999856949,
+          "bytes": 9089
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 197.79999995231628
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 177.59999990463257
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/",
+      "cache": "warm",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/",
+      "ttfb": 8,
+      "fcp": 376,
+      "lcp": 624,
+      "cls": 0,
+      "longTasks": [
+        62,
+        111,
+        81,
+        62,
+        52
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/tools/social-media-growth-audit",
+          "ms": 203.09999990463257,
+          "bytes": 3764
+        },
+        {
+          "url": "/login",
+          "ms": 176.29999995231628,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/6c12cf5f426232e6.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.7000000476837158
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/ -> /services",
+      "cache": "warm-transition",
+      "run": 4,
+      "transitionMs": 4323.7648000000045,
+      "clientNavigation": true
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "cold",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 404,
+      "fcp": 2372,
+      "lcp": 2372,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        117,
+        731,
+        716,
+        150,
+        128,
+        78,
+        108,
+        149
+      ],
+      "jsBytes": 292044,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 863.5999999046326,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1531.9000000953674,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2149.7000000476837,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1437.2000000476837,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2209.2000000476837,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1526,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1121.6000001430511,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 245.59999990463257,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1168.7000000476837,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/9141-508e124ecad70ae2.js",
+          "ms": 2224.0999999046326,
+          "bytes": 10109
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 178.5
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 154.80000019073486
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "warm",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 92.09999990463257,
+      "fcp": 552,
+      "lcp": 552,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        69,
+        108,
+        89
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 36,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 172.90000009536743,
+          "bytes": 459
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 356.5,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 3
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "cold",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 380.69999980926514,
+      "fcp": 2356,
+      "lcp": 2356,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        61,
+        123,
+        514,
+        200,
+        165,
+        79,
+        94,
+        132
+      ],
+      "jsBytes": 292044,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 804.7000000476837,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1522.2999999523163,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 1983.5,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1434.7000000476837,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2103.2999999523163,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1502.2000000476837,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1080.9000000953674,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 235,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1158.7999999523163,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/9141-508e124ecad70ae2.js",
+          "ms": 2179.9000000953674,
+          "bytes": 10109
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 185.90000009536743
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 173.10000014305115
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "warm",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 64.79999995231628,
+      "fcp": 328,
+      "lcp": 612,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        131,
+        101
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 36,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 174.40000009536743,
+          "bytes": 459
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 376.90000009536743,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 1.8999998569488525
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "cold",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 374.80000019073486,
+      "fcp": 2636,
+      "lcp": 2636,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        94,
+        120,
+        566,
+        155,
+        108,
+        90,
+        118
+      ],
+      "jsBytes": 292044,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 764.8999998569489,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1516.9000000953674,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 1980.7999999523163,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1483.8999998569489,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2138,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1523.2000000476837,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1092,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 257.7000000476837,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1169.3000001907349,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/9141-508e124ecad70ae2.js",
+          "ms": 2151.5,
+          "bytes": 10109
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 175.90000009536743
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 182.10000014305115
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "warm",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 63,
+      "fcp": 364,
+      "lcp": 532,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        113,
+        112
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 36,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 176.30000019073486,
+          "bytes": 459
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 393.7000000476837,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 2.0999999046325684
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "cold",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 370.7999999523163,
+      "fcp": 2372,
+      "lcp": 2372,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        91,
+        67,
+        702,
+        202,
+        113,
+        76,
+        85,
+        111
+      ],
+      "jsBytes": 292044,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 721.1000001430511,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1499.3999998569489,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2049.4000000953674,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1435.7999999523163,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2150.7000000476837,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1489.2000000476837,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1148.1000001430511,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 252.60000014305115,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1143.5999999046326,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/9141-508e124ecad70ae2.js",
+          "ms": 2165.5,
+          "bytes": 10109
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 178.90000009536743
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 177.5
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "warm",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 76.20000004768372,
+      "fcp": 848,
+      "lcp": 848,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        118,
+        134,
+        163
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 36,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 180.5,
+          "bytes": 459
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 489.7999999523163,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 2.8000001907348633
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "cold",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 403.40000009536743,
+      "fcp": 2604,
+      "lcp": 2604,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        68,
+        232,
+        178,
+        102,
+        66,
+        92,
+        128
+      ],
+      "jsBytes": 292044,
+      "imageBytes": 0,
+      "requestCount": 37,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 880.8000001907349,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1532,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2186.7000000476837,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1437.0999999046326,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2203.0999999046326,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1534.2000000476837,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1154,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 246.40000009536743,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1183.2999999523163,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/9141-508e124ecad70ae2.js",
+          "ms": 2217.5,
+          "bytes": 10109
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 182.39999985694885
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 169.70000004768372
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/services",
+      "cache": "warm",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/services",
+      "ttfb": 72.20000004768372,
+      "fcp": 628,
+      "lcp": 628,
+      "cls": 0.001793125284005992,
+      "longTasks": [
+        116,
+        77,
+        125
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 36,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 179.70000004768372,
+          "bytes": 459
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 396.09999990463257,
+          "bytes": 459
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/254648d89414ae31.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/service-health",
+          "ms": 3.5
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "cold",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 381.2000000476837,
+      "fcp": 2516,
+      "lcp": 2516,
+      "cls": 0,
+      "longTasks": [
+        89,
+        602,
+        215,
+        74,
+        160,
+        59,
+        174,
+        93
+      ],
+      "jsBytes": 289525,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 837.7999999523163,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1502.3999998569489,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2011.7000000476837,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1422.7999999523163,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2069.7000000476837,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1426.3999998569489,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 998.6000001430511,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 237.29999995231628,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1089.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 340,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/display-currency",
+          "ms": 181.69999980926514
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "warm",
+      "run": 0,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 49.200000047683716,
+      "fcp": 332,
+      "lcp": 520,
+      "cls": 0,
+      "longTasks": [
+        50,
+        78
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 175.5,
+          "bytes": 459
+        },
+        {
+          "url": "/pricing",
+          "ms": 174.80000019073486,
+          "bytes": 432
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": []
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "cold",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 375.2999999523163,
+      "fcp": 2356,
+      "lcp": 2356,
+      "cls": 0,
+      "longTasks": [
+        103,
+        602,
+        172,
+        107,
+        73,
+        90,
+        96
+      ],
+      "jsBytes": 289525,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 871.2000000476837,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1524.7000000476837,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2041.7000000476837,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1414.3000001907349,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2132,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1453.7999999523163,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1018.4000000953674,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 231.89999985694885,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1048.7000000476837,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 343.2000000476837,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/display-currency",
+          "ms": 181
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "warm",
+      "run": 1,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 49.89999985694885,
+      "fcp": 632,
+      "lcp": 632,
+      "cls": 0,
+      "longTasks": [
+        56,
+        72
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 175.29999995231628,
+          "bytes": 459
+        },
+        {
+          "url": "/pricing",
+          "ms": 174.09999990463257,
+          "bytes": 432
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": []
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "cold",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 350.90000009536743,
+      "fcp": 2268,
+      "lcp": 2268,
+      "cls": 0,
+      "longTasks": [
+        75,
+        622,
+        228,
+        53,
+        140,
+        77,
+        125,
+        110
+      ],
+      "jsBytes": 289525,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 813.6000001430511,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1509.5999999046326,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2028.8999998569489,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1400.6000001430511,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2103.2999999523163,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1409.8000001907349,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 974.8999998569489,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 246.69999980926514,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1082.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 344.7000000476837,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/display-currency",
+          "ms": 182
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "warm",
+      "run": 2,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 55.299999952316284,
+      "fcp": 664,
+      "lcp": 736,
+      "cls": 0,
+      "longTasks": [
+        61,
+        78
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 180.70000004768372,
+          "bytes": 459
+        },
+        {
+          "url": "/pricing",
+          "ms": 179.40000009536743,
+          "bytes": 432
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": []
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "cold",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 378.90000009536743,
+      "fcp": 2476,
+      "lcp": 2476,
+      "cls": 0,
+      "longTasks": [
+        114,
+        642,
+        171,
+        120,
+        86,
+        127,
+        108
+      ],
+      "jsBytes": 289525,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 928.8000001907349,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1521.0999999046326,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 2060.7999999523163,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1408.7000000476837,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2151.2999999523163,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1436.7000000476837,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1015.6999998092651,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 244.5,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1061.4000000953674,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 350.7999999523163,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/display-currency",
+          "ms": 178.80000019073486
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "warm",
+      "run": 3,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 56.90000009536743,
+      "fcp": 516,
+      "lcp": 516,
+      "cls": 0,
+      "longTasks": [
+        63,
+        128
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 169.29999995231628,
+          "bytes": 459
+        },
+        {
+          "url": "/pricing",
+          "ms": 168.5,
+          "bytes": 432
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": []
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "cold",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 361,
+      "fcp": 2160,
+      "lcp": 2160,
+      "cls": 0,
+      "longTasks": [
+        520,
+        243,
+        136,
+        70,
+        94,
+        117
+      ],
+      "jsBytes": 289525,
+      "imageBytes": 0,
+      "requestCount": 35,
+      "resources": [
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 920.5,
+          "bytes": 63517
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 1529.7999999523163,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 1955.4000000953674,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 1471.5,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/app/page-354f9511be29e4c9.js",
+          "ms": 2156.5,
+          "bytes": 16753
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 1461.7999999523163,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 1025.9000000953674,
+          "bytes": 13424
+        },
+        {
+          "url": "/",
+          "ms": 250.59999990463257,
+          "bytes": 12146
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 1072.9000000953674,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/image",
+          "ms": 375.90000009536743,
+          "bytes": 9521
+        }
+      ],
+      "api": [
+        {
+          "url": "/api/display-currency",
+          "ms": 168.79999995231628
+        }
+      ]
+    },
+    {
+      "profile": "mobile-4g",
+      "route": "/packages",
+      "cache": "warm",
+      "run": 4,
+      "status": 200,
+      "finalPath": "/packages",
+      "ttfb": 59.200000047683716,
+      "fcp": 436,
+      "lcp": 436,
+      "cls": 0,
+      "longTasks": [
+        71,
+        68
+      ],
+      "jsBytes": 0,
+      "imageBytes": 0,
+      "requestCount": 34,
+      "resources": [
+        {
+          "url": "/login",
+          "ms": 179.20000004768372,
+          "bytes": 459
+        },
+        {
+          "url": "/pricing",
+          "ms": 178,
+          "bytes": 432
+        },
+        {
+          "url": "/_next/image",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/css/e7e6ebc5cf32d2f4.css",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/webpack-104dc89f4d03f18f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 0,
+          "bytes": 0
+        },
+        {
+          "url": "/_next/static/chunks/1864-71ea49a2d27fcfcf.js",
+          "ms": 0,
+          "bytes": 0
+        }
+      ],
+      "api": []
+    }
+  ]
+}

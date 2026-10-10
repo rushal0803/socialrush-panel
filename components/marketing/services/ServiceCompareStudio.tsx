@@ -1,43 +1,19 @@
 "use client";
-
-import Link from "next/link";
-import { Check, Layers3, Search, X } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
-import { formatCurrency } from "@/lib/currency";
-import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
-import { useBodyScrollLock } from "@/lib/ui/use-body-scroll-lock";
+import dynamic from "next/dynamic";
+import { Layers3 } from "lucide-react";
+import { useState } from "react";
+import type { SmmService } from "@/lib/smm-service-catalog";
 import styles from "./ServicesCatalog.module.css";
-import compare from "./ServiceCompare.module.css";
+
+const ServiceCompareDialog = dynamic(() => import("./ServiceCompareDialog"), { ssr: false });
 
 export default function ServiceCompareStudio({ serviceCatalog }: { serviceCatalog: SmmService[] }) {
-  const { currency } = usePreferredCurrency("INR");
-  const dialog = useRef<HTMLDialogElement>(null);
   const [open, setOpen] = useState(false);
-  const [query, setQuery] = useState("");
-  const [platform, setPlatform] = useState<"all" | SmmPlatformId>("all");
+  const [activated, setActivated] = useState(false);
   const [selectedCodes, setSelectedCodes] = useState<string[]>([]);
-  useBodyScrollLock(open);
-  useEffect(() => { if (open) dialog.current?.showModal(); else dialog.current?.close(); }, [open]);
-  const selected = useMemo(() => serviceCatalog.filter(service => selectedCodes.includes(service.code)), [selectedCodes, serviceCatalog]);
-  const results = useMemo(() => serviceCatalog.filter(service => (platform === "all" || service.platform === platform) && `${service.name} ${service.description} ${service.code}`.toLowerCase().includes(query.trim().toLowerCase())), [serviceCatalog, platform, query]);
-  const platforms = Array.from(new Set(serviceCatalog.map(service => service.platform)));
-  const toggleService = (code: string) => setSelectedCodes(current => current.includes(code) ? current.filter(item => item !== code) : current.length < 3 ? [...current, code] : current);
+  const selectedCount = serviceCatalog.filter(service => selectedCodes.includes(service.code)).length;
   return <>
-    <button type="button" className={styles.secondary} title="Compare services" onClick={() => setOpen(true)} aria-haspopup="dialog" aria-expanded={open}><Layers3 size={16} aria-hidden="true" /><span className="sr-only sm:not-sr-only">Compare services</span>{selected.length > 0 && <span>({selected.length})</span>}</button>
-    <dialog ref={dialog} className={compare.dialog} aria-labelledby="service-compare-title" onCancel={() => setOpen(false)} onClose={() => setOpen(false)}>
-      {open && <><header className={compare.header}><div><h2 id="service-compare-title">Compare services</h2><p>Select up to 3 services. Review their conditions before ordering.</p></div><button type="button" autoFocus onClick={() => setOpen(false)} aria-label="Close service comparison"><X size={20} /></button></header>
-      <div className={compare.body}>
-        <div className={compare.picker}>
-          <label className={styles.search}><span className="sr-only">Search services to compare</span><Search size={16} aria-hidden="true" /><input type="search" value={query} onChange={event => setQuery(event.target.value)} placeholder="Search any service…" /></label>
-          <label className={compare.platform}>Platform<select value={platform} onChange={event => setPlatform(event.target.value as typeof platform)}><option value="all">All platforms</option>{platforms.map(id => <option key={id} value={id}>{platformMeta[id].label}</option>)}</select></label>
-          <p className={compare.count} role="status">{selected.length}/3 selected · {results.length} services</p>
-          <div className={compare.choices}>{results.map(service => { const active = selectedCodes.includes(service.code); return <button key={service.code} type="button" aria-pressed={active} disabled={!active && selected.length === 3} onClick={() => toggleService(service.code)}><span><strong>{service.name}</strong><small>{formatCurrency(service.pricePer1000, currency)} / 1K</small></span><span aria-hidden="true">{active ? <Check size={18} /> : "+"}</span></button>; })}{!results.length && <p>No services match your search.</p>}</div>
-        </div>
-        <section className={compare.shortlist} aria-label="Your shortlist"><div className={compare.shortlistHeading}><h3>Your shortlist</h3>{selected.length > 0 && <button type="button" onClick={() => setSelectedCodes([])}>Clear all</button>}</div>
-          {selected.length ? <div className={compare.cards}>{selected.map(service => <article key={service.code}><div className={compare.shortlistHeading}><h4>{service.name}</h4><button type="button" aria-label={`Remove ${service.name} from comparison`} onClick={() => toggleService(service.code)}><X size={18} /></button></div><p className={compare.price}>{formatCurrency(service.pricePer1000, currency)} <small>/ 1K</small></p><dl><div><dt>Minimum</dt><dd>{service.minQuantity.toLocaleString("en-IN")}</dd></div><div><dt>Maximum</dt><dd>{service.maxQuantity.toLocaleString("en-IN")}</dd></div><div><dt>Delivery</dt><dd>{service.deliveryTime}</dd></div><div><dt>Refill / support</dt><dd>{service.refillPolicy}</dd></div><div><dt>Before ordering</dt><dd>{service.importantInstruction}</dd></div></dl><Link className={styles.primary} href={`/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`}>Choose this service</Link></article>)}</div> : <p className={compare.empty}>Select services from the catalogue to compare pricing, delivery, refill and quantity limits here.</p>}
-        </section>
-      </div></>}
-    </dialog>
+    <button type="button" className={styles.secondary} title="Compare services" onClick={() => { setActivated(true); setOpen(true); }} aria-haspopup="dialog" aria-expanded={open}><Layers3 size={16} aria-hidden="true" /><span className="sr-only sm:not-sr-only">Compare services</span>{selectedCount > 0 && <span>({selectedCount})</span>}</button>
+    {activated && <ServiceCompareDialog serviceCatalog={serviceCatalog} open={open} onClose={() => setOpen(false)} selectedCodes={selectedCodes} setSelectedCodes={setSelectedCodes} />}
   </>;
 }
