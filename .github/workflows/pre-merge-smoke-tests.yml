@@ -60,6 +60,20 @@ jobs:
       - name: Install Chromium for smoke tests
         run: npx playwright install --with-deps chromium
       - run: npm run test:smoke
+      - name: Capture brand-correct screenshots of the real current PR code (local fixture only)
+        if: ${{ github.event.pull_request.number == 630 && success() }}
+        timeout-minutes: 3
+        env:
+          PREMIUM_REVIEW_ROUTES: '["/","/services","/packages","/login","/register"]'
+        run: node scripts/premium-design-review.cjs brand-current
+      - name: Attach current dark-orange visual-review screenshots
+        if: ${{ github.event.pull_request.number == 630 && always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialrush-pr630-brand-current-screenshots
+          path: artifacts/premium-design/brand-current/
+          if-no-files-found: warn
+          retention-days: 14
       - name: Retain Playwright release-gate diagnostics
         if: always()
         uses: actions/upload-artifact@v4
