@@ -6,8 +6,9 @@ import { getLeadContactOutreachBlockReason, isLeadContactOutreachEligible } from
 import { formatAutonomousOutreachEmail, formatOutreachEmail, renderOutreachSubject, renderOutreachText } from "./email-formatting";
 import type { CRMLead, CRMLeadContact, CRMOutreachSettings, CRMSuppressionEntry } from "./types";
 
-const OUTREACH_FROM = "SocialRUSH <growth@outreach.getsocialrush.com>";
-const OUTREACH_REPLY_TO = "growth@outreach.getsocialrush.com";
+const fallbackOutreachFrom = "support@getsocialrush.com";
+const outreachFrom = (settings: Pick<CRMOutreachSettings,"from_name"|"from_email">) => `${settings.from_name || "SocialRUSH"} <${settings.from_email || fallbackOutreachFrom}>`;
+const outreachReplyTo = (settings: Pick<CRMOutreachSettings,"reply_to"|"from_email">) => settings.reply_to || settings.from_email || fallbackOutreachFrom;
 const cleanEmail = (value: string) => value.trim().toLowerCase();
 const textFromHtml = (value: string) => value.replace(/<[^>]*>/g, " ").replace(/&nbsp;/gi, " ").replace(/&amp;/gi, "&").replace(/\s+/g, " ").trim();
 const client = () => {
@@ -207,7 +208,7 @@ export async function sendApprovedResendDraft(messageId: string) {
   if (!contact || !lead || !settings || settings.provider !== "resend" || !settings.enabled || !isLeadContactOutreachEligible(contact as CRMLeadContact, lead as Pick<CRMLead, "status">, settings as CRMOutreachSettings, (suppressions || []) as CRMSuppressionEntry[])) throw new Error("This draft is not eligible for Resend delivery.");
   const personalization = { full_name: contact.full_name, business_name: lead.business_name, recommended_service: lead.recommended_service };
   const formatted = formatAutonomousOutreachEmail(message.body, personalization);
-  const response = await client().emails.send({ from: OUTREACH_FROM, replyTo: OUTREACH_REPLY_TO, to: [contact.email], subject: renderOutreachSubject(message.subject, personalization), text: formatted.text, html: formatted.html }, { idempotencyKey: `crm-outreach-${message.id}` });
+  const response = await client().emails.send({ from: outreachFrom(settings as CRMOutreachSettings), replyTo: outreachReplyTo(settings as CRMOutreachSettings), to: [contact.email], subject: renderOutreachSubject(message.subject, personalization), text: formatted.text, html: formatted.html }, { idempotencyKey: `crm-outreach-${message.id}` });
   if (response.error || !response.data?.id) throw new Error(response.error?.message || "Resend could not accept the draft.");
   const now = new Date().toISOString();
   await db.from("crm_outreach_messages").update({ provider: "resend", provider_message_id: response.data.id, status: "sent", sent_at: now, updated_at: now }).eq("id", message.id).is("provider_message_id", null);
@@ -268,8 +269,9 @@ export async function processCrmOutreachAutopilot() {
   // Refresh discovery-derived lead state before enrollment. These calls are
   // deliberately sequential: a newly promoted/scored lead must exist before
   // enrollment, and a new enrollment must exist before its first message is queued.
-  const {data:promoted,error:pipelineError}=await db.rpc("refresh_crm_prospecting_pipeline");
+  const {error:pipelineError}=await db.rpc("refresh_crm_prospecting_intelligence");
   if(pipelineError)throw pipelineError;
+  const promoted=0;
   const {data:enrolled,error:enrollError}=await db.rpc("refresh_crm_outreach_autopilot");
   if(enrollError)throw enrollError;
   const {data:queued,error:queueError}=await db.rpc("enqueue_due_crm_outreach_messages");
@@ -351,7 +353,7 @@ export async function processCrmOutreachAutopilot() {
       const {error:freezeError}=await db.from("crm_outreach_messages").update({subject:resolvedSubject,body:resolvedBody,updated_at:new Date().toISOString()}).eq("id",message.id).eq("status","sending");
       if(freezeError)throw freezeError;
       const formatted=formatAutonomousOutreachEmail(resolvedBody,personalization);
-      const response=await client().emails.send({from:OUTREACH_FROM,replyTo:OUTREACH_REPLY_TO,to:[contact.email],subject:resolvedSubject,text:formatted.text,html:formatted.html},{idempotencyKey:`crm-autopilot-${message.id}`});
+      const response=await client().emails.send({from:outreachFrom(currentSettings as CRMOutreachSettings),replyTo:outreachReplyTo(currentSettings as CRMOutreachSettings),to:[contact.email],subject:resolvedSubject,text:formatted.text,html:formatted.html},{idempotencyKey:`crm-autopilot-${message.id}`});
       if(response.error||!response.data?.id)throw new Error(response.error?.message||"Resend could not accept the Autopilot email.");
 
       const now=new Date().toISOString();
