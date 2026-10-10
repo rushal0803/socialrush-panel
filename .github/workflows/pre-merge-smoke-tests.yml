@@ -60,6 +60,18 @@ jobs:
       - name: Install Chromium for smoke tests
         run: npx playwright install --with-deps chromium
       - run: npm run test:smoke
+      - name: Capture Phase 2 public desktop/mobile review images
+        if: ${{ github.event.pull_request.number == 631 && success() }}
+        timeout-minutes: 4
+        run: node scripts/phase2-design-review.cjs
+      - name: Attach real Phase 2 visuals and rendered SEO facts
+        if: ${{ github.event.pull_request.number == 631 && always() }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialrush-pr631-phase2-visual-review
+          path: artifacts/phase2-design/
+          retention-days: 14
+          if-no-files-found: warn
       - name: Retain Playwright release-gate diagnostics
         if: always()
         uses: actions/upload-artifact@v4
