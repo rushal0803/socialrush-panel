@@ -127,3 +127,32 @@ test("all three conversion paths preserve destinations and first-party tracking"
     else await expect(page).toHaveURL(new RegExp(`${path.href}$`));
   }
 });
+
+for (const width of [1280, 1440, 1920]) {
+  test("desktop header navigation labels never wrap at " + width + "px", async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    for (const route of ["/", "/services"]) {
+      await page.goto(route, { waitUntil: "domcontentloaded" });
+      const header = page.locator("header.nav-2-header");
+      const nav = header.getByRole("navigation", { name: "Primary navigation" });
+      await expect(nav).toBeVisible();
+      const labels = await nav.locator("summary, a").evaluateAll(items => items.map(el => {
+        const textNode = [...el.childNodes].find(node => node.nodeType === Node.TEXT_NODE && node.textContent?.trim());
+        if (!textNode) return { text: el.textContent?.trim(), lines: 0 };
+        const range = document.createRange();
+        range.selectNodeContents(textNode);
+        return { text: textNode.textContent?.trim(), lines: range.getClientRects().length };
+      }));
+      expect(labels.every(({ lines }) => lines <= 1), JSON.stringify({ route, width, labels })).toBe(true);
+      const fits = await header.evaluate(el => {
+        const navigation = el.querySelector('nav[aria-label="Primary navigation"]');
+        const actions = navigation?.nextElementSibling;
+        if (!navigation || !actions) return false;
+        const n = navigation.getBoundingClientRect(), a = actions.getBoundingClientRect();
+        return n.left >= -1 && a.right <= window.innerWidth + 1 && n.right <= a.left + 1;
+      });
+      expect(fits, "Desktop header must fit at " + width + "px on " + route).toBe(true);
+      expect(await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
+    }
+  });
+}
