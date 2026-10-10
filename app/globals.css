@@ -128,9 +128,7 @@ html:has(.service-money-page) { scroll-behavior: smooth; }
   .instagram-followers-mobile > section:first-child h1 + p + div + div > span:last-child {
     display: none;
   }
-  .instagram-followers-mobile > section:nth-child(2) {
-    display: none;
-  }
+  /* Do not hide sections by child index: the order-first hero may be followed by SEO guidance. */
 }
 
 
