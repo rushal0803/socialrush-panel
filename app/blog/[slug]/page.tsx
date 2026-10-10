@@ -119,10 +119,14 @@ export default async function BlogDetailPage({ params }: { params: Promise<{ slu
   const articleUrl = new URL(`/blog/${article.slug}`, SEO_SITE_URL).toString();
   const articleImage = getArticleImage(article.image);
   const articleAuthor = article.author;
-  // This shared hero has a small, pre-encoded asset so cold image optimization
-  // cannot hold up guide navigation. Keep the original SEO image above.
-  const preoptimizedHero = articleImage === "/images/blog/promote-new-youtube-channel-india.png";
-  const heroImage = preoptimizedHero ? "/images/blog/promote-new-youtube-channel-india.webp" : articleImage;
+  // These shared heroes have small pre-encoded assets so cold image optimization
+  // cannot hold up guide navigation. Keep the original SEO images above.
+  const preoptimizedHero = [
+    "/images/blog/promote-new-youtube-channel-india.png",
+    "/images/blog/facebook-page-growth-india.png",
+    "/images/blog/social-media-growth-strategy-indian-creators.png",
+  ].includes(articleImage);
+  const heroImage = preoptimizedHero ? articleImage.replace(/\.png$/i, ".webp") : articleImage;
   const breadcrumbTitle = article.breadcrumbTitle ?? article.title;
   const articleSections = getArticleSections(article);
   const articleSectionIds = getUniqueSectionIds(articleSections);
