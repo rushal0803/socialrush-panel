@@ -16,7 +16,6 @@ export const searchPriorityTargets: readonly SearchPriorityTarget[] = [
   { slug: "buy-instagram-likes-india", label: "Instagram Likes India", intent: "post and Reel like pricing" },
   { slug: "buy-youtube-views-india", label: "YouTube Views India", intent: "video view pricing" },
   // Public commercial URLs discovered but not yet crawled in the 10 Oct 2026 GSC export.
-  { slug: "buy-youtube-watch-hours-india", label: "YouTube Watch Hours India", intent: "public-video watch-hour requirements" },
   { slug: "buy-youtube-comments-india", label: "YouTube Comments India", intent: "video comment service details" },
   { slug: "buy-instagram-comments-india", label: "Instagram Comments India", intent: "post comment service details" },
   { slug: "buy-facebook-group-members-india", label: "Facebook Group Members India", intent: "community member service requirements" },
@@ -28,6 +27,7 @@ export const crawlPriorityServiceLinks = searchPriorityTargets.map((target) => (
 }));
 
 export const searchPlanningLinks = [
+  { href: "/buy-youtube-watch-hours-india", label: "YouTube Watch Hours India", intent: "public-video watch-hour requirements" },
   { href: "/pricing", label: "Compare Live Social Media Pricing", intent: "cross-platform live INR rates" },
   { href: "/tools/social-media-service-cost-calculator", label: "Service Cost Calculator", intent: "quantity-based cost planning" },
 ] as const;
