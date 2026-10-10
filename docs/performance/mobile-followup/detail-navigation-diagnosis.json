@@ -1,0 +1,84 @@
+{
+  "note": "One after-only diagnostic transition; instrumentation and observation differ from paired heading timings. Not a before/after speed claim.",
+  "requests": [
+    {
+      "url": "/buy-instagram-followers-india",
+      "rsc": true,
+      "start": 2079026.800936,
+      "type": "Fetch",
+      "headersMs": 181.4190000295639,
+      "totalMs": 256.79400004446507,
+      "bytes": 17791
+    },
+    {
+      "url": "/_next/static/chunks/4966-988575a50481abeb.js",
+      "rsc": false,
+      "start": 2079026.997042,
+      "type": "Script",
+      "headersMs": 232.93900000862777,
+      "totalMs": 231.6560000181198,
+      "bytes": 4677
+    },
+    {
+      "url": "/_next/static/chunks/3778-49c9b61304c8786f.js",
+      "rsc": false,
+      "start": 2079027.003949,
+      "type": "Script",
+      "headersMs": 241.296999854967,
+      "totalMs": 240.0340000167489,
+      "bytes": 5663
+    },
+    {
+      "url": "/_next/static/chunks/app/buy-instagram-followers-india/page-01325302fb3724fe.js",
+      "rsc": false,
+      "start": 2079027.009807,
+      "type": "Script",
+      "headersMs": 206.19600010104477,
+      "totalMs": 203.24099995195866,
+      "bytes": 2990
+    }
+  ],
+  "browser": {
+    "gestureMs": 23.399999856948853,
+    "tasks": [
+      {
+        "start": 7497,
+        "ms": 594
+      },
+      {
+        "start": 8120.799999952316,
+        "ms": 56
+      }
+    ],
+    "resources": [
+      {
+        "url": "/buy-instagram-followers-india",
+        "start": 33.200000047683716,
+        "headers": 60.59999990463257,
+        "end": 289.5,
+        "bytes": 16775
+      },
+      {
+        "url": "/_next/static/chunks/4966-988575a50481abeb.js",
+        "start": 232.79999995231628,
+        "headers": 236.39999985694885,
+        "end": 460.5,
+        "bytes": 3712
+      },
+      {
+        "url": "/_next/static/chunks/3778-49c9b61304c8786f.js",
+        "start": 238.09999990463257,
+        "headers": 242.29999995231628,
+        "end": 475.7999999523163,
+        "bytes": 4697
+      },
+      {
+        "url": "/_next/static/chunks/app/buy-instagram-followers-india/page-01325302fb3724fe.js",
+        "start": 243,
+        "headers": 245.29999995231628,
+        "end": 444.7999999523163,
+        "bytes": 2026
+      }
+    ]
+  }
+}

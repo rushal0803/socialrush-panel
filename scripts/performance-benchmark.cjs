@@ -9,7 +9,8 @@ const base = process.env.PERF_BASE_URL || 'http://localhost:3001';
 const local = ['localhost', '127.0.0.1'].includes(new URL(base).hostname);
 const runs = Number(process.env.PERF_RUNS || 5);
 const out = process.env.PERF_OUTPUT || 'artifacts/performance/results.json';
-const routes = ['/', '/services', '/packages', '/dashboard', '/dashboard/wallet', '/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fperformance_qa%2F'];
+const routes = process.env.PERF_ROUTES ? JSON.parse(process.env.PERF_ROUTES) : ['/', '/services', '/packages', '/dashboard', '/dashboard/wallet', '/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fperformance_qa%2F'];
+const profiles = process.env.PERF_PROFILES ? process.env.PERF_PROFILES.split(',') : ['desktop', 'mobile-4g'];
 
 async function authenticate(context) {
   const origin = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL).origin;
@@ -47,7 +48,7 @@ async function main() {
     fs.writeFileSync(`${out}.partial`, JSON.stringify({ incomplete: true, samples }, null, 2));
   };
   try {
-    for (const profile of ['desktop', 'mobile-4g']) {
+    for (const profile of profiles) {
       for (const route of routes.filter(route => local || !route.startsWith('/dashboard'))) {
         for (let run = 0; run < runs; run++) {
           const context = await browser.newContext({ viewport: profile === 'desktop' ? { width: 1440, height: 900 } : { width: 390, height: 844 }, isMobile: profile !== 'desktop', deviceScaleFactor: 1, serviceWorkers: 'block' });

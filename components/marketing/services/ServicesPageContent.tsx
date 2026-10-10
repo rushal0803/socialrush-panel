@@ -7,7 +7,6 @@ import BlogShell from "@/components/marketing/blog/BlogShell";
 import ServiceCompareStudio from "./ServiceCompareStudio";
 import { ServicesHero, PlatformSelector, ServiceSearch, ServiceCategoryFilter, ServiceCard, serviceCategory } from "./ServicesCatalog";
 import styles from "./ServicesCatalog.module.css";
-import PlatformIcon from "@/components/PlatformIcon";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 import { useServiceHealth } from "@/lib/use-service-health";

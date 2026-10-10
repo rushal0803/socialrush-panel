@@ -1,0 +1,294 @@
+{
+  "sourceCommit": "ab938bae08585a9c2be9500487b78825b22e9fbc",
+  "buildId": "6HOgXLf_uK5o2Dy8HzRUd",
+  "environment": {
+    "node": "v24.16.0",
+    "platform": "win32",
+    "browser": "151.0.7922.34",
+    "mobile": "390x844 touch, DPR1, 1.6Mbps down, 750Kbps up, 150ms latency, 4x CPU",
+    "serviceWorkers": "blocked",
+    "analytics": "DNT",
+    "timing": "Browser touchstart capture to distinct visible heading at animation frame; real tap and browser back. Cold destination unvisited; warm after real visit/back with same router and HTTP cache. No private data."
+  },
+  "runs": 5,
+  "samples": [
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "cold-destination",
+      "run": 0,
+      "ms": 2661.7000000476837,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "warm-destination",
+      "run": 0,
+      "ms": 2375.7000000476837,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "cold-destination",
+      "run": 1,
+      "ms": 2573,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "warm-destination",
+      "run": 1,
+      "ms": 1202,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "cold-destination",
+      "run": 2,
+      "ms": 2202.5,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "warm-destination",
+      "run": 2,
+      "ms": 1301.7000000476837,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "cold-destination",
+      "run": 3,
+      "ms": 2094.5,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "warm-destination",
+      "run": 3,
+      "ms": 1703.5,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "cold-destination",
+      "run": 4,
+      "ms": 2293.800000190735,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/services",
+      "cache": "warm-destination",
+      "run": 4,
+      "ms": 1629.9000000953674,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "cold-destination",
+      "run": 0,
+      "ms": 1355.6999998092651,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "warm-destination",
+      "run": 0,
+      "ms": 1248.2999999523163,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "cold-destination",
+      "run": 1,
+      "ms": 1210.3999998569489,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "warm-destination",
+      "run": 1,
+      "ms": 1137.7000000476837,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "cold-destination",
+      "run": 2,
+      "ms": 1461.2999999523163,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "warm-destination",
+      "run": 2,
+      "ms": 1067.3999998569489,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "cold-destination",
+      "run": 3,
+      "ms": 1450.5,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "warm-destination",
+      "run": 3,
+      "ms": 1313.4000000953674,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "cold-destination",
+      "run": 4,
+      "ms": 1314.8999998569489,
+      "clientNavigation": true
+    },
+    {
+      "source": "/",
+      "destination": "/packages",
+      "cache": "warm-destination",
+      "run": 4,
+      "ms": 1048.3999998569489,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "cold-destination",
+      "run": 0,
+      "ms": 1467.4000000953674,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "warm-destination",
+      "run": 0,
+      "ms": 444,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "cold-destination",
+      "run": 1,
+      "ms": 1638.9000000953674,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "warm-destination",
+      "run": 1,
+      "ms": 343.5,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "cold-destination",
+      "run": 2,
+      "ms": 1441.1000001430511,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "warm-destination",
+      "run": 2,
+      "ms": 395.5,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "cold-destination",
+      "run": 3,
+      "ms": 1467.3999998569489,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "warm-destination",
+      "run": 3,
+      "ms": 440.2999999523163,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "cold-destination",
+      "run": 4,
+      "ms": 1529.5999999046326,
+      "clientNavigation": true
+    },
+    {
+      "source": "/services",
+      "destination": "/buy-instagram-followers-india",
+      "cache": "warm-destination",
+      "run": 4,
+      "ms": 430.09999990463257,
+      "clientNavigation": true
+    }
+  ],
+  "summary": [
+    {
+      "key": "/|/services|cold-destination",
+      "count": 5,
+      "median": 2293.800000190735,
+      "p75": 2573
+    },
+    {
+      "key": "/|/services|warm-destination",
+      "count": 5,
+      "median": 1629.9000000953674,
+      "p75": 1703.5
+    },
+    {
+      "key": "/|/packages|cold-destination",
+      "count": 5,
+      "median": 1355.6999998092651,
+      "p75": 1450.5
+    },
+    {
+      "key": "/|/packages|warm-destination",
+      "count": 5,
+      "median": 1137.7000000476837,
+      "p75": 1248.2999999523163
+    },
+    {
+      "key": "/services|/buy-instagram-followers-india|cold-destination",
+      "count": 5,
+      "median": 1467.4000000953674,
+      "p75": 1529.5999999046326
+    },
+    {
+      "key": "/services|/buy-instagram-followers-india|warm-destination",
+      "count": 5,
+      "median": 430.09999990463257,
+      "p75": 440.2999999523163
+    }
+  ]
+}

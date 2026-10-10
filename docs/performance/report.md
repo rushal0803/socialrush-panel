@@ -1,5 +1,7 @@
 # SocialRUSH performance results
 
+Latest PR #623 continuation: [focused mobile comparisons and final CI](mobile-followup.md). The six-route tables below retain the earlier main-to-PR comparison; the continuation measures only the requested public routes and journeys.
+
 Baseline: main at `0a30ae3778d932bbbb36f93e182a57b2bd31b251` (PR #622).
 The following comparisons use five samples per route/profile/cache condition on the same Windows runner, Node and Chromium versions. Full conditions and limitations are in [README.md](README.md). Timings are milliseconds; JS sizes are decimal KB. Arrows show baseline → optimized build.
 
@@ -237,3 +239,6 @@ exceptionally fast. The full JSON report, trace and DevTools log are in local
 ignored `artifacts/performance/lighthouse-services*` files. The initial attempt
 failed to access the local debugging connection under sandbox restrictions;
 the permitted retry completed successfully.
+### PR #623 mobile continuation
+
+The subsequent focused continuation is documented in [mobile-followup.md](mobile-followup.md), including fresh paired mobile measurements, desktop JavaScript retention, scrolling validation and the remaining detail-navigation regression. The earlier CI completed successfully: 222 tests, zero failures. The continuation's exact final CI and preview are recorded in [PR #623](https://github.com/rushal0803/socialrush-panel/pull/623). The historical tables and audit above are retained; no full-site audit was repeated.

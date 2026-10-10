@@ -1,0 +1,7 @@
+{
+  "note": "After-only traced mobile cold services load; instrumentation overhead; not isolated hydration or before/after evidence.",
+  "traceEvents": 11843,
+  "longTasks": 9,
+  "longestTaskMs": 482.611,
+  "totalLongTaskMs": 1686.5210000000002
+}

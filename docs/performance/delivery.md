@@ -132,3 +132,6 @@ exceptionally fast. The full JSON report, trace and DevTools log are in local
 ignored `artifacts/performance/lighthouse-services*` files. The initial attempt
 failed to access the local debugging connection under sandbox restrictions;
 the permitted retry completed successfully.
+### PR #623 mobile continuation
+
+The subsequent focused continuation is documented in [mobile-followup.md](mobile-followup.md), including fresh paired mobile measurements, desktop JavaScript retention, scrolling validation and the remaining detail-navigation regression. The earlier CI completed successfully: 222 tests, zero failures. The continuation's exact final CI and preview are recorded in [PR #623](https://github.com/rushal0803/socialrush-panel/pull/623). The historical tables and audit above are retained; no full-site audit was repeated.

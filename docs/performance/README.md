@@ -175,3 +175,28 @@ into the performance work.
 
 Do not merge or promote production automatically. Preview and PR review are
 the delivery target.
+## Focused PR #623 continuation
+
+See [mobile-followup.md](mobile-followup.md) for the fresh paired results. The original six-route report is historical; this continuation measures only three public routes and three mobile journeys. Raw data and rejected-trial evidence are in [mobile-followup/](mobile-followup/).
+
+For each application revision, build first, then run these sequentially with no tests or other benchmarks alongside them (PowerShell):
+
+```powershell
+$env:PERF_PROFILES='mobile-4g'
+$env:PERF_ROUTES='["/","/services","/packages"]'
+$env:PERF_OUTPUT='artifacts/performance/mobile-loads.json'
+node scripts/performance-benchmark.cjs
+$env:PERF_OUTPUT='artifacts/performance/mobile-journeys.json'
+node scripts/performance-mobile-journeys.cjs
+$env:PERF_PROFILES='desktop'
+$env:PERF_ROUTES='["/services"]'
+$env:PERF_OUTPUT='artifacts/performance/desktop-services.json'
+node scripts/performance-benchmark.cjs
+node scripts/performance-trace.cjs
+```
+
+Keep five samples and the same environment on both sides. Tracing is a separate diagnostic run. The mobile journey runner includes real touchscreen taps and genuine browser-back destination-warm visits. Its browser timer differs from the original Node-side click timer. The report generator rejects mismatched application revisions, build IDs, environments, sample counts and lost App Router sentinels:
+
+```powershell
+node scripts/performance-mobile-report.cjs docs/performance/mobile-followup/mobile-before.json docs/performance/mobile-followup/mobile-after.json docs/performance/mobile-followup/journeys-before.json docs/performance/mobile-followup/journeys-after.json
+```
