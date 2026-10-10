@@ -1,8 +1,9 @@
 // Local CI admin layout visual verification only. Never run against production.
-const { chromium } = require("@playwright/test");
+const { chromium, expect } = require("@playwright/test");
 const { mkdirSync, writeFileSync } = require("node:fs");
 const { resolve } = require("node:path");
 const start = require("./playwright-server-setup.cjs");
+require("@next/env").loadEnvConfig(process.cwd());
 
 const base = "http://localhost:3001";
 const user = { id: "11111111-1111-4111-8111-111111111111", email: "admin-qa@example.invalid",
@@ -11,7 +12,8 @@ const encode = value => Buffer.from(JSON.stringify(value)).toString("base64url")
 const expires_at = Math.floor(Date.now() / 1000) + 3600;
 const token = [encode({alg:"HS256",typ:"JWT"}),encode({sub:user.id,role:"authenticated",aud:"authenticated",exp:expires_at}),"dGVzdA"].join(".");
 const session = { access_token: token, refresh_token: "fixture", expires_at, expires_in: 3600, token_type: "bearer", user };
-const key = "sb-localhost-auth-token";
+const backend = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL);
+const key = `sb-${backend.hostname.split(".")[0]}-auth-token`;
 
 async function main() {
   if (process.env.ADMIN_QA_FIXTURE !== "1" || !/^(http:\/\/localhost:3001|http:\/\/127\.0\.0\.1:3001)$/.test(base)) {
@@ -32,6 +34,27 @@ async function main() {
     await anonymous.close();
     for (const width of [390,1440]) {
       const context = await browser.newContext({viewport:{width,height:900},serviceWorkers:"block",reducedMotion:"reduce"});
+      // The server preload does not intercept browser requests. Keep client
+      // authentication and read-only data inside this same synthetic fixture.
+      await context.route(`${backend.origin}/**`, async route => {
+        const request = route.request();
+        const path = new URL(request.url()).pathname;
+        if (!path.startsWith("/auth/v1/") && !path.startsWith("/rest/v1/")) {
+          return backend.origin === base ? route.continue() : route.abort("blockedbyclient");
+        }
+        const headers = { "Access-Control-Allow-Origin": base, "Access-Control-Allow-Headers": "*", "Access-Control-Allow-Methods": "GET, OPTIONS" };
+        if (request.method() === "OPTIONS") return route.fulfill({status:204,headers});
+        if (request.method() !== "GET") return route.fulfill({status:403,headers,json:{message:"Writes disabled in admin visual fixture"}});
+        let json = path.startsWith("/auth/v1/") ? user : [];
+        if (path.endsWith("/profiles")) {
+          const profile = {...user,full_name:"Admin QA",role:"admin",balance:100000,is_blocked:false};
+          json = request.headers().accept?.includes("object") ? profile : [profile];
+        }
+        return route.fulfill({json,headers});
+      });
+      await context.routeWebSocket(/\/realtime\/v1\/websocket/, socket => socket.onMessage(message => {
+        try { const [join,ref,topic] = JSON.parse(String(message)); socket.send(JSON.stringify([join,ref,topic,"phx_reply",{status:"ok",response:{}}])); } catch { /* No live changes in synthetic fixture. */ }
+      }));
       await context.addCookies([{name:key,value:"base64-"+encode(session),url:base}]);
       await context.addInitScript(({key,session}) => {
         localStorage.setItem(key,JSON.stringify(session));
@@ -43,6 +66,8 @@ async function main() {
       if (response?.status() !== 200 || !pathname.startsWith("/admin/dashboard")) {
         throw Error("Fixture admin dashboard failed to render: "+JSON.stringify({status:response?.status(),pathname,width}));
       }
+      await expect(page.getByRole("heading",{name:"Operations Dashboard",exact:true})).toBeVisible();
+      await expect(page.locator(".admin-shell main .animate-pulse, .admin-shell main [aria-busy='true']")).toHaveCount(0);
       if (width >= 1024) {
         await page.getByRole("navigation",{name:"Admin sections",exact:true}).waitFor({timeout:15000});
         for (const name of ["Manage","Growth & SEO","Customers & settings"]) {
