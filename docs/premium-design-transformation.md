@@ -99,3 +99,16 @@ Second Linux CI trace (run 38070199045): all catalogue widths passed; Facebook a
 Run 38071797283 passed 248 browser cases and retained the same 51 existing skips; only the LinkedIn contextual guide still timed out. The recurring cold optimizer stalls move between shared PNG assets under the full Linux suite. The existing eight-guide regression group now uses pre-encoded versions of its eight shared hero assets (83–110KB each). Each guide additionally asserts exact accessible image name, resolved WebP pathname, successful decode and original PNG Open Graph URL. Source PNGs, article data, JSON-LD and original SEO metadata remain intact. This covers the affected regression group without a new full-site audit, timeout increase or coverage reduction.
 
 Final CI-fix production build qCY3yQx2TSF4-F4WjsxVj: 73 affected browser checks and 14 targeted checkout/guide checks passed locally. All 22 review images and the 10-document rendered SEO comparison were regenerated from this build. The final five-run comparison supersedes earlier after-build numbers. Median browser click time was approximately unchanged (82→80ms), but observed render wait rose 730→915ms. The /services route-resource median rose only 134→148ms; the same two client chunks and existing router prefetch paths appear in both versions. This narrows the observation to render/post-response work without proving a causal root or estimating hydration time. No runtime instrumentation, animation or client dependency was added.
+
+
+## Brand-consistency follow-up (pending new rendered review)
+
+Following visual feedback, **retain the existing SocialRUSH dark charcoal/black and signature orange theme** rather than switching the website to a cream-led identity.
+
+- Replaced the cream homepage workspace mockup with a charcoal command-center presentation and restrained orange borders, status accents and clear controls. The sample-data disclosure remains visible.
+- Replaced the cream final CTA, login feature panel and Services selection guide with dark surfaces; aligned shared marketing, package, editorial and customer dashboard styles to the existing palette.
+- Strengthened hierarchy on service-discovery cards, the active platform selector, search focus and the homepage platform rail, using CSS only.
+- Kept the original hero H1, all page-specific metadata, schema, service data, live prices, auth, wallet, orders and checkout behavior.
+- Added a dedicated unit regression test for forbidden cream values in premium templates and a rendered desktop palette check in Playwright.
+
+**Review status:** These changes are in the same draft PR. Previously published screenshots and the five-run performance comparisons were captured **before** this brand-consistency revision and cannot establish its final visual quality or speed. Capture new rendered desktop/mobile comparisons and repeat matching performance checks before approval. The design PR intentionally disables Vercel Git deployments on this branch; do not merge or promote to production without review.
