@@ -117,6 +117,20 @@ test("platform hubs link to published, unique authority guides", () => {
   }
 });
 
+test("GSC crawled evergreen guides are linked from their relevant platform hubs", () => {
+  const targets = [
+    ["instagram", "/blog/best-time-to-post-on-instagram-india"],
+    ["youtube", "/blog/how-to-get-1000-youtube-subscribers"],
+  ] as const;
+  for (const [platform, href] of targets) {
+    assert.ok(
+      contentClusters[platform].guideLinks.some((guide) => guide.href === href),
+      `${platform} hub needs a direct link to ${href}`,
+    );
+    assert.ok(articleSlugs.includes(href.slice("/blog/".length)), `${href} must be a published article`);
+  }
+});
+
 test("growth hubs expose crawlable authority-guide links", () => {
   const sharedHubSource = readFileSync(
     new URL("../../components/marketing/PlatformGrowthHub.tsx", import.meta.url),
