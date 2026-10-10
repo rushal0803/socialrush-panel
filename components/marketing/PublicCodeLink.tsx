@@ -8,7 +8,6 @@ import type { ComponentProps } from "react";
 const loaders = {
   "/services": () => import("./services/ServicesPageContent"),
   "/packages": () => import("./packages/PremiumPackagesPageContent"),
-  "/buy-instagram-followers-india": () => import("./InstagramFollowersOrderPanel"),
 };
 const warmed = new Map<string, Promise<unknown>>();
 function warmCode(path: string) {

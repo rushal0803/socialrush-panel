@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { ArrowRight, CheckCircle2, ChevronDown, Package, RefreshCw, ShieldCheck } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
 import ServiceCompareStudio from "./ServiceCompareStudio";
@@ -12,14 +12,10 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 import { useServiceHealth } from "@/lib/use-service-health";
 import PersonalizationShelf from "@/components/marketing/cro/PersonalizationShelf";
-import CustomCampaignCta from "@/components/marketing/CustomCampaignCta";
 
 const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"];
 
-const platformColors: Record<SmmPlatformId, string> = {
-  instagram: "text-pink-300", youtube: "text-red-400", facebook: "text-blue-300", linkedin: "text-sky-300",
-  telegram: "text-cyan-300", tiktok: "text-fuchsia-300", x: "text-white",
-};
+
 
 const servicePaths: Record<string, string> = {
   "instagram-followers": "/buy-instagram-followers-india", "instagram-likes": "/instagram-likes", "instagram-views": "/instagram-views", "instagram-comments": "/buy-instagram-comments-india",
@@ -35,23 +31,16 @@ const servicePaths: Record<string, string> = {
 const aliases: Record<string, SmmPlatformId> = { instagram: "instagram", youtube: "youtube", facebook: "facebook", linkedin: "linkedin", telegram: "telegram", tiktok: "tiktok", twitter: "x", x: "x", "twitter-x": "x" };
 
 
-const serviceFaqs = [
-  ["How do I choose the right service?", "Start with your platform and goal, then review the current rate, link requirement, delivery estimate and refill information shown for that service before ordering."],
-  ["Do I need to provide my password?", "No. SocialRUSH uses public-link ordering. Provide only the public profile, post, reel, video, page, channel or group requested for the selected service."],
-  ["How does delivery work?", "Delivery timing depends on the selected service, order size and platform dynamics. The relevant estimate is shown before ordering, and progress is available in your dashboard."],
-  ["What does refill mean?", "Eligible services include refill coverage for the period shown before checkout. If a qualifying delivery drops in that period, contact support with the order ID for review."],
-  ["Can I track my order?", "Yes. Submitted orders can be followed from your customer dashboard, including their processing stage, updates and completion details."],
-  ["How is pricing calculated?", "Each active service has a current rate. Entering a valid quantity calculates the exact total before you confirm your order."],
-];
+
 
 function platformFrom(value?: string): SmmPlatformId { return aliases[String(value ?? "").toLowerCase().trim()] ?? "instagram"; }
 function platformFromServiceType(value?: string): SmmPlatformId | undefined {
   const prefix = String(value ?? "").toLowerCase().trim().split("-")[0];
   return aliases[prefix];
 }
-type Props = { initialPlatformParam?: string; initialTypeParam?: string; initialSearchParam?: string; serviceCatalog: SmmService[]; children?: ReactNode };
+type Props = { initialPlatformParam?: string; initialTypeParam?: string; initialSearchParam?: string; serviceCatalog: SmmService[]; staticSections: ReactNode; children?: ReactNode };
 
-export default function ServicesPageContent({ initialPlatformParam, initialTypeParam, initialSearchParam, serviceCatalog, children }: Props) {
+export default function ServicesPageContent({ initialPlatformParam, initialTypeParam, initialSearchParam, serviceCatalog, staticSections, children }: Props) {
   // Freeze the serialized RSC catalog for the hydration render. Every derived
   // view below uses this same server-provided collection.
   const [catalogServices] = useState<SmmService[]>(() => serviceCatalog);
@@ -122,18 +111,7 @@ export default function ServicesPageContent({ initialPlatformParam, initialTypeP
 
     <section className="relative px-4 pt-5 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-4 rounded-[1.5rem] border border-white/10 bg-[#101010] p-5 sm:grid-cols-[1fr_auto] sm:items-center sm:p-6"><div><p className="text-[10px] font-black tracking-[.16em] text-orange-300">NEED MULTIPLE SERVICES?</p><h2 className="mt-2 text-xl font-black">Explore SocialRUSH Packages</h2><p className="mt-2 text-sm leading-6 text-[#C7CBD3]">Compare bundled options without interrupting a single-service order.</p></div><Link href={`/packages?platform=${platform === "x" ? "twitter" : platform}`} className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/10 bg-white/[.06] px-4 text-xs font-black hover:border-orange-400/50">Explore Packages <ArrowRight className="h-4 w-4" /></Link></div></section>
 
-    <section aria-labelledby="confidence-heading" className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-7xl"><div className="max-w-2xl"><p className="text-[10px] font-black tracking-[.16em] text-orange-300">ORDER WITH CONFIDENCE</p><h2 id="confidence-heading" className="mt-2 text-2xl font-black">Clear information before you order.</h2></div><div className="mt-4 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">{[[ShieldCheck,"Public link only","Provide the relevant public profile, post, video, page or channel link."],[CheckCircle2,"Transparent pricing","Current rates are visible before confirmation."],[Package,"Order tracking","Follow submitted orders from your customer dashboard."],[RefreshCw,"Refill information","Applicable refill or support terms are shown on each service."]].map(([Icon,title,text]) => { const ItemIcon = Icon as typeof ShieldCheck; return <article key={title as string} className="rounded-2xl border border-white/10 bg-[#111113] p-4"><ItemIcon className="h-5 w-5 text-orange-300" /><h3 className="mt-3 text-sm font-black">{title as string}</h3><p className="mt-2 text-xs leading-5 text-[#AEB5C0]">{text as string}</p></article>; })}</div></div></section>
-
-    <section id="how-to-choose" aria-labelledby="how-heading" className="relative scroll-mt-24 px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-7xl rounded-[1.6rem] border border-white/10 bg-[#111113] p-5 sm:p-6"><p className="text-[10px] font-black tracking-[.16em] text-orange-300">SIMPLE ORDERING</p><h2 id="how-heading" className="mt-2 text-2xl font-black">How to Choose a Service</h2><p className="mt-2 max-w-2xl text-sm leading-6 text-[#AEB5C0]">Choose the option that matches your goal, then continue through the existing order flow with the required public link and quantity.</p><div className="mt-5 grid gap-2.5 sm:grid-cols-2 lg:grid-cols-4">{[["01","Choose Platform","Start with the network you want to grow."],["02","Select Service","Match the option to your campaign goal."],["03","Provide Public Link","Add the requested public link and quantity."],["04","Review & Order","Confirm the details and continue securely."]].map(([number,title,text]) => <div key={number} className="relative rounded-2xl border border-white/[.08] bg-black/20 p-4 lg:after:absolute lg:after:right-[-0.6rem] lg:after:top-1/2 lg:after:h-px lg:after:w-3 lg:after:bg-orange-300/30 lg:last:after:hidden"><p className="text-xs font-black tracking-[.14em] text-orange-300">{number}</p><h3 className="mt-3 text-sm font-black">{title}</h3><p className="mt-1.5 text-xs leading-5 text-[#AEB5C0]">{text}</p></div>)}</div><Link href="/dashboard/new-order" className="mt-5 inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#ff9b36] text-[#171008] px-5 text-sm font-black">Start Your Order <ArrowRight className="h-4 w-4" /></Link></div></section>
-
-    <section aria-labelledby="platform-links-heading" className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-7xl"><p className="text-[10px] font-black tracking-[.16em] text-orange-300">EXPLORE BY PLATFORM</p><h2 id="platform-links-heading" className="mt-2 text-2xl font-black">Explore services by platform</h2><div className="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">{platforms.map((id) => <Link key={id} href={`/services?platform=${id === "x" ? "twitter" : id}`} className="group flex min-h-16 items-center justify-between rounded-2xl border border-white/10 bg-[#111113] px-4 text-sm font-black transition hover:border-orange-400/45 hover:bg-white/[.035]"><span className="flex min-w-0 items-center gap-3"><span className={`grid h-9 w-9 place-items-center rounded-lg bg-black/25 ${platformColors[id]}`}><PlatformIcon platform={platformMeta[id].icon} className="h-4 w-4" /></span><span><span className="block">{platformMeta[id].label}</span><span className="mt-0.5 block text-[10px] font-bold text-[#8F96A3]">{platformServiceCounts[id]} {platformServiceCounts[id] === 1 ? "service" : "services"} · Explore</span></span></span><ArrowRight className="h-4 w-4 shrink-0 text-orange-300 transition group-hover:translate-x-0.5" /></Link>)}</div></div></section>
-
-    <CustomCampaignCta />
-    <section aria-labelledby="seo-heading" className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-7xl rounded-[1.6rem] border border-white/10 bg-[#101014] p-5 sm:p-6"><p className="text-[10px] font-black tracking-[.16em] text-orange-300">SOCIALRUSH DIRECTORY</p><h2 id="seo-heading" className="mt-2 text-2xl font-black">Social Media Growth Services in India</h2><div className="mt-4 max-w-5xl space-y-3 text-sm leading-7 text-[#C7CBD3]"><p>SocialRUSH brings supported social media services into one searchable catalog. Compare live service pricing and the available delivery or refill details before moving into the order flow.</p><p>Explore <Link href="/services?platform=instagram" className="rounded-sm font-bold text-orange-200 underline decoration-orange-300/35 underline-offset-4 hover:text-orange-100">Instagram growth services</Link>, <Link href="/services?platform=youtube" className="rounded-sm font-bold text-orange-200 underline decoration-orange-300/35 underline-offset-4 hover:text-orange-100">YouTube growth services</Link>, Facebook, LinkedIn, TikTok, Telegram and <Link href="/services?platform=twitter" className="rounded-sm font-bold text-orange-200 underline decoration-orange-300/35 underline-offset-4 hover:text-orange-100">X / Twitter services</Link> according to the goal and public link you need to submit. For bundled options, you can also <Link href="/packages" className="rounded-sm font-bold text-orange-200 underline decoration-orange-300/35 underline-offset-4 hover:text-orange-100">compare SocialRUSH packages</Link>.</p></div></div></section>
-
-    <section aria-labelledby="services-faq-heading" className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-4xl"><div className="flex flex-wrap items-end justify-between gap-3"><div><p className="text-[10px] font-black tracking-[.16em] text-orange-300">HELPFUL ANSWERS</p><h2 id="services-faq-heading" className="mt-2 text-2xl font-black">Services FAQ</h2></div><Link href="/faq" className="inline-flex min-h-10 items-center gap-1 text-sm font-black text-orange-200 hover:text-orange-100">View All FAQs <ArrowRight className="h-4 w-4" /></Link></div><div className="mt-4 space-y-2">{serviceFaqs.map(([question, answer]) => <details key={question} className="group rounded-2xl border border-white/10 bg-[#111113] px-4"><summary className="flex min-h-14 cursor-pointer list-none items-center justify-between gap-4 text-sm font-black [&::-webkit-details-marker]:hidden">{question}<ChevronDown className="h-4 w-4 shrink-0 text-orange-300 transition group-open:rotate-180" /></summary><p className="border-t border-white/[.08] py-4 text-sm leading-6 text-[#C7CBD3]">{answer}</p></details>)}</div></div></section>
-
-    <section className="relative px-4 pt-7 sm:px-6 sm:pt-9 lg:px-8"><div className="mx-auto max-w-7xl rounded-[1.6rem] border border-white/10 bg-[#101010] p-6 sm:flex sm:items-center sm:justify-between sm:gap-8 sm:p-7"><div><p className="text-[10px] font-black tracking-[.16em] text-orange-300">READY WHEN YOU ARE</p><h2 className="mt-2 text-2xl font-black sm:text-3xl">Ready to Grow Your Social Presence?</h2><p className="mt-2 max-w-xl text-sm leading-6 text-[#C7CBD3]">Choose a service, review the current details and continue to your existing SocialRUSH order flow.</p></div><div className="mt-5 flex flex-wrap gap-3 sm:mt-0 sm:shrink-0"><Link href="/dashboard/new-order" className="inline-flex min-h-11 items-center justify-center gap-2 rounded-xl bg-[#ff9b36] text-[#171008] px-5 text-sm font-black">Start Your Order <ArrowRight className="h-4 w-4" /></Link><Link href="/packages" className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/[.05] px-5 text-sm font-black hover:border-orange-400/50">View Packages</Link></div></div></section>
+    {staticSections}
     <div className={styles.supporting}>{children}</div>
   </div></BlogShell>;
 }

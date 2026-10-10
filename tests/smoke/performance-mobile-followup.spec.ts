@@ -31,11 +31,28 @@ test("lazy comparison preserves selections, filters and trigger focus", async ({
   await expect(dialog.getByRole("link", { name: "Choose this service" })).toHaveCount(1);
 });
 
+test("directory informational sections and FAQ remain in server HTML", async ({ request }) => {
+  const response = await request.get("/services");
+  expect(response.status()).toBe(200);
+  const html = await response.text();
+  for (const text of ["Clear information before you order.", "How to Choose a Service", "Explore services by platform", "Social Media Growth Services in India", "Services FAQ", "Do I need to provide my password?"]) expect(html).toContain(text);
+  expect(html).toContain('id="how-to-choose"');
+  expect(html).toContain('rel="canonical"');
+});
+
 for (const path of ["/", "/services", "/packages"]) {
   test(`deferred mobile content remains reachable on ${path}`, async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await page.goto(path);
     await expect(page.locator("h1").first()).toBeVisible();
+    if (path === "/services") {
+      await page.locator("#how-to-choose").scrollIntoViewIfNeeded();
+      await expect(page.getByRole("heading", { name: "How to Choose a Service", exact: true })).toBeVisible();
+      const faq = page.locator('section[aria-labelledby="services-faq-heading"] details').first();
+      await faq.locator("summary").focus();
+      await page.keyboard.press("Enter");
+      await expect(faq).toHaveAttribute("open", "");
+    }
     await page.locator("footer").scrollIntoViewIfNeeded();
     await expect(page.locator("footer")).toBeVisible();
     expect(await page.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);

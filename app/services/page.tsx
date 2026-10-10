@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import ServicesStaticSections from "@/components/marketing/services/ServicesStaticSections";
 import ServicesPageContent from "@/components/marketing/services/ServicesPageContent";
 import SocialMediaServicesIndiaAuthority from "@/components/marketing/services/SocialMediaServicesIndiaAuthority";
 import GrowthPlatformIndiaAuthority from "@/components/marketing/services/GrowthPlatformIndiaAuthority";
@@ -126,6 +127,7 @@ export default async function ServicesPage({ searchParams }: ServicesPageProps) 
         initialPlatformParam={searchParams?.platform}
         initialTypeParam={searchParams?.type ?? searchParams?.service}
         initialSearchParam={searchParams?.q ?? searchParams?.search}
+        staticSections={<ServicesStaticSections platformServiceCounts={Object.fromEntries(["instagram", "youtube", "facebook", "linkedin", "telegram", "tiktok", "x"].map(platform => [platform, serviceCatalog.filter(service => service.platform === platform).length])) as Record<SmmService["platform"], number>} />}
         serviceCatalog={serviceCatalog}
       >
         <GrowthPlatformIndiaAuthority />
