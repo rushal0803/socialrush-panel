@@ -78,3 +78,16 @@ test("Phase 2 actual Terms, Privacy and Refund routes retain copy and dark brand
     assert.doesNotMatch(page, /bg-\[#eeeae0\]|bg-\[#eeeadf\]|bg-\[#eae4d7\]/i);
   }
 });
+
+
+test("Phase 2 creator-tools preview cards exclude alternate pastel hues", () => {
+  const page = read("components/marketing/tools/ToolsContent.tsx");
+  const from = page.lastIndexOf("function Preview(");
+  const to = page.indexOf("function HubPremium()", from);
+  assert.ok(from >= 0 && to > from);
+  const previews = page.slice(from, to);
+  assert.doesNotMatch(previews, /(?:pink|violet|cyan|sky|indigo|red|emerald)-[0-9]+/);
+  assert.match(previews, /#101219/);
+  assert.match(previews, /#FF7600/);
+  assert.match(previews, /#FF9A2E/);
+});
