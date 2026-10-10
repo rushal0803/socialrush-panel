@@ -271,7 +271,8 @@ export async function processCrmOutreachAutopilot() {
   // enrollment, and a new enrollment must exist before its first message is queued.
   const {error:pipelineError}=await db.rpc("refresh_crm_prospecting_intelligence");
   if(pipelineError)throw pipelineError;
-  const promoted=0;
+  const {data:promoted,error:promotionError}=await db.rpc("promote_ready_crm_lead_candidates");
+  if(promotionError)throw promotionError;
   const {data:enrolled,error:enrollError}=await db.rpc("refresh_crm_outreach_autopilot");
   if(enrollError)throw enrollError;
   const {data:queued,error:queueError}=await db.rpc("enqueue_due_crm_outreach_messages");
