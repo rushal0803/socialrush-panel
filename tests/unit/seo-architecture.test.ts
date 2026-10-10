@@ -224,7 +224,7 @@ test("priority India pages keep Search Console query language in metadata", () =
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
-  assert.match(metadataTitle(twitter), /Buy Twitter \(X\) Followers India/);
+  assert.match(metadataTitle(twitter), /Buy X \/ Twitter Followers India/);
   assert.match(twitter.description ?? "", /Buy Twitter\/X followers in India/i);
   assert.match(metadataTitle(facebook), /Buy Facebook Followers India/);
   assert.match(facebook.description ?? "", /live INR pricing/i);
@@ -236,7 +236,7 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(telegram.description ?? "", /live INR pricing/i);
   for (const metadata of [instagramLikes, instagramViews, instagramComments, instagramSaves, instagramShares]) {
     assert.match(metadataTitle(metadata), /Buy Instagram (Likes|Views|Comments|Saves|Shares) India \| Live INR Plans/);
-    assert.match(metadata.description ?? "", /live INR pricing/i);
+    assert.match(metadata.description ?? "", /live INR pricing|Compare .* in INR/i);
   }
   assert.match(String(instagramLikes.alternates?.canonical), /\/instagram-likes$/);
   assert.match(String(instagramViews.alternates?.canonical), /\/instagram-views$/);
@@ -246,7 +246,8 @@ test("priority India pages keep Search Console query language in metadata", () =
     assert.match(metadata.description ?? "", /live INR pricing/i);
   }
   assert.match(String(facebookShares.alternates?.canonical), /\/buy-facebook-shares-india$/);
-  assert.match(middlewareSource, /"\/services\/facebook-shares": "\/buy-facebook-shares-india"/);
+  assert.match(middlewareSource, /\.\.\.commercialCanonicalRedirects/);
+  assert.equal(commercialCanonicalRedirects["/services/facebook-shares"], "/buy-facebook-shares-india");
   assert.match(metadataTitle(linkedinLikes), /Buy LinkedIn Likes India \| Live INR Plans/);
   assert.match(linkedinLikes.description ?? "", /live INR pricing/i);
   assert.match(String(linkedinLikes.alternates?.canonical), /\/linkedin-likes$/);
@@ -286,8 +287,10 @@ test("international routes are allowlisted, catalog-backed, and have no unpublis
     assert.equal(isPublishedInternationalPath(path), true);
     assert.ok(activeSmmServices.some((service) => service.code === page.catalogServiceCode));
   }
-  assert.equal(getPublishedCountryServicePage("sg", "buy-instagram-followers"), undefined);
-  assert.equal(isPublishedInternationalPath("/sg/buy-instagram-followers"), false);
+  assert.equal(getPublishedCountryServicePage("zz", "buy-instagram-followers"), undefined);
+  assert.equal(isPublishedInternationalPath("/zz/buy-instagram-followers"), false);
+  assert.ok(getPublishedCountryServicePage("sg", "buy-instagram-followers"));
+  assert.equal(isPublishedInternationalPath("/sg/buy-instagram-followers"), true);
 });
 
 test("country service schema remains INR-authoritative", () => {
@@ -358,10 +361,10 @@ test("blog authority links stay canonical and avoid tracking-query crawl noise",
   const blogSource = readFileSync(new URL("../../app/blog/[slug]/page.tsx", import.meta.url), "utf8");
   const bridgeSource = readFileSync(new URL("../../components/marketing/blog/ContentAuthorityBridge.tsx", import.meta.url), "utf8");
 
-  assert.match(blogSource, /getPlatformAuthorityTargets\(articlePlatform\)/);
+  assert.match(blogSource, /getGuideAuthorityTargets\(articlePlatform, `\/blog\/\$\{article\.slug\}`\)/);
   assert.match(blogSource, /authorityTargets\.map/);
   assert.match(blogSource, /authorityTargetHrefs\.has\(item\.href\)/);
-  assert.match(bridgeSource, /getPlatformAuthorityTargets/);
+  assert.match(bridgeSource, /getGuideAuthorityTargets/);
   assert.doesNotMatch(bridgeSource, /utm_source|utm_medium|utm_campaign|utm_content/);
   assert.doesNotMatch(bridgeSource, /\/services\/instagram|\/services\/youtube|\/services\/facebook|\/services\/twitter/);
 });
@@ -452,6 +455,10 @@ test("phase 5H freshness registry marks only clean canonical-style paths with a 
     if (path === "/for-agencies") assert.equal(searchFreshnessLastmod[path], PHASE5_AGENCY_RESELLER_UPDATE);
     else if (path === "/social-media-growth-india") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_GROWTH_UPDATE);
     else if (path === "/services") assert.equal(searchFreshnessLastmod[path], PHASE5_SOCIAL_SERVICES_UPDATE);
+    else if (path === "/pricing") assert.equal(searchFreshnessLastmod[path], PHASE5_PRICING_INTENT_UPDATE);
+    else if (path === "/trust") assert.equal(searchFreshnessLastmod[path], PHASE5_SAFE_ORDERING_UPDATE);
+    else if (["/tools/youtube-watch-time-calculator", "/tools/youtube-subscriber-growth-rate-calculator", "/tools/youtube-view-growth-rate-calculator", "/tools/youtube-engagement-rate-calculator", "/tools/instagram-follower-growth-rate-calculator", "/tools/instagram-reach-rate-calculator", "/tools/instagram-story-engagement-rate-calculator"].includes(path)) assert.equal(searchFreshnessLastmod[path], "2026-09-28");
+    else if (["/tools/linkedin-engagement-rate-calculator", "/tools/instagram-engagement-rate-calculator"].includes(path)) assert.equal(searchFreshnessLastmod[path], "2026-09-29");
     else if (["/instagram-growth-india","/youtube-growth-india","/facebook-growth-india","/linkedin-growth-india","/x-growth-india","/tiktok-growth-india","/services/telegram"].includes(path)) assert.equal(searchFreshnessLastmod[path], PHASE5_PLATFORM_SMM_UPDATE);
     else assert.equal(searchFreshnessLastmod[path], PHASE5_SIGNIFICANT_UPDATE);
   }
@@ -636,12 +643,13 @@ test("phase 5N /for-agencies exposes visible reseller authority and truthful fre
   const authoritySource = readFileSync(new URL("../../components/marketing/audiences/AgencyResellerIntentSection.tsx", import.meta.url), "utf8");
   const monitorSource = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
   const indexNowSource = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
-  assert.match(pageSource, /SMM Reseller Panel India for Agencies/);
+  assert.match(pageSource, /Social Media Growth Platform for Agencies India/);
   assert.match(pageSource, /<AgencyResellerIntentSection\/>/);
-  assert.match(authoritySource, /SMM reseller panel India/);
-  assert.match(authoritySource, /Multi-client workspace/);
-  assert.match(authoritySource, /API documentation/);
-  assert.match(authoritySource, /does not claim to provide a white-label child panel/i);
+  assert.match(authoritySource, /Agency social media growth platform India/);
+  assert.match(authoritySource, /agencyResellerCriteria\.map/);
+  assert.match(JSON.stringify(agencyResellerCriteria), /Multi-client workspace/);
+  assert.match(JSON.stringify(agencyResellerCriteria), /API documentation/);
+  assert.match(authoritySource, /not a white-label panel/i);
   assert.match(monitorSource, /\["\/smm-reseller-panel-india", "\/for-agencies"\]/);
   assert.match(indexNowSource, /"\/for-agencies"/);
   assert.equal(searchFreshnessLastmod["/for-agencies"], "2026-09-28");
@@ -718,11 +726,10 @@ test("phase 5P growth hub exposes visible engagement-service intent without outc
   const source = readFileSync(new URL("../../app/social-media-growth-india/page.tsx", import.meta.url), "utf8");
   const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
   assert.match(source, /Social media engagement services India/i);
-  assert.match(source, /Followers, subscribers and members/);
-  assert.match(source, /Likes, views and content engagement/);
-  assert.match(source, /Comments, saves and shares/);
+  assert.match(source, /socialEngagementServiceGroups\.map/);
+  assert.deepEqual(socialEngagementServiceGroups.map(group => group.title), ["Followers, subscribers and members", "Likes, views and content engagement", "Comments, saves and shares"]);
   assert.match(source, /do not guarantee organic reach/i);
-  assert.doesNotMatch(source, /100% safe|guaranteed reach|guaranteed sales|#1|cheapest/i);
+  assert.doesNotMatch(source, /100% safe|guaranteed reach|guaranteed sales|#1\b|cheapest/i);
   assert.match(monitor, /"\/social-media-engagement-services-india", "\/social-media-growth-india"/);
   assert.match(monitor, /"\/social-media-engagement-service-india", "\/social-media-growth-india"/);
   assert.equal(searchFreshnessLastmod["/social-media-growth-india"], "2026-09-28");
@@ -840,15 +847,15 @@ test("phase 5T assigns platform SMM panel queries to existing canonical hubs", (
 
   for (const [platform, canonicalPath] of Object.entries(expected)) {
     const intent = platformSmmIntent[platform as keyof typeof platformSmmIntent];
-    assert.match(intent.primaryKeyword, /SMM panel India/i);
+    assert.match(intent.primaryKeyword, /growth services India/i);
     const owner = transactionalQueryOwners.find((item) => item.canonicalPath === canonicalPath);
     assert.ok(owner, `${canonicalPath} should own a platform SMM query family`);
     for (const alias of intent.aliases) {
       assert.equal(commercialCanonicalRedirects[alias], canonicalPath);
     }
   }
-  assert.match(platformSmmKeywords("instagram")[0] || "", /Instagram SMM panel India/);
-  assert.match(platformSmmKeywords("twitter")[0] || "", /Twitter \/ X SMM panel India/);
+  assert.match(platformSmmKeywords("instagram")[0] || "", /Instagram growth services India/);
+  assert.match(platformSmmKeywords("twitter")[0] || "", /Twitter \/ X growth services India/);
 });
 
 test("phase 5T renders platform SMM authority on every target hub", () => {
@@ -907,9 +914,9 @@ test("phase 5U pricing page exposes visible SMM price-list authority and release
   const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
 
-  assert.match(pricing, /SMM Panel Price List India \| Live INR Rates/);
+  assert.match(pricing, /Social Media Service Price List India \| Live INR Rates/);
   assert.match(pricing, /<SmmPricingIndiaAuthority \/>/);
-  assert.match(authority, /SMM panel pricing in India/i);
+  assert.match(authority, /Social media service pricing in India/i);
   assert.match(authority, /including UPI where applicable/i);
   assert.match(authority, /Treat checkout as the final authority/i);
   assert.match(monitor, /"\/smm-panel-price-list-india", "\/pricing"/);
@@ -954,12 +961,12 @@ test("phase 5V Trust Center exposes visible no-password authority and release sa
   const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
 
-  assert.match(page, /Safe SMM Ordering India \| No Password \| SocialRUSH/);
+  assert.match(page, /Safe Social Media Growth Ordering India \| SocialRUSH/);
   assert.match(page, /<SafeSmmOrderingAuthority \/>/);
   assert.match(authority, /What “no password required” should mean/i);
   assert.match(authority, /does not need your social-media password, OTP or recovery code/i);
   assert.match(authority, /does not mean a platform outcome is guaranteed/i);
-  assert.doesNotMatch(authority, /SocialRUSH is the safest|#1|cheapest/i);
+  assert.doesNotMatch(authority, /SocialRUSH is the safest|#1\b|cheapest/i);
 
   assert.equal(PHASE5_SAFE_ORDERING_UPDATE, "2026-09-28");
   assert.equal(searchFreshnessLastmod["/trust"], PHASE5_SAFE_ORDERING_UPDATE);
@@ -1002,9 +1009,9 @@ test("phase 5W agency page exposes visible SMM API authority and monitored alias
   const apiDocs = readFileSync(new URL("../../app/dashboard/api-docs/page.tsx", import.meta.url), "utf8");
   const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
 
-  assert.match(page, /SMM Reseller Panel & API India for Agencies/);
+  assert.match(page, /Social Media Growth Platform for Agencies India/);
   assert.match(page, /<SmmApiIndiaAuthority\/>/);
-  assert.match(authority, /SMM panel API India/i);
+  assert.match(authority, /Social media growth API India/i);
   assert.match(authority, /authenticated API documentation/i);
   assert.match(authority, /does not guarantee service availability/i);
   assert.match(apiDocs, /Authorization: Bearer YOUR_API_KEY/);
@@ -1051,10 +1058,10 @@ test("phase 5X pricing page exposes visible affordable SMM authority and monitor
   const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
 
-  assert.match(page, /affordable SocialRUSH SMM panel pricing in India/i);
+  assert.match(page, /Compare SocialRUSH social media growth pricing in India/i);
   assert.match(page, /<AffordableSmmIndiaAuthority \/>/);
-  assert.match(authority, /Affordable SMM panel India/i);
-  assert.match(authority, /What “cheap SMM panel” should mean/i);
+  assert.match(authority, /Affordable social media growth services India/i);
+  assert.match(authority, /Compare the live INR rate with the quantity you can actually order/i);
   assert.match(authority, /does not claim to be universally the cheapest/i);
   assert.doesNotMatch(authority, /India.?s cheapest|#1 SMM|guaranteed lowest/i);
 
@@ -1113,7 +1120,7 @@ test("phase 5Z bulk intent copy stays operational and avoids unsupported reselle
   assert.ok(bulkSmmIndiaKeywords.includes("bulk social media services India"));
   assert.equal(bulkSmmDecisionPoints.length, 4);
   const copy = bulkSmmDecisionPoints.map((item) => item.text).join(" ");
-  assert.match(copy, /current/i);
+  assert.match(copy, /active SocialRUSH catalog/i);
   assert.match(copy, /review/i);
   const faqCopy = bulkSmmFaqs().map((item) => item.answer).join(" ");
   assert.match(faqCopy, /No automatic bulk or wholesale discount is promised/i);

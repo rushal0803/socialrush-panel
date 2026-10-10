@@ -38,6 +38,9 @@ test("directory informational sections and FAQ remain in server HTML", async ({ 
   for (const text of ["Clear information before you order.", "How to Choose a Service", "Explore services by platform", "Social Media Growth Services in India", "Services FAQ", "Do I need to provide my password?"]) expect(html).toContain(text);
   expect(html).toContain('id="how-to-choose"');
   expect(html).toContain('rel="canonical"');
+  for (const href of ["/buy-youtube-watch-hours-india", "/buy-youtube-comments-india", "/buy-instagram-comments-india", "/buy-facebook-group-members-india"]) {
+    expect(html).toContain(`href="${href}"`);
+  }
 });
 
 for (const path of ["/", "/services", "/packages"]) {

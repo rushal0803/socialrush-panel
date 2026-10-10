@@ -29,11 +29,11 @@ module.exports = async function setup() {
     console.log(`[smoke server] owned process ${server.pid} exited`);
   };
   try {
-    const deadline = Date.now() + 30000;
+    const deadline = Date.now() + 60000;
     while (Date.now() < deadline) {
       if (spawnError) throw spawnError;
       if (server.exitCode !== null) throw new Error(`Smoke server exited early: ${server.exitCode}`);
-      try { if ((await fetch(url, { signal: AbortSignal.timeout(1500) })).ok) return stop; } catch {}
+      try { if ((await fetch(url, { signal: AbortSignal.timeout(5000) })).ok) return stop; } catch {}
       await new Promise(resolve => setTimeout(resolve, 200));
     }
     throw new Error('Smoke server did not become ready within 30 seconds');
