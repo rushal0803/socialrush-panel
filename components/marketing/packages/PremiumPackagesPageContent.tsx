@@ -212,7 +212,7 @@ export default function PremiumPackagesPageContent({ initialPlatformParam, initi
     </div>}
     {variant === "public" && <section className="mt-8 border-t border-white/10 pt-6"><h2 className="text-lg font-bold">Before you order</h2><div className="mt-3 grid gap-3 sm:grid-cols-3">{[{q:"What is included?",a:"Each package includes the displayed quantity for one service and one destination link."},{q:"How do savings work?",a:"Larger tiers receive the displayed discount. Review your total before placing an order."},{q:"Where can I track my order?",a:"Sign in to view progress in your dashboard. Check service details for link requirements and refill terms."}].map((faq) => <details key={faq.q} className="rounded-xl border border-white/15 p-4"><summary className="cursor-pointer text-sm font-semibold">{faq.q}</summary><p className="mt-3 text-sm leading-6 text-zinc-300">{faq.a}</p></details>)}</div><Link href="/services" className="mt-4 inline-flex min-h-11 items-center text-sm font-semibold text-orange-300">Explore all services</Link></section>}
     </div></main>;
-  return variant === "dashboard" ? experience : <div className="bg-[#070707] text-white"><div className="public-dark"><MarketingHeader /></div>{experience}<div className="public-dark"><MarketingFooter /></div></div>;
+  return variant === "dashboard" ? experience : <div className="bg-[#070707] text-white"><div className="public-dark"><MarketingHeader /></div>{experience}<div className="public-dark content-auto"><MarketingFooter /></div></div>;
 }
 
 function PackageCard({ pkg, selected, onSelect }: { pkg: PackageUiSelection; selected: boolean; onSelect: () => void }) {

@@ -22,7 +22,7 @@ export default function BlogShell({ children }: { children: React.ReactNode }) {
       <MarketingHeader />
       {children}
       {pathname.startsWith("/blog/") ? <BlogRevenueBridge /> : null}
-      <MarketingFooter />
+      <div className={pathname === "/services" ? "content-auto" : undefined}><MarketingFooter /></div>
     </main>
   );
 }
