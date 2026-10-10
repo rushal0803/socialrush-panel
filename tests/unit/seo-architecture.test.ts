@@ -71,7 +71,7 @@ test("platform hubs link directly to canonical service pages", () => {
 });
 
 test("Services hub directly links key commercial pages awaiting Google's first crawl", () => {
-  const linkedPaths = new Set(crawlPriorityServiceLinks.map((entry) => entry.href));
+  const linkedPaths = new Set([...crawlPriorityServiceLinks, ...searchPlanningLinks].map((entry) => entry.href));
 
   for (const href of [
     "/buy-youtube-watch-hours-india",
