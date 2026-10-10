@@ -18,7 +18,7 @@ export type BlogSection = {   heading: string;   body: string;   tips: string[];
       "A practical checklist for Indian buyers using UPI for Instagram follower services, including payment safety, live pricing, public-profile ordering and post-payment checks.",
     breadcrumbTitle: "Instagram Followers UPI Payment Guide India",
     readingTime: "8 min read",
-    image: "/images/blog/instagram-followers-price-in-india.png",
+    image: "/images/blog/instagram-followers-price-india.png",
     imageAlt: "UPI payment safety checklist for Instagram follower services in India",
     author: "SocialRUSH Editorial Team",
     publishedAt: "2026-09-02",

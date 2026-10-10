@@ -70,6 +70,19 @@ test("platform hubs link directly to canonical service pages", () => {
   }
 });
 
+test("Services hub directly links key commercial pages awaiting Google's first crawl", () => {
+  const linkedPaths = new Set([...crawlPriorityServiceLinks, ...searchPlanningLinks].map((entry) => entry.href));
+
+  for (const href of [
+    "/buy-youtube-watch-hours-india",
+    "/buy-youtube-comments-india",
+    "/buy-instagram-comments-india",
+    "/buy-facebook-group-members-india",
+  ]) {
+    assert.ok(linkedPaths.has(href), `${href} must be linked from Services without redirect aliases`);
+  }
+});
+
 test("platform hubs link to published, unique authority guides", () => {
   const publishedArticles = new Set(articleSlugs);
 
