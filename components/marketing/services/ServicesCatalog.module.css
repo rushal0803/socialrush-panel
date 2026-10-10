@@ -48,19 +48,20 @@
 .icon { display:grid; place-items:center; width:34px; height:34px; flex-shrink:0; color:#ffbf79; background:#1c1c1c; border-radius:9px; }
 .card h3 { font-size:16px; font-weight:700; line-height:1.3; overflow-wrap:anywhere; }
 .health { margin-top:8px; }
-.description { font-size:13px; line-height:1.65; color:#c4c8bd; margin-top:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+.health :global(span) { font-size:12px; line-height:1.4; }
+.description { font-size:14px; line-height:1.5; color:#c4c8bd; margin-top:8px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
 .price { margin:10px 0 6px; }
-.price>span { color:#9ca3af; font-size:12px; }
+.price>span { color:#c4c8bd; font-size:13px; }
 .price p { font-size:13px; color:#d1d5db; line-height:1.5; }
 .price strong { color:#fff; font-size:26px; font-weight:750; letter-spacing:-.035em; }
-.price small { font-size:12px; color:#d1d5db; }
-.meta { display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:12px; line-height:1.5; padding-top:10px; border-top:1px solid #ffffff14; }
-.meta dt { color:#9ca3af; }
+.price small { font-size:13px; color:#d1d5db; }
+.meta { display:grid; grid-template-columns:1fr 1fr; gap:12px; font-size:13px; line-height:1.4; padding-top:8px; border-top:1px solid #ffffff14; }
+.meta dt { color:#c4c8bd; }
 .meta dd { color:#e5e7eb; margin-top:2px; overflow-wrap:anywhere; }
 .cardActions { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin-top:auto; padding-top:8px; }
 .cardActions .primary { flex:1; padding-inline:10px; font-size:13px; }
 .unavailable { font-size:13px; color:#d1d5db; min-height:44px; display:flex; align-items:center; }
-.requirements { margin-top:4px; font-size:12px; color:#d1d5db; }
+.requirements { margin-top:2px; font-size:13px; color:#d1d5db; }
 .requirements summary { min-height:44px; display:flex; align-items:center; justify-content:space-between; cursor:pointer; list-style:none; }
 .requirements summary::-webkit-details-marker { display:none; }
 .requirements[open] summary svg { transform:rotate(180deg); }
@@ -92,8 +93,6 @@
 .supporting :global(.text-slate-900) { color:#fff; }
 .supporting :global(.bg-orange-500) { background:#ff9b36; color:#171008; }
 .supporting :is(h2) { font-size:clamp(22px,3vw,30px); }
-/* Keep the live catalogue eager; skip layout of the following mobile SEO sections. */
-@media (max-width: 767px) {
-  .catalog > section { content-visibility: auto; contain-intrinsic-block-size: auto 800px; }
-  .supporting { content-visibility: auto; contain-intrinsic-block-size: auto 3000px; }
-}
+/* Keep the hero and live catalogue eager; defer subsequent offscreen sections. */
+.catalog > section { content-visibility:auto; contain-intrinsic-block-size:auto 800px; }
+.supporting { content-visibility:auto; contain-intrinsic-block-size:auto 3000px; }

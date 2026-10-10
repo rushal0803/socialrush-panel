@@ -43,8 +43,6 @@ The implementation adds no client library or generated imagery. It keeps meaning
 
 Local artifacts are intentionally gitignored: `artifacts/premium-design/` includes build and test logs, baseline and final screenshots, rendered SEO comparison and matched performance reports. Dashboard screenshots use `artifacts/premium-responsive/premium-design/`. The earlier dashboard baseline is from the existing audit and is not a newly captured exact-main comparison.
 
-## Limits
-
 ## Matched performance comparison
 
 Three runs per route/cache/device condition against the same owned localhost production server; mobile uses the existing 4G and 4x CPU profile. Cold-browser medians:
@@ -58,3 +56,38 @@ Three runs per route/cache/device condition against the same owned localhost pro
 Cold CLS stayed zero for home/packages; services improved from 0.00231 to zero desktop and 0.00179 to 0.00143 mobile. Transfer-budget and client-navigation checks passed. Desktop home-to-services transition median rose from 539 to 744 ms; mobile fell from 2777 to 2548 ms. Desktop homepage LCP rose 84 ms. These timing differences remain review limitations; this is not an across-the-board performance improvement. Files: `performance-before-owned.json`, `performance-after.json`, `performance-comparison.json`.
 
 Local browser fixtures never submit real payments, alter balances or place real orders. Synthetic timings are diagnostic medians, not field p75, INP, a ranking guarantee or a site-wide WCAG certification. A production release requires review of the draft PR and rendered preview.
+
+## PR #630 readability and CI follow-up
+
+Continuing on the original branch and draft PR. Main was synchronized through `10cfdbaf` with the CRM candidate-promotion migration, allowed activity type correction, role-inbox greeting and outreach sender fixes retained verbatim. No CRM code, database execution or outreach action was performed by this follow-up.
+
+The original GitHub Actions run `38063201988` failed on three Phase 31 homepage source tests before build or smoke tests ran. Hero content now lives in a server component, so those assertions read both components and also verify the component wiring. All original action, destination and analytics assertions remain. Restored the explicit three conversion-path labels and catalogue/ordering explanation. Added browser assertions for actual destinations and each first-party conversion event.
+
+Workspace labels/statuses now have a 12px minimum; body/row text is 14px. Mobile rows stack their statuses, and narrow summary tiles reflow into one column. Authentication guidance, consent, errors and links are 14–15px with 16px inputs; submit-button text and auth links have stronger contrast. Discovery-card descriptions are 14px, price details/requirements 13px and health labels 12px. Business handlers and numerical values remain unchanged.
+
+CSS `content-visibility` now also defers deep desktop homepage/discovery sections while retaining their HTML, text and links. Hero and live catalogue remain eager. No runtime animation, client dependency or application JavaScript was added for performance. Lab instrumentation now records the LCP element and click-to-render timing/resources; it runs only in the benchmark browser.
+
+The existing Vercel preview remains on `f836cd5d`. This follow-up must not deploy: `vercel.json` disables Git auto-deployments specifically for `feat/socialrush-premium-design-transformation`. Other branches keep their existing behavior. Do not create a new preview or promote a deployment during this follow-up.
+
+Committed visual evidence is in [the PR #630 image gallery](design/pr-630/README.md), using lossless PNGs, native-resolution links and descriptive alternative text. Original-to-final viewport pairs and Phase-1-to-follow-up service-card detail pairs are labeled separately. The latest images are local production renders, not an updated Vercel deployment.
+
+Configured local regressions passed: 232 phase/SEO tests, 200 unit tests, 5 live-price equivalence tests, 5 payment-confidence tests and 9 CRM pipeline tests. Remote final CI, final browser checks and the final five-run desktop comparison are recorded in the PR body and linked evidence, after completion.
+
+Final affected browser rerun: 22 passed, covering 11 catalogue/comparison widths, minimum readable fonts (including health badges), keyboard/contrast, all three conversion destinations/events and package checkout price/quantity/server-total protections. The earlier 43-case follow-up run also passed guest/signed-in handoffs for all seven platforms and the 11-width public matrix. Final rendered SEO comparison passed 10 documents across the five changed routes; full before/after metadata, schemas, H1s and original links are identical, with no document overflow. Ownership and international-integrity audits passed.
+
+Final matched desktop experiment: five runs per cache/route, 1440x900 Chromium 151 on the same Windows/Node 24 host, cold browser/warm server, 3-second observation, DNT and fixture backend. Before public build is the original Phase 1 build (`f836cd5d`); the merged main changes only CRM code and migrations. After build includes this follow-up. JSON `sourceCommit` records repository HEAD when the lab ran, not the uncommitted public-source changes; the differing `buildId` values identify the measured build artifacts. Raw reports are committed in [the review gallery](design/pr-630/README.md).
+
+| Desktop metric | Before follow-up | Final after | Change |
+| --- | ---: | ---: | ---: |
+| Home cold LCP | 820 ms | 692 ms | -15.6% |
+| Home warm LCP | 316 ms | 220 ms | -30.4% |
+| Services cold LCP | 672 ms | 760 ms | +13.1% |
+| Home → services median transition | 803 ms | 820 ms | +2.1% |
+| Home → services sampled p75 transition | 861 ms | 936 ms | +8.7% |
+| Home cold JS transfer | 277689 bytes | 277742 bytes | +53 bytes |
+
+CLS remains zero on both routes; all measured transitions retained the client document. LCP attribution identifies the static H1, not an image. Transition records distinguish browser-click/render timing and fresh route resources. Navigation is not consistently faster: a candidate run before the final health-label correction measured 718 ms median, while the final repeat measured 820 ms. Timings are host-load-sensitive; retain the final result and slower-tail samples. The original three-run pre-redesign comparison is above and should not be mixed with this five-run experiment to claim a precise speedup. No field p75/INP claim or claim that all desktop regressions are solved.
+
+Phase 2 is deferred until Phase 1 approval. It will be a separate effort for admin, tools, support, reviews and legal templates, with readable task-specific layouts rather than repeated generic card grids. No Phase 2 branch or PR has been created.
+
+Known unrelated check: an exploratory all-file unit invocation found a pre-existing `topical-authority.test.ts` six-platform expectation while `content-clusters.ts` includes Telegram. Those files match main and this test is outside the configured PR CI commands. It was not altered or suppressed to make this PR green. The exploratory command also omitted the path-alias loader; the configured 200-test invocation with its required loader passed.

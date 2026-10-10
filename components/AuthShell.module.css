@@ -23,3 +23,12 @@
 @media(max-width:1023px) { .layout { grid-template-columns:1fr; max-width:620px; padding:24px; } .visual { display:none; } }
 @media(max-width:390px) { .layout { padding:20px 16px; } .back span { display:none; } }
 @media(prefers-reduced-motion:reduce) { .shell * { animation:none !important; transition:none !important; } }
+/* Preserve form behavior while giving labels, consent and errors room to read. */
+.back,.eyebrow,.visual > p,.visual li > span { font-size:13px; }
+.subtitle,.footer,.visual > span,.visual li { font-size:15px; }
+.visual .footnote { font-size:14px; color:#505548; }
+.form :global(.text-xs) { font-size:14px; line-height:1.6; }
+.form :global(.text-sm) { font-size:15px; line-height:1.5; }
+.form :global(.text-orange-600) { color:#ffb17a !important; }
+.form button[type="submit"] { background:#ff9950 !important; color:#221307 !important; box-shadow:none !important; }
+.form input::placeholder { color:#aeb3a7; }

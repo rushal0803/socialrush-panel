@@ -3,7 +3,7 @@ const { chromium } = require('@playwright/test');
 const fs = require('node:fs');
 const path = require('node:path');
 const stage = process.argv[2] || 'after';
-const routes = ['/', '/services', '/packages', '/pricing', '/buy-instagram-followers-india', '/youtube-views', '/linkedin-followers', '/buy-facebook-followers-india', '/tiktok-followers', '/telegram-members', '/twitter-followers', '/us/buy-instagram-followers', '/login', '/register', '/blog', '/about', '/faq', '/contact'];
+const routes = process.env.PREMIUM_REVIEW_ROUTES ? JSON.parse(process.env.PREMIUM_REVIEW_ROUTES) : ['/', '/services', '/packages', '/pricing', '/buy-instagram-followers-india', '/youtube-views', '/linkedin-followers', '/buy-facebook-followers-india', '/tiktok-followers', '/telegram-members', '/twitter-followers', '/us/buy-instagram-followers', '/login', '/register', '/blog', '/about', '/faq', '/contact'];
 async function main() {
   const stop = await require('./playwright-server-setup.cjs')();
   const browser = await chromium.launch();
@@ -28,6 +28,10 @@ async function main() {
         await page.waitForTimeout(1200);
         await page.screenshot({ path: path.join(dir, `${route === '/' ? 'home' : route.slice(1)}-${width}.png`), fullPage: true });
         results.push(await page.evaluate(({ route, width, status }) => ({ route, width, status, title: document.title, canonical: document.querySelector('link[rel="canonical"]')?.href, robots: document.querySelector('meta[name="robots"]')?.content, h1: [...document.querySelectorAll('h1')].map(e => e.textContent), links: [...new Set([...document.querySelectorAll('a[href]')].map(e => e.getAttribute('href')))].sort(), schemas: [...document.querySelectorAll('script[type="application/ld+json"]')].map(e => JSON.parse(e.textContent)), overflow: document.documentElement.scrollWidth > width, ...window.__review }), { route, width, status: response.status() }));
+        if (route === '/') {
+          const workspace = page.getByRole('complementary', { name: 'SocialRUSH workspace preview with illustrative sample data' });
+          if (await workspace.count()) await workspace.screenshot({ path: path.join(dir, `home-workspace-${width}.png`) });
+        }
       }
       await context.close();
     }

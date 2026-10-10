@@ -3,17 +3,19 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
+const homepage = () => read("components/marketing/PremiumHomepage.tsx") + read("components/marketing/PremiumHomeHero.tsx");
 
 test("Phase 31 makes price-first ordering the primary homepage action", () => {
-  const home = read("components/marketing/PremiumHomepage.tsx");
-  assert.match(home, /Check Price & Start/);
+  const home = homepage();
+  assert.match(read("components/marketing/HomepageContent.tsx"), /<PremiumHomepage hero={<PremiumHomeHero \/>} \/>/);
+  assert.match(home, /Check Price &(?:amp;)? Start/);
   assert.match(home, /href="#order-demo"/);
   assert.match(home, /Browse Services/);
   assert.match(home, /See how ordering works/);
 });
 
 test("Phase 31 gives visitors three explicit conversion paths", () => {
-  const home = read("components/marketing/PremiumHomepage.tsx");
+  const home = homepage();
   assert.match(home, /I’m ready to order/);
   assert.match(home, /I want to compare services/);
   assert.match(home, /I need to plan a budget/);
@@ -22,7 +24,7 @@ test("Phase 31 gives visitors three explicit conversion paths", () => {
 });
 
 test("Phase 31 measures homepage conversion-path clicks with first-party analytics", () => {
-  const home = read("components/marketing/PremiumHomepage.tsx");
+  const home = homepage();
   const events = read("lib/analytics/events.ts");
   assert.match(events, /"homepage_conversion_path_click"/);
   assert.match(home, /event="homepage_conversion_path_click"/);

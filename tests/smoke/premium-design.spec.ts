@@ -51,3 +51,54 @@ test("login feature heading retains accessible contrast on its light surface", a
   });
   expect(ratio).toBeGreaterThanOrEqual(3);
 });
+
+for (const width of [320, 390, 1440]) {
+  test(`preview, auth and service information stays readable at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/");
+    const preview = page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" });
+    for (const label of await preview.locator("p, small, strong, span").all()) {
+      if (await label.isVisible()) expect(await label.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(12);
+    }
+    for (const route of ["/login", "/register"]) {
+      await page.goto(route);
+      for (const label of await page.locator("form label, form a, form [role=alert]").all()) {
+        if (await label.isVisible()) expect(await label.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(14);
+      }
+      for (const input of await page.locator('form input:not([type="checkbox"])').all()) {
+        expect(await input.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(16);
+      }
+    }
+    await page.goto("/services");
+    const card = page.locator("[data-catalog-service]").first();
+    for (const label of await card.locator("span").all()) {
+      if (await label.isVisible()) expect(await label.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(12);
+    }
+    for (const detail of await card.locator("p, small, dt, dd, summary").all()) {
+      if (await detail.isVisible()) expect(await detail.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(13);
+    }
+  });
+}
+
+test("all three conversion paths preserve destinations and first-party tracking", async ({ page }) => {
+  await page.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { get: () => "0" }));
+  const events: Array<{ event: string; metadata?: { surface?: string; step?: string } }> = [];
+  await page.route("**/api/analytics", route => {
+    const data = route.request().postDataJSON();
+    events.push(data);
+    return route.fulfill({ status: 200, json: { ok: true } });
+  });
+  for (const path of [
+    { title: "I’m ready to order", href: "#order-demo", step: "order" },
+    { title: "I want to compare services", href: "/services", step: "compare" },
+    { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
+  ]) {
+    await page.goto("/");
+    const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
+    await expect(link).toHaveAttribute("href", path.href);
+    await link.click();
+    await expect.poll(() => events.some(event => event.event === "homepage_conversion_path_click" && event.metadata?.surface === "homepage_decision_rail" && event.metadata?.step === path.step)).toBe(true);
+    if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
+    else await expect(page).toHaveURL(new RegExp(`${path.href}$`));
+  }
+});

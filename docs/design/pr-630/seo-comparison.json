@@ -1,0 +1,142 @@
+[
+  {
+    "route": "/",
+    "width": 390,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/services",
+    "width": 390,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/packages",
+    "width": 390,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/login",
+    "width": 390,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/register",
+    "width": 390,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/",
+    "width": 1440,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/services",
+    "width": 1440,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/packages",
+    "width": 1440,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/login",
+    "width": 1440,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  },
+  {
+    "route": "/register",
+    "width": 1440,
+    "preserved": [
+      "status",
+      "title",
+      "canonical",
+      "robots",
+      "schema",
+      "h1",
+      "links"
+    ],
+    "overflow": false
+  }
+]

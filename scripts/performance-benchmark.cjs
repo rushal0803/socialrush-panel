@@ -55,7 +55,10 @@ async function main() {
           await context.addInitScript(() => {
             Object.defineProperty(navigator, 'doNotTrack', { get: () => '1' });
             window.__perf = { lcp: null, cls: 0, longTasks: [] };
-            new PerformanceObserver(list => { for (const e of list.getEntries()) window.__perf.lcp = e.startTime; }).observe({ type: 'largest-contentful-paint', buffered: true });
+            new PerformanceObserver(list => { for (const e of list.getEntries()) {
+              window.__perf.lcp = e.startTime;
+              window.__perf.lcpElement = { tag: e.element?.tagName, text: e.element?.textContent?.slice(0, 100), size: e.size, renderTime: e.renderTime, loadTime: e.loadTime };
+            } }).observe({ type: 'largest-contentful-paint', buffered: true });
             new PerformanceObserver(list => { for (const e of list.getEntries()) if (!e.hadRecentInput) window.__perf.cls += e.value; }).observe({ type: 'layout-shift', buffered: true });
             new PerformanceObserver(list => { for (const e of list.getEntries()) window.__perf.longTasks.push(e.duration); }).observe({ type: 'longtask', buffered: true });
           });
@@ -87,8 +90,10 @@ async function main() {
           if (route === '/') {
             await page.evaluate(() => window.__transitionDocument = true);
             const link = page.locator('a[href="/services"]').filter({ visible: true }).first();
+            await link.evaluate(element => element.addEventListener('click', () => { window.__transitionClick = performance.now(); }, { once: true, capture: true }));
             const started = performance.now();
             await link.click();
+            const clickMs = performance.now() - started;
             await page.waitForURL('**/services');
             await page.locator('main h1').first().waitFor();
             await page.waitForFunction(() => {
@@ -97,7 +102,8 @@ async function main() {
               for (let e = h; e; e = e.parentElement) if (Number(getComputedStyle(e).opacity) < .99) return false;
               return true;
             });
-            record({ profile, route: '/ -> /services', cache: 'warm-transition', run, transitionMs: performance.now() - started, clientNavigation: await page.evaluate(() => window.__transitionDocument === true) });
+            const transition = await page.evaluate(() => ({ clientNavigation: window.__transitionDocument === true, renderMs: performance.now() - window.__transitionClick, navigationResources: performance.getEntriesByType('resource').filter(r => r.startTime >= window.__transitionClick).map(r => ({ path: new URL(r.name).pathname, ms: r.duration, bytes: r.transferSize })) }));
+            record({ profile, route: '/ -> /services', cache: 'warm-transition', run, transitionMs: performance.now() - started, clickMs, ...transition });
           }
           await context.close();
         }
