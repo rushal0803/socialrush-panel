@@ -260,11 +260,17 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
     }
   }
 
-  test("wrong planner URL stays non-canonical and out of sitemap", async ({ page, request }) => {
-    const response = await page.goto("/tools/social-media-growth-goal-planner");
-    expect(response?.status()).toBe(404);
+  test("legacy planner URL redirects permanently to the one canonical tool", async ({ page, request }) => {
+    const legacy = await request.get("/tools/social-media-growth-goal-planner", { maxRedirects: 0 });
+    expect(legacy.status()).toBe(308);
+    expect(legacy.headers()["location"]).toContain("/tools/creator-growth-goal-planner");
+
+    const canonical = await page.goto("/tools/creator-growth-goal-planner");
+    expect(canonical?.status()).toBe(200);
+    await expect(page.locator('link[rel="canonical"][href$="/tools/creator-growth-goal-planner"]')).toHaveCount(1);
     await expect(page.locator('link[rel="canonical"][href$="/tools/social-media-growth-goal-planner"]')).toHaveCount(0);
-    await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(1);
+    await expect(page.locator('meta[name="robots"][content*="noindex"]')).toHaveCount(0);
+
     const sitemap = await request.get("/sitemap.xml");
     expect(sitemap.ok()).toBe(true);
     const xml = await sitemap.text();
