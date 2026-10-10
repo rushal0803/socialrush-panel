@@ -34,7 +34,32 @@ test("hero actions, sample labels and keyboard focus are understandable", async 
   await expect(page.getByRole("link", { name: /Forgot password/i })).toBeFocused();
 });
 
-test("login feature heading retains accessible contrast on its light surface", async ({ page }) => {
+
+test("premium redesign keeps graphite surfaces and orange CTA instead of cream panels", async ({ page }) => {
+  await page.setViewportSize({ width: 1440, height: 900 });
+  await page.goto("/");
+  const preview = page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" });
+  await expect(preview).toBeVisible();
+  const previewStyles = await preview.evaluate(node => {
+    const style = getComputedStyle(node);
+    return { background: style.backgroundImage, color: style.color };
+  });
+  expect(previewStyles.background).toContain("linear-gradient");
+  expect(previewStyles.background).toContain("rgb(16, 18, 25)");
+  expect(previewStyles.color).toBe("rgb(248, 250, 252)");
+
+  await page.goto("/services");
+  const servicesGuide = page.getByRole("complementary", { name: "Service selection guide" });
+  await expect(servicesGuide).toBeVisible();
+  expect(await servicesGuide.evaluate(node => getComputedStyle(node).backgroundColor)).toBe("rgb(16, 18, 25)");
+
+  await page.goto("/login");
+  const authVisual = page.getByRole("complementary", { name: "SocialRUSH account features" });
+  await expect(authVisual).toBeVisible();
+  expect(await authVisual.evaluate(node => getComputedStyle(node).backgroundColor)).toBe("rgb(16, 18, 25)");
+});
+
+test("login feature heading retains accessible contrast on its dark surface", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 900 });
   await page.goto("/login");
   const ratio = await page.getByRole("complementary", { name: "SocialRUSH account features" }).evaluate(aside => {
