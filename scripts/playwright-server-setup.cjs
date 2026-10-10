@@ -36,6 +36,6 @@ module.exports = async function setup() {
       try { if ((await fetch(url, { signal: AbortSignal.timeout(5000) })).ok) return stop; } catch {}
       await new Promise(resolve => setTimeout(resolve, 200));
     }
-    throw new Error('Smoke server did not become ready within 30 seconds');
+    throw new Error('Smoke server did not become ready within 60 seconds');
   } catch (error) { await stop(); throw error; }
 };
