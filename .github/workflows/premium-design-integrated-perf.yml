@@ -1,0 +1,58 @@
+name: Combined premium design paired performance (QA only)
+
+on:
+  pull_request:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  compare:
+    if: ${{ github.event.pull_request.number == 632 }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    env:
+      NEXT_PUBLIC_SUPABASE_URL: http://localhost:3001
+      NEXT_PUBLIC_SUPABASE_ANON_KEY: smoke-test-anon-key
+      SUPABASE_SERVICE_ROLE_KEY: smoke-test-service-role-key
+      PERF_ROUTES: '["/","/services","/support","/tools"]'
+      PERF_PROFILES: desktop,mobile-4g
+      PERF_RUNS: 3
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npx playwright install --with-deps chromium
+      - name: Measure current production-main code using fixture-only local build
+        env:
+          PERF_OUTPUT: artifacts/integration-perf/main.json
+        run: |
+          git checkout --detach ${{ github.event.pull_request.base.sha }}
+          rm -rf .next
+          npm run build
+          node scripts/performance-benchmark.cjs
+      - name: Measure same-run integrated review candidate
+        env:
+          PERF_OUTPUT: artifacts/integration-perf/candidate.json
+        run: |
+          git checkout --detach ${{ github.event.pull_request.head.sha }}
+          rm -rf .next
+          npm run build
+          node scripts/performance-benchmark.cjs
+      - name: Write controlled comparison table
+        run: node scripts/design-integration-perf-compare.cjs
+      - name: Preserve both raw datasets and comparison
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: socialrush-pr632-paired-performance
+          path: artifacts/integration-perf/
+          if-no-files-found: warn
+          retention-days: 14
