@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { getServicePageCroConfig } from "../../lib/cro/service-page-cro.ts";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
@@ -117,4 +117,21 @@ test("Service readiness counts remain compatible with existing public order smok
   assert.match(card, /\/3 ready/);
   assert.match(card, /data-cro-readiness/);
   assert.match(card, /Review current INR price before payment/);
+});
+
+test("All fallback catalog detail links have a dedicated route rather than an unknown slug", () => {
+  const catalog = read("lib/smm-service-catalog.ts");
+  const directory = read("components/marketing/services/ServicesPageContent.tsx");
+  const codes = [...catalog.matchAll(/code:\s*"([a-z0-9-]+)"/g)].map(match => match[1]);
+  const pathMap = directory.match(/const servicePaths: Record<string, string> = \{([\s\S]*?)\};/);
+  assert.ok(pathMap, "The canonical detail route ownership map must exist");
+  const explicitCodes = new Set([...pathMap![1].matchAll(/"([a-z0-9-]+)":\s*"\/[^"]+"/g)].map(match => match[1]));
+  const fallbackCodes = codes.filter(code => !explicitCodes.has(code));
+
+  assert.equal(codes.length, 43, "Treat catalog additions as route coverage changes");
+  assert.equal(explicitCodes.size, 21);
+  assert.equal(fallbackCodes.length, 22);
+  for (const code of fallbackCodes) {
+    assert.ok(existsSync(new URL(`../../app/services/${code}/page.tsx`, import.meta.url)), `${code}: missing /services/${code} detail route`);
+  }
 });
