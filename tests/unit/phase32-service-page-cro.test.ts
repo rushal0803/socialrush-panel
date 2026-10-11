@@ -1,6 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { getServicePageCroConfig } from "../../lib/cro/service-page-cro.ts";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
@@ -65,4 +65,73 @@ test("Phase 32 shared order card keeps neutral merchandising and service-specifi
   assert.match(card, /option\.label/);
   assert.match(card, /data-cro-service-instruction/);
   assert.doesNotMatch(card, /most popular|best seller|limited time|only \d+ left|save \d+%|discount/i);
+});
+
+test("Phase 3 service landing pages retain accessible order builders and their mobile action docks", () => {
+  const likes = read("app/(india-seo-services)/buy-instagram-likes-india/page.tsx");
+  const linkedIn = read("components/marketing/LinkedInFollowersLanding.tsx");
+  const views = read("components/marketing/YouTubeViewsLanding.tsx");
+
+  assert.match(likes, /<InstagramLikesOrderPanel compact/);
+  assert.match(likes, /Choose Likes &amp; See Total/);
+  assert.match(likes, /ServiceOrderStickyCta href="#packages"/);
+  assert.match(likes, /startingPrice=\{service\?\.pricePer1000\}/);
+
+  assert.match(linkedIn, /function OrderBuilder\(/);
+  assert.match(linkedIn, /id="order"/);
+  assert.match(linkedIn, /Choose Followers &amp; See Total/);
+  assert.match(linkedIn, /ServiceOrderStickyCta href="#order"/);
+
+  assert.match(views, /function OrderBuilder\(/);
+  assert.match(views, /id="packages"/);
+  assert.match(views, /Choose Views &amp; See Total/);
+  assert.match(views, /ServiceOrderStickyCta href="#packages"/);
+  assert.doesNotMatch(views, /orderHref="#order"/);
+});
+
+test("Phase 3 flagship previews do not autoplay and Instagram followers preserve search entry heading", () => {
+  const linkedIn = read("components/marketing/LinkedInFollowersLanding.tsx");
+  const views = read("components/marketing/YouTubeViewsLanding.tsx");
+  const instagram = read("app/buy-instagram-followers-india/page.tsx");
+
+  assert.match(linkedIn, /\[playing, setPlaying\] = useState\(false\)/);
+  assert.match(views, /\[playing, setPlaying\] = useState\(false\)/);
+  assert.match(instagram, /Buy Instagram Followers <span[^>]+>India<\/span>/);
+});
+
+test("Shared catalog detail landings keep inline order and mobile CTA on the same guarded route", () => {
+  const page = read("components/marketing/services/PremiumCatalogServiceLanding.tsx");
+  assert.match(page, /const usesInlineOrderBuilder = canStartOrder && !\/custom-comments\|endorsements\|poll-votes\//);
+  assert.match(page, /const primaryOrderHref = usesInlineOrderBuilder \? "#order-builder" : orderHref/);
+  assert.match(page, /<section id="order-builder" className="min-w-0 scroll-mt-28">/);
+  assert.match(page, /<ServiceOrderCard service=\{service\}/);
+  assert.match(page, /<ServiceOrderStickyCta href=\{primaryOrderHref\}/);
+  assert.match(page, /available=\{canStartOrder\}/);
+  assert.match(page, /This service is currently unavailable/);
+  assert.match(page, /<Link href="\/services"/);
+  assert.doesNotMatch(page, /\{usesInlineOrderBuilder \? <section className="mt-6"><aside/);
+});
+
+test("Service readiness counts remain compatible with existing public order smoke tests", () => {
+  const card = read("components/marketing/services/ServiceOrderCard.tsx");
+  assert.match(card, /\/3 ready/);
+  assert.match(card, /data-cro-readiness/);
+  assert.match(card, /Review current INR price before payment/);
+});
+
+test("All fallback catalog detail links have a dedicated route rather than an unknown slug", () => {
+  const catalog = read("lib/smm-service-catalog.ts");
+  const directory = read("components/marketing/services/ServicesPageContent.tsx");
+  const codes = [...catalog.matchAll(/code:\s*"([a-z0-9-]+)"/g)].map(match => match[1]);
+  const pathMap = directory.match(/const servicePaths: Record<string, string> = \{([\s\S]*?)\};/);
+  assert.ok(pathMap, "The canonical detail route ownership map must exist");
+  const explicitCodes = new Set([...pathMap![1].matchAll(/"([a-z0-9-]+)":\s*"\/[^"]+"/g)].map(match => match[1]));
+  const fallbackCodes = codes.filter(code => !explicitCodes.has(code));
+
+  assert.equal(codes.length, 43, "Treat catalog additions as route coverage changes");
+  assert.equal(explicitCodes.size, 21);
+  assert.equal(fallbackCodes.length, 22);
+  for (const code of fallbackCodes) {
+    assert.ok(existsSync(new URL(`../../app/services/${code}/page.tsx`, import.meta.url)), `${code}: missing /services/${code} detail route`);
+  }
 });
