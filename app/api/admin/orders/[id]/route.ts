@@ -57,11 +57,15 @@ export async function PATCH(request: NextRequest, { params: paramsPromise }: { p
 
   const { data: currentOrder, error: currentOrderError } = await auth.supabase
     .from("orders")
-    .select("id,user_id,charge,status")
+    .select("id,user_id,charge,status,payment_status")
     .eq("id", params.id)
     .maybeSingle();
   if (currentOrderError) return NextResponse.json({ error: currentOrderError.message }, { status: 400 });
   if (!currentOrder) return NextResponse.json({ error: "Order not found" }, { status: 404 });
+
+  if (currentOrder.payment_status === "verification_pending" && update.status !== undefined && !["pending", "cancelled", "failed"].includes(String(update.status))) {
+    return NextResponse.json({ error: "Payment is awaiting verification. Use the dedicated payment approval workflow before fulfillment." }, { status: 409 });
+  }
 
   for (const key of ["starting_count", "current_count", "partial_quantity_delivered", "remaining_count"] as const) {
     if (body[key] !== undefined) {
