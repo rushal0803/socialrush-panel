@@ -32,14 +32,19 @@ export default async function AutomationHealthPage(){
  ]);
  const errors=[follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks].map(x=>x.error?.message).filter(Boolean);
  const a=automation.data?.[0] as Run|undefined,d=discovery.data?.[0] as Run|undefined;
+ const hoursSince=(iso?:string|null)=>iso?Math.max(0,(now.getTime()-Date.parse(iso))/3600000):null;
+ const automationAge=hoursSince(a?.started_at),discoveryAge=hoursSince(d?.started_at);
+ const emailTrackingNeedsAttention=(customerAccepted.count??0)>0&&(deliveryWebhooks.count??0)===0;
  const alerts=[
   follow.count&&follow.count>0?String(follow.count)+" overdue customer follow-ups need attention":null,
   reply.count&&reply.count>0?String(reply.count)+" pending reply follow-ups need attention":null,
   a?.status!=="completed"?"Customer automation did not report a completed latest run":null,
+  automationAge!==null&&automationAge>36?"Customer automation has not run in more than 36 hours":null,
   d?.status!=="completed"?"Prospect discovery latest run is not completed":null,
+  discoveryAge!==null&&discoveryAge>36?"Prospect discovery has not run in more than 36 hours":null,
   customerFailed.count&&customerFailed.count>0?String(customerFailed.count)+" customer email delivery failures in the past 7 days":null,
   webhookFailures.count&&webhookFailures.count>0?String(webhookFailures.count)+" failed Resend webhook events":null,
-  customerAccepted.count&&customerAccepted.count>0&&deliveryWebhooks.count===0?"Delivery tracking requires attention: accepted emails exist, but no email.delivered webhook is recorded. Verify the Resend webhook endpoint, event subscriptions and signing secret. Do not infer that recipients failed to receive emails.":null,
+  emailTrackingNeedsAttention?"Delivery tracking requires attention: accepted emails exist, but no email.delivered webhook is recorded. Verify the Resend webhook endpoint, event subscriptions and signing secret. Do not infer that recipients failed to receive emails.":null,
  ].filter(Boolean);
  return <main className="mx-auto max-w-6xl space-y-7 p-4 text-white sm:p-8">
   <header><Link href="/admin/crm" className="text-sm text-orange-300">← CRM overview</Link><p className="mt-5 text-xs font-bold uppercase tracking-widest text-orange-300">Operations</p><h1 className="mt-2 text-3xl font-black">CRM Automation Health</h1><p className="mt-2 text-sm text-zinc-400">Live operational indicators. This page never sends email or changes CRM records.</p></header>
