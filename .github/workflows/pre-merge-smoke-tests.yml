@@ -27,7 +27,7 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npx tsc --noEmit
+      - name: Manual wallet payment review contract tests (no database access)\n        run: node --test tests/unit/manual-wallet-review-contract.test.mjs\n      - run: npx tsc --noEmit
       - name: Complete unit regressions and live catalogue equivalence
         run: npm run test:unit && npm run test:live-service-facts
       - name: Verify PR 624 blog image assets
