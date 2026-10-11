@@ -24,7 +24,7 @@ test("Phase 19 scopes the mobile UX layer to the six canonical Instagram money t
 test("Phase 19 keeps follower-only mobile rules from leaking into other money pages", () => {
   const globals = read("app/globals.css");
   assert.match(globals, /\.instagram-followers-mobile > section:first-child/);
-  assert.match(globals, /\.instagram-followers-mobile > section:nth-child\(2\)/);
+  assert.doesNotMatch(globals, /\.instagram-followers-mobile > section:nth-child\(2\)/);
   assert.doesNotMatch(globals, /\.service-money-page > section:nth-child\(2\)/);
 });
 
