@@ -11,7 +11,7 @@ export default async function AutomationHealthPage(){
  const db=await createClient();
  const now=new Date();
  const since=new Date(now.getTime()-7*864e5).toISOString();
- const [follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed]=await Promise.all([
+ const [follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks]=await Promise.all([
   db.from("crm_follow_ups").select("id",{count:"exact",head:true}).eq("status","pending").lt("due_at",now.toISOString()),
   db.from("crm_lead_reply_followups").select("id",{count:"exact",head:true}).eq("status","pending"),
   db.from("crm_leads").select("id",{count:"exact",head:true}),
@@ -25,8 +25,12 @@ export default async function AutomationHealthPage(){
   db.from("customer_email_events").select("id",{count:"exact",head:true}).eq("status","sent").gte("sent_at",since),
   db.from("customer_email_events").select("id",{count:"exact",head:true}).eq("delivery_status","delivered").gte("sent_at",since),
   db.from("customer_email_events").select("id",{count:"exact",head:true}).in("delivery_status",["bounced","complained","suppressed","failed"]).gte("sent_at",since),
+  db.from("customer_email_events").select("id",{count:"exact",head:true}).eq("delivery_status","accepted"),
+  db.from("customer_email_events").select("id",{count:"exact",head:true}).is("delivery_status",null),
+  db.from("crm_resend_webhook_events").select("event_id",{count:"exact",head:true}).eq("status","failed"),
+  db.from("crm_resend_webhook_events").select("event_id",{count:"exact",head:true}).eq("event_type","email.delivered"),
  ]);
- const errors=[follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed].map(x=>x.error?.message).filter(Boolean);
+ const errors=[follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks].map(x=>x.error?.message).filter(Boolean);
  const a=automation.data?.[0] as Run|undefined,d=discovery.data?.[0] as Run|undefined;
  const alerts=[
   follow.count&&follow.count>0?String(follow.count)+" overdue customer follow-ups need attention":null,
@@ -34,6 +38,8 @@ export default async function AutomationHealthPage(){
   a?.status!=="completed"?"Customer automation did not report a completed latest run":null,
   d?.status!=="completed"?"Prospect discovery latest run is not completed":null,
   customerFailed.count&&customerFailed.count>0?String(customerFailed.count)+" customer email delivery failures in the past 7 days":null,
+  webhookFailures.count&&webhookFailures.count>0?String(webhookFailures.count)+" failed Resend webhook events":null,
+  customerAccepted.count&&customerAccepted.count>0&&deliveryWebhooks.count===0?"No Resend delivery-confirmation events recorded; check webhook subscriptions":null,
  ].filter(Boolean);
  return <main className="mx-auto max-w-6xl space-y-7 p-4 text-white sm:p-8">
   <header><Link href="/admin/crm" className="text-sm text-orange-300">← CRM overview</Link><p className="mt-5 text-xs font-bold uppercase tracking-widest text-orange-300">Operations</p><h1 className="mt-2 text-3xl font-black">CRM Automation Health</h1><p className="mt-2 text-sm text-zinc-400">Live operational indicators. This page never sends email or changes CRM records.</p></header>
@@ -47,6 +53,10 @@ export default async function AutomationHealthPage(){
    <Metric label="Customer emails sent · 7 days" value={customerSent.count??"Unavailable"}/>
    <Metric label="Customer emails delivered · 7 days" value={customerDelivered.count??"Unavailable"}/>
    <Metric label="Customer delivery failures · 7 days" value={customerFailed.count??"Unavailable"}/>
+   <Metric label="Accepted, not confirmed · all time" value={customerAccepted.count??"Unavailable"}/>
+   <Metric label="Unknown delivery · all time" value={customerUnknown.count??"Unavailable"}/>
+   <Metric label="Resend delivery webhooks · all time" value={deliveryWebhooks.count??"Unavailable"}/>
+   <Metric label="Failed webhooks · all time" value={webhookFailures.count??"Unavailable"}/>
    <Metric label="Automatic sending" value={outreachSettings.data?.enabled&&outreachSettings.data?.auto_send?"On":"Off"}/>
    <Metric label="Daily email cap" value={outreachSettings.data?.global_daily_send_limit??"Unavailable"}/>
    <Metric label="Daily lead-enrollment cap" value={outreachSettings.data?.autopilot_daily_enroll_limit??"Unavailable"}/>
