@@ -34,9 +34,12 @@ export default async function AutomationHealthPage(){
  const a=automation.data?.[0] as Run|undefined,d=discovery.data?.[0] as Run|undefined;
  const hoursSince=(iso?:string|null)=>iso?Math.max(0,(now.getTime()-Date.parse(iso))/3600000):null;
  const automationAge=hoursSince(a?.started_at),discoveryAge=hoursSince(d?.started_at);
+ const briefAge=hoursSince(brief.data?.[0]?.generated_at);
  const emailTrackingNeedsAttention=(customerAccepted.count??0)>0&&(deliveryWebhooks.count??0)===0;
  const alerts=[
   errors.length>0?String(errors.length)+" CRM monitoring queries failed; status is incomplete and needs investigation":null,
+  briefAge===null?"No CRM daily brief has been recorded":null,
+  briefAge!==null&&briefAge>36?"The CRM daily brief is more than 36 hours old":null,
   follow.count&&follow.count>0?String(follow.count)+" overdue customer follow-ups need attention":null,
   reply.count&&reply.count>0?String(reply.count)+" pending reply follow-ups need attention":null,
   a?.status!=="completed"?"Customer automation did not report a completed latest run":null,
