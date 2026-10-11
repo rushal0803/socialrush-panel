@@ -7,6 +7,7 @@ import { checkoutAmountPrefill, safeCheckoutReturnPath } from "@/lib/cro/checkou
 
 const UPI_ID = "8860330771@pthdfc";
 const PAYEE = "Rushal";
+const USDT_ADDRESS = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
 const QUICK_AMOUNTS = [100, 500, 1000, 2000, 5000];
 
 function makeReference() {
@@ -16,7 +17,8 @@ function makeReference() {
   return `SRW-${token}`;
 }
 
-export default function DesktopUpiQrCheckout() {
+export default function DesktopUpiQrCheckout({ inrPerUsd }: { inrPerUsd: number | null }) {
+  const [method, setMethod] = useState<"upi" | "bank_transfer" | "usdt_trc20">("upi");
   const searchParams = useSearchParams();
   const requestedAmount = checkoutAmountPrefill(searchParams.get("amount"));
   const returnPath = safeCheckoutReturnPath(searchParams.get("next"));
@@ -25,12 +27,15 @@ export default function DesktopUpiQrCheckout() {
   const [showMobileQr, setShowMobileQr] = useState(false);
   const [paymentStarted, setPaymentStarted] = useState(false);
   const [utr, setUtr] = useState("");
+  const [lockedAmount, setLockedAmount] = useState<number | null>(null);
+  const [lockedUsdt, setLockedUsdt] = useState<number | null>(null);
   const [copied, setCopied] = useState(false);
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
   const [success, setSuccess] = useState<{ id: string; amount: number } | null>(null);
   const utrRef = useRef<HTMLInputElement>(null);
   const amount = Number(amountText || 0);
+  const usdtAmount = inrPerUsd && inrPerUsd > 0 ? Math.ceil(amount / inrPerUsd * 100) / 100 : null;
   const validAmount = Number.isFinite(amount) && amount >= 100 && amount <= 500000;
 
   const upiHref = useMemo(() => {
