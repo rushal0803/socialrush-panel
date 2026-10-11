@@ -2,7 +2,6 @@
 create schema auth;
 create function auth.jwt() returns jsonb language sql stable as
 'select coalesce(nullif(current_setting(''request.jwt.claims'', true), '''')::jsonb, ''{}''::jsonb)';
-create schema public;
 create table public.profiles (id uuid primary key, balance numeric not null default 0);
 create table public.transactions (
  id uuid primary key, user_id uuid not null references public.profiles(id),
