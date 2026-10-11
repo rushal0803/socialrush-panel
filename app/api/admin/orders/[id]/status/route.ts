@@ -19,7 +19,7 @@ export async function POST(request: Request, { params: paramsPromise }: { params
 
   const { data: currentOrder, error: currentOrderError } = await auth.supabase
     .from("orders")
-    .select("id,user_id,charge,status,payment_status,admin_note")
+    .select("id,user_id,charge,status,payment_status,admin_note,customer_note")
     .eq("id", params.id)
     .maybeSingle();
   if (currentOrderError) return NextResponse.json({ error: currentOrderError.message }, { status: 400 });
@@ -33,7 +33,8 @@ export async function POST(request: Request, { params: paramsPromise }: { params
   if (awaitingPaymentVerification && status === "processing") {
     const verifiedId = String(body?.verifiedTransactionId || "").trim();
     const note = String(body?.note || "").trim();
-    if (body?.receiptVerified !== true || !/^[A-Za-z0-9-]{8,80}$/.test(verifiedId) || note.length < 12) {
+    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\s*([A-Za-z0-9-]{8,80})\./i)?.[1];
+    if (body?.receiptVerified !== true || !submittedId || verifiedId.toUpperCase() !== submittedId.toUpperCase() || note.length < 12) {
       return NextResponse.json({ error: "Verify the incoming receipt, enter the matching transaction ID and provide a verification note before approval." }, { status: 422 });
     }
   }
