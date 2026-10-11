@@ -282,25 +282,34 @@ export async function updateWebsiteSettings(formData: FormData) {
 
 
 export async function reviewManualWalletPayment(formData: FormData) {
-  const { adminSupabase } = await requireAdmin();
+  const { adminSupabase, user } = await requireAdmin();
   const id = text(formData, "id");
   const decision = text(formData, "decision");
-  const verifiedId = text(formData, "verifiedTransactionId");
-  const evidence = text(formData, "evidence");
   if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ||
       !["approve", "reject"].includes(decision)) throw new Error("Invalid payment review request.");
   if (decision === "approve" && text(formData, "receiptVerified") !== "yes") {
-    throw new Error("Independently verify receipt, destination and amount before approval.");
+    throw new Error("Independently verify receipt, destination, amount and transaction ID before approval.");
   }
-  if (evidence.length < (decision === "approve" ? 20 : 12) || evidence.length > 1000) {
-    throw new Error("A meaningful verification note is required.");
+  const { data: transaction, error: readError } = await adminSupabase
+    .from("transactions")
+    .select("id,amount,type,status,payment_method,provider_payment_id")
+    .eq("id", id).single();
+  if (readError || !transaction || transaction.status !== "pending" || transaction.type !== "credit" ||
+      !["manual_upi", "manual_bank_transfer", "manual_usdt_trc20"].includes(String(transaction.payment_method))) {
+    throw new Error("Pending manual deposit not found. Refresh before reviewing.");
   }
-  // One service-role RPC atomically checks the pending deposit, records evidence,
-  // credits the balance once on approval, and changes the transaction status.
+  const submittedId = String(transaction.provider_payment_id || "").trim();
+  if (decision === "approve" && (!/^[A-Za-z0-9-]{8,80}$/.test(submittedId) || !Number.isFinite(Number(transaction.amount)) || Number(transaction.amount) <= 0)) {
+    throw new Error("Missing or invalid submitted payment reference or amount.");
+  }
+  const evidence = decision === "approve"
+    ? `Admin ${user.id} confirmed independent receipt of INR ${Number(transaction.amount).toFixed(2)} for ${transaction.payment_method}, submitted transaction ${submittedId}, at ${new Date().toISOString()}.`
+    : `Admin ${user.id} rejected manual deposit at ${new Date().toISOString()}.`;
+  // Database RPC locks the pending deposit, checks the reference and credits only once.
   const { error } = await adminSupabase.rpc("admin_review_manual_wallet_payment", {
     p_transaction_id: id,
     p_decision: decision,
-    p_verified_transaction_id: verifiedId,
+    p_verified_transaction_id: decision === "approve" ? submittedId : "",
     p_evidence: evidence,
   });
   if (error) throw new Error("Unable to review deposit: " + error.message);
