@@ -145,13 +145,19 @@ export async function updateOrder(formData: FormData) {
 
   const { data: currentOrder } = await supabase
     .from("orders")
-    .select("id, user_id, charge, status")
+    .select("id, user_id, charge, status, payment_status")
     .eq("id", orderId)
     .single();
 
   if (!currentOrder) {
     revalidatePath("/admin/orders");
     return;
+  }
+
+  // The legacy admin form must not bypass manual receipt verification.
+  if (currentOrder.payment_status === "verification_pending" &&
+      !["pending", "cancelled", "failed"].includes(nextStatus)) {
+    throw new Error("Verify the incoming payment through the dedicated approval workflow before fulfillment.");
   }
 
   await supabase
