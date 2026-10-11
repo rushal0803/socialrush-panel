@@ -274,6 +274,37 @@ export async function updateWebsiteSettings(formData: FormData) {
   revalidatePath("/admin/settings");
 }
 
+
+export async function reviewManualWalletPayment(formData: FormData) {
+  const { supabase } = await requireAdmin();
+  const id = text(formData, "id");
+  const decision = text(formData, "decision");
+  const verifiedId = text(formData, "verifiedTransactionId");
+  const evidence = text(formData, "evidence");
+  if (!/^[0-9a-f-]{36}$/i.test(id) || !["approve", "reject"].includes(decision)) throw new Error("Invalid payment review request.");
+  const { data: payment, error: readError } = await supabase.from("transactions")
+    .select("id,status,type,payment_method,provider_payment_id,amount")
+    .eq("id", id).single();
+  if (readError || !payment || payment.status !== "pending" || payment.type !== "credit" ||
+      !["manual_upi", "manual_bank_transfer", "manual_usdt_trc20"].includes(String(payment.payment_method))) {
+    throw new Error("This manual deposit is not awaiting review.");
+  }
+  if (decision === "approve") {
+    if (text(formData, "receiptVerified") !== "yes" || verifiedId.toUpperCase() !== String(payment.provider_payment_id || "").toUpperCase() ||
+        evidence.length < 20 || evidence.length > 1000) {
+      throw new Error("Confirm the actual received amount, destination and matching transaction ID. Provide a verification note (20–1000 characters).");
+    }
+  } else if (evidence.length < 12 || evidence.length > 1000) {
+    throw new Error("Explain why this deposit was rejected (12–1000 characters).");
+  }
+  // The existing SQL function locks the pending row and credits the balance atomically.
+  // It rejects repeat reviews, avoiding duplicate wallet credits.
+  const { error } = await supabase.rpc("admin_review_payment", { p_transaction_id: id, p_decision: decision });
+  if (error) throw new Error("Unable to review deposit: " + error.message);
+  revalidatePath("/admin/transactions");
+  revalidatePath("/dashboard/wallet");
+}
+
 export async function updateTransactionStatus(formData: FormData) {
   const { supabase } = await requireAdmin();
   const id = text(formData, "id");
