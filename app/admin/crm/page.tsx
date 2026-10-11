@@ -18,7 +18,7 @@ export default async function CrmOverviewPage(){
     s.from("profiles").select("id,full_name,email,created_at").neq("role","admin").order("created_at",{ascending:false}).limit(1000),
     s.from("orders").select("user_id,charge,status,payment_status,platform,created_at").order("created_at",{ascending:false}).limit(10000),
     s.from("crm_customer_profiles").select("customer_id,lifecycle_stage,priority"),
-    s.from("crm_follow_ups").select("id,customer_id,title,due_at,status,follow_up_type").eq("status","pending").order("due_at").limit(100),
+    s.from("crm_follow_ups").select("id,customer_id,title,due_at,status,follow_up_type").eq("status","pending").order("due_at").limit(1000),
     s.from("support_tickets").select("id,status").limit(1000),
     s.from("order_refill_requests").select("id,status").limit(1000),
     s.from("order_drafts").select("user_id,updated_at").limit(2000),
@@ -42,6 +42,8 @@ export default async function CrmOverviewPage(){
   const life=crmRows.reduce((a,x)=>{a[x.lifecycle_stage]=(a[x.lifecycle_stage]||0)+1;return a},{} as Record<string,number>);
   const people=new Map(profiles.map(p=>[p.id,p]));
   const overdue=follow.filter(x=>x.due_at<now);
+  // Supabase returns at most 1,000 rows by default; warn instead of silently claiming an exact total.
+  const followUpCountMayBeTruncated=follow.length>=1000;
   const high=crmRows.filter(x=>x.priority==="high");
   const neverOrdered=sum.filter(x=>x.m.validOrders===0);
   const newCustomers=sum.filter(x=>x.p.created_at>=since);
@@ -105,6 +107,7 @@ export default async function CrmOverviewPage(){
   ];
 
   const issues=[
+    followUpCountMayBeTruncated&&"Pending follow-up counts may be incomplete (1,000-row limit)",
     overdue.length&&`${overdue.length} overdue follow-up${overdue.length>1?"s":""}`,
     high.length&&`${high.length} high-priority customer${high.length>1?"s":""}`,
     (sr.data||[]).filter((x:any)=>!["closed","resolved"].includes(String(x.status).toLowerCase())).length&&`${(sr.data||[]).filter((x:any)=>!["closed","resolved"].includes(String(x.status).toLowerCase())).length} open support issue${(sr.data||[]).length>1?"s":""}`,
