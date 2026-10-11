@@ -121,11 +121,26 @@ async function customerEmailOutboundEvent(eventType:string,data:Record<string,un
   if(updateError)throw updateError;
 
   if(suppressionReason){
-    const {error:suppressionError}=await db.from("crm_suppression_list").upsert(
-      {email:cleanEmail(event.recipient),reason:suppressionReason,source:"resend_customer_email"},
-      {onConflict:"email"}
+    const email=cleanEmail(event.recipient);
+    const {error:insertError}=await db.from("crm_suppression_list").insert(
+      {email,reason:suppressionReason,source:"resend_customer_email"}
     );
-    if(suppressionError)throw suppressionError;
+    if(insertError){
+      if(insertError.code!=="23505")throw insertError;
+      const {data:existing,error:lookupError}=await db
+        .from("crm_suppression_list")
+        .select("id,email")
+        .ilike("email",email)
+        .limit(1)
+        .maybeSingle();
+      if(lookupError)throw lookupError;
+      if(!existing)throw insertError;
+      const {error:updateSuppressionError}=await db
+        .from("crm_suppression_list")
+        .update({reason:suppressionReason,source:"resend_customer_email"})
+        .eq("id",existing.id);
+      if(updateSuppressionError)throw updateSuppressionError;
+    }
   }
 
   return {customerEmail:true,eventId:event.id,deliveryStatus:String(patch.delivery_status||event.delivery_status||"accepted")};
