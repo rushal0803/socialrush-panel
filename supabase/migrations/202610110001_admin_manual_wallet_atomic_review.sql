@@ -18,6 +18,9 @@ begin
   if not found or v_payment.status <> 'pending' or v_payment.type <> 'credit'
      or v_payment.payment_method not in ('manual_upi','manual_bank_transfer','manual_usdt_trc20')
   then raise exception 'Pending manual deposit not found'; end if;
+  if p_decision='approve' and (v_payment.amount is null or v_payment.amount <= 0) then
+    raise exception 'Invalid deposit amount';
+  end if;
   if p_decision='approve' and (
     trim(coalesce(p_verified_transaction_id,'')) = ''
     or upper(trim(p_verified_transaction_id)) <> upper(coalesce(v_payment.provider_payment_id,''))
