@@ -65,7 +65,11 @@ export async function recordTrustedEvent(input: {
       metadata.attribution_model = "first_touch_inherited";
     }
 
-    await admin.from("analytics_events").upsert(
+    // event_id is unique only under a partial index (WHERE event_id IS NOT NULL).
+    // PostgREST onConflict=event_id cannot infer that index (Postgres 42P10).
+    // A plain insert preserves append-only events and the index still rejects
+    // duplicate event IDs atomically on retries.
+    const { error: writeError } = await admin.from("analytics_events").insert(
       {
         event_name: input.eventName,
         anonymous_session_id: attribution?.anonymous_session_id || null,
@@ -83,9 +87,13 @@ export async function recordTrustedEvent(input: {
         referring_domain: attribution?.referring_domain || null,
         safe_metadata: safeMetadata(metadata),
       },
-      { onConflict: "event_id", ignoreDuplicates: true },
     );
+    if (writeError && writeError.code !== "23505") {
+      // Log only the Postgres error code, never customer or payment details.
+      console.error("[trusted-analytics] insert failed", { code: writeError.code });
+    }
   } catch {
-    /* Do not roll back a verified payment, ledger entry, or order. */
+    // Analytics is best effort and must never undo or block a paid order.
+    console.error("[trusted-analytics] unexpected write failure");
   }
 }
