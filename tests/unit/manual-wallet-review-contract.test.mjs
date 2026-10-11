@@ -12,7 +12,7 @@ test("manual deposit review supports all three methods", () => {
   }
 });
 test("only service role can invoke atomic review RPC", () => {
-  assert.match(sql, /auth\.jwt\(\)->>'role'\s*\)\s*<>\s*'service_role'/);
+  assert.ok(sql.includes("coalesce(auth.jwt()->>'role', '') <> 'service_role'"));
   assert.match(sql, /revoke all on function public\.admin_review_manual_wallet_payment\(uuid,text,text,text\) from anon, authenticated/);
   assert.match(sql, /grant execute on function public\.admin_review_manual_wallet_payment\(uuid,text,text,text\) to service_role/);
 });
