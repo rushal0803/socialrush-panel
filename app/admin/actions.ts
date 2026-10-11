@@ -276,33 +276,27 @@ export async function updateWebsiteSettings(formData: FormData) {
 
 
 export async function reviewManualWalletPayment(formData: FormData) {
-  const { supabase } = await requireAdmin();
+  const { adminSupabase } = await requireAdmin();
   const id = text(formData, "id");
   const decision = text(formData, "decision");
   const verifiedId = text(formData, "verifiedTransactionId");
   const evidence = text(formData, "evidence");
-  if (!/^[0-9a-f-]{36}$/i.test(id) || !["approve", "reject"].includes(decision)) throw new Error("Invalid payment review request.");
-  const { data: payment, error: readError } = await supabase.from("transactions")
-    .select("id,status,type,payment_method,provider_payment_id,amount,metadata")
-    .eq("id", id).single();
-  if (readError || !payment || payment.status !== "pending" || payment.type !== "credit" ||
-      !["manual_upi", "manual_bank_transfer", "manual_usdt_trc20"].includes(String(payment.payment_method))) {
-    throw new Error("This manual deposit is not awaiting review.");
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ||
+      !["approve", "reject"].includes(decision)) throw new Error("Invalid payment review request.");
+  if (decision === "approve" && text(formData, "receiptVerified") !== "yes") {
+    throw new Error("Independently verify receipt, destination and amount before approval.");
   }
-  if (decision === "approve") {
-    if (text(formData, "receiptVerified") !== "yes" || verifiedId.toUpperCase() !== String(payment.provider_payment_id || "").toUpperCase() ||
-        evidence.length < 20 || evidence.length > 1000) {
-      throw new Error("Confirm the actual received amount, destination and matching transaction ID. Provide a verification note (20–1000 characters).");
-    }
-  } else if (evidence.length < 12 || evidence.length > 1000) {
-    throw new Error("Explain why this deposit was rejected (12–1000 characters).");
+  if (evidence.length < (decision === "approve" ? 20 : 12) || evidence.length > 1000) {
+    throw new Error("A meaningful verification note is required.");
   }
-  const existingMetadata = payment.metadata && typeof payment.metadata === "object" && !Array.isArray(payment.metadata) ? payment.metadata : {};
-  const { error: auditError } = await supabase.from("transactions").update({ metadata: { ...existingMetadata, admin_review_evidence: evidence, admin_review_decision: decision, admin_reviewed_at: new Date().toISOString() } }).eq("id", id).eq("status", "pending");
-  if (auditError) throw new Error("Could not save verification evidence. Payment was not approved.");
-  // The existing SQL function locks the pending row and credits the balance atomically.
-  // It rejects repeat reviews, avoiding duplicate wallet credits.
-  const { error } = await supabase.rpc("admin_review_payment", { p_transaction_id: id, p_decision: decision });
+  // One service-role RPC atomically checks the pending deposit, records evidence,
+  // credits the balance once on approval, and changes the transaction status.
+  const { error } = await adminSupabase.rpc("admin_review_manual_wallet_payment", {
+    p_transaction_id: id,
+    p_decision: decision,
+    p_verified_transaction_id: verifiedId,
+    p_evidence: evidence,
+  });
   if (error) throw new Error("Unable to review deposit: " + error.message);
   revalidatePath("/admin/transactions");
   revalidatePath("/dashboard/wallet");
