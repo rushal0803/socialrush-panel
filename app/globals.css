@@ -98,16 +98,16 @@ html:has(.service-money-page) { scroll-behavior: smooth; }
     margin-top: 1rem;
     line-height: 1.65;
   }
-  .instagram-followers-mobile > section:first-child h1 + p + div {
+  .instagram-followers-mobile > section:first-child [data-service-hero-actions] {
     margin-top: 1.25rem;
   }
-  .instagram-followers-mobile > section:first-child h1 + p + div > a:first-child {
+  .instagram-followers-mobile > section:first-child [data-service-hero-actions] > a:first-child {
     width: 100%;
     min-height: 3.5rem;
     border-radius: 1rem;
     font-size: .9375rem;
   }
-  .instagram-followers-mobile > section:first-child h1 + p + div > a:last-child {
+  .instagram-followers-mobile > section:first-child [data-service-hero-actions] > a:last-child {
     min-height: 2.5rem;
     border: 0;
     background: transparent;
@@ -115,17 +115,17 @@ html:has(.service-money-page) { scroll-behavior: smooth; }
     text-decoration: underline;
     text-underline-offset: .25rem;
   }
-  .instagram-followers-mobile > section:first-child h1 + p + div + div {
+  .instagram-followers-mobile > section:first-child [data-service-hero-benefits] {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: .5rem 1rem;
     margin-top: 1rem;
   }
-  .instagram-followers-mobile > section:first-child h1 + p + div + div > span {
+  .instagram-followers-mobile > section:first-child [data-service-hero-benefits] > span {
     min-width: 0;
     font-size: .6875rem;
   }
-  .instagram-followers-mobile > section:first-child h1 + p + div + div > span:last-child {
+  .instagram-followers-mobile > section:first-child [data-service-hero-benefits] > span:last-child {
     display: none;
   }
   /* Do not hide sections by child index: the order-first hero may be followed by SEO guidance. */
