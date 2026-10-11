@@ -22,7 +22,7 @@ export const clientAnalyticsEvents = [
   "utr_submitted",
   "checkout_error",
   "checkout_recovery_view",
-  "checkout_recovery_click",
+  "checkout_recovery_click","email_recovery_click",
   "creator_tool_used",
   "creator_tool_result_generated",
   "blog_article_viewed",
