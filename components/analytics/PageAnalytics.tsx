@@ -1,11 +1,12 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect } from "react";
-import { primeAttribution, track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
+import { useEffect, useRef } from "react";
+import { isOrganicSearchReferrer, primeAttribution, track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
 
 export default function PageAnalytics() {
   const path = usePathname();
+  const checkedInitialLanding = useRef(false);
 
   useEffect(() => {
     primeAttribution();
@@ -15,12 +16,14 @@ export default function PageAnalytics() {
     const market = path.match(/^\/(us|uk|ca|au|ae|sg)$/)?.[1];
     if (market) track("market_hub_viewed", { market, country_page_type: "hub" });
     if (event) track(event);
-    // Record the landing type only. Referrer URLs and search terms are never sent.
-    const referrerHost = (() => {
-      try { return document.referrer ? new URL(document.referrer).hostname : ""; } catch { return ""; }
-    })();
-    if (/(google|bing|duckduckgo|yahoo|yandex|baidu)\./i.test(referrerHost)) {
-      track("organic_landing_view", { referrer_type: "search" });
+    // The document referrer remains unchanged during client-side navigation.
+    // Count one search landing per document, not again on dashboard/route changes.
+    // Referrer URLs and search terms are never sent.
+    if (!checkedInitialLanding.current) {
+      checkedInitialLanding.current = true;
+      if (isOrganicSearchReferrer(document.referrer, window.location.hostname)) {
+        track("organic_landing_view", { referrer_type: "search" });
+      }
     }
   }, [path]);
 

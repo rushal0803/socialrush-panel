@@ -1,6 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
+import { isOrganicSearchReferrer } from "../../lib/analytics/events.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
   buildTrafficGrowthDashboard,
@@ -70,6 +71,39 @@ test("Phase 45 records a generic consent-aware page view on route changes", () =
   assert.match(events, /"page_viewed"/);
   assert.match(pageAnalytics, /track\("page_viewed"\)/);
   assert.match(events, /navigator\.doNotTrack === "1"/);
+});
+
+test("Phase 8 identifies only external search referrers for organic landings", () => {
+  const host = "www.getsocialrush.com";
+  for (const referrer of [
+    "https://www.google.com/search?q=organic",
+    "https://www.google.co.in/search?q=services",
+    "https://www.bing.com/search?q=smm",
+    "https://duckduckgo.com/?q=socialrush",
+  ]) {
+    assert.equal(isOrganicSearchReferrer(referrer, host), true, referrer);
+  }
+  for (const referrer of [
+    "",
+    "https://www.getsocialrush.com/services",
+    "https://getsocialrush.com/dashboard",
+    "https://example.com/article",
+    "https://notgoogle.com/ad",
+    "not a valid referrer",
+    "javascript:alert(1)",
+  ]) {
+    assert.equal(isOrganicSearchReferrer(referrer, host), false, referrer);
+  }
+});
+
+test("Phase 8 tracks organic landings once per document but page views on navigation", () => {
+  const analytics = read("components/analytics/PageAnalytics.tsx");
+  assert.match(analytics, /const checkedInitialLanding = useRef\(false\)/);
+  assert.match(analytics, /if \(!checkedInitialLanding\.current\) \{/);
+  assert.match(analytics, /checkedInitialLanding\.current = true/);
+  assert.match(analytics, /isOrganicSearchReferrer\(document\.referrer, window\.location\.hostname\)/);
+  assert.match(analytics, /track\("organic_landing_view", \{ referrer_type: "search" \}\)/);
+  assert.match(analytics, /track\("page_viewed"\)/);
 });
 
 test("Phase 45 synchronizes newer analytics events instead of silently dropping them", () => {
