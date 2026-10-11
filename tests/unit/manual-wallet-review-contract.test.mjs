@@ -23,6 +23,10 @@ test("wallet balance update and transaction status share one locked transaction"
   assert.match(sql, /status=case when p_decision='approve' then 'completed' else 'failed' end/);
   assert.match(sql, /if not found then raise exception 'Wallet profile missing'/);
 });
+test("approval rejects non-positive deposit amounts", () => {
+  assert.match(sql, /v_payment\.amount is null or v_payment\.amount <= 0/);
+  assert.match(sql, /raise exception 'Invalid deposit amount'/);
+});
 test("transaction ID and review evidence are required", () => {
   assert.match(sql, /upper\(trim\(p_verified_transaction_id\)\)\s*<>\s*upper\(coalesce\(v_payment\.provider_payment_id,''\)\)/);
   assert.match(sql, /admin_review_evidence/);
