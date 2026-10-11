@@ -79,7 +79,7 @@ export default function ServiceOrderCard({ service, title = "Configure your orde
     <p id={`${id}-link-help`} className={attempted && linkError ? styles.error : styles.help} role={attempted && linkError ? "alert" : undefined}>{attempted && linkError ? linkError : rule.helper}</p>
     <dl className={styles.facts}><div><dt>Delivery estimate</dt><dd>{service.deliveryTime}</dd></div><div><dt>Refill terms</dt><dd>{service.refillPolicy}</dd></div></dl>
     {service.importantInstruction ? <p className={styles.help} data-cro-service-instruction><strong>Before you continue:</strong> {service.importantInstruction}</p> : null}
-    <div className={styles.readiness} data-cro-readiness role="status"><Check className="h-3.5 w-3.5" aria-hidden="true" />{ready ? "Details ready · Final price verified at checkout" : "Choose a valid quantity and enter the required public link"}</div>
+    <div className={styles.readiness} data-cro-readiness role="status"><Check className="h-3.5 w-3.5" aria-hidden="true" />{1 + Number(!qtyError && total !== null) + Number(!linkError)}/3 ready · {ready ? "Review current INR price before payment" : "Enter a valid quantity and public link"}</div>
     <Link href={ready ? href : "#"} onClick={continueOrder} className={styles.primary}>Continue to Secure Order <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>
     <p className={styles.nextStep}>No payment is taken on this page. Your selection carries into secure order review, where the current INR total is confirmed.</p>
     <div className={styles.assurance}><span><Check className="h-3.5 w-3.5" aria-hidden="true" />No password required</span><span><Check className="h-3.5 w-3.5" aria-hidden="true" />Dashboard order tracking</span></div>
