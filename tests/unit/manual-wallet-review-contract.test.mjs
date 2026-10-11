@@ -47,3 +47,24 @@ test("legacy admin order form cannot bypass pending payment verification", () =>
   assert.match(legacy, /verification_pending/);
   assert.match(legacy, /\["pending", "cancelled", "failed"\]\.includes\(nextStatus\)/);
 });
+
+
+test("one-click order approval derives transaction reference from stored submission", () => {
+  const route = readFileSync("app/api/admin/orders/[id]/status/route.ts", "utf8");
+  const ui = readFileSync("components/admin/AdminPendingPaymentVerification.tsx", "utf8");
+  assert.match(route, /auth\.user\.id/);
+  assert.match(route, /currentOrder\.customer_note/);
+  assert.match(route, /body\?\.receiptVerified !== true/);
+  assert.match(route, /\.eq\("payment_status", currentOrder\.payment_status\)/);
+  assert.doesNotMatch(ui, /setVerifiedTransactionId|setVerificationNote/);
+  assert.match(ui, /disabled=\{busy \|\| !receiptVerified\}/);
+});
+
+test("one-click wallet approval records admin identity and preserves atomic RPC", () => {
+  const ui = readFileSync("app/admin/transactions/page.tsx", "utf8");
+  assert.doesNotMatch(ui, /name="verifiedTransactionId"|name="evidence"/);
+  assert.match(ui, /name="receiptVerified"/);
+  assert.match(review, /user\.id/);
+  assert.match(review, /transaction\.provider_payment_id/);
+  assert.match(review, /adminSupabase\.rpc\("admin_review_manual_wallet_payment"/);
+});

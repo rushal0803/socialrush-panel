@@ -31,21 +31,18 @@ export async function POST(request: Request, { params: paramsPromise }: { params
   }
 
   if (awaitingPaymentVerification && status === "processing") {
-    const verifiedId = String(body?.verifiedTransactionId || "").trim();
-    const note = String(body?.note || "").trim();
-    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\s*([A-Za-z0-9-]{8,80})\./i)?.[1];
-    if (body?.receiptVerified !== true || !submittedId || verifiedId.toUpperCase() !== submittedId.toUpperCase() || note.length < 12) {
-      return NextResponse.json({ error: "Verify the incoming receipt, enter the matching transaction ID and provide a verification note before approval." }, { status: 422 });
+    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\\s*([A-Za-z0-9-]{8,80})\\./i)?.[1];
+    if (body?.receiptVerified !== true || !submittedId || !Number.isFinite(Number(currentOrder.charge)) || Number(currentOrder.charge) <= 0) {
+      return NextResponse.json({ error: "Confirm the actual incoming payment and ensure a valid submitted transaction ID and amount exist." }, { status: 422 });
     }
   }
 
   const update: Record<string, string | null> = { status };
   if (awaitingPaymentVerification && status === "processing") {
     update.payment_status = "paid";
-    const verifiedNote = `Manual payment verified by admin on ${new Date().toISOString()}. Verified transaction: ${String(body?.verifiedTransactionId).trim()}.`;
-    update.admin_note = body?.note !== undefined
-      ? `${verifiedNote} ${String(body.note).trim().slice(0, 1800)}`.trim()
-      : `${verifiedNote}${currentOrder.admin_note ? ` ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
+    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\\s*([A-Za-z0-9-]{8,80})\\./i)?.[1];
+    const verifiedNote = `Manual receipt confirmed by admin ${auth.user.id} at ${new Date().toISOString()}. Customer-submitted transaction ID: ${submittedId}. Amount: INR ${Number(currentOrder.charge).toFixed(2)}. Admin attested to independent verification of incoming funds, destination and transaction ID.`;
+    update.admin_note = `${verifiedNote}${currentOrder.admin_note ? ` Previous note: ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
   } else if (awaitingPaymentVerification && status === "failed") {
     update.payment_status = "failed";
     const failedNote = `Manual payment verification failed by admin on ${new Date().toISOString()}.`;
@@ -56,9 +53,9 @@ export async function POST(request: Request, { params: paramsPromise }: { params
     update.admin_note = String(body.note).trim().slice(0, 2000) || null;
   }
 
-  const { data, error } = await auth.supabase.from("orders").update(update).eq("id", params.id).select("*").maybeSingle();
+  const { data, error } = await auth.supabase.from("orders").update(update).eq("id", params.id).eq("payment_status", currentOrder.payment_status).eq("status", currentOrder.status).select("*").maybeSingle();
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-  if (!data) return NextResponse.json({ error: "Order not found" }, { status: 404 });
+  if (!data) return NextResponse.json({ error: "Order changed during review. Refresh and try again." }, { status: 409 });
 
   const paymentVerified = awaitingPaymentVerification && status === "processing";
   if (paymentVerified) {
