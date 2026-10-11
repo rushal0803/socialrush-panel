@@ -11,7 +11,7 @@ export default async function AutomationHealthPage(){
  const db=await createClient();
  const now=new Date();
  const since=new Date(now.getTime()-7*864e5).toISOString();
- const [follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks]=await Promise.all([
+ const [follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks,inboundReplies,wonLeads]=await Promise.all([
   db.from("crm_follow_ups").select("id",{count:"exact",head:true}).eq("status","pending").lt("due_at",now.toISOString()),
   db.from("crm_lead_reply_followups").select("id",{count:"exact",head:true}).eq("status","pending"),
   db.from("crm_leads").select("id",{count:"exact",head:true}),
@@ -29,8 +29,10 @@ export default async function AutomationHealthPage(){
   db.from("customer_email_events").select("id",{count:"exact",head:true}).is("delivery_status",null),
   db.from("crm_resend_webhook_events").select("event_id",{count:"exact",head:true}).eq("status","failed"),
   db.from("crm_resend_webhook_events").select("event_id",{count:"exact",head:true}).eq("event_type","email.delivered"),
+  db.from("crm_inbound_messages").select("id",{count:"exact",head:true}).gte("received_at",since),
+  db.from("crm_leads").select("id",{count:"exact",head:true}).eq("status","won"),
  ]);
- const errors=[follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks].map(x=>x.error?.message).filter(Boolean);
+ const errors=[follow,reply,leads,candidates,messages,automation,discovery,brief,outreachSettings,customerQueued,customerSent,customerDelivered,customerFailed,customerAccepted,customerUnknown,webhookFailures,deliveryWebhooks,inboundReplies,wonLeads].map(x=>x.error?.message).filter(Boolean);
  const a=automation.data?.[0] as Run|undefined,d=discovery.data?.[0] as Run|undefined;
  const hoursSince=(iso?:string|null)=>iso?Math.max(0,(now.getTime()-Date.parse(iso))/3600000):null;
  const automationAge=hoursSince(a?.started_at),discoveryAge=hoursSince(d?.started_at);
@@ -58,6 +60,8 @@ export default async function AutomationHealthPage(){
    <Metric label="Total sales leads" value={leads.count??"Unavailable"}/>
    <Metric label="Qualified candidates" value={candidates.count??"Unavailable"}/>
    <Metric label="Cold outreach sent · 7 days" value={messages.count??"Unavailable"}/>
+   <Metric label="Inbound lead replies · 7 days" value={inboundReplies.count??"Unavailable"}/>
+   <Metric label="Won sales leads · current" value={wonLeads.count??"Unavailable"}/>
    <Metric label="Customer emails queued" value={customerQueued.count??"Unavailable"}/>
    <Metric label="Customer emails sent · 7 days" value={customerSent.count??"Unavailable"}/>
    <Metric label="Customer emails delivered · 7 days" value={customerDelivered.count??"Unavailable"}/>
