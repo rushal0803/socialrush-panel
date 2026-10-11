@@ -11,7 +11,7 @@ begin
     raise exception 'Service role required';
   end if;
   if p_decision not in ('approve','reject') then raise exception 'Invalid decision'; end if;
-  if char_length(trim(coalesce(p_evidence,''))) < case when p_decision='approve' then 20 else 12 end
+  if char_length(trim(coalesce(p_evidence,''))) < (case when p_decision='approve' then 20 else 12 end)
      or char_length(p_evidence) > 1000 then raise exception 'Review evidence required'; end if;
   select * into v_payment from public.transactions
     where id=p_transaction_id for update;
