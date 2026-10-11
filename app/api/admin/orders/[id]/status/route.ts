@@ -13,7 +13,7 @@ export async function POST(request: Request, { params: paramsPromise }: { params
   const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
-  const body = (await request.json().catch(() => null)) as { status?: string; note?: string } | null;
+  const body = (await request.json().catch(() => null)) as { status?: string; note?: string; receiptVerified?: boolean; verifiedTransactionId?: string } | null;
   const status = String(body?.status ?? "").toLowerCase();
   if (!statuses.has(status)) return NextResponse.json({ error: "Unsupported order status" }, { status: 422 });
 
@@ -30,10 +30,18 @@ export async function POST(request: Request, { params: paramsPromise }: { params
     return NextResponse.json({ error: "Verify the payment before moving this order beyond Pending." }, { status: 409 });
   }
 
+  if (awaitingPaymentVerification && status === "processing") {
+    const verifiedId = String(body?.verifiedTransactionId || "").trim();
+    const note = String(body?.note || "").trim();
+    if (body?.receiptVerified !== true || !/^[A-Za-z0-9-]{8,80}$/.test(verifiedId) || note.length < 12) {
+      return NextResponse.json({ error: "Verify the incoming receipt, enter the matching transaction ID and provide a verification note before approval." }, { status: 422 });
+    }
+  }
+
   const update: Record<string, string | null> = { status };
   if (awaitingPaymentVerification && status === "processing") {
     update.payment_status = "paid";
-    const verifiedNote = `Manual payment verified by admin on ${new Date().toISOString()}.`;
+    const verifiedNote = `Manual payment verified by admin on ${new Date().toISOString()}. Verified transaction: ${String(body?.verifiedTransactionId).trim()}.`;
     update.admin_note = body?.note !== undefined
       ? `${verifiedNote} ${String(body.note).trim().slice(0, 1800)}`.trim()
       : `${verifiedNote}${currentOrder.admin_note ? ` ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
