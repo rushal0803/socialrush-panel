@@ -8,5 +8,14 @@ export default async function AddFundsPage() {
   const { user } = await getDashboardContext();
   if (!user) redirect("/login?next=/dashboard/add-funds");
 
-  return <DesktopUpiQrCheckout />;
+  let inrPerUsd: number | null = null;
+  try {
+    const response = await fetch("https://api.frankfurter.app/latest?from=USD&to=INR", { next: { revalidate: 300 } });
+    if (response.ok) {
+      const data = await response.json() as { rates?: { INR?: number } };
+      const rate = Number(data.rates?.INR);
+      if (Number.isFinite(rate) && rate > 0) inrPerUsd = rate;
+    }
+  } catch { /* Disable USDT when conversion is unavailable */ }
+  return <DesktopUpiQrCheckout inrPerUsd={inrPerUsd} />;
 }

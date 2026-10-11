@@ -145,13 +145,19 @@ export async function updateOrder(formData: FormData) {
 
   const { data: currentOrder } = await supabase
     .from("orders")
-    .select("id, user_id, charge, status")
+    .select("id, user_id, charge, status, payment_status")
     .eq("id", orderId)
     .single();
 
   if (!currentOrder) {
     revalidatePath("/admin/orders");
     return;
+  }
+
+  // The legacy admin form must not bypass manual receipt verification.
+  if (currentOrder.payment_status === "verification_pending" &&
+      !["pending", "cancelled", "failed"].includes(nextStatus)) {
+    throw new Error("Verify the incoming payment through the dedicated approval workflow before fulfillment.");
   }
 
   await supabase
@@ -274,9 +280,51 @@ export async function updateWebsiteSettings(formData: FormData) {
   revalidatePath("/admin/settings");
 }
 
+
+export async function reviewManualWalletPayment(formData: FormData) {
+  const { adminSupabase } = await requireAdmin();
+  const id = text(formData, "id");
+  const decision = text(formData, "decision");
+  const verifiedId = text(formData, "verifiedTransactionId");
+  const evidence = text(formData, "evidence");
+  if (!/^[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id) ||
+      !["approve", "reject"].includes(decision)) throw new Error("Invalid payment review request.");
+  if (decision === "approve" && text(formData, "receiptVerified") !== "yes") {
+    throw new Error("Independently verify receipt, destination and amount before approval.");
+  }
+  if (evidence.length < (decision === "approve" ? 20 : 12) || evidence.length > 1000) {
+    throw new Error("A meaningful verification note is required.");
+  }
+  // One service-role RPC atomically checks the pending deposit, records evidence,
+  // credits the balance once on approval, and changes the transaction status.
+  const { error } = await adminSupabase.rpc("admin_review_manual_wallet_payment", {
+    p_transaction_id: id,
+    p_decision: decision,
+    p_verified_transaction_id: verifiedId,
+    p_evidence: evidence,
+  });
+  if (error) throw new Error("Unable to review deposit: " + error.message);
+  revalidatePath("/admin/transactions");
+  revalidatePath("/dashboard/wallet");
+}
+
 export async function updateTransactionStatus(formData: FormData) {
   const { supabase } = await requireAdmin();
-  await supabase.from("transactions").update({ status: text(formData, "status") }).eq("id", text(formData, "id"));
+  const id = text(formData, "id");
+  const status = text(formData, "status");
+  if (!["pending", "completed", "failed", "cancelled"].includes(status)) throw new Error("Invalid transaction status.");
+  const { data: transaction, error: readError } = await supabase
+    .from("transactions")
+    .select("id,status,payment_method")
+    .eq("id", id).single();
+  if (readError || !transaction) throw new Error("Transaction could not be loaded.");
+  if (["manual_upi", "manual_bank_transfer", "manual_usdt_trc20"].includes(String(transaction.payment_method))) {
+    throw new Error("Manual payment deposits require verified receipt and a dedicated approval workflow. Status changes are blocked here.");
+  }
+  if (transaction.status !== status) {
+    const { error } = await supabase.from("transactions").update({ status }).eq("id", id).eq("status", transaction.status);
+    if (error) throw new Error("Transaction update failed.");
+  }
   revalidatePath("/admin/transactions");
 }
 

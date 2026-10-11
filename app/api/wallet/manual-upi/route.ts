@@ -25,6 +25,9 @@ export async function POST(request: NextRequest) {
         ? "usdt_trc20"
         : "upi";
   const usdtAmount = Number(body?.usdtAmount);
+  if (body?.paymentMethod !== undefined && !["upi", "bank_transfer", "usdt_trc20"].includes(body.paymentMethod)) {
+    return NextResponse.json({ error: "Unsupported payment method." }, { status: 422 });
+  }
 
   if (!Number.isFinite(amount) || amount < 100 || amount > 500000 || Math.round(amount * 100) !== amount * 100) {
     return NextResponse.json({ error: "Enter an amount between ₹100 and ₹5,00,000." }, { status: 422 });
@@ -37,7 +40,8 @@ export async function POST(request: NextRequest) {
   }
 
   const admin = createAdminClient();
-  const { data: existing } = await admin.from("transactions").select("id,user_id,status").eq("provider_payment_id", utr).maybeSingle();
+  const { data: existing, error: duplicateError } = await admin.from("transactions").select("id,user_id,status").eq("provider_payment_id", utr).maybeSingle();
+  if (duplicateError) return NextResponse.json({ error: "Unable to check for duplicate payments. Please try again." }, { status: 503 });
   if (existing) return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted." }, { status: 409 });
 
   const { data: existingOrderPayment, error: existingOrderPaymentError } = await admin
@@ -54,7 +58,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for an order." }, { status: 409 });
   }
 
-  const { data: existingRef } = await admin.from("transactions").select("id,status").eq("provider_order_id", paymentReference).eq("user_id", user.id).maybeSingle();
+  const { data: existingRef, error: referenceError } = await admin.from("transactions").select("id,status").eq("provider_order_id", paymentReference).eq("user_id", user.id).maybeSingle();
+  if (referenceError) return NextResponse.json({ error: "Unable to check payment reference. Please try again." }, { status: 503 });
   if (existingRef) return NextResponse.json({ data: existingRef, duplicate: true });
 
   const { data: transaction, error } = await admin.from("transactions").insert({

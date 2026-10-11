@@ -34,7 +34,7 @@
     "test:cro": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/cro-personalization.test.ts",
     "test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts",
     "test:crm-pipeline": "node --experimental-strip-types --test tests/unit/sales-pipeline.test.ts tests/unit/crm-outreach-autopilot.test.ts",
-    "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts",
+    "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts tests/unit/manual-wallet-review-contract.test.mjs",
     "test:phase12": "node --experimental-strip-types --test tests/unit/phase12-quality.test.ts",
     "seo:instagram-tech": "node scripts/seo-instagram-technical-check.mjs",
     "seo:instagram-sitemap": "node scripts/seo-instagram-sitemap-check.mjs"
