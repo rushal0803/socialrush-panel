@@ -49,6 +49,8 @@ function shouldProtect(pathname: string) {
 export async function updateSession(request: NextRequest) {
   const pathname = request.nextUrl.pathname;
   const requestHeaders = new Headers(request.headers);
+  // Never trust a client-supplied bypass header; only the login route may set it.
+  requestHeaders.delete("x-socialrush-admin-login");
   if (pathname === "/admin/login") {
     requestHeaders.set("x-socialrush-admin-login", "1");
   }
