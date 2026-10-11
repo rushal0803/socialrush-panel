@@ -71,7 +71,67 @@ async function storeUnmatchedReceived(message: { id?: string; message_id?: strin
   return { unmatched: true, reason };
 }
 
-const supportedResendEvents = new Set(["email.received","email.bounced","email.delivered","email.complained","email.suppressed","email.failed"]);
+type CustomerEmailDeliveryStatus = "accepted"|"delivered"|"bounced"|"complained"|"suppressed"|"failed";
+
+async function customerEmailOutboundEvent(eventType:string,data:Record<string,unknown>) {
+  const providerMessageId=String(data.email_id||data.id||"");
+  if(!providerMessageId)return null;
+
+  const db=createAdminClient();
+  const {data:event,error}=await db
+    .from("customer_email_events")
+    .select("id,recipient,delivery_status")
+    .eq("provider_message_id",providerMessageId)
+    .maybeSingle();
+  if(error)throw error;
+  if(!event)return null;
+
+  const occurredAt=typeof data.created_at==="string"&&!Number.isNaN(Date.parse(data.created_at))
+    ? data.created_at
+    : new Date().toISOString();
+  const terminalStatus=new Set(["bounced","complained","suppressed","failed"]);
+  const patch:Record<string,unknown>={provider_event_at:occurredAt,updated_at:new Date().toISOString()};
+  let suppressionReason:"bounce"|"complaint"|"invalid"|null=null;
+
+  if(eventType==="email.delivered"){
+    if(!terminalStatus.has(String(event.delivery_status||"")))patch.delivery_status="delivered" satisfies CustomerEmailDeliveryStatus;
+    patch.delivered_at=occurredAt;
+  }else if(eventType==="email.opened"){
+    if(!terminalStatus.has(String(event.delivery_status||"")))patch.delivery_status="delivered" satisfies CustomerEmailDeliveryStatus;
+    patch.opened_at=occurredAt;
+  }else if(eventType==="email.clicked"){
+    if(!terminalStatus.has(String(event.delivery_status||"")))patch.delivery_status="delivered" satisfies CustomerEmailDeliveryStatus;
+    patch.clicked_at=occurredAt;
+  }else if(eventType==="email.bounced"){
+    patch.delivery_status="bounced" satisfies CustomerEmailDeliveryStatus;
+    suppressionReason="bounce";
+  }else if(eventType==="email.complained"){
+    patch.delivery_status="complained" satisfies CustomerEmailDeliveryStatus;
+    suppressionReason="complaint";
+  }else if(eventType==="email.suppressed"){
+    patch.delivery_status="suppressed" satisfies CustomerEmailDeliveryStatus;
+    suppressionReason="invalid";
+  }else if(eventType==="email.failed"){
+    patch.delivery_status="failed" satisfies CustomerEmailDeliveryStatus;
+  }else{
+    return null;
+  }
+
+  const {error:updateError}=await db.from("customer_email_events").update(patch).eq("id",event.id);
+  if(updateError)throw updateError;
+
+  if(suppressionReason){
+    const {error:suppressionError}=await db.from("crm_suppression_list").upsert(
+      {email:cleanEmail(event.recipient),reason:suppressionReason,source:"resend_customer_email"},
+      {onConflict:"email"}
+    );
+    if(suppressionError)throw suppressionError;
+  }
+
+  return {customerEmail:true,eventId:event.id,deliveryStatus:String(patch.delivery_status||event.delivery_status||"accepted")};
+}
+
+const supportedResendEvents = new Set(["email.received","email.bounced","email.delivered","email.opened","email.clicked","email.complained","email.suppressed","email.failed"]);
 export async function handleResendWebhook(event: ResendEvent, eventId: string) {
   const eventType = String(event.type || "");
   if (!eventId || !supportedResendEvents.has(eventType)) return { ignored: true };
@@ -81,13 +141,15 @@ export async function handleResendWebhook(event: ResendEvent, eventId: string) {
   if (claim === "in_progress") return { inProgress: true };
   try {
     const data = event.data || {};
-    const result =
-      eventType === "email.received" ? await receive(data) :
+    const customerResult = eventType === "email.received" ? null : await customerEmailOutboundEvent(eventType,data);
+    const result = customerResult ||
+      (eventType === "email.received" ? await receive(data) :
       eventType === "email.bounced" ? await bounce(data) :
       eventType === "email.delivered" ? await delivered(data) :
+      eventType === "email.opened" || eventType === "email.clicked" ? { unmatched:true, engagementOnly:true } :
       eventType === "email.complained" ? await complained(data) :
       eventType === "email.suppressed" ? await suppressed(data) :
-      await deliveryFailed(data);
+      await deliveryFailed(data));
     await finishEvent(eventId);
     webhookLog("processed", { eventType, eventId, matched: !("unmatched" in result && result.unmatched) });
     return result;
