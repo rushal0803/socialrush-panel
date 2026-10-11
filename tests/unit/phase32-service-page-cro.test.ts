@@ -66,3 +66,35 @@ test("Phase 32 shared order card keeps neutral merchandising and service-specifi
   assert.match(card, /data-cro-service-instruction/);
   assert.doesNotMatch(card, /most popular|best seller|limited time|only \d+ left|save \d+%|discount/i);
 });
+
+test("Phase 3 service landing pages retain accessible order builders and their mobile action docks", () => {
+  const likes = read("app/(india-seo-services)/buy-instagram-likes-india/page.tsx");
+  const linkedIn = read("components/marketing/LinkedInFollowersLanding.tsx");
+  const views = read("components/marketing/YouTubeViewsLanding.tsx");
+
+  assert.match(likes, /<InstagramLikesOrderPanel compact/);
+  assert.match(likes, /Choose Likes &amp; See Total/);
+  assert.match(likes, /ServiceOrderStickyCta href="#packages"/);
+  assert.match(likes, /startingPrice=\{service\?\.pricePer1000\}/);
+
+  assert.match(linkedIn, /function OrderBuilder\(/);
+  assert.match(linkedIn, /id="order"/);
+  assert.match(linkedIn, /Choose Followers &amp; See Total/);
+  assert.match(linkedIn, /ServiceOrderStickyCta href="#order"/);
+
+  assert.match(views, /function OrderBuilder\(/);
+  assert.match(views, /id="packages"/);
+  assert.match(views, /Choose Views &amp; See Total/);
+  assert.match(views, /ServiceOrderStickyCta href="#packages"/);
+  assert.doesNotMatch(views, /orderHref="#order"/);
+});
+
+test("Phase 3 flagship previews do not autoplay and Instagram followers preserve search entry heading", () => {
+  const linkedIn = read("components/marketing/LinkedInFollowersLanding.tsx");
+  const views = read("components/marketing/YouTubeViewsLanding.tsx");
+  const instagram = read("app/buy-instagram-followers-india/page.tsx");
+
+  assert.match(linkedIn, /\[playing, setPlaying\] = useState\(false\)/);
+  assert.match(views, /\[playing, setPlaying\] = useState\(false\)/);
+  assert.match(instagram, /Buy Instagram Followers <span[^>]+>India<\/span>/);
+});
