@@ -36,8 +36,8 @@ export default async function PremiumCatalogServiceLanding({ serviceCode, canoni
   const catalog = activeSmmServices.find((service) => service.code === serviceCode);
   if (!catalog) return null;
   const live = catalog.requiresLiveCatalogFacts ? await getLiveServiceFacts(catalog.platform, catalog.name, catalog.code) : null;
-const canStartOrder = canStartServiceOrder(Boolean(catalog.requiresLiveCatalogFacts), live);
-  const service = live?.available ? { ...catalog, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } : catalog;
+  const canStartOrder = canStartServiceOrder(Boolean(catalog.requiresLiveCatalogFacts), live);
+  const service = canStartOrder && live?.available ? { ...catalog, pricePer1000: live.rate, minQuantity: live.min, maxQuantity: live.max, deliveryTime: live.deliveryTime, refillPolicy: live.refillPolicy, qualityType: live.qualityType, importantInstruction: live.importantInstruction } : catalog;
   const platform = platformMeta[service.platform];
   const orderHref = `/dashboard/new-order?platform=${encodeURIComponent(service.platform)}&service=${encodeURIComponent(service.code)}`;
   const resolvedCanonicalPath = canonicalPath ?? `/services/${service.code}`;
@@ -51,15 +51,15 @@ const canStartOrder = canStartServiceOrder(Boolean(catalog.requiresLiveCatalogFa
   const target = intentCopy?.target ?? `public ${platform.label} destination`;
   const hasSpecificDeliveryEstimate = Boolean(service.deliveryTime && !/estimate shown before checkout/i.test(service.deliveryTime));
   const deliveryDisplay = hasSpecificDeliveryEstimate ? service.deliveryTime : "Shown before checkout";
-  const deliveryAnswer = hasSpecificDeliveryEstimate ? `The current service estimate is ${service.deliveryTime}. Timing can vary with quantity, destination availability and current service conditions.` : "The current delivery estimate is shown in the service details before checkout. Timing can vary with quantity, destination availability and current service conditions.";
+  const deliveryAnswer = !canStartOrder ? "Delivery details are unavailable while this service is inactive. Please check available services." : hasSpecificDeliveryEstimate ? `The current service estimate is ${service.deliveryTime}. Timing can vary with quantity, destination availability and current service conditions.` : "The current delivery estimate is shown in the service details before checkout. Timing can vary with quantity, destination availability and current service conditions.";
 
   const faq: ReadonlyArray<readonly [string, string]> = [
     [`How do I order ${faqName}?`, `Choose your quantity, enter the correct ${target} link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard.`],
     [`Which link should I submit for ${faqName}?`, `Use the direct link for the eligible ${target}. Check the URL carefully before payment and keep the destination public and available while the order is processing.`],
     ["Do I need to share my password?", "No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN."],
-    [`How much do ${faqName} cost?`, "The service card shows the current rate and quantity limits. Your order total is calculated from the quantity you select before checkout."],
+    [`How much do ${faqName} cost?`, canStartOrder ? "The service card shows the current rate and quantity limits. Your order total is calculated from the quantity you select before checkout." : "Live pricing is unavailable while this service is inactive. Check the available service catalog for current options."],
     ["How long does delivery take?", deliveryAnswer],
-    ["What is the refill policy?", `The current service policy is ${service.refillPolicy}. Review the order details before checkout because service conditions can change.`],
+    ["What is the refill policy?", canStartOrder ? `The current service policy is ${service.refillPolicy}. Review the order details before checkout because service conditions can change.` : "Refill terms can be confirmed when the service is available again. Review active service conditions before payment."],
     ...(intentCopy?.terminology ? [["Why does this page mention both Twitter and X?", intentCopy.terminology] as const] : []),
     [`Do ${faqName} guarantee reach, followers, sales or ranking?`, "No. SocialRUSH does not guarantee organic reach, follower growth, sales, leads, search visibility or other platform outcomes from an engagement order."],
   ];
