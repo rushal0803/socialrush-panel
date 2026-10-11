@@ -84,3 +84,23 @@ test("Phase 46 exposes the revenue control center in admin", () => {
   assert.match(page, /Phase 46 · ₹5L Monthly Revenue Engine/);
   assert.match(page, /Verified monthly revenue control center/);
 });
+
+
+test("Post-launch trusted payment and order events use the partial unique event_id index safely", () => {
+  const writer = read("lib/analytics/server.ts");
+  const wallet = read("app/api/orders/route.ts");
+  const verified = read("app/api/checkout/payment/verify/route.ts");
+
+  // ON CONFLICT(event_id) fails with 42P10 against the existing partial unique index.
+  assert.match(writer, /\.from\("analytics_events"\)\.insert\(/);
+  assert.doesNotMatch(writer, /\.from\("analytics_events"\)\.upsert\(/);
+  assert.doesNotMatch(writer, /onConflict:\s*"event_id"/);
+  assert.match(writer, /writeError\.code !== "23505"/);
+  assert.match(writer, /console\.error\("\[trusted-analytics\] insert failed"/);
+  assert.match(writer, /safeMetadata\(metadata\)/);
+  assert.match(writer, /event_id:\s*input\.eventId/);
+  assert.match(wallet, /eventName:\s*"order_created"/);
+  assert.match(verified, /eventName:\s*"payment_completed"/);
+  // Verified outcomes remain server-side; never add client payment-success writes.
+  assert.doesNotMatch(read("lib/analytics/events.ts").split("export const clientAnalyticsEvents")[1].split("] as const")[0], /"payment_completed"|"order_created"/);
+});
