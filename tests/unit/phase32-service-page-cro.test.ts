@@ -98,3 +98,23 @@ test("Phase 3 flagship previews do not autoplay and Instagram followers preserve
   assert.match(views, /\[playing, setPlaying\] = useState\(false\)/);
   assert.match(instagram, /Buy Instagram Followers <span[^>]+>India<\/span>/);
 });
+
+test("Shared catalog detail landings keep inline order and mobile CTA on the same guarded route", () => {
+  const page = read("components/marketing/services/PremiumCatalogServiceLanding.tsx");
+  assert.match(page, /const usesInlineOrderBuilder = canStartOrder && !\/custom-comments\|endorsements\|poll-votes\//);
+  assert.match(page, /const primaryOrderHref = usesInlineOrderBuilder \? "#order-builder" : orderHref/);
+  assert.match(page, /<section id="order-builder" className="min-w-0 scroll-mt-28">/);
+  assert.match(page, /<ServiceOrderCard service=\{service\}/);
+  assert.match(page, /<ServiceOrderStickyCta href=\{primaryOrderHref\}/);
+  assert.match(page, /available=\{canStartOrder\}/);
+  assert.match(page, /This service is currently unavailable/);
+  assert.match(page, /<Link href="\/services"/);
+  assert.doesNotMatch(page, /\{usesInlineOrderBuilder \? <section className="mt-6"><aside/);
+});
+
+test("Service readiness counts remain compatible with existing public order smoke tests", () => {
+  const card = read("components/marketing/services/ServiceOrderCard.tsx");
+  assert.match(card, /\/3 ready/);
+  assert.match(card, /data-cro-readiness/);
+  assert.match(card, /Review current INR price before payment/);
+});
