@@ -39,7 +39,7 @@ export default async function AutomationHealthPage(){
   d?.status!=="completed"?"Prospect discovery latest run is not completed":null,
   customerFailed.count&&customerFailed.count>0?String(customerFailed.count)+" customer email delivery failures in the past 7 days":null,
   webhookFailures.count&&webhookFailures.count>0?String(webhookFailures.count)+" failed Resend webhook events":null,
-  customerAccepted.count&&customerAccepted.count>0&&deliveryWebhooks.count===0?"No Resend delivery-confirmation events recorded; check webhook subscriptions":null,
+  customerAccepted.count&&customerAccepted.count>0&&deliveryWebhooks.count===0?"Delivery tracking requires attention: accepted emails exist, but no email.delivered webhook is recorded. Verify the Resend webhook endpoint, event subscriptions and signing secret. Do not infer that recipients failed to receive emails.":null,
  ].filter(Boolean);
  return <main className="mx-auto max-w-6xl space-y-7 p-4 text-white sm:p-8">
   <header><Link href="/admin/crm" className="text-sm text-orange-300">← CRM overview</Link><p className="mt-5 text-xs font-bold uppercase tracking-widest text-orange-300">Operations</p><h1 className="mt-2 text-3xl font-black">CRM Automation Health</h1><p className="mt-2 text-sm text-zinc-400">Live operational indicators. This page never sends email or changes CRM records.</p></header>
@@ -67,6 +67,7 @@ export default async function AutomationHealthPage(){
   </section>
   <section className="rounded-2xl border border-white/10 bg-[#111] p-5"><h2 className="font-bold">Actions requiring attention</h2>{alerts.length?<ul className="mt-3 list-disc space-y-2 pl-5 text-sm text-amber-200">{alerts.map(x=><li key={x}>{x}</li>)}</ul>:<p className="mt-3 text-sm text-zinc-300">No pending alerts from the monitored counters.</p>}
   <div className="mt-4 flex flex-wrap gap-3"><Link href="/admin/crm/follow-ups?view=overdue" className="rounded-lg bg-orange-500 px-4 py-2 text-sm font-bold">Review follow-ups</Link><Link href="/admin/crm/pipeline" className="rounded-lg border border-white/20 px-4 py-2 text-sm">Review sales pipeline</Link></div></section>
+  <section className="rounded-2xl border border-orange-400/20 bg-[#111] p-5"><h2 className="font-bold">Delivery verification checklist</h2><ol className="mt-3 list-decimal space-y-2 pl-5 text-sm text-zinc-300"><li>In Resend, verify the webhook target matches the production /api/webhooks/resend endpoint.</li><li>Enable email.delivered, email.bounced, email.complained, email.suppressed and email.failed events.</li><li>Confirm the production webhook signing secret matches the active Resend endpoint; never paste it into tickets or logs.</li><li>Send one authorized test email, then verify its provider message ID matches a customer email event and that delivery status updates.</li><li>Investigate failures before adjusting outreach volume.</li></ol></section>
   <p className="text-xs text-zinc-500">Last daily brief: {format(brief.data?.[0]?.generated_at)}. Counts represent database states; sent emails are not necessarily delivered. {errors.length?"Some data sources failed: "+errors.join("; "):""}</p>
  </main>;
 }
