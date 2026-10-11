@@ -92,19 +92,19 @@ const instagramMarketIntent: Partial<
   Record<InternationalMarket["slug"], Pick<CountryServiceCopy, "intentTitle" | "intentSummary" | "planningChecks">>
 > = {
   us: {
-    intentTitle: "Plan Instagram follower campaigns for US-facing profiles",
-    intentSummary: "Creators serving audiences across the United States may focus on one region, several states, or the whole country. Decide whom your organic content serves, make recent posts useful to new visitors, and compare follower quantities with existing profile activity. A follower package does not guarantee US-based followers, relevant reach, or engagement. USD is a planning display estimate; the final checkout remains in INR.",
+    intentTitle: "Plan Instagram follower campaigns for USA-facing profiles",
+    intentSummary: "For creators, brands and teams planning campaigns for US-facing audiences, organic content may focus on one US region, several states, or the whole country. Decide whom your organic content serves, make recent posts useful to new visitors, and compare follower quantities with existing profile activity. A follower package does not guarantee US-based followers, relevant reach, or engagement. USD is a planning display estimate; the final checkout remains in INR.",
     planningChecks: [
-      "Define whether your organic content speaks to a city, a region, several states, or a nationwide audience. This is not a promise of geographically targeted follower delivery.",
+      "Use USD display estimates only for planning; define whether your organic content speaks to a city, a region, several states, or a nationwide audience. This does not promise geographically targeted follower delivery.",
       "Compare genuine comments, post saves, and profile visits with follower counts instead of assuming more followers means new customers.",
       "Verify your public Instagram profile, current INR checkout total, delivery estimate, and service-specific refill terms before ordering.",
     ],
   },
   uk: {
     intentTitle: "Compare Instagram follower options for UK creators and local businesses",
-    intentSummary: "UK creators, independent shops, and local services should distinguish between content for nearby visitors, a national market, and a specialist community. Make your bio and recent posts understandable, including your service area when relevant, before comparing package quantities. GBP values are display estimates for planning; checkout remains in INR. An Instagram follower package does not guarantee followers based in the United Kingdom or new customer enquiries.",
+    intentSummary: "UK creators, brands and independent marketing teams, including independent shops and local services, should distinguish content for nearby visitors, a national market, and a specialist community. Make your bio and recent posts understandable, including your service area when relevant, before comparing package quantities. GBP values are display estimates for planning; checkout remains in INR. An Instagram follower package does not guarantee followers based in the United Kingdom or new customer enquiries.",
     planningChecks: [
-      "Clarify whether each organic content theme is for local visitors, national customers, or a specialist audience; the follower service does not promise geographic targeting.",
+      "Use GBP estimates for planning; clarify whether each organic content theme is for local visitors, national customers, or a specialist audience. Follower delivery is not geographically guaranteed.",
       "Review profile clarity, genuine interactions, and qualified enquiries alongside visible follower growth.",
       "Use pound-sterling display estimates for planning, then confirm the final INR total and applicable delivery/refill terms before paying.",
     ],
