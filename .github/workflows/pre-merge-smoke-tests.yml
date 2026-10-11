@@ -117,6 +117,30 @@ jobs:
           retention-days: 7
           if-no-files-found: warn
 
+  wallet-db-integration:
+    name: Isolated PostgreSQL wallet approval and replay checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_PASSWORD: wallet_fixture_only
+          POSTGRES_DB: wallet_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Execute isolated wallet database integration tests
+        env:
+          PGPASSWORD: wallet_fixture_only
+        run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/manual-wallet-review.integration.sql
+
   perf-evidence:
     name: PR 630 mobile/desktop performance evidence (non-release)
     if: ${{ github.event.pull_request.number == 630 }}
