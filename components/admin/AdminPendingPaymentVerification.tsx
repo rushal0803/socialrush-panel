@@ -13,6 +13,9 @@ type Props = {
 export default function AdminPendingPaymentVerification({ orderId, paymentStatus, customerNote, amount }: Props) {
   const router = useRouter();
   const [busy, setBusy] = useState(false);
+  const [receiptVerified, setReceiptVerified] = useState(false);
+  const [verifiedTransactionId, setVerifiedTransactionId] = useState("");
+  const [verificationNote, setVerificationNote] = useState("");
   const [error, setError] = useState("");
   const [message, setMessage] = useState("");
 
@@ -26,7 +29,7 @@ export default function AdminPendingPaymentVerification({ orderId, paymentStatus
       const response = await fetch(`/api/admin/orders/${orderId}/status`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ status: "processing", note: "Manual payment receipt verified against the submitted UTR." }),
+        body: JSON.stringify({ status: "processing", receiptVerified, verifiedTransactionId, note: verificationNote }),
       });
       const payload = await response.json();
       if (!response.ok) throw new Error(payload.error || "Unable to confirm payment.");
@@ -50,7 +53,8 @@ export default function AdminPendingPaymentVerification({ orderId, paymentStatus
       </div>
       {error ? <p className="mt-3 rounded-xl bg-red-100 p-3 text-xs font-semibold text-red-700">{error}</p> : null}
       {message ? <p className="mt-3 rounded-xl bg-emerald-100 p-3 text-xs font-semibold text-emerald-700">{message}</p> : null}
-      <button type="button" disabled={busy} onClick={() => void confirmPayment()} className="mt-4 min-h-12 w-full rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:opacity-50">
+      <div className="mt-4 space-y-3"><label className="block text-xs font-bold text-slate-800">Verified bank/chain transaction ID<input value={verifiedTransactionId} onChange={(event) => setVerifiedTransactionId(event.target.value)} placeholder="Enter ID from received payment" className="mt-2 w-full rounded-xl border border-amber-300 bg-white px-3 py-3 text-sm" /></label><label className="block text-xs font-bold text-slate-800">Verification evidence / note<textarea value={verificationNote} onChange={(event) => setVerificationNote(event.target.value)} placeholder="Confirm received amount, destination and date against your bank or TRON explorer" className="mt-2 w-full rounded-xl border border-amber-300 bg-white px-3 py-3 text-sm" rows={3} /></label><label className="flex items-start gap-2 text-xs font-semibold text-slate-800"><input type="checkbox" checked={receiptVerified} onChange={(event) => setReceiptVerified(event.target.checked)} className="mt-0.5" />I personally verified the actual incoming payment, exact amount, transaction ID and receiving account or TRC20 address.</label></div>
+      <button type="button" disabled={busy || !receiptVerified || verifiedTransactionId.trim().length < 8 || verificationNote.trim().length < 12} onClick={() => void confirmPayment()} className="mt-4 min-h-12 w-full rounded-xl bg-gradient-to-r from-emerald-600 to-emerald-500 px-5 py-3 text-sm font-black text-white shadow-lg disabled:opacity-50">
         {busy ? "Confirming…" : "Confirm Payment & Start Processing"}
       </button>
       <p className="mt-3 text-xs leading-5 text-amber-800">Click this only after you see the exact payment in your account. This action marks payment as Paid and moves the order to Processing.</p>
