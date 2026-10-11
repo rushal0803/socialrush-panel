@@ -31,7 +31,7 @@ export async function POST(request: Request, { params: paramsPromise }: { params
   }
 
   if (awaitingPaymentVerification && status === "processing") {
-    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\\s*([A-Za-z0-9-]{8,80})\\./i)?.[1];
+    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\s*([A-Za-z0-9-]{8,80})\./i)?.[1];
     if (body?.receiptVerified !== true || !submittedId || !Number.isFinite(Number(currentOrder.charge)) || Number(currentOrder.charge) <= 0) {
       return NextResponse.json({ error: "Confirm the actual incoming payment and ensure a valid submitted transaction ID and amount exist." }, { status: 422 });
     }
@@ -40,7 +40,7 @@ export async function POST(request: Request, { params: paramsPromise }: { params
   const update: Record<string, string | null> = { status };
   if (awaitingPaymentVerification && status === "processing") {
     update.payment_status = "paid";
-    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\\s*([A-Za-z0-9-]{8,80})\\./i)?.[1];
+    const submittedId = String(currentOrder.customer_note || "").match(/UTR:\s*([A-Za-z0-9-]{8,80})\./i)?.[1];
     const verifiedNote = `Manual receipt confirmed by admin ${auth.user.id} at ${new Date().toISOString()}. Customer-submitted transaction ID: ${submittedId}. Amount: INR ${Number(currentOrder.charge).toFixed(2)}. Admin attested to independent verification of incoming funds, destination and transaction ID.`;
     update.admin_note = `${verifiedNote}${currentOrder.admin_note ? ` Previous note: ${currentOrder.admin_note}` : ""}`.slice(0, 2000);
   } else if (awaitingPaymentVerification && status === "failed") {
