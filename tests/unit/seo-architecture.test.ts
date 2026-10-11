@@ -7,7 +7,7 @@ import { countryServicePaths, getPublishedCountryServicePage, publishedCountrySe
 import { hasUniquePrimaryTargets, indexableInternationalPaths, isPublishedInternationalPath, protectedIndiaSeoPaths, seoIntentMap } from "../../lib/seo/architecture.ts";
 import { createCountryServiceSchema } from "../../lib/seo/country-service-schema.ts";
 import { contentClusters } from "../../lib/seo/content-clusters.ts";
-import { articleSlugs } from "../../components/marketing/blog/blogData.ts";
+import { articleSlugs, getArticleBySlug } from "../../components/marketing/blog/blogData.ts";
 import { buildQuantityPlanning, serviceUnitFromCode } from "../../lib/seo/search-demand.ts";
 import { getPlatformAuthorityTargets, uniqueAuthorityTargets } from "../../lib/seo/authority-graph.ts";
 import { crawlPriorityServiceLinks, searchPlanningLinks } from "../../lib/seo/search-priority.ts";
@@ -113,6 +113,47 @@ test("platform hubs link to published, unique authority guides", () => {
         publishedArticles.has(guide.href.replace("/blog/", "")),
         `${guide.href} must resolve to a published article`,
       );
+    }
+  }
+});
+
+test("GSC crawled evergreen guides are linked from their relevant platform hubs", () => {
+  const targets = [
+    ["instagram", "/blog/best-time-to-post-on-instagram-india"],
+    ["youtube", "/blog/how-to-get-1000-youtube-subscribers"],
+  ] as const;
+  for (const [platform, href] of targets) {
+    assert.ok(
+      contentClusters[platform].guideLinks.some((guide) => guide.href === href),
+      `${platform} hub needs a direct link to ${href}`,
+    );
+    assert.ok(articleSlugs.includes(href.slice("/blog/".length)), `${href} must be a published article`);
+  }
+});
+
+test("GSC Phase 4 guides offer practical editorial detail beyond a basic introduction", () => {
+  for (const [slug, headings] of [
+    ["facebook-page-growth-tips-for-local-businesses", [
+      "A Practical Two-Week Posting Plan for a Local Business",
+      "Make It Easy for Nearby Customers to Contact You",
+      "Measure Real Enquiries Alongside Reach and Follows",
+    ]],
+    ["social-media-growth-strategy-indian-creators", [
+      "Choose One Primary Channel and One Supporting Platform",
+      "Example Seven-Day Content and Distribution Routine",
+      "Use a Simple Scorecard to Separate Attention and Outcomes",
+    ]],
+  ] as const) {
+    const article = getArticleBySlug(slug);
+    assert.ok(article, `${slug} must remain a published article`);
+    const actualHeadings = article.sections.map((section) => section.heading);
+    assert.ok(article.sections.length >= 6, `${slug} needs concrete usable sections`);
+    assert.equal(new Set(actualHeadings).size, actualHeadings.length, `${slug} must not repeat section headings`);
+    for (const heading of headings) {
+      assert.ok(actualHeadings.includes(heading), `${slug} must retain ${heading}`);
+      const section = article.sections.find((item) => item.heading === heading);
+      assert.ok((section?.body ?? "").length >= 250, `${slug}: ${heading} needs actionable explanatory copy`);
+      assert.ok((section?.tips?.length ?? 0) >= 3, `${slug}: ${heading} needs practical steps`);
     }
   }
 });
@@ -304,6 +345,28 @@ test("international routes are allowlisted, catalog-backed, and have no unpublis
   assert.equal(isPublishedInternationalPath("/zz/buy-instagram-followers"), false);
   assert.ok(getPublishedCountryServicePage("sg", "buy-instagram-followers"));
   assert.equal(isPublishedInternationalPath("/sg/buy-instagram-followers"), true);
+});
+
+test("US and UK Instagram pages provide distinct, accurate market guidance", () => {
+  const us = getPublishedCountryServicePage("us", "buy-instagram-followers");
+  const uk = getPublishedCountryServicePage("uk", "buy-instagram-followers");
+  const ca = getPublishedCountryServicePage("ca", "buy-instagram-followers");
+  assert.ok(us && uk && ca);
+  assert.notEqual(us.copy.intentTitle, uk.copy.intentTitle);
+  assert.notEqual(us.copy.intentSummary, uk.copy.intentSummary);
+  assert.match(us.copy.intentSummary ?? "", /region|states/i);
+  assert.match(uk.copy.intentSummary ?? "", /local|national/i);
+  assert.match(us.copy.intentSummary ?? "", /does not guarantee US-based followers/i);
+  assert.match(uk.copy.intentSummary ?? "", /does not guarantee followers based in the United Kingdom/i);
+  assert.match(us.copy.intentSummary ?? "", /checkout remains in INR/);
+  assert.match(uk.copy.intentSummary ?? "", /checkout remains in INR/);
+  assert.equal(us.market.currency, "USD");
+  assert.equal(uk.market.currency, "GBP");
+  assert.equal(ca.market.currency, "CAD");
+  assert.equal(us.catalogServiceCode, uk.catalogServiceCode);
+  assert.equal(us.copy.planningChecks?.length, 3);
+  assert.equal(uk.copy.planningChecks?.length, 3);
+  assert.match(ca.copy.intentTitle ?? "", /Instagram follower planning/);
 });
 
 test("country service schema remains INR-authoritative", () => {

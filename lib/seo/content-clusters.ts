@@ -42,6 +42,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
       { label: "Instagram followers vs engagement", href: "/blog/instagram-followers-vs-engagement" },
       { label: "Instagram follower pricing guide for India", href: "/blog/instagram-followers-price-in-india" },
       { label: "Instagram views vs reach in 2026", href: "/blog/instagram-views-vs-reach" },
+      { label: "Best time to post on Instagram in India", href: "/blog/best-time-to-post-on-instagram-india" },
     ],
   },
   youtube: {
@@ -59,6 +60,7 @@ export const contentClusters: Record<ContentPlatform, ContentCluster> = {
     guideLinks: [
       { label: "YouTube subscribers price guide for India", href: "/blog/youtube-subscribers-price-in-india" },
       { label: "How to promote a new YouTube channel in India", href: "/blog/how-to-promote-new-youtube-channel-in-india" },
+      { label: "How to get your first 1,000 YouTube subscribers", href: "/blog/how-to-get-1000-youtube-subscribers" },
       { label: "YouTube subscribers vs views for Indian creators", href: "/blog/youtube-subscribers-vs-views-india" },
       { label: "YouTube views pricing guide for India", href: "/blog/youtube-views-price-in-india" },
       { label: "YouTube subscriber safety & policy guide", href: "/blog/is-it-safe-to-buy-youtube-subscribers" },
