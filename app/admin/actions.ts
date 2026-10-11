@@ -276,7 +276,21 @@ export async function updateWebsiteSettings(formData: FormData) {
 
 export async function updateTransactionStatus(formData: FormData) {
   const { supabase } = await requireAdmin();
-  await supabase.from("transactions").update({ status: text(formData, "status") }).eq("id", text(formData, "id"));
+  const id = text(formData, "id");
+  const status = text(formData, "status");
+  if (!["pending", "completed", "failed", "cancelled"].includes(status)) throw new Error("Invalid transaction status.");
+  const { data: transaction, error: readError } = await supabase
+    .from("transactions")
+    .select("id,status,payment_method")
+    .eq("id", id).single();
+  if (readError || !transaction) throw new Error("Transaction could not be loaded.");
+  if (["manual_upi", "manual_bank_transfer", "manual_usdt_trc20"].includes(String(transaction.payment_method))) {
+    throw new Error("Manual payment deposits require verified receipt and a dedicated approval workflow. Status changes are blocked here.");
+  }
+  if (transaction.status !== status) {
+    const { error } = await supabase.from("transactions").update({ status }).eq("id", id).eq("status", transaction.status);
+    if (error) throw new Error("Transaction update failed.");
+  }
   revalidatePath("/admin/transactions");
 }
 
