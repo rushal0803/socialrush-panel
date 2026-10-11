@@ -38,3 +38,12 @@ test("admin server action uses privileged atomic RPC after receipt confirmation"
   assert.match(review, /adminSupabase\.rpc\("admin_review_manual_wallet_payment"/);
   assert.doesNotMatch(review, /\.from\("transactions"\)\.update/);
 });
+
+
+test("legacy admin order form cannot bypass pending payment verification", () => {
+  const actions = readFileSync("app/admin/actions.ts", "utf8");
+  const legacy = actions.slice(actions.indexOf("export async function updateOrder("), actions.indexOf("export async function adjustBalance("));
+  assert.match(legacy, /payment_status/);
+  assert.match(legacy, /verification_pending/);
+  assert.match(legacy, /\["pending", "cancelled", "failed"\]\.includes\(nextStatus\)/);
+});
