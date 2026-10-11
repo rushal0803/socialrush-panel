@@ -97,10 +97,10 @@ async function customerEmailOutboundEvent(eventType:string,data:Record<string,un
     if(!terminalStatus.has(String(event.delivery_status||"")))patch.delivery_status="delivered" satisfies CustomerEmailDeliveryStatus;
     patch.delivered_at=occurredAt;
   }else if(eventType==="email.opened"){
-    if(!terminalStatus.has(String(event.delivery_status||"")))patch.delivery_status="delivered" satisfies CustomerEmailDeliveryStatus;
+    // Engagement is not a provider email.delivered confirmation.
+    // Preserve the last delivery status while recording engagement separately.
     patch.opened_at=occurredAt;
   }else if(eventType==="email.clicked"){
-    if(!terminalStatus.has(String(event.delivery_status||"")))patch.delivery_status="delivered" satisfies CustomerEmailDeliveryStatus;
     patch.clicked_at=occurredAt;
   }else if(eventType==="email.bounced"){
     patch.delivery_status="bounced" satisfies CustomerEmailDeliveryStatus;
