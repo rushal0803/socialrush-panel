@@ -319,6 +319,7 @@ export default function NewOrderPage() {
     if (!recoveryCampaign) return;
     recoveryCampaignRef.current = recoveryCampaign;
     track("checkout_recovery_click", { campaign: recoveryCampaign });
+    track("email_recovery_click", { campaign: recoveryCampaign, surface: "new_order_landing" });
   }, [recoveryCampaign]);
 
   const services = useMemo(
