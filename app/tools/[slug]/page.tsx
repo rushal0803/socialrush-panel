@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { notFound, redirect } from "next/navigation";
+import { notFound, permanentRedirect, redirect } from "next/navigation";
 import PublicShell from "@/components/marketing/PublicShell";
 import ToolsContent from "@/components/marketing/tools/ToolsContent";
 import { createPageMetadata, SEO_SITE_URL } from "@/lib/seo/metadata";
@@ -14,6 +14,10 @@ export async function generateMetadata({ params: paramsPromise }: { params: Prom
 }
 export default async function ToolPage({ params: paramsPromise }: { params: Promise<{ slug: string }> }) {
   const params = await paramsPromise;
+  // Preserve the historical planner URL without creating a duplicate tool page.
+  if (params.slug === "social-media-growth-goal-planner") {
+    permanentRedirect("/tools/creator-growth-goal-planner");
+  }
   const legacySlug = {
     "youtube-thumbnail-preview-title-checker": "youtube-thumbnail-preview",
     "instagram-caption-character-counter": "instagram-caption-counter",
