@@ -63,3 +63,11 @@ test("template rendering errors are handled inside each worker item", () => {
   const source = read("lib/orders/notification-delivery.ts");
   assert.match(source, /try \{\s*const content = orderNoticeContent\(/);
 });
+
+test("worker reports suppressed and permanently failed notices without logging recipient addresses", () => {
+  const source = read("lib/orders/notification-delivery.ts");
+  assert.match(source, /let suppressed = 0/);
+  assert.match(source, /let permanentlyFailed = 0/);
+  assert.match(source, /if \(retryError\)/);
+  assert.match(source, /processed: batch\.length, sent, failed, suppressed, permanentlyFailed/);
+});
