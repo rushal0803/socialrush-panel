@@ -1347,3 +1347,15 @@ test("phase 11 preserves the historical growth-goal-planner URL with one canonic
   assert.ok(route.indexOf(legacySlug) < route.indexOf(canonicalRedirect), "Redirect must be in the legacy branch");
   assert.ok(route.includes("if (!tool) notFound();"), "Unknown unrelated tool slugs remain 404");
 });
+
+
+test("phase 13 redirects the historical LinkedIn personal-brands blog URL to its published canonical", () => {
+  const legacySlug = "linkedin-growth-tips-for-personal-brands";
+  const canonicalSlug = "linkedin-growth-tips-personal-brands";
+  const route = readFileSync(new URL("../../app/blog/linkedin-growth-tips-for-personal-brands/page.tsx", import.meta.url), "utf8");
+  assert.ok(route.includes('import { permanentRedirect } from "next/navigation"'), "Legacy page must issue a permanent redirect");
+  assert.ok(route.includes('permanentRedirect("/blog/linkedin-growth-tips-personal-brands")'), "Redirect must use the existing published article");
+  assert.ok(getArticleBySlug(canonicalSlug), "Canonical LinkedIn personal-brands article must remain published");
+  assert.equal(getArticleBySlug(legacySlug), undefined, "Legacy URL must not become an indexable duplicate article");
+  assert.ok(!articleSlugs.includes(legacySlug), "Legacy slug must remain outside the published blog sitemap");
+});
