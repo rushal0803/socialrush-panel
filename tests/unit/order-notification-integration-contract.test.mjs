@@ -45,3 +45,10 @@ test("admin status notices are feature-gated and failure-isolated", () => {
   assert.match(source, /enqueueOrderNotice\(params\.id, kind/);
   assert.match(source, /\[order-notifications\] enqueue failed/);
 });
+
+test("stale delivery claims cannot be retried without limit", () => {
+  const migration = read("supabase/migrations/202610130001_order_notification_outbox.sql");
+  assert.match(migration, /attempts >= 5/);
+  assert.match(migration, /where attempts < 5/);
+  assert.match(migration, /claimed_at < now\(\) - interval '15 minutes'/);
+});
