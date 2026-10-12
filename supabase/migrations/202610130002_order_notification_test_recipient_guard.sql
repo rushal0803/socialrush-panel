@@ -34,4 +34,4 @@ begin
 end;
 $$;
 revoke all on function public.claim_order_notification_batch(integer,text) from public, anon, authenticated;
-grant execute on function public.claim_order_notification_batch(integer) to service_role;
+grant execute on function public.claim_order_notification_batch(integer,text) to service_role;
