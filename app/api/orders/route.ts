@@ -5,6 +5,7 @@ import { revalidatePath } from "next/cache";
 import { detectPublicCount } from "@/lib/orders/count-detector";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
+import { enqueueOrderNotice } from "@/lib/orders/notification-outbox";
 
 async function saveInitialCount(
   supabase: ReturnType<typeof createAdminClient>,
@@ -107,6 +108,13 @@ export async function POST(request: NextRequest) {
       serviceCode: body.serviceCode,
     });
     await supabase.from("order_drafts").delete().eq("user_id", user.id);
+    if (process.env.ORDER_NOTIFICATIONS_ENABLED === "true") {
+      try {
+        await enqueueOrderNotice(checkout.id, "order_placed", user.email ?? null);
+      } catch (notificationError) {
+        console.error("[order-notifications] wallet checkout enqueue failed", notificationError);
+      }
+    }
   }
 
   revalidatePath("/dashboard");

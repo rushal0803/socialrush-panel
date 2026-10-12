@@ -52,6 +52,7 @@ jobs:
       - run: npm run seo:digital-pr
       - run: npm run seo:distribution
       - run: npm run trust:audit
+      - run: npm run test:order-notifications
       - run: npm run test:crm-pipeline
       - run: npm run test:international-seo
       - run: npm run test:payment-confidence

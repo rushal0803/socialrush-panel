@@ -3,6 +3,9 @@ import { revalidatePath } from "next/cache";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
 import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
 import { recordTrustedEvent } from "@/lib/analytics/server";
+import { orderNotificationEvents } from "@/lib/orders/notification-policy";
+import { enqueueOrderNotice } from "@/lib/orders/notification-outbox";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const statuses = new Set([
   "pending", "processing", "in_progress", "partial", "completed", "cancelled",
@@ -120,6 +123,25 @@ export async function POST(request: Request, { params: paramsPromise }: { params
         },
         { status: 500 },
       );
+    }
+  }
+
+  // Best-effort enqueue after the order update and refund handling. Email delivery remains gated.
+  if (process.env.ORDER_NOTIFICATIONS_ENABLED === "true") {
+    try {
+      const events = orderNotificationEvents(
+        { status: currentOrder.status, paymentStatus: currentOrder.payment_status },
+        { status: data.status, paymentStatus: data.payment_status },
+      );
+      if (events.length) {
+        const { data: customer, error: customerError } = await createAdminClient().auth.admin.getUserById(currentOrder.user_id);
+        if (customerError) throw customerError;
+        for (const kind of events) {
+          await enqueueOrderNotice(params.id, kind, customer.user?.email ?? null);
+        }
+      }
+    } catch (notificationError) {
+      console.error("[order-notifications] enqueue failed", notificationError);
     }
   }
 

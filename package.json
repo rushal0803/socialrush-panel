@@ -37,7 +37,8 @@
     "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts tests/unit/manual-wallet-review-contract.test.mjs",
     "test:phase12": "node --experimental-strip-types --test tests/unit/phase12-quality.test.ts",
     "seo:instagram-tech": "node scripts/seo-instagram-technical-check.mjs",
-    "seo:instagram-sitemap": "node scripts/seo-instagram-sitemap-check.mjs"
+    "seo:instagram-sitemap": "node scripts/seo-instagram-sitemap-check.mjs",
+    "test:order-notifications": "node --experimental-strip-types --test tests/unit/order-notification-policy.test.ts tests/unit/order-notification-integration-contract.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
