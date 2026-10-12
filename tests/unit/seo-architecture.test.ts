@@ -1347,3 +1347,28 @@ test("phase 11 preserves the historical growth-goal-planner URL with one canonic
   assert.ok(route.indexOf(legacySlug) < route.indexOf(canonicalRedirect), "Redirect must be in the legacy branch");
   assert.ok(route.includes("if (!tool) notFound();"), "Unknown unrelated tool slugs remain 404");
 });
+
+
+test("phase 13 editorial guides give platform-specific actionable advice beyond shared boilerplate", () => {
+  const cases = [
+    ["how-to-grow-fast-on-instagram", [
+      "Diagnose what makes viewers visit your profile",
+      "Test hooks, carousels and Reels without changing everything",
+      "Build an audience loop that does not look automated",
+      "Review a four-week follow and engagement scorecard",
+    ]],
+    ["linkedin-growth-tips-personal-brands", [
+      "Make your expertise verifiable on your profile",
+      "Use four repeatable post formats with distinct jobs",
+      "Turn relevant comments into professional conversations",
+      "Run a four-week personal-brand publishing routine",
+      "Measure who engages, not only how many",
+    ]],
+  ] as const;
+  for (const [slug, headings] of cases) {
+    const article = getArticleBySlug(slug);
+    assert.ok(article, `${slug} remains a live canonical article`);
+    for (const heading of headings) assert.ok(article.sections.some(s => s.heading === heading), `${slug}: missing ${heading}`);
+    assert.ok(article.sections.length >= 10, `${slug}: maintain detailed non-duplicate guidance`);
+  }
+});
