@@ -17,8 +17,8 @@ export async function enqueueOrderNotice(orderId: string, kind: OrderNoticeKind,
 }
 
 /** The queue must be claimed atomically before delivery to prevent concurrent cron workers. */
-export async function claimOrderNoticeBatch(limit = 20) {
-  const { data, error } = await createAdminClient().rpc("claim_order_notification_batch", { p_limit: limit });
+export async function claimOrderNoticeBatch(limit = 20, testRecipient?: string) {
+  const { data, error } = await createAdminClient().rpc("claim_order_notification_batch", { p_limit: limit, p_test_recipient: testRecipient || null });
   if (error) throw error;
   return data ?? [];
 }
