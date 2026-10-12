@@ -30,7 +30,12 @@ export function customerStatusClass(status: string | null | undefined) {
   }[customerOrderStatus(status).tone];
 }
 
-export function customerOrderStages(status: string) {
+export function customerOrderStages(status: string, paymentStatus?: string | null) {
+  const payment = String(paymentStatus || "").toLowerCase();
+  if (["verification_pending", "pending", "processing", "failed", "cancelled"].includes(payment)) {
+    const labels = ["Order received", "Payment verification", "Processing", "Delivery in progress", "Completed"];
+    return labels.map((label, index) => ({ label, state: index === 0 ? "done" as const : index === 1 ? "current" as const : "upcoming" as const }));
+  }
   const delivery = ["Order received", "Payment confirmed", "Processing", "Delivery in progress", "Completed"];
   if (status === "refill_requested") {
     return [
