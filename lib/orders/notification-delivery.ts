@@ -25,8 +25,8 @@ export async function deliverOrderNotificationBatch() {
       await db.from("order_notification_outbox").update({ status: "suppressed", last_error: "No valid recipient", updated_at: new Date().toISOString() }).eq("id", notice.id).eq("status", "sending");
       continue;
     }
-    const content = orderNoticeContent(kind, String(notice.order_id).slice(0, 8));
     try {
+      const content = orderNoticeContent(kind, String(notice.order_id).slice(0, 8));
       const { data, error } = await resend.emails.send({
         from: FROM,
         to: email,
