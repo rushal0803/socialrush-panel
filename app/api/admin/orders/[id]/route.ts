@@ -57,7 +57,7 @@ export async function PATCH(request: NextRequest, { params: paramsPromise }: { p
 
   const { data: currentOrder, error: currentOrderError } = await auth.supabase
     .from("orders")
-    .select("id,user_id,charge,status,payment_status")
+    .select("id,user_id,charge,status,payment_status,quantity")
     .eq("id", params.id)
     .maybeSingle();
   if (currentOrderError) return NextResponse.json({ error: currentOrderError.message }, { status: 400 });
@@ -72,6 +72,13 @@ export async function PATCH(request: NextRequest, { params: paramsPromise }: { p
       const count = nullableCount(body[key]);
       if (count === undefined) return NextResponse.json({ error: `${key} must be a non-negative whole number` }, { status: 422 });
       update[key] = count;
+    }
+  }
+
+  if (body.delivered_count !== undefined && body.delivered_count !== null && body.delivered_count !== "") {
+    const verified = nullableCount(body.delivered_count);
+    if (verified === undefined || verified === null || verified > Number(currentOrder.quantity)) {
+      return NextResponse.json({ error: "Verified delivered count must be within the ordered quantity." }, { status: 422 });
     }
   }
 
