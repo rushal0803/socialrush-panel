@@ -52,3 +52,9 @@ test("stale delivery claims cannot be retried without limit", () => {
   assert.match(migration, /where attempts < 5/);
   assert.match(migration, /claimed_at < now\(\) - interval '15 minutes'/);
 });
+
+test("worker detects a lost claim when marking an email as accepted", () => {
+  const source = read("lib/orders/notification-delivery.ts");
+  assert.match(source, /select\("id"\)\.maybeSingle\(\)/);
+  assert.match(source, /if \(saveError \|\| !saved\)/);
+});
