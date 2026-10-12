@@ -17,12 +17,16 @@ export async function deliverOrderNotificationBatch() {
   const batch = await claimOrderNoticeBatch(20);
   let sent = 0;
   let failed = 0;
+  let suppressed = 0;
+  let permanentlyFailed = 0;
   for (const notice of batch) {
     const email = String(notice.recipient_email || "").trim();
     const kind = notice.event_kind as OrderNoticeKind;
     const attempt = Number(notice.attempts || 1);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-      await db.from("order_notification_outbox").update({ status: "suppressed", last_error: "No valid recipient", updated_at: new Date().toISOString() }).eq("id", notice.id).eq("status", "sending");
+      const { error: suppressError } = await db.from("order_notification_outbox").update({ status: "suppressed", last_error: "No valid recipient", updated_at: new Date().toISOString() }).eq("id", notice.id).eq("status", "sending");
+      if (suppressError) throw suppressError;
+      suppressed++;
       continue;
     }
     try {
@@ -42,14 +46,21 @@ export async function deliverOrderNotificationBatch() {
       const message = error instanceof Error ? error.message.slice(0, 400) : "Email delivery failed";
       const final = attempt >= MAX_ATTEMPTS;
       const delay = Math.min(60, 2 ** attempt);
-      await db.from("order_notification_outbox").update({
+      const { error: retryError } = await db.from("order_notification_outbox").update({
         status: final ? "failed" : "retry",
         last_error: message,
         next_attempt_at: new Date(Date.now() + delay * 60_000).toISOString(),
         updated_at: new Date().toISOString(),
       }).eq("id", notice.id).eq("status", "sending");
+      if (retryError) {
+        console.error("[order-notifications] unable to persist retry state", { notificationId: notice.id, error: retryError.message });
+      }
+      if (final) {
+        permanentlyFailed++;
+        console.error("[order-notifications] delivery permanently failed", { notificationId: notice.id, attempts: attempt });
+      }
       failed++;
     }
   }
-  return { enabled: true, processed: batch.length, sent, failed };
+  return { enabled: true, processed: batch.length, sent, failed, suppressed, permanentlyFailed };
 }
