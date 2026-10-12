@@ -35,8 +35,8 @@ export async function deliverOrderNotificationBatch() {
         text: `${content.heading}\n\n${content.message}\n\nView your order: https://www.getsocialrush.com/dashboard/orders/${notice.order_id}\n\nSocialRUSH Support`,
       }, { idempotencyKey: notice.event_key });
       if (error || !data?.id) throw new Error(error?.message || "Email provider did not accept message");
-      const { error: saveError } = await db.from("order_notification_outbox").update({ status: "sent", provider_message_id: data.id, sent_at: new Date().toISOString(), last_error: null, updated_at: new Date().toISOString() }).eq("id", notice.id).eq("status", "sending");
-      if (saveError) throw saveError;
+      const { data: saved, error: saveError } = await db.from("order_notification_outbox").update({ status: "sent", provider_message_id: data.id, sent_at: new Date().toISOString(), last_error: null, updated_at: new Date().toISOString() }).eq("id", notice.id).eq("status", "sending").select("id").maybeSingle();
+      if (saveError || !saved) throw saveError ?? new Error("Notification claim was lost before delivery acknowledgement");
       sent++;
     } catch (error) {
       const message = error instanceof Error ? error.message.slice(0, 400) : "Email delivery failed";
