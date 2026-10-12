@@ -5,6 +5,7 @@ import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 import { orderNotificationEvents } from "@/lib/orders/notification-policy";
 import { enqueueOrderNotice } from "@/lib/orders/notification-outbox";
+import { createAdminClient } from "@/lib/supabase/admin";
 
 const statuses = new Set([
   "pending", "processing", "in_progress", "partial", "completed", "cancelled",
@@ -133,7 +134,7 @@ export async function POST(request: Request, { params: paramsPromise }: { params
         { status: data.status, paymentStatus: data.payment_status },
       );
       if (events.length) {
-        const { data: customer, error: customerError } = await auth.supabase.auth.admin.getUserById(currentOrder.user_id);
+        const { data: customer, error: customerError } = await createAdminClient().auth.admin.getUserById(currentOrder.user_id);
         if (customerError) throw customerError;
         for (const kind of events) {
           await enqueueOrderNotice(params.id, kind, customer.user?.email ?? null);
