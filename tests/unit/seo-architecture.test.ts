@@ -1339,7 +1339,11 @@ test("Facebook and LinkedIn public order builders record only valid, privacy-saf
 test("phase 11 preserves the historical growth-goal-planner URL with one canonical redirect", () => {
   const route = readFileSync(new URL("../../app/tools/[slug]/page.tsx", import.meta.url), "utf8");
   const catalog = readFileSync(new URL("../../lib/tools/catalog.ts", import.meta.url), "utf8");
-  assert.match(catalog, /slug: "creator-growth-goal-planner"/);
-  assert.match(route, /params\\.slug === "social-media-growth-goal-planner"[\\s\\S]*?permanentRedirect\\("\\/tools\\/creator-growth-goal-planner"\\)/);
-  assert.match(route, /if \\(!tool\\) notFound\\(\\)/);
+  const legacySlug = 'params.slug === "social-media-growth-goal-planner"';
+  const canonicalRedirect = 'permanentRedirect("/tools/creator-growth-goal-planner")';
+  assert.ok(catalog.includes('slug: "creator-growth-goal-planner"'), "Current tool must be in the catalog");
+  assert.ok(route.includes(legacySlug), "Legacy GSC slug must be matched exactly");
+  assert.ok(route.includes(canonicalRedirect), "Legacy slug must use a permanent redirect to current canonical");
+  assert.ok(route.indexOf(legacySlug) < route.indexOf(canonicalRedirect), "Redirect must be in the legacy branch");
+  assert.ok(route.includes("if (!tool) notFound();"), "Unknown unrelated tool slugs remain 404");
 });
