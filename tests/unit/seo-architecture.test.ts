@@ -1319,3 +1319,18 @@ test("phase 14 LinkedIn guide strengthens existing canonicals without creating a
   assert.match(source, /\/linkedin-growth-india/);
   assert.match(source, /does not prove engagement|does not guarantee|do not assume/i);
 });
+
+
+test("Facebook and LinkedIn public order builders record only valid, privacy-safe order clicks", () => {
+  for (const [file, surface] of [
+    ["FacebookFollowersLanding.tsx", "facebook_followers_order_builder"],
+    ["LinkedInFollowersLanding.tsx", "linkedin_followers_order_builder"],
+  ] as const) {
+    const source = readFileSync(new URL(`../../components/marketing/${file}`, import.meta.url), "utf8");
+    assert.match(source, /import \{ track \} from "@\/lib\/analytics\/events";/);
+    const normalized = source.replace(/\s+/g, "");
+    const expected = `if(!valid){e.preventDefault();setAttempted(true);return;}track("new_order_clicked",{service_code:service.code,platform:service.platform,quantity,surface:"${surface}"});`;
+    assert.ok(normalized.includes(expected), `${file}: blocked clicks must not be tracked, and valid clicks should be`);
+    assert.doesNotMatch(expected, /\blink\b|\bemail\b|\buser_id\b/, "Never attach a submitted profile URL or personal data to analytics");
+  }
+});
