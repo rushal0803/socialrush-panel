@@ -28,3 +28,20 @@ test("notification cron is scheduled once per day", () => {
   const cron = config.crons.find((item) => item.path === "/api/cron/order-notifications");
   assert.equal(cron?.schedule, "20 3 * * *");
 });
+
+test("database queue denies browser roles and uses atomic row claiming", () => {
+  const migration = read("supabase/migrations/202610130001_order_notification_outbox.sql");
+  assert.match(migration, /enable row level security/i);
+  assert.match(migration, /revoke all on public\.order_notification_outbox from anon, authenticated/i);
+  assert.match(migration, /auth\.role\(\) <> 'service_role'/);
+  assert.match(migration, /for update skip locked/i);
+  assert.match(migration, /grant execute on function public\.claim_order_notification_batch\(integer\) to service_role/i);
+});
+
+test("admin status notices are feature-gated and failure-isolated", () => {
+  const source = read("app/api/admin/orders/[id]/status/route.ts");
+  assert.match(source, /ORDER_NOTIFICATIONS_ENABLED === "true"/);
+  assert.match(source, /orderNotificationEvents\(/);
+  assert.match(source, /enqueueOrderNotice\(params\.id, kind/);
+  assert.match(source, /\[order-notifications\] enqueue failed/);
+});
