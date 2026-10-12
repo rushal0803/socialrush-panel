@@ -9,6 +9,7 @@ type Props = {
   order: {
     id: string;
     status: string;
+    quantity: number;
     starting_count: number | null;
     current_count: number | null;
     partial_quantity_delivered: number | null;
@@ -30,6 +31,7 @@ export default function AdminOrderControls({ order }: Props) {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState("");
   const [error, setError] = useState("");
+  const hasCountEvidence = (order.starting_count != null && order.current_count != null) || order.partial_quantity_delivered != null;
 
   async function request(path: string, options: RequestInit) {
     setBusy(true);
@@ -57,6 +59,11 @@ export default function AdminOrderControls({ order }: Props) {
   async function save(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const values = Object.fromEntries(new FormData(event.currentTarget));
+    const delivered = values.delivered_count === "" ? null : Number(values.delivered_count);
+    if (delivered !== null && (!Number.isSafeInteger(delivered) || delivered < 0 || delivered > Number(order.quantity))) {
+      setError("Verified delivered quantity must be between 0 and the ordered quantity.");
+      return;
+    }
     await request(`/api/admin/orders/${order.id}`, {
       method: "PATCH",
       body: JSON.stringify({
@@ -64,7 +71,7 @@ export default function AdminOrderControls({ order }: Props) {
         starting_count: values.starting_count === "" ? null : Number(values.starting_count),
         current_count: values.current_count === "" ? null : Number(values.current_count),
         delivered_count: values.delivered_count === "" ? null : Number(values.delivered_count),
-        remaining_count: values.remaining_count === "" ? null : Number(values.remaining_count),
+
         provider_order_id: values.provider_order_id,
         admin_note: values.admin_note,
         failed_reason: values.failed_reason,
@@ -122,12 +129,12 @@ export default function AdminOrderControls({ order }: Props) {
       </button>
 
       <form onSubmit={save} className="mt-6 grid gap-4 sm:grid-cols-2">
+        <p className="text-xs text-amber-200 sm:col-span-2">Delivery tracking: {hasCountEvidence ? "Counts recorded" : "Not verified"}. Enter real starting and current counts, or a confirmed delivered quantity. Completing an order does not automatically verify delivery. Remaining quantity is calculated automatically.</p>
         <label className="text-xs font-semibold text-[#D1D5DB]">Status<select name="status" defaultValue={order.status} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white">{statuses.map((status) => <option key={status} value={status}>{status.replaceAll("_", " ")}</option>)}</select></label>
         <label className="text-xs font-semibold text-[#D1D5DB]">Provider order ID<input name="provider_order_id" defaultValue={order.provider_order_id || ""} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" /></label>
         <label className="text-xs font-semibold text-[#D1D5DB]">Starting count<input name="starting_count" type="number" min="0" defaultValue={order.starting_count ?? ""} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" /></label>
         <label className="text-xs font-semibold text-[#D1D5DB]">Current count<input name="current_count" type="number" min="0" defaultValue={order.current_count ?? ""} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" /></label>
-        <label className="text-xs font-semibold text-[#D1D5DB]">Delivered count<input name="delivered_count" type="number" min="0" defaultValue={order.delivered_count ?? order.partial_quantity_delivered ?? ""} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" /></label>
-        <label className="text-xs font-semibold text-[#D1D5DB]">Remaining count<input name="remaining_count" type="number" min="0" defaultValue={order.remaining_count ?? ""} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" /></label>
+        <label className="text-xs font-semibold text-[#D1D5DB]">Verified delivered count<input name="delivered_count" type="number" min="0" defaultValue={order.delivered_count ?? order.partial_quantity_delivered ?? ""} className="mt-2 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" /></label>
         <label className="flex items-center gap-3 rounded-xl border border-slate-200 px-4 py-3 text-xs font-semibold"><input name="refill_eligible" type="checkbox" defaultChecked={order.refill_eligible} /> Refill eligible</label>
         <label className="text-xs font-semibold text-[#D1D5DB] sm:col-span-2">Admin note<textarea name="admin_note" defaultValue={order.admin_note || ""} className="mt-2 min-h-24 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" placeholder="Private: never shown to customer" /></label>
         <label className="text-xs font-semibold text-[#D1D5DB]">Failed reason<textarea name="failed_reason" defaultValue={order.failed_reason || ""} className="mt-2 min-h-20 w-full rounded-xl border border-orange-400/25 bg-[#0B0B0F] px-3 py-3 text-xs text-white placeholder:text-[#9CA3AF]" placeholder="Reason shown internally" /></label>
