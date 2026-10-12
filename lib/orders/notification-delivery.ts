@@ -25,7 +25,11 @@ export async function deliverOrderNotificationBatch() {
     const attempt = Number(notice.attempts || 1);
     if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       const { error: suppressError } = await db.from("order_notification_outbox").update({ status: "suppressed", last_error: "No valid recipient", updated_at: new Date().toISOString() }).eq("id", notice.id).eq("status", "sending");
-      if (suppressError) throw suppressError;
+      if (suppressError) {
+        console.error("[order-notifications] unable to suppress invalid recipient", { notificationId: notice.id, error: suppressError.message });
+        failed++;
+        continue;
+      }
       suppressed++;
       continue;
     }
