@@ -14,7 +14,11 @@ export async function deliverOrderNotificationBatch() {
   if (!apiKey) throw new Error("RESEND_API_KEY is not configured");
   const resend = new Resend(apiKey);
   const db = createAdminClient();
-  const batch = await claimOrderNoticeBatch(20);
+  const testRecipient = process.env.ORDER_NOTIFICATIONS_TEST_RECIPIENT?.trim().toLowerCase();
+  if (testRecipient && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testRecipient)) {
+    throw new Error("Invalid ORDER_NOTIFICATIONS_TEST_RECIPIENT");
+  }
+  const batch = await claimOrderNoticeBatch(20, testRecipient);
   let sent = 0;
   let failed = 0;
   let suppressed = 0;
