@@ -58,3 +58,8 @@ test("worker detects a lost claim when marking an email as accepted", () => {
   assert.match(source, /select\("id"\)\.maybeSingle\(\)/);
   assert.match(source, /if \(saveError \|\| !saved\)/);
 });
+
+test("template rendering errors are handled inside each worker item", () => {
+  const source = read("lib/orders/notification-delivery.ts");
+  assert.match(source, /try \{\s*const content = orderNoticeContent\(/);
+});
