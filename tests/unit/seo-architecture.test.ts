@@ -1334,3 +1334,12 @@ test("Facebook and LinkedIn public order builders record only valid, privacy-saf
     assert.doesNotMatch(expected, /\blink\b|\bemail\b|\buser_id\b/, "Never attach a submitted profile URL or personal data to analytics");
   }
 });
+
+
+test("phase 11 preserves the historical growth-goal-planner URL with one canonical redirect", () => {
+  const route = readFileSync(new URL("../../app/tools/[slug]/page.tsx", import.meta.url), "utf8");
+  const catalog = readFileSync(new URL("../../lib/tools/catalog.ts", import.meta.url), "utf8");
+  assert.match(catalog, /slug: "creator-growth-goal-planner"/);
+  assert.match(route, /params\\.slug === "social-media-growth-goal-planner"[\\s\\S]*?permanentRedirect\\("\\/tools\\/creator-growth-goal-planner"\\)/);
+  assert.match(route, /if \\(!tool\\) notFound\\(\\)/);
+});
