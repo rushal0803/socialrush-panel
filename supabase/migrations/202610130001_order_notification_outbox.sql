@@ -25,11 +25,21 @@ language plpgsql security definer set search_path = public
 as $$
 begin
   if auth.role() <> 'service_role' then raise exception 'Forbidden'; end if;
+  -- A worker may crash after claiming a row. Expired leases are recoverable,
+  -- but never recycle a row beyond the configured delivery-attempt ceiling.
+  update public.order_notification_outbox
+  set status = 'failed', last_error = 'Maximum delivery attempts reached after stale claim',
+      updated_at = now()
+  where status = 'sending'
+    and claimed_at < now() - interval '15 minutes'
+    and attempts >= 5;
+
   return query
   with claimed as (
     select id from public.order_notification_outbox
-    where (status in ('pending','retry') and next_attempt_at <= now())
-       or (status = 'sending' and claimed_at < now() - interval '15 minutes')
+    where attempts < 5
+      and ((status in ('pending','retry') and next_attempt_at <= now())
+       or (status = 'sending' and claimed_at < now() - interval '15 minutes'))
     order by created_at
     limit least(greatest(p_limit,1),50)
     for update skip locked
