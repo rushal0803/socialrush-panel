@@ -13,6 +13,7 @@ begin
   set status = 'failed', last_error = 'Maximum delivery attempts reached after stale claim',
       updated_at = now()
   where status = 'sending'
+    and (p_test_recipient is null or lower(recipient_email) = lower(p_test_recipient))
     and claimed_at < now() - interval '15 minutes'
     and attempts >= 5;
 
