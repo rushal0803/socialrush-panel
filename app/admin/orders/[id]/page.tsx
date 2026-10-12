@@ -26,7 +26,8 @@ export default async function AdminOrderDetailsPage({ params: paramsPromise }: {
   ]);
   const profile = order.profiles as unknown as { full_name?: string; email?: string; phone?: string } | null;
   const service = order.services as unknown as { name?: string; delivery_time?: string; refill_policy?: string } | null;
-  const progress = order.progress_percent === null ? 0 : Number(order.progress_percent);
+  const hasVerifiedCounts = (order.starting_count != null && order.current_count != null) || order.partial_quantity_delivered != null;
+  const progress = hasVerifiedCounts && order.progress_percent != null ? Math.min(100, Math.max(0, Number(order.progress_percent))) : null;
   const refundTransaction = (transactions ?? []).find((item) => item.type === "refund");
   const walletRefunded = Boolean(refundTransaction);
 
@@ -51,11 +52,12 @@ export default async function AdminOrderDetailsPage({ params: paramsPromise }: {
 
           <section className="rounded-3xl border border-white bg-white/90 p-5 shadow-sm sm:p-7">
             <h2 className="text-lg font-black text-[#0B0B0F]">Fulfillment progress</h2>
-            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">{[["Starting",count(order.starting_count)],["Current",count(order.current_count)],["Delivered",count(order.delivered_count)],["Remaining",count(order.remaining_count)]].map(([label,value]) => <div key={label} className="rounded-2xl bg-slate-50 p-4"><p className="text-[9px] font-bold uppercase text-slate-400">{label}</p><p className="mt-2 text-lg font-black">{value}</p></div>)}</div>
-            <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400" style={{ width: `${progress}%` }} /></div>
-            <p className="mt-2 text-right text-xs font-bold text-orange-700">{order.progress_percent === null ? "Progress unavailable" : `${progress.toFixed(2)}% delivered`}</p>
+            <div className="mt-5 grid grid-cols-2 gap-3 sm:grid-cols-4">{[["Starting",count(order.starting_count)],["Current",count(order.current_count)],["Delivered",count(order.delivered_count)],["Remaining",hasVerifiedCounts ? count(order.remaining_count) : "Not verified"]].map(([label,value]) => <div key={label} className="rounded-2xl bg-slate-50 p-4"><p className="text-[9px] font-bold uppercase text-slate-400">{label}</p><p className="mt-2 text-lg font-black">{value}</p></div>)}</div>
+            <div className="mt-5 h-3 overflow-hidden rounded-full bg-slate-100"><div className="h-full rounded-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-400" style={{ width: `${progress ?? 0}%` }} /></div>
+            <p className="mt-2 text-right text-xs font-bold text-orange-700">{progress === null ? "Delivery progress not verified" : `${progress.toFixed(2)}% delivered`}</p>
             {order.count_detection_status === "failed" ? <p className="mt-4 rounded-xl border border-amber-200 bg-amber-50 p-3 text-xs font-semibold text-amber-800">Automatic count unavailable. Please update manually. {order.count_detection_message}</p> : null}
             {order.count_detection_status === "manual" ? <p className="mt-4 rounded-xl border border-orange-400/25 bg-orange-500/10 p-3 text-xs font-semibold text-orange-200">Counts are currently maintained manually by an administrator.</p> : null}
+            {progress === null ? <p className="mt-3 rounded-xl border border-amber-400/30 bg-amber-500/10 p-3 text-xs text-amber-200">Order status: <strong>{order.status}</strong>. Delivery counts have not been verified. Record actual starting/current counts or a confirmed delivered quantity in Admin controls to calculate progress.</p> : null}
             <p className="mt-4 text-xs text-slate-500">Detection: <strong>{order.count_detection_status || "not attempted"}</strong> · Source: {order.count_detection_source || "—"} · Last checked: {order.last_count_checked_at ? new Date(order.last_count_checked_at).toLocaleString("en-IN") : "Never"}</p>
           </section>
 
