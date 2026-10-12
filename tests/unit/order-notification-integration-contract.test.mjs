@@ -71,3 +71,8 @@ test("worker reports suppressed and permanently failed notices without logging r
   assert.match(source, /if \(retryError\)/);
   assert.match(source, /processed: batch\.length, sent, failed, suppressed, permanentlyFailed/);
 });
+
+test("invalid recipient persistence errors do not abort remaining notices", () => {
+  const source = read("lib/orders/notification-delivery.ts");
+  assert.match(source, /if \(suppressError\) \{[\s\S]*?failed\+\+;\s*continue;/);
+});
