@@ -15,8 +15,9 @@ export async function deliverOrderNotificationBatch() {
   const resend = new Resend(apiKey);
   const db = createAdminClient();
   const testRecipient = process.env.ORDER_NOTIFICATIONS_TEST_RECIPIENT?.trim().toLowerCase();
-  if (testRecipient && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testRecipient)) {
-    throw new Error("Invalid ORDER_NOTIFICATIONS_TEST_RECIPIENT");
+  // Fail closed: no unrestricted sending while test mode is enabled.
+  if (!testRecipient || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(testRecipient)) {
+    throw new Error("A valid ORDER_NOTIFICATIONS_TEST_RECIPIENT is required before notification delivery");
   }
   const batch = await claimOrderNoticeBatch(20, testRecipient);
   let sent = 0;
