@@ -28,6 +28,17 @@ export async function ingestInboundReply(input: InboundReply) {
     await db.from("crm_lead_enrollments").update({status:"paused",next_send_at:null,updated_at:new Date().toISOString()}).eq("contact_id",contact.id).eq("status","active");
     await log(db,contact.lead_id,messageId,"sequence_paused_on_reply",{classification:result.classification,needs_admin_review:result.needsAdminReview});
   }
+  // A clearly classified opt-out must be honored even when other reply details need review.
+  if (result.needsAdminReview && result.classification === "unsubscribe") {
+    const now = new Date().toISOString();
+    const { error: suppressionError } = await db.from("crm_suppression_list").upsert({email:from,reason:"opt_out",source:"reply_automation"},{onConflict:"email"});
+    if (suppressionError) throw suppressionError;
+    const { error: contactError } = await db.from("crm_lead_contacts").update({opted_out_at:now,updated_at:now}).eq("id",contact.id);
+    if (contactError) throw contactError;
+    const { error: enrollmentError } = await db.from("crm_lead_enrollments").update({status:"opted_out",next_send_at:null,updated_at:now}).eq("contact_id",contact.id).in("status",["active","paused"]);
+    if (enrollmentError) throw enrollmentError;
+    await log(db,contact.lead_id,messageId,"suppression_added",{reason:"opt_out",needs_admin_review:true});
+  }
   if (result.needsAdminReview) return {duplicate:false,id:messageId,needsAdminReview:true};
   if (settings.auto_stop_sequence_on_reply && (genuine.has(result.classification) || result.classification==="out_of_office")) { const status=result.classification==="unsubscribe"?"opted_out":result.classification==="bounce"?"bounced":result.classification==="out_of_office"?"paused":"replied"; await db.from("crm_lead_enrollments").update({status,next_send_at:null,updated_at:new Date().toISOString()}).eq("contact_id",contact.id).in("status",["active","paused"]); await log(db,contact.lead_id,messageId,"sequence_stopped",{status}); }
   const update:Record<string,unknown>={}; if (["interested","meeting_request"].includes(result.classification)) Object.assign(update,{status:"qualified",priority:"high"}); else if (["needs_information","not_now"].includes(result.classification)) update.status="replied"; else if(result.classification==="negative_reply") update.status="lost"; else if(result.classification==="unsubscribe") update.status="do_not_contact";
