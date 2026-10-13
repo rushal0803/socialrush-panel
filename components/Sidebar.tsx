@@ -1,16 +1,16 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { logout } from "@/app/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { groupDashboardLinks } from "@/lib/dashboard/navigation";
+import { groupDashboardLinks, isDashboardLinkActive } from "@/lib/dashboard/navigation";
+import styles from "@/components/dashboard/PremiumWorkspace.module.css";
 
 function NavIcon({ name }: { name: string }) {
   const paths: Record<string, ReactNode> = {
@@ -78,7 +78,7 @@ function NavIcon({ name }: { name: string }) {
   };
 
   return (
-    <svg viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
+    <svg aria-hidden="true" viewBox="0 0 24 24" className="h-5 w-5" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round">
       {paths[name]}
     </svg>
   );
@@ -86,16 +86,16 @@ function NavIcon({ name }: { name: string }) {
 
 export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const query = useSearchParams().toString();
   const groups = groupDashboardLinks();
 
   return (
     <nav className={mobile ? "grid gap-4" : "min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
       {Object.entries(groups).map(([group, items]) => <section key={group} aria-label={group}>
-        <p className="mb-1 px-3 text-[9px] font-black uppercase tracking-[.16em] text-[#6b7280]">{group}</p>
+        <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[.14em] text-[#a8afbd]">{group}</p>
         <div className="space-y-1">{items.map((item) => {
-          const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
-          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${active ? "text-white" : mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"}`}>
-            {active && <motion.span layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"} className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]" transition={{ type: "spring", stiffness: 380, damping: 30 }} />}
+          const active = isDashboardLinkActive(item.href, pathname, query);
+          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={styles.navLink}>
             <span className="relative z-10"><NavIcon name={item.icon} /></span><span className="relative z-10">{item.label}</span>
           </Link>;
         })}</div>
@@ -152,7 +152,7 @@ export default function Sidebar({
         <p className="mt-1 text-xs font-semibold text-[#a8afbd]">Growth control center</p>
       </div>
 
-      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Customer navigation</p>
+      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#a8afbd]">Customer navigation</p>
       <NavLinks />
 
       <div className="mt-4 rounded-2xl border border-white/[.09] bg-white/[.035] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.22)]">
@@ -169,7 +169,7 @@ export default function Sidebar({
       </div>
 
       <form action={logout} className="mt-4">
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#a8afbd] hover:bg-white/5 hover:text-white">
           <span>↪</span> Log out
         </button>
       </form>

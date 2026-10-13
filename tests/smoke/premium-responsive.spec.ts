@@ -29,7 +29,7 @@ async function captureFullPage(page: import("@playwright/test").Page, file: stri
 
 async function expectRevealedContent(page: import("@playwright/test").Page) {
   const heading = page.locator("main h1").first();
-  await expect(heading).toBeVisible();
+  await expect(heading).toBeVisible({ timeout: 30000 });
   // Visibility alone permits opacity:0. Wait for hydration-driven reveal
   // wrappers as well, otherwise a screenshot can capture an empty hero.
   await expect.poll(() => heading.evaluate(element => {
@@ -204,6 +204,18 @@ test("public lab rendering metrics", async ({ page }, testInfo) => {
 });
 
 const dashboardRoutes = ["/dashboard", "/dashboard/new-order", "/dashboard/packages", "/dashboard/orders", "/dashboard/order-history", "/dashboard/wallet", "/dashboard/add-funds", "/dashboard/billing", "/dashboard/referrals", "/dashboard/account", "/dashboard/support", "/dashboard/settings", "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F"];
+if (process.env.DASHBOARD_UPGRADE_AUDIT === "1") dashboardRoutes.push(
+  "/dashboard/campaign-stacks", "/dashboard/retainers", "/dashboard/reseller",
+  "/dashboard/campaigns", "/dashboard/clients", "/dashboard/saved-profiles",
+  "/dashboard/notifications", "/dashboard/new-order?tab=favourites",
+  "/dashboard/repeat-campaigns", "/dashboard/rewards", "/dashboard/reviews", "/dashboard/api-docs",
+  "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+  "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+  "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+  "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+  "/dashboard/reseller/portfolio", "/dashboard/reseller/monthly-plans",
+  "/dashboard/reseller/monthly-planner", "/dashboard/reseller/bulk-planner", "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+);
 
 async function authenticate(context: import("@playwright/test").BrowserContext, baseURL: string) {
   // Layout-only QR fixture encodes "responsive-qa", never a payable UPI link.
@@ -215,15 +227,30 @@ async function authenticate(context: import("@playwright/test").BrowserContext, 
   const token = `${Buffer.from(JSON.stringify({ alg: "HS256", typ: "JWT" })).toString("base64url")}.${Buffer.from(JSON.stringify({ sub: user.id, role: "authenticated", aud: "authenticated", exp: expires_at })).toString("base64url")}.${Buffer.from("test-signature").toString("base64url")}`;
   const session = { access_token: token, refresh_token: "fixture", expires_at, expires_in: 3600, token_type: "bearer", user };
   await context.addCookies([{ name: storageKey, value: `base64-${Buffer.from(JSON.stringify(session)).toString("base64url")}`, url: baseURL }]);
-  await context.addInitScript(({ storageKey, session }) => localStorage.setItem(storageKey, JSON.stringify(session)), { storageKey, session });
+  await context.addInitScript(({ storageKey, session, baseURL }) => {
+    if (location.origin === new URL(baseURL).origin) localStorage.setItem(storageKey, JSON.stringify(session));
+  }, { storageKey, session, baseURL });
   const fixtureHeaders = { 'Access-Control-Allow-Origin': baseURL, 'Access-Control-Allow-Credentials': 'true', 'Access-Control-Allow-Headers': 'authorization, apikey, content-type, x-client-info', 'Access-Control-Allow-Methods': 'GET, OPTIONS' };
   await context.route(`${origin}/auth/v1/**`, route => route.fulfill({ json: user, headers: fixtureHeaders }));
   await context.route(`${origin}/rest/v1/**`, route => {
     const url = new URL(route.request().url());
     if (route.request().method() === "OPTIONS") return route.fulfill({ status: 204, headers: fixtureHeaders });
     if (route.request().method() !== "GET") return route.fulfill({ status: 403, json: { message: "Paid operations disabled in responsive QA" }, headers: fixtureHeaders });
-    if (url.pathname.endsWith("/profiles")) return route.fulfill({ json: [{ ...user, full_name: "Responsive QA", balance: 100000, is_blocked: false }], headers: fixtureHeaders });
+    if (url.pathname.endsWith("/profiles")) {
+      const profile = { ...user, full_name: "Responsive QA", balance: 100000, is_blocked: false };
+      return route.fulfill({ json: route.request().headers().accept?.includes("object") ? profile : [profile], headers: fixtureHeaders });
+    }
     if (url.pathname.endsWith("/services")) return route.fulfill({ json: JSON.parse(fs.readFileSync("tests/fixtures/packages-catalog.json", "utf8")), headers: fixtureHeaders });
+    if (process.env.DASHBOARD_UPGRADE_AUDIT === "1") {
+      const fixture = JSON.parse(fs.readFileSync("tests/fixtures/dashboard-workspace.json", "utf8"))[url.pathname.split("/").pop()!];
+      if (fixture) {
+        let found = fixture;
+        for (const [field, filter] of url.searchParams) {
+          if (filter?.startsWith("eq.")) found = found.filter((row: Record<string, unknown>) => String(row[field]) === filter.slice(3));
+        }
+        return route.fulfill({ json: route.request().headers().accept?.includes("object") ? found[0] || null : found, headers: fixtureHeaders });
+      }
+    }
     return route.fulfill({ json: [], headers: fixtureHeaders });
   });
   await context.routeWebSocket(/\/realtime\/v1\/websocket/, socket => {
@@ -233,6 +260,98 @@ async function authenticate(context: import("@playwright/test").BrowserContext, 
         socket.send(JSON.stringify([joinRef, ref, topic, "phx_reply", { status: "ok", response: {} }]));
       } catch { /* No unsolicited fixture events. */ }
     });
+  });
+}
+
+test("customer service search recovers from an empty result", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  const catalogueRequested = page.waitForRequest(request => request.method() === "GET" && request.url().includes("/rest/v1/services"));
+  await page.goto("/dashboard/new-order?platform=instagram");
+  const search = page.getByRole("searchbox", { name: "Search services" });
+  await expect(search).toBeVisible({ timeout: 30000 });
+  await catalogueRequested;
+  await search.fill("no-service-matches-this-fixture");
+  await expect(page.getByText(/No services match/)).toBeVisible();
+  await page.getByRole("button", { name: "Clear search", exact: true }).click();
+  await expect(search).toHaveValue("");
+  await search.fill("followers");
+  await expect(page.getByRole("status").filter({ hasText: /of .* services/ })).not.toHaveText(/^0 of/);
+  await expect(page.locator("main article").first()).toContainText(/followers/i);
+});
+
+test("dashboard drawer preserves every destination and closes after query navigation", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  await page.setViewportSize({ width: 320, height: 480 });
+  await page.goto("/dashboard/new-order");
+  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+  const dialog = page.getByRole("dialog", { name: "Mobile navigation" });
+  const navigation = dialog.getByRole("navigation", { name: "Dashboard navigation", exact: true });
+  await expect(navigation.locator("a")).toHaveCount(22);
+  for (const label of ["New Order", "Orders", "Wallet", "Packages", "Settings", "Support"]) await expect(navigation.getByRole("link", { name: label, exact: true })).toHaveCount(1);
+  const close = dialog.getByRole("button", { name: "Close menu", exact: true });
+  await expect(close).toBeFocused();
+  for (let index = 0; index < 30; index++) {
+    await page.keyboard.press("Tab");
+    await expect.poll(() => dialog.evaluate(element => element.contains(document.activeElement))).toBe(true);
+  }
+  await navigation.getByRole("link", { name: "Favourite Services", exact: true }).click();
+  await expect(page).toHaveURL(/tab=favourites/);
+  await expect(dialog).toHaveCount(0);
+  await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
+  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+  await expect(navigation.locator('[aria-current="page"]')).toHaveCount(1);
+  await expect(navigation.locator('[aria-current="page"]')).toHaveText("Favourite Services");
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+});
+
+for (const balance of [0, 200, 100000]) {
+  test(`order review preserves the wallet split with balance ${balance}`, async ({ page, context, baseURL }) => {
+    await authenticate(context, baseURL!);
+    const origin = new URL(process.env.NEXT_PUBLIC_SUPABASE_URL!).origin;
+    await context.route(`${origin}/rest/v1/profiles*`, route => route.fulfill({
+      json: { balance }, headers: { "Access-Control-Allow-Origin": baseURL!, "Access-Control-Allow-Headers": "*" },
+    }));
+    const paidRequests: string[] = [];
+    await context.route(/\/api\/(orders|checkout\/intent|payments\/.*order)/, route => {
+      if (route.request().method() === "POST") paidRequests.push(route.request().url());
+      return route.fulfill({ status: 403, json: { error: "Paid operations disabled in dashboard review QA" } });
+    });
+    await page.setViewportSize({ width: 390, height: 740 });
+    let releaseCatalogue!: () => void;
+    let markCatalogueRequested!: () => void;
+    const catalogueGate = new Promise<void>(resolve => { releaseCatalogue = resolve; });
+    const catalogueRequested = new Promise<void>(resolve => { markCatalogueRequested = resolve; });
+    await context.route(`${origin}/rest/v1/services*`, async route => {
+      if (route.request().method() !== "GET") return route.fallback();
+      markCatalogueRequested();
+      await catalogueGate;
+      await route.fallback();
+    });
+    await page.goto("/dashboard/new-order?platform=instagram&service=instagram-followers&prefill=1&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F");
+    const quantity = page.getByPlaceholder("Enter quantity");
+    await expect(quantity).toBeVisible({ timeout: 30000 });
+    // Server-rendered inputs can be visible before event handlers attach in
+    // WebKit. The first client catalogue request proves effects have mounted;
+    // its response stays blocked until the customer has edited the quantity.
+    await catalogueRequested;
+    await quantity.fill("2000");
+    const catalogueResponse = page.waitForResponse(response => response.request().method() === "GET" && response.url().startsWith(`${origin}/rest/v1/services`));
+    releaseCatalogue();
+    await (await catalogueResponse).finished();
+    await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+    await expect(quantity).toHaveValue("2000");
+    await page.getByRole("button", { name: "Review Order", exact: true }).click();
+    await expect(page.getByRole("heading", { name: "Review & pay", exact: true })).toBeVisible();
+    const summary = page.locator(".sr-order-payment-card");
+    const money = (value: number) => new Intl.NumberFormat("en-IN", { style: "currency", currency: "INR", minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(value);
+    const total = 1598;
+    for (const [label, value] of [["Order total", total], ["Wallet balance", balance], ["Wallet to apply", Math.min(balance, total)], ["Remaining to pay", Math.max(0, total - balance)], ["Projected wallet after order", Math.max(0, balance - total)]] as const) {
+      await expect(summary.locator("div.flex").filter({ has: page.getByText(label, { exact: true }) }).locator("strong")).toHaveText(money(value));
+    }
+    await expect(page.getByRole("button", { name: balance >= total ? /Place Order/ : /Pay Remaining/ })).toBeEnabled();
+    expect(paidRequests).toEqual([]);
+    await page.screenshot({ path: path.join(outputRoot, `order-review-balance-${balance}-390.png`), fullPage: true });
   });
 }
 
@@ -246,6 +365,16 @@ for (const width of widths) {
     const results = [];
     for (const route of dashboardRoutes) {
       const page = await context.newPage();
+      await page.addInitScript(() => {
+        const state = window as unknown as { dashboardLab: { lcp: number | null; cls: number } };
+        state.dashboardLab = { lcp: null, cls: 0 };
+        if (PerformanceObserver.supportedEntryTypes.includes("largest-contentful-paint")) new PerformanceObserver(list => {
+          for (const entry of list.getEntries()) state.dashboardLab.lcp = entry.startTime;
+        }).observe({ type: "largest-contentful-paint", buffered: true });
+        if (PerformanceObserver.supportedEntryTypes.includes("layout-shift")) new PerformanceObserver(list => {
+          for (const entry of list.getEntries() as Array<PerformanceEntry & { value: number; hadRecentInput: boolean }>) if (!entry.hadRecentInput) state.dashboardLab.cls += entry.value;
+        }).observe({ type: "layout-shift", buffered: true });
+      });
       const onError = (error: Error) => errors.push(`${page.url()}: ${error.message}`);
       page.on('pageerror', onError);
       await page.setViewportSize({ width, height: width <= 480 ? 740 : 900 });
@@ -257,16 +386,34 @@ for (const width of widths) {
       const layout = await page.evaluate(() => {
         document.documentElement.style.overflowX = "visible";
         document.body.style.overflowX = "visible";
+        const viewport = document.documentElement.clientWidth;
+        const clippedControls = Array.from(document.querySelectorAll("main h1, main h2, main input, main select, main textarea, main button")).filter(element => {
+          const box = element.getBoundingClientRect();
+          if (!box.width || !box.height) return false;
+          for (let parent = element.parentElement; parent && parent.tagName !== "MAIN"; parent = parent.parentElement) {
+            if (["auto", "scroll"].includes(getComputedStyle(parent).overflowX)) return false;
+          }
+          return box.left < -1 || box.right > viewport + 1;
+        }).map(element => ({ tag: element.tagName, text: element.textContent?.slice(0, 80) }));
         return { viewport: document.documentElement.clientWidth, scroll: document.documentElement.scrollWidth,
+          clippedControls,
           outside: Array.from(document.querySelectorAll('*')).filter(element => element.scrollWidth > element.clientWidth + 1 && getComputedStyle(element).overflowX === 'visible').slice(0, 25).map(element => ({ tag: element.tagName, class: element.className, text: element.textContent?.slice(0, 60), width: element.clientWidth, scroll: element.scrollWidth })) };
       });
-      results.push({ route, ...layout });
+      const lab = await page.evaluate(() => {
+        const navigation = performance.getEntriesByType("navigation")[0] as PerformanceNavigationTiming;
+        const state = window as unknown as { dashboardLab: { lcp: number | null; cls: number } };
+        return { ...state.dashboardLab, ttfb: navigation.responseStart - navigation.requestStart };
+      });
+      results.push({ route, ...layout, lab });
       if ([320, 390, 768, 1440].includes(width)) {
         const name = route.split("?")[0].slice(1).replaceAll("/", "-");
         await page.screenshot({ path: path.join(output, `${name}-${width}-hero.png`) });
         await captureFullPage(page, path.join(output, `${name}-${width}.png`));
       }
-      if (stage !== "before") expect.soft(layout.scroll, `${route} at ${width}px`).toBeLessThanOrEqual(layout.viewport + 1);
+      if (stage !== "before") {
+        expect.soft(layout.scroll, `${route} at ${width}px`).toBeLessThanOrEqual(layout.viewport + 1);
+        expect.soft(layout.clippedControls, `${route} controls/headings at ${width}px`).toEqual([]);
+      }
       await page.waitForLoadState('load', { timeout: 30000 });
       page.off('pageerror', onError);
       await page.close();

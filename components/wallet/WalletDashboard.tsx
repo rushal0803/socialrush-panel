@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, AnimatePresence, useInView } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -96,28 +96,13 @@ function Counter({
   moneyValue?: boolean;
   formatter?: (value: number) => string;
 }) {
-  const ref = useRef<HTMLSpanElement>(null);
-  const visible = useInView(ref, { once: true });
-  const [shown, setShown] = useState(0);
-  useEffect(() => {
-    if (!visible) return;
-    const start = performance.now();
-    let frame = 0;
-    const tick = (now: number) => {
-      const progress = Math.min((now - start) / 900, 1);
-      setShown(value * (1 - Math.pow(1 - progress, 3)));
-      if (progress < 1) frame = requestAnimationFrame(tick);
-    };
-    frame = requestAnimationFrame(tick);
-    return () => cancelAnimationFrame(frame);
-  }, [value, visible]);
   return (
-    <span ref={ref}>
+    <span>
       {moneyValue
         ? formatter
-          ? formatter(shown)
-          : Math.round(shown).toLocaleString("en-IN")
-        : Math.round(shown).toLocaleString("en-IN")}
+          ? formatter(value)
+          : Math.round(value).toLocaleString("en-IN")
+        : Math.round(value).toLocaleString("en-IN")}
     </span>
   );
 }

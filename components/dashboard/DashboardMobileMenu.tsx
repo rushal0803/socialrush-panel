@@ -65,7 +65,7 @@ export default function DashboardMobileMenu() {
               </div>
 
               <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
-              <p className="mb-3 text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard navigation</p>
+              <p className="mb-4 text-xs leading-5 text-slate-400">Your orders, funds and campaign workspace.</p>
               <NavLinks mobile onNavigate={() => setIsOpen(false)} />
               <div className="mt-3"><AndroidAppDownload /></div>
 

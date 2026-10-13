@@ -3,6 +3,9 @@
 import Link from "next/link";
 import { ChevronDown, Wallet } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { usePathname } from "next/navigation";
+import { dashboardLinks, isDashboardLinkActive } from "@/lib/dashboard/navigation";
+import styles from "@/components/dashboard/PremiumWorkspace.module.css";
 import DashboardMobileMenu from "@/components/dashboard/DashboardMobileMenu";
 import NotificationBell from "@/components/dashboard/NotificationBell";
 import DashboardSearch from "@/components/dashboard/DashboardSearch";
@@ -92,11 +95,14 @@ function CurrencySelector() {
 
 export default function DashboardHeaderBar({ name, role, initials, balance }: { name: string; role: string; initials: string; balance: number }) {
   const { currency, rates } = usePreferredCurrency("INR");
+  const pathname = usePathname();
+  const currentPage = dashboardLinks.find(item => isDashboardLinkActive(item.href, pathname))?.label || "Customer workspace";
   return (
     <header className="sticky top-0 z-[70] border-b border-white/[.08] bg-[#0c0e14]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4">
         <BrandMark priority className="min-[430px]:hidden lg:hidden" />
         <Logo light compactOnMobile priority className="hidden min-[430px]:inline-flex lg:hidden [&_img]:!h-11 [&_img]:!max-w-[132px]" />
+        <p className={styles.workspaceLabel}>Your workspace<span>{currentPage}</span></p>
 
         <div className="ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3">
           <CurrencySelector />
@@ -105,7 +111,7 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
 
           <Link href="/dashboard/wallet" className="hidden min-h-11 shrink-0 items-center gap-2 rounded-xl border border-white/[.1] bg-white/[.035] px-3 text-left transition hover:border-orange-400/35 hover:bg-orange-500/[.08] md:inline-flex">
             <Wallet className="h-4 w-4 text-[#ff9a2e]" />
-            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#747b89]">Wallet (INR)</span><span className="block text-sm font-extrabold text-white">{formatCurrency(balance, currency, rates)}</span></span>
+            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#a8afbd]">Wallet ({currency})</span><span className="block text-sm font-extrabold tabular-nums text-white">{formatCurrency(balance, currency, rates)}</span></span>
           </Link>
           <Link
             href="/dashboard/add-funds"
