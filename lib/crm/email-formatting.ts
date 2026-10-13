@@ -41,7 +41,7 @@ export function renderOutreachSubject(template: string | null | undefined, perso
 const escapeHtml = (value: string) => value.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/\"/g, "&quot;").replace(/'/g, "&#39;");
 export function outreachTextToHtml(text: string) {
   const paragraphs = text.split(/\n{2,}/).map((paragraph) => `<p style="margin:0 0 18px;">${escapeHtml(paragraph).replace(/\n/g, "<br />")}</p>`).join("");
-  return `<!doctype html><html><head><meta name="viewport" content="width=device-width, initial-scale=1" /></head><body style="margin:0;background:#ffffff;color:#1f2937;font-family:Arial,Helvetica,sans-serif;"><main style="max-width:600px;margin:0 auto;padding:28px 20px;font-size:16px;line-height:1.6;">${paragraphs}</main></body></html>`;
+  return `<!doctype html><html lang="en"><head><meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" /></head><body style="margin:0;background:#ffffff;color:#1f2937;font-family:Arial,Helvetica,sans-serif;"><main style="max-width:600px;margin:0 auto;padding:28px 20px;font-size:16px;line-height:1.6;">${paragraphs}</main></body></html>`;
 }
 export function formatOutreachEmail(template: string | null | undefined, personalization: Personalization) { const text = renderOutreachText(template, personalization); return { text, html: outreachTextToHtml(text) }; }
 
