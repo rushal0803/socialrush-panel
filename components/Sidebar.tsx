@@ -1,16 +1,15 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { logout } from "@/app/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { groupDashboardLinks } from "@/lib/dashboard/navigation";
+import { groupDashboardLinks, isDashboardNavItemActive } from "@/lib/dashboard/navigation";
 
 function NavIcon({ name }: { name: string }) {
   const paths: Record<string, ReactNode> = {
@@ -86,20 +85,54 @@ function NavIcon({ name }: { name: string }) {
 
 export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const search = useSearchParams().toString();
   const groups = groupDashboardLinks();
+  // Revenue actions come before the long workspace list on narrow phones.
+  const order = mobile
+    ? (["Main", "Money", "Workspace", "Account", "Help"] as const)
+    : (["Main", "Workspace", "Money", "Account", "Help"] as const);
+
+  const linksFor = (items: typeof groups.Main) => items.map((item) => {
+    const active = isDashboardNavItemActive(pathname, item.href, search);
+    return (
+      <Link
+        key={item.href}
+        href={item.href}
+        onClick={onNavigate}
+        aria-current={active ? "page" : undefined}
+        className={`group/nav relative flex min-h-11 items-center gap-3 rounded-xl px-3.5 py-3 text-sm font-semibold transition-colors motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active
+          ? "bg-gradient-to-r from-[#ff7a00] to-[#ffb000] text-[#17100b] shadow-[0_8px_24px_-15px_rgba(255,122,0,.8)]"
+          : "text-[#dce0e9] hover:bg-white/[.08] hover:text-white"}`}
+      >
+        <span className="shrink-0" aria-hidden="true"><NavIcon name={item.icon} /></span>
+        <span className="min-w-0 flex-1 leading-5">{item.label}</span>
+      </Link>
+    );
+  });
 
   return (
-    <nav className={mobile ? "grid gap-4" : "min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
-      {Object.entries(groups).map(([group, items]) => <section key={group} aria-label={group}>
-        <p className="mb-1 px-3 text-[9px] font-black uppercase tracking-[.16em] text-[#6b7280]">{group}</p>
-        <div className="space-y-1">{items.map((item) => {
-          const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
-          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${active ? "text-white" : mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"}`}>
-            {active && <motion.span layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"} className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]" transition={{ type: "spring", stiffness: 380, damping: 30 }} />}
-            <span className="relative z-10"><NavIcon name={item.icon} /></span><span className="relative z-10">{item.label}</span>
-          </Link>;
-        })}</div>
-      </section>)}
+    <nav className={mobile ? "grid content-start gap-4" : "min-h-0 flex-1 space-y-4 overflow-y-auto overscroll-contain pr-1"} aria-label="Dashboard navigation">
+      {order.map((group) => {
+        const items = groups[group];
+        const hasActiveLink = items.some((item) => isDashboardNavItemActive(pathname, item.href, search));
+        if (mobile && !["Main", "Money"].includes(group)) {
+          return (
+            <details key={`${group}:${pathname}`} open={hasActiveLink} className="group rounded-2xl border border-white/[.09] bg-white/[.025] p-2">
+              <summary className="flex min-h-11 cursor-pointer list-none items-center justify-between gap-3 rounded-xl px-3 text-xs font-bold tracking-wide text-[#e1e5ec] marker:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 [&::-webkit-details-marker]:hidden">
+                <span>{group} <span className="ml-1 text-[10px] font-medium text-[#aab2c1]">({items.length})</span></span>
+                <svg aria-hidden="true" className="h-4 w-4 shrink-0 text-[#fca24d] transition-transform group-open:rotate-180 motion-reduce:transition-none" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="m6 9 6 6 6-6" /></svg>
+              </summary>
+              <div className="mt-1 grid gap-1 border-t border-white/[.07] pt-2">{linksFor(items)}</div>
+            </details>
+          );
+        }
+        return (
+          <section key={group} aria-label={group}>
+            <p className="mb-2 px-3 text-[10px] font-bold uppercase tracking-[.15em] text-[#aab2c1]">{group}</p>
+            <div className="grid gap-1">{linksFor(items)}</div>
+          </section>
+        );
+      })}
     </nav>
   );
 }
@@ -152,7 +185,7 @@ export default function Sidebar({
         <p className="mt-1 text-xs font-semibold text-[#a8afbd]">Growth control center</p>
       </div>
 
-      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Customer navigation</p>
+      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#aab2c1]">Customer navigation</p>
       <NavLinks />
 
       <div className="mt-4 rounded-2xl border border-white/[.09] bg-white/[.035] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.22)]">
@@ -169,7 +202,7 @@ export default function Sidebar({
       </div>
 
       <form action={logout} className="mt-4">
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
+        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#dce0e9] hover:bg-white/[.08] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300">
           <span>↪</span> Log out
         </button>
       </form>

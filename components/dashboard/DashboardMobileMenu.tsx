@@ -52,7 +52,10 @@ export default function DashboardMobileMenu() {
       >
         <div className="flex min-h-0 flex-1 flex-col">
               <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(0.75rem+env(safe-area-inset-top))]">
-                <div className="min-w-0 max-w-[calc(100%-3.5rem)]"><Logo light /></div>
+                <div className="min-w-0 max-w-[calc(100%-3.5rem)]">
+                  <Logo light />
+                  <p className="mt-1 truncate text-[10px] font-semibold tracking-[.13em] text-[#aab2c1]">CUSTOMER WORKSPACE</p>
+                </div>
                 <button
                   ref={closeRef}
                   type="button"
@@ -65,33 +68,14 @@ export default function DashboardMobileMenu() {
               </div>
 
               <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
-              <p className="mb-3 text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard navigation</p>
+              <p className="mb-3 text-[10px] font-bold uppercase tracking-[0.16em] text-orange-300">Your tools</p>
               <NavLinks mobile onNavigate={() => setIsOpen(false)} />
-              <div className="mt-3"><AndroidAppDownload /></div>
-
-              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
-                <Link
-                  href="/dashboard/new-order"
-                  onClick={() => setIsOpen(false)}
-                  className="col-span-2 inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-4 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20"
-                >
-                  Start Order
-                </Link>
-                <Link
-                  href="/dashboard/account"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2.5 text-sm font-bold text-orange-100"
-                >
-                  Profile
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-bold text-[#D1D5DB] transition hover:border-orange-400/30 hover:text-white"
-                >
-                  Log out
-                </button>
-              </div>
+              <div className="mt-5"><AndroidAppDownload /></div>
+                            </div>
+              <div className="grid shrink-0 grid-cols-2 gap-2 border-t border-white/10 bg-[#101219] px-4 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pt-3">
+                <Link href="/dashboard/wallet" onClick={() => setIsOpen(false)} className="flex min-h-11 items-center justify-center rounded-xl bg-gradient-to-r from-[#ff7a00] to-[#ffb000] px-3 text-xs font-extrabold text-[#17100b] focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300">Add Funds</Link>
+                <Link href="/dashboard/support" onClick={() => setIsOpen(false)} className="flex min-h-11 items-center justify-center rounded-xl border border-white/20 bg-white/[.05] px-3 text-xs font-bold text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300">Get Support</Link>
+                <button type="button" onClick={handleLogout} className="col-span-2 min-h-11 rounded-xl text-xs font-semibold text-[#b9c1ce] transition-colors hover:bg-white/[.05] hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300">Log out</button>
               </div>
         </div>
       </MobileMenuLayer>

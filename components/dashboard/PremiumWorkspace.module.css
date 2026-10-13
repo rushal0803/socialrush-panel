@@ -1,5 +1,5 @@
 .workspace { background:#07080d; --sr-text-muted:#a8afbd; --sr-border:#ffffff20; --sr-shadow-card:0 8px 24px #0002; }
-.workspace :global(.dashboard-sidebar) { background:#101219; border-color:#ffffff20; backdrop-filter:none; }
+.workspace :global(.dashboard-sidebar) { background:#101219; border-color:#ffffff20; backdrop-filter:none; color:#e1e5ec; scrollbar-width:thin; scrollbar-color:#383c48 transparent; }
 .workspace :global(.sr-dashboard-hero) { background:#151821; border-color:#ffffff25; box-shadow:inset 0 2px rgba(255,118,0,.24); border-radius:16px; }
 .workspace :global(.sr-dashboard-hero > .pointer-events-none) { display:none; }
 .workspace :global(.dashboard-card),.workspace :global(.dashboard-glass) { border-color:#ffffff25; box-shadow:0 8px 24px #0002; }
@@ -15,3 +15,14 @@
 .sectionTitle h2 { font-weight:650; font-size:15px; }
 .badge { font-variant-numeric:tabular-nums; border-radius:6px; min-height:26px; }
 @media(max-width:600px) { .pageHeader { padding-bottom:16px; } }
+
+/* Shared workspace improvements apply to every authenticated customer route. */
+.workspace :global(#dashboard-main-content) { min-width:0; }
+.workspace :global(.dashboard-sidebar a), .workspace :global(.dashboard-sidebar button) { -webkit-tap-highlight-color:transparent; }
+.workspace :global(.dashboard-sidebar nav) { scrollbar-width:thin; scrollbar-color:#383c48 transparent; }
+@media (max-width:1023px) {
+  .workspace :global(#dashboard-main-content) { padding-bottom:calc(5rem + env(safe-area-inset-bottom)); }
+}
+@media (prefers-reduced-motion:reduce) {
+  .workspace :global(.dashboard-sidebar a), .workspace :global(.dashboard-sidebar button) { transition:none; }
+}
