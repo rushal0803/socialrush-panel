@@ -33,7 +33,7 @@ export function extractLatestReplyText(bodyText: string): string {
 
 export async function classifyLeadReply(input: { subject?: string|null; bodyText: string }): Promise<ReplyClassificationResult> {
   const text=extractLatestReplyText(input.bodyText).toLowerCase().replace(/[\u2018\u2019]/g, "'");
-  if (/\b(unsubscribe|remove me|stop emailing|do not contact|take me off (your|the) list)\b/.test(text)) return rule("unsubscribe","Explicit opt-out language detected.","Suppress this address permanently.");
+  if (/\b(unsubscribe|remove me|remove my (?:email|address)|stop (?:emailing|contacting|sending (?:me )?emails)|do not contact|don\x27t contact|take me off (?:your|the) (?:mailing )?list|opt[ -]?out)\b/.test(text)) return rule("unsubscribe","Explicit opt-out language detected.","Suppress this address permanently.");
   if (/\b(mailbox unavailable|delivery has failed|undeliverable|recipient address rejected|550 5\.1\.1|user unknown)\b/.test(text)) return rule("bounce","Delivery failure language detected.","Mark the contact invalid and suppress this address.");
   if (/\b(out of (the )?office|automatic reply|away from (my )?(desk|office)|on (annual )?leave)\b/.test(text)) return rule("out_of_office","Out-of-office language detected.","Pause the sequence and review the return date.");
   // Keep explicit rejection ahead of positive language (for example, "not interested").
