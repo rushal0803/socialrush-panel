@@ -91,15 +91,19 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
 
   return (
     <nav className={mobile ? "grid gap-4" : "min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
-      {Object.entries(groups).map(([group, items]) => <section key={group} aria-label={group}>
-        <p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[.14em] text-[#a8afbd]">{group}</p>
-        <div className="space-y-1">{items.map((item) => {
+      {Object.entries(groups).map(([group, items]) => {
+        const links = <div className="space-y-1">{items.map((item) => {
           const active = isDashboardLinkActive(item.href, pathname, query);
           return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={styles.navLink}>
             <span className="relative z-10"><NavIcon name={item.icon} /></span><span className="relative z-10">{item.label}</span>
           </Link>;
-        })}</div>
-      </section>)}
+        })}</div>;
+        if (mobile && group !== "Main") return <details key={`${group}-${pathname}-${query}`} className={styles.navGroup} open={items.some(item => isDashboardLinkActive(item.href, pathname, query))}>
+          <summary><span>{group}</span><span aria-hidden="true" className={styles.navCount}>{items.length}</span><svg aria-hidden="true" viewBox="0 0 16 16" width="16" height="16" fill="none"><path d="m4 6 4 4 4-4" stroke="currentColor" strokeWidth="1.5" /></svg></summary>
+          {links}
+        </details>;
+        return <section key={group} aria-label={group}><p className="mb-2 px-3 text-[10px] font-semibold uppercase tracking-[.14em] text-[#a8afbd]">{group}</p>{links}</section>;
+      })}
     </nav>
   );
 }

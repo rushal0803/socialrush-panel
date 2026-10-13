@@ -98,6 +98,29 @@ npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'authenticated
 
 Lab LCP/CLS/TTFB values in per-width JSON files are single local, unthrottled synthetic navigations with reduced motion. They are not field Core Web Vitals, Lighthouse scores, INP measurements or a statistically paired before/after benchmark. The baseline screenshots use an empty fixture; the final workspace includes synthetic populated records. New Order uses the same catalogue in both.
 
+## Search and compact navigation follow-up
+
+The same feature branch preserves the owner's test-only correction and adds native, keyboard-operable mobile disclosure groups. New Order, Orders, Wallet and Packages remain immediately visible; all 22 destinations remain available. Compare the [previous drawer](before-compact-drawer-390.png) with the [compact drawer](after-compact-drawer-390.png).
+
+Search previously refetched continuously when orders were empty or a request failed. It now reads orders and tickets once per opening or explicit retry, aborts pending reads on dismissal, and reports loading, empty and error states. Its dialog is portalled to the document body, with labelled controls, keyboard containment, Escape/outside dismissal, focus restoration and body scroll restoration. This removes the sticky header's containing-block constraint without changing authenticated APIs or financial state.
+
+| Search observation | Before | After |
+|---|---:|---:|
+| 390px, API reads during the 1,000ms observation | 60 | 2 |
+| 1440px, API reads during the 1,000ms observation | 140 | 2 |
+| 390px, automation-observed opening time (ms) | 870 | 1046 |
+| 1440px, automation-observed opening time (ms) | 321 | 281 |
+| 390px, dialog overlay bounds | 390 × 117px | 390 × 844px |
+| 1440px, dialog overlay bounds | 1184 × 117px | 1440 × 844px |
+
+The mobile run uses Chromium 4× CPU slowdown, 150ms RTT, 1.6Mbps download and 750Kbps upload; desktop is unthrottled. API responses are synthetic empty records. Opening time is a single automation sample, including test/locator scheduling, **not INP or a field percentile**. Mobile opening was slower in this sample; only the request reduction and corrected overlay geometry are established improvements. Raw samples: [mobile before](before-search-390.json), [mobile after](after-search-390.json), [desktop before](before-search-1440.json), [desktop after](after-search-1440.json).
+
+Follow-up validation passed the production build, TypeScript, 216 unit tests, 14 payment-confidence tests and 14 targeted navigation/package/responsive contracts (some overlap). Three search browser tests verify request budgets, focus/Escape, explicit error retry and cancellation. Twelve further Chromium tests cover the compact drawer, service search, wallet shortfall reviews, payment instructions and 102 layouts across all 34 routes at 320/768/1440px. The original ten-width, 340-layout evidence remains above. The added fixture-only CI step runs these critical search/navigation/wallet reviews within the existing smoke job, without another build or job.
+
+The full local `npm run test:smoke -- --workers=2` completed with 325 passed, 59 opt-in cases skipped and one timeout in the existing public-navigation warmup test. Its menu click did not open a drawer; the unchanged test passed on isolated rerun (2.5s test / 8.5s suite). No assertion was removed or relaxed. The first full run was interrupted before a summary and is not counted as a pass. After the final focus correction, all eight Chromium search/navigation/wallet cases selected for CI passed together in 29.8s. Final-head CI is the full release regression gate, with the repository's existing retry policy.
+
+The follow-up desktop WebKit short-phone drawer check passed. The combined WebKit run exhausted its global deadline before the remaining checks ran; an isolated search retry check then exposed Safari's pointer-button focus behavior. Search now explicitly focuses its trigger on pointer opening, so dismissing restores the correct trigger. After the correction, both the unchanged search retry/cancellation/focus test and all-destinations/query-navigation drawer test passed in an isolated WebKit run (2 tests, 33.8s). The final production rebuild and `npx tsc --noEmit` passed. The timing samples above were captured before this final focus-only correction. Desktop WebKit checks do not establish physical iPhone behavior.
+
 ## Release gate
 
 Keep the PR in draft until CI, visual review and owner-approved staging checks pass. Firefox runner repair, real gateway settlement, database integration, physical Android/iPhone keyboard/safe-area behavior and field p75 LCP/INP/CLS require separate release verification. Local fixtures cannot prove production data completeness or gateway settlement. Existing unrelated lint warnings are not suppressed.

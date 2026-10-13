@@ -1,0 +1,15 @@
+{
+  "width": 1440,
+  "openMs": 321,
+  "observationMs": 1000,
+  "orderReads": 70,
+  "ticketReads": 70,
+  "box": {
+    "x": 256,
+    "y": 0,
+    "width": 1184,
+    "height": 117.265625
+  },
+  "profile": "unthrottled; mocked API responses",
+  "before": true
+}

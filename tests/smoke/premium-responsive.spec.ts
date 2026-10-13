@@ -279,6 +279,62 @@ test("customer service search recovers from an empty result", async ({ page, con
   await expect(page.locator("main article").first()).toContainText(/followers/i);
 });
 
+for (const width of [390, 1440]) {
+  test(`dashboard search request budget and dialog at ${width}px`, async ({ page, context, baseURL, browserName }) => {
+    test.skip(browserName !== "chromium", "Throttled journey measurement uses Chromium CDP");
+    await authenticate(context, baseURL!);
+    await page.setViewportSize({ width, height: 844 });
+    const cdp = await context.newCDPSession(page);
+    if (width === 390) {
+      await cdp.send("Emulation.setCPUThrottlingRate", { rate: 4 });
+      await cdp.send("Network.emulateNetworkConditions", { offline: false, latency: 150, downloadThroughput: 1.6 * 1024 * 1024 / 8, uploadThroughput: 750 * 1024 / 8 });
+    }
+    let orderReads = 0, ticketReads = 0;
+    await page.route("**/api/orders?limit=30", route => { orderReads++; return route.fulfill({ json: { data: [] } }); });
+    await page.route("**/api/support/tickets", route => { ticketReads++; return route.fulfill({ json: { data: [] } }); });
+    const mounted = page.waitForRequest(request => request.method() === "GET" && request.url().includes("/rest/v1/services"));
+    await page.goto("/dashboard/new-order?platform=instagram");
+    await mounted;
+    const trigger = page.getByRole("button", { name: "Search orders and support tickets" });
+    const started = Date.now();
+    await trigger.click();
+    const dialog = page.getByRole("dialog", { name: "Dashboard search", exact: true });
+    await expect(dialog).toBeVisible();
+    const openMs = Date.now() - started;
+    const search = dialog.getByPlaceholder("Search an order ID, service, or support ticket");
+    await search.fill("no-matching-order");
+    // Fixed observation window measures repeated requests; this is not a wait
+    // for readiness or an INP measurement. All API responses are safe fixtures.
+    await page.waitForTimeout(1000);
+    const box = await dialog.boundingBox();
+    const before = process.env.DASHBOARD_SEARCH_BASELINE === "1";
+    fs.mkdirSync(outputRoot, { recursive: true });
+    fs.writeFileSync(path.join(outputRoot, `search-journey-${width}.json`), JSON.stringify({ width, openMs, observationMs: 1000, orderReads, ticketReads, box, profile: width === 390 ? "4x CPU, 150ms RTT, 1.6Mbps; mocked API responses" : "unthrottled; mocked API responses", before }, null, 2));
+    if (!before) {
+      expect(orderReads).toBe(1);
+      expect(ticketReads).toBe(1);
+      await expect(dialog.getByText("No matching orders or tickets.")).toBeVisible();
+      expect(box?.height).toBe(844);
+      expect(box?.width).toBe(width);
+      for (let index = 0; index < 8; index++) {
+        await page.keyboard.press("Tab");
+        await expect.poll(() => dialog.evaluate(element => element.contains(document.activeElement))).toBe(true);
+      }
+    }
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    if (!before) {
+      await expect(trigger).toBeFocused();
+      await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
+    }
+    if (width === 390) {
+      await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+      await expect(page.getByRole("dialog", { name: "Mobile navigation" })).toBeVisible();
+      await page.screenshot({ path: path.join(outputRoot, "drawer-390.png") });
+    }
+  });
+}
+
 test("dashboard drawer preserves every destination and closes after query navigation", async ({ page, context, baseURL }) => {
   await authenticate(context, baseURL!);
   await page.setViewportSize({ width: 320, height: 480 });
@@ -287,9 +343,18 @@ test("dashboard drawer preserves every destination and closes after query naviga
   const dialog = page.getByRole("dialog", { name: "Mobile navigation" });
   const navigation = dialog.getByRole("navigation", { name: "Dashboard navigation", exact: true });
   await expect(navigation.locator("a")).toHaveCount(22);
-  for (const label of ["New Order", "Orders", "Wallet", "Packages", "Settings", "Support"]) await expect(navigation.getByRole("link", { name: label, exact: true })).toHaveCount(1);
   const close = dialog.getByRole("button", { name: "Close menu", exact: true });
   await expect(close).toBeFocused();
+  for (const label of ["New Order", "Orders", "Wallet", "Packages"]) await expect(navigation.getByRole("link", { name: label, exact: true })).toBeVisible();
+  await expect(navigation.locator("details[open]")).toHaveCount(0);
+  await expect(navigation.locator("summary")).toHaveCount(4);
+  await navigation.locator("summary").first().focus();
+  await page.keyboard.press("Enter");
+  await expect(navigation.locator("details[open]")).toHaveCount(1);
+  await page.keyboard.press("Enter");
+  await expect(navigation.locator("details[open]")).toHaveCount(0);
+  for (const summary of await navigation.locator("summary").all()) await summary.click();
+  for (const label of ["New Order", "Orders", "Wallet", "Packages", "Settings", "Support"]) await expect(navigation.getByRole("link", { name: label, exact: true })).toHaveCount(1);
   for (let index = 0; index < 30; index++) {
     await page.keyboard.press("Tab");
     await expect.poll(() => dialog.evaluate(element => element.contains(document.activeElement))).toBe(true);
@@ -303,6 +368,50 @@ test("dashboard drawer preserves every destination and closes after query naviga
   await expect(navigation.locator('[aria-current="page"]')).toHaveText("Favourite Services");
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
+});
+
+test("dashboard search retries only on request and cancels when dismissed", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  let failed = true, slow = false, reads = 0;
+  let releasePending!: () => void, markPending!: () => void;
+  const pendingGate = new Promise<void>(resolve => { releasePending = resolve; });
+  const pendingStarted = new Promise<void>(resolve => { markPending = resolve; });
+  await page.route("**/api/orders?limit=30", async route => {
+    reads++;
+    if (slow) {
+      markPending();
+      await pendingGate;
+      return; // The request was intentionally cancelled by dismissing the dialog.
+    }
+    await route.fulfill({ status: failed ? 503 : 200, json: failed ? { error: "Fixture unavailable" } : { data: [] } });
+  });
+  await page.route("**/api/support/tickets", route => route.fulfill({ json: { data: [] } }));
+  const mounted = page.waitForRequest(request => request.method() === "GET" && request.url().includes("/rest/v1/services"));
+  await page.goto("/dashboard/new-order?platform=instagram");
+  await mounted;
+  const trigger = page.getByRole("button", { name: "Search orders and support tickets" });
+  await trigger.click();
+  const dialog = page.getByRole("dialog", { name: "Dashboard search", exact: true });
+  await expect(dialog.getByRole("alert")).toContainText("Search is unavailable");
+  await page.waitForTimeout(500); // Observe the absence of automatic retries.
+  expect(reads).toBe(1);
+  failed = false;
+  await dialog.getByRole("button", { name: "Try again", exact: true }).click();
+  await expect(dialog.getByText(/Type to search your own/)).toBeVisible();
+  expect(reads).toBe(2);
+  await expect(dialog.getByRole("textbox")).toBeFocused();
+  await page.keyboard.press("Escape");
+  await expect(trigger).toBeFocused();
+  slow = true;
+  const cancelled = page.waitForEvent("requestfailed", { predicate: request => request.url().includes("/api/orders?limit=30") });
+  await page.keyboard.press("Control+k");
+  await expect(dialog).toBeVisible();
+  await pendingStarted;
+  await page.mouse.click(2, 2);
+  await expect(dialog).toHaveCount(0);
+  expect((await cancelled).failure()?.errorText).toMatch(/abort|cancel/i);
+  releasePending();
+  await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
 });
 
 for (const balance of [0, 200, 100000]) {
