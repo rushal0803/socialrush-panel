@@ -164,3 +164,11 @@ The final isolated WebKit run passed all three checks in 28.3s: drawer-to-fundin
 ## Release gate
 
 Keep the PR in draft until CI, visual review and owner-approved staging checks pass. Firefox runner repair, real gateway settlement, database integration, physical Android/iPhone keyboard/safe-area behavior and field p75 LCP/INP/CLS require separate release verification. Local fixtures cannot prove production data completeness or gateway settlement. Existing unrelated lint warnings are not suppressed.
+
+## Mobile wallet first-screen usability follow-up (14 October 2026)
+
+Inspection of the actual 390px and 768px fixture captures revealed a content-priority issue: the wallet route placed a four-step payment explainer and a detailed confidence panel above the live wallet balance and actions, pushing the money controls below the first fold.
+
+The wallet route now renders its existing WalletDashboard first, followed by both existing payment-confidence components. No data fetching, payment options, pricing calculations, hidden legacy add-funds form, add-funds redirect, or transaction semantics changed. The separate add-funds route retains its payment guidance. A unit regression checks this order.
+
+Visual evidence warning: the checked-in wallet 'after' screenshots predate this specific ordering correction and must be recaptured for design approval. Re-run configured responsive and payment regression tests at this exact head before merge. No Vercel preview or production deploy requested.

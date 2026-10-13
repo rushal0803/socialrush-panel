@@ -47,3 +47,15 @@ test("mobile drawer keeps funds and support in a visible footer, without duplica
   assert.equal(menu.includes("Start Order"), false);
   assert.equal(menu.includes("Profile"), false);
 });
+
+
+test("wallet balance and money actions precede lengthy payment-confidence explanations", () => {
+  const walletPage = readFileSync(new URL("../../app/dashboard/wallet/page.tsx", import.meta.url), "utf8");
+  const walletLayout = readFileSync(new URL("../../app/dashboard/wallet/layout.tsx", import.meta.url), "utf8");
+  const summaryPosition = walletPage.indexOf("<WalletDashboard initial={initial} />");
+  const confidencePosition = walletPage.indexOf("<PaymentConfidencePanel transactions={transactions}");
+  assert.ok(summaryPosition >= 0 && confidencePosition > summaryPosition, "show wallet balance and money actions before the supplementary confidence dashboard");
+  assert.match(walletPage, /<WalletAddFundsRedirect \/>/);
+  assert.ok(walletLayout.indexOf("{children}") < walletLayout.indexOf('<PaymentConfidenceExperience mode="wallet" />'));
+  assert.match(walletPage, /#add-funds\{display:none!important\}/);
+});
