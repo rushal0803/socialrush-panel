@@ -13,17 +13,15 @@ const orderDate = (value?: string | null) => { const date = value ? new Date(val
 
 function frame({ preheader, headline, body, card, cta, href, support }: FrameOptions) {
   const home = site();
-  const safeHeadline = esc(headline);
-  const safePreheader = esc(preheader);
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
 <body style="margin:0;padding:0;background:#07080D;color:#F8FAFC;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%;">
-<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#07080D;opacity:0;">${safePreheader}</div>
+<div style="display:none;max-height:0;overflow:hidden;mso-hide:all;font-size:1px;line-height:1px;color:#07080D;opacity:0;">${preheader}</div>
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;background:#07080D;"><tr><td align="center" style="padding:32px 12px;">
 <table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0" style="width:100%;max-width:600px;background:#101219;border:1px solid #252934;border-radius:18px;overflow:hidden;">
 <tr><td style="height:4px;line-height:4px;font-size:0;background:#FF7600;background:linear-gradient(135deg,#FF6200 0%,#FF9A00 100%);">&nbsp;</td></tr>
 <tr><td style="padding:26px 28px 20px;background:#0C0E14;border-bottom:1px solid #252934;"><table role="presentation" width="100%" cellspacing="0" cellpadding="0" border="0"><tr><td valign="middle"><img src="https://www.getsocialrush.com/images/brand/socialrush-logo-transparent.png" width="174" alt="SocialRUSH" style="display:block;width:174px;max-width:100%;height:auto;border:0;outline:none;text-decoration:none;"></td></tr></table></td></tr>
-<tr><td style="padding:30px 28px 10px;"><h1 style="margin:0;color:#F8FAFC;font-size:27px;line-height:36px;font-weight:700;letter-spacing:-.4px;">${safeHeadline}</h1></td></tr>
+<tr><td style="padding:30px 28px 10px;"><h1 style="margin:0;color:#F8FAFC;font-size:27px;line-height:36px;font-weight:700;letter-spacing:-.4px;">${headline}</h1></td></tr>
 <tr><td style="padding:10px 28px 0;font-size:15px;line-height:25px;color:#A8AFBD;">${body}</td></tr>
 ${card ? `<tr><td style="padding:24px 28px 0;">${card}</td></tr>` : ""}
 <tr><td style="padding:28px 28px 0;"><table role="presentation" cellspacing="0" cellpadding="0" border="0"><tr><td align="center" style="border-radius:9px;background:#FF7600;background:linear-gradient(135deg,#FF6200 0%,#FF9A00 100%);"><a href="${href}" style="display:inline-block;padding:14px 24px;border-radius:9px;color:#FFFFFF;font-size:15px;line-height:20px;font-weight:700;text-decoration:none;">${cta}</a></td></tr></table></td></tr>
@@ -149,7 +147,7 @@ export function inactiveLongTerm(name?:string|null,userId?:string):EmailTemplate
 
 export function orderCreated(name: string | null | undefined, order: Order): EmailTemplate {
   const url = `${site()}/dashboard/orders/${order.id}`;
-  return { subject: `Order received — SocialRUSH ${orderId(order)}`, html: frame({ preheader: `Your SocialRUSH order ${esc(orderId(order))} has been received.`, headline: `Thanks, ${esc(first(name))}. Your order is confirmed.`, body: "We’ve successfully received your order and it is now in our system. You can review the order details and follow its progress from your dashboard.", card: details(order), cta: "Track Your Order", href: url, support: `If anything looks incorrect or you need assistance, reply to this email and include your order ID (${esc(orderId(order))}) so our team can help quickly.` }), text: `Thanks, ${first(name)}. Your order is confirmed.\n\nWe’ve successfully received your order and it is now in our system.\n\nOrder ID: ${orderId(order)}\nPlatform: ${order.platform || "—"}\nService: ${order.service_name || "—"}\nQuantity: ${order.quantity ?? "—"}\nAmount: ${amount(order.charge)}\nStatus: ${order.status || "—"}\nOrder date: ${orderDate(order.created_at)}\n\nTrack your order: ${url}\n\nIf anything looks incorrect or you need assistance, reply to this email and include your order ID so our team can help quickly.` };
+  return { subject: `Order received — SocialRUSH ${orderId(order)}`, html: frame({ preheader: `Your SocialRUSH order ${esc(orderId(order))} has been received.`, headline: `Thanks, ${esc(first(name))}. We’ve received your order.`, body: "We’ve successfully received your order and it is now in our system. You can review the order details and follow its progress from your dashboard.", card: details(order), cta: "Track Your Order", href: url, support: `If anything looks incorrect or you need assistance, reply to this email and include your order ID (${esc(orderId(order))}) so our team can help quickly.` }), text: `Thanks, ${first(name)}. We’ve received your order.\n\nWe’ve successfully received your order and it is now in our system.\n\nOrder ID: ${orderId(order)}\nPlatform: ${order.platform || "—"}\nService: ${order.service_name || "—"}\nQuantity: ${order.quantity ?? "—"}\nAmount: ${amount(order.charge)}\nStatus: ${order.status || "—"}\nOrder date: ${orderDate(order.created_at)}\n\nTrack your order: ${url}\n\nIf anything looks incorrect or you need assistance, reply to this email and include your order ID so our team can help quickly.` };
 }
 
 export function orderCompleted(name: string | null | undefined, order: Order): EmailTemplate {
