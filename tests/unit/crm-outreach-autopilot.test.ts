@@ -34,8 +34,10 @@ test("autonomous outreach adds a clear reply-to-unsubscribe instruction",()=>{
     "Hi {{first_name}},\n\nI thought {{business_name}} may benefit from {{recommended_service}}.",
     {full_name:"Asha Sharma",business_name:"Acme",recommended_service:"LinkedIn growth"}
   );
-  assert.match(email.text,/reply “unsubscribe”/i);
-  assert.match(email.html,/reply “unsubscribe”/i);
+  assert.match(email.text,/reply UNSUBSCRIBE/i);
+  assert.match(email.html,/reply UNSUBSCRIBE/i);
+  assert.match(email.html,/<html lang="en">/);
+  assert.match(email.html,/<meta charset="utf-8" \/>/);
   assert.match(email.text,/Asha/);
   assert.match(email.text,/Acme/);
 });
