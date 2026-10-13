@@ -35,11 +35,11 @@ test("mobile drawer keeps funds and support in a visible footer, without duplica
   const menu = readFileSync(new URL("../../components/dashboard/DashboardMobileMenu.tsx", import.meta.url), "utf8");
   assert.match(menu, /min-h-0 flex-1 overflow-y-auto/);
   assert.match(menu, /role="group" aria-label="Quick dashboard actions" className="shrink-0/);
-  assert.match(menu, /href="\\/dashboard\\/wallet#add-funds"/);
-  assert.match(menu, /href="\\/dashboard\\/support"/);
+  assert.ok(menu.includes('href="/dashboard/wallet#add-funds"'));
+  assert.ok(menu.includes('href="/dashboard/support"'));
   assert.match(menu, /<NavLinks mobile/);
-  assert.match(menu, /<AndroidAppDownload \\/>/);
+  assert.ok(menu.includes("<AndroidAppDownload />"));
   assert.match(menu, /onClick={handleLogout}/);
-  assert.doesNotMatch(menu, />\\s*Start Order\\s*<\\/Link>/);
-  assert.doesNotMatch(menu, />\\s*Profile\\s*<\\/Link>/);
+  assert.equal(menu.includes("Start Order"), false);
+  assert.equal(menu.includes("Profile"), false);
 });
