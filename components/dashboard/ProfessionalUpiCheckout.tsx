@@ -287,7 +287,7 @@ export default function ProfessionalUpiCheckout() {
           <div>
             <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">Direct UPI checkout</p>
             <p className="mt-1 text-sm font-black text-[#0B0B0F]">Pay directly by UPI — no wallet top-up required</p>
-            <p className="mt-1 text-xs font-medium text-[#4B5563]">Your exact order amount is prepared securely before your UPI app opens.</p>
+            <p className="mt-1 text-xs font-medium text-slate-300">Your exact order amount is prepared securely before your UPI app opens.</p>
           </div>
           <button
             type="button"

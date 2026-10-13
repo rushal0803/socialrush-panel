@@ -22,6 +22,10 @@ test("navigation distinguishes favourites and exact route boundaries", () => {
   assert.equal(isDashboardLinkActive("/dashboard/orders", "/dashboard/orders-other"), false);
   assert.equal(isDashboardLinkActive("/dashboard/orders", "/dashboard/order-history"), true);
   assert.equal(isDashboardLinkActive("/dashboard/wallet", "/dashboard/add-funds"), true);
+  assert.equal(isDashboardLinkActive("/dashboard/new-order", "/dashboard/order-summary"), true);
+  assert.equal(isDashboardLinkActive("/dashboard/new-order", "/dashboard/order-summary", "tab=favourites"), true);
+  assert.equal(isDashboardLinkActive("/dashboard/wallet", "/dashboard/direct-upi"), true);
+  assert.equal(isDashboardLinkActive("/dashboard/new-order", "/dashboard/order-summary-other"), false);
   assert.equal(isDashboardLinkActive("/dashboard", "/dashboard/new-order"), false);
 });
 

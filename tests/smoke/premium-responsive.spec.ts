@@ -166,6 +166,15 @@ test("dashboard drawer remains keyboard accessible on a short phone", async ({ p
   const dialog = page.getByRole("dialog", { name: "Mobile navigation" });
   const close = dialog.getByRole("button", { name: "Close menu", exact: true });
   await expect(close).toBeFocused();
+  const actions = dialog.getByRole("group", { name: "Quick dashboard actions" });
+  for (const name of ["Add Funds", "Get Support"]) {
+    const action = actions.getByRole("link", { name, exact: true });
+    await expect(action).toBeVisible();
+    const box = await action.boundingBox();
+    expect(box?.height).toBeGreaterThanOrEqual(44);
+    expect(box!.y + box!.height).toBeLessThanOrEqual(480);
+  }
+  await expect(actions.getByRole("link", { name: "Add Funds", exact: true })).toHaveAttribute("href", "/dashboard/wallet#add-funds");
   await dialog.locator('a[href]').first().focus();
   await page.keyboard.press("Shift+Tab");
   await expect(dialog.getByRole("button", { name: /log ?out/i })).toBeFocused();
@@ -175,6 +184,13 @@ test("dashboard drawer remains keyboard accessible on a short phone", async ({ p
   await page.setViewportSize({ width: 1024, height: 768 });
   await expect(dialog).toHaveCount(0);
   await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
+  await page.setViewportSize({ width: 390, height: 740 });
+  await trigger.click();
+  await dialog.getByRole("link", { name: "Add Funds", exact: true }).click();
+  await expect(page).toHaveURL(/\/dashboard\/add-funds$/);
+  await expect(dialog).toHaveCount(0);
+  await expect(page.getByRole("heading", { name: "Complete your payment", exact: true })).toBeInViewport();
+  await expect(page.getByRole("textbox", { name: "Amount", exact: true })).toBeVisible();
 });
 
 test("public lab rendering metrics", async ({ page }, testInfo) => {
@@ -370,6 +386,82 @@ test("dashboard drawer preserves every destination and closes after query naviga
   await expect(dialog).toHaveCount(0);
 });
 
+test("customer funding starts with amount selection at every requested width", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  fs.mkdirSync(outputRoot, { recursive: true });
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1280, 1440, 1920]) {
+    await page.setViewportSize({ width, height: width <= 430 ? 740 : 900 });
+    await page.goto("/dashboard/add-funds");
+    await expect(page.getByRole("heading", { name: "Complete your payment", exact: true })).toBeInViewport();
+    await expect(page.getByRole("textbox", { name: "Amount", exact: true })).toBeInViewport();
+    await expect(page.getByRole("region", { name: "Payment confidence", exact: true })).toBeVisible();
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+    if ([390, 768, 1440].includes(width)) await page.screenshot({ path: path.join(outputRoot, `funding-form-${width}.png`) });
+  }
+});
+
+test("customer order review keeps readable labels and summary amounts", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  for (const width of [390, 1440]) {
+    await page.setViewportSize({ width, height: 844 });
+    await page.goto("/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F");
+    await expect(page.getByRole("heading", { name: "Instagram Followers", exact: true })).toBeVisible();
+    const contrasts = await page.locator("#dashboard-main-content main").evaluate(root => {
+      const rgba = (value: string) => (value.match(/[\d.]+/g) || []).map(Number);
+      const luminance = (color: number[]) => color.slice(0, 3).map(value => {
+        const channel = value / 255;
+        return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4;
+      }).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+      const paymentCaption = Array.from(root.ownerDocument.querySelectorAll("p")).find(element => element.textContent === "Your exact order amount is prepared securely before your UPI app opens.");
+      const targets = [...root.querySelectorAll<HTMLElement>("label, aside span, section > p"), ...(paymentCaption ? [paymentCaption] : [])];
+      return targets.filter(element => element.getClientRects().length > 0).map(element => {
+        const ancestors: Element[] = [];
+        for (let parent: Element | null = element; parent; parent = parent.parentElement) ancestors.unshift(parent);
+        let background = [255, 255, 255];
+        for (const parent of ancestors) {
+          const color = rgba(getComputedStyle(parent).backgroundColor);
+          const alpha = color[3] ?? 1;
+          background = background.map((value, index) => color[index] * alpha + value * (1 - alpha));
+        }
+        const foreground = luminance(rgba(getComputedStyle(element).color));
+        const backdrop = luminance(background);
+        return { text: element.textContent?.trim().slice(0, 80), ratio: (Math.max(foreground, backdrop) + 0.05) / (Math.min(foreground, backdrop) + 0.05) };
+      });
+    });
+    fs.mkdirSync(outputRoot, { recursive: true });
+    fs.writeFileSync(path.join(outputRoot, `order-review-contrast-${width}.json`), JSON.stringify(contrasts, null, 2));
+    if (process.env.ORDER_REVIEW_CONTRAST_BASELINE !== "1") {
+      expect(contrasts.length).toBeGreaterThanOrEqual(6);
+      for (const result of contrasts) expect(result.ratio, result.text).toBeGreaterThanOrEqual(4.5);
+    }
+    await page.screenshot({ path: path.join(outputRoot, `order-review-contrast-${width}.png`), fullPage: true });
+  }
+  // A saved synthetic intent exercises the already-paid warning without
+  // creating an intent, following its payment link, or submitting a UTR.
+  await page.evaluate(() => sessionStorage.setItem("socialrush-direct-payment:bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", JSON.stringify({ started: true, total: 123.45, savedAt: Date.now() - 120000 })));
+  await page.setViewportSize({ width: 390, height: 844 });
+  await page.goto("/dashboard/wallet");
+  const warning = page.getByText(/Already paid.*do not pay again\./);
+  await expect(warning).toBeVisible();
+  const recoveryContrast = await warning.evaluate(element => {
+    const luminance = (rgb: number[]) => rgb.map(value => { const channel = value / 255; return channel <= 0.04045 ? channel / 12.92 : ((channel + 0.055) / 1.055) ** 2.4; }).reduce((sum, value, index) => sum + value * [0.2126, 0.7152, 0.0722][index], 0);
+    const rgba = (value: string) => (value.match(/[\d.]+/g) || []).map(Number);
+    const ancestors: Element[] = [];
+    for (let parent: Element | null = element; parent; parent = parent.parentElement) ancestors.unshift(parent);
+    let background = [255, 255, 255];
+    for (const parent of ancestors) {
+      const color = rgba(getComputedStyle(parent).backgroundColor), alpha = color[3] ?? 1;
+      background = background.map((value, index) => color[index] * alpha + value * (1 - alpha));
+    }
+    const foreground = luminance(rgba(getComputedStyle(element).color)), backdrop = luminance(background);
+    return (Math.max(foreground, backdrop) + 0.05) / (Math.min(foreground, backdrop) + 0.05);
+  });
+  fs.writeFileSync(path.join(outputRoot, "recovery-contrast.json"), JSON.stringify({ ratio: recoveryContrast }));
+  if (process.env.ORDER_REVIEW_CONTRAST_BASELINE !== "1") expect(recoveryContrast).toBeGreaterThanOrEqual(4.5);
+  await expect(page.getByRole("link", { name: "Return to payment / UTR", exact: true })).toHaveAttribute("href", "/dashboard/direct-upi?intent=bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb");
+  await page.screenshot({ path: path.join(outputRoot, "recovery-warning-390.png") });
+});
+
 test("dashboard search retries only on request and cancels when dismissed", async ({ page, context, baseURL }) => {
   await authenticate(context, baseURL!);
   let failed = true, slow = false, reads = 0;
@@ -491,6 +583,9 @@ for (const width of widths) {
       expect(response?.status(), route).toBeLessThan(400);
       await expect(page.locator(".dashboard-shell")).toBeVisible();
       await expectRevealedContent(page);
+      if (route.startsWith("/dashboard/order-summary") && width < 1024) {
+        await expect(page.getByRole("navigation", { name: "Primary dashboard navigation" }).getByRole("link", { name: "New Order", exact: true })).toHaveAttribute("aria-current", "page");
+      }
       await page.waitForLoadState('load', { timeout: 30000 });
       const layout = await page.evaluate(() => {
         document.documentElement.style.overflowX = "visible";

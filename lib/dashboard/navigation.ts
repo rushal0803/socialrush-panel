@@ -9,7 +9,8 @@ export function isDashboardLinkActive(href: string, pathname: string, query = ""
   const [route, requiredQuery] = href.split("?");
   const current = new URLSearchParams(query);
   if (requiredQuery) return pathname === route && [...new URLSearchParams(requiredQuery)].every(([key, value]) => current.get(key) === value);
-  if (route === "/dashboard/new-order" && current.get("tab") === "favourites") return false;
+  if (route === "/dashboard/new-order" && pathname === route && current.get("tab") === "favourites") return false;
+  if (route === "/dashboard/new-order" && pathname === "/dashboard/order-summary") return true;
   if (route === "/dashboard/wallet" && ["/dashboard/add-funds", "/dashboard/direct-upi"].includes(pathname)) return true;
   if (route === "/dashboard/orders" && pathname === "/dashboard/order-history") return true;
   return pathname === route || (route !== "/dashboard" && pathname.startsWith(`${route}/`));

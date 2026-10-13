@@ -1,0 +1,4410 @@
+{
+  "note": "Final review: safe authenticated synthetic fixtures, 34 routes at all ten requested widths. Lab timings are local unthrottled samples, not a speed improvement or field percentile.",
+  "results": [
+    {
+      "width": 320,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1124,
+            "cls": 0,
+            "ttfb": 164.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 760,
+            "cls": 0,
+            "ttfb": 49.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 656,
+            "cls": 0,
+            "ttfb": 80.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 61.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 34.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 780,
+            "cls": 0.01960555149744339,
+            "ttfb": 69.1000000005588
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 544,
+            "cls": 0.01960555149744339,
+            "ttfb": 60.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 39.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0,
+            "ttfb": 39.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 33.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 320,
+              "scroll": 400
+            }
+          ],
+          "lab": {
+            "lcp": 276,
+            "cls": 0,
+            "ttfb": 48.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 788,
+            "cls": 0.018715485756026298,
+            "ttfb": 46.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 344,
+            "cls": 0,
+            "ttfb": 46.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "mt-2 flex flex-col gap-5 lg:flex-row lg:items-end lg:justify-between",
+              "text": "Build a broader campaign, one service at a time.Compare rela",
+              "width": 246,
+              "scroll": 250
+            }
+          ],
+          "lab": {
+            "lcp": 376,
+            "cls": 0,
+            "ttfb": 85
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0,
+            "ttfb": 42
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 504,
+            "cls": 0,
+            "ttfb": 53.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 244,
+            "cls": 0,
+            "ttfb": 44.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 71.1000000005588
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 204,
+            "cls": 0,
+            "ttfb": 32.5
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 704,
+            "cls": 0,
+            "ttfb": 87.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 36.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 216,
+            "cls": 0,
+            "ttfb": 43.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 244,
+            "cls": 0,
+            "ttfb": 49.19999999925494
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 70.3999999994412
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 51.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 508,
+            "cls": 0.0270813550036523,
+            "ttfb": 43.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 516,
+            "cls": 0,
+            "ttfb": 71.5
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 244,
+            "cls": 0,
+            "ttfb": 48.5
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 43.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 208,
+            "cls": 0,
+            "ttfb": 38.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 156,
+            "cls": 0,
+            "ttfb": 35.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 260,
+            "cls": 0,
+            "ttfb": 51.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 248,
+            "cls": 0,
+            "ttfb": 46.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 320,
+          "scroll": 320,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 172,
+            "cls": 0,
+            "ttfb": 37.5
+          }
+        }
+      ]
+    },
+    {
+      "width": 360,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1092,
+            "cls": 0,
+            "ttfb": 86.5
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 724,
+            "cls": 0,
+            "ttfb": 105.5
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 628,
+            "cls": 0,
+            "ttfb": 104.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0,
+            "ttfb": 35.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 57.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 384,
+            "cls": 0,
+            "ttfb": 62.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 556,
+            "cls": 0.01960555149744339,
+            "ttfb": 41.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 58.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 276,
+            "cls": 0,
+            "ttfb": 56.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 60.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 360,
+              "scroll": 440
+            }
+          ],
+          "lab": {
+            "lcp": 240,
+            "cls": 0,
+            "ttfb": 37.5
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 592,
+            "cls": 0.03749890430971512,
+            "ttfb": 56
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 228,
+            "cls": 0,
+            "ttfb": 29.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 540,
+            "cls": 0,
+            "ttfb": 92.70000000018626
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 43.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 552,
+            "cls": 0,
+            "ttfb": 57.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 236,
+            "cls": 0,
+            "ttfb": 49.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 81.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 344,
+            "cls": 0,
+            "ttfb": 46.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 59.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 292,
+            "cls": 0,
+            "ttfb": 73.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 228,
+            "cls": 0,
+            "ttfb": 45.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 240,
+            "cls": 0,
+            "ttfb": 56.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 176,
+            "cls": 0,
+            "ttfb": 36.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 256,
+            "cls": 0,
+            "ttfb": 41.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0.04738940376186998,
+            "ttfb": 48.5
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 208,
+            "cls": 0,
+            "ttfb": 40
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 39.5
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 228,
+            "cls": 0,
+            "ttfb": 49.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 68.8999999994412
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 208,
+            "cls": 0,
+            "ttfb": 36.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 400,
+            "cls": 0,
+            "ttfb": 145.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 248,
+            "cls": 0,
+            "ttfb": 35.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 360,
+          "scroll": 360,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0,
+            "ttfb": 51.299999999813735
+          }
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1352,
+            "cls": 0,
+            "ttfb": 428.70000000018626
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 612,
+            "cls": 0,
+            "ttfb": 58
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 528,
+            "cls": 0,
+            "ttfb": 54.5
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 592,
+            "cls": 0,
+            "ttfb": 31.699999999254942
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 49.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 552,
+            "cls": 0.01960555149744339,
+            "ttfb": 56.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 236,
+            "cls": 0,
+            "ttfb": 35
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 67.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 212,
+            "cls": 0,
+            "ttfb": 46.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 212,
+            "cls": 0,
+            "ttfb": 30.199999999254942
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 375,
+              "scroll": 455
+            }
+          ],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 79.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 488,
+            "cls": 0.03752064280496713,
+            "ttfb": 26
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 204,
+            "cls": 0,
+            "ttfb": 32.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 572,
+            "cls": 0,
+            "ttfb": 60.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 36
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 512,
+            "cls": 0,
+            "ttfb": 51.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 51.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 61.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 49.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 184,
+            "cls": 0,
+            "ttfb": 41.5
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 46.5
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 192,
+            "cls": 0,
+            "ttfb": 39.69999999925494
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 292,
+            "cls": 0,
+            "ttfb": 42.5
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 184,
+            "cls": 0,
+            "ttfb": 48.5
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0,
+            "ttfb": 32.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0.04757433802045289,
+            "ttfb": 58
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 192,
+            "cls": 0,
+            "ttfb": 35.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 228,
+            "cls": 0,
+            "ttfb": 50.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 73.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 236,
+            "cls": 0,
+            "ttfb": 41.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 256,
+            "cls": 0,
+            "ttfb": 124.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 248,
+            "cls": 0,
+            "ttfb": 43.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 208,
+            "cls": 0,
+            "ttfb": 32.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 188,
+            "cls": 0,
+            "ttfb": 30.300000000745058
+          }
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1232,
+            "cls": 0,
+            "ttfb": 382.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 640,
+            "cls": 0,
+            "ttfb": 54.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 632,
+            "cls": 0,
+            "ttfb": 70.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 83.3999999994412
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 628,
+            "cls": 0,
+            "ttfb": 54.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1156,
+            "cls": 0.01960555149744339,
+            "ttfb": 62.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0,
+            "ttfb": 47.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0,
+            "ttfb": 47.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 90.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 31.399999999441206
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 390,
+              "scroll": 470
+            }
+          ],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 68
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 628,
+            "cls": 0.01877035455413834,
+            "ttfb": 25.100000000558794
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 244,
+            "cls": 0,
+            "ttfb": 32.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 204,
+            "cls": 0,
+            "ttfb": 36.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 532,
+            "cls": 0,
+            "ttfb": 46.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 572,
+            "cls": 0,
+            "ttfb": 52.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 208,
+            "cls": 0,
+            "ttfb": 37
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 272,
+            "cls": 0,
+            "ttfb": 68.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 176,
+            "cls": 0,
+            "ttfb": 27.699999999254942
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 172,
+            "cls": 0,
+            "ttfb": 28.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 288,
+            "cls": 0,
+            "ttfb": 49.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 460,
+            "cls": 0,
+            "ttfb": 42
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 196,
+            "cls": 0,
+            "ttfb": 37.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 192,
+            "cls": 0,
+            "ttfb": 59.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 256,
+            "cls": 0,
+            "ttfb": 33.69999999925494
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 212,
+            "cls": 0.020256560094397934,
+            "ttfb": 31.600000000558794
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 224,
+            "cls": 0,
+            "ttfb": 50
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 240,
+            "cls": 0,
+            "ttfb": 35.5
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 240,
+            "cls": 0,
+            "ttfb": 44.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 212,
+            "cls": 0,
+            "ttfb": 39.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 216,
+            "cls": 0,
+            "ttfb": 41.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 328,
+            "cls": 0,
+            "ttfb": 53.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 57.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 390,
+          "scroll": 390,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 512,
+            "cls": 0,
+            "ttfb": 75.79999999981374
+          }
+        }
+      ]
+    },
+    {
+      "width": 430,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1316,
+            "cls": 0,
+            "ttfb": 382.5
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 616,
+            "cls": 0,
+            "ttfb": 39
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 56.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 31.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 252,
+            "cls": 0,
+            "ttfb": 45
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 544,
+            "cls": 0.01960555149744339,
+            "ttfb": 44.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 212,
+            "cls": 0,
+            "ttfb": 35.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 93.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 45.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 272,
+            "cls": 0,
+            "ttfb": 50
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 430,
+              "scroll": 510
+            }
+          ],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 34
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 660,
+            "cls": 0.018793687464963394,
+            "ttfb": 45
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 39.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 204,
+            "cls": 0,
+            "ttfb": 35.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 220,
+            "cls": 0,
+            "ttfb": 33.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 272,
+            "cls": 0,
+            "ttfb": 31.100000000558794
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 216,
+            "cls": 0,
+            "ttfb": 51.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 260,
+            "cls": 0,
+            "ttfb": 40.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 248,
+            "cls": 0,
+            "ttfb": 54.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 624,
+            "cls": 0,
+            "ttfb": 86.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 65.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 200,
+            "cls": 0,
+            "ttfb": 44.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 288,
+            "cls": 0,
+            "ttfb": 66.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 82
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 420,
+            "cls": 0,
+            "ttfb": 49.5
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 276,
+            "cls": 0.022127074591876607,
+            "ttfb": 77.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 336,
+            "cls": 0,
+            "ttfb": 60.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 336,
+            "cls": 0,
+            "ttfb": 60.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 660,
+            "cls": 0,
+            "ttfb": 185.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 244,
+            "cls": 0,
+            "ttfb": 51.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 604,
+            "cls": 0,
+            "ttfb": 91
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 632,
+            "cls": 0,
+            "ttfb": 64.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 564,
+            "cls": 0,
+            "ttfb": 65.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 430,
+          "scroll": 430,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 172,
+            "cls": 0,
+            "ttfb": 34.299999999813735
+          }
+        }
+      ]
+    },
+    {
+      "width": 768,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1436,
+            "cls": 0,
+            "ttfb": 452.69999999925494
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 956,
+            "cls": 0,
+            "ttfb": 71
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 360,
+            "cls": 0,
+            "ttfb": 90.5
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 548,
+            "cls": 0.005466145833333333,
+            "ttfb": 44.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0.005466145833333333,
+            "ttfb": 39.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 704,
+            "cls": 0.02032098765432099,
+            "ttfb": 47.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 54.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 260,
+            "cls": 0,
+            "ttfb": 31.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 236,
+            "cls": 0,
+            "ttfb": 32.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 312,
+            "cls": 0,
+            "ttfb": 54.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 768,
+              "scroll": 848
+            }
+          ],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 49
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 828,
+            "cls": 0.015597325102880658,
+            "ttfb": 54.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 504,
+            "cls": 0,
+            "ttfb": 57.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 276,
+            "cls": 0,
+            "ttfb": 34
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 87.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 540,
+            "cls": 0,
+            "ttfb": 38.5
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 96.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 48.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 34.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 216,
+            "cls": 0,
+            "ttfb": 43.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 260,
+            "cls": 0,
+            "ttfb": 33
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 232,
+            "cls": 0,
+            "ttfb": 35.10000000055879
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 228,
+            "cls": 0,
+            "ttfb": 41.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 260,
+            "cls": 0,
+            "ttfb": 41
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 76.8999999994412
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 696,
+            "cls": 0.029359670781893,
+            "ttfb": 41.69999999925494
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 240,
+            "cls": 0,
+            "ttfb": 44.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 34.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 236,
+            "cls": 0,
+            "ttfb": 38.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 264,
+            "cls": 0,
+            "ttfb": 28.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 280,
+            "cls": 0,
+            "ttfb": 50.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 292,
+            "cls": 0,
+            "ttfb": 34.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 272,
+            "cls": 0,
+            "ttfb": 53
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 768,
+          "scroll": 768,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 240,
+            "cls": 0,
+            "ttfb": 46
+          }
+        }
+      ]
+    },
+    {
+      "width": 1024,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "min-w-0 flex-1",
+              "text": "Studio QAInstagram · ready to prefill",
+              "width": 27,
+              "scroll": 44
+            },
+            {
+              "tag": "P",
+              "class": "mt-0.5 text-[10px] text-slate-500",
+              "text": "Instagram · ready to prefill",
+              "width": 27,
+              "scroll": 44
+            }
+          ],
+          "lab": {
+            "lcp": 1380,
+            "cls": 0,
+            "ttfb": 381.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 644,
+            "cls": 0,
+            "ttfb": 66.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 676,
+            "cls": 0,
+            "ttfb": 81.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0.020747155083550347,
+            "ttfb": 30.100000000558794
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 484,
+            "cls": 0.020747155083550347,
+            "ttfb": 43.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 596,
+            "cls": 0.01346494886610243,
+            "ttfb": 48.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 340,
+            "cls": 0,
+            "ttfb": 47.5
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 284,
+            "cls": 0,
+            "ttfb": 32.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "mt-6 grid gap-4 sm:grid-cols-3",
+              "text": "01ShareSend your account-linked referral URL to someone who ",
+              "width": 344,
+              "scroll": 354
+            },
+            {
+              "tag": "H3",
+              "class": "mt-3 font-black text-white",
+              "text": "Share",
+              "width": 62,
+              "scroll": 72
+            },
+            {
+              "tag": "P",
+              "class": "mt-2 text-xs leading-6 text-slate-400",
+              "text": "Send your account-linked referral URL to someone who genuine",
+              "width": 62,
+              "scroll": 64
+            },
+            {
+              "tag": "DIV",
+              "class": "rounded-2xl border border-white/[.08] bg-white/[.035] p-5",
+              "text": "02RegisterA new customer who signs up through the link is at",
+              "width": 102,
+              "scroll": 127
+            },
+            {
+              "tag": "H3",
+              "class": "mt-3 font-black text-white",
+              "text": "Register",
+              "width": 62,
+              "scroll": 107
+            },
+            {
+              "tag": "DIV",
+              "class": "rounded-2xl border border-white/[.08] bg-white/[.035] p-5",
+              "text": "03QualifyThe referral qualifies after an eligible paid order",
+              "width": 102,
+              "scroll": 113
+            },
+            {
+              "tag": "H3",
+              "class": "mt-3 font-black text-white",
+              "text": "Qualify",
+              "width": 62,
+              "scroll": 93
+            }
+          ],
+          "lab": {
+            "lcp": 304,
+            "cls": 0,
+            "ttfb": 39.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 924,
+            "cls": 0,
+            "ttfb": 376.5
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 768,
+              "scroll": 848
+            }
+          ],
+          "lab": {
+            "lcp": 664,
+            "cls": 0,
+            "ttfb": 358.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 824,
+            "cls": 0,
+            "ttfb": 75
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "rounded-2xl bg-white/[.03] p-4",
+              "text": "PlatformInstagram",
+              "width": 79,
+              "scroll": 86
+            },
+            {
+              "tag": "P",
+              "class": "mt-1 text-sm font-black text-slate-100",
+              "text": "Instagram",
+              "width": 47,
+              "scroll": 70
+            },
+            {
+              "tag": "DIV",
+              "class": "mt-4 grid gap-3 sm:grid-cols-3",
+              "text": "1Place orderYour wallet is charged only when the order is cr",
+              "width": 212,
+              "scroll": 227
+            },
+            {
+              "tag": "DIV",
+              "class": "rounded-2xl border border-white/10 bg-white p-4",
+              "text": "1Place orderYour wallet is charged only when the order is cr",
+              "width": 61,
+              "scroll": 82
+            },
+            {
+              "tag": "P",
+              "class": "mt-3 text-sm font-black text-slate-100",
+              "text": "Place order",
+              "width": 29,
+              "scroll": 38
+            },
+            {
+              "tag": "P",
+              "class": "mt-1 text-xs font-medium leading-5 text-slate-300",
+              "text": "Your wallet is charged only when the order is created succes",
+              "width": 29,
+              "scroll": 66
+            },
+            {
+              "tag": "DIV",
+              "class": "rounded-2xl border border-white/10 bg-white p-4",
+              "text": "2Track statusThe order appears in My Orders with its current",
+              "width": 61,
+              "scroll": 72
+            },
+            {
+              "tag": "P",
+              "class": "mt-3 text-sm font-black text-slate-100",
+              "text": "Track status",
+              "width": 29,
+              "scroll": 42
+            },
+            {
+              "tag": "P",
+              "class": "mt-1 text-xs font-medium leading-5 text-slate-300",
+              "text": "The order appears in My Orders with its current fulfillment ",
+              "width": 29,
+              "scroll": 56
+            },
+            {
+              "tag": "DIV",
+              "class": "rounded-2xl border border-white/10 bg-white p-4",
+              "text": "3DeliveryKeep the destination public while the service is be",
+              "width": 61,
+              "scroll": 77
+            },
+            {
+              "tag": "P",
+              "class": "mt-3 text-sm font-black text-slate-100",
+              "text": "Delivery",
+              "width": 29,
+              "scroll": 57
+            },
+            {
+              "tag": "P",
+              "class": "mt-1 text-xs font-medium leading-5 text-slate-300",
+              "text": "Keep the destination public while the service is being deliv",
+              "width": 29,
+              "scroll": 61
+            }
+          ],
+          "lab": {
+            "lcp": 316,
+            "cls": 0.000021039115058051214,
+            "ttfb": 57.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0,
+            "ttfb": 32.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 384,
+            "cls": 0,
+            "ttfb": 148.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 828,
+            "cls": 0,
+            "ttfb": 364.5
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 37
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 276,
+            "cls": 0,
+            "ttfb": 32.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 328,
+            "cls": 0,
+            "ttfb": 56.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 316,
+            "cls": 0,
+            "ttfb": 70
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 320,
+            "cls": 0,
+            "ttfb": 68.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 40
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 324,
+            "cls": 0,
+            "ttfb": 40.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 228,
+            "cls": 0,
+            "ttfb": 33.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4",
+              "text": "Your workspaceAPI Documentation₹₹ INRCurrency:INR ₹SearchWal",
+              "width": 704,
+              "scroll": 706
+            },
+            {
+              "tag": "DIV",
+              "class": "ml-auto flex min-w-0 items-center gap-1.5 min-[430px]:gap-2 sm:gap-3",
+              "text": "₹₹ INRCurrency:INR ₹SearchWallet (INR)₹0.00Add FundsPQPackag",
+              "width": 564,
+              "scroll": 566
+            }
+          ],
+          "lab": {
+            "lcp": 540,
+            "cls": 0,
+            "ttfb": 51.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 720,
+            "cls": 0.01916430155436198,
+            "ttfb": 48.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 264,
+            "cls": 0,
+            "ttfb": 36.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0,
+            "ttfb": 57.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 324,
+            "cls": 0,
+            "ttfb": 45.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 312,
+            "cls": 0,
+            "ttfb": 72.3999999994412
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 276,
+            "cls": 0,
+            "ttfb": 35.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "grid gap-7 lg:grid-cols-[1.2fr_.8fr] lg:items-end",
+              "text": "Agency revenue conversionBuild a monthly client plan with ma",
+              "width": 638,
+              "scroll": 669
+            },
+            {
+              "tag": "ASIDE",
+              "class": "rounded-2xl border border-emerald-400/15 bg-emerald-500/[.06] p-5",
+              "text": "Margin-safe planningThe client quote is planning math only. ",
+              "width": 147,
+              "scroll": 216
+            },
+            {
+              "tag": "DIV",
+              "class": "flex items-center gap-3",
+              "text": "Margin-safe planning",
+              "width": 107,
+              "scroll": 196
+            }
+          ],
+          "lab": {
+            "lcp": 604,
+            "cls": 0,
+            "ttfb": 346.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 372,
+            "cls": 0,
+            "ttfb": 84
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 1024,
+          "scroll": 1024,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 42.59999999962747
+          }
+        }
+      ]
+    },
+    {
+      "width": 1280,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1488,
+            "cls": 0,
+            "ttfb": 427.8999999994412
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 688,
+            "cls": 0,
+            "ttfb": 37.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 380,
+            "cls": 0,
+            "ttfb": 113.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 352,
+            "cls": 0.021095906575520833,
+            "ttfb": 80.5
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 328,
+            "cls": 0.021095906575520833,
+            "ttfb": 41.5
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 728,
+            "cls": 0.011475206163194444,
+            "ttfb": 57.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 28.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 524,
+            "cls": 0,
+            "ttfb": 39.5
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 364,
+            "cls": 0,
+            "ttfb": 73.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 796,
+            "cls": 0,
+            "ttfb": 44.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 1024,
+              "scroll": 1104
+            }
+          ],
+          "lab": {
+            "lcp": 440,
+            "cls": 0,
+            "ttfb": 115.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1016,
+            "cls": 0,
+            "ttfb": 38.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 368,
+            "cls": 0,
+            "ttfb": 67.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 420,
+            "cls": 0,
+            "ttfb": 46.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 308,
+            "cls": 0,
+            "ttfb": 38.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 560,
+            "cls": 0,
+            "ttfb": 88.1000000005588
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 37
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 308,
+            "cls": 0,
+            "ttfb": 119.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 392,
+            "cls": 0,
+            "ttfb": 39.5
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 712,
+            "cls": 0,
+            "ttfb": 42.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 316,
+            "cls": 0,
+            "ttfb": 63.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0,
+            "ttfb": 41
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 328,
+            "cls": 0,
+            "ttfb": 39.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 41.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 592,
+            "cls": 0,
+            "ttfb": 338.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 776,
+            "cls": 0.016578173828125,
+            "ttfb": 76.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 268,
+            "cls": 0,
+            "ttfb": 34.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 312,
+            "cls": 0,
+            "ttfb": 45.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 312,
+            "cls": 0,
+            "ttfb": 52.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 368,
+            "cls": 0,
+            "ttfb": 43.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 260,
+            "cls": 0,
+            "ttfb": 34.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 392,
+            "cls": 0,
+            "ttfb": 32.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 340,
+            "cls": 0,
+            "ttfb": 51.5
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 1280,
+          "scroll": 1280,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 272,
+            "cls": 0,
+            "ttfb": 51.59999999962747
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1480,
+            "cls": 0,
+            "ttfb": 419.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1016,
+            "cls": 0,
+            "ttfb": 65.1000000005588
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 712,
+            "cls": 0,
+            "ttfb": 94.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 408,
+            "cls": 0.028264247899519892,
+            "ttfb": 46.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 360,
+            "cls": 0.028264247899519892,
+            "ttfb": 64.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 680,
+            "cls": 0.010478009259259258,
+            "ttfb": 92.70000000018626
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 372,
+            "cls": 0,
+            "ttfb": 57.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 576,
+            "cls": 0,
+            "ttfb": 49.39999999944121
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 360,
+            "cls": 0,
+            "ttfb": 42.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 292,
+            "cls": 0,
+            "ttfb": 42.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 1184,
+              "scroll": 1264
+            }
+          ],
+          "lab": {
+            "lcp": 596,
+            "cls": 0,
+            "ttfb": 77.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 868,
+            "cls": 0,
+            "ttfb": 44.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 312,
+            "cls": 0.00001063903892318244,
+            "ttfb": 34.5
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 556,
+            "cls": 0,
+            "ttfb": 32.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 520,
+            "cls": 0,
+            "ttfb": 56.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 288,
+            "cls": 0,
+            "ttfb": 42.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 420,
+            "cls": 0,
+            "ttfb": 68.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 356,
+            "cls": 0,
+            "ttfb": 58.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 472,
+            "cls": 0,
+            "ttfb": 119.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 820,
+            "cls": 0,
+            "ttfb": 47.5
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 668,
+            "cls": 0,
+            "ttfb": 95.8999999994412
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 332,
+            "cls": 0,
+            "ttfb": 48.19999999925494
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 348,
+            "cls": 0,
+            "ttfb": 48.299999999813735
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 288,
+            "cls": 0,
+            "ttfb": 54.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 544,
+            "cls": 0,
+            "ttfb": 39.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 840,
+            "cls": 0.01919355709876543,
+            "ttfb": 69.70000000018626
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 328,
+            "cls": 0,
+            "ttfb": 35.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 324,
+            "cls": 0,
+            "ttfb": 41.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 412,
+            "cls": 0,
+            "ttfb": 101.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 332,
+            "cls": 0,
+            "ttfb": 41.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 560,
+            "cls": 0,
+            "ttfb": 51.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 344,
+            "cls": 0,
+            "ttfb": 40.89999999944121
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 44.5
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 1440,
+          "scroll": 1440,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 528,
+            "cls": 0,
+            "ttfb": 49.89999999944121
+          }
+        }
+      ]
+    },
+    {
+      "width": 1920,
+      "results": [
+        {
+          "route": "/dashboard",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1532,
+            "cls": 0,
+            "ttfb": 532.2999999998137
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 876,
+            "cls": 0,
+            "ttfb": 99.5
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 424,
+            "cls": 0,
+            "ttfb": 76.3999999994412
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 420,
+            "cls": 0.021292820683232058,
+            "ttfb": 61.5
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 652,
+            "cls": 0.021292820683232058,
+            "ttfb": 89.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1084,
+            "cls": 0.008275245949074073,
+            "ttfb": 80.5
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 376,
+            "cls": 0,
+            "ttfb": 47.40000000037253
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 616,
+            "cls": 0,
+            "ttfb": 57.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 388,
+            "cls": 0,
+            "ttfb": 50.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 336,
+            "cls": 0,
+            "ttfb": 37.09999999962747
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 1664,
+              "scroll": 1744
+            }
+          ],
+          "lab": {
+            "lcp": 372,
+            "cls": 0,
+            "ttfb": 39.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 704,
+            "cls": 0,
+            "ttfb": 29.799999999813735
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 304,
+            "cls": 0.000005984459394290123,
+            "ttfb": 31.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 336,
+            "cls": 0,
+            "ttfb": 48.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 420,
+            "cls": 0,
+            "ttfb": 56
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 700,
+            "cls": 0,
+            "ttfb": 140.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 316,
+            "cls": 0,
+            "ttfb": 44.60000000055879
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 344,
+            "cls": 0,
+            "ttfb": 38.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 344,
+            "cls": 0,
+            "ttfb": 49.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 296,
+            "cls": 0,
+            "ttfb": 61
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 316,
+            "cls": 0,
+            "ttfb": 33.200000000186265
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 356,
+            "cls": 0,
+            "ttfb": 85.70000000018626
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 588,
+            "cls": 0,
+            "ttfb": 338.59999999962747
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 312,
+            "cls": 0,
+            "ttfb": 68.20000000018626
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 416,
+            "cls": 0,
+            "ttfb": 94.70000000018626
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 784,
+            "cls": 0.009980536265432098,
+            "ttfb": 82.3999999994412
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 300,
+            "cls": 0,
+            "ttfb": 38.19999999925494
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 656,
+            "cls": 0,
+            "ttfb": 97.30000000074506
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 352,
+            "cls": 0,
+            "ttfb": 45.5
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 416,
+            "cls": 0,
+            "ttfb": 132.29999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 292,
+            "cls": 0,
+            "ttfb": 89.79999999981374
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 364,
+            "cls": 0,
+            "ttfb": 47.90000000037253
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 328,
+            "cls": 0,
+            "ttfb": 48.700000000186265
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 1920,
+          "scroll": 1920,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 556,
+            "cls": 0,
+            "ttfb": 66.5
+          }
+        }
+      ]
+    }
+  ]
+}

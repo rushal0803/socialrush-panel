@@ -152,40 +152,40 @@ export default function DashboardOrderSummaryPage() {
   }
 
   return (
-    <main className="min-h-[calc(100vh-5rem)] bg-[#FFF8F1] px-4 pb-20 pt-6 sm:px-6 lg:px-8">
+    <main data-order-review className="dashboard-premium-page min-h-[calc(100vh-5rem)] bg-transparent px-4 pb-20 pt-6 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-5xl">
-        <Link href={`/dashboard/new-order?service=${encodeURIComponent(selectedService.code)}`} className="text-sm font-bold text-[#FF8A00] hover:text-black">
-          ← Back to services
+        <Link href={`/dashboard/new-order?service=${encodeURIComponent(selectedService.code)}`} className="text-sm font-bold text-[#FF8A00] hover:text-orange-200">
+          &larr; Back to services
         </Link>
 
         <div className="mt-5 grid gap-6 lg:grid-cols-[1fr_360px]">
-          <section className="rounded-3xl border border-orange-100 bg-white p-5 shadow-sm sm:p-7">
+          <section className="rounded-3xl border border-white/10 bg-white p-5 shadow-sm sm:p-7">
             <p className="text-xs font-black uppercase tracking-[0.14em] text-orange-600">Review order</p>
             <h1 className="mt-2 text-2xl font-black text-[#0B0B0F]">{experience.name}</h1>
-            <p className="mt-2 text-sm leading-6 text-slate-600">{selectedService.description}</p>
+            <p className="mt-2 text-sm leading-6 text-slate-300">{selectedService.description}</p>
 
             <div className="mt-6 grid gap-5">
-              <label className="text-sm font-bold text-slate-900">
+              <label className="text-sm font-bold text-slate-100">
                 Quantity
                 <input
                   inputMode="numeric"
                   value={quantityInput}
                   onChange={(event) => { setQuantityInput(cleanQuantity(event.target.value)); setError(""); }}
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-orange-100 bg-white px-4 text-lg font-bold outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-50"
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-white/10 bg-white px-4 text-lg font-bold outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-50"
                 />
-                {quantityError ? <span className="mt-2 block text-xs font-semibold text-red-600">{quantityError}</span> : null}
+                {quantityError ? <span className="mt-2 block text-xs font-semibold text-red-200">{quantityError}</span> : null}
               </label>
 
-              <label className="text-sm font-bold text-slate-900">
+              <label className="text-sm font-bold text-slate-100">
                 {linkRule.label}
                 <input
                   value={targetLink}
                   onChange={(event) => { setTargetLink(event.target.value); setError(""); }}
                   placeholder={linkRule.placeholder}
-                  className="mt-2 min-h-14 w-full rounded-2xl border border-orange-100 bg-white px-4 outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-50"
+                  className="mt-2 min-h-14 w-full rounded-2xl border border-white/10 bg-white px-4 outline-none focus:border-orange-400 focus:ring-4 focus:ring-orange-50"
                 />
-                <span className="mt-2 block text-xs text-slate-500">{linkRule.helper} Keep the destination public during delivery.</span>
-                {linkError ? <span className="mt-2 block text-xs font-semibold text-red-600">{linkError}</span> : null}
+                <span className="mt-2 block text-xs text-slate-400">{linkRule.helper} Keep the destination public during delivery.</span>
+                {linkError ? <span className="mt-2 block text-xs font-semibold text-red-200">{linkError}</span> : null}
               </label>
             </div>
 
@@ -195,9 +195,9 @@ export default function DashboardOrderSummaryPage() {
               <Info label="Refill" value={selectedService.refillPolicy} />
             </div>
 
-            <div className="mt-6 rounded-3xl border border-orange-100 bg-orange-50/70 p-5 sm:p-6">
+            <div className="mt-6 rounded-3xl border border-white/10 bg-white/[.03] p-5 sm:p-6">
               <p className="text-[10px] font-black uppercase tracking-[0.16em] text-orange-600">What happens next</p>
-              <h2 className="mt-2 text-lg font-black text-slate-950">A clear checkout path before fulfillment starts</h2>
+              <h2 className="mt-2 text-lg font-black text-slate-100">A clear checkout path before fulfillment starts</h2>
               <div className="mt-4 grid gap-3 sm:grid-cols-3">
                 {hasEnoughWallet ? (
                   <>
@@ -213,26 +213,26 @@ export default function DashboardOrderSummaryPage() {
                   </>
                 )}
               </div>
-              <p className="mt-4 flex items-start gap-2 text-xs font-semibold leading-5 text-slate-600">
-                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-600" />
+              <p className="mt-4 flex items-start gap-2 text-xs font-semibold leading-5 text-slate-300">
+                <ShieldCheck className="mt-0.5 h-4 w-4 shrink-0 text-emerald-300" />
                 Never pay twice for the same checkout. If you already paid, return to the UTR confirmation step instead of starting a new payment.
               </p>
             </div>
           </section>
 
-          <aside className="h-fit rounded-3xl border border-orange-100 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-24">
+          <aside className="h-fit rounded-3xl border border-white/10 bg-white p-5 shadow-sm sm:p-6 lg:sticky lg:top-24">
             <h2 className="text-lg font-black text-[#0B0B0F]">Order summary</h2>
             <div className="mt-5 space-y-3 text-sm">
               <Row label="Service" value={experience.name} />
               <Row label="Quantity" value={quantity > 0 ? quantity.toLocaleString("en-IN") : "Not entered"} />
               <Row label="Wallet balance" value={walletLabel} />
-              <div className="border-t border-dashed border-orange-100 pt-4">
+              <div className="border-t border-dashed border-white/10 pt-4">
                 <Row label="Total" value={totalLabel} strong />
               </div>
             </div>
 
             {walletLoading ? (
-              <div className="mt-5 flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-orange-100 text-sm font-black text-orange-700">
+              <div className="mt-5 flex min-h-14 items-center justify-center gap-2 rounded-2xl bg-orange-500/10 text-sm font-black text-orange-200">
                 <LoaderCircle className="h-4 w-4 animate-spin" /> Checking wallet...
               </div>
             ) : hasEnoughWallet ? (
@@ -240,33 +240,33 @@ export default function DashboardOrderSummaryPage() {
                 type="button"
                 onClick={() => void placeWalletOrder()}
                 disabled={!formIsValid || submitting || Boolean(success)}
-                className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-white disabled:cursor-not-allowed disabled:opacity-50"
+                className="mt-5 inline-flex min-h-14 w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] px-5 text-sm font-black text-[#111318] disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {submitting ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Wallet className="h-4 w-4" />}
                 {success ? "Order Placed" : submitting ? "Processing..." : "Place Order with Wallet"}
               </button>
             ) : directUpiRequired ? (
-              <div className="mt-5 rounded-2xl border border-orange-200 bg-orange-50 p-4">
-                <p className="flex items-center gap-2 text-sm font-black text-orange-800"><LockKeyhole className="h-4 w-4" /> Pay directly by UPI</p>
-                <p className="mt-2 text-xs font-semibold leading-5 text-orange-700">No wallet top-up is required. Use the Direct UPI Checkout shown above this page. Your exact order amount will be prepared before your UPI app opens.</p>
+              <div className="mt-5 rounded-2xl border border-orange-200 bg-white/[.03] p-4">
+                <p className="flex items-center gap-2 text-sm font-black text-orange-200"><LockKeyhole className="h-4 w-4" /> Pay directly by UPI</p>
+                <p className="mt-2 text-xs font-semibold leading-5 text-orange-200">No wallet top-up is required. Use the Direct UPI Checkout shown above this page. Your exact order amount will be prepared before your UPI app opens.</p>
               </div>
             ) : (
-              <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-4 text-xs font-semibold text-slate-600">Complete the quantity and public link to continue.</div>
+              <div className="mt-5 rounded-2xl border border-white/10 bg-white/[.03] p-4 text-xs font-semibold text-slate-300">Complete the quantity and public link to continue.</div>
             )}
 
-            <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-500"><ShieldCheck className="h-3.5 w-3.5 text-emerald-600" /> Never share your UPI PIN or OTP</p>
-            <p className="mt-2 text-center text-[10px] text-slate-500">{getCurrencyDisclaimer()}</p>
+            <p className="mt-4 flex items-center justify-center gap-1.5 text-[11px] font-semibold text-slate-400"><ShieldCheck className="h-3.5 w-3.5 text-emerald-300" /> Never share your UPI PIN or OTP</p>
+            <p className="mt-2 text-center text-[10px] text-slate-400">{getCurrencyDisclaimer()}</p>
           </aside>
         </div>
 
-        {error ? <p role="alert" className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-700">{error}</p> : null}
+        {error ? <p role="alert" className="mt-5 rounded-2xl border border-red-200 bg-red-50 p-4 text-sm font-semibold text-red-200">{error}</p> : null}
         {success ? (
           <section className="mt-6 space-y-4">
-            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-900 sm:p-6">
+            <div className="rounded-3xl border border-emerald-200 bg-emerald-50 p-5 text-emerald-200 sm:p-6">
               <div className="flex items-start gap-3"><CheckCircle2 className="mt-0.5 h-6 w-6 shrink-0" /><div><p className="text-lg font-black">Order placed successfully</p><p className="mt-1 text-sm leading-6">Your order is saved. You can track it now, or add a complementary service while your campaign details are fresh.</p></div></div>
               <div className="mt-4 grid gap-3 sm:grid-cols-2">
                 <Link href="/dashboard/orders" className="inline-flex min-h-12 items-center justify-center rounded-xl bg-emerald-700 px-4 text-sm font-black text-white">View my orders</Link>
-                <Link href="/dashboard/campaign-stacks" onClick={() => track("order_success_recommendation_click", { source: "campaign_stacks", order_id: success.id, service_code: selectedService.code, platform: selectedService.platform })} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-300 bg-white px-4 text-sm font-black text-emerald-800">Explore campaign stacks</Link>
+                <Link href="/dashboard/campaign-stacks" onClick={() => track("order_success_recommendation_click", { source: "campaign_stacks", order_id: success.id, service_code: selectedService.code, platform: selectedService.platform })} className="inline-flex min-h-12 items-center justify-center rounded-xl border border-emerald-300 bg-white px-4 text-sm font-black text-emerald-200">Explore campaign stacks</Link>
               </div>
             </div>
             <div className="rounded-3xl bg-[#0B0B0F] p-1 sm:p-2">
@@ -280,19 +280,19 @@ export default function DashboardOrderSummaryPage() {
 }
 
 function Info({ label, value }: { label: string; value: string }) {
-  return <div className="rounded-2xl bg-orange-50 p-4"><p className="text-xs text-slate-500">{label}</p><p className="mt-1 text-sm font-black text-slate-900">{value}</p></div>;
+  return <div className="rounded-2xl bg-white/[.03] p-4"><p className="text-xs text-slate-400">{label}</p><p className="mt-1 text-sm font-black text-slate-100">{value}</p></div>;
 }
 
 function CheckoutStep({ number, title, detail }: { number: string; title: string; detail: string }) {
   return (
-    <div className="rounded-2xl border border-orange-100 bg-white p-4">
-      <div className="grid h-8 w-8 place-items-center rounded-full bg-orange-100 text-xs font-black text-orange-700">{number}</div>
-      <p className="mt-3 text-sm font-black text-slate-900">{title}</p>
-      <p className="mt-1 text-xs font-medium leading-5 text-slate-600">{detail}</p>
+    <div className="rounded-2xl border border-white/10 bg-white p-4">
+      <div className="grid h-8 w-8 place-items-center rounded-full bg-orange-500/10 text-xs font-black text-orange-200">{number}</div>
+      <p className="mt-3 text-sm font-black text-slate-100">{title}</p>
+      <p className="mt-1 text-xs font-medium leading-5 text-slate-300">{detail}</p>
     </div>
   );
 }
 
 function Row({ label, value, strong = false }: { label: string; value: string; strong?: boolean }) {
-  return <div className="flex items-start justify-between gap-4"><span className="text-slate-500">{label}</span><span className={`${strong ? "text-lg" : "text-sm"} max-w-[62%] break-words text-right font-black text-slate-900`}>{value}</span></div>;
+  return <div className="flex items-start justify-between gap-4"><span className="text-slate-400">{label}</span><span className={`${strong ? "text-lg" : "text-sm"} max-w-[62%] break-words text-right font-black text-slate-100`}>{value}</span></div>;
 }

@@ -121,6 +121,46 @@ The full local `npm run test:smoke -- --workers=2` completed with 325 passed, 59
 
 The follow-up desktop WebKit short-phone drawer check passed. The combined WebKit run exhausted its global deadline before the remaining checks ran; an isolated search retry check then exposed Safari's pointer-button focus behavior. Search now explicitly focuses its trigger on pointer opening, so dismissing restores the correct trigger. After the correction, both the unchanged search retry/cancellation/focus test and all-destinations/query-navigation drawer test passed in an isolated WebKit run (2 tests, 33.8s). The final production rebuild and `npx tsc --noEmit` passed. The timing samples above were captured before this final focus-only correction. Desktop WebKit checks do not establish physical iPhone behavior.
 
+## Final review and comparison with PR #668 (14 October 2026)
+
+The final review started from #667 head `916008c0`, preserving the owner's persistent Add Funds/Get Support footer and its green CI run `38470083344`. PR #668 (`13d307f0`) was compared against current main and this implementation; its alternative navigation was not cherry-picked wholesale.
+
+| Overlap in #668 | Disposition in #667 |
+|---|---|
+| Compact native disclosure groups, readable sidebar, CSS active states, safe-area clearance | Already implemented in #667; preserve the existing 22 destinations and page styling |
+| Persistent Add Funds and Support footer | Already integrated by the owner; both controls remain visible and at least 44px high on a 320×480 phone. The existing wallet hash link redirects to the canonical `/dashboard/add-funds` payment page, rather than revealing an inline wallet section. [Current drawer](final-funds-drawer-390.png) |
+| Shared bottom-navigation route matching | Already shared; add the missing Order Summary → New Order continuation highlight and constrain the favourites query exclusion to its actual page |
+| Explicit bottom-bar focus and reduced-motion states | Integrate the missing keyboard outline and reduced-motion transition class |
+| Direct UPI highlighted as New Order | Preserve #667's Wallet highlight for its existing funding route; no payment flow changes |
+| Alternate menu spacing, group ordering and seven-file foundation replacement | Preserve working #667 layout; no demonstrated capability gap warrants a second redesign |
+
+The visual review found dark legacy text on dark order-review cards. Presentation-only classes now give quantity/link labels, summary values, instructions and recovery feedback readable colours and quieter borders. The UPI caption and saved-checkout warning receive the same correction. Financial calculations, validation, wallet loading and submission code before the JSX return are unchanged; the payment/recovery components change colour classes only. QR plates and the intentionally light X-platform badge retain their existing contrasting text.
+
+| Selected text, computed colour contrast | Before | After |
+|---|---:|---:|
+| Quantity/link labels and order summary values, 390px | 1.06:1 | 17.29:1 |
+| Direct UPI caption, 390px | 2.51:1 | 12.75:1 |
+| Already-paid recovery warning, 390px | 1.16:1 | 15.90:1 |
+
+The new browser check requires at least 4.5:1 for selected review text at 390/1440px and for the synthetic already-paid warning. It checks the existing recovery URL without following it or creating an intent, payment or UTR. These are computed CSS colour measurements for those selected controls, not a whole-site accessibility certification or a performance claim. See [raw contrast measurements](final-review-contrast.json).
+
+The Add Funds click check first exposed an incorrect test assumption: the wallet hash uses the existing redirect to `/dashboard/add-funds`; its inline section is intentionally hidden. The corrected destination check then found the payment heading below the mobile viewport because the large confidence panel preceded the entire funding form. The layout now places the unchanged form first and the unchanged confidence panel afterwards. No payment control, method, warning, amount rule or verification action is removed. The browser regression checks the actual destination and amount field, plus first-viewport heading/amount visibility and overflow at all ten requested widths.
+
+| Capture | Before | After |
+|---|---|---|
+| Order review, mobile 390px | [Before](before-order-review-contrast-390.png) | [After](after-order-review-contrast-390.png) |
+| Order review, desktop 1440px | [Before](before-order-review-contrast-1440.png) | [After](after-order-review-contrast-1440.png) |
+| Saved-payment warning, mobile 390px | [Before](before-recovery-warning-390.png) | [After](after-recovery-warning-390.png) |
+| Funding form, mobile 390px | [Before](before-funding-form-390.png) | [After](after-funding-form-390.png) |
+| Funding form, tablet 768px | [Before](before-funding-form-768.png) | [After](after-funding-form-768.png) |
+| Funding form, desktop 1440px | [Before](before-funding-form-1440.png) | [After](after-funding-form-1440.png) |
+
+Navigation/package unit contracts and the contrast/recovery browser check run in existing CI steps, with no additional CI job or deployment. The original mobile/tablet/desktop evidence and detailed 34-route inventory remain above. Latest final-head CI and release status are linked from PR #667.
+
+Local review verification: production build, `npx tsc --noEmit`, 216 unit tests, 14 payment-confidence tests and 7 package/navigation contract tests passed. The post-contrast route run passed all 24 browser checks, including 340 layouts across 34 routes at every requested width, exact wallet shortfall reviews, search, navigation and payment instructions. After reordering the funding layout, six focused Chromium checks passed: the actual drawer-to-funding journey, heading/amount visibility and overflow at all ten widths, and payment instructions at 320/390/768/1440px. See [raw route results](final-review-responsive-results.json); that matrix precedes the final funding-layout reorder, which is covered by the focused ten-width check. Earlier failed diagnostic assertions are explained above; no product assertion was removed to hide a defect.
+
+The final isolated WebKit run passed all three checks in 28.3s: drawer-to-funding navigation, funding heading/amount visibility across all ten widths, and review/recovery contrast. This remains a desktop engine check; physical iPhone keyboard and safe-area behavior is a release review requirement.
+
 ## Release gate
 
 Keep the PR in draft until CI, visual review and owner-approved staging checks pass. Firefox runner repair, real gateway settlement, database integration, physical Android/iPhone keyboard/safe-area behavior and field p75 LCP/INP/CLS require separate release verification. Local fixtures cannot prove production data completeness or gateway settlement. Existing unrelated lint warnings are not suppressed.
