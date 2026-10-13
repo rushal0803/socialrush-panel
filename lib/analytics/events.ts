@@ -118,6 +118,20 @@ const searchSource = (hostname: string) => {
   return undefined;
 };
 
+/** Recognize an external search-engine document referrer without transmitting its URL. */
+export function isOrganicSearchReferrer(referrerUrl: string, currentHostname: string): boolean {
+  if (!referrerUrl || !currentHostname) return false;
+  try {
+    const referrer = new URL(referrerUrl);
+    if (referrer.protocol !== "https:" && referrer.protocol !== "http:") return false;
+    const host = referrer.hostname.toLowerCase().replace(/^www\./, "");
+    const current = currentHostname.toLowerCase().replace(/^www\./, "");
+    return host !== current && Boolean(searchSource(host));
+  } catch {
+    return false;
+  }
+}
+
 const sanitizeAttribution = (value: unknown): ClientAttribution | null => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const raw = value as Record<string, unknown>;
