@@ -46,7 +46,7 @@ export function outreachTextToHtml(text: string) {
 export function formatOutreachEmail(template: string | null | undefined, personalization: Personalization) { const text = renderOutreachText(template, personalization); return { text, html: outreachTextToHtml(text) }; }
 
 
-const autonomousOptOut = "If you'd rather not receive further emails from SocialRUSH, reply “unsubscribe” and we'll stop.";
+const autonomousOptOut = "If you would prefer not to receive further emails from SocialRUSH, reply UNSUBSCRIBE and we will stop contacting you.";
 export function formatAutonomousOutreachEmail(template: string | null | undefined, personalization: Personalization) {
   const base = formatOutreachEmail(template, personalization);
   const text = `${base.text}\n\n${autonomousOptOut}`;
