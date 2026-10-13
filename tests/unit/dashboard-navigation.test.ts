@@ -1,5 +1,6 @@
 import test from "node:test";
 import assert from "node:assert/strict";
+import { readFileSync } from "node:fs";
 import { dashboardLinks, groupDashboardLinks, isDashboardLinkActive } from "../../lib/dashboard/navigation.ts";
 
 test("customer dashboard navigation groups live routes without duplicates", () => {
@@ -28,4 +29,17 @@ test("primary destinations and previously hidden workspace features remain avail
   const groups = groupDashboardLinks();
   for (const href of ["/dashboard/new-order", "/dashboard/orders", "/dashboard/wallet", "/dashboard/packages"]) assert.ok(groups.Main.some(item => item.href === href));
   for (const href of ["/dashboard/settings", "/dashboard/rewards", "/dashboard/reviews", "/dashboard/repeat-campaigns", "/dashboard/api-docs"]) assert.ok(dashboardLinks.some(item => item.href === href));
+});
+
+test("mobile drawer keeps funds and support in a visible footer, without duplicated primary links", () => {
+  const menu = readFileSync(new URL("../../components/dashboard/DashboardMobileMenu.tsx", import.meta.url), "utf8");
+  assert.match(menu, /min-h-0 flex-1 overflow-y-auto/);
+  assert.match(menu, /role="group" aria-label="Quick dashboard actions" className="shrink-0/);
+  assert.match(menu, /href="\\/dashboard\\/wallet#add-funds"/);
+  assert.match(menu, /href="\\/dashboard\\/support"/);
+  assert.match(menu, /<NavLinks mobile/);
+  assert.match(menu, /<AndroidAppDownload \\/>/);
+  assert.match(menu, /onClick={handleLogout}/);
+  assert.doesNotMatch(menu, />\\s*Start Order\\s*<\\/Link>/);
+  assert.doesNotMatch(menu, />\\s*Profile\\s*<\\/Link>/);
 });
