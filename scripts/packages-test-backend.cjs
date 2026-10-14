@@ -27,6 +27,20 @@ globalThis.fetch = async (input, init) => {
     }
     return json(headers.get('accept')?.includes('object') ? found[0] || null : found);
   }
+  if (process.env.DASHBOARD_UPGRADE_AUDIT === '1' && (!init?.method || ['GET', 'HEAD'].includes(init.method))) {
+    const table = url.pathname.split('/').pop();
+    const fixture = require('../tests/fixtures/dashboard-workspace.json')[table];
+    if (fixture) {
+      let found = fixture;
+      for (const [field, filter] of url.searchParams) {
+        if (filter?.startsWith('eq.')) found = found.filter(row => String(row[field]) === filter.slice(3));
+        if (filter?.startsWith('in.(')) found = found.filter(row => filter.slice(4, -1).split(',').includes(String(row[field])));
+      }
+      return new Response(JSON.stringify(headers.get('accept')?.includes('object') ? found[0] || null : found), {
+        headers: { 'Content-Type': 'application/json', 'Content-Range': found.length ? `0-${found.length-1}/${found.length}` : '*/0' },
+      });
+    }
+  }
   if (url.pathname.endsWith('/rest/v1/profiles')) return json({ ...user, full_name: process.env.ADMIN_QA_FIXTURE === '1' ? 'Admin QA' : 'Package QA', ...(process.env.ADMIN_QA_FIXTURE === '1' ? { role: 'admin' } : {}), balance: process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' ? 0 : 100000, is_blocked: false });
   if (url.pathname.endsWith('/rest/v1/checkout_intents')) {
     if (process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' && url.searchParams.get('id') === 'eq.33333333-3333-4333-8333-333333333333' && (!init?.method || init.method === 'GET')) {

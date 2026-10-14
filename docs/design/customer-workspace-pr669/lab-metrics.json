@@ -1,0 +1,51 @@
+{
+  "note": "Single unthrottled localhost fixture samples; not field p75, paired performance improvement, or INP. LCP captured at audit observation, may change with later content.",
+  "metrics": [
+    {
+      "width": 390,
+      "routes": [
+        {
+          "route": "/dashboard",
+          "lcp": 1256,
+          "cls": 0,
+          "ttfb": 380.1000000014901
+        },
+        {
+          "route": "/dashboard/new-order",
+          "lcp": 716,
+          "cls": 0,
+          "ttfb": 77.29999999701977
+        },
+        {
+          "route": "/dashboard/wallet",
+          "lcp": 876,
+          "cls": 0,
+          "ttfb": 53.29999999701977
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "routes": [
+        {
+          "route": "/dashboard",
+          "lcp": 1580,
+          "cls": 0,
+          "ttfb": 439.6000000014901
+        },
+        {
+          "route": "/dashboard/new-order",
+          "lcp": 760,
+          "cls": 0,
+          "ttfb": 56.399999998509884
+        },
+        {
+          "route": "/dashboard/wallet",
+          "lcp": 1504,
+          "cls": 0,
+          "ttfb": 79.90000000596046
+        }
+      ]
+    }
+  ]
+}

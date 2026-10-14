@@ -20,7 +20,7 @@
 .workspace :global(.dashboard-table) { font-variant-numeric: tabular-nums; }
 .workspace :global(.dashboard-table th) { padding-block: 14px; font-size: 11px; font-weight: 650; letter-spacing: .05em; }
 .workspace :global(.dashboard-table td) { padding-block: 18px; }
-.workspace :global(.btn-dashboard-primary) { background: #ff7900; color: #0c0e14; box-shadow: none; border-color: #ff7900; }
+.workspace :global(.btn-dashboard-primary) { background: #ff7600; color: #0c0e14; box-shadow: none; border-color: #ff7600; }
 .workspace :is(a,button,input,select,textarea,summary):focus-visible { outline: 2px solid #ffb17a; outline-offset: 3px; }
 .pageHeader { padding-bottom: 20px; border-bottom: 1px solid #ffffff20; margin-bottom: 8px; }
 .pageHeader h1 { font-weight: 650; letter-spacing: -.035em; font-size: clamp(26px,3vw,36px); }
@@ -32,4 +32,115 @@
 @media (max-width: 1023px) { .workspace :global(#dashboard-main-content) { min-width: 0; padding-bottom: calc(4.25rem + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: reduce) {
   .workspace :global(.dashboard-sidebar) *, .workspace :global([data-dashboard-bottom-nav]) * { scroll-behavior: auto; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
+
+/* Customer-only foundations. Payment QR plates and gateway overlays retain
+   their own styles; no colour remapping of arbitrary utility classes. */
+.workspace {
+  --sr-border: #ffffff14;
+  --sr-text-muted: #a8afbd;
+  --sr-shadow-card: 0 8px 28px #00000018;
+  color: #f4f5f7;
+  color-scheme: dark;
+  background: #090b10;
+}
+.workspace:global(.dashboard-shell) { background: #090b10; }
+.workspace :global(.dashboard-premium-page) { background: transparent; }
+.workspace :global(.dashboard-sidebar) { width: 16rem; background: #0f1219; border-color: var(--sr-border); }
+.workspace :global(.dashboard-glass),
+.workspace :global(.dashboard-card) { background: #12151d; border: 1px solid var(--sr-border); border-radius: 16px; box-shadow: var(--sr-shadow-card); }
+.workspace :global(.dashboard-table) { width: 100%; border-collapse: collapse; }
+.workspace :global(.dashboard-table th) { color: #a8afbd; background: #0f1219; text-align: left; }
+.workspace :global(.dashboard-table td) { border-color: var(--sr-border); }
+.workspace :global(.btn-dashboard-primary) { min-height: 44px; border-radius: 10px; font-weight: 650; transition: background-color 160ms; }
+.workspace :global(.btn-dashboard-primary:hover) { background: #ff922e; transform: none; }
+.workspace :global(.btn-dashboard-secondary) { min-height: 44px; border-radius: 10px; border-color: #ffffff20; background: #ffffff04; box-shadow: none; }
+.workspace :global(.dashboard-premium-page) h1 { font-weight: 650; letter-spacing: -.04em; }
+.workspace :global(.dashboard-premium-page) h2 { font-weight: 650; letter-spacing: -.02em; }
+.workspace :global(.sr-dashboard-hero) { background: #151922; border-color: #ffffff18; box-shadow: inset 0 2px #ff76004d; }
+.workspace :global(.sr-dashboard-hero) h1 { font-size: clamp(1.7rem, 2.7vw, 2.5rem); line-height: 1.18; }
+.workspace :global(.sr-dashboard-hero) h1 > span { margin-top: .5rem; background: none; color: #ffad69; font-size: .72em; }
+.workspace :global(.sr-dashboard-hero)::after { display: none; }
+.workspace :global(.sr-dashboard-bottom-actions) { position: static; backdrop-filter: none; box-shadow: none; }
+.workspace :global(.sr-dashboard-wallet-card) { background: #0d1017; border-color: #ffffff18; backdrop-filter: none; }
+.workspace :global(.sr-dashboard-wallet-card) > :global([aria-hidden]) { display: none; }
+.workspace :global(.sr-dashboard-metric) { min-height: 136px; }
+.workspace :global(.sr-dashboard-metric) > p:nth-of-type(2) { font-size: 1.6rem; font-weight: 650; font-variant-numeric: tabular-nums; }
+.workspace :global(.sr-dashboard-order-row) h3 { overflow-wrap: anywhere; }
+.workspace :global(.dashboard-order-summary) { background: #141820; border-color: #ff76004d; box-shadow: none; }
+.workspace :global(.dashboard-order-page) :global(.truncate) { white-space: normal; overflow-wrap: anywhere; }
+.workspace :global(.dashboard-wallet-page) { font-variant-numeric: tabular-nums; }
+.workspace :global(.dashboard-premium-page) > header,
+.workspace :global(.dashboard-premium-page) > div > header { border-color: #ffffff18; background: #151922; border-radius: 16px; box-shadow: none; }
+.workspace :global(.package-experience) { background: transparent; }
+.workspace :global(.package-experience) > div > header { padding-bottom: 20px; border-bottom: 1px solid #ffffff18; }
+.workspace :global(.package-experience) h1 { font-size: clamp(1.7rem, 3vw, 2.5rem); font-weight: 650; }
+.workspace :global(.sr-order-payment-card),
+.workspace :global(.sr-order-live-preview) > div:first-child { background: #151922; box-shadow: none; border-color: #ff760033; }
+.workspace :global(.sr-order-payment-card) strong { font-variant-numeric: tabular-nums; }
+.workspace :global(.sr-order-payment-card) > div > div { gap: 12px; }
+.workspace :global(.sr-order-payment-card) > div > div > strong { text-align: right; overflow-wrap: anywhere; }
+.workspace :global(.sr-order-final-cta) { background: #ff7600; color: #111318; font-weight: 700; box-shadow: none; }
+.workspace :global(.dashboard-input) { min-height: 44px; border-radius: 10px; background: #0c0f16; }
+.workspace :global(.dashboard-premium-page) :is(input, select, textarea) { scroll-margin-block: 100px; }
+.pageHeader h1 { color: #f4f5f7; }
+.pageHeader p { color: #a8afbd; }
+.sectionTitle h2 { color: #f4f5f7; }
+.sectionTitle p { color: #a8afbd; }
+
+.navLink {
+  display: flex;
+  position: relative;
+  align-items: center;
+  gap: 12px;
+  min-height: 44px;
+  padding: 10px 12px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: #b8bfcc;
+  font-size: 13px;
+  font-weight: 550;
+  line-height: 1.5;
+  transition: color 160ms, background-color 160ms, border-color 160ms;
+}
+.navLink > span:first-child { flex-shrink: 0; }
+.navLink > span:last-child { min-width: 0; overflow-wrap: anywhere; }
+.navLink:hover { color: #fff; background: #ffffff06; border-color: #ffffff0d; }
+.navLink[aria-current="page"] { color: #ffb57b; background: #ff760012; border-color: #ff76002e; }
+.navLink[aria-current="page"]::before { content: ""; position: absolute; left: -1px; height: 18px; width: 3px; background: #ff7600; border-radius: 2px; }
+.navLink:focus-visible { outline: 2px solid #ffb17a; outline-offset: 2px; }
+.navGroup { border-top: 1px solid #ffffff14; padding-top: 4px; }
+.navGroup > summary { display: flex; align-items: center; gap: 10px; min-height: 44px; padding: 10px 12px; color: #c4cad5; font-size: 13px; font-weight: 600; cursor: pointer; list-style: none; border-radius: 10px; }
+.navGroup > summary::-webkit-details-marker { display: none; }
+.navGroup > summary:focus-visible { outline: 2px solid #ffb17a; outline-offset: 2px; }
+.navGroup > summary:hover { background: #ffffff06; }
+.navGroup > summary > svg { transition: transform 160ms; }
+.navGroup[open] > summary > svg { transform: rotate(180deg); }
+.navCount { margin-left: auto; color: #a8afbd; font-size: 11px; font-variant-numeric: tabular-nums; }
+.dialogOverlay { position: fixed; inset: 0; z-index: 100000; display: flex; justify-content: center; align-items: flex-start; padding: clamp(16px, 12vh, 100px) max(16px, env(safe-area-inset-right)) calc(16px + env(safe-area-inset-bottom)) max(16px, env(safe-area-inset-left)); background: #000b; color: #f4f5f7; color-scheme: dark; }
+.dialogSurface { display: flex; flex-direction: column; width: 100%; max-width: 640px; max-height: calc(100dvh - 132px - env(safe-area-inset-bottom)); min-width: 0; border: 1px solid #ffffff26; border-radius: 16px; background: #12151d; box-shadow: 0 24px 80px #0007; }
+.dialogSurface :is(a, button, input):focus-visible { outline: 2px solid #ffb17a; outline-offset: 2px; }
+@media (max-height: 480px) { .dialogOverlay { padding-top: 16px; } .dialogSurface { max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)); } }
+.workspaceLabel { display: none; min-width: 0; color: #a8afbd; font-size: 12px; }
+.workspaceLabel span { display: block; margin-top: 3px; color: #f4f5f7; font-size: 14px; font-weight: 600; }
+@media (min-width: 1024px) { .workspaceLabel { display: block; } }
+
+.serviceSearch { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
+.serviceSearch label { flex: 1 1 220px; min-width: 0; }
+.serviceSearch input { width: 100%; min-height: 48px; border: 1px solid #ffffff20; border-radius: 10px; background: #0c0f16; padding: 12px 14px; color: #fff; font-size: 14px; }
+.serviceSearch p { font-size: 12px; color: #a8afbd; }
+.searchEmpty { margin-top: 16px; padding: 24px; border: 1px dashed #ffffff26; border-radius: 12px; text-align: center; color: #a8afbd; font-size: 14px; }
+.searchEmpty button { display: block; margin: 12px auto 0; min-height: 44px; color: #ffb17a; }
+
+@media (max-width: 1023px) {
+  .workspace :global(#dashboard-main-content) > main { padding-bottom: calc(6rem + env(safe-area-inset-bottom)); }
+}
+@media (max-width: 359px) {
+  .workspace :global(.sr-dashboard-metric) { padding: 12px; }
+  .workspace :global(.sr-dashboard-wallet-card) { padding: 16px; }
+  .workspace :global(.sr-dashboard-wallet-card) :global(.text-4xl) { font-size: 1.9rem; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .navGroup > summary > svg { transition: none; }
+  .navLink, .workspace :global(.btn-dashboard-primary), .workspace :global(.btn-dashboard-secondary) { transition: none; }
 }

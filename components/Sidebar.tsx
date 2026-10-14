@@ -1,7 +1,7 @@
 ﻿"use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import Logo from "./Logo";
@@ -87,11 +87,12 @@ const mobileGroupOrder = ["Main", "Money", "Workspace", "Account", "Help"] as co
 
 export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
+  const query = useSearchParams().toString();
   const groups = groupDashboardLinks();
 
   function renderItems(items: (typeof groups)["Main"]) {
     return items.map((item) => {
-      const active = isDashboardLinkActive(pathname, item.href);
+      const active = isDashboardLinkActive(pathname, item.href, query);
       const primaryAction = item.href === "/dashboard/new-order";
       return (
         <Link
@@ -126,7 +127,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
     return (
       <nav className="grid gap-4" aria-label="Dashboard navigation" data-dashboard-mobile-links>
         {mobileGroupOrder.map((group) => group === "Workspace" ? (
-          <details key={group} open={isWorkspaceRoute(pathname)} className="group rounded-2xl border border-white/10 bg-white/[.025] p-2" data-dashboard-workspace-group>
+          <details key={group} open={isWorkspaceRoute(pathname, query)} className="group rounded-2xl border border-white/10 bg-white/[.025] p-2" data-dashboard-workspace-group>
             <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-xl px-3 text-sm font-semibold text-slate-100 outline-none focus-visible:ring-2 focus-visible:ring-orange-300 [&::-webkit-details-marker]:hidden">
               <span className="flex-1">More workspace tools</span>
               <span className="rounded-full border border-white/10 px-2 py-0.5 text-[11px] font-medium text-slate-400">{groups.Workspace.length}</span>

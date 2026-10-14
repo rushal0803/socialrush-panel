@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { Home, PlusCircle, ReceiptText, WalletCards, UserRound } from "lucide-react";
 import { isDashboardLinkActive } from "@/lib/dashboard/navigation";
 
@@ -15,6 +15,7 @@ const links = [
 
 export default function MobileBottomNav() {
   const pathname = usePathname();
+  const query = useSearchParams().toString();
   // Payment and verification are focused flows: don't cover their primary CTA.
   if (pathname.startsWith("/dashboard/direct-upi") || pathname.startsWith("/dashboard/order-summary")) return null;
 
@@ -26,14 +27,14 @@ export default function MobileBottomNav() {
     >
       <div className="mx-auto grid max-w-lg grid-cols-5 gap-0.5">
         {links.map(({ href, label, Icon }) => {
-          const active = isDashboardLinkActive(pathname, href);
+          const active = isDashboardLinkActive(pathname, href, query);
           const order = href === "/dashboard/new-order";
           return (
             <Link
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-0.5 text-[10px] font-semibold leading-tight transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 ${active
+              className={`flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-0.5 text-[10px] font-semibold leading-tight transition-colors motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 ${active
                 ? "bg-orange-400/[.13] text-orange-200"
                 : order ? "text-orange-300 hover:bg-orange-400/[.08]" : "text-slate-400 hover:bg-white/[.06] hover:text-white"}`}
             >

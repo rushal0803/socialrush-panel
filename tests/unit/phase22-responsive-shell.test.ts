@@ -6,7 +6,11 @@ const read = (path: string) => readFileSync(new URL("../../" + path, import.meta
 
 test("Phase 22 keeps dashboard mobile drawer links readable outside dashboard shell", () => {
   const source = read("components/Sidebar.tsx");
-  assert.ok(source.includes('mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white"'));
+  assert.match(source, /min-h-11/);
+  assert.match(source, /text-slate-200/);
+  assert.match(source, /aria-current=\{active \? "page" : undefined\}/);
+  assert.match(source, /focus-visible:outline-orange-300/);
+  assert.match(read("components/dashboard/DashboardMobileMenu.tsx"), /bg-\[#0b0d12\] text-white/);
 });
 
 test("Phase 22 compacts the dashboard header through the sidebar's narrow desktop widths", () => {

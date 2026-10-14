@@ -1,0 +1,39 @@
+# Tested customer route scenarios
+
+- `/dashboard`
+- `/dashboard/new-order`
+- `/dashboard/packages`
+- `/dashboard/orders`
+- `/dashboard/order-history`
+- `/dashboard/wallet`
+- `/dashboard/add-funds`
+- `/dashboard/billing`
+- `/dashboard/referrals`
+- `/dashboard/account`
+- `/dashboard/support`
+- `/dashboard/settings`
+- `/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F`
+- `/dashboard/campaign-stacks`
+- `/dashboard/retainers`
+- `/dashboard/reseller`
+- `/dashboard/services`
+- `/dashboard/new-campaign`
+- `/dashboard/campaigns`
+- `/dashboard/clients`
+- `/dashboard/saved-profiles`
+- `/dashboard/notifications`
+- `/dashboard/new-order?tab=favourites`
+- `/dashboard/repeat-campaigns`
+- `/dashboard/rewards`
+- `/dashboard/reviews`
+- `/dashboard/api-docs`
+- `/dashboard/orders/55555555-5555-4555-8555-555555555555`
+- `/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888`
+- `/dashboard/clients/99999999-9999-4999-8999-999999999999`
+- `/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa`
+- `/dashboard/reseller/portfolio`
+- `/dashboard/reseller/monthly-plans`
+- `/dashboard/reseller/monthly-planner`
+- `/dashboard/reseller/bulk-planner`
+- `/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666`
+- `/dashboard/direct-upi?intent=33333333-3333-4333-8333-333333333333` ? separate payment-instruction tests at all eight widths.

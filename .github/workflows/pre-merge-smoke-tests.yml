@@ -61,6 +61,21 @@ jobs:
       - name: Install Chromium for smoke tests
         run: npx playwright install --with-deps chromium
       - run: npm run test:smoke
+      - name: Authenticated customer search, navigation and wallet review (fixture only)
+        timeout-minutes: 3
+        env:
+          RESPONSIVE_PAYMENT_FIXTURE: '1'
+          DASHBOARD_UPGRADE_AUDIT: '1'
+          RESPONSIVE_STAGE: customer-release-gate
+        run: npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer funding' --workers=2 --global-timeout=150000
+      - name: Attach customer workspace regression evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: customer-workspace-fixture-qa
+          path: artifacts/premium-responsive/customer-release-gate/
+          retention-days: 7
+          if-no-files-found: warn
       - name: Capture brand-correct screenshots of the real current PR code (local fixture only)
         if: ${{ (github.event.pull_request.number == 630 || github.event.pull_request.number == 632) && success() }}
         timeout-minutes: 3

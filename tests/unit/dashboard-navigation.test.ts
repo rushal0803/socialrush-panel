@@ -32,7 +32,7 @@ test("workspace menu stays discoverable and expands when visiting nested workspa
   assert.equal(isWorkspaceRoute("/dashboard/wallet"), false);
   assert.equal(isWorkspaceRoute("/dashboard/new-order"), false);
   const sidebar = source("components/Sidebar.tsx");
-  assert.match(sidebar, /<details key=\{group\} open=\{isWorkspaceRoute\(pathname\)\}/);
+  assert.match(sidebar, /<details key=\{group\} open=\{isWorkspaceRoute\(pathname, query\)\}/);
   assert.doesNotMatch(sidebar, /\bdefaultOpen=/);
   assert.match(sidebar, /<summary/);
   assert.doesNotMatch(sidebar, /from "framer-motion"/);
@@ -49,4 +49,23 @@ test("mobile drawer provides quick actions, close and accessible fixed navigatio
   assert.match(bottom, /data-dashboard-bottom-nav/);
   assert.match(bottom, /direct-upi/);
   assert.match(bottom, /safe-area-inset-bottom/);
+});
+
+test("query shortcuts and money continuations retain one correct active destination", () => {
+  assert.equal(isDashboardLinkActive("/dashboard/new-order", "/dashboard/new-order?tab=favourites", "tab=favourites"), true);
+  assert.equal(isDashboardLinkActive("/dashboard/new-order", "/dashboard/new-order", "tab=favourites"), false);
+  assert.equal(isDashboardLinkActive("/dashboard/add-funds", "/dashboard/wallet"), true);
+  assert.equal(isDashboardLinkActive("/dashboard/order-history", "/dashboard/orders"), true);
+  assert.equal(dashboardLinks.length, 22);
+});
+
+test("wallet balance and money actions precede lengthy payment-confidence explanations", () => {
+  const walletPage = source("app/dashboard/wallet/page.tsx");
+  const walletLayout = source("app/dashboard/wallet/layout.tsx");
+  const summaryPosition = walletPage.indexOf("<WalletDashboard initial={initial} />");
+  const confidencePosition = walletPage.indexOf("<PaymentConfidencePanel transactions={transactions}");
+  assert.ok(summaryPosition >= 0 && confidencePosition > summaryPosition, "show wallet balance and money actions before the supplementary confidence dashboard");
+  assert.match(walletPage, /<WalletAddFundsRedirect \/>/);
+  assert.ok(walletLayout.indexOf("{children}") < walletLayout.indexOf('<PaymentConfidenceExperience mode="wallet" />'));
+  assert.match(walletPage, /#add-funds\{display:none!important\}/);
 });

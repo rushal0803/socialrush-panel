@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { usePathname, useRouter } from "next/navigation";
+import { usePathname, useSearchParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import { NavLinks } from "@/components/Sidebar";
 import { createClient } from "@/lib/supabase/client";
@@ -12,6 +12,7 @@ import AndroidAppDownload from "@/components/pwa/AndroidAppDownload";
 
 export default function DashboardMobileMenu() {
   const pathname = usePathname();
+  const query = useSearchParams().toString();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const [signingOut, setSigningOut] = useState(false);
@@ -19,7 +20,7 @@ export default function DashboardMobileMenu() {
   const closeRef = useRef<HTMLButtonElement>(null);
   const closeMenu = () => setIsOpen(false);
 
-  useEffect(() => { setIsOpen(false); }, [pathname]);
+  useEffect(() => { setIsOpen(false); }, [pathname, query]);
 
   async function handleLogout() {
     setIsOpen(false);
@@ -40,7 +41,7 @@ export default function DashboardMobileMenu() {
         aria-label={isOpen ? "Close navigation" : "Open navigation"}
         aria-expanded={isOpen}
         aria-controls="socialrush-mobile-navigation"
-        onClick={() => setIsOpen((open) => !open)}
+        onClick={event => { event.currentTarget.focus(); setIsOpen(open => !open); }}
         className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-orange-400/30 bg-orange-500/10 text-orange-100 transition-colors hover:bg-orange-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
@@ -87,6 +88,10 @@ export default function DashboardMobileMenu() {
             <button type="button" disabled={signingOut} onClick={handleLogout} className="flex min-h-11 w-full items-center justify-center rounded-xl border border-white/15 bg-white/[.035] text-sm font-semibold text-slate-200 transition hover:bg-white/[.08] disabled:opacity-50">
               {signingOut ? "Signing out..." : "Log out"}
             </button>
+          </div>
+          <div role="group" aria-label="Quick dashboard actions" className="grid shrink-0 grid-cols-2 gap-2 border-t border-white/10 bg-[#0b0d12] px-4 pt-3 pb-[calc(.75rem+env(safe-area-inset-bottom))]">
+            <Link href="/dashboard/add-funds" onClick={closeMenu} className="flex min-h-11 items-center justify-center rounded-xl bg-[#ff7600] px-3 text-sm font-bold text-[#111318]">Add Funds</Link>
+            <Link href="/dashboard/support" onClick={closeMenu} className="flex min-h-11 items-center justify-center rounded-xl border border-white/15 px-3 text-sm font-semibold">Get Support</Link>
           </div>
         </div>
       </MobileMenuLayer>

@@ -46,6 +46,7 @@ import { track } from "@/lib/analytics/events";
 import { addRecentService, CONTINUE_ORDER_KEY, parseRecentServices, RECENT_SERVICES_KEY, serializeContinueOrder } from "@/lib/cro/personalization";
 import { buildQuantityMerchandising, quantityForMinimumSpend } from "@/lib/cro/quantity-merchandising";
 import { findSafeAlternative } from "@/lib/service-alternatives";
+import workspaceStyles from "@/components/dashboard/PremiumWorkspace.module.css";
 
 type PlatformId = SmmPlatformId;
 type ApiOrderData = { id: string; charge: number; balance: number; duplicate?: boolean };
@@ -218,6 +219,7 @@ export default function NewOrderPage() {
       : String(initialService.minQuantity);
   });
   const [walletBalance, setWalletBalance] = useState<number | null>(null);
+  const [serviceSearch, setServiceSearch] = useState("");
   const [firstOrderOffer, setFirstOrderOffer] = useState<FirstOrderOffer | null>(null);
   const [firstOrder, setFirstOrder] = useState(false);
   const [walletLoading, setWalletLoading] = useState(true);
@@ -232,6 +234,7 @@ export default function NewOrderPage() {
   const inFlight = useRef(false);
   const requestId = useRef("");
   const funnelSignals = useRef(new Set<string>());
+  const appliedPrefillQuery = useRef<string | null>(null);
   const recoveryCampaign = searchParams.get("source") === "email_recovery"
     ? (searchParams.get("campaign") || "unknown").slice(0, 80)
     : null;
@@ -247,6 +250,8 @@ export default function NewOrderPage() {
   const loadedLivePlatforms = useRef(new Set<PlatformId>());
 
   useEffect(() => {
+    const shouldApplyPrefill = appliedPrefillQuery.current !== queryString;
+    appliedPrefillQuery.current = queryString;
     if (!queryString) {
       setPlatform(null);
       setSelectedService(null);
@@ -269,7 +274,9 @@ export default function NewOrderPage() {
       setPlatform(platformFromUrl);
       setSelectedService(null);
     }
-    if (searchParams.get("resume") === "1" || searchParams.get("prefill") === "1") {
+    // Live catalogue refreshes update the selected service's facts. They must
+    // not overwrite a quantity, link or specialty field the customer edited.
+    if (shouldApplyPrefill && (searchParams.get("resume") === "1" || searchParams.get("prefill") === "1")) {
       setTargetLink(searchParams.get("link") || "");
       setQuantityInput(cleanQuantity(searchParams.get("quantity") || ""));
       setEndorsementSkillName(searchParams.get("endorsementSkillName") || "");
@@ -335,6 +342,10 @@ export default function NewOrderPage() {
     const health = healthByService[selectedService.code];
     return health && (!health.acceptsNewOrders || health.status === "paused" || health.status === "maintenance");
   })());
+  const visibleServices = services.filter((service) => {
+    const query = serviceSearch.trim().toLowerCase();
+    return !query || `${service.name} ${service.description} ${service.code} ${serviceExperience[service.code]?.name || ""}`.toLowerCase().includes(query);
+  });
   const safeAlternative = useMemo(
     () => selectedService ? findSafeAlternative(selectedService, services, healthByService.health) : null,
     [healthByService.health, selectedService, services],
@@ -462,6 +473,7 @@ export default function NewOrderPage() {
   };
 
   const choosePlatform = (nextPlatform: PlatformId) => {
+    setServiceSearch("");
     if (advanceTimer.current || platform === nextPlatform && checkoutStep === 2) return;
     track("order_platform_selected", { platform: nextPlatform });
     setPlatform(nextPlatform);
@@ -921,7 +933,7 @@ export default function NewOrderPage() {
   );
 
   return (
-    <main className="dashboard-premium-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-10 pt-5 text-white sm:px-6 lg:px-8">
+    <main className="dashboard-premium-page dashboard-order-page relative min-h-[calc(100vh-5rem)] overflow-x-clip bg-[#050505] px-4 pb-10 pt-5 text-white sm:px-6 lg:px-8">
       <div className="pointer-events-none absolute inset-0 overflow-hidden"><div className="absolute -left-24 top-0 h-80 w-80 rounded-full bg-orange-600/10 blur-3xl" /><div className="absolute right-0 top-20 h-64 w-64 rounded-full bg-amber-500/5 blur-3xl" /></div>
       <div className="relative mx-auto max-w-6xl">
         <header className="mb-4 flex items-end justify-between gap-4 sm:mb-6">
@@ -975,8 +987,13 @@ export default function NewOrderPage() {
               <button type="button" onClick={() => moveTo(1)} className="text-xs font-bold text-[#B5B5B5] hover:text-white">← Back to platforms</button><p className="mt-4 text-[10px] font-black uppercase tracking-[.16em] text-orange-300">Step 2 of 4 · {platform && platformMeta[platform].label}</p><h2 className="mt-2 text-xl font-black sm:text-2xl">Choose a service</h2>{firstOrderOffer ? <div className="mt-4 rounded-2xl border border-emerald-400/30 bg-emerald-500/[.08] p-4"><div className="flex items-start gap-3"><Gift className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><p className="text-xs font-black text-white">First-order wallet bonus</p><p className="mt-1 text-[11px] leading-5 text-[#C9D5CF]">Complete your first qualifying order of ₹{firstOrderOffer.minimum.toLocaleString("en-IN")} or more and receive ₹{firstOrderOffer.reward.toLocaleString("en-IN")} in your SocialRUSH wallet after completion.</p></div></div></div> : <div className="mt-4 rounded-2xl border border-emerald-400/20 bg-emerald-500/[.06] p-4"><div className="flex items-start gap-3"><ShieldCheck className="mt-0.5 h-5 w-5 shrink-0 text-emerald-300" /><div><p className="text-xs font-black text-white">First order tip</p><p className="mt-1 text-[11px] leading-5 text-[#AEB5C0]">If you’re unsure, start with the minimum or starter quantity. You can review delivery and scale your next order after you’re comfortable.</p></div></div></div>}
               {favouriteServices.length ? <section className="sr-motion-lift mt-4 rounded-2xl border border-orange-400/20 bg-orange-500/[.06] p-3" aria-label="Your favourite services"><p className="text-xs font-black text-white">Your favourite services</p><p className="mt-1 text-[11px] text-[#9CA3AF]">Start a new editable order with a saved service.</p><div className="mt-3 flex flex-wrap gap-2">{favouriteServices.map((service) => <button key={service.code} type="button" onClick={() => chooseService(service)} className="inline-flex min-h-10 items-center gap-2 rounded-full border border-orange-400/25 bg-orange-500/[.08] px-3 text-xs font-bold text-orange-100"><Heart className="h-3.5 w-3.5 fill-current" />{serviceExperience[service.code]?.name || service.name}</button>)}</div></section> : null}
               {(favouriteNotice || favouriteError) ? <p role="status" className={`mt-3 text-xs ${favouriteError ? "text-red-300" : "text-emerald-300"}`}>{favouriteError || favouriteNotice}</p> : null}
-              <div className="mt-5 grid gap-3 sm:grid-cols-2">
-                {services.map((service) => {
+              <div className={workspaceStyles.serviceSearch}>
+                <label><span className="sr-only">Search services</span><input type="search" placeholder="Search services by name or type" value={serviceSearch} onChange={(event) => setServiceSearch(event.target.value)} /></label>
+                <p role="status">{visibleServices.length} of {services.length} services</p>
+              </div>
+              {!visibleServices.length ? <div className={workspaceStyles.searchEmpty}>No services match “{serviceSearch}”.<button type="button" onClick={() => setServiceSearch("")}>Clear search</button></div> : null}
+              <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                {visibleServices.map((service) => {
                   const active = selectedService?.code === service.code;
                   const serviceId = serviceIds[service.code];
                   const isFavourite = Boolean(serviceId && favouriteServiceIds.has(serviceId));
