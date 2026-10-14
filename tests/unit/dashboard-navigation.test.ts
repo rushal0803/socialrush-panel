@@ -74,3 +74,40 @@ test("narrow desktop header preserves action space and uses the shared route hel
   assert.match(source("components/dashboard/DashboardHeaderBar.tsx"), /isDashboardLinkActive\(pathname, item.href, query\)/);
   assert.match(source("components/dashboard/PremiumWorkspace.module.css"), /@media \(min-width: 1440px\) \{ \.workspaceLabel \{ display: block; \} \}/);
 });
+
+test("money-page checkout contrast and route-scoped UPI overlay", () => {
+  const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
+  const shell = read("app/dashboard/layout.tsx");
+  const reviewLayout = read("app/dashboard/order-summary/layout.tsx");
+  const review = read("app/dashboard/order-summary/page.tsx");
+  const recovery = read("components/dashboard/AbandonedCheckoutRecovery.tsx");
+  assert.doesNotMatch(shell, /<ProfessionalUpiCheckout\s*\/>/);
+  assert.match(reviewLayout, /<ProfessionalUpiCheckout\s*\/>/);
+  assert.match(reviewLayout, /\{children\}/);
+  assert.match(read("components/dashboard/ProfessionalUpiCheckout.tsx"), /pathname !== "\/dashboard\/order-summary"/);
+  assert.match(review, /bg-\[#141820\]/);
+  assert.match(review, /bg-\[#0B1018\]/);
+  assert.doesNotMatch(review, /bg-white p-5 shadow-sm/);
+  assert.doesNotMatch(recovery, /border-orange-200 bg-orange-50/);
+  assert.match(recovery, /bg-\[#151922\]/);
+  assert.match(read("components/dashboard/PremiumWorkspace.module.css"), /font-size: max\(1rem, 1em\)/);
+  assert.match(review, /placeWalletOrder\(\)/);
+  assert.match(review, /\/api\/orders/);
+  assert.match(review, /\/api\/checkout\/intent/);
+});
+
+
+test("billing details remain above mobile navigation and support keyboard focus", () => {
+  const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
+  const billing = read("components/dashboard/BillingDashboardContent.tsx");
+  assert.match(billing, /useBodyScrollLock\(true\)/);
+  assert.match(billing, /role="dialog" aria-modal="true"/);
+  assert.match(billing, /z-\[100\]/);
+  assert.match(billing, /closeButtonRef\.current\?\.focus\(\)/);
+  assert.match(billing, /previousFocus\.focus\(\)/);
+  assert.match(billing, /event\.key === "Escape"/);
+  assert.match(billing, /event\.key !== "Tab"/);
+  assert.match(billing, /onKeyDown=\{onDialogKeyDown\}/);
+  assert.match(billing, /onReset=\{resetFilters\}/);
+  assert.match(billing, />Clear filters<\/button>/);
+});

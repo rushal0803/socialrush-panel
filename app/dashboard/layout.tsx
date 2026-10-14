@@ -5,7 +5,6 @@ import { ProfileSetupError } from "@/lib/auth/ensure-profile";
 import { getDashboardContext } from "@/lib/auth/dashboard-context";
 import { redirect } from "next/navigation";
 import MobileBottomNav from "@/components/dashboard/MobileBottomNav";
-import ProfessionalUpiCheckout from "@/components/dashboard/ProfessionalUpiCheckout";
 import DirectUpiCheckoutBridge from "@/components/dashboard/DirectUpiCheckoutBridge";
 import AbandonedCheckoutRecovery from "@/components/dashboard/AbandonedCheckoutRecovery";
 import CheckoutFunnelTracker from "@/components/analytics/CheckoutFunnelTracker";
@@ -49,7 +48,6 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
       <div className="min-w-0 flex-1">
         <Header email={context.user.email || ""} fullName={context.profile.full_name} role={context.profile.role} balance={Number(context.profile.balance ?? 0)} />
         <DirectUpiCheckoutBridge />
-        <ProfessionalUpiCheckout />
         <AbandonedCheckoutRecovery />
         <CheckoutFunnelTracker />
         <div id="dashboard-main-content" tabIndex={-1} className="outline-none">

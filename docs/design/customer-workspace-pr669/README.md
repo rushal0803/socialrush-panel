@@ -109,3 +109,10 @@ The remaining demonstrated design gap was Orders hierarchy: a large command cent
 [Raw Orders measurements](orders-priority.json): search is within the first viewport and above the bottom bar at all nine widths; footer shortcuts clear the bottom bar; computed repeat-button contrast is 6.94:1; status/no-results/reset and preserved quantity/link handoff passed with read-only synthetic records. The complete route matrix also checks populated Orders and Order History. No orders were submitted.
 
 The request reduction above belongs to the prior upgrade already merged in main; it is not claimed as an incremental speed improvement from this Orders/layout continuation. Latest samples do not identify an additional measured bottleneck that warrants a risky JavaScript, data-fetching or financial refactor. Field INP and p75 CWV targets remain unverified. Final-head CI and preview status are recorded in the existing PR after the reconciliation commit.
+
+## Integrated money-page accessibility patch (14 October 2026)
+
+- Reconciled draft [#674](https://github.com/rushal0803/socialrush-panel/pull/674) into the **single customer-workspace PR #669** without overwriting its navigation and Orders improvements. The original PR #674 remains open until this consolidated branch passes the exact-head checks.
+- Exact order-review UI, saved payment recovery, keyboard-trapped Billing transaction details, mobile readable inputs, and route-scoped legacy UPI overlay are included. The two previously overlapping files (`PremiumWorkspace.module.css` and `dashboard-navigation.test.ts`) were merged by preserving #669's complete content and adding only #674's additive CSS and two new regression tests.
+- No price calculation, wallet balance, checkout intent, payment provider callbacks, Supabase migrations, auth, RLS, or customer financial data were touched.
+- **Release gate:** re-run latest SHA CI, payment-confidence, full browser smoke, TypeScript and Vercel preview; verify mobile overlays versus bottom navigation at 320/390/430px. No merge or production release from this integration commit.
