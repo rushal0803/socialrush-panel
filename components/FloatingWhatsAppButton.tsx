@@ -37,7 +37,7 @@ export default function FloatingWhatsAppButton() {
     pathname === "/dashboard/billing" ||
     pathname === "/dashboard/orders" ||
     pathname === "/dashboard/order-history";
-  const dashboardOffset = pathname.startsWith("/dashboard") ? "bottom-[calc(5.25rem+env(safe-area-inset-bottom))] sm:bottom-6" : "bottom-[calc(.75rem+env(safe-area-inset-bottom))] sm:bottom-6";
+  const dashboardOffset = pathname.startsWith("/dashboard") ? "bottom-[calc(5.25rem+env(safe-area-inset-bottom))] lg:bottom-6" : "bottom-[calc(.75rem+env(safe-area-inset-bottom))] sm:bottom-6";
   const publicSurface = !pathname.startsWith("/dashboard");
   const placement = publicSurface
     ? "relative mb-4 ml-auto mr-4 w-fit gap-2 px-4 py-3 lg:fixed lg:bottom-6 lg:right-6 lg:m-0"

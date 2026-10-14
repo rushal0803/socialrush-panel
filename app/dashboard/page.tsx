@@ -7,7 +7,7 @@ import { buildFrequentRepeatPatterns, buildRepeatOrderHref } from "@/lib/cro/rep
 import { buildRetentionDecision } from "@/lib/retention/engine";
 import { FIRST_ORDER_NON_QUALIFYING_STATES } from "@/lib/cro/first-order-conversion";
 import { redirect } from "next/navigation";
-import styles from "./phase7-command-center.module.css";
+
 
 const activeStatuses = ["pending", "processing", "in_progress", "partial", "awaiting_action"];
 type RawOrder = { id: string; service_name: string | null; platform: string | null; link: string | null; quantity: number | null; status: string | null; charge: number | null; created_at: string; progress_percent: number | null; refill_eligible: boolean | null };
@@ -157,5 +157,5 @@ export default async function DashboardPage() {
 
   const hour = Number(new Intl.DateTimeFormat("en-IN", { hour: "numeric", hourCycle: "h23", timeZone: "Asia/Kolkata" }).format(new Date()));
   const greeting = hour < 5 ? "Welcome back" : hour < 12 ? "Good morning" : hour < 17 ? "Good afternoon" : "Good evening";
-  return <div className={styles.commandCenter}><EmailRecoveryAttribution /><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={totalOrders} activeOrders={count(1)} completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} checkoutRecovery={checkoutRecovery} firstOrderOffer={firstOrderOffer} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10) || failed(18), payments: failed(3) || failed(13), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RetentionNextActionCard decision={retentionDecision} /></div></div>;
+  return <div className="relative isolate"><EmailRecoveryAttribution /><DashboardOverviewContent greeting={greeting} userName={profile?.full_name?.split(" ")[0] || ""} walletBalance={Number(profile?.balance || 0)} orders={orders} activeCampaigns={activeCampaigns} totalOrders={totalOrders} activeOrders={count(1)} completedOrders={completedOrders} pendingOrders={pendingOrders} paymentChecks={paymentChecks} transactions={transactions} ticket={ticket} openTickets={count(5)} rewardBalance={Number(reward?.amount || 0)} savedProfiles={savedProfiles} favourites={favourites} firstOrder={firstOrder} draft={draft} shortcuts={shortcuts} checkoutRecovery={checkoutRecovery} firstOrderOffer={firstOrderOffer} errors={{ orders: failed(0) || failed(1) || failed(2) || failed(9) || failed(10) || failed(18), payments: failed(3) || failed(13), support: failed(4) || failed(5), rewards: failed(6), profiles: failed(7) }} /><div className="mx-auto w-full max-w-[1500px] px-4 pb-10 sm:px-6 lg:px-8"><RetentionNextActionCard decision={retentionDecision} /></div></div>;
 }

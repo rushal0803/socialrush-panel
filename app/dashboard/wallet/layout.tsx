@@ -4,8 +4,8 @@ import PaymentConfidenceExperience from "@/components/wallet/PaymentConfidenceEx
 export default function WalletLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <>
-      <PaymentConfidenceExperience mode="wallet" />
       {children}
+      <PaymentConfidenceExperience mode="wallet" />
     </>
   );
 }

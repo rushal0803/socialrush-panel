@@ -64,34 +64,37 @@ export default function DashboardMobileMenu() {
                 </button>
               </div>
 
-              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
-              <p className="mb-3 text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard navigation</p>
-              <NavLinks mobile onNavigate={() => setIsOpen(false)} />
-              <div className="mt-3"><AndroidAppDownload /></div>
+              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-4">
+                <p className="mb-4 text-xs leading-5 text-slate-400">Your orders, funds and campaign workspace.</p>
+                <NavLinks mobile onNavigate={() => setIsOpen(false)} />
+                <div className="mt-3"><AndroidAppDownload /></div>
+              </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
-                <Link
-                  href="/dashboard/new-order"
-                  onClick={() => setIsOpen(false)}
-                  className="col-span-2 inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-4 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20"
-                >
-                  Start Order
-                </Link>
-                <Link
-                  href="/dashboard/account"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2.5 text-sm font-bold text-orange-100"
-                >
-                  Profile
-                </Link>
+              {/* Keep important money/help actions visible even when the workspace list is long. */}
+              <div role="group" aria-label="Quick dashboard actions" className="shrink-0 border-t border-white/10 bg-[#0B0B0F] px-4 pt-3 pb-[calc(0.75rem+env(safe-area-inset-bottom))] pr-[calc(1rem+env(safe-area-inset-right))]">
+                <div className="grid grid-cols-2 gap-2">
+                  <Link
+                    href="/dashboard/wallet#add-funds"
+                    onClick={() => setIsOpen(false)}
+                    className="inline-flex min-h-12 min-w-0 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-2 py-3 text-sm font-bold text-[#17100b] shadow-lg shadow-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                  >
+                    Add Funds
+                  </Link>
+                  <Link
+                    href="/dashboard/support"
+                    onClick={() => setIsOpen(false)}
+                    className="inline-flex min-h-12 min-w-0 items-center justify-center rounded-xl border border-white/20 bg-white/[.06] px-2 py-3 text-sm font-bold text-white transition-colors hover:border-orange-300/50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+                  >
+                    Get Support
+                  </Link>
+                </div>
                 <button
                   type="button"
                   onClick={handleLogout}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-bold text-[#D1D5DB] transition hover:border-orange-400/30 hover:text-white"
+                  className="mt-2 inline-flex min-h-11 w-full items-center justify-center rounded-xl border border-white/10 bg-white/[.03] px-3 text-sm font-semibold text-[#D1D5DB] transition-colors hover:border-orange-400/30 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
                 >
                   Log out
                 </button>
-              </div>
               </div>
         </div>
       </MobileMenuLayer>

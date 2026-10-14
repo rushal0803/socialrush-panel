@@ -6,7 +6,19 @@ const read = (path: string) => readFileSync(new URL("../../" + path, import.meta
 
 test("Phase 22 keeps dashboard mobile drawer links readable outside dashboard shell", () => {
   const source = read("components/Sidebar.tsx");
-  assert.ok(source.includes('mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white"'));
+  const css = read("components/dashboard/PremiumWorkspace.module.css");
+  const drawer = read("components/dashboard/DashboardMobileMenu.tsx");
+  const portal = read("components/navigation/MobileMenuLayer.tsx");
+
+  // Navigation now uses a shared CSS module rather than legacy inline Tailwind
+  // classes. Verify real mobile readability, tap targets, focus and active state.
+  assert.match(source, /className=\{styles\.navLink\}/);
+  assert.match(source, /aria-current=\{active \? "page" : undefined\}/);
+  assert.match(drawer, /<NavLinks mobile onNavigate=\{\(\) => setIsOpen\(false\)\} \/>/);
+  assert.match(portal, /createPortal\(/);
+  assert.match(css, /\.navLink\s*\{[^}]*min-height:\s*44px;[^}]*color:\s*#[0-9a-f]{6};/s);
+  assert.match(css, /\.navLink\[aria-current="page"\]\s*\{[^}]*color:/s);
+  assert.match(css, /\.navLink:focus-visible\s*\{[^}]*outline:/s);
 });
 
 test("Phase 22 compacts the dashboard header through the sidebar's narrow desktop widths", () => {

@@ -1,0 +1,245 @@
+{
+  "note": "Computed CSS foreground/background contrast for selected order-review labels, summary values, UPI caption and saved-payment warning; synthetic fixtures, not a complete accessibility audit.",
+  "orderReview": {
+    "before": [
+      {
+        "width": 390,
+        "results": [
+          {
+            "text": "Review order",
+            "ratio": 8.895902815565831
+          },
+          {
+            "text": "Compare Instagram follower campaigns with clear pricing, delivery estimates and ",
+            "ratio": 12.78851036492228
+          },
+          {
+            "text": "Quantity",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Instagram profile linkUse the public URL for the profile you want to grow. Keep ",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Service",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "Instagram Followers",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Quantity",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "1,000",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Wallet balance",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "₹1,00,000.00",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Total",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "₹799.00",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Your exact order amount is prepared securely before your UPI app opens.",
+            "ratio": 2.5056729437008936
+          }
+        ]
+      },
+      {
+        "width": 1440,
+        "results": [
+          {
+            "text": "Review order",
+            "ratio": 8.895902815565831
+          },
+          {
+            "text": "Compare Instagram follower campaigns with clear pricing, delivery estimates and ",
+            "ratio": 12.78851036492228
+          },
+          {
+            "text": "Quantity",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Instagram profile linkUse the public URL for the profile you want to grow. Keep ",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Service",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "Instagram Followers",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Quantity",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "1,000",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Wallet balance",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "₹1,00,000.00",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Total",
+            "ratio": 7.422297732904128
+          },
+          {
+            "text": "₹799.00",
+            "ratio": 1.0555383518901038
+          },
+          {
+            "text": "Your exact order amount is prepared securely before your UPI app opens.",
+            "ratio": 2.5056729437008936
+          }
+        ]
+      }
+    ],
+    "after": [
+      {
+        "width": 390,
+        "results": [
+          {
+            "text": "Review order",
+            "ratio": 8.939467624588232
+          },
+          {
+            "text": "Compare Instagram follower campaigns with clear pricing, delivery estimates and ",
+            "ratio": 12.754286838607493
+          },
+          {
+            "text": "Quantity",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Instagram profile linkUse the public URL for the profile you want to grow. Keep ",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Service",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "Instagram Followers",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Quantity",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "1,000",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Wallet balance",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "₹1,00,000.00",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Total",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "₹799.00",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Your exact order amount is prepared securely before your UPI app opens.",
+            "ratio": 12.754286838607493
+          }
+        ]
+      },
+      {
+        "width": 1440,
+        "results": [
+          {
+            "text": "Review order",
+            "ratio": 8.939467624588232
+          },
+          {
+            "text": "Compare Instagram follower campaigns with clear pricing, delivery estimates and ",
+            "ratio": 12.754286838607493
+          },
+          {
+            "text": "Quantity",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Instagram profile linkUse the public URL for the profile you want to grow. Keep ",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Service",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "Instagram Followers",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Quantity",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "1,000",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Wallet balance",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "₹1,00,000.00",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Total",
+            "ratio": 7.458646037280338
+          },
+          {
+            "text": "₹799.00",
+            "ratio": 17.285276745445582
+          },
+          {
+            "text": "Your exact order amount is prepared securely before your UPI app opens.",
+            "ratio": 12.754286838607493
+          }
+        ]
+      }
+    ]
+  },
+  "recovery": {
+    "before": {
+      "ratio": 1.15843559939234
+    },
+    "after": {
+      "ratio": 15.895567038739964
+    }
+  }
+}

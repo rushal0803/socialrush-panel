@@ -21,6 +21,7 @@
   "git": {
     "deploymentEnabled": {
       "feat/socialrush-premium-design-transformation": false,
+      "feat/premium-customer-dashboard-v2": false,
       "review/socialrush-premium-phases-1-2-integration": false
     }
   },
