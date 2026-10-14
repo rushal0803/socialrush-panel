@@ -1,5 +1,5 @@
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
-import { getBrowserAnalyticsSessionId } from "./session";
+import { getBrowserAnalyticsSessionId } from "./session.ts";
 
 export const clientAnalyticsEvents = [
   "page_viewed",
