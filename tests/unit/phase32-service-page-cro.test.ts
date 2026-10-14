@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
 import { getServicePageCroConfig } from "../../lib/cro/service-page-cro.ts";
+import { getInstagramCommentsOrderReadiness, isOrderableInstagramCommentsService } from "../../lib/cro/instagram-comments-order.ts";
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
 
@@ -134,4 +135,30 @@ test("All fallback catalog detail links have a dedicated route rather than an un
   for (const code of fallbackCodes) {
     assert.ok(existsSync(new URL(`../../app/services/${code}/page.tsx`, import.meta.url)), `${code}: missing /services/${code} detail route`);
   }
+});
+
+test("Instagram Comments cannot show checkout as ready with missing or invalid public live facts", () => {
+  const good={available:true,rate:799,min:100,max:100000};
+  for (const bad of [null,{...good,available:false},{...good,rate:0},{...good,rate:-1},{...good,rate:NaN},{...good,min:0},{...good,max:99},{...good,max:100.5}]) {
+    assert.equal(isOrderableInstagramCommentsService(bad),false);
+    assert.deepEqual(getInstagramCommentsOrderReadiness(bad,1000,true),{serviceReady:false,quantityReady:false,total:null,canContinue:false});
+  }
+  assert.deepEqual(getInstagramCommentsOrderReadiness(good,1000,true),{serviceReady:true,quantityReady:true,total:799,canContinue:true});
+  assert.equal(getInstagramCommentsOrderReadiness(good,100,true).total,79.9);
+  for(const q of [0,99,100001,100.5,Infinity]){
+    assert.equal(getInstagramCommentsOrderReadiness(good,q,true).canContinue,false);
+    assert.equal(getInstagramCommentsOrderReadiness(good,q,true).total,null);
+  }
+  assert.equal(getInstagramCommentsOrderReadiness(good,1000,false).canContinue,false);
+});
+
+test("Instagram Comments displays unavailable pricing, prevents submit and preserves accurate per-1K schema",()=>{
+  const landing=read("components/marketing/InstagramCommentsLanding.tsx");
+  const page=read("app/buy-instagram-comments-india/page.tsx");
+  assert.match(landing,/getInstagramCommentsOrderReadiness\(live,q,/);
+  assert.match(landing,/disabled=\{!serviceReady\}/);
+  assert.match(landing,/readiness\.total===null\?"—"/);
+  assert.match(landing,/serviceReady\?"Available":"Live details unavailable"/);
+  assert.match(page,/isOrderableInstagramCommentsService\(live\)/);
+  assert.match(page,/referenceQuantity/);
 });
