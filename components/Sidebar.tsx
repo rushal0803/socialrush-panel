@@ -126,7 +126,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
     return (
       <nav className="grid gap-4" aria-label="Dashboard navigation" data-dashboard-mobile-links>
         {mobileGroupOrder.map((group) => group === "Workspace" ? (
-          <details key={group} defaultOpen={isWorkspaceRoute(pathname)} className="group rounded-2xl border border-white/10 bg-white/[.025] p-2" data-dashboard-workspace-group>
+          <details key={group} open={isWorkspaceRoute(pathname)} className="group rounded-2xl border border-white/10 bg-white/[.025] p-2" data-dashboard-workspace-group>
             <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-xl px-3 text-sm font-semibold text-slate-100 outline-none focus-visible:ring-2 focus-visible:ring-orange-300 [&::-webkit-details-marker]:hidden">
               <span className="flex-1">More workspace tools</span>
               <span className="rounded-full border border-white/10 px-2 py-0.5 text-[11px] font-medium text-slate-400">{groups.Workspace.length}</span>

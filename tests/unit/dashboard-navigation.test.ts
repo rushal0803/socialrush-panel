@@ -32,7 +32,8 @@ test("workspace menu stays discoverable and expands when visiting nested workspa
   assert.equal(isWorkspaceRoute("/dashboard/wallet"), false);
   assert.equal(isWorkspaceRoute("/dashboard/new-order"), false);
   const sidebar = source("components/Sidebar.tsx");
-  assert.match(sidebar, /<details key=\{group\} defaultOpen=\{isWorkspaceRoute\(pathname\)\}/);
+  assert.match(sidebar, /<details key=\{group\} open=\{isWorkspaceRoute\(pathname\)\}/);
+  assert.doesNotMatch(sidebar, /\bdefaultOpen=/);
   assert.match(sidebar, /<summary/);
   assert.doesNotMatch(sidebar, /from "framer-motion"/);
 });
