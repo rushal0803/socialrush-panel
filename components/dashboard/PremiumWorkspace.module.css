@@ -126,3 +126,9 @@
   .navGroup > summary > svg { transition: none; }
   .navLink, .workspace :global(.btn-dashboard-primary), .workspace :global(.btn-dashboard-secondary) { transition: none; }
 }
+
+/* Keep customer form fields comfortably readable at phone widths. */
+@media (max-width: 767px) {
+  .workspace :global(.dashboard-premium-page) :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { font-size: max(1rem, 1em); }
+  .workspace :global(#dashboard-main-content) { min-width: 0; width: 100%; }
+}
