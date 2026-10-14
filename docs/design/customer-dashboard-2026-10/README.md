@@ -171,4 +171,24 @@ Inspection of the actual 390px and 768px fixture captures revealed a content-pri
 
 The wallet route now renders its existing WalletDashboard first, followed by both existing payment-confidence components. No data fetching, payment options, pricing calculations, hidden legacy add-funds form, add-funds redirect, or transaction semantics changed. The separate add-funds route retains its payment guidance. A unit regression checks this order.
 
-Visual evidence warning: the checked-in wallet 'after' screenshots predate this specific ordering correction and must be recaptured for design approval. Re-run configured responsive and payment regression tests at this exact head before merge. No Vercel preview or production deploy requested.
+The stale Wallet captures have now been replaced with captures from application head `95087a7da3e133b3e09e1d33fd46ef461c1c7322`. Balance and Add Funds were verified in the first viewport at all seven release widths.
+
+| Wallet ordering | Before correction | Current capture |
+|---|---|---|
+| Mobile 390px | [Before](before-wallet-first-390.png) | [After](after-dashboard-wallet-390.png) |
+| Tablet 768px | [Before](before-wallet-first-768.png) | [After](after-dashboard-wallet-768.png) |
+| Desktop 1440px | [Before](before-wallet-first-1440.png) | [After](after-dashboard-wallet-1440.png) |
+
+## Final release verification on 95087a7d
+
+No application code needed further changes. The remaining changes are QA coverage and evidence on the existing PR. All 34 routes passed the fresh Chromium matrix at 320, 360, 390, 430, 768, 1024 and 1440px: 238 layouts with no detected horizontal overflow, clipped tested controls/headings or runtime errors. Wallet balance and its main Add Funds action passed first-viewport checks. [Raw route results](release-95087-results.json). Existing ten-width evidence also includes 1920px.
+
+The combined local run passed **26 Playwright checks** in 3.7 minutes, including search loading/error/retry/cancellation/no-results, drawer navigation, exact wallet shortfall reviews, funding visibility, payment instructions and the route matrix. A new browser-only mock covers disabled submitting state, a rejected submission with the reference retained, retry, and pending verification feedback. Both requests were intercepted and fulfilled in the browser; neither reached the manual-UPI endpoint. The synthetic reference is QA-NOT-A-PAYMENT. No payment app was opened, no order/payment was created, and no wallet credit was asserted. [Mocked pending confirmation](mocked-pending-confirmation-390.png). The submit control was checked above the mobile bottom bar.
+
+Local configured checks: TypeScript passed; 216 unit tests passed; 14 payment-confidence tests passed; 8 package/navigation contracts passed; production build passed. Existing unrelated build/lint warnings remain. Workflow [38484681027](https://github.com/rushal0803/socialrush-panel/actions/runs/38484681027) passed on exact application head 95087a7d, including 262 smoke checks (61 opt-in skips), 10 customer checks and isolated wallet SQL integration.
+
+Additional local diagnostic runs exhausted their global deadlines without completing the selected Wallet checks; these are not passes. A standalone uncompleted Wallet test was removed instead of adding an unverified CI gate; its first-viewport assertions remain in the successful route matrix. Latest WebKit passed the short-phone drawer check, while three further selected checks did not run before the deadline. Earlier WebKit evidence remains above. Fresh empty-wallet filtering and a complete latest-head multi-engine pass are not established by those attempts.
+
+The fresh overview and Wallet mobile/tablet/desktop screenshots and [mobile funding drawer](final-funds-drawer-390.png) replace their older counterparts. New Order captures remain valid because its code did not change. Fixtures are synthetic and cannot establish live balances, data completeness, settlement, refunds or gateway behavior. No application financial logic, authentication, RLS, schema, checkout API, order idempotency or live prices changed during this final review.
+
+Performance: this matrix is an unthrottled lab check, not a speed benchmark. No new faster-performance claim is made. The measured search request reduction and its single-sample timing limitations are documented above. Physical device keyboard/safe-area review, Firefox runner verification, field p75 LCP/INP/CLS and owner-approved sandbox payment/settlement review remain release gates. Keep PR #667 in draft for owner review; do not merge or deploy production without explicit owner approval.

@@ -386,6 +386,48 @@ test("dashboard drawer preserves every destination and closes after query naviga
   await expect(dialog).toHaveCount(0);
 });
 
+test("customer funding confirmation remains pending after browser-only mocked submission", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  await page.setViewportSize({ width: 390, height: 740 });
+  let releaseFailure!: () => void;
+  const failureGate = new Promise<void>(resolve => { releaseFailure = resolve; });
+  const submissions: Array<Record<string, unknown>> = [];
+  await page.route("**/api/wallet/manual-upi", async route => {
+    expect(new URL(route.request().url()).origin).toBe(new URL(baseURL!).origin);
+    submissions.push(route.request().postDataJSON());
+    if (submissions.length === 1) {
+      await failureGate;
+      return route.fulfill({ status: 503, json: { error: "Fixture unavailable; reference not submitted" } });
+    }
+    return route.fulfill({ json: { data: { id: "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb", amount: 799, status: "pending" } } });
+  });
+  await page.goto("/dashboard/add-funds?amount=799");
+  await page.waitForLoadState("load");
+  await expect(page.getByRole("textbox", { name: "Amount", exact: true })).toHaveValue("799");
+  // This switches local UI steps only. Never open the UPI link or QR payment.
+  await page.getByRole("button", { name: /completed the payment/ }).click();
+  const reference = page.getByPlaceholder("Enter UTR / Transaction ID");
+  await expect(reference).toHaveAccessibleName(/UTR.*Transaction ID/);
+  await reference.fill("QA-NOT-A-PAYMENT");
+  const submit = page.getByRole("button", { name: "Submit payment for verification", exact: true });
+  await submit.evaluate(element => element.scrollIntoView({ block: "center" }));
+  const buttonBox = await submit.boundingBox();
+  const navBox = await page.getByRole("navigation", { name: "Primary dashboard navigation" }).boundingBox();
+  expect(buttonBox!.y + buttonBox!.height).toBeLessThanOrEqual(navBox!.y);
+  await submit.click();
+  await expect(page.getByRole("button", { name: "Submitting…", exact: true })).toBeDisabled();
+  releaseFailure();
+  await expect(page.getByText("Fixture unavailable; reference not submitted", { exact: true })).toBeVisible();
+  await expect(reference).toHaveValue("QA-NOT-A-PAYMENT");
+  await submit.click();
+  await expect(page.getByRole("heading", { name: /799 is being verified/ })).toBeVisible();
+  await expect(page.getByText("Do not pay again. Your wallet will be credited after verification.", { exact: true })).toBeVisible();
+  expect(submissions).toHaveLength(2);
+  for (const body of submissions) { expect(body.amount).toBe(799); expect(body.utr).toBe("QA-NOT-A-PAYMENT"); expect(body.paymentMethod).toBe("upi"); }
+  fs.mkdirSync(outputRoot, { recursive: true });
+  await page.screenshot({ path: path.join(outputRoot, "mocked-pending-confirmation-390.png") });
+});
+
 test("customer funding starts with amount selection at every requested width", async ({ page, context, baseURL }) => {
   await authenticate(context, baseURL!);
   fs.mkdirSync(outputRoot, { recursive: true });
@@ -583,6 +625,10 @@ for (const width of widths) {
       expect(response?.status(), route).toBeLessThan(400);
       await expect(page.locator(".dashboard-shell")).toBeVisible();
       await expectRevealedContent(page);
+      if (route === "/dashboard/wallet") {
+        await expect(page.locator("#dashboard-main-content").getByText("Wallet Balance", { exact: true })).toBeInViewport();
+        await expect(page.locator("#dashboard-main-content").getByRole("link", { name: "Add Funds", exact: true }).first()).toBeInViewport();
+      }
       if (route.startsWith("/dashboard/order-summary") && width < 1024) {
         await expect(page.getByRole("navigation", { name: "Primary dashboard navigation" }).getByRole("link", { name: "New Order", exact: true })).toHaveAttribute("aria-current", "page");
       }
