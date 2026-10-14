@@ -28,10 +28,8 @@
 .sectionTitle { border-color: #ffffff20; }
 .sectionTitle h2 { font-weight: 650; font-size: 15px; }
 .badge { font-variant-numeric: tabular-nums; border-radius: 6px; min-height: 26px; }
-@media (max-width: 600px) {
-  .pageHeader { padding-bottom: 16px; }
-  .workspace :global(#dashboard-main-content) { min-width: 0; padding-bottom: calc(4.25rem + env(safe-area-inset-bottom)); }
-}
+@media (max-width: 600px) { .pageHeader { padding-bottom: 16px; } }
+@media (max-width: 1023px) { .workspace :global(#dashboard-main-content) { min-width: 0; padding-bottom: calc(4.25rem + env(safe-area-inset-bottom)); } }
 @media (prefers-reduced-motion: reduce) {
   .workspace :global(.dashboard-sidebar) *, .workspace :global([data-dashboard-bottom-nav]) * { scroll-behavior: auto; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
 }

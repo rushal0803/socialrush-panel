@@ -203,7 +203,7 @@ export default function Sidebar({
         <p className="mt-2 text-2xl font-black text-white">{formatCurrency(balance, currency, rates)}</p>
         {currency !== "INR" ? <p className="mt-1 text-[10px] text-[#a8afbd]">Ledger balance remains INR</p> : null}
 
-        <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex min-h-11 w-full items-center justify-center py-2.5 text-xs">
+        <Link href="/dashboard/add-funds" className="btn-dashboard-primary mt-4 flex min-h-11 w-full items-center justify-center py-2.5 text-xs">
           Add Funds
         </Link>
       </div>

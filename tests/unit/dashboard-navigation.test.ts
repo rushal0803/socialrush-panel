@@ -42,7 +42,7 @@ test("mobile drawer provides quick actions, close and accessible fixed navigatio
   const bottom = source("components/dashboard/MobileBottomNav.tsx");
   assert.match(drawer, /aria-label="Close menu"/);
   assert.match(drawer, /href="\/dashboard\/new-order"/);
-  assert.match(drawer, /href="\/dashboard\/wallet"/);
+  assert.match(drawer, /href="\/dashboard\/add-funds"/);
   assert.match(drawer, /href="\/dashboard\/orders"/);
   assert.match(drawer, /<MobileMenuLayer/);
   assert.match(bottom, /data-dashboard-bottom-nav/);

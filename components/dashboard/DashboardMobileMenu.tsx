@@ -77,7 +77,7 @@ export default function DashboardMobileMenu() {
                 Create new order <ArrowRight className="h-4 w-4" aria-hidden="true" />
               </Link>
               <div className="mt-2 grid grid-cols-2 gap-2">
-                <Link href="/dashboard/wallet" onClick={closeMenu} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[.045] px-2 text-xs font-semibold text-white transition hover:bg-white/10"><WalletCards size={16} aria-hidden="true" /> Add Funds</Link>
+                <Link href="/dashboard/add-funds" onClick={closeMenu} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[.045] px-2 text-xs font-semibold text-white transition hover:bg-white/10"><WalletCards size={16} aria-hidden="true" /> Add Funds</Link>
                 <Link href="/dashboard/orders" onClick={closeMenu} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[.045] px-2 text-xs font-semibold text-white transition hover:bg-white/10"><ReceiptText size={16} aria-hidden="true" /> Orders</Link>
               </div>
             </div>
