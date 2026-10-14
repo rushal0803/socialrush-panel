@@ -2,6 +2,7 @@ import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { isOrganicSearchReferrer } from "../../lib/analytics/events.ts";
+import { createClientAnalyticsSessionIdProvider, isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "../../lib/analytics/session.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
   buildTrafficGrowthDashboard,
@@ -146,4 +147,51 @@ test("Phase 45 exposes the traffic workspace and labels the 100K number as targe
   assert.match(page, /roadmap target/);
   assert.match(page, /This is target arithmetic only/);
   assert.match(page, /does not predict when SocialRUSH will reach 100K/);
+});
+
+test("Phase 15 correlates concurrent first-page analytics beacons before cookies arrive", () => {
+  const entries = new Map<string, string>();
+  const storage = {
+    getItem: (key: string) => entries.get(key) ?? null,
+    setItem: (key: string, value: string) => { entries.set(key, value); },
+  };
+  const initialId = "512047cb-27ea-4bbc-9ab0-29d27db43633";
+  const fallbackId = "e1a11b09-f179-4286-a6cd-55e72f6b77bc";
+  const provider = createClientAnalyticsSessionIdProvider();
+  const pageView = provider(storage, () => initialId);
+  const organicLanding = provider(storage, () => { throw new Error("Unexpected second UUID"); });
+  assert.equal(pageView, organicLanding);
+  // Simulate independently handled POSTs with no cookie, using the same request nonce.
+  assert.equal(resolveAnalyticsSessionId(undefined, pageView, () => fallbackId), initialId);
+  assert.equal(resolveAnalyticsSessionId(undefined, organicLanding, () => fallbackId), initialId);
+  assert.equal(createClientAnalyticsSessionIdProvider()(storage, () => fallbackId), initialId);
+});
+
+test("Phase 15 server cookies override client correlation tokens and malformed tokens fail closed", () => {
+  const clientId = "512047cb-27ea-4bbc-9ab0-29d27db43633";
+  const cookieId = "e1a11b09-f179-4286-a6cd-55e72f6b77bc";
+  assert.equal(resolveAnalyticsSessionId(cookieId, clientId, () => { throw new Error("Unexpected fallback"); }), cookieId);
+  for (const submitted of ["garbage", "00000000-0000-0000-0000-000000000000", "aaaaaaaa-aaaa-4aaa-7aaa-aaaaaaaaaaaa", {}, null]) {
+    assert.equal(resolveAnalyticsSessionId(undefined, submitted, () => cookieId), cookieId);
+  }
+  assert.equal(isValidAnalyticsSessionId(clientId), true);
+  assert.equal(isValidAnalyticsSessionId(cookieId), true);
+});
+
+test("Phase 15 tolerates blocked tab storage and retains the existing privacy and API guardrails", () => {
+  const clientId = "512047cb-27ea-4bbc-9ab0-29d27db43633";
+  const provider = createClientAnalyticsSessionIdProvider();
+  const blocked = {getItem() {throw new Error("blocked")}, setItem() {throw new Error("blocked")}};
+  assert.equal(provider(blocked, () => clientId), clientId);
+  assert.equal(provider(blocked, () => { throw new Error("Unexpected second UUID"); }), clientId);
+
+  const events = read("lib/analytics/events.ts");
+  const route = read("app/api/analytics/route.ts");
+  assert.match(events, /navigator\.doNotTrack === "1"/);
+  assert.match(events, /sessionId: getBrowserAnalyticsSessionId\(\)/);
+  assert.match(route, /requireJson\(request, 8_192\)/);
+  assert.match(route, /rateLimit\(request, "analytics", 120, 60_000\)/);
+  assert.match(route, /resolveAnalyticsSessionId\(cookie, body\.sessionId/);
+  assert.match(route, /if \(!isValidAnalyticsSessionId\(cookie\)\)/);
+  assert.match(route, /httpOnly: true/);
 });

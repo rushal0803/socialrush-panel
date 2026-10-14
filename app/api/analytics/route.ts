@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { clientAnalyticsEvents } from "@/lib/analytics/events";
+import { isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "@/lib/analytics/session";
 import { requireJson, rateLimit } from "@/lib/security/request";
 
 const safeKeys = new Set([
@@ -52,9 +53,9 @@ export async function POST(request: NextRequest) {
   }
 
   const cookie = request.cookies.get("sr_analytics_session")?.value;
-  const session = /^[0-9a-f-]{36}$/i.test(cookie || "")
-    ? cookie!
-    : crypto.randomUUID();
+  // Two initial sendBeacon requests can arrive before either receives Set-Cookie.
+  // The validated client token correlates those requests; an existing cookie wins.
+  const session = resolveAnalyticsSessionId(cookie, body.sessionId, () => crypto.randomUUID());
   const width = Number(request.headers.get("sec-ch-viewport-width") || 0);
   const mobile = request.headers.get("sec-ch-ua-mobile") === "?1";
   const device = mobile
@@ -163,7 +164,7 @@ export async function POST(request: NextRequest) {
   }
 
   const response = new NextResponse(null, { status: 204 });
-  if (!cookie) {
+  if (!isValidAnalyticsSessionId(cookie)) {
     response.cookies.set("sr_analytics_session", session, {
       httpOnly: true,
       sameSite: "lax",

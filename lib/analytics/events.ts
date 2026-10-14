@@ -1,4 +1,6 @@
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
+import { getBrowserAnalyticsSessionId } from "./session.ts";
+
 export const clientAnalyticsEvents = [
   "page_viewed",
   "sign_up_started",
@@ -238,6 +240,7 @@ export function track(
   const { service_code, platform, ...safeMetadata } = metadata;
   const body = JSON.stringify({
     event,
+    sessionId: getBrowserAnalyticsSessionId(),
     pagePath: safePath(),
     serviceCode: typeof service_code === "string" ? service_code : undefined,
     platform: typeof platform === "string" ? platform : undefined,
