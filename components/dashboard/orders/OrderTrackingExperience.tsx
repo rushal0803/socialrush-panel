@@ -6,6 +6,7 @@ import styles from "./OrderTrackingExperience.module.css";
 export default function OrderTrackingExperience({ children }: Readonly<{ children: ReactNode }>) {
   return (
     <div className={styles.shell}>
+      {children}
       <section className={styles.commandBar} aria-label="Order tracking command center">
         <div className={styles.intro}>
           <span className={styles.eyebrow}><ShieldCheck className="h-3.5 w-3.5" /> Order command center</span>
@@ -26,7 +27,6 @@ export default function OrderTrackingExperience({ children }: Readonly<{ childre
           <Link href="/dashboard/new-order" className={styles.primary}>Start campaign <ArrowRight className="h-4 w-4" /></Link>
         </nav>
       </section>
-      {children}
     </div>
   );
 }

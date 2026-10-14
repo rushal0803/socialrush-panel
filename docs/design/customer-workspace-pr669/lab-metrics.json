@@ -1,26 +1,26 @@
 {
-  "note": "Single unthrottled localhost fixture samples after the header correction; not field p75, paired performance improvement, or INP. LCP captured at audit observation, may change with later content.",
+  "note": "Single unthrottled localhost fixture samples on the branch reconciled with main d4c2baaa; not field p75, paired speed improvement, or INP. LCP observed during the audit can change with later content.",
   "metrics": [
     {
       "width": 390,
       "routes": [
         {
           "route": "/dashboard",
-          "lcp": 1312,
+          "lcp": 1168,
           "cls": 0,
-          "ttfb": 377.09999999403954
+          "ttfb": 376.29999999701977
         },
         {
           "route": "/dashboard/new-order",
-          "lcp": 616,
+          "lcp": 464,
           "cls": 0,
-          "ttfb": 30
+          "ttfb": 26.5
         },
         {
           "route": "/dashboard/wallet",
-          "lcp": 1140,
+          "lcp": 568,
           "cls": 0,
-          "ttfb": 43.5
+          "ttfb": 33.5
         }
       ]
     },
@@ -29,21 +29,21 @@
       "routes": [
         {
           "route": "/dashboard",
-          "lcp": 1528,
+          "lcp": 1308,
           "cls": 0,
-          "ttfb": 443.40000000596046
+          "ttfb": 366
         },
         {
           "route": "/dashboard/new-order",
-          "lcp": 892,
+          "lcp": 580,
           "cls": 0,
-          "ttfb": 40.6000000089407
+          "ttfb": 29.19999998807907
         },
         {
           "route": "/dashboard/wallet",
-          "lcp": 1680,
+          "lcp": 1284,
           "cls": 0,
-          "ttfb": 73.70000000298023
+          "ttfb": 46.900000005960464
         }
       ]
     }

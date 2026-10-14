@@ -1,8 +1,8 @@
 // Package only this audit's known captures, never historical artifact folders.
 const fs = require('node:fs');
 const path = require('node:path');
-const widths = [320, 360, 390, 430, 768, 1024, 1440, 1920];
-const source = 'artifacts/premium-responsive/pr669-header-fixed';
+const widths = [320, 360, 375, 390, 430, 768, 1024, 1440, 1920];
+const source = 'artifacts/premium-responsive/pr669-main-sync';
 const target = 'docs/design/customer-workspace-pr669';
 const runs = widths.map(width => ({ width, routes: JSON.parse(fs.readFileSync(path.join(source, `dashboard-${width}.json`), 'utf8')) }));
 for (const run of runs) for (const row of run.routes) {

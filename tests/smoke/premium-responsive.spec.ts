@@ -304,6 +304,62 @@ test("customer service search recovers from an empty result", async ({ page, con
   }
 });
 
+test("customer orders prioritize filters and preserve tracking and repeat handoff", async ({ page, context, baseURL }) => {
+  test.setTimeout(60000);
+  test.skip(process.env.DASHBOARD_UPGRADE_AUDIT !== "1", "Requires populated read-only customer fixtures");
+  await authenticate(context, baseURL!);
+  const measurements: Array<Record<string, unknown>> = [];
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: width < 768 ? 740 : 900 });
+    await page.goto("/dashboard/orders");
+    await expectRevealedContent(page);
+    await expect(page.getByRole("textbox", { name: "Search orders", exact: true })).toBeInViewport();
+    const searchBox = await page.getByRole("textbox", { name: "Search orders", exact: true }).boundingBox();
+    const barBox = await page.getByRole("navigation", { name: "Primary dashboard navigation", includeHidden: true }).boundingBox();
+    if (barBox) expect(searchBox!.y + searchBox!.height).toBeLessThanOrEqual(barBox.y);
+    const filters = page.getByRole("region", { name: "Order filters", exact: true });
+    await expect(filters.getByRole("combobox", { name: "Filter order status", exact: true })).toBeVisible();
+    const main = page.locator("#dashboard-main-content main");
+    await expect(main.getByRole("link", { name: "View Details", exact: true })).toHaveCount(2);
+    const tools = page.getByRole("region", { name: "Order tracking command center" });
+    expect(await tools.evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(await filters.evaluate(el => el.getBoundingClientRect().bottom));
+    const search = filters.getByRole("textbox", { name: "Search orders", exact: true });
+    await search.fill("qa-no-matching-order");
+    await expect(main.getByText("No orders match these filters.", { exact: true })).toBeVisible();
+    await filters.getByRole("button", { name: "Reset", exact: true }).click();
+    await filters.getByRole("combobox", { name: "Filter order status", exact: true }).selectOption("completed");
+    await expect(main.getByRole("link", { name: "View Details", exact: true })).toHaveCount(1);
+    const repeat = main.getByRole("link", { name: "Order Again", exact: true });
+    const contrast = await repeat.evaluate(element => {
+      const css = getComputedStyle(element);
+      const luminance = (value: string) => {
+        const rgb = value.match(/[\d.]+/g)!.slice(0, 3).map(Number).map(n => {
+          const channel = n / 255;
+          return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+        });
+        return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+      };
+      const a = luminance(css.color), b = luminance(css.backgroundColor);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    });
+    expect(contrast).toBeGreaterThanOrEqual(4.5);
+    const href = await repeat.getAttribute("href");
+    const handoff = new URL(href!, baseURL!);
+    expect(handoff.pathname).toBe("/dashboard/new-order");
+    expect(handoff.searchParams.get("quantity")).toBe("1000");
+    expect(handoff.searchParams.get("link")).toBe("https://www.instagram.com/p/responsive_qa/");
+    const shortcut = tools.getByRole("link", { name: "Start campaign", exact: true });
+    await shortcut.scrollIntoViewIfNeeded();
+    if (barBox) {
+      const box = await shortcut.boundingBox();
+      expect(box!.y + box!.height).toBeLessThanOrEqual(barBox.y);
+    }
+    measurements.push({ width, searchBox, bottomNavTop: barBox?.y ?? null, repeatContrast: contrast, repeatHref: href });
+  }
+  fs.mkdirSync(outputRoot, { recursive: true });
+  fs.writeFileSync(path.join(outputRoot, "orders-priority.json"), JSON.stringify(measurements, null, 2));
+});
+
 for (const width of [390, 1440]) {
   test(`dashboard search request budget and dialog at ${width}px`, async ({ page, context, baseURL, browserName }) => {
     test.skip(browserName !== "chromium", "Throttled journey measurement uses Chromium CDP");
@@ -646,6 +702,10 @@ for (const width of widths) {
       if (route === "/dashboard/wallet") {
         await expect(page.locator("#dashboard-main-content").getByText("Wallet Balance", { exact: true })).toBeInViewport();
         await expect(page.locator("#dashboard-main-content").getByRole("link", { name: "Add Funds", exact: true }).first()).toBeInViewport();
+      }
+      if (route === "/dashboard/orders" || route === "/dashboard/order-history") {
+        await expect(page.getByRole("textbox", { name: "Search orders", exact: true })).toBeInViewport();
+        if (process.env.DASHBOARD_UPGRADE_AUDIT === "1") await expect(page.locator("#dashboard-main-content main").getByRole("link", { name: "View Details", exact: true })).toHaveCount(2);
       }
       if (route.startsWith("/dashboard/order-summary")) {
         // PR #669 deliberately removes the bar on focused checkout flows.

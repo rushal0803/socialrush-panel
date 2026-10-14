@@ -4,6 +4,7 @@
   "widths": [
     320,
     360,
+    375,
     390,
     430,
     768,
@@ -11,7 +12,7 @@
     1440,
     1920
   ],
-  "checkedLayouts": 288,
+  "checkedLayouts": 324,
   "runs": [
     {
       "width": 320,
@@ -23,9 +24,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 960,
+            "lcp": 856,
             "cls": 0,
-            "ttfb": 55.29999999701977
+            "ttfb": 55.599999994039536
           }
         },
         {
@@ -35,9 +36,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 624,
+            "lcp": 480,
             "cls": 0,
-            "ttfb": 29
+            "ttfb": 22.299999997019768
           }
         },
         {
@@ -47,9 +48,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 580,
+            "lcp": 208,
             "cls": 0,
-            "ttfb": 118.90000000596046
+            "ttfb": 48.099999994039536
           }
         },
         {
@@ -61,7 +62,7 @@
           "lab": {
             "lcp": 224,
             "cls": 0,
-            "ttfb": 41
+            "ttfb": 25.600000008940697
           }
         },
         {
@@ -71,9 +72,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 69.29999999701977
+            "ttfb": 31.5
           }
         },
         {
@@ -83,9 +84,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 760,
+            "lcp": 632,
             "cls": 0,
-            "ttfb": 46.3999999910593
+            "ttfb": 36.29999999701977
           }
         },
         {
@@ -95,9 +96,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 140,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 23.5
+            "ttfb": 22.30000001192093
           }
         },
         {
@@ -107,9 +108,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 580,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 41.79999999701977
+            "ttfb": 29.30000001192093
           }
         },
         {
@@ -119,9 +120,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 204,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 40.70000000298023
+            "ttfb": 33.5
           }
         },
         {
@@ -131,9 +132,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 196,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 37.70000000298023
+            "ttfb": 30.200000002980232
           }
         },
         {
@@ -151,9 +152,9 @@
             }
           ],
           "lab": {
-            "lcp": 232,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 46.79999999701977
+            "ttfb": 30
           }
         },
         {
@@ -163,9 +164,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 724,
+            "lcp": 364,
             "cls": 0.018715485756026298,
-            "ttfb": 40.69999998807907
+            "ttfb": 21
           }
         },
         {
@@ -175,9 +176,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 208,
+            "lcp": 144,
             "cls": 0,
-            "ttfb": 47.6000000089407
+            "ttfb": 23.799999997019768
           }
         },
         {
@@ -195,9 +196,9 @@
             }
           ],
           "lab": {
-            "lcp": 264,
+            "lcp": 184,
             "cls": 0,
-            "ttfb": 44.099999994039536
+            "ttfb": 30.100000008940697
           }
         },
         {
@@ -207,9 +208,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 244,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 47.29999999701977
+            "ttfb": 29.700000002980232
           }
         },
         {
@@ -219,9 +220,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 556,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 73.8999999910593
+            "ttfb": 45.3999999910593
           }
         },
         {
@@ -231,9 +232,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 256,
+            "lcp": 188,
             "cls": 0,
-            "ttfb": 53.20000000298023
+            "ttfb": 44.70000000298023
           }
         },
         {
@@ -243,9 +244,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 252,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 102.5
+            "ttfb": 40.29999999701977
           }
         },
         {
@@ -255,9 +256,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 216,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 62.79999999701977
+            "ttfb": 29.200000002980232
           }
         },
         {
@@ -267,9 +268,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 236,
+            "lcp": 188,
             "cls": 0,
-            "ttfb": 56.20000000298023
+            "ttfb": 33.6000000089407
           }
         },
         {
@@ -279,9 +280,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 228,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 29.600000008940697
+            "ttfb": 35.79999999701977
           }
         },
         {
@@ -291,9 +292,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 644,
+            "lcp": 120,
             "cls": 0,
-            "ttfb": 104
+            "ttfb": 24.400000005960464
           }
         },
         {
@@ -303,9 +304,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 260,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 74.79999999701977
+            "ttfb": 26.900000005960464
           }
         },
         {
@@ -315,9 +316,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 492,
+            "lcp": 148,
             "cls": 0,
-            "ttfb": 54.79999999701977
+            "ttfb": 25.799999997019768
           }
         },
         {
@@ -327,9 +328,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 220,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 40.5
+            "ttfb": 33.599999994039536
           }
         },
         {
@@ -339,9 +340,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 144,
             "cls": 0,
-            "ttfb": 48.1000000089407
+            "ttfb": 31.400000005960464
           }
         },
         {
@@ -351,9 +352,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 264,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 43.80000001192093
+            "ttfb": 24.399999991059303
           }
         },
         {
@@ -363,9 +364,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 224,
-            "cls": 0.0270813550036523,
-            "ttfb": 34.20000000298023
+            "lcp": 416,
+            "cls": 0.23489870856921113,
+            "ttfb": 28.299999997019768
           }
         },
         {
@@ -375,9 +376,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 216,
+            "lcp": 164,
             "cls": 0,
-            "ttfb": 48.099999994039536
+            "ttfb": 38.20000000298023
           }
         },
         {
@@ -387,9 +388,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 268,
+            "lcp": 140,
             "cls": 0,
-            "ttfb": 51.599999994039536
+            "ttfb": 27.5
           }
         },
         {
@@ -399,9 +400,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 192,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 33.099999994039536
+            "ttfb": 34.70000000298023
           }
         },
         {
@@ -411,9 +412,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 636,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 69
+            "ttfb": 33.70000000298023
           }
         },
         {
@@ -423,9 +424,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 284,
+            "lcp": 140,
             "cls": 0,
-            "ttfb": 55
+            "ttfb": 28.299999997019768
           }
         },
         {
@@ -435,9 +436,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 596,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 104.6000000089407
+            "ttfb": 25.299999997019768
           }
         },
         {
@@ -447,9 +448,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 192,
+            "lcp": 188,
             "cls": 0,
-            "ttfb": 24.700000002980232
+            "ttfb": 30.399999991059303
           }
         },
         {
@@ -459,9 +460,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 504,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 62.1000000089407
+            "ttfb": 34.29999999701977
           }
         }
       ]
@@ -476,9 +477,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1172,
+            "lcp": 1164,
             "cls": 0,
-            "ttfb": 241.30000001192093
+            "ttfb": 373.20000000298023
           }
         },
         {
@@ -488,9 +489,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 544,
+            "lcp": 432,
             "cls": 0,
-            "ttfb": 30.900000005960464
+            "ttfb": 21.299999997019768
           }
         },
         {
@@ -500,9 +501,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 564,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 84.5
+            "ttfb": 37.900000005960464
           }
         },
         {
@@ -512,9 +513,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 196,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 26.799999997019768
+            "ttfb": 29.299999997019768
           }
         },
         {
@@ -524,9 +525,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 200,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 43.6000000089407
+            "ttfb": 26.100000008940697
           }
         },
         {
@@ -536,9 +537,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1100,
+            "lcp": 604,
             "cls": 0,
-            "ttfb": 71.40000000596046
+            "ttfb": 45.5
           }
         },
         {
@@ -548,9 +549,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 492,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 45.5
+            "ttfb": 26
           }
         },
         {
@@ -560,9 +561,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 276,
+            "lcp": 164,
             "cls": 0,
-            "ttfb": 45.5
+            "ttfb": 26.799999997019768
           }
         },
         {
@@ -572,9 +573,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 696,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 234.70000000298023
+            "ttfb": 27.899999991059303
           }
         },
         {
@@ -584,9 +585,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 208,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 37.70000000298023
+            "ttfb": 25.700000002980232
           }
         },
         {
@@ -604,9 +605,9 @@
             }
           ],
           "lab": {
-            "lcp": 264,
+            "lcp": 208,
             "cls": 0,
-            "ttfb": 44.599999994039536
+            "ttfb": 36.099999994039536
           }
         },
         {
@@ -616,9 +617,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 532,
+            "lcp": 412,
             "cls": 0.03749890430971512,
-            "ttfb": 31
+            "ttfb": 24.799999997019768
           }
         },
         {
@@ -628,9 +629,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 256,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 47.400000005960464
+            "ttfb": 24.19999998807907
           }
         },
         {
@@ -640,9 +641,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 34.900000005960464
+            "ttfb": 30.600000008940697
           }
         },
         {
@@ -652,9 +653,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 216,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 42.400000005960464
+            "ttfb": 42.30000001192093
           }
         },
         {
@@ -664,9 +665,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 280,
+            "lcp": 236,
             "cls": 0,
-            "ttfb": 56.3999999910593
+            "ttfb": 51.3999999910593
           }
         },
         {
@@ -676,9 +677,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 288,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 90
+            "ttfb": 60.900000005960464
           }
         },
         {
@@ -688,9 +689,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 348,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 166.3999999910593
+            "ttfb": 35.79999999701977
           }
         },
         {
@@ -700,9 +701,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 496,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 59
+            "ttfb": 26.400000005960464
           }
         },
         {
@@ -712,9 +713,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 288,
+            "lcp": 148,
             "cls": 0,
-            "ttfb": 75
+            "ttfb": 29.400000005960464
           }
         },
         {
@@ -724,9 +725,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 244,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 44.5
+            "ttfb": 25.5
           }
         },
         {
@@ -736,9 +737,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 480,
+            "lcp": 144,
             "cls": 0,
-            "ttfb": 77.70000000298023
+            "ttfb": 24.299999997019768
           }
         },
         {
@@ -748,9 +749,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 208,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 31.599999994039536
+            "ttfb": 27.400000005960464
           }
         },
         {
@@ -760,9 +761,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 224,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 47.19999998807907
+            "ttfb": 30.700000002980232
           }
         },
         {
@@ -772,9 +773,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 232,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 47.099999994039536
+            "ttfb": 28.600000008940697
           }
         },
         {
@@ -784,9 +785,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 228,
+            "lcp": 120,
             "cls": 0,
-            "ttfb": 62.5
+            "ttfb": 21.69999998807907
           }
         },
         {
@@ -796,9 +797,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 280,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 35.20000000298023
+            "ttfb": 24.700000002980232
           }
         },
         {
@@ -808,9 +809,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 224,
-            "cls": 0.04738940376186998,
-            "ttfb": 58.19999998807907
+            "lcp": 424,
+            "cls": 0.16555890666849282,
+            "ttfb": 25.900000005960464
           }
         },
         {
@@ -820,9 +821,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 488,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 70.59999999403954
+            "ttfb": 28.69999998807907
           }
         },
         {
@@ -832,9 +833,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 204,
+            "lcp": 200,
             "cls": 0,
-            "ttfb": 30.19999998807907
+            "ttfb": 34.3999999910593
           }
         },
         {
@@ -844,9 +845,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 244,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 38.900000005960464
+            "ttfb": 30
           }
         },
         {
@@ -856,9 +857,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 576,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 74.5
+            "ttfb": 27.599999994039536
           }
         },
         {
@@ -868,9 +869,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 260,
+            "lcp": 136,
             "cls": 0,
-            "ttfb": 39.70000000298023
+            "ttfb": 24.799999997019768
           }
         },
         {
@@ -880,9 +881,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 568,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 47.1000000089407
+            "ttfb": 24.700000002980232
           }
         },
         {
@@ -892,9 +893,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 272,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 62.400000005960464
+            "ttfb": 26.19999998807907
           }
         },
         {
@@ -904,9 +905,454 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
+            "lcp": 164,
+            "cls": 0,
+            "ttfb": 29.700000002980232
+          }
+        }
+      ]
+    },
+    {
+      "width": 375,
+      "routes": [
+        {
+          "route": "/dashboard",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1192,
+            "cls": 0,
+            "ttfb": 405.79999999701977
+          }
+        },
+        {
+          "route": "/dashboard/new-order",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 448,
+            "cls": 0,
+            "ttfb": 19.899999991059303
+          }
+        },
+        {
+          "route": "/dashboard/packages",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
             "lcp": 172,
             "cls": 0,
-            "ttfb": 38.70000000298023
+            "ttfb": 36.599999994039536
+          }
+        },
+        {
+          "route": "/dashboard/orders",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 156,
+            "cls": 0,
+            "ttfb": 26
+          }
+        },
+        {
+          "route": "/dashboard/order-history",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 164,
+            "cls": 0,
+            "ttfb": 28.700000002980232
+          }
+        },
+        {
+          "route": "/dashboard/wallet",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 1000,
+            "cls": 0,
+            "ttfb": 34.3999999910593
+          }
+        },
+        {
+          "route": "/dashboard/add-funds",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 180,
+            "cls": 0,
+            "ttfb": 25.099999994039536
+          }
+        },
+        {
+          "route": "/dashboard/billing",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 148,
+            "cls": 0,
+            "ttfb": 26.700000002980232
+          }
+        },
+        {
+          "route": "/dashboard/referrals",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 172,
+            "cls": 0,
+            "ttfb": 31.400000005960464
+          }
+        },
+        {
+          "route": "/dashboard/account",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 168,
+            "cls": 0,
+            "ttfb": 23.200000002980232
+          }
+        },
+        {
+          "route": "/dashboard/support",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [
+            {
+              "tag": "DIV",
+              "class": "pointer-events-none absolute inset-0",
+              "text": "",
+              "width": 375,
+              "scroll": 455
+            }
+          ],
+          "lab": {
+            "lcp": 176,
+            "cls": 0,
+            "ttfb": 28.19999998807907
+          }
+        },
+        {
+          "route": "/dashboard/settings",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 592,
+            "cls": 0.03752064280496713,
+            "ttfb": 21.900000005960464
+          }
+        },
+        {
+          "route": "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 176,
+            "cls": 0,
+            "ttfb": 31.299999997019768
+          }
+        },
+        {
+          "route": "/dashboard/campaign-stacks",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 172,
+            "cls": 0,
+            "ttfb": 28.400000005960464
+          }
+        },
+        {
+          "route": "/dashboard/retainers",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 204,
+            "cls": 0,
+            "ttfb": 38.099999994039536
+          }
+        },
+        {
+          "route": "/dashboard/reseller",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 252,
+            "cls": 0,
+            "ttfb": 48.1000000089407
+          }
+        },
+        {
+          "route": "/dashboard/services",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 184,
+            "cls": 0,
+            "ttfb": 38.3999999910593
+          }
+        },
+        {
+          "route": "/dashboard/new-campaign",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 164,
+            "cls": 0,
+            "ttfb": 42.1000000089407
+          }
+        },
+        {
+          "route": "/dashboard/campaigns",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 160,
+            "cls": 0,
+            "ttfb": 24.200000002980232
+          }
+        },
+        {
+          "route": "/dashboard/clients",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 164,
+            "cls": 0,
+            "ttfb": 30.299999997019768
+          }
+        },
+        {
+          "route": "/dashboard/saved-profiles",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 188,
+            "cls": 0,
+            "ttfb": 30.400000005960464
+          }
+        },
+        {
+          "route": "/dashboard/notifications",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 152,
+            "cls": 0,
+            "ttfb": 35.20000000298023
+          }
+        },
+        {
+          "route": "/dashboard/new-order?tab=favourites",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 156,
+            "cls": 0,
+            "ttfb": 24
+          }
+        },
+        {
+          "route": "/dashboard/repeat-campaigns",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 168,
+            "cls": 0,
+            "ttfb": 25.899999991059303
+          }
+        },
+        {
+          "route": "/dashboard/rewards",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 156,
+            "cls": 0,
+            "ttfb": 28.299999997019768
+          }
+        },
+        {
+          "route": "/dashboard/reviews",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 136,
+            "cls": 0,
+            "ttfb": 22.400000005960464
+          }
+        },
+        {
+          "route": "/dashboard/api-docs",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 176,
+            "cls": 0,
+            "ttfb": 23.5
+          }
+        },
+        {
+          "route": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 468,
+            "cls": 0.1660836981829803,
+            "ttfb": 22.399999991059303
+          }
+        },
+        {
+          "route": "/dashboard/billing/transactions/88888888-8888-4888-8888-888888888888",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 156,
+            "cls": 0,
+            "ttfb": 26.799999997019768
+          }
+        },
+        {
+          "route": "/dashboard/clients/99999999-9999-4999-8999-999999999999",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 156,
+            "cls": 0,
+            "ttfb": 24
+          }
+        },
+        {
+          "route": "/dashboard/campaigns/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 160,
+            "cls": 0,
+            "ttfb": 28.599999994039536
+          }
+        },
+        {
+          "route": "/dashboard/reseller/portfolio",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 164,
+            "cls": 0,
+            "ttfb": 27.700000002980232
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-plans",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 168,
+            "cls": 0,
+            "ttfb": 23.700000002980232
+          }
+        },
+        {
+          "route": "/dashboard/reseller/monthly-planner",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 172,
+            "cls": 0,
+            "ttfb": 24.80000001192093
+          }
+        },
+        {
+          "route": "/dashboard/reseller/bulk-planner",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 164,
+            "cls": 0,
+            "ttfb": 24.299999997019768
+          }
+        },
+        {
+          "route": "/dashboard/reviews/new?order=66666666-6666-4666-8666-666666666666",
+          "viewport": 375,
+          "scroll": 375,
+          "clippedControls": [],
+          "outside": [],
+          "lab": {
+            "lcp": 132,
+            "cls": 0,
+            "ttfb": 21.899999991059303
           }
         }
       ]
@@ -921,9 +1367,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1312,
+            "lcp": 1168,
             "cls": 0,
-            "ttfb": 377.09999999403954
+            "ttfb": 376.29999999701977
           }
         },
         {
@@ -933,9 +1379,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 616,
+            "lcp": 464,
             "cls": 0,
-            "ttfb": 30
+            "ttfb": 26.5
           }
         },
         {
@@ -945,9 +1391,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 700,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 65.29999999701977
+            "ttfb": 44.6000000089407
           }
         },
         {
@@ -957,9 +1403,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 212,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 26.19999998807907
+            "ttfb": 23.899999991059303
           }
         },
         {
@@ -969,9 +1415,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 592,
+            "lcp": 144,
             "cls": 0,
-            "ttfb": 82
+            "ttfb": 21.400000005960464
           }
         },
         {
@@ -981,9 +1427,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1140,
+            "lcp": 568,
             "cls": 0,
-            "ttfb": 43.5
+            "ttfb": 33.5
           }
         },
         {
@@ -993,9 +1439,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 268,
+            "lcp": 164,
             "cls": 0,
-            "ttfb": 66.30000001192093
+            "ttfb": 22.700000002980232
           }
         },
         {
@@ -1005,9 +1451,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 232,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 49.5
+            "ttfb": 24.299999997019768
           }
         },
         {
@@ -1017,9 +1463,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 216,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 30.5
+            "ttfb": 25.400000005960464
           }
         },
         {
@@ -1029,9 +1475,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 276,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 52.20000000298023
+            "ttfb": 27.400000005960464
           }
         },
         {
@@ -1049,9 +1495,9 @@
             }
           ],
           "lab": {
-            "lcp": 264,
+            "lcp": 188,
             "cls": 0,
-            "ttfb": 37.6000000089407
+            "ttfb": 23
           }
         },
         {
@@ -1061,9 +1507,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 700,
+            "lcp": 404,
             "cls": 0.01877035455413834,
-            "ttfb": 37.70000000298023
+            "ttfb": 20.700000002980232
           }
         },
         {
@@ -1073,9 +1519,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 524,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 46.20000000298023
+            "ttfb": 22.900000005960464
           }
         },
         {
@@ -1085,9 +1531,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 40.69999998807907
+            "ttfb": 24.799999997019768
           }
         },
         {
@@ -1097,9 +1543,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 212,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 38
+            "ttfb": 27.200000002980232
           }
         },
         {
@@ -1109,9 +1555,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 488,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 54.900000005960464
+            "ttfb": 25.5
           }
         },
         {
@@ -1121,9 +1567,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 236,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 37
+            "ttfb": 30.5
           }
         },
         {
@@ -1133,9 +1579,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 324,
-            "cls": 0.000027392257121986854,
-            "ttfb": 69.29999999701977
+            "lcp": 144,
+            "cls": 0,
+            "ttfb": 30.5
           }
         },
         {
@@ -1145,9 +1591,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 264,
+            "lcp": 152,
             "cls": 0,
-            "ttfb": 39.5
+            "ttfb": 29.099999994039536
           }
         },
         {
@@ -1157,9 +1603,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 252,
+            "lcp": 212,
             "cls": 0,
-            "ttfb": 56.8999999910593
+            "ttfb": 34.8999999910593
           }
         },
         {
@@ -1169,9 +1615,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 516,
+            "lcp": 164,
             "cls": 0,
-            "ttfb": 42.29999999701977
+            "ttfb": 23.5
           }
         },
         {
@@ -1181,9 +1627,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 184,
+            "lcp": 372,
             "cls": 0,
-            "ttfb": 32.099999994039536
+            "ttfb": 21.200000002980232
           }
         },
         {
@@ -1193,9 +1639,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 276,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 74.20000000298023
+            "ttfb": 28.599999994039536
           }
         },
         {
@@ -1205,9 +1651,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 200,
+            "lcp": 148,
             "cls": 0,
-            "ttfb": 35.599999994039536
+            "ttfb": 28.5
           }
         },
         {
@@ -1217,9 +1663,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 208,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 43.79999999701977
+            "ttfb": 28
           }
         },
         {
@@ -1229,9 +1675,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 200,
+            "lcp": 148,
             "cls": 0,
-            "ttfb": 38.79999999701977
+            "ttfb": 29.200000002980232
           }
         },
         {
@@ -1241,9 +1687,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 256,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 43
+            "ttfb": 28.200000002980232
           }
         },
         {
@@ -1253,9 +1699,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 544,
-            "cls": 0.020256560094397934,
-            "ttfb": 68.1000000089407
+            "lcp": 440,
+            "cls": 0.1388775866075275,
+            "ttfb": 22.400000005960464
           }
         },
         {
@@ -1265,9 +1711,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 140,
             "cls": 0,
-            "ttfb": 46.1000000089407
+            "ttfb": 22.700000002980232
           }
         },
         {
@@ -1277,9 +1723,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 204,
             "cls": 0,
-            "ttfb": 81.5
+            "ttfb": 35
           }
         },
         {
@@ -1289,9 +1735,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 280,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 81.79999999701977
+            "ttfb": 32.1000000089407
           }
         },
         {
@@ -1301,9 +1747,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 192,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 33.29999999701977
+            "ttfb": 27.200000002980232
           }
         },
         {
@@ -1313,9 +1759,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 44.79999999701977
+            "ttfb": 25.899999991059303
           }
         },
         {
@@ -1325,9 +1771,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 588,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 50
+            "ttfb": 24.599999994039536
           }
         },
         {
@@ -1337,9 +1783,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 216,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 36.20000000298023
+            "ttfb": 31.200000002980232
           }
         },
         {
@@ -1349,9 +1795,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 196,
+            "lcp": 144,
             "cls": 0,
-            "ttfb": 34.20000000298023
+            "ttfb": 25
           }
         }
       ]
@@ -1366,9 +1812,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1332,
+            "lcp": 1164,
             "cls": 0,
-            "ttfb": 417.09999999403954
+            "ttfb": 359.70000000298023
           }
         },
         {
@@ -1378,9 +1824,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 656,
+            "lcp": 440,
             "cls": 0,
-            "ttfb": 28.69999998807907
+            "ttfb": 20.200000002980232
           }
         },
         {
@@ -1390,9 +1836,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 296,
+            "lcp": 244,
             "cls": 0,
-            "ttfb": 66.79999999701977
+            "ttfb": 51.400000005960464
           }
         },
         {
@@ -1402,9 +1848,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 304,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 50.70000000298023
+            "ttfb": 25
           }
         },
         {
@@ -1414,9 +1860,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 220,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 38.1000000089407
+            "ttfb": 32.900000005960464
           }
         },
         {
@@ -1426,9 +1872,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 940,
+            "lcp": 544,
             "cls": 0,
-            "ttfb": 66.20000000298023
+            "ttfb": 32
           }
         },
         {
@@ -1438,9 +1884,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 256,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 44.29999999701977
+            "ttfb": 29.599999994039536
           }
         },
         {
@@ -1450,9 +1896,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 228,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 46
+            "ttfb": 30.200000002980232
           }
         },
         {
@@ -1462,9 +1908,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 216,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 47.3999999910593
+            "ttfb": 23.799999997019768
           }
         },
         {
@@ -1474,9 +1920,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 260,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 37.79999999701977
+            "ttfb": 29.599999994039536
           }
         },
         {
@@ -1494,9 +1940,9 @@
             }
           ],
           "lab": {
-            "lcp": 244,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 36.80000001192093
+            "ttfb": 25
           }
         },
         {
@@ -1506,9 +1952,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 660,
+            "lcp": 372,
             "cls": 0.018793687464963394,
-            "ttfb": 34.5
+            "ttfb": 25.200000002980232
           }
         },
         {
@@ -1520,7 +1966,7 @@
           "lab": {
             "lcp": 196,
             "cls": 0,
-            "ttfb": 35.400000005960464
+            "ttfb": 43.5
           }
         },
         {
@@ -1530,9 +1976,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 240,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 35.70000000298023
+            "ttfb": 22.399999991059303
           }
         },
         {
@@ -1542,9 +1988,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 208,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 37.599999994039536
+            "ttfb": 26.700000002980232
           }
         },
         {
@@ -1554,9 +2000,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 564,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 41.29999999701977
+            "ttfb": 33.3999999910593
           }
         },
         {
@@ -1566,9 +2012,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 356,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 151
+            "ttfb": 46
           }
         },
         {
@@ -1578,9 +2024,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 288,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 94.69999998807907
+            "ttfb": 38.400000005960464
           }
         },
         {
@@ -1590,9 +2036,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 236,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 60.5
+            "ttfb": 26.200000002980232
           }
         },
         {
@@ -1602,9 +2048,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 248,
+            "lcp": 164,
             "cls": 0,
-            "ttfb": 38.79999999701977
+            "ttfb": 27.799999997019768
           }
         },
         {
@@ -1614,9 +2060,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 228,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 42.80000001192093
+            "ttfb": 28.799999997019768
           }
         },
         {
@@ -1626,9 +2072,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 604,
+            "lcp": 400,
             "cls": 0,
-            "ttfb": 31.399999991059303
+            "ttfb": 21.700000002980232
           }
         },
         {
@@ -1638,9 +2084,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 236,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 48.099999994039536
+            "ttfb": 27.400000005960464
           }
         },
         {
@@ -1650,9 +2096,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 220,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 41.900000005960464
+            "ttfb": 33.20000000298023
           }
         },
         {
@@ -1662,9 +2108,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 224,
+            "lcp": 168,
             "cls": 0,
-            "ttfb": 52.8999999910593
+            "ttfb": 31.299999997019768
           }
         },
         {
@@ -1674,9 +2120,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 196,
+            "lcp": 156,
             "cls": 0,
-            "ttfb": 35.8999999910593
+            "ttfb": 28.399999991059303
           }
         },
         {
@@ -1686,9 +2132,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 248,
+            "lcp": 212,
             "cls": 0,
-            "ttfb": 39.5
+            "ttfb": 39.900000005960464
           }
         },
         {
@@ -1698,9 +2144,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 224,
-            "cls": 0.022127074591876607,
-            "ttfb": 41.79999999701977
+            "lcp": 472,
+            "cls": 0.11790206007291862,
+            "ttfb": 28.100000008940697
           }
         },
         {
@@ -1710,9 +2156,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 272,
+            "lcp": 140,
             "cls": 0,
-            "ttfb": 62.400000005960464
+            "ttfb": 25.899999991059303
           }
         },
         {
@@ -1722,9 +2168,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 308,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 35.900000005960464
+            "ttfb": 33.900000005960464
           }
         },
         {
@@ -1734,9 +2180,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 284,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 51.20000000298023
+            "ttfb": 34.20000000298023
           }
         },
         {
@@ -1746,9 +2192,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 248,
+            "lcp": 200,
             "cls": 0,
-            "ttfb": 45
+            "ttfb": 34.70000000298023
           }
         },
         {
@@ -1758,9 +2204,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 204,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 36.80000001192093
+            "ttfb": 35.900000005960464
           }
         },
         {
@@ -1770,9 +2216,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 560,
+            "lcp": 188,
             "cls": 0,
-            "ttfb": 36.5
+            "ttfb": 25.799999997019768
           }
         },
         {
@@ -1782,9 +2228,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 280,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 33.6000000089407
+            "ttfb": 26.799999997019768
           }
         },
         {
@@ -1794,9 +2240,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 268,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 51.5
+            "ttfb": 29
           }
         }
       ]
@@ -1811,9 +2257,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1348,
+            "lcp": 1172,
             "cls": 0,
-            "ttfb": 399.09999999403954
+            "ttfb": 361.59999999403954
           }
         },
         {
@@ -1823,9 +2269,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 612,
+            "lcp": 488,
             "cls": 0,
-            "ttfb": 39.099999994039536
+            "ttfb": 21.5
           }
         },
         {
@@ -1835,9 +2281,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 276,
+            "lcp": 224,
             "cls": 0,
-            "ttfb": 66.79999999701977
+            "ttfb": 41.5
           }
         },
         {
@@ -1847,9 +2293,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 408,
-            "cls": 0.005466145833333333,
-            "ttfb": 49.1000000089407
+            "lcp": 192,
+            "cls": 0.09727349175347222,
+            "ttfb": 27.200000002980232
           }
         },
         {
@@ -1859,9 +2305,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 280,
-            "cls": 0.005466145833333333,
-            "ttfb": 34.099999994039536
+            "lcp": 172,
+            "cls": 0.09727349175347222,
+            "ttfb": 21.200000002980232
           }
         },
         {
@@ -1871,9 +2317,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 980,
+            "lcp": 628,
             "cls": 0,
-            "ttfb": 47.3999999910593
+            "ttfb": 30.599999994039536
           }
         },
         {
@@ -1883,9 +2329,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 456,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 30.700000002980232
+            "ttfb": 25
           }
         },
         {
@@ -1895,9 +2341,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 560,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 89.1000000089407
+            "ttfb": 26.299999997019768
           }
         },
         {
@@ -1907,9 +2353,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 276,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 48.29999999701977
+            "ttfb": 25.700000002980232
           }
         },
         {
@@ -1919,9 +2365,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 320,
+            "lcp": 172,
             "cls": 0,
-            "ttfb": 32.8999999910593
+            "ttfb": 23.5
           }
         },
         {
@@ -1939,9 +2385,9 @@
             }
           ],
           "lab": {
-            "lcp": 316,
+            "lcp": 240,
             "cls": 0,
-            "ttfb": 60.29999999701977
+            "ttfb": 26
           }
         },
         {
@@ -1951,9 +2397,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 728,
+            "lcp": 436,
             "cls": 0.015597325102880658,
-            "ttfb": 41.80000001192093
+            "ttfb": 21.799999997019768
           }
         },
         {
@@ -1963,9 +2409,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 224,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 36.5
+            "ttfb": 28.899999991059303
           }
         },
         {
@@ -1975,9 +2421,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 264,
+            "lcp": 180,
             "cls": 0,
-            "ttfb": 35.79999999701977
+            "ttfb": 21.5
           }
         },
         {
@@ -1987,9 +2433,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 344,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 109.69999998807907
+            "ttfb": 24.599999994039536
           }
         },
         {
@@ -1999,9 +2445,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 548,
+            "lcp": 200,
             "cls": 0,
-            "ttfb": 40
+            "ttfb": 32.19999998807907
           }
         },
         {
@@ -2011,9 +2457,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 672,
+            "lcp": 176,
             "cls": 0,
-            "ttfb": 145.8999999910593
+            "ttfb": 39.79999999701977
           }
         },
         {
@@ -2023,9 +2469,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 384,
+            "lcp": 212,
             "cls": 0,
-            "ttfb": 126.40000000596046
+            "ttfb": 53.29999999701977
           }
         },
         {
@@ -2035,9 +2481,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 540,
+            "lcp": 284,
             "cls": 0,
-            "ttfb": 72.70000000298023
+            "ttfb": 51.400000005960464
           }
         },
         {
@@ -2047,9 +2493,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 368,
+            "lcp": 264,
             "cls": 0,
-            "ttfb": 46
+            "ttfb": 41.3999999910593
           }
         },
         {
@@ -2059,9 +2505,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 544,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 45.69999998807907
+            "ttfb": 27.600000008940697
           }
         },
         {
@@ -2071,9 +2517,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 964,
+            "lcp": 144,
             "cls": 0,
-            "ttfb": 78.59999999403954
+            "ttfb": 22.700000002980232
           }
         },
         {
@@ -2083,9 +2529,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 456,
+            "lcp": 220,
             "cls": 0,
-            "ttfb": 116.79999999701977
+            "ttfb": 28.399999991059303
           }
         },
         {
@@ -2095,9 +2541,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 300,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 60
+            "ttfb": 29.299999997019768
           }
         },
         {
@@ -2107,9 +2553,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 556,
+            "lcp": 236,
             "cls": 0,
-            "ttfb": 49.3999999910593
+            "ttfb": 35.1000000089407
           }
         },
         {
@@ -2119,9 +2565,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 220,
+            "lcp": 200,
             "cls": 0,
-            "ttfb": 37.8999999910593
+            "ttfb": 38.6000000089407
           }
         },
         {
@@ -2131,9 +2577,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 300,
+            "lcp": 280,
             "cls": 0,
-            "ttfb": 61.19999998807907
+            "ttfb": 39.1000000089407
           }
         },
         {
@@ -2143,9 +2589,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 744,
-            "cls": 0.029359670781893,
-            "ttfb": 43.79999999701977
+            "lcp": 568,
+            "cls": 0.05359492026748971,
+            "ttfb": 33.20000000298023
           }
         },
         {
@@ -2155,9 +2601,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 264,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 42
+            "ttfb": 38.5
           }
         },
         {
@@ -2167,9 +2613,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 324,
+            "lcp": 224,
             "cls": 0,
-            "ttfb": 85.19999998807907
+            "ttfb": 27.5
           }
         },
         {
@@ -2179,9 +2625,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 220,
+            "lcp": 232,
             "cls": 0,
-            "ttfb": 29.899999991059303
+            "ttfb": 35.29999999701977
           }
         },
         {
@@ -2191,9 +2637,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 344,
+            "lcp": 188,
             "cls": 0,
-            "ttfb": 47.80000001192093
+            "ttfb": 27.30000001192093
           }
         },
         {
@@ -2203,9 +2649,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 320,
+            "lcp": 184,
             "cls": 0,
-            "ttfb": 50.900000005960464
+            "ttfb": 27.69999998807907
           }
         },
         {
@@ -2215,9 +2661,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 332,
+            "lcp": 232,
             "cls": 0,
-            "ttfb": 87.40000000596046
+            "ttfb": 26.899999991059303
           }
         },
         {
@@ -2227,9 +2673,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 604,
+            "lcp": 184,
             "cls": 0,
-            "ttfb": 103.20000000298023
+            "ttfb": 24.299999997019768
           }
         },
         {
@@ -2239,9 +2685,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 316,
+            "lcp": 164,
             "cls": 0,
-            "ttfb": 127.1000000089407
+            "ttfb": 26.400000005960464
           }
         }
       ]
@@ -2271,9 +2717,9 @@
             }
           ],
           "lab": {
-            "lcp": 1516,
+            "lcp": 1248,
             "cls": 0,
-            "ttfb": 403.90000000596046
+            "ttfb": 383.90000000596046
           }
         },
         {
@@ -2283,9 +2729,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 628,
+            "lcp": 544,
             "cls": 0,
-            "ttfb": 43.30000001192093
+            "ttfb": 31
           }
         },
         {
@@ -2295,9 +2741,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 428,
+            "lcp": 336,
             "cls": 0,
-            "ttfb": 60.6000000089407
+            "ttfb": 47
           }
         },
         {
@@ -2307,9 +2753,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 300,
-            "cls": 0.020747155083550347,
-            "ttfb": 28.900000005960464
+            "lcp": 640,
+            "cls": 0.11285393555959067,
+            "ttfb": 38.29999999701977
           }
         },
         {
@@ -2319,9 +2765,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 316,
-            "cls": 0,
-            "ttfb": 34.19999998807907
+            "lcp": 636,
+            "cls": 0.11285393555959067,
+            "ttfb": 23.5
           }
         },
         {
@@ -2331,9 +2777,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1064,
+            "lcp": 716,
             "cls": 0,
-            "ttfb": 83.59999999403954
+            "ttfb": 43.80000001192093
           }
         },
         {
@@ -2343,9 +2789,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 428,
+            "lcp": 268,
             "cls": 0,
-            "ttfb": 46.1000000089407
+            "ttfb": 28.600000008940697
           }
         },
         {
@@ -2355,9 +2801,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 584,
+            "lcp": 208,
             "cls": 0,
-            "ttfb": 101.29999999701977
+            "ttfb": 25.700000002980232
           }
         },
         {
@@ -2417,9 +2863,9 @@
             }
           ],
           "lab": {
-            "lcp": 356,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 50.6000000089407
+            "ttfb": 23
           }
         },
         {
@@ -2429,9 +2875,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 404,
+            "lcp": 288,
             "cls": 0,
-            "ttfb": 37.900000005960464
+            "ttfb": 46.1000000089407
           }
         },
         {
@@ -2449,9 +2895,9 @@
             }
           ],
           "lab": {
-            "lcp": 616,
+            "lcp": 244,
             "cls": 0,
-            "ttfb": 81.69999998807907
+            "ttfb": 27.200000002980232
           }
         },
         {
@@ -2461,9 +2907,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 920,
+            "lcp": 580,
             "cls": 0,
-            "ttfb": 53.099999994039536
+            "ttfb": 35.099999994039536
           }
         },
         {
@@ -2558,9 +3004,9 @@
             }
           ],
           "lab": {
-            "lcp": 336,
+            "lcp": 220,
             "cls": 0.000021039115058051214,
-            "ttfb": 34.8999999910593
+            "ttfb": 22.5
           }
         },
         {
@@ -2570,9 +3016,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 296,
+            "lcp": 228,
             "cls": 0,
-            "ttfb": 35.69999998807907
+            "ttfb": 24.799999997019768
           }
         },
         {
@@ -2582,9 +3028,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 384,
+            "lcp": 232,
             "cls": 0,
-            "ttfb": 60.29999999701977
+            "ttfb": 31.099999994039536
           }
         },
         {
@@ -2594,9 +3040,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 344,
+            "lcp": 252,
             "cls": 0,
-            "ttfb": 56.3999999910593
+            "ttfb": 33.29999999701977
           }
         },
         {
@@ -2606,9 +3052,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 328,
+            "lcp": 276,
             "cls": 0,
-            "ttfb": 56
+            "ttfb": 67.5
           }
         },
         {
@@ -2618,9 +3064,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 540,
+            "lcp": 520,
             "cls": 0,
-            "ttfb": 221.29999999701977
+            "ttfb": 64.5
           }
         },
         {
@@ -2630,9 +3076,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 628,
+            "lcp": 200,
             "cls": 0,
-            "ttfb": 95.59999999403954
+            "ttfb": 24.5
           }
         },
         {
@@ -2642,9 +3088,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 364,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 49.5
+            "ttfb": 24.400000005960464
           }
         },
         {
@@ -2654,9 +3100,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 476,
+            "lcp": 308,
             "cls": 0,
-            "ttfb": 150.20000000298023
+            "ttfb": 108.29999999701977
           }
         },
         {
@@ -2666,9 +3112,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 268,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 42.79999999701977
+            "ttfb": 23.599999994039536
           }
         },
         {
@@ -2678,9 +3124,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 748,
+            "lcp": 212,
             "cls": 0,
-            "ttfb": 110.69999998807907
+            "ttfb": 22.799999997019768
           }
         },
         {
@@ -2690,9 +3136,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 316,
+            "lcp": 212,
             "cls": 0,
-            "ttfb": 40.400000005960464
+            "ttfb": 27.299999997019768
           }
         },
         {
@@ -2702,9 +3148,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 364,
+            "lcp": 208,
             "cls": 0,
-            "ttfb": 49.400000005960464
+            "ttfb": 27.099999994039536
           }
         },
         {
@@ -2714,9 +3160,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 304,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 54.19999998807907
+            "ttfb": 32.69999998807907
           }
         },
         {
@@ -2726,9 +3172,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 412,
+            "lcp": 244,
             "cls": 0,
-            "ttfb": 42
+            "ttfb": 24.400000005960464
           }
         },
         {
@@ -2738,9 +3184,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1032,
-            "cls": 0.01916430155436198,
-            "ttfb": 59.70000000298023
+            "lcp": 604,
+            "cls": 0.03472341749403212,
+            "ttfb": 34
           }
         },
         {
@@ -2750,9 +3196,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 604,
+            "lcp": 240,
             "cls": 0,
-            "ttfb": 44.5
+            "ttfb": 32.30000001192093
           }
         },
         {
@@ -2762,9 +3208,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 332,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 54.1000000089407
+            "ttfb": 25.599999994039536
           }
         },
         {
@@ -2774,9 +3220,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 336,
+            "lcp": 244,
             "cls": 0,
-            "ttfb": 42.29999999701977
+            "ttfb": 32.400000005960464
           }
         },
         {
@@ -2786,9 +3232,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 660,
+            "lcp": 276,
             "cls": 0,
-            "ttfb": 95.5
+            "ttfb": 29.599999994039536
           }
         },
         {
@@ -2798,9 +3244,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 324,
+            "lcp": 340,
             "cls": 0,
-            "ttfb": 74
+            "ttfb": 61.80000001192093
           }
         },
         {
@@ -2832,9 +3278,9 @@
             }
           ],
           "lab": {
-            "lcp": 340,
+            "lcp": 344,
             "cls": 0,
-            "ttfb": 38.70000000298023
+            "ttfb": 111.5
           }
         },
         {
@@ -2844,9 +3290,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 344,
+            "lcp": 224,
             "cls": 0,
-            "ttfb": 39.400000005960464
+            "ttfb": 22
           }
         },
         {
@@ -2856,9 +3302,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 300,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 51.1000000089407
+            "ttfb": 30.099999994039536
           }
         }
       ]
@@ -2873,9 +3319,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1528,
+            "lcp": 1308,
             "cls": 0,
-            "ttfb": 443.40000000596046
+            "ttfb": 366
           }
         },
         {
@@ -2885,9 +3331,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 892,
+            "lcp": 580,
             "cls": 0,
-            "ttfb": 40.6000000089407
+            "ttfb": 29.19999998807907
           }
         },
         {
@@ -2897,9 +3343,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 356,
+            "lcp": 320,
             "cls": 0,
-            "ttfb": 63.900000005960464
+            "ttfb": 55.1000000089407
           }
         },
         {
@@ -2909,9 +3355,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 436,
-            "cls": 0.028264247899519892,
-            "ttfb": 59.6000000089407
+            "lcp": 812,
+            "cls": 0.06945973588605968,
+            "ttfb": 26.700000002980232
           }
         },
         {
@@ -2921,9 +3367,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 440,
-            "cls": 0.028264247899519892,
-            "ttfb": 64.09999999403954
+            "lcp": 668,
+            "cls": 0.06945973588605968,
+            "ttfb": 29.700000002980232
           }
         },
         {
@@ -2933,9 +3379,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1680,
+            "lcp": 1284,
             "cls": 0,
-            "ttfb": 73.70000000298023
+            "ttfb": 46.900000005960464
           }
         },
         {
@@ -2945,9 +3391,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 708,
+            "lcp": 416,
             "cls": 0,
-            "ttfb": 81.6000000089407
+            "ttfb": 48.8999999910593
           }
         },
         {
@@ -2957,9 +3403,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 480,
+            "lcp": 396,
             "cls": 0,
-            "ttfb": 64.40000000596046
+            "ttfb": 52.5
           }
         },
         {
@@ -2969,9 +3415,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 444,
+            "lcp": 368,
             "cls": 0,
-            "ttfb": 56.1000000089407
+            "ttfb": 45.900000005960464
           }
         },
         {
@@ -2981,9 +3427,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 452,
+            "lcp": 392,
             "cls": 0,
-            "ttfb": 57.70000000298023
+            "ttfb": 46.69999998807907
           }
         },
         {
@@ -3001,9 +3447,9 @@
             }
           ],
           "lab": {
-            "lcp": 524,
+            "lcp": 320,
             "cls": 0,
-            "ttfb": 74.8999999910593
+            "ttfb": 38.69999998807907
           }
         },
         {
@@ -3013,9 +3459,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 976,
+            "lcp": 780,
             "cls": 0,
-            "ttfb": 46.1000000089407
+            "ttfb": 31.700000002980232
           }
         },
         {
@@ -3025,9 +3471,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 396,
+            "lcp": 236,
             "cls": 0.00001063903892318244,
-            "ttfb": 58.5
+            "ttfb": 32.19999998807907
           }
         },
         {
@@ -3037,9 +3483,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 524,
+            "lcp": 204,
             "cls": 0,
-            "ttfb": 72.3999999910593
+            "ttfb": 25.5
           }
         },
         {
@@ -3049,9 +3495,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 436,
+            "lcp": 380,
             "cls": 0,
-            "ttfb": 57.70000000298023
+            "ttfb": 47.29999999701977
           }
         },
         {
@@ -3061,9 +3507,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 956,
+            "lcp": 652,
             "cls": 0,
-            "ttfb": 58.79999999701977
+            "ttfb": 53.20000000298023
           }
         },
         {
@@ -3073,9 +3519,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 380,
+            "lcp": 400,
             "cls": 0,
-            "ttfb": 69.1000000089407
+            "ttfb": 91.20000000298023
           }
         },
         {
@@ -3085,9 +3531,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 504,
+            "lcp": 1664,
             "cls": 0,
-            "ttfb": 107.6000000089407
+            "ttfb": 1215.7000000029802
           }
         },
         {
@@ -3097,9 +3543,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 368,
+            "lcp": 304,
             "cls": 0,
-            "ttfb": 44.900000005960464
+            "ttfb": 38.69999998807907
           }
         },
         {
@@ -3109,9 +3555,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 348,
+            "lcp": 304,
             "cls": 0,
-            "ttfb": 44.20000000298023
+            "ttfb": 47.099999994039536
           }
         },
         {
@@ -3121,9 +3567,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 384,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 49.8999999910593
+            "ttfb": 18.69999998807907
           }
         },
         {
@@ -3133,9 +3579,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 308,
+            "lcp": 696,
             "cls": 0,
-            "ttfb": 42.69999998807907
+            "ttfb": 20.200000002980232
           }
         },
         {
@@ -3145,9 +3591,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 500,
+            "lcp": 192,
             "cls": 0,
-            "ttfb": 98.70000000298023
+            "ttfb": 22.80000001192093
           }
         },
         {
@@ -3157,9 +3603,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 440,
+            "lcp": 580,
             "cls": 0,
-            "ttfb": 101.19999998807907
+            "ttfb": 19.299999997019768
           }
         },
         {
@@ -3169,9 +3615,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 440,
+            "lcp": 184,
             "cls": 0,
-            "ttfb": 49.79999999701977
+            "ttfb": 22.600000008940697
           }
         },
         {
@@ -3181,9 +3627,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 288,
+            "lcp": 160,
             "cls": 0,
-            "ttfb": 43.5
+            "ttfb": 20.899999991059303
           }
         },
         {
@@ -3193,9 +3639,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 356,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 42
+            "ttfb": 18.099999994039536
           }
         },
         {
@@ -3205,9 +3651,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 992,
-            "cls": 0.01919355709876543,
-            "ttfb": 51.70000000298023
+            "lcp": 464,
+            "cls": 0.023999455589849106,
+            "ttfb": 21.19999998807907
           }
         },
         {
@@ -3217,9 +3663,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 332,
+            "lcp": 220,
             "cls": 0,
-            "ttfb": 54
+            "ttfb": 26.299999997019768
           }
         },
         {
@@ -3229,9 +3675,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 380,
+            "lcp": 328,
             "cls": 0,
-            "ttfb": 48.70000000298023
+            "ttfb": 63.3999999910593
           }
         },
         {
@@ -3241,9 +3687,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 448,
+            "lcp": 220,
             "cls": 0,
-            "ttfb": 52.79999999701977
+            "ttfb": 21.700000002980232
           }
         },
         {
@@ -3253,9 +3699,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 372,
+            "lcp": 248,
             "cls": 0,
-            "ttfb": 46
+            "ttfb": 31.099999994039536
           }
         },
         {
@@ -3265,9 +3711,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 380,
+            "lcp": 208,
             "cls": 0,
-            "ttfb": 51.599999994039536
+            "ttfb": 22.200000002980232
           }
         },
         {
@@ -3277,9 +3723,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 424,
+            "lcp": 244,
             "cls": 0,
-            "ttfb": 39.900000005960464
+            "ttfb": 20.799999997019768
           }
         },
         {
@@ -3289,9 +3735,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 392,
+            "lcp": 280,
             "cls": 0,
-            "ttfb": 49.1000000089407
+            "ttfb": 30
           }
         },
         {
@@ -3301,9 +3747,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 652,
+            "lcp": 196,
             "cls": 0,
-            "ttfb": 67.79999999701977
+            "ttfb": 25.099999994039536
           }
         }
       ]
@@ -3318,9 +3764,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1784,
+            "lcp": 1272,
             "cls": 0,
-            "ttfb": 618.7000000029802
+            "ttfb": 368.40000000596046
           }
         },
         {
@@ -3330,9 +3776,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1252,
+            "lcp": 308,
             "cls": 0,
-            "ttfb": 62.5
+            "ttfb": 21.299999997019768
           }
         },
         {
@@ -3342,9 +3788,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 408,
+            "lcp": 332,
             "cls": 0,
-            "ttfb": 75.40000000596046
+            "ttfb": 53
           }
         },
         {
@@ -3354,9 +3800,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 712,
-            "cls": 0.021292820683232058,
-            "ttfb": 61.599999994039536
+            "lcp": 584,
+            "cls": 0.052327367994520396,
+            "ttfb": 21.600000008940697
           }
         },
         {
@@ -3366,9 +3812,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 600,
-            "cls": 0.021292820683232058,
-            "ttfb": 53.400000005960464
+            "lcp": 580,
+            "cls": 0.052327367994520396,
+            "ttfb": 23.600000008940697
           }
         },
         {
@@ -3378,9 +3824,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 1852,
+            "lcp": 1148,
             "cls": 0,
-            "ttfb": 116.80000001192093
+            "ttfb": 38.5
           }
         },
         {
@@ -3390,9 +3836,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 428,
+            "lcp": 320,
             "cls": 0,
-            "ttfb": 50.900000005960464
+            "ttfb": 32.5
           }
         },
         {
@@ -3402,9 +3848,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 424,
+            "lcp": 268,
             "cls": 0,
-            "ttfb": 80.29999999701977
+            "ttfb": 32
           }
         },
         {
@@ -3414,9 +3860,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 440,
+            "lcp": 256,
             "cls": 0,
-            "ttfb": 82.09999999403954
+            "ttfb": 28.600000008940697
           }
         },
         {
@@ -3426,9 +3872,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 456,
+            "lcp": 264,
             "cls": 0,
-            "ttfb": 69.29999999701977
+            "ttfb": 27.5
           }
         },
         {
@@ -3446,9 +3892,9 @@
             }
           ],
           "lab": {
-            "lcp": 360,
+            "lcp": 260,
             "cls": 0,
-            "ttfb": 50.80000001192093
+            "ttfb": 26.299999997019768
           }
         },
         {
@@ -3458,9 +3904,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 968,
+            "lcp": 676,
             "cls": 0,
-            "ttfb": 54
+            "ttfb": 33.5
           }
         },
         {
@@ -3470,9 +3916,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 340,
+            "lcp": 240,
             "cls": 0.000005984459394290123,
-            "ttfb": 40
+            "ttfb": 25.399999991059303
           }
         },
         {
@@ -3482,9 +3928,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 440,
+            "lcp": 252,
             "cls": 0,
-            "ttfb": 60.70000000298023
+            "ttfb": 28.100000008940697
           }
         },
         {
@@ -3494,9 +3940,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 620,
+            "lcp": 252,
             "cls": 0,
-            "ttfb": 59.599999994039536
+            "ttfb": 25.299999997019768
           }
         },
         {
@@ -3506,9 +3952,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 764,
+            "lcp": 252,
             "cls": 0,
-            "ttfb": 93
+            "ttfb": 27.100000008940697
           }
         },
         {
@@ -3518,9 +3964,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 516,
+            "lcp": 324,
             "cls": 0,
-            "ttfb": 170.90000000596046
+            "ttfb": 67.8999999910593
           }
         },
         {
@@ -3530,9 +3976,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 396,
+            "lcp": 224,
             "cls": 0,
-            "ttfb": 105.20000000298023
+            "ttfb": 72.79999999701977
           }
         },
         {
@@ -3542,9 +3988,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 328,
+            "lcp": 228,
             "cls": 0,
-            "ttfb": 74.40000000596046
+            "ttfb": 26.400000005960464
           }
         },
         {
@@ -3554,9 +4000,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 384,
+            "lcp": 260,
             "cls": 0,
-            "ttfb": 67.70000000298023
+            "ttfb": 25.200000002980232
           }
         },
         {
@@ -3566,9 +4012,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 744,
+            "lcp": 296,
             "cls": 0,
-            "ttfb": 67.1000000089407
+            "ttfb": 24.30000001192093
           }
         },
         {
@@ -3578,9 +4024,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 320,
+            "lcp": 236,
             "cls": 0,
-            "ttfb": 44.29999999701977
+            "ttfb": 30.80000001192093
           }
         },
         {
@@ -3590,9 +4036,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 472,
+            "lcp": 308,
             "cls": 0,
-            "ttfb": 58.6000000089407
+            "ttfb": 44.79999999701977
           }
         },
         {
@@ -3602,9 +4048,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 428,
+            "lcp": 252,
             "cls": 0,
-            "ttfb": 59.79999999701977
+            "ttfb": 30.299999997019768
           }
         },
         {
@@ -3614,9 +4060,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 364,
+            "lcp": 276,
             "cls": 0,
-            "ttfb": 47
+            "ttfb": 26.600000008940697
           }
         },
         {
@@ -3626,9 +4072,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 332,
+            "lcp": 216,
             "cls": 0,
-            "ttfb": 53.79999999701977
+            "ttfb": 22.599999994039536
           }
         },
         {
@@ -3638,9 +4084,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 452,
+            "lcp": 344,
             "cls": 0,
-            "ttfb": 68.5
+            "ttfb": 34.599999994039536
           }
         },
         {
@@ -3650,9 +4096,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 880,
-            "cls": 0.009980536265432098,
-            "ttfb": 63.5
+            "lcp": 648,
+            "cls": 0.012702758487654321,
+            "ttfb": 29.700000002980232
           }
         },
         {
@@ -3662,9 +4108,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 436,
+            "lcp": 264,
             "cls": 0,
-            "ttfb": 40.20000000298023
+            "ttfb": 31.600000008940697
           }
         },
         {
@@ -3674,9 +4120,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 412,
+            "lcp": 292,
             "cls": 0,
-            "ttfb": 37.69999998807907
+            "ttfb": 34.8999999910593
           }
         },
         {
@@ -3686,9 +4132,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 624,
+            "lcp": 320,
             "cls": 0,
-            "ttfb": 51.6000000089407
+            "ttfb": 87.5
           }
         },
         {
@@ -3698,9 +4144,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 600,
+            "lcp": 368,
             "cls": 0,
-            "ttfb": 58.80000001192093
+            "ttfb": 97.20000000298023
           }
         },
         {
@@ -3710,9 +4156,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 332,
+            "lcp": 276,
             "cls": 0,
-            "ttfb": 41.30000001192093
+            "ttfb": 31.299999997019768
           }
         },
         {
@@ -3722,9 +4168,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 396,
+            "lcp": 300,
             "cls": 0,
-            "ttfb": 35
+            "ttfb": 26
           }
         },
         {
@@ -3734,9 +4180,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 792,
+            "lcp": 272,
             "cls": 0,
-            "ttfb": 231.5
+            "ttfb": 23.899999991059303
           }
         },
         {
@@ -3746,9 +4192,9 @@
           "clippedControls": [],
           "outside": [],
           "lab": {
-            "lcp": 348,
+            "lcp": 224,
             "cls": 0,
-            "ttfb": 75.1000000089407
+            "ttfb": 27.399999991059303
           }
         }
       ]

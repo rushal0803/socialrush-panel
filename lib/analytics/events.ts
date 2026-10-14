@@ -1,4 +1,6 @@
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
+import { getBrowserAnalyticsSessionId } from "./session.ts";
+
 export const clientAnalyticsEvents = [
   "page_viewed",
   "sign_up_started",
@@ -231,13 +233,23 @@ export function track(
 ) {
   if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
 
-  const key = `${event}:${safePath()}:${JSON.stringify(metadata)}`;
-  if (sent.has(key)) return;
-  sent.add(key);
+  // Count real return visits (A -> B -> A) instead of deduplicating all page
+  // views on the same URL for the lifetime of this document.
+  // Organic landings, however, must be counted once per document even if the
+  // analytics component remounts on a different client-side route.
+  if (event !== "page_viewed") {
+    const key =
+      event === "organic_landing_view"
+        ? event
+        : `${event}:${safePath()}:${JSON.stringify(metadata)}`;
+    if (sent.has(key)) return;
+    sent.add(key);
+  }
 
   const { service_code, platform, ...safeMetadata } = metadata;
   const body = JSON.stringify({
     event,
+    sessionId: getBrowserAnalyticsSessionId(),
     pagePath: safePath(),
     serviceCode: typeof service_code === "string" ? service_code : undefined,
     platform: typeof platform === "string" ? platform : undefined,

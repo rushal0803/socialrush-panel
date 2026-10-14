@@ -1,0 +1,15 @@
+{
+  "width": 390,
+  "openMs": 1046,
+  "observationMs": 1000,
+  "orderReads": 1,
+  "ticketReads": 1,
+  "box": {
+    "x": 0,
+    "y": 0,
+    "width": 390,
+    "height": 844
+  },
+  "profile": "4x CPU, 150ms RTT, 1.6Mbps; mocked API responses",
+  "before": false
+}
