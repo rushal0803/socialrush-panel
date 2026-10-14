@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { isOrganicSearchReferrer } from "../../lib/analytics/events.ts";
+import { isOrganicSearchReferrer, track } from "../../lib/analytics/events.ts";
 import { createClientAnalyticsSessionIdProvider, isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "../../lib/analytics/session.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
@@ -194,4 +194,67 @@ test("Phase 15 tolerates blocked tab storage and retains the existing privacy an
   assert.match(route, /resolveAnalyticsSessionId\(cookie, body\.sessionId/);
   assert.match(route, /if \(!isValidAnalyticsSessionId\(cookie\)\)/);
   assert.match(route, /httpOnly: true/);
+});
+
+test("Phase 16 records return page visits while keeping organic landings once per document", async () => {
+  const names = ["window", "location", "navigator", "document"] as const;
+  const previous = names.map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const);
+  const storage = new Map<string, string>();
+  const route = { pathname: "/phase16-return-visit-a" };
+  const beacons: Blob[] = [];
+  const browser = {
+    crypto: { randomUUID: () => "512047cb-27ea-4bbc-9ab0-29d27db43633" },
+    location: { hostname: "www.getsocialrush.com", search: "" },
+    sessionStorage: {
+      getItem: (key: string) => storage.get(key) ?? null,
+      setItem: (key: string, value: string) => { storage.set(key, value); },
+    },
+  };
+  const navigation = {
+    doNotTrack: "0",
+    sendBeacon: (_url: string, payload: Blob) => {
+      beacons.push(payload);
+      return true;
+    },
+  };
+  try {
+    for (const [name, value] of Object.entries({
+      window: browser, location: route, navigator: navigation, document: { referrer: "" },
+    })) {
+      Object.defineProperty(globalThis, name, { configurable: true, value });
+    }
+    track("page_viewed");
+    route.pathname = "/phase16-return-visit-b";
+    track("page_viewed");
+    route.pathname = "/phase16-return-visit-a";
+    track("page_viewed");
+    assert.equal(beacons.length, 3, "return to A should record a second A page view");
+
+    // If PageAnalytics remounts, the unchanged original referrer must not
+    // produce another organic landing on a later account route in this document.
+    track("organic_landing_view", { referrer_type: "search" });
+    route.pathname = "/dashboard/new-order";
+    track("organic_landing_view", { referrer_type: "search" });
+    assert.equal(beacons.length, 4, "one organic landing per document regardless of path");
+
+    const payloads = await Promise.all(beacons.map(async (blob) => JSON.parse(await blob.text())));
+    assert.deepEqual(payloads.map((row) => row.pagePath), [
+      "/phase16-return-visit-a",
+      "/phase16-return-visit-b",
+      "/phase16-return-visit-a",
+      "/phase16-return-visit-a",
+    ]);
+    assert.deepEqual(payloads.map((row) => row.event), [
+      "page_viewed", "page_viewed", "page_viewed", "organic_landing_view",
+    ]);
+    assert.equal(new Set(payloads.map((row) => row.sessionId)).size, 1);
+    navigation.doNotTrack = "1";
+    track("page_viewed");
+    assert.equal(beacons.length, 4, "Do Not Track must still suppress analytics");
+  } finally {
+    for (const [name, descriptor] of previous) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else Reflect.deleteProperty(globalThis, name);
+    }
+  }
 });

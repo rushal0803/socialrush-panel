@@ -233,9 +233,18 @@ export function track(
 ) {
   if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
 
-  const key = `${event}:${safePath()}:${JSON.stringify(metadata)}`;
-  if (sent.has(key)) return;
-  sent.add(key);
+  // Count real return visits (A -> B -> A) instead of deduplicating all page
+  // views on the same URL for the lifetime of this document.
+  // Organic landings, however, must be counted once per document even if the
+  // analytics component remounts on a different client-side route.
+  if (event !== "page_viewed") {
+    const key =
+      event === "organic_landing_view"
+        ? event
+        : `${event}:${safePath()}:${JSON.stringify(metadata)}`;
+    if (sent.has(key)) return;
+    sent.add(key);
+  }
 
   const { service_code, platform, ...safeMetadata } = metadata;
   const body = JSON.stringify({
