@@ -26,3 +26,9 @@ Date: 2026-10-14. Audited base main: `d4c2baaa765c2e632b3a2124399e3f0e9c76094b`.
 - Measure actual before/after JS and LCP/INP/CLS on authenticated device before claiming performance wins.
 - No change to service rates, payment calculations, UTR verification, cashfree/razorpay, idempotency, wallet, RLS, migrations or order state.
 - **Draft PR only**, do not merge or deploy to production before reviewed green checks.
+
+## Follow-up improvement: billing money-record interaction
+- Payment details now layer above the mobile bottom navigation, respect phone safe areas, restore the originating Details button focus, constrain Tab focus, close on Escape, and scroll-lock only while open.
+- Mobile and desktop payment-search empty states now offer a Clear filters action without changing any financial data or transaction filtering logic.
+- Regression coverage added to the existing dashboard navigation/money-page tests; no changes to financial APIs or Supabase.
+- Fresh exact-head CI and authenticated responsive checks are still required before release.

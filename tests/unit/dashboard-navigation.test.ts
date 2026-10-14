@@ -80,3 +80,19 @@ test("money-page checkout contrast and route-scoped UPI overlay", () => {
   assert.match(review, /\/api\/orders/);
   assert.match(review, /\/api\/checkout\/intent/);
 });
+
+
+test("billing details remain above mobile navigation and support keyboard focus", () => {
+  const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
+  const billing = read("components/dashboard/BillingDashboardContent.tsx");
+  assert.match(billing, /useBodyScrollLock\(true\)/);
+  assert.match(billing, /role="dialog" aria-modal="true"/);
+  assert.match(billing, /z-\[100\]/);
+  assert.match(billing, /closeButtonRef\.current\?\.focus\(\)/);
+  assert.match(billing, /previousFocus\.focus\(\)/);
+  assert.match(billing, /event\.key === "Escape"/);
+  assert.match(billing, /event\.key !== "Tab"/);
+  assert.match(billing, /onKeyDown=\{onDialogKeyDown\}/);
+  assert.match(billing, /onReset=\{resetFilters\}/);
+  assert.match(billing, />Clear filters<\/button>/);
+});
