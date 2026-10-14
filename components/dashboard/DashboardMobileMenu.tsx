@@ -5,7 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import { NavLinks } from "@/components/Sidebar";
 import { createClient } from "@/lib/supabase/client";
-import { Menu, X } from "lucide-react";
+import { ArrowRight, Menu, ReceiptText, WalletCards, X } from "lucide-react";
 import MobileMenuLayer from "@/components/navigation/MobileMenuLayer";
 import Logo from "@/components/Logo";
 import AndroidAppDownload from "@/components/pwa/AndroidAppDownload";
@@ -14,17 +14,22 @@ export default function DashboardMobileMenu() {
   const pathname = usePathname();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [signingOut, setSigningOut] = useState(false);
   const triggerRef = useRef<HTMLButtonElement>(null);
   const closeRef = useRef<HTMLButtonElement>(null);
+  const closeMenu = () => setIsOpen(false);
 
-  useEffect(() => {
-    setIsOpen(false);
-  }, [pathname]);
+  useEffect(() => { setIsOpen(false); }, [pathname]);
 
   async function handleLogout() {
     setIsOpen(false);
-    await createClient().auth.signOut();
-    router.replace("/login");
+    setSigningOut(true);
+    try {
+      await createClient().auth.signOut();
+      router.replace("/login");
+    } finally {
+      setSigningOut(false);
+    }
   }
 
   return (
@@ -34,65 +39,55 @@ export default function DashboardMobileMenu() {
         ref={triggerRef}
         aria-label={isOpen ? "Close navigation" : "Open navigation"}
         aria-expanded={isOpen}
-        onClick={(event) => {
-          event.stopPropagation();
-          setIsOpen((open) => !open);
-        }}
-        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-orange-400/30 bg-orange-500/10 text-orange-200 shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+        aria-controls="socialrush-mobile-navigation"
+        onClick={() => setIsOpen((open) => !open)}
+        className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-orange-400/30 bg-orange-500/10 text-orange-100 transition-colors hover:bg-orange-500/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
       >
         {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
       </button>
       <MobileMenuLayer
         open={isOpen}
-        onClose={() => setIsOpen(false)}
+        onClose={closeMenu}
         variant="drawer"
         showCloseButton={false}
         initialFocusRef={closeRef}
         returnFocusRef={triggerRef}
       >
-        <div className="flex min-h-0 flex-1 flex-col">
-              <div className="sticky top-0 z-10 flex items-center justify-between gap-3 border-b border-white/10 bg-[#0B0B0F] pb-3 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(0.75rem+env(safe-area-inset-top))]">
-                <div className="min-w-0 max-w-[calc(100%-3.5rem)]"><Logo light /></div>
-                <button
-                  ref={closeRef}
-                  type="button"
-                  aria-label="Close menu"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-flex h-11 min-h-11 w-11 min-w-11 shrink-0 items-center justify-center rounded-xl border-2 border-orange-400/70 bg-[#151821] text-white shadow-[0_12px_28px_-16px_rgba(255,122,0,.85)] transition hover:bg-orange-500/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
-                >
-                  <X size={25} strokeWidth={2.75} aria-hidden="true" />
-                </button>
-              </div>
+        <div id="socialrush-mobile-navigation" className="flex min-h-0 flex-1 flex-col bg-[#0b0d12] text-white">
+          <div className="sticky top-0 z-10 flex shrink-0 items-center justify-between gap-3 border-b border-white/10 bg-[#0b0d12] pb-3 pl-5 pr-[calc(1rem+env(safe-area-inset-right))] pt-[calc(.75rem+env(safe-area-inset-top))]">
+            <div className="min-w-0">
+              <Logo light />
+              <p className="mt-1 text-[10px] font-semibold uppercase tracking-[.13em] text-slate-400">Customer workspace</p>
+            </div>
+            <button
+              ref={closeRef}
+              type="button"
+              aria-label="Close menu"
+              onClick={closeMenu}
+              className="grid h-11 w-11 shrink-0 place-items-center rounded-xl border border-orange-400/50 bg-[#151821] text-white transition-colors hover:bg-orange-400/15 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"
+            >
+              <X size={24} strokeWidth={2.4} aria-hidden="true" />
+            </button>
+          </div>
 
-              <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain py-4 pl-4 pr-[calc(1rem+env(safe-area-inset-right))] pb-[calc(1rem+env(safe-area-inset-bottom))]">
-              <p className="mb-3 text-[10px] font-black uppercase tracking-[0.16em] text-orange-400">Dashboard navigation</p>
-              <NavLinks mobile onNavigate={() => setIsOpen(false)} />
-              <div className="mt-3"><AndroidAppDownload /></div>
+          <div className="min-h-0 flex-1 space-y-5 overflow-y-auto overscroll-contain px-4 pb-[calc(1.5rem+env(safe-area-inset-bottom))] pt-5">
+            <div className="rounded-2xl border border-orange-400/20 bg-gradient-to-br from-[#23180f] via-[#17151a] to-[#11141a] p-4 shadow-[0_16px_28px_-22px_rgba(0,0,0,.85)]">
+              <p className="text-[10px] font-bold uppercase tracking-[.17em] text-orange-300">Quick actions</p>
+              <Link href="/dashboard/new-order" onClick={closeMenu} className="mt-3 flex min-h-12 items-center justify-between rounded-xl bg-gradient-to-r from-[#ff7900] to-[#ffae22] px-4 text-sm font-bold text-[#211006] transition hover:brightness-110">
+                Create new order <ArrowRight className="h-4 w-4" aria-hidden="true" />
+              </Link>
+              <div className="mt-2 grid grid-cols-2 gap-2">
+                <Link href="/dashboard/wallet" onClick={closeMenu} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[.045] px-2 text-xs font-semibold text-white transition hover:bg-white/10"><WalletCards size={16} aria-hidden="true" /> Add Funds</Link>
+                <Link href="/dashboard/orders" onClick={closeMenu} className="flex min-h-11 items-center justify-center gap-2 rounded-xl border border-white/15 bg-white/[.045] px-2 text-xs font-semibold text-white transition hover:bg-white/10"><ReceiptText size={16} aria-hidden="true" /> Orders</Link>
+              </div>
+            </div>
 
-              <div className="mt-3 grid grid-cols-2 gap-2 border-t border-white/10 pt-3">
-                <Link
-                  href="/dashboard/new-order"
-                  onClick={() => setIsOpen(false)}
-                  className="col-span-2 inline-flex min-h-12 items-center justify-center rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FF9F00] px-4 py-3 text-sm font-black text-white shadow-lg shadow-orange-500/20"
-                >
-                  Start Order
-                </Link>
-                <Link
-                  href="/dashboard/account"
-                  onClick={() => setIsOpen(false)}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-orange-400/25 bg-orange-500/10 px-3 py-2.5 text-sm font-bold text-orange-100"
-                >
-                  Profile
-                </Link>
-                <button
-                  type="button"
-                  onClick={handleLogout}
-                  className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/10 bg-white/5 px-3 py-2.5 text-sm font-bold text-[#D1D5DB] transition hover:border-orange-400/30 hover:text-white"
-                >
-                  Log out
-                </button>
-              </div>
-              </div>
+            <NavLinks mobile onNavigate={closeMenu} />
+            <div className="border-t border-white/10 pt-4"><AndroidAppDownload /></div>
+            <button type="button" disabled={signingOut} onClick={handleLogout} className="flex min-h-11 w-full items-center justify-center rounded-xl border border-white/15 bg-white/[.035] text-sm font-semibold text-slate-200 transition hover:bg-white/[.08] disabled:opacity-50">
+              {signingOut ? "Signing out..." : "Log out"}
+            </button>
+          </div>
         </div>
       </MobileMenuLayer>
     </div>

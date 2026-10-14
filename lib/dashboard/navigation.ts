@@ -4,3 +4,13 @@ export const dashboardLinks:readonly DashboardNavigationItem[]=[
 {label:"Campaign Stacks",href:"/dashboard/campaign-stacks",icon:"campaign",group:"Workspace"},{label:"Recurring Revenue",href:"/dashboard/retainers",icon:"campaign",group:"Workspace"},{label:"Reseller Hub",href:"/dashboard/reseller",icon:"clients",group:"Workspace"},{label:"Campaigns",href:"/dashboard/campaigns",icon:"campaign",group:"Workspace"},{label:"Clients",href:"/dashboard/clients",icon:"clients",group:"Workspace"},{label:"Referral Center",href:"/dashboard/referrals",icon:"gift",group:"Workspace"},{label:"Saved Profiles",href:"/dashboard/saved-profiles",icon:"bookmark",group:"Workspace"},{label:"Favourite Services",href:"/dashboard/new-order?tab=favourites",icon:"heart",group:"Workspace"},
 {label:"Wallet",href:"/dashboard/wallet",icon:"wallet",group:"Money"},{label:"Billing",href:"/dashboard/billing",icon:"receipt",group:"Money"},{label:"Notifications",href:"/dashboard/notifications",icon:"bell",group:"Account"},{label:"Account",href:"/dashboard/account",icon:"settings",group:"Account"},{label:"Support",href:"/dashboard/support",icon:"support",group:"Help"}];
 export function groupDashboardLinks(items=dashboardLinks){return items.reduce<Record<DashboardNavigationItem["group"],DashboardNavigationItem[]>>((groups,item)=>{groups[item.group].push(item);return groups},{Main:[],Workspace:[],Money:[],Account:[],Help:[]})}
+
+/** Only the actual destination is active; a query-specific shortcut is never
+ * highlighted as an unrelated page. Nested detail routes inherit the parent. */
+export function isDashboardLinkActive(pathname: string, href: string): boolean {
+  if (href.includes("?") || href.includes("#")) return false;
+  return pathname === href || (href !== "/dashboard" && pathname.startsWith(href + "/"));
+}
+export function isWorkspaceRoute(pathname: string): boolean {
+  return dashboardLinks.some((item) => item.group === "Workspace" && isDashboardLinkActive(pathname, item.href));
+}

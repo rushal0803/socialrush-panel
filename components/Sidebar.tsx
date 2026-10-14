@@ -4,13 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
-import { motion } from "framer-motion";
 import Logo from "./Logo";
 import { logout } from "@/app/auth/actions";
 import { createClient } from "@/lib/supabase/client";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
-import { groupDashboardLinks } from "@/lib/dashboard/navigation";
+import { groupDashboardLinks, isDashboardLinkActive, isWorkspaceRoute } from "@/lib/dashboard/navigation";
 
 function NavIcon({ name }: { name: string }) {
   const paths: Record<string, ReactNode> = {
@@ -84,24 +83,65 @@ function NavIcon({ name }: { name: string }) {
   );
 }
 
+const mobileGroupOrder = ["Main", "Money", "Workspace", "Account", "Help"] as const;
+
 export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onNavigate?: () => void }) {
   const pathname = usePathname();
   const groups = groupDashboardLinks();
 
-  return (
-    <nav className={mobile ? "grid gap-4" : "min-h-0 flex-1 space-y-4 overflow-y-auto pr-1"} aria-label="Dashboard navigation">
-      {Object.entries(groups).map(([group, items]) => <section key={group} aria-label={group}>
-        <p className="mb-1 px-3 text-[9px] font-black uppercase tracking-[.16em] text-[#6b7280]">{group}</p>
-        <div className="space-y-1">{items.map((item) => {
-          const active = item.href === "/dashboard" ? pathname === item.href : pathname.startsWith(item.href);
-          return <Link key={item.href} href={item.href} onClick={onNavigate} aria-current={active ? "page" : undefined} className={`relative flex items-center gap-3 overflow-hidden rounded-2xl px-3.5 py-3 text-sm font-semibold transition-all ${active ? "text-white" : mobile ? "text-[#D1D5DB] hover:bg-orange-500/10 hover:text-white" : "text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]"}`}>
-            {active && <motion.span layoutId={mobile ? "mobile-dashboard-active" : "dashboard-active"} className="absolute inset-0 rounded-xl bg-gradient-to-r from-[#FF7A00] to-[#FFB000] shadow-[0_12px_26px_rgba(255, 196, 0, .35)]" transition={{ type: "spring", stiffness: 380, damping: 30 }} />}
-            <span className="relative z-10"><NavIcon name={item.icon} /></span><span className="relative z-10">{item.label}</span>
-          </Link>;
-        })}</div>
-      </section>)}
-    </nav>
+  function renderItems(items: (typeof groups)["Main"]) {
+    return items.map((item) => {
+      const active = isDashboardLinkActive(pathname, item.href);
+      const primaryAction = item.href === "/dashboard/new-order";
+      return (
+        <Link
+          key={item.href}
+          href={item.href}
+          onClick={onNavigate}
+          aria-current={active ? "page" : undefined}
+          className={`group relative flex min-h-11 items-center gap-3 rounded-xl border px-3.5 py-2.5 text-[13px] font-semibold transition-colors focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300 ${active
+            ? "border-orange-400/45 bg-gradient-to-r from-[#ff7900] to-[#f59e0b] text-[#160c03] shadow-[0_8px_20px_-14px_rgba(255,122,0,.75)]"
+            : primaryAction
+              ? "border-orange-400/25 bg-orange-400/[.10] text-orange-200 hover:border-orange-400/45 hover:bg-orange-400/[.16]"
+              : "border-transparent text-slate-200 hover:border-white/10 hover:bg-white/[.07] hover:text-white"}`}
+        >
+          <span className={`shrink-0 ${active ? "text-[#251002]" : primaryAction ? "text-orange-300" : "text-slate-400 group-hover:text-orange-200"}`}><NavIcon name={item.icon} /></span>
+          <span className="min-w-0 flex-1 break-words">{item.label}</span>
+          {active ? <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#251002]" /> : null}
+        </Link>
+      );
+    });
+  }
+
+  const section = (group: keyof typeof groups) => (
+    <section key={group} aria-label={group === "Main" ? "Essentials" : group} className="space-y-1">
+      <p className="px-3 pb-1 pt-1 text-[10px] font-bold uppercase tracking-[.15em] text-slate-400">
+        {group === "Main" ? "Essentials" : group === "Money" ? "Payments & billing" : group}
+      </p>
+      <div className="grid gap-1">{renderItems(groups[group])}</div>
+    </section>
   );
+
+  if (mobile) {
+    return (
+      <nav className="grid gap-4" aria-label="Dashboard navigation" data-dashboard-mobile-links>
+        {mobileGroupOrder.map((group) => group === "Workspace" ? (
+          <details key={group} defaultOpen={isWorkspaceRoute(pathname)} className="group rounded-2xl border border-white/10 bg-white/[.025] p-2" data-dashboard-workspace-group>
+            <summary className="flex min-h-11 cursor-pointer list-none items-center gap-3 rounded-xl px-3 text-sm font-semibold text-slate-100 outline-none focus-visible:ring-2 focus-visible:ring-orange-300 [&::-webkit-details-marker]:hidden">
+              <span className="flex-1">More workspace tools</span>
+              <span className="rounded-full border border-white/10 px-2 py-0.5 text-[11px] font-medium text-slate-400">{groups.Workspace.length}</span>
+              <span aria-hidden="true" className="text-lg text-orange-300 transition-transform group-open:rotate-180">⌄</span>
+            </summary>
+            <div className="mt-1 grid gap-1 border-t border-white/10 pt-2">{renderItems(groups.Workspace)}</div>
+          </details>
+        ) : section(group))}
+      </nav>
+    );
+  }
+
+  return <nav className="flex min-h-0 flex-col gap-5" aria-label="Dashboard navigation" data-dashboard-desktop-links>
+    {(["Main", "Workspace", "Money", "Account", "Help"] as const).map(section)}
+  </nav>;
 }
 
 export default function Sidebar({
@@ -142,7 +182,7 @@ export default function Sidebar({
   }, [userId]);
 
   return (
-    <aside className="dashboard-sidebar hidden h-screen w-[17.5rem] shrink-0 flex-col overflow-y-auto overscroll-contain px-4 py-5 lg:sticky lg:top-0 lg:flex">
+    <aside className="dashboard-sidebar hidden h-screen w-[17.5rem] shrink-0 flex-col overflow-y-auto overscroll-contain px-3 py-5 lg:sticky lg:top-0 lg:flex">
       <div className="px-2">
         <Logo light />
       </div>
@@ -152,8 +192,8 @@ export default function Sidebar({
         <p className="mt-1 text-xs font-semibold text-[#a8afbd]">Growth control center</p>
       </div>
 
-      <p className="mb-3 mt-7 px-3 text-[10px] font-semibold uppercase tracking-[0.18em] text-[#111827]">Customer navigation</p>
-      <NavLinks />
+      <Link href="/dashboard/new-order" className="mx-1 mt-6 flex min-h-12 items-center justify-center gap-3 rounded-xl bg-gradient-to-r from-[#ff7900] to-[#ffae22] px-4 text-sm font-bold text-[#211006] shadow-[0_12px_22px_-17px_rgba(255,122,0,.8)] transition hover:brightness-110 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-300"><span aria-hidden="true" className="text-xl leading-none">+</span> Create new order</Link>
+      <div className="mt-6"><NavLinks /></div>
 
       <div className="mt-4 rounded-2xl border border-white/[.09] bg-white/[.035] p-4 text-white shadow-[0_14px_30px_rgba(0,0,0,.22)]">
         <div className="flex items-center justify-between">
@@ -163,13 +203,13 @@ export default function Sidebar({
         <p className="mt-2 text-2xl font-black text-white">{formatCurrency(balance, currency, rates)}</p>
         {currency !== "INR" ? <p className="mt-1 text-[10px] text-[#a8afbd]">Ledger balance remains INR</p> : null}
 
-        <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex w-full justify-center py-2.5 text-xs">
+        <Link href="/dashboard/wallet" className="btn-dashboard-primary mt-4 flex min-h-11 w-full items-center justify-center py-2.5 text-xs">
           Add Funds
         </Link>
       </div>
 
       <form action={logout} className="mt-4">
-        <button className="flex w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-[#111827] hover:bg-white/70 hover:text-[#0B0B0F]">
+        <button className="flex min-h-11 w-full items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold text-slate-300 transition hover:bg-white/[.07] hover:text-white">
           <span>↪</span> Log out
         </button>
       </form>
