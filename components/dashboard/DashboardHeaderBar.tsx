@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { ChevronDown, Wallet } from "lucide-react";
 import { useEffect, useMemo, useRef, useState } from "react";
-import { usePathname } from "next/navigation";
+import { usePathname, useSearchParams } from "next/navigation";
 import { dashboardLinks, isDashboardLinkActive } from "@/lib/dashboard/navigation";
 import styles from "@/components/dashboard/PremiumWorkspace.module.css";
 import DashboardMobileMenu from "@/components/dashboard/DashboardMobileMenu";
@@ -96,7 +96,8 @@ function CurrencySelector() {
 export default function DashboardHeaderBar({ name, role, initials, balance }: { name: string; role: string; initials: string; balance: number }) {
   const { currency, rates } = usePreferredCurrency("INR");
   const pathname = usePathname();
-  const currentPage = dashboardLinks.find(item => isDashboardLinkActive(item.href, pathname))?.label || "Customer workspace";
+  const query = useSearchParams().toString();
+  const currentPage = dashboardLinks.find(item => isDashboardLinkActive(pathname, item.href, query))?.label || "Customer workspace";
   return (
     <header className="sticky top-0 z-[70] border-b border-white/[.08] bg-[#0c0e14]/95 px-4 py-3 shadow-[0_10px_30px_-24px_rgba(0,0,0,.9)] backdrop-blur-xl sm:px-6 lg:px-8">
       <div className="mx-auto flex min-h-12 max-w-[1800px] items-center gap-1 min-[360px]:gap-1.5 min-[430px]:gap-2 sm:min-h-14 sm:gap-4">

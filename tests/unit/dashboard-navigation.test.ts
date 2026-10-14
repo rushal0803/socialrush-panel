@@ -69,3 +69,8 @@ test("wallet balance and money actions precede lengthy payment-confidence explan
   assert.ok(walletLayout.indexOf("{children}") < walletLayout.indexOf('<PaymentConfidenceExperience mode="wallet" />'));
   assert.match(walletPage, /#add-funds\{display:none!important\}/);
 });
+
+test("narrow desktop header preserves action space and uses the shared route helper correctly", () => {
+  assert.match(source("components/dashboard/DashboardHeaderBar.tsx"), /isDashboardLinkActive\(pathname, item.href, query\)/);
+  assert.match(source("components/dashboard/PremiumWorkspace.module.css"), /@media \(min-width: 1440px\) \{ \.workspaceLabel \{ display: block; \} \}/);
+});

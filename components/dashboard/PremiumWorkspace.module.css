@@ -123,7 +123,8 @@
 @media (max-height: 480px) { .dialogOverlay { padding-top: 16px; } .dialogSurface { max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)); } }
 .workspaceLabel { display: none; min-width: 0; color: #a8afbd; font-size: 12px; }
 .workspaceLabel span { display: block; margin-top: 3px; color: #f4f5f7; font-size: 14px; font-weight: 600; }
-@media (min-width: 1024px) { .workspaceLabel { display: block; } }
+/* Leave the narrow desktop header to its money and account controls. */
+@media (min-width: 1440px) { .workspaceLabel { display: block; } }
 
 .serviceSearch { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
 .serviceSearch label { flex: 1 1 220px; min-width: 0; }

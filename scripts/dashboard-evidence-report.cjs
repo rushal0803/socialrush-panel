@@ -2,7 +2,7 @@
 const fs = require('node:fs');
 const path = require('node:path');
 const widths = [320, 360, 390, 430, 768, 1024, 1440, 1920];
-const source = 'artifacts/premium-responsive/pr669-final';
+const source = 'artifacts/premium-responsive/pr669-header-fixed';
 const target = 'docs/design/customer-workspace-pr669';
 const runs = widths.map(width => ({ width, routes: JSON.parse(fs.readFileSync(path.join(source, `dashboard-${width}.json`), 'utf8')) }));
 for (const run of runs) for (const row of run.routes) {
@@ -15,8 +15,9 @@ fs.writeFileSync(path.join(target, 'responsive-results.json'), JSON.stringify({
 }, null, 2));
 for (const width of [390, 768, 1440]) for (const page of ['dashboard', 'dashboard-new-order', 'dashboard-wallet']) {
   for (const stage of ['before', 'after']) {
-    const dir = stage === 'before' ? 'artifacts/premium-responsive/before' : source;
-    fs.copyFileSync(path.join(dir, `${page}-${width}-hero.png`), path.join(target, `${stage}-${page}-${width}.png`));
+    const file = path.join(target, `${stage}-${page}-${width}.png`);
+    if (stage === 'before' && !fs.existsSync(file)) throw Error(`Missing documented main baseline: ${file}`);
+    if (stage === 'after') fs.copyFileSync(path.join(source, page === 'dashboard-new-order' ? `new-order-entry-${width}.png` : `${page}-${width}-hero.png`), file);
   }
 }
 console.log(`${runs.reduce((sum, run) => sum + run.routes.length, 0)} layouts packaged; 18 selected before/after screenshots.`);

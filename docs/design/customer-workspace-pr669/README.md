@@ -30,11 +30,12 @@ Existing good page layouts were preserved. Shared design improvements apply thro
 - Keep funding/support actions visible on a 320×480 phone, with at least 44px targets; no destination removed.
 - Reuse proven fixes for the search empty/error request loop, contained dialog/focus, cramped billing rows, unreadable review/recovery text and money controls pushed below guidance. No alternative financial implementation was adopted.
 - The obsolete Phase 22 unit assertion expected a removed inline colour string. It now checks retained readable text, tap targets, active state, keyboard outline and the dark portal surface.
+- Actions [38555894258](https://github.com/rushal0803/socialrush-panel/actions/runs/38555894258) passed the full smoke suite (262 passed, 62 opt-in skips) but found Add Funds document overflow at 1024px on Linux Chromium (1051px measured width). The local Windows header also exceeded its own available width. Fix the header's old navigation-helper argument order and show its optional workspace caption only from 1440px, leaving narrow desktop space for money/account actions. Funding tests now check visible header controls as well as document width; the overflow assertion is retained.
 - First local browser run: 23 passed, 5 failed because an inherited #667 assertion expected a bottom bar on Order Summary. #669 intentionally hides it. The new assertion verifies absence; no application behavior changed to satisfy the old test. Corrected complete matrix rerun: 9 passed, including all eight widths and the mobile search/capture check.
 
 ## Screenshots
 
-Before images are the existing same-fixture **main `01d49452` baseline**, retained from the #667 audit. After images were recaptured from this coordinated #669 working tree. They are not a before/after comparison limited to #669's first three commits. Monetary values and records are synthetic fixtures, not live customer data.
+Before images are the existing same-fixture **main `01d49452` baseline**, retained from the #667 audit. After images were recaptured from the final #669 working tree after the header correction. New Order plain-entry captures are kept separate from its Favourites variant. They are not a before/after comparison limited to #669's first three commits. Monetary values and records are synthetic fixtures, not live customer data.
 
 | Page | Mobile 390px before / after | Tablet 768px before / after | Desktop 1440px before / after |
 |---|---|---|---|
@@ -55,11 +56,12 @@ Widths: **320, 360, 390, 430, 768, 1024, 1440 and 1920px**. All 288 general matr
 Local verification on the final application code:
 
 - `npx tsc --noEmit`: passed before the build and after integration.
-- `npm run test:unit`: **222 passed**, zero failures, including six navigation/Wallet regression cases.
+- `npm run test:unit`: **223 passed**, zero failures, including seven navigation/Wallet/header regression cases after the CI correction.
 - `npm run test:payment-confidence`: **14 passed**.
 - Focused Phase 22/package contracts: **11 passed**.
 - `npm run build`: passed; existing unrelated lint warnings remain, with no suppression.
-- Chromium first run: **23 passed**, five integration-test mismatches described above. Corrected rerun: **9 passed**, covering the complete eight-width matrix and mobile search. All 28 selected browser checks are established across these runs; do not describe the initial run as wholly green.
+- Final corrected application: **28 Chromium checks passed together in 4.0 minutes**, including the complete eight-width matrix and strengthened funding/header bounds. The revised service-search/plain-entry capture test separately passed (1 check, 10.2s suite); it is also included in the existing CI customer step.
+- Historical Chromium first run: **23 passed**, five integration-test mismatches described above. Corrected rerun: **9 passed**, covering the complete eight-width matrix and mobile search. All 28 selected browser checks are established across these runs; do not describe the initial run as wholly green.
 - Full configured `npm run test:smoke` and final-head Actions status are recorded in the PR's latest verification section after CI completes.
 
 Browser coverage includes drawer close/Escape, focus cycling/restoration, body-scroll unlock, desktop breakpoint dismissal, native disclosure, all destinations, query navigation, service search no-results, search loading/error/retry/cancellation, exact wallet shortfalls at 0/200/100000, review text contrast, and payment instructions. The mocked manual-UPI test checks disabled submitting state, error/reference retention, retry and **pending verification**, never a fabricated successful credit. Both submissions are intercepted and fulfilled inside the browser; neither reaches the endpoint. Its reference is `QA-NOT-A-PAYMENT`; the submit button is checked above the bottom bar. No UPI app/link is launched.
@@ -70,18 +72,18 @@ Browser coverage includes drawer close/Escape, focus cycling/restoration, body-s
 |---|---:|---:|
 | 390px order + ticket reads | 60 | 2 |
 | 1440px order + ticket reads | 140 | 2 |
-| 390px automation-observed opening (ms) | 870 | 988 |
-| 1440px automation-observed opening (ms) | 321 | 365 |
+| 390px automation-observed opening (ms) | 870 | 823 |
+| 1440px automation-observed opening (ms) | 321 | 283 |
 
-Raw [mobile baseline](before-search-390.json), [mobile current](search-journey-390.json), [desktop baseline](before-search-1440.json), [desktop current](search-journey-1440.json). Mobile uses 4× CPU, 150ms RTT and 1.6Mbps download with mocked responses; desktop is unthrottled. These are single automation samples, including locator scheduling, not INP. Both current opening samples are slower; the demonstrated improvement is the request reduction and full-viewport overlay, **not a speed claim**.
+Raw [mobile baseline](before-search-390.json), [mobile current](search-journey-390.json), [desktop baseline](before-search-1440.json), [desktop current](search-journey-1440.json). Mobile uses 4× CPU, 150ms RTT and 1.6Mbps download with mocked responses; desktop is unthrottled. These are single automation samples, including locator scheduling, not INP. The samples vary between runs (the earlier coordinated run was 988ms mobile / 365ms desktop). They do not establish a speed improvement; the demonstrated improvement is the request reduction and full-viewport overlay.
 
 Fresh unthrottled localhost fixture observations, in milliseconds:
 
 | Page | 390px LCP / CLS | 1440px LCP / CLS |
 |---|---|---|
-| Overview | 1256 / 0 | 1580 / 0 |
-| New Order | 716 / 0 | 760 / 0 |
-| Wallet | 876 / 0 | 1504 / 0 |
+| Overview | 1312 / 0 | 1528 / 0 |
+| New Order | 616 / 0 | 892 / 0 |
+| Wallet | 1140 / 0 | 1680 / 0 |
 
 [Raw lab metrics](lab-metrics.json). Each is one navigation, captured at the audit observation; LCP may change with later content. These are neither field p75 measurements nor a measured before/after speed improvement. INP was not measured. Do not claim the site's LCP ≤2.5s, INP ≤200ms or CLS ≤0.1 field targets are achieved. No dependency or new animation library was added; existing navigation motion is reduced, and wallet counter animation is removed.
 
@@ -89,4 +91,4 @@ Fresh unthrottled localhost fixture observations, in milliseconds:
 
 No checkout/payment API, settlement/refund calculation, authentication, permissions, Supabase client implementation, RLS, schema or migration changes. No live service price, quantity limit, wallet balance/deduction, partial-wallet formula, order creation or idempotency change. Existing analytics/tracking calls are retained. New Order changes are local search/prefill interaction; order-summary and payment/recovery changes are presentation; wallet counter renders the actual supplied value immediately. QR fixture encodes a QA marker and cannot initiate payment. Fixtures use synthetic identity and transport; they cannot prove production settlement, authorization or real data completeness.
 
-**Keep draft for owner review; hold production release.** Final-head required CI must be green. Physical Android/iPhone keyboard/safe-area checks, approved sandbox gateway/settlement/refund verification, complete current-head Safari/Firefox coverage and field p75 CWV remain unverified release checks. No real production order or payment was submitted. No merge or production deployment without explicit owner approval. Limit work to this existing PR and one coordinated implementation/evidence commit unless a genuine failing gate needs correction.
+**Keep draft for owner review; hold production release.** Final-head required CI must be green. Physical Android/iPhone keyboard/safe-area checks, approved sandbox gateway/settlement/refund verification, complete current-head Safari/Firefox coverage and field p75 CWV remain unverified release checks. No real production order or payment was submitted. No merge or production deployment without explicit owner approval. One coordinated implementation/evidence commit and a focused correction for the genuine CI overflow; no extra cosmetic revision or deployment command.

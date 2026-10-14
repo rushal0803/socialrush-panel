@@ -293,6 +293,15 @@ test("customer service search recovers from an empty result", async ({ page, con
   await search.fill("followers");
   await expect(page.getByRole("status").filter({ hasText: /of .* services/ })).not.toHaveText(/^0 of/);
   await expect(page.locator("main article").first()).toContainText(/followers/i);
+  // Preserve plain-entry evidence separately from the Favourites route.
+  fs.mkdirSync(outputRoot, { recursive: true });
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: width === 390 ? 740 : 900 });
+    await page.goto("/dashboard/new-order");
+    await expectRevealedContent(page);
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: path.join(outputRoot, `new-order-entry-${width}.png`) });
+  }
 });
 
 for (const width of [390, 1440]) {
@@ -441,6 +450,11 @@ test("customer funding starts with amount selection at every requested width", a
     await expect(page.getByRole("heading", { name: "Complete your payment", exact: true })).toBeInViewport();
     await expect(page.getByRole("textbox", { name: "Amount", exact: true })).toBeInViewport();
     await expect(page.getByRole("region", { name: "Payment confidence", exact: true })).toBeVisible();
+    const headerControls = await page.locator("header").first().locator("button, a").evaluateAll(elements => elements.filter(element => {
+      const box = element.getBoundingClientRect();
+      return box.width && box.height && (box.left < -1 || box.right > document.documentElement.clientWidth + 1);
+    }).map(element => element.getAttribute("aria-label") || element.textContent));
+    expect(headerControls, `Funding header controls at ${width}px`).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
     if ([390, 768, 1440].includes(width)) await page.screenshot({ path: path.join(outputRoot, `funding-form-${width}.png`) });
   }
