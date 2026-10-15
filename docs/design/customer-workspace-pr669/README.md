@@ -1,5 +1,24 @@
 # SocialRUSH customer workspace — PR #669
 
+## Latest continuation: 15 October 2026
+
+Reviewed owner head `f507b6d0`, including the incorporated #674 money-page work, without restarting the redesign. Chromium passed **34 tests** in 5.9 minutes: **360 general layouts** (36 scenarios at 320, 360, 375, 390, 430, 768, 1024, **1280**, 1440 and 1920px), ten direct-payment widths and critical customer journeys. No detected horizontal overflow. Updated Overview/New Order/Wallet comparisons use fresh captures; historical before images remain labelled with their original baseline below.
+
+The new pending-payment Billing test checks ten widths, status wording, receipt destination, overlay visibility, scroll lock, filter recovery, keyboard containment and focus restoration without payment submission. It reproduced a WebKit focus escape in the owner's boundary-only focus trap. The correction explicitly cycles through dialog controls and focuses the invoking Details button before opening, preserving focus restoration in Safari. No financial data, calculation, request or payment action changed. **Corrected-build test passed in Chromium (34.4s) and WebKit (1.4m), each across all ten widths.** This focused WebKit check does not establish complete Safari coverage.
+
+TypeScript, **225 unit tests** and the corrected production build pass. **14 payment-confidence tests** passed on the owner head; financial code is unchanged. Owner-head Actions [38614532235](https://github.com/rushal0803/socialrush-panel/actions/runs/38614532235) passed; this is historical evidence until the correction's exact-head CI completes. Existing build lint warnings remain outside this presentation change.
+
+| Refreshed evidence | Mobile 390px | Tablet 768px | Desktop 1440px |
+|---|---|---|---|
+| Wallet | [Capture](after-dashboard-wallet-390.png) | [Capture](after-dashboard-wallet-768.png) | [Capture](after-dashboard-wallet-1440.png) |
+| Billing | [Capture](after-dashboard-billing-390.png) | [Capture](after-dashboard-billing-768.png) | [Capture](after-dashboard-billing-1440.png) |
+| Pending payment dialog | [Capture](billing-pending-dialog-390.png) | [Capture](billing-pending-dialog-768.png) | [Capture](billing-pending-dialog-1440.png) |
+| Order Review | [Capture](after-dashboard-order-summary-390.png) | [Capture](after-dashboard-order-summary-768.png) | [Capture](after-dashboard-order-summary-1440.png) |
+
+Measured Next.js build First Load JS, prior main reconciliation versus owner head: Overview **120 → 120 kB**, New Order **208 → 208 kB**, Wallet **169 → 169 kB**, Order Summary **187 → 187 kB**, Billing **114 → 115 kB**. Route-scoping the legacy UPI client did **not** show a reported bundle reduction; Billing accessibility adds approximately 1 kB. These rounded build estimates do not establish faster performance or field CWV targets.
+
+**Remaining product limitation:** Billing supplies invoice metadata and payment receipt details, not downloadable invoice documents. No approved invoice-document endpoint/assets exist in this reviewed implementation; no fake download was added. Physical Android/iPhone behavior, complete browser coverage, field INP/p75 CWV, large histories and approved sandbox settlement/refunds remain unverified. Keep draft for owner review; no production merge/deployment.
+
 This report continues draft [PR #669](https://github.com/rushal0803/socialrush-panel/pull/669) on `feat/customer-workspace-mobile-premium-20261014`, starting from `0574cac8`. The latest continuation reconciles owner-merged main `d4c2baaa` (#667 plus analytics #671/#672) into this same feature branch; it does not duplicate those already merged page upgrades. It preserves that PR's navigation foundation and reuses reviewed customer-page improvements from #667 rather than creating a competing redesign. It does not merge either PR or deploy production.
 
 ## Completed scope
@@ -82,9 +101,9 @@ Fresh unthrottled localhost fixture observations, in milliseconds:
 
 | Page | 390px LCP / CLS | 1440px LCP / CLS |
 |---|---|---|
-| Overview | 1168 / 0 | 1308 / 0 |
-| New Order | 464 / 0 | 580 / 0 |
-| Wallet | 568 / 0 | 1284 / 0 |
+| Overview | 1432 / 0 | 1684 / 0 |
+| New Order | 684 / 0 | 856 / 0 |
+| Wallet | 1392 / 0 | 1416 / 0 |
 
 [Raw lab metrics](lab-metrics.json). Each is one navigation, captured at the audit observation; LCP may change with later content. These are neither field p75 measurements nor a measured before/after speed improvement. INP was not measured. Do not claim the site's LCP ≤2.5s, INP ≤200ms or CLS ≤0.1 field targets are achieved. No dependency or new animation library was added; existing navigation motion is reduced, and wallet counter animation is removed.
 

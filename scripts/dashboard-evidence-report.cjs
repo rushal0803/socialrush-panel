@@ -1,8 +1,8 @@
 // Package only this audit's known captures, never historical artifact folders.
 const fs = require('node:fs');
 const path = require('node:path');
-const widths = [320, 360, 375, 390, 430, 768, 1024, 1440, 1920];
-const source = 'artifacts/premium-responsive/pr669-main-sync';
+const widths = [320, 360, 375, 390, 430, 768, 1024, 1280, 1440, 1920];
+const source = 'artifacts/premium-responsive/pr669-f507-final';
 const target = 'docs/design/customer-workspace-pr669';
 const runs = widths.map(width => ({ width, routes: JSON.parse(fs.readFileSync(path.join(source, `dashboard-${width}.json`), 'utf8')) }));
 for (const run of runs) for (const row of run.routes) {
@@ -21,3 +21,10 @@ for (const width of [390, 768, 1440]) for (const page of ['dashboard', 'dashboar
   }
 }
 console.log(`${runs.reduce((sum, run) => sum + run.routes.length, 0)} layouts packaged; 18 selected before/after screenshots.`);
+for (const width of [390, 768, 1440]) for (const page of ['dashboard-orders', 'dashboard-billing', 'dashboard-packages', 'dashboard-order-summary']) {
+  fs.copyFileSync(path.join(source, `${page}-${width}-hero.png`), path.join(target, `after-${page}-${width}.png`));
+}
+fs.writeFileSync(path.join(target, 'lab-metrics.json'), JSON.stringify({
+  note: 'Owner head f507b6d0, single unthrottled localhost fixture observations. Not field p75, INP or a paired speed improvement.',
+  metrics: runs.filter(run => [390, 1440].includes(run.width)).map(run => ({ width: run.width, routes: run.routes.filter(row => ['/dashboard', '/dashboard/new-order', '/dashboard/wallet'].includes(row.route)).map(row => ({ route: row.route, ...row.lab })) })),
+}, null, 2));

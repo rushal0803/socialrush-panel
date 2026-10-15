@@ -360,6 +360,47 @@ test("customer orders prioritize filters and preserve tracking and repeat handof
   fs.writeFileSync(path.join(outputRoot, "orders-priority.json"), JSON.stringify(measurements, null, 2));
 });
 
+test("customer billing details preserve pending status, focus and filter recovery", async ({ page, context, baseURL }) => {
+  test.setTimeout(90000);
+  test.skip(process.env.DASHBOARD_UPGRADE_AUDIT !== "1", "Requires populated read-only customer fixtures");
+  await authenticate(context, baseURL!);
+  fs.mkdirSync(outputRoot, { recursive: true });
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1280, 1440, 1920]) {
+    await page.setViewportSize({ width, height: width <= 430 ? 740 : 900 });
+    await page.goto("/dashboard/billing");
+    const record = page.locator("main article:visible").filter({ hasText: "fixture-pending-verification" });
+    const trigger = record.getByRole("button", { name: /^(Details|View details for .+)$/i });
+    await trigger.click();
+    const dialog = page.getByRole("dialog", { name: "Payment details", exact: true });
+    const close = dialog.getByRole("button", { name: "Close payment details", exact: true });
+    await expect(close).toBeFocused();
+    await expect(dialog.getByText("No completed wallet effect", { exact: true })).toBeVisible();
+    await expect.poll(() => page.evaluate(() => document.body.style.position)).toBe("fixed");
+    for (let index = 0; index < 12; index++) {
+      await page.keyboard.press(index < 6 ? "Tab" : "Shift+Tab");
+      await expect.poll(() => dialog.evaluate(el => el.contains(document.activeElement))).toBe(true);
+    }
+    const receipt = dialog.getByRole("link", { name: "Receipt / proof", exact: true });
+    await expect(receipt).toHaveAttribute("href", /^\/dashboard\/billing\/transactions\/[0-9a-f-]+$/);
+    await receipt.scrollIntoViewIfNeeded();
+    expect(await receipt.evaluate(el => {
+      const box = el.getBoundingClientRect();
+      return !!document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)?.closest('[role="dialog"]');
+    })).toBe(true);
+    if ([390, 768, 1440].includes(width)) await page.screenshot({ path: path.join(outputRoot, `billing-pending-dialog-${width}.png`) });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
+    const search = page.getByRole("textbox", { name: "Search payment activity", exact: true });
+    await search.fill("qa-no-matching-payment");
+    await page.getByRole("button", { name: "Clear filters", exact: true }).click();
+    await expect(search).toHaveValue("");
+    await expect(record).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+  }
+});
+
 for (const width of [390, 1440]) {
   test(`dashboard search request budget and dialog at ${width}px`, async ({ page, context, baseURL, browserName }) => {
     test.skip(browserName !== "chromium", "Throttled journey measurement uses Chromium CDP");

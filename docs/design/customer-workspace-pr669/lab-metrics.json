@@ -1,26 +1,26 @@
 {
-  "note": "Single unthrottled localhost fixture samples on the branch reconciled with main d4c2baaa; not field p75, paired speed improvement, or INP. LCP observed during the audit can change with later content.",
+  "note": "Owner head f507b6d0, single unthrottled localhost fixture observations. Not field p75, INP or a paired speed improvement.",
   "metrics": [
     {
       "width": 390,
       "routes": [
         {
           "route": "/dashboard",
-          "lcp": 1168,
+          "lcp": 1432,
           "cls": 0,
-          "ttfb": 376.29999999701977
+          "ttfb": 420.29999999701977
         },
         {
           "route": "/dashboard/new-order",
-          "lcp": 464,
+          "lcp": 684,
           "cls": 0,
-          "ttfb": 26.5
+          "ttfb": 41.29999999701977
         },
         {
           "route": "/dashboard/wallet",
-          "lcp": 568,
+          "lcp": 1392,
           "cls": 0,
-          "ttfb": 33.5
+          "ttfb": 62.400000005960464
         }
       ]
     },
@@ -29,21 +29,21 @@
       "routes": [
         {
           "route": "/dashboard",
-          "lcp": 1308,
+          "lcp": 1684,
           "cls": 0,
-          "ttfb": 366
+          "ttfb": 569.0999999940395
         },
         {
           "route": "/dashboard/new-order",
-          "lcp": 580,
+          "lcp": 856,
           "cls": 0,
-          "ttfb": 29.19999998807907
+          "ttfb": 88.70000000298023
         },
         {
           "route": "/dashboard/wallet",
-          "lcp": 1284,
+          "lcp": 1416,
           "cls": 0,
-          "ttfb": 46.900000005960464
+          "ttfb": 56.900000005960464
         }
       ]
     }
