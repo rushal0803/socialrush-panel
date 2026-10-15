@@ -26,5 +26,5 @@ export default async function ToolPage({ params: paramsPromise }: { params: Prom
   const tool = toolBySlug[params.slug];
   if (!tool) notFound();
   const schema = { "@context": "https://schema.org", "@graph": [{ "@type": "WebApplication", name: tool.title, applicationCategory: "CreatorApplication", operatingSystem: "Web", description: tool.description, url: `${SEO_SITE_URL}/tools/${tool.slug}` }, { "@type": "FAQPage", mainEntity: tool.faqs.map((item) => ({ "@type": "Question", name: item.q, acceptedAnswer: { "@type": "Answer", text: item.a } })) }] };
-  return <PublicShell><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema) }} /><ToolsContent activeSlug={params.slug} /></PublicShell>;
+  return <PublicShell><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(schema).replace(/</g, "\\u003c") }} /><ToolsContent activeSlug={params.slug} /></PublicShell>;
 }
