@@ -70,6 +70,10 @@
 .workspace :global(.dashboard-order-summary) { background: #141820; border-color: #ff76004d; box-shadow: none; }
 .workspace :global(.dashboard-order-page) :global(.truncate) { white-space: normal; overflow-wrap: anywhere; }
 .workspace :global(.dashboard-wallet-page) { font-variant-numeric: tabular-nums; }
+.workspace :global(.dashboard-wallet-page) > :global(.pointer-events-none) { display: none; }
+.workspace :global(.dashboard-wallet-page) :global(#transactions) { border-radius: 16px; border-color: var(--sr-border); background: #12151d; box-shadow: none; }
+.workspace :global(.dashboard-wallet-page) :global(.rounded-2xl) { box-shadow: none; }
+.workspace :global(.dashboard-wallet-page) :is(h1,h2) { font-weight: 650; }
 .workspace :global(.dashboard-premium-page) > header,
 .workspace :global(.dashboard-premium-page) > div > header { border-color: #ffffff18; background: #151922; border-radius: 16px; box-shadow: none; }
 .workspace :global(.package-experience) { background: transparent; }

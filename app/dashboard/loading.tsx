@@ -3,7 +3,7 @@ export default function DashboardLoading() {
     <main
       aria-busy="true"
       aria-label="Loading dashboard"
-      className="mx-auto w-full max-w-[1800px] animate-pulse px-4 py-6 text-white sm:px-8 lg:px-10"
+      className="mx-auto w-full max-w-[1800px] motion-safe:animate-pulse px-4 py-6 text-white sm:px-8 lg:px-10"
     >
       <div className="h-7 w-56 rounded-lg bg-white/10" />
       <div className="mt-3 h-4 w-80 max-w-full rounded bg-white/[.06]" />

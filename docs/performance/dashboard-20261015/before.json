@@ -1,0 +1,1829 @@
+{
+  "profile": "Production localhost, Chromium 1440x900, reduced motion, no throttling, synthetic read-only Supabase transport; 5 repeat clicks/route. Not field CWV/INP or live database latency.",
+  "errors": [],
+  "transitions": [
+    {
+      "route": "/dashboard",
+      "p75": 999.0882999999958
+    },
+    {
+      "route": "/dashboard/new-order",
+      "p75": 333.7980000000025
+    },
+    {
+      "route": "/dashboard/orders",
+      "p75": 216.53859999999986
+    },
+    {
+      "route": "/dashboard/wallet",
+      "p75": 997.3130999999994
+    },
+    {
+      "route": "/dashboard/billing",
+      "p75": 289.08179999999993
+    },
+    {
+      "route": "/dashboard/packages",
+      "p75": 1014.585500000001
+    }
+  ],
+  "samples": [
+    {
+      "kind": "document",
+      "route": "/dashboard",
+      "cls": 0,
+      "lcp": 4276,
+      "ttfb": 708.5999999940395,
+      "jsBytes": 295817,
+      "requests": [
+        {
+          "url": "/_next/image",
+          "ms": 328.6000000089407,
+          "bytes": 858
+        },
+        {
+          "url": "/_next/image",
+          "ms": 328.3999999910593,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/css/ac0486cc709229b9.css",
+          "ms": 418.8999999910593,
+          "bytes": 63290
+        },
+        {
+          "url": "/_next/static/css/4df0daa92bdd2502.css",
+          "ms": 344.69999998807907,
+          "bytes": 2872
+        },
+        {
+          "url": "/_next/static/chunks/webpack-dde33c37b97aae8c.js",
+          "ms": 375.5,
+          "bytes": 2805
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 428.1000000089407,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 412.40000000596046,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 378,
+          "bytes": 872
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 409.90000000596046,
+          "bytes": 2810
+        },
+        {
+          "url": "/_next/static/chunks/1864-aedc12059462991e.js",
+          "ms": 420,
+          "bytes": 13419
+        },
+        {
+          "url": "/_next/static/chunks/4223-60908bb67a0b940e.js",
+          "ms": 418.1000000089407,
+          "bytes": 6662
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 436.09999999403954,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/7094-987d6006cd990fcf.js",
+          "ms": 438.5,
+          "bytes": 5200
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-b4d7092a6578ae6b.js",
+          "ms": 440,
+          "bytes": 5748
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 446.59999999403954,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/53c13509-ae181d22eb1c0536.js",
+          "ms": 442.5,
+          "bytes": 1984
+        },
+        {
+          "url": "/_next/static/chunks/2619-04bc32f026a0d946.js",
+          "ms": 447.79999999701977,
+          "bytes": 3706
+        },
+        {
+          "url": "/_next/static/chunks/7896-a7de567b0d486029.js",
+          "ms": 451.90000000596046,
+          "bytes": 3280
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 493.20000000298023,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1356-adfdac4d495aab3e.js",
+          "ms": 462.29999999701977,
+          "bytes": 5549
+        },
+        {
+          "url": "/_next/static/chunks/1639-b96f0ef0d3c880e3.js",
+          "ms": 466.5,
+          "bytes": 3983
+        },
+        {
+          "url": "/_next/static/chunks/5232-42a12528801003a8.js",
+          "ms": 472.40000000596046,
+          "bytes": 3233
+        },
+        {
+          "url": "/_next/static/chunks/6497-d8475281a415613d.js",
+          "ms": 476,
+          "bytes": 2466
+        },
+        {
+          "url": "/_next/static/chunks/7381-f7fee5afdc8c70be.js",
+          "ms": 477.20000000298023,
+          "bytes": 4542
+        },
+        {
+          "url": "/_next/static/chunks/2262-570f8ff70d05eaed.js",
+          "ms": 489.70000000298023,
+          "bytes": 9061
+        },
+        {
+          "url": "/_next/static/chunks/8550-71e072c0c71c448f.js",
+          "ms": 495.69999998807907,
+          "bytes": 4098
+        },
+        {
+          "url": "/_next/static/chunks/app/page-696fff70c6789a73.js",
+          "ms": 501.69999998807907,
+          "bytes": 13234
+        },
+        {
+          "url": "/_next/static/chunks/5337-6966681bceeb68f7.js",
+          "ms": 503.5,
+          "bytes": 2637
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/page-0f83d890312fc022.js",
+          "ms": 504.29999999701977,
+          "bytes": 7558
+        },
+        {
+          "url": "/_next/static/chunks/8096-70f061926697f961.js",
+          "ms": 510,
+          "bytes": 2828
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/layout-f445cde01598c918.js",
+          "ms": 511.90000000596046,
+          "bytes": 13572
+        },
+        {
+          "url": "/api/notifications",
+          "ms": 79,
+          "bytes": 327
+        },
+        {
+          "url": "/",
+          "ms": 158.20000000298023,
+          "bytes": 17351
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 150.79999999701977,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/orders",
+          "ms": 151.19999998807907,
+          "bytes": 450
+        },
+        {
+          "url": "/dashboard/packages",
+          "ms": 151.29999999701977,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/wallet",
+          "ms": 152.5,
+          "bytes": 451
+        },
+        {
+          "url": "/api/display-currency",
+          "ms": 99.59999999403954,
+          "bytes": 318
+        },
+        {
+          "url": "/_next/static/css/e5dea371d33290c4.css",
+          "ms": 118.29999999701977,
+          "bytes": 8211
+        },
+        {
+          "url": "/dashboard/campaign-stacks",
+          "ms": 113.30000001192093,
+          "bytes": 446
+        },
+        {
+          "url": "/dashboard/retainers",
+          "ms": 115.30000001192093,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/reseller",
+          "ms": 115,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/campaigns",
+          "ms": 116,
+          "bytes": 440
+        },
+        {
+          "url": "/dashboard/clients",
+          "ms": 116.1000000089407,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/referrals",
+          "ms": 102.19999998807907,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/saved-profiles",
+          "ms": 94.79999999701977,
+          "bytes": 445
+        },
+        {
+          "url": "/dashboard/add-funds",
+          "ms": 94.59999999403954,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/account",
+          "ms": 96.29999999701977,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/support",
+          "ms": 96.5,
+          "bytes": 451
+        },
+        {
+          "url": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "ms": 35.70000000298023,
+          "bytes": 473
+        }
+      ],
+      "domNodes": 736,
+      "hiddenFundingNodes": 0
+    },
+    {
+      "kind": "document",
+      "route": "/dashboard/new-order",
+      "cls": 0,
+      "lcp": 452,
+      "ttfb": 72,
+      "jsBytes": 324051,
+      "requests": [
+        {
+          "url": "/_next/image",
+          "ms": 41.70000000298023,
+          "bytes": 858
+        },
+        {
+          "url": "/_next/image",
+          "ms": 35.70000000298023,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/css/ac0486cc709229b9.css",
+          "ms": 63,
+          "bytes": 63290
+        },
+        {
+          "url": "/_next/static/css/4df0daa92bdd2502.css",
+          "ms": 41.79999999701977,
+          "bytes": 2872
+        },
+        {
+          "url": "/_next/static/css/7becd8d73319cb82.css",
+          "ms": 43.70000000298023,
+          "bytes": 1528
+        },
+        {
+          "url": "/_next/static/chunks/webpack-dde33c37b97aae8c.js",
+          "ms": 55.599999994039536,
+          "bytes": 2805
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 89.79999999701977,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 95.40000000596046,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 66.70000000298023,
+          "bytes": 872
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 74.79999999701977,
+          "bytes": 2810
+        },
+        {
+          "url": "/_next/static/chunks/1864-aedc12059462991e.js",
+          "ms": 80.20000000298023,
+          "bytes": 13419
+        },
+        {
+          "url": "/_next/static/chunks/4223-60908bb67a0b940e.js",
+          "ms": 83.5,
+          "bytes": 6662
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 86.59999999403954,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/7094-987d6006cd990fcf.js",
+          "ms": 99.09999999403954,
+          "bytes": 5200
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-b4d7092a6578ae6b.js",
+          "ms": 98.1000000089407,
+          "bytes": 5748
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 112.3999999910593,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/53c13509-ae181d22eb1c0536.js",
+          "ms": 106.70000000298023,
+          "bytes": 1984
+        },
+        {
+          "url": "/_next/static/chunks/2619-04bc32f026a0d946.js",
+          "ms": 110.8999999910593,
+          "bytes": 3706
+        },
+        {
+          "url": "/_next/static/chunks/7896-a7de567b0d486029.js",
+          "ms": 116.70000000298023,
+          "bytes": 3280
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 157.09999999403954,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1356-adfdac4d495aab3e.js",
+          "ms": 122.20000000298023,
+          "bytes": 5549
+        },
+        {
+          "url": "/_next/static/chunks/1639-b96f0ef0d3c880e3.js",
+          "ms": 130.3999999910593,
+          "bytes": 3983
+        },
+        {
+          "url": "/_next/static/chunks/5232-42a12528801003a8.js",
+          "ms": 135.20000000298023,
+          "bytes": 3233
+        },
+        {
+          "url": "/_next/static/chunks/6497-d8475281a415613d.js",
+          "ms": 140.59999999403954,
+          "bytes": 2466
+        },
+        {
+          "url": "/_next/static/chunks/7381-f7fee5afdc8c70be.js",
+          "ms": 143.29999999701977,
+          "bytes": 4542
+        },
+        {
+          "url": "/_next/static/chunks/2262-570f8ff70d05eaed.js",
+          "ms": 146.79999999701977,
+          "bytes": 9061
+        },
+        {
+          "url": "/_next/static/chunks/8550-71e072c0c71c448f.js",
+          "ms": 158.40000000596046,
+          "bytes": 4098
+        },
+        {
+          "url": "/_next/static/chunks/app/page-696fff70c6789a73.js",
+          "ms": 164.6000000089407,
+          "bytes": 13234
+        },
+        {
+          "url": "/_next/static/chunks/5337-6966681bceeb68f7.js",
+          "ms": 199.79999999701977,
+          "bytes": 2637
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/page-0f83d890312fc022.js",
+          "ms": 203.29999999701977,
+          "bytes": 7558
+        },
+        {
+          "url": "/_next/static/chunks/4966-988575a50481abeb.js",
+          "ms": 211.09999999403954,
+          "bytes": 3712
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/new-order/page-59cbeb7d6e5fd4c2.js",
+          "ms": 220.40000000596046,
+          "bytes": 24522
+        },
+        {
+          "url": "/_next/static/chunks/8096-70f061926697f961.js",
+          "ms": 219.1000000089407,
+          "bytes": 2828
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/layout-f445cde01598c918.js",
+          "ms": 222.70000000298023,
+          "bytes": 13572
+        },
+        {
+          "url": "/api/notifications",
+          "ms": 32.5,
+          "bytes": 327
+        },
+        {
+          "url": "/",
+          "ms": 98.59999999403954,
+          "bytes": 17351
+        },
+        {
+          "url": "/dashboard",
+          "ms": 91.8999999910593,
+          "bytes": 427
+        },
+        {
+          "url": "/dashboard/orders",
+          "ms": 92.20000000298023,
+          "bytes": 450
+        },
+        {
+          "url": "/dashboard/packages",
+          "ms": 93.59999999403954,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/wallet",
+          "ms": 94.6000000089407,
+          "bytes": 451
+        },
+        {
+          "url": "/api/rewards/first-order-offer",
+          "ms": 85.40000000596046,
+          "bytes": 360
+        },
+        {
+          "url": "/dashboard/campaign-stacks",
+          "ms": 80.40000000596046,
+          "bytes": 446
+        },
+        {
+          "url": "/dashboard/retainers",
+          "ms": 80.5,
+          "bytes": 439
+        },
+        {
+          "url": "/_next/static/css/e5dea371d33290c4.css",
+          "ms": 140.20000000298023,
+          "bytes": 8211
+        },
+        {
+          "url": "/dashboard/reseller",
+          "ms": 77.5,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/campaigns",
+          "ms": 77.59999999403954,
+          "bytes": 440
+        },
+        {
+          "url": "/dashboard/clients",
+          "ms": 77.70000000298023,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/referrals",
+          "ms": 66,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/saved-profiles",
+          "ms": 68.8999999910593,
+          "bytes": 445
+        },
+        {
+          "url": "/dashboard/add-funds",
+          "ms": 69.30000001192093,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/account",
+          "ms": 69.09999999403954,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/support",
+          "ms": 69.29999999701977,
+          "bytes": 451
+        }
+      ],
+      "domNodes": 451,
+      "hiddenFundingNodes": 0
+    },
+    {
+      "kind": "document",
+      "route": "/dashboard/orders",
+      "cls": 0.06945973588605968,
+      "lcp": 748,
+      "ttfb": 42.599999994039536,
+      "jsBytes": 304421,
+      "requests": [
+        {
+          "url": "/_next/image",
+          "ms": 68.20000000298023,
+          "bytes": 858
+        },
+        {
+          "url": "/_next/image",
+          "ms": 70.30000001192093,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/css/ac0486cc709229b9.css",
+          "ms": 105.1000000089407,
+          "bytes": 63290
+        },
+        {
+          "url": "/_next/static/css/4df0daa92bdd2502.css",
+          "ms": 51.69999998807907,
+          "bytes": 2872
+        },
+        {
+          "url": "/_next/static/css/e0b7a7167663305a.css",
+          "ms": 57.5,
+          "bytes": 1633
+        },
+        {
+          "url": "/_next/static/chunks/webpack-dde33c37b97aae8c.js",
+          "ms": 65.8999999910593,
+          "bytes": 2805
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 108.5,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 123.5,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 107.29999999701977,
+          "bytes": 872
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 112.5,
+          "bytes": 2810
+        },
+        {
+          "url": "/_next/static/chunks/1864-aedc12059462991e.js",
+          "ms": 124.20000000298023,
+          "bytes": 13419
+        },
+        {
+          "url": "/_next/static/chunks/4223-60908bb67a0b940e.js",
+          "ms": 138.6000000089407,
+          "bytes": 6662
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 143.69999998807907,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/7094-987d6006cd990fcf.js",
+          "ms": 141,
+          "bytes": 5200
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-b4d7092a6578ae6b.js",
+          "ms": 144.09999999403954,
+          "bytes": 5748
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 151,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/53c13509-ae181d22eb1c0536.js",
+          "ms": 147,
+          "bytes": 1984
+        },
+        {
+          "url": "/_next/static/chunks/2619-04bc32f026a0d946.js",
+          "ms": 178.1000000089407,
+          "bytes": 3706
+        },
+        {
+          "url": "/_next/static/chunks/7896-a7de567b0d486029.js",
+          "ms": 212.1000000089407,
+          "bytes": 3280
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 246.80000001192093,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1356-adfdac4d495aab3e.js",
+          "ms": 215.6000000089407,
+          "bytes": 5549
+        },
+        {
+          "url": "/_next/static/chunks/1639-b96f0ef0d3c880e3.js",
+          "ms": 216.29999999701977,
+          "bytes": 3983
+        },
+        {
+          "url": "/_next/static/chunks/5232-42a12528801003a8.js",
+          "ms": 217.29999999701977,
+          "bytes": 3233
+        },
+        {
+          "url": "/_next/static/chunks/6497-d8475281a415613d.js",
+          "ms": 242.40000000596046,
+          "bytes": 2466
+        },
+        {
+          "url": "/_next/static/chunks/7381-f7fee5afdc8c70be.js",
+          "ms": 259.09999999403954,
+          "bytes": 4542
+        },
+        {
+          "url": "/_next/static/chunks/2262-570f8ff70d05eaed.js",
+          "ms": 262.1000000089407,
+          "bytes": 9061
+        },
+        {
+          "url": "/_next/static/chunks/8550-71e072c0c71c448f.js",
+          "ms": 263.3999999910593,
+          "bytes": 4098
+        },
+        {
+          "url": "/_next/static/chunks/app/page-696fff70c6789a73.js",
+          "ms": 266.40000000596046,
+          "bytes": 13234
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/orders/layout-715188efe6816551.js",
+          "ms": 277.20000000298023,
+          "bytes": 1304
+        },
+        {
+          "url": "/_next/static/chunks/9895-f94743ee6c708176.js",
+          "ms": 278.29999999701977,
+          "bytes": 2540
+        },
+        {
+          "url": "/_next/static/chunks/4966-988575a50481abeb.js",
+          "ms": 288.29999999701977,
+          "bytes": 3712
+        },
+        {
+          "url": "/_next/static/chunks/5634-621250c07b61a7c3.js",
+          "ms": 290.29999999701977,
+          "bytes": 5136
+        },
+        {
+          "url": "/_next/static/chunks/2979-1f7b3fe292905a97.js",
+          "ms": 302.80000001192093,
+          "bytes": 5577
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/orders/page-7a6ef4f2b4b10dda.js",
+          "ms": 297.1000000089407,
+          "bytes": 530
+        },
+        {
+          "url": "/_next/static/chunks/8096-70f061926697f961.js",
+          "ms": 303.79999999701977,
+          "bytes": 2828
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/layout-f445cde01598c918.js",
+          "ms": 307.70000000298023,
+          "bytes": 13572
+        },
+        {
+          "url": "/api/notifications",
+          "ms": 28.5,
+          "bytes": 327
+        },
+        {
+          "url": "/",
+          "ms": 71.79999999701977,
+          "bytes": 17351
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 68.6000000089407,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard",
+          "ms": 69.30000001192093,
+          "bytes": 427
+        },
+        {
+          "url": "/dashboard/packages",
+          "ms": 69.6000000089407,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/wallet",
+          "ms": 69.6000000089407,
+          "bytes": 451
+        },
+        {
+          "url": "/dashboard/campaign-stacks",
+          "ms": 99.1000000089407,
+          "bytes": 446
+        },
+        {
+          "url": "/_next/static/css/e5dea371d33290c4.css",
+          "ms": 112.20000000298023,
+          "bytes": 8211
+        },
+        {
+          "url": "/dashboard/retainers",
+          "ms": 97.90000000596046,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/reseller",
+          "ms": 98.59999999403954,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/campaigns",
+          "ms": 98.20000000298023,
+          "bytes": 440
+        },
+        {
+          "url": "/dashboard/clients",
+          "ms": 94.29999999701977,
+          "bytes": 438
+        },
+        {
+          "url": "/auth/v1/user",
+          "ms": 11.900000005960464,
+          "bytes": 0
+        },
+        {
+          "url": "/rest/v1/orders",
+          "ms": 6.0999999940395355,
+          "bytes": 0
+        },
+        {
+          "url": "/dashboard/referrals",
+          "ms": 106.29999999701977,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/saved-profiles",
+          "ms": 105.3999999910593,
+          "bytes": 445
+        },
+        {
+          "url": "/dashboard/add-funds",
+          "ms": 104.79999999701977,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/account",
+          "ms": 104.09999999403954,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/repeat-campaigns",
+          "ms": 47,
+          "bytes": 447
+        },
+        {
+          "url": "/dashboard/orders/55555555-5555-4555-8555-555555555555",
+          "ms": 34.70000000298023,
+          "bytes": 461
+        },
+        {
+          "url": "/dashboard/orders/66666666-6666-4666-8666-666666666666",
+          "ms": 34.20000000298023,
+          "bytes": 461
+        }
+      ],
+      "domNodes": 568,
+      "hiddenFundingNodes": 0
+    },
+    {
+      "kind": "document",
+      "route": "/dashboard/wallet",
+      "cls": 0,
+      "lcp": 1012,
+      "ttfb": 84.29999999701977,
+      "jsBytes": 314134,
+      "requests": [
+        {
+          "url": "/_next/image",
+          "ms": 24.599999994039536,
+          "bytes": 858
+        },
+        {
+          "url": "/_next/image",
+          "ms": 36.20000000298023,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/css/ac0486cc709229b9.css",
+          "ms": 45.30000001192093,
+          "bytes": 63290
+        },
+        {
+          "url": "/_next/static/css/4df0daa92bdd2502.css",
+          "ms": 37,
+          "bytes": 2872
+        },
+        {
+          "url": "/_next/static/css/0ecfbbcd4fc95768.css",
+          "ms": 37.8999999910593,
+          "bytes": 1591
+        },
+        {
+          "url": "/_next/static/chunks/webpack-dde33c37b97aae8c.js",
+          "ms": 56.70000000298023,
+          "bytes": 2805
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 92.70000000298023,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 89.70000000298023,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 67.90000000596046,
+          "bytes": 872
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 88.20000000298023,
+          "bytes": 2810
+        },
+        {
+          "url": "/_next/static/chunks/4223-60908bb67a0b940e.js",
+          "ms": 93.59999999403954,
+          "bytes": 6662
+        },
+        {
+          "url": "/_next/static/chunks/1864-aedc12059462991e.js",
+          "ms": 91.40000000596046,
+          "bytes": 13419
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 100.79999999701977,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/7094-987d6006cd990fcf.js",
+          "ms": 109.6000000089407,
+          "bytes": 5200
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-b4d7092a6578ae6b.js",
+          "ms": 108.79999999701977,
+          "bytes": 5748
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 113.90000000596046,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/53c13509-ae181d22eb1c0536.js",
+          "ms": 114.20000000298023,
+          "bytes": 1984
+        },
+        {
+          "url": "/_next/static/chunks/2619-04bc32f026a0d946.js",
+          "ms": 118.3999999910593,
+          "bytes": 3706
+        },
+        {
+          "url": "/_next/static/chunks/7896-a7de567b0d486029.js",
+          "ms": 119.59999999403954,
+          "bytes": 3280
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 157.59999999403954,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1356-adfdac4d495aab3e.js",
+          "ms": 124.5,
+          "bytes": 5549
+        },
+        {
+          "url": "/_next/static/chunks/1639-b96f0ef0d3c880e3.js",
+          "ms": 133.79999999701977,
+          "bytes": 3983
+        },
+        {
+          "url": "/_next/static/chunks/5232-42a12528801003a8.js",
+          "ms": 134.70000000298023,
+          "bytes": 3233
+        },
+        {
+          "url": "/_next/static/chunks/6497-d8475281a415613d.js",
+          "ms": 145.29999999701977,
+          "bytes": 2466
+        },
+        {
+          "url": "/_next/static/chunks/7381-f7fee5afdc8c70be.js",
+          "ms": 146.79999999701977,
+          "bytes": 4542
+        },
+        {
+          "url": "/_next/static/chunks/2262-570f8ff70d05eaed.js",
+          "ms": 154,
+          "bytes": 9061
+        },
+        {
+          "url": "/_next/static/chunks/8550-71e072c0c71c448f.js",
+          "ms": 154.79999999701977,
+          "bytes": 4098
+        },
+        {
+          "url": "/_next/static/chunks/app/page-696fff70c6789a73.js",
+          "ms": 159.40000000596046,
+          "bytes": 13234
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/wallet/page-71647349a2c86138.js",
+          "ms": 165.79999999701977,
+          "bytes": 14112
+        },
+        {
+          "url": "/_next/static/chunks/8096-70f061926697f961.js",
+          "ms": 168.70000000298023,
+          "bytes": 2828
+        },
+        {
+          "url": "/_next/static/chunks/3973-ff006e6e8082a20e.js",
+          "ms": 166.90000000596046,
+          "bytes": 14400
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/layout-f445cde01598c918.js",
+          "ms": 170.6000000089407,
+          "bytes": 13572
+        },
+        {
+          "url": "/api/notifications",
+          "ms": 26.69999998807907,
+          "bytes": 327
+        },
+        {
+          "url": "/",
+          "ms": 85.1000000089407,
+          "bytes": 17351
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 81.5,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard",
+          "ms": 82,
+          "bytes": 427
+        },
+        {
+          "url": "/dashboard/orders",
+          "ms": 82.40000000596046,
+          "bytes": 450
+        },
+        {
+          "url": "/dashboard/packages",
+          "ms": 83,
+          "bytes": 439
+        },
+        {
+          "url": "/_next/static/css/e5dea371d33290c4.css",
+          "ms": 85.29999999701977,
+          "bytes": 8211
+        },
+        {
+          "url": "/dashboard/campaign-stacks",
+          "ms": 90,
+          "bytes": 446
+        },
+        {
+          "url": "/dashboard/retainers",
+          "ms": 113.09999999403954,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/reseller",
+          "ms": 114.20000000298023,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/campaigns",
+          "ms": 113.90000000596046,
+          "bytes": 440
+        },
+        {
+          "url": "/dashboard/clients",
+          "ms": 105.59999999403954,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/referrals",
+          "ms": 102.29999999701977,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/saved-profiles",
+          "ms": 100.3999999910593,
+          "bytes": 445
+        },
+        {
+          "url": "/dashboard/add-funds",
+          "ms": 99.59999999403954,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/account",
+          "ms": 98.40000000596046,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/support",
+          "ms": 97.09999999403954,
+          "bytes": 479
+        }
+      ],
+      "domNodes": 893,
+      "hiddenFundingNodes": 169
+    },
+    {
+      "kind": "document",
+      "route": "/dashboard/billing",
+      "cls": 0,
+      "lcp": 544,
+      "ttfb": 37.400000005960464,
+      "jsBytes": 304722,
+      "requests": [
+        {
+          "url": "/_next/image",
+          "ms": 29.200000002980232,
+          "bytes": 858
+        },
+        {
+          "url": "/_next/image",
+          "ms": 36.900000005960464,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/css/ac0486cc709229b9.css",
+          "ms": 47.599999994039536,
+          "bytes": 63290
+        },
+        {
+          "url": "/_next/static/css/4df0daa92bdd2502.css",
+          "ms": 32.6000000089407,
+          "bytes": 2872
+        },
+        {
+          "url": "/_next/static/chunks/webpack-dde33c37b97aae8c.js",
+          "ms": 54.70000000298023,
+          "bytes": 2805
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 81.70000000298023,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 83,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 56.8999999910593,
+          "bytes": 872
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 58.599999994039536,
+          "bytes": 2810
+        },
+        {
+          "url": "/_next/static/chunks/1864-aedc12059462991e.js",
+          "ms": 67.90000000596046,
+          "bytes": 13419
+        },
+        {
+          "url": "/_next/static/chunks/4223-60908bb67a0b940e.js",
+          "ms": 74.1000000089407,
+          "bytes": 6662
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 81.5,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/7094-987d6006cd990fcf.js",
+          "ms": 78,
+          "bytes": 5200
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-b4d7092a6578ae6b.js",
+          "ms": 88.70000000298023,
+          "bytes": 5748
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 91.90000000596046,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/53c13509-ae181d22eb1c0536.js",
+          "ms": 94.59999999403954,
+          "bytes": 1984
+        },
+        {
+          "url": "/_next/static/chunks/2619-04bc32f026a0d946.js",
+          "ms": 98.6000000089407,
+          "bytes": 3706
+        },
+        {
+          "url": "/_next/static/chunks/7896-a7de567b0d486029.js",
+          "ms": 100.09999999403954,
+          "bytes": 3280
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 136.90000000596046,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1356-adfdac4d495aab3e.js",
+          "ms": 104.70000000298023,
+          "bytes": 5549
+        },
+        {
+          "url": "/_next/static/chunks/1639-b96f0ef0d3c880e3.js",
+          "ms": 113.8999999910593,
+          "bytes": 3983
+        },
+        {
+          "url": "/_next/static/chunks/5232-42a12528801003a8.js",
+          "ms": 117.79999999701977,
+          "bytes": 3233
+        },
+        {
+          "url": "/_next/static/chunks/6497-d8475281a415613d.js",
+          "ms": 129.5,
+          "bytes": 2466
+        },
+        {
+          "url": "/_next/static/chunks/7381-f7fee5afdc8c70be.js",
+          "ms": 134.40000000596046,
+          "bytes": 4542
+        },
+        {
+          "url": "/_next/static/chunks/2262-570f8ff70d05eaed.js",
+          "ms": 141.70000000298023,
+          "bytes": 9061
+        },
+        {
+          "url": "/_next/static/chunks/8550-71e072c0c71c448f.js",
+          "ms": 153.1000000089407,
+          "bytes": 4098
+        },
+        {
+          "url": "/_next/static/chunks/app/page-696fff70c6789a73.js",
+          "ms": 155.20000000298023,
+          "bytes": 13234
+        },
+        {
+          "url": "/_next/static/chunks/5337-6966681bceeb68f7.js",
+          "ms": 160,
+          "bytes": 2637
+        },
+        {
+          "url": "/_next/static/chunks/8096-70f061926697f961.js",
+          "ms": 161.59999999403954,
+          "bytes": 2828
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/page-0f83d890312fc022.js",
+          "ms": 162.29999999701977,
+          "bytes": 7558
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/billing/page-37f861a22cd3fc75.js",
+          "ms": 170.80000001192093,
+          "bytes": 8905
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/layout-f445cde01598c918.js",
+          "ms": 169.5,
+          "bytes": 13572
+        },
+        {
+          "url": "/api/notifications",
+          "ms": 26.700000002980232,
+          "bytes": 327
+        },
+        {
+          "url": "/",
+          "ms": 80.40000000596046,
+          "bytes": 17351
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 76.90000000596046,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard",
+          "ms": 77.1000000089407,
+          "bytes": 427
+        },
+        {
+          "url": "/dashboard/orders",
+          "ms": 77.20000000298023,
+          "bytes": 450
+        },
+        {
+          "url": "/dashboard/packages",
+          "ms": 77.19999998807907,
+          "bytes": 439
+        },
+        {
+          "url": "/_next/static/css/e5dea371d33290c4.css",
+          "ms": 86.09999999403954,
+          "bytes": 8211
+        },
+        {
+          "url": "/dashboard/wallet",
+          "ms": 89.70000000298023,
+          "bytes": 451
+        },
+        {
+          "url": "/dashboard/campaign-stacks",
+          "ms": 89.70000000298023,
+          "bytes": 446
+        },
+        {
+          "url": "/dashboard/retainers",
+          "ms": 88.79999999701977,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/reseller",
+          "ms": 88.40000000596046,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/campaigns",
+          "ms": 88.20000000298023,
+          "bytes": 440
+        },
+        {
+          "url": "/dashboard/clients",
+          "ms": 59,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/referrals",
+          "ms": 53.79999999701977,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/saved-profiles",
+          "ms": 52.70000000298023,
+          "bytes": 445
+        },
+        {
+          "url": "/dashboard/add-funds",
+          "ms": 52.70000000298023,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/account",
+          "ms": 52.29999999701977,
+          "bytes": 438
+        }
+      ],
+      "domNodes": 502,
+      "hiddenFundingNodes": 0
+    },
+    {
+      "kind": "document",
+      "route": "/dashboard/packages",
+      "cls": 0,
+      "lcp": 400,
+      "ttfb": 89.40000000596046,
+      "jsBytes": 308192,
+      "requests": [
+        {
+          "url": "/_next/image",
+          "ms": 30.5,
+          "bytes": 858
+        },
+        {
+          "url": "/_next/image",
+          "ms": 36,
+          "bytes": 9521
+        },
+        {
+          "url": "/_next/static/css/ac0486cc709229b9.css",
+          "ms": 44.5,
+          "bytes": 63290
+        },
+        {
+          "url": "/_next/static/css/4df0daa92bdd2502.css",
+          "ms": 32,
+          "bytes": 2872
+        },
+        {
+          "url": "/_next/static/css/e5dea371d33290c4.css",
+          "ms": 32,
+          "bytes": 8211
+        },
+        {
+          "url": "/_next/static/chunks/webpack-dde33c37b97aae8c.js",
+          "ms": 56.599999994039536,
+          "bytes": 2805
+        },
+        {
+          "url": "/_next/static/chunks/4bd1b696-100b9d70ed4e49c1.js",
+          "ms": 83.90000000596046,
+          "bytes": 54664
+        },
+        {
+          "url": "/_next/static/chunks/1255-0046eeb68b7d2d4d.js",
+          "ms": 82.5,
+          "bytes": 46516
+        },
+        {
+          "url": "/_next/static/chunks/main-app-f8c4bb2b341af43f.js",
+          "ms": 61.400000005960464,
+          "bytes": 872
+        },
+        {
+          "url": "/_next/static/chunks/8e1d74a4-487d271e19d21cff.js",
+          "ms": 64.30000001192093,
+          "bytes": 2810
+        },
+        {
+          "url": "/_next/static/chunks/1864-aedc12059462991e.js",
+          "ms": 73,
+          "bytes": 13419
+        },
+        {
+          "url": "/_next/static/chunks/4223-60908bb67a0b940e.js",
+          "ms": 72.5,
+          "bytes": 6662
+        },
+        {
+          "url": "/_next/static/chunks/7865-7493125ea4fd9335.js",
+          "ms": 81.70000000298023,
+          "bytes": 10550
+        },
+        {
+          "url": "/_next/static/chunks/7094-987d6006cd990fcf.js",
+          "ms": 86.79999999701977,
+          "bytes": 5200
+        },
+        {
+          "url": "/_next/static/chunks/app/layout-b4d7092a6578ae6b.js",
+          "ms": 90.90000000596046,
+          "bytes": 5748
+        },
+        {
+          "url": "/_next/static/chunks/44530001-699706df5f232cb6.js",
+          "ms": 98.09999999403954,
+          "bytes": 13578
+        },
+        {
+          "url": "/_next/static/chunks/53c13509-ae181d22eb1c0536.js",
+          "ms": 105,
+          "bytes": 1984
+        },
+        {
+          "url": "/_next/static/chunks/2619-04bc32f026a0d946.js",
+          "ms": 107.5,
+          "bytes": 3706
+        },
+        {
+          "url": "/_next/static/chunks/7896-a7de567b0d486029.js",
+          "ms": 108.6000000089407,
+          "bytes": 3280
+        },
+        {
+          "url": "/_next/static/chunks/1159-68810b618e0de89e.js",
+          "ms": 133.29999999701977,
+          "bytes": 51262
+        },
+        {
+          "url": "/_next/static/chunks/1356-adfdac4d495aab3e.js",
+          "ms": 112.90000000596046,
+          "bytes": 5549
+        },
+        {
+          "url": "/_next/static/chunks/1639-b96f0ef0d3c880e3.js",
+          "ms": 118.5,
+          "bytes": 3983
+        },
+        {
+          "url": "/_next/static/chunks/5232-42a12528801003a8.js",
+          "ms": 128.09999999403954,
+          "bytes": 3233
+        },
+        {
+          "url": "/_next/static/chunks/6497-d8475281a415613d.js",
+          "ms": 130.29999999701977,
+          "bytes": 2466
+        },
+        {
+          "url": "/_next/static/chunks/7381-f7fee5afdc8c70be.js",
+          "ms": 133.20000000298023,
+          "bytes": 4542
+        },
+        {
+          "url": "/_next/static/chunks/8550-71e072c0c71c448f.js",
+          "ms": 139.5,
+          "bytes": 4098
+        },
+        {
+          "url": "/_next/static/chunks/2262-570f8ff70d05eaed.js",
+          "ms": 137.09999999403954,
+          "bytes": 9061
+        },
+        {
+          "url": "/_next/static/chunks/app/page-696fff70c6789a73.js",
+          "ms": 148.29999999701977,
+          "bytes": 13234
+        },
+        {
+          "url": "/_next/static/chunks/5337-6966681bceeb68f7.js",
+          "ms": 150.90000000596046,
+          "bytes": 2637
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/page-0f83d890312fc022.js",
+          "ms": 153,
+          "bytes": 7558
+        },
+        {
+          "url": "/_next/static/chunks/4966-988575a50481abeb.js",
+          "ms": 156.59999999403954,
+          "bytes": 3712
+        },
+        {
+          "url": "/_next/static/chunks/5288-f4ba0002fd93f4b0.js",
+          "ms": 160.09999999403954,
+          "bytes": 8097
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/packages/page-a680a129ab502f0e.js",
+          "ms": 158.29999999701977,
+          "bytes": 566
+        },
+        {
+          "url": "/_next/static/chunks/8096-70f061926697f961.js",
+          "ms": 162.70000000298023,
+          "bytes": 2828
+        },
+        {
+          "url": "/_next/static/chunks/app/dashboard/layout-f445cde01598c918.js",
+          "ms": 164.69999998807907,
+          "bytes": 13572
+        },
+        {
+          "url": "/api/notifications",
+          "ms": 24.899999991059303,
+          "bytes": 327
+        },
+        {
+          "url": "/",
+          "ms": 90.70000000298023,
+          "bytes": 17351
+        },
+        {
+          "url": "/dashboard/new-order",
+          "ms": 86.3999999910593,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard",
+          "ms": 85.70000000298023,
+          "bytes": 427
+        },
+        {
+          "url": "/dashboard/orders",
+          "ms": 86.29999999701977,
+          "bytes": 450
+        },
+        {
+          "url": "/dashboard/wallet",
+          "ms": 86.5,
+          "bytes": 451
+        },
+        {
+          "url": "/auth/v1/user",
+          "ms": 6.0999999940395355,
+          "bytes": 0
+        },
+        {
+          "url": "/rest/v1/profiles",
+          "ms": 5.799999997019768,
+          "bytes": 0
+        },
+        {
+          "url": "/dashboard/campaign-stacks",
+          "ms": 75.8999999910593,
+          "bytes": 446
+        },
+        {
+          "url": "/dashboard/retainers",
+          "ms": 77.5,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/reseller",
+          "ms": 77.20000000298023,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/campaigns",
+          "ms": 79.6000000089407,
+          "bytes": 440
+        },
+        {
+          "url": "/dashboard/clients",
+          "ms": 95.70000000298023,
+          "bytes": 438
+        },
+        {
+          "url": "/dashboard/referrals",
+          "ms": 87,
+          "bytes": 439
+        },
+        {
+          "url": "/dashboard/saved-profiles",
+          "ms": 86.5,
+          "bytes": 445
+        },
+        {
+          "url": "/dashboard/add-funds",
+          "ms": 86.69999998807907,
+          "bytes": 452
+        },
+        {
+          "url": "/dashboard/account",
+          "ms": 86.70000000298023,
+          "bytes": 438
+        }
+      ],
+      "domNodes": 457,
+      "hiddenFundingNodes": 0
+    },
+    {
+      "kind": "transition",
+      "run": 0,
+      "route": "/dashboard",
+      "ms": 535.6987000000008
+    },
+    {
+      "kind": "transition",
+      "run": 0,
+      "route": "/dashboard/new-order",
+      "ms": 519.2090000000026
+    },
+    {
+      "kind": "transition",
+      "run": 0,
+      "route": "/dashboard/orders",
+      "ms": 545.1604000000007
+    },
+    {
+      "kind": "transition",
+      "run": 0,
+      "route": "/dashboard/wallet",
+      "ms": 541.0414999999994
+    },
+    {
+      "kind": "transition",
+      "run": 0,
+      "route": "/dashboard/billing",
+      "ms": 1067.927499999998
+    },
+    {
+      "kind": "transition",
+      "run": 0,
+      "route": "/dashboard/packages",
+      "ms": 537.0725999999995
+    },
+    {
+      "kind": "transition",
+      "run": 1,
+      "route": "/dashboard",
+      "ms": 937.5238000000027
+    },
+    {
+      "kind": "transition",
+      "run": 1,
+      "route": "/dashboard/new-order",
+      "ms": 270.1212999999989
+    },
+    {
+      "kind": "transition",
+      "run": 1,
+      "route": "/dashboard/orders",
+      "ms": 211.2439000000013
+    },
+    {
+      "kind": "transition",
+      "run": 1,
+      "route": "/dashboard/wallet",
+      "ms": 971.3126000000047
+    },
+    {
+      "kind": "transition",
+      "run": 1,
+      "route": "/dashboard/billing",
+      "ms": 202.1024000000034
+    },
+    {
+      "kind": "transition",
+      "run": 1,
+      "route": "/dashboard/packages",
+      "ms": 1014.585500000001
+    },
+    {
+      "kind": "transition",
+      "run": 2,
+      "route": "/dashboard",
+      "ms": 999.0882999999958
+    },
+    {
+      "kind": "transition",
+      "run": 2,
+      "route": "/dashboard/new-order",
+      "ms": 333.7980000000025
+    },
+    {
+      "kind": "transition",
+      "run": 2,
+      "route": "/dashboard/orders",
+      "ms": 204.63930000000255
+    },
+    {
+      "kind": "transition",
+      "run": 2,
+      "route": "/dashboard/wallet",
+      "ms": 997.3130999999994
+    },
+    {
+      "kind": "transition",
+      "run": 2,
+      "route": "/dashboard/billing",
+      "ms": 289.08179999999993
+    },
+    {
+      "kind": "transition",
+      "run": 2,
+      "route": "/dashboard/packages",
+      "ms": 1022.7027000000016
+    },
+    {
+      "kind": "transition",
+      "run": 3,
+      "route": "/dashboard",
+      "ms": 465.5356000000029
+    },
+    {
+      "kind": "transition",
+      "run": 3,
+      "route": "/dashboard/new-order",
+      "ms": 180.39869999999792
+    },
+    {
+      "kind": "transition",
+      "run": 3,
+      "route": "/dashboard/orders",
+      "ms": 206.73049999999785
+    },
+    {
+      "kind": "transition",
+      "run": 3,
+      "route": "/dashboard/wallet",
+      "ms": 548.7304000000004
+    },
+    {
+      "kind": "transition",
+      "run": 3,
+      "route": "/dashboard/billing",
+      "ms": 246.89830000000075
+    },
+    {
+      "kind": "transition",
+      "run": 3,
+      "route": "/dashboard/packages",
+      "ms": 996.1181999999972
+    },
+    {
+      "kind": "transition",
+      "run": 4,
+      "route": "/dashboard",
+      "ms": 1006.9945000000007
+    },
+    {
+      "kind": "transition",
+      "run": 4,
+      "route": "/dashboard/new-order",
+      "ms": 246.69199999999546
+    },
+    {
+      "kind": "transition",
+      "run": 4,
+      "route": "/dashboard/orders",
+      "ms": 216.53859999999986
+    },
+    {
+      "kind": "transition",
+      "run": 4,
+      "route": "/dashboard/wallet",
+      "ms": 1017.6293000000005
+    },
+    {
+      "kind": "transition",
+      "run": 4,
+      "route": "/dashboard/billing",
+      "ms": 246.09550000000309
+    },
+    {
+      "kind": "transition",
+      "run": 4,
+      "route": "/dashboard/packages",
+      "ms": 978.6296000000002
+    }
+  ]
+}

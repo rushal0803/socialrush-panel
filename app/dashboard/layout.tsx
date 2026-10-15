@@ -9,6 +9,7 @@ import DirectUpiCheckoutBridge from "@/components/dashboard/DirectUpiCheckoutBri
 import AbandonedCheckoutRecovery from "@/components/dashboard/AbandonedCheckoutRecovery";
 import CheckoutFunnelTracker from "@/components/analytics/CheckoutFunnelTracker";
 import styles from "@/components/dashboard/PremiumWorkspace.module.css";
+import DashboardBalanceProvider from "@/components/dashboard/DashboardBalanceProvider";
 
 export const metadata: Metadata = {
   robots: { index: false, follow: false },
@@ -37,14 +38,14 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
   if (context.profile.is_blocked) redirect("/login?error=account_blocked");
 
   return (
-    <div className={`dashboard-shell relative flex min-h-screen ${styles.workspace}`}>
+    <DashboardBalanceProvider userId={context.user.id} initialBalance={Number(context.profile.balance)}><div className={`dashboard-shell relative flex min-h-screen ${styles.workspace}`}>
       <a
         href="#dashboard-main-content"
         className="sr-only z-[100000] rounded-sr-control bg-sr-brand px-4 py-3 font-bold text-white shadow-sr-button focus:not-sr-only focus:fixed focus:left-4 focus:top-4"
       >
         Skip to dashboard content
       </a>
-      <Sidebar initialBalance={context.profile.balance} userId={context.user.id} />
+      <Sidebar initialBalance={context.profile.balance} />
       <div className="min-w-0 flex-1">
         <Header email={context.user.email || ""} fullName={context.profile.full_name} role={context.profile.role} balance={Number(context.profile.balance ?? 0)} />
         <DirectUpiCheckoutBridge />
@@ -55,6 +56,6 @@ export default async function DashboardLayout({ children }: Readonly<{ children:
         </div>
         <MobileBottomNav />
       </div>
-    </div>
+    </div></DashboardBalanceProvider>
   );
 }

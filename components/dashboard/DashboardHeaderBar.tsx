@@ -13,6 +13,7 @@ import Logo, { BrandMark } from "@/components/Logo";
 import { currencies } from "@/lib/currency";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
+import { useDashboardBalance } from "./DashboardBalanceProvider";
 
 function CurrencySelector() {
   const { currency, setCurrency } = usePreferredCurrency("INR");
@@ -94,6 +95,7 @@ function CurrencySelector() {
 }
 
 export default function DashboardHeaderBar({ name, role, initials, balance }: { name: string; role: string; initials: string; balance: number }) {
+  const currentBalance = useDashboardBalance(balance);
   const { currency, rates } = usePreferredCurrency("INR");
   const pathname = usePathname();
   const query = useSearchParams().toString();
@@ -112,7 +114,7 @@ export default function DashboardHeaderBar({ name, role, initials, balance }: { 
 
           <Link href="/dashboard/wallet" className="hidden min-h-11 shrink-0 items-center gap-2 rounded-xl border border-white/[.1] bg-white/[.035] px-3 text-left transition hover:border-orange-400/35 hover:bg-orange-500/[.08] md:inline-flex">
             <Wallet className="h-4 w-4 text-[#ff9a2e]" />
-            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#a8afbd]">Wallet ({currency})</span><span className="block text-sm font-extrabold tabular-nums text-white">{formatCurrency(balance, currency, rates)}</span></span>
+            <span><span className="block text-[9px] font-bold uppercase tracking-[.12em] text-[#a8afbd]">Wallet ({currency})</span><span className="block text-sm font-extrabold tabular-nums text-white">{formatCurrency(currentBalance, currency, rates)}</span></span>
           </Link>
           <Link
             href="/dashboard/add-funds"

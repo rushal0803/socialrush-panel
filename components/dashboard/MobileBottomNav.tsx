@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import DashboardNavLink from "./DashboardNavLink";
 import { usePathname, useSearchParams } from "next/navigation";
 import { Home, PlusCircle, ReceiptText, WalletCards, UserRound } from "lucide-react";
 import { isDashboardLinkActive } from "@/lib/dashboard/navigation";
@@ -30,17 +30,17 @@ export default function MobileBottomNav() {
           const active = isDashboardLinkActive(pathname, href, query);
           const order = href === "/dashboard/new-order";
           return (
-            <Link
+            <DashboardNavLink
               key={href}
               href={href}
               aria-current={active ? "page" : undefined}
-              className={`flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-0.5 text-[10px] font-semibold leading-tight transition-colors motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 ${active
+              className={`relative flex min-h-14 min-w-0 flex-col items-center justify-center gap-1 rounded-xl px-0.5 text-[10px] font-semibold leading-tight transition-colors motion-reduce:transition-none focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300 ${active
                 ? "bg-orange-400/[.13] text-orange-200"
                 : order ? "text-orange-300 hover:bg-orange-400/[.08]" : "text-slate-400 hover:bg-white/[.06] hover:text-white"}`}
             >
               <Icon className="h-5 w-5 shrink-0" aria-hidden="true" />
               <span className="max-w-full truncate">{label}</span>
-            </Link>
+            </DashboardNavLink>
           );
         })}
       </div>

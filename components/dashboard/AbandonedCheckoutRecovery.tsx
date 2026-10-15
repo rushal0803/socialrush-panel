@@ -20,9 +20,11 @@ export default function AbandonedCheckoutRecovery() {
   useEffect(() => {
     if (hidden) return;
     let newest: Candidate | null = null;
-    for (let i = 0; i < sessionStorage.length; i += 1) {
-      const key = sessionStorage.key(i);
-      if (!key) continue;
+    // Snapshot keys before pruning expired records, so deletion cannot skip one.
+    let keys: string[];
+    try { keys = Object.keys(sessionStorage); } catch { return; }
+    for (const key of keys) {
+      if (!key.startsWith(LEGACY_PREFIX) && !key.startsWith(DIRECT_PREFIX)) continue;
       try {
         const raw = sessionStorage.getItem(key);
         if (!raw) continue;

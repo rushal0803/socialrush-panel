@@ -856,3 +856,47 @@ for (const width of widths) {
     }
   });
 }
+
+
+test("dashboard wallet details trap focus and preserve unverified status", async ({ page, context, baseURL }) => {
+  test.setTimeout(60000);
+  test.skip(process.env.DASHBOARD_UPGRADE_AUDIT !== "1", "Requires customer fixtures");
+  await authenticate(context, baseURL!);
+  await page.setViewportSize({width:390,height:740});
+  await page.goto("/dashboard/wallet");
+  await expect(page.locator("#add-funds")).toHaveCount(0);
+  const row=page.locator("#transactions article:visible").filter({hasText:/pending/i});
+  const trigger=row.getByRole("button",{name:"View Details",exact:true});
+  await trigger.click();
+  const dialog=page.getByRole("dialog",{name:"Transaction Details",exact:true});
+  await expect(dialog).toBeVisible();
+  await expect(dialog.getByText("No completed wallet impact",{exact:true})).toBeVisible();
+  await expect(dialog.getByRole("button",{name:"Close transaction details"})).toBeFocused();
+  for(let i=0;i<8;i++){await page.keyboard.press(i<4?"Tab":"Shift+Tab");await expect.poll(()=>dialog.evaluate(el=>el.contains(document.activeElement))).toBe(true);}
+  await page.keyboard.press("Escape");
+  await expect(dialog).toHaveCount(0);
+  await expect(trigger).toBeFocused();
+  await expect.poll(()=>page.evaluate(()=>document.body.style.position)).not.toBe("fixed");
+  await page.route("**/api/payments/cashfree/verify",route=>route.fulfill({json:{data:{status:"pending",balance:null}}}));
+  await page.goto("/dashboard/wallet?cashfree_order_id=fixture-pending");
+  await expect(page.locator("main").getByRole("alert")).toContainText("still being verified");
+  await expect(page.getByText("Payment successful",{exact:true})).toHaveCount(0);
+});
+
+test("dashboard shell shares balance updates without browser order loading", async ({ page, context, baseURL }) => {
+  test.setTimeout(60000);
+  test.skip(process.env.DASHBOARD_UPGRADE_AUDIT !== "1", "Requires customer fixtures");
+  await authenticate(context, baseURL!);
+  await page.setViewportSize({width:1440,height:900});
+  let orderReads=0;
+  page.on("request",request=>{if(request.url().includes("/rest/v1/orders"))orderReads++;});
+  await page.goto("/dashboard/orders");
+  await expect(page.getByRole("heading",{name:"Your campaigns",exact:true})).toBeVisible();
+  await expect(page.locator("main").getByRole("link",{name:"View Details",exact:true})).toHaveCount(2);
+  await page.getByRole("button",{name:"Currency: INR"}).click();
+  await page.keyboard.press("Escape");
+  await page.evaluate(()=>window.dispatchEvent(new CustomEvent("wallet-balance-updated",{detail:1234.5})));
+  await expect(page.locator("header").getByRole("link",{name:/Wallet \(INR\)/})).toContainText("1,234.50");
+  await expect(page.locator("aside")).toContainText("1,234.50");
+  expect(orderReads).toBe(0);
+});
