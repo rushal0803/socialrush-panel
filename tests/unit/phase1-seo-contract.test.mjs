@@ -45,9 +45,9 @@ test("legacy commercial URLs redirect and apex host resolves to www", () => {
 test("dynamic tool and comparison pages declare self canonicals and safe JSON-LD", () => {
   const toolPage = read("app/tools/[slug]/page.tsx");
   const comparisonPage = read("app/compare/[competitor]/page.tsx");
-  assert.match(toolPage, /path: `\\/tools\\/\\$\\{tool\\.slug\\}`/);
-  assert.match(comparisonPage, /path:`\\/compare\\/\\$\\{c\\.slug\\}`/);
+  assert.ok(toolPage.includes("path: `/tools/${tool.slug}`"));
+  assert.ok(comparisonPage.includes("path:`/compare/${c.slug}`"));
   assert.ok(toolPage.includes('JSON.stringify(schema).replace(/</g, "\\\\u003c")'));
-  assert.match(toolPage, /if \\(!tool\\) notFound\\(\\)/);
-  assert.match(comparisonPage, /if\\(!comparisonSlugs\\.includes\\(params\\.competitor/);
+  assert.ok(toolPage.includes("if (!tool) notFound()"));
+  assert.ok(comparisonPage.includes("if(!comparisonSlugs.includes(params.competitor"));
 });
