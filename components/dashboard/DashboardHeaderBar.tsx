@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ChevronDown, Wallet } from "lucide-react";
-import { useEffect, useMemo, useRef, useState } from "react";
+
 import { usePathname, useSearchParams } from "next/navigation";
 import { dashboardLinks, isDashboardLinkActive } from "@/lib/dashboard/navigation";
 import styles from "@/components/dashboard/PremiumWorkspace.module.css";
@@ -17,80 +17,24 @@ import { useDashboardBalance } from "./DashboardBalanceProvider";
 
 function CurrencySelector() {
   const { currency, setCurrency } = usePreferredCurrency("INR");
-  const [open, setOpen] = useState(false);
-  const rootRef = useRef<HTMLDivElement>(null);
-
-  const options = useMemo(
-    () => currencies.map(({ code, symbol }) => ({ code, symbol })),
-    [],
-  );
-
-  useEffect(() => {
-    const handlePointerDown = (event: MouseEvent) => {
-      if (!rootRef.current?.contains(event.target as Node)) {
-        setOpen(false);
-      }
-    };
-
-    const handleEscape = (event: KeyboardEvent) => {
-      if (event.key === "Escape") setOpen(false);
-    };
-
-    window.addEventListener("mousedown", handlePointerDown);
-    window.addEventListener("keydown", handleEscape);
-
-    return () => {
-      window.removeEventListener("mousedown", handlePointerDown);
-      window.removeEventListener("keydown", handleEscape);
-    };
-  }, []);
-
-  const active = options.find((item) => item.code === currency) || options[0];
 
   return (
-    <div ref={rootRef} className="relative shrink-0">
-      <button
-        type="button"
-        onClick={() => setOpen((value) => !value)}
-        aria-expanded={open}
-        aria-haspopup="menu"
-        aria-label={`Currency: ${active.code}`}
-        className="inline-flex h-11 min-w-11 items-center justify-center gap-1.5 rounded-xl border border-orange-400/25 bg-white/[.06] px-2 text-sm font-bold text-white shadow-[0_10px_24px_rgba(0,0,0,.3)] transition hover:-translate-y-0.5 hover:bg-orange-400/10 min-[360px]:px-3 sm:px-3.5"
+    <label className="relative inline-flex h-11 shrink-0 items-center rounded-xl border border-white/15 bg-white/[.04] text-sm font-semibold text-white focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-orange-300">
+      <span className="sr-only">Display currency</span>
+      <select
+        value={currency}
+        onChange={(event) => setCurrency(event.target.value as typeof currency)}
+        className="h-full w-12 min-w-0 appearance-none rounded-xl bg-transparent py-2 pl-2 pr-2 text-base text-white outline-none min-[360px]:w-20 min-[360px]:pr-6 sm:w-24 min-[360px]:pl-3 sm:text-sm"
+        aria-label="Display currency"
+        aria-describedby="dashboard-currency-help"
       >
-        <span className="min-[360px]:hidden">{active.symbol}</span>
-        <span className="hidden min-[360px]:inline lg:hidden">{active.symbol} {active.code}</span>
-        <span className="hidden lg:inline-flex items-center gap-2">
-          <span className="text-[10px] font-black uppercase tracking-[0.14em] text-[#9CA3AF]">Currency:</span>
-          <span>{active.code} {active.symbol}</span>
-        </span>
-        <ChevronDown className="hidden h-4 w-4 text-[#9CA3AF] min-[360px]:block" />
-      </button>
-
-      {open ? (
-        <div className="absolute right-0 top-full z-[80] mt-2 w-56 overflow-hidden rounded-2xl border border-orange-400/25 bg-[#111111]/95 p-2 shadow-[0_24px_60px_-26px_rgba(0,0,0,.8)] backdrop-blur-xl">
-          <p className="px-3 pb-2 pt-1 text-[10px] font-black uppercase tracking-[0.16em] text-[#A8AFBD]">Select currency</p>
-          <div className="grid gap-1">
-            {options.map((option) => {
-              const selected = option.code === currency;
-              return (
-                <button
-                  key={option.code}
-                  type="button"
-                  onClick={() => {
-                    setCurrency(option.code);
-                    setOpen(false);
-                  }}
-                  className={`flex items-center justify-between rounded-xl px-3 py-2.5 text-left text-sm font-semibold transition ${selected ? "bg-gradient-to-r from-[#FF7A00] to-[#FFB000] text-white" : "text-slate-300 hover:bg-orange-400/10 hover:text-white"}`}
-                >
-                  <span>{option.code}</span>
-                  <span className={`text-right font-black ${selected ? "text-[#0B0B0F]" : "text-[#D7DBE3]"}`}>{option.symbol}</span>
-                </button>
-              );
-            })}
-          </div>
-        </div>
-      ) : null}
-    </div>
+        {currencies.map(({ code, name }) => (
+          <option key={code} value={code} aria-label={`${code}: ${name}`} className="bg-[#12151d] text-white">{code}</option>
+        ))}
+      </select>
+      <ChevronDown aria-hidden="true" className="pointer-events-none absolute right-1.5 hidden h-3.5 w-3.5 text-slate-400 min-[360px]:block" />
+      <span id="dashboard-currency-help" className="sr-only">Display preference only. Wallet ledger and payments remain in INR.</span>
+    </label>
   );
 }
 
