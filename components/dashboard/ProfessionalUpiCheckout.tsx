@@ -83,7 +83,7 @@ export default function ProfessionalUpiCheckout() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const upiId = MANUAL_UPI_ID;
+  const upiId = process.env.NEXT_PUBLIC_UPI_ID?.trim() ? MANUAL_UPI_ID : "";
   const payeeName = MANUAL_UPI_PAYEE_NAME;
 
   const snapshot = useMemo<OrderSnapshot | null>(() => {
