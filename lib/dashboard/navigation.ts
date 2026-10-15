@@ -5,7 +5,7 @@ export const dashboardLinks:readonly DashboardNavigationItem[]=[
 {label:"Wallet",href:"/dashboard/wallet",icon:"wallet",group:"Main"},{label:"Billing",href:"/dashboard/billing",icon:"receipt",group:"Money"},{label:"Notifications",href:"/dashboard/notifications",icon:"bell",group:"Account"},{label:"Account",href:"/dashboard/account",icon:"settings",group:"Account"},{label:"Settings",href:"/dashboard/settings",icon:"settings",group:"Account"},{label:"Rewards",href:"/dashboard/rewards",icon:"gift",group:"Money"},{label:"Repeat Campaigns",href:"/dashboard/repeat-campaigns",icon:"campaign",group:"Workspace"},{label:"Your Reviews",href:"/dashboard/reviews",icon:"heart",group:"Account"},{label:"API Documentation",href:"/dashboard/api-docs",icon:"orders",group:"Help"},{label:"Support",href:"/dashboard/support",icon:"support",group:"Help"}];
 export function groupDashboardLinks(items=dashboardLinks){return items.reduce<Record<DashboardNavigationItem["group"],DashboardNavigationItem[]>>((groups,item)=>{groups[item.group].push(item);return groups},{Main:[],Workspace:[],Money:[],Account:[],Help:[]})}
 
-export function isDashboardLinkActive(href: string, pathname: string, query = "") {
+export function isDashboardLinkActive(pathname: string, href: string, query = "") {
   const [route, requiredQuery] = href.split("?");
   const current = new URLSearchParams(query);
   if (requiredQuery) return pathname === route && [...new URLSearchParams(requiredQuery)].every(([key, value]) => current.get(key) === value);
@@ -14,4 +14,8 @@ export function isDashboardLinkActive(href: string, pathname: string, query = ""
   if (route === "/dashboard/wallet" && ["/dashboard/add-funds", "/dashboard/direct-upi"].includes(pathname)) return true;
   if (route === "/dashboard/orders" && pathname === "/dashboard/order-history") return true;
   return pathname === route || (route !== "/dashboard" && pathname.startsWith(`${route}/`));
+}
+
+export function isWorkspaceRoute(pathname: string, query = ""): boolean {
+  return dashboardLinks.some(item => item.group === "Workspace" && isDashboardLinkActive(pathname, item.href, query));
 }

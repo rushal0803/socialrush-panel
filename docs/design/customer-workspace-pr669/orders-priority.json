@@ -1,0 +1,110 @@
+[
+  {
+    "width": 320,
+    "searchBox": {
+      "x": 29,
+      "y": 378.5,
+      "width": 262,
+      "height": 48
+    },
+    "bottomNavTop": 677,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 360,
+    "searchBox": {
+      "x": 29,
+      "y": 378.5,
+      "width": 302,
+      "height": 48
+    },
+    "bottomNavTop": 677,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 375,
+    "searchBox": {
+      "x": 29,
+      "y": 378.5,
+      "width": 317,
+      "height": 48
+    },
+    "bottomNavTop": 677,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 390,
+    "searchBox": {
+      "x": 29,
+      "y": 378.5,
+      "width": 332,
+      "height": 48
+    },
+    "bottomNavTop": 677,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 430,
+    "searchBox": {
+      "x": 29,
+      "y": 322.5,
+      "width": 372,
+      "height": 48
+    },
+    "bottomNavTop": 677,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 768,
+    "searchBox": {
+      "x": 41,
+      "y": 280.1875,
+      "width": 339,
+      "height": 48
+    },
+    "bottomNavTop": 837,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 1024,
+    "searchBox": {
+      "x": 305,
+      "y": 288.1875,
+      "width": 161.5,
+      "height": 48
+    },
+    "bottomNavTop": null,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 1440,
+    "searchBox": {
+      "x": 305,
+      "y": 268.1875,
+      "width": 265.5,
+      "height": 48
+    },
+    "bottomNavTop": null,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  },
+  {
+    "width": 1920,
+    "searchBox": {
+      "x": 355,
+      "y": 268.1875,
+      "width": 360.5,
+      "height": 48
+    },
+    "bottomNavTop": null,
+    "repeatContrast": 6.939978003682273,
+    "repeatHref": "/dashboard/new-order?platform=instagram&service=instagram-shares&quantity=1000&resume=1&repeat=1&repeatMode=same_target&link=https%3A%2F%2Fwww.instagram.com%2Fp%2Fresponsive_qa%2F"
+  }
+]

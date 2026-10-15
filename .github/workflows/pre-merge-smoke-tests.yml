@@ -67,7 +67,7 @@ jobs:
           RESPONSIVE_PAYMENT_FIXTURE: '1'
           DASHBOARD_UPGRADE_AUDIT: '1'
           RESPONSIVE_STAGE: customer-release-gate
-        run: npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer funding' --workers=2 --global-timeout=150000
+        run: npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding' --workers=2 --global-timeout=150000
       - name: Attach customer workspace regression evidence
         if: always()
         uses: actions/upload-artifact@v4

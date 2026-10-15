@@ -4,6 +4,10 @@
   container-type: inline-size;
 }
 
+@media (max-width: 1023px) {
+  .shell { padding-bottom: calc(5rem + env(safe-area-inset-bottom)); }
+}
+
 .commandBar {
   position: relative;
   z-index: 18;
@@ -117,9 +121,9 @@
 }
 
 .primary {
-  background: linear-gradient(90deg, #ff7a00, #ffb000);
-  color: #fff;
-  box-shadow: 0 16px 30px -20px rgba(255, 153, 0, 0.9);
+  background: #ff7600;
+  color: #111318;
+  box-shadow: none;
 }
 
 .secondary {
@@ -192,7 +196,7 @@
   }
 
   .shell :global(main) {
-    padding-bottom: max(7rem, env(safe-area-inset-bottom));
+    padding-bottom: 1.5rem;
   }
 }
 

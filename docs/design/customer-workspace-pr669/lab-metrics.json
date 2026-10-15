@@ -1,0 +1,51 @@
+{
+  "note": "Owner head f507b6d0, single unthrottled localhost fixture observations. Not field p75, INP or a paired speed improvement.",
+  "metrics": [
+    {
+      "width": 390,
+      "routes": [
+        {
+          "route": "/dashboard",
+          "lcp": 1432,
+          "cls": 0,
+          "ttfb": 420.29999999701977
+        },
+        {
+          "route": "/dashboard/new-order",
+          "lcp": 684,
+          "cls": 0,
+          "ttfb": 41.29999999701977
+        },
+        {
+          "route": "/dashboard/wallet",
+          "lcp": 1392,
+          "cls": 0,
+          "ttfb": 62.400000005960464
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "routes": [
+        {
+          "route": "/dashboard",
+          "lcp": 1684,
+          "cls": 0,
+          "ttfb": 569.0999999940395
+        },
+        {
+          "route": "/dashboard/new-order",
+          "lcp": 856,
+          "cls": 0,
+          "ttfb": 88.70000000298023
+        },
+        {
+          "route": "/dashboard/wallet",
+          "lcp": 1416,
+          "cls": 0,
+          "ttfb": 56.900000005960464
+        }
+      ]
+    }
+  ]
+}

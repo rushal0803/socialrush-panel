@@ -174,10 +174,10 @@ test("dashboard drawer remains keyboard accessible on a short phone", async ({ p
     expect(box?.height).toBeGreaterThanOrEqual(44);
     expect(box!.y + box!.height).toBeLessThanOrEqual(480);
   }
-  await expect(actions.getByRole("link", { name: "Add Funds", exact: true })).toHaveAttribute("href", "/dashboard/wallet#add-funds");
+  await expect(actions.getByRole("link", { name: "Add Funds", exact: true })).toHaveAttribute("href", "/dashboard/add-funds");
   await dialog.locator('a[href]').first().focus();
   await page.keyboard.press("Shift+Tab");
-  await expect(dialog.getByRole("button", { name: /log ?out/i })).toBeFocused();
+  await expect(actions.getByRole("link", { name: "Get Support", exact: true })).toBeFocused();
   await page.keyboard.press("Escape");
   await expect(trigger).toBeFocused();
   await trigger.click();
@@ -186,7 +186,7 @@ test("dashboard drawer remains keyboard accessible on a short phone", async ({ p
   await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
   await page.setViewportSize({ width: 390, height: 740 });
   await trigger.click();
-  await dialog.getByRole("link", { name: "Add Funds", exact: true }).click();
+  await actions.getByRole("link", { name: "Add Funds", exact: true }).click();
   await expect(page).toHaveURL(/\/dashboard\/add-funds$/);
   await expect(dialog).toHaveCount(0);
   await expect(page.getByRole("heading", { name: "Complete your payment", exact: true })).toBeInViewport();
@@ -221,7 +221,7 @@ test("public lab rendering metrics", async ({ page }, testInfo) => {
 
 const dashboardRoutes = ["/dashboard", "/dashboard/new-order", "/dashboard/packages", "/dashboard/orders", "/dashboard/order-history", "/dashboard/wallet", "/dashboard/add-funds", "/dashboard/billing", "/dashboard/referrals", "/dashboard/account", "/dashboard/support", "/dashboard/settings", "/dashboard/order-summary?service=instagram-followers&quantity=1000&link=https%3A%2F%2Fwww.instagram.com%2Fresponsive_qa%2F"];
 if (process.env.DASHBOARD_UPGRADE_AUDIT === "1") dashboardRoutes.push(
-  "/dashboard/campaign-stacks", "/dashboard/retainers", "/dashboard/reseller",
+  "/dashboard/campaign-stacks", "/dashboard/retainers", "/dashboard/reseller", "/dashboard/services", "/dashboard/new-campaign",
   "/dashboard/campaigns", "/dashboard/clients", "/dashboard/saved-profiles",
   "/dashboard/notifications", "/dashboard/new-order?tab=favourites",
   "/dashboard/repeat-campaigns", "/dashboard/rewards", "/dashboard/reviews", "/dashboard/api-docs",
@@ -293,6 +293,112 @@ test("customer service search recovers from an empty result", async ({ page, con
   await search.fill("followers");
   await expect(page.getByRole("status").filter({ hasText: /of .* services/ })).not.toHaveText(/^0 of/);
   await expect(page.locator("main article").first()).toContainText(/followers/i);
+  // Preserve plain-entry evidence separately from the Favourites route.
+  fs.mkdirSync(outputRoot, { recursive: true });
+  for (const width of [390, 768, 1440]) {
+    await page.setViewportSize({ width, height: width === 390 ? 740 : 900 });
+    await page.goto("/dashboard/new-order");
+    await expectRevealedContent(page);
+    await page.evaluate(() => document.fonts.ready);
+    await page.screenshot({ path: path.join(outputRoot, `new-order-entry-${width}.png`) });
+  }
+});
+
+test("customer orders prioritize filters and preserve tracking and repeat handoff", async ({ page, context, baseURL }) => {
+  test.setTimeout(60000);
+  test.skip(process.env.DASHBOARD_UPGRADE_AUDIT !== "1", "Requires populated read-only customer fixtures");
+  await authenticate(context, baseURL!);
+  const measurements: Array<Record<string, unknown>> = [];
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1440, 1920]) {
+    await page.setViewportSize({ width, height: width < 768 ? 740 : 900 });
+    await page.goto("/dashboard/orders");
+    await expectRevealedContent(page);
+    await expect(page.getByRole("textbox", { name: "Search orders", exact: true })).toBeInViewport();
+    const searchBox = await page.getByRole("textbox", { name: "Search orders", exact: true }).boundingBox();
+    const barBox = await page.getByRole("navigation", { name: "Primary dashboard navigation", includeHidden: true }).boundingBox();
+    if (barBox) expect(searchBox!.y + searchBox!.height).toBeLessThanOrEqual(barBox.y);
+    const filters = page.getByRole("region", { name: "Order filters", exact: true });
+    await expect(filters.getByRole("combobox", { name: "Filter order status", exact: true })).toBeVisible();
+    const main = page.locator("#dashboard-main-content main");
+    await expect(main.getByRole("link", { name: "View Details", exact: true })).toHaveCount(2);
+    const tools = page.getByRole("region", { name: "Order tracking command center" });
+    expect(await tools.evaluate(el => el.getBoundingClientRect().top)).toBeGreaterThan(await filters.evaluate(el => el.getBoundingClientRect().bottom));
+    const search = filters.getByRole("textbox", { name: "Search orders", exact: true });
+    await search.fill("qa-no-matching-order");
+    await expect(main.getByText("No orders match these filters.", { exact: true })).toBeVisible();
+    await filters.getByRole("button", { name: "Reset", exact: true }).click();
+    await filters.getByRole("combobox", { name: "Filter order status", exact: true }).selectOption("completed");
+    await expect(main.getByRole("link", { name: "View Details", exact: true })).toHaveCount(1);
+    const repeat = main.getByRole("link", { name: "Order Again", exact: true });
+    const contrast = await repeat.evaluate(element => {
+      const css = getComputedStyle(element);
+      const luminance = (value: string) => {
+        const rgb = value.match(/[\d.]+/g)!.slice(0, 3).map(Number).map(n => {
+          const channel = n / 255;
+          return channel <= 0.04045 ? channel / 12.92 : Math.pow((channel + 0.055) / 1.055, 2.4);
+        });
+        return rgb[0] * 0.2126 + rgb[1] * 0.7152 + rgb[2] * 0.0722;
+      };
+      const a = luminance(css.color), b = luminance(css.backgroundColor);
+      return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+    });
+    expect(contrast).toBeGreaterThanOrEqual(4.5);
+    const href = await repeat.getAttribute("href");
+    const handoff = new URL(href!, baseURL!);
+    expect(handoff.pathname).toBe("/dashboard/new-order");
+    expect(handoff.searchParams.get("quantity")).toBe("1000");
+    expect(handoff.searchParams.get("link")).toBe("https://www.instagram.com/p/responsive_qa/");
+    const shortcut = tools.getByRole("link", { name: "Start campaign", exact: true });
+    await shortcut.scrollIntoViewIfNeeded();
+    if (barBox) {
+      const box = await shortcut.boundingBox();
+      expect(box!.y + box!.height).toBeLessThanOrEqual(barBox.y);
+    }
+    measurements.push({ width, searchBox, bottomNavTop: barBox?.y ?? null, repeatContrast: contrast, repeatHref: href });
+  }
+  fs.mkdirSync(outputRoot, { recursive: true });
+  fs.writeFileSync(path.join(outputRoot, "orders-priority.json"), JSON.stringify(measurements, null, 2));
+});
+
+test("customer billing details preserve pending status, focus and filter recovery", async ({ page, context, baseURL }) => {
+  test.setTimeout(90000);
+  test.skip(process.env.DASHBOARD_UPGRADE_AUDIT !== "1", "Requires populated read-only customer fixtures");
+  await authenticate(context, baseURL!);
+  fs.mkdirSync(outputRoot, { recursive: true });
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1280, 1440, 1920]) {
+    await page.setViewportSize({ width, height: width <= 430 ? 740 : 900 });
+    await page.goto("/dashboard/billing");
+    const record = page.locator("main article:visible").filter({ hasText: "fixture-pending-verification" });
+    const trigger = record.getByRole("button", { name: /^(Details|View details for .+)$/i });
+    await trigger.click();
+    const dialog = page.getByRole("dialog", { name: "Payment details", exact: true });
+    const close = dialog.getByRole("button", { name: "Close payment details", exact: true });
+    await expect(close).toBeFocused();
+    await expect(dialog.getByText("No completed wallet effect", { exact: true })).toBeVisible();
+    await expect.poll(() => page.evaluate(() => document.body.style.position)).toBe("fixed");
+    for (let index = 0; index < 12; index++) {
+      await page.keyboard.press(index < 6 ? "Tab" : "Shift+Tab");
+      await expect.poll(() => dialog.evaluate(el => el.contains(document.activeElement))).toBe(true);
+    }
+    const receipt = dialog.getByRole("link", { name: "Receipt / proof", exact: true });
+    await expect(receipt).toHaveAttribute("href", /^\/dashboard\/billing\/transactions\/[0-9a-f-]+$/);
+    await receipt.scrollIntoViewIfNeeded();
+    expect(await receipt.evaluate(el => {
+      const box = el.getBoundingClientRect();
+      return !!document.elementFromPoint(box.x + box.width / 2, box.y + box.height / 2)?.closest('[role="dialog"]');
+    })).toBe(true);
+    if ([390, 768, 1440].includes(width)) await page.screenshot({ path: path.join(outputRoot, `billing-pending-dialog-${width}.png`) });
+    await page.keyboard.press("Escape");
+    await expect(dialog).toHaveCount(0);
+    await expect(trigger).toBeFocused();
+    await expect.poll(() => page.evaluate(() => document.body.style.position)).not.toBe("fixed");
+    const search = page.getByRole("textbox", { name: "Search payment activity", exact: true });
+    await search.fill("qa-no-matching-payment");
+    await page.getByRole("button", { name: "Clear filters", exact: true }).click();
+    await expect(search).toHaveValue("");
+    await expect(record).toHaveCount(1);
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
+  }
 });
 
 for (const width of [390, 1440]) {
@@ -346,6 +452,10 @@ for (const width of [390, 1440]) {
     if (width === 390) {
       await page.getByRole("button", { name: "Open navigation", exact: true }).click();
       await expect(page.getByRole("dialog", { name: "Mobile navigation" })).toBeVisible();
+      await expect.poll(() => page.getByRole("dialog", { name: "Mobile navigation" }).getByRole("img", { name: "SocialRUSH logo", exact: true }).evaluate(element => {
+        const logo = element as HTMLImageElement;
+        return logo.complete && logo.naturalWidth > 0;
+      })).toBe(true);
       await page.screenshot({ path: path.join(outputRoot, "drawer-390.png") });
     }
   });
@@ -363,7 +473,7 @@ test("dashboard drawer preserves every destination and closes after query naviga
   await expect(close).toBeFocused();
   for (const label of ["New Order", "Orders", "Wallet", "Packages"]) await expect(navigation.getByRole("link", { name: label, exact: true })).toBeVisible();
   await expect(navigation.locator("details[open]")).toHaveCount(0);
-  await expect(navigation.locator("summary")).toHaveCount(4);
+  await expect(navigation.locator("summary")).toHaveCount(1);
   await navigation.locator("summary").first().focus();
   await page.keyboard.press("Enter");
   await expect(navigation.locator("details[open]")).toHaveCount(1);
@@ -437,6 +547,11 @@ test("customer funding starts with amount selection at every requested width", a
     await expect(page.getByRole("heading", { name: "Complete your payment", exact: true })).toBeInViewport();
     await expect(page.getByRole("textbox", { name: "Amount", exact: true })).toBeInViewport();
     await expect(page.getByRole("region", { name: "Payment confidence", exact: true })).toBeVisible();
+    const headerControls = await page.locator("header").first().locator("button, a").evaluateAll(elements => elements.filter(element => {
+      const box = element.getBoundingClientRect();
+      return box.width && box.height && (box.left < -1 || box.right > document.documentElement.clientWidth + 1);
+    }).map(element => element.getAttribute("aria-label") || element.textContent));
+    expect(headerControls, `Funding header controls at ${width}px`).toEqual([]);
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(width + 1);
     if ([390, 768, 1440].includes(width)) await page.screenshot({ path: path.join(outputRoot, `funding-form-${width}.png`) });
   }
@@ -629,8 +744,13 @@ for (const width of widths) {
         await expect(page.locator("#dashboard-main-content").getByText("Wallet Balance", { exact: true })).toBeInViewport();
         await expect(page.locator("#dashboard-main-content").getByRole("link", { name: "Add Funds", exact: true }).first()).toBeInViewport();
       }
-      if (route.startsWith("/dashboard/order-summary") && width < 1024) {
-        await expect(page.getByRole("navigation", { name: "Primary dashboard navigation" }).getByRole("link", { name: "New Order", exact: true })).toHaveAttribute("aria-current", "page");
+      if (route === "/dashboard/orders" || route === "/dashboard/order-history") {
+        await expect(page.getByRole("textbox", { name: "Search orders", exact: true })).toBeInViewport();
+        if (process.env.DASHBOARD_UPGRADE_AUDIT === "1") await expect(page.locator("#dashboard-main-content main").getByRole("link", { name: "View Details", exact: true })).toHaveCount(2);
+      }
+      if (route.startsWith("/dashboard/order-summary")) {
+        // PR #669 deliberately removes the bar on focused checkout flows.
+        await expect(page.getByRole("navigation", { name: "Primary dashboard navigation" })).toHaveCount(0);
       }
       await page.waitForLoadState('load', { timeout: 30000 });
       const layout = await page.evaluate(() => {

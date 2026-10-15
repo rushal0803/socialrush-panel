@@ -1,20 +1,38 @@
-.workspace { background:#07080d; --sr-text-muted:#a8afbd; --sr-border:#ffffff20; --sr-shadow-card:0 8px 24px #0002; }
-.workspace :global(.dashboard-sidebar) { background:#101219; border-color:#ffffff20; backdrop-filter:none; }
-.workspace :global(.sr-dashboard-hero) { background:#151821; border-color:#ffffff25; box-shadow:inset 0 2px rgba(255,118,0,.24); border-radius:16px; }
-.workspace :global(.sr-dashboard-hero > .pointer-events-none) { display:none; }
-.workspace :global(.dashboard-card),.workspace :global(.dashboard-glass) { border-color:#ffffff25; box-shadow:0 8px 24px #0002; }
-.workspace :global(.dashboard-table) { font-variant-numeric:tabular-nums; }
-.workspace :global(.dashboard-table th) { padding-block:14px; font-size:11px; font-weight:650; letter-spacing:.05em; }
-.workspace :global(.dashboard-table td) { padding-block:18px; }
-.workspace :global(.btn-dashboard-primary) { background:#ff7600; color:#0c0e14; box-shadow:none; border-color:#ff7600; }
-.workspace :is(a,button,input,select,textarea,summary):focus-visible { outline:2px solid #ffb17a; outline-offset:3px; }
-.pageHeader { padding-bottom:20px; border-bottom:1px solid #ffffff20; margin-bottom:8px; }
-.pageHeader h1 { font-weight:650; letter-spacing:-.035em; font-size:clamp(26px,3vw,36px); }
-.pageHeader p { line-height:1.7; max-width:640px; }
-.sectionTitle { border-color:#ffffff20; }
-.sectionTitle h2 { font-weight:650; font-size:15px; }
-.badge { font-variant-numeric:tabular-nums; border-radius:6px; min-height:26px; }
-@media(max-width:600px) { .pageHeader { padding-bottom:16px; } }
+.workspace {
+  background: #07080d;
+  color: #f3f4f6;
+  --sr-text-muted: #b0b8c8;
+  --sr-border: #ffffff20;
+  --sr-shadow-card: 0 12px 28px #0003;
+  min-width: 0;
+}
+.workspace :global(.dashboard-sidebar) {
+  background: linear-gradient(170deg, #11141c 0%, #0b0d13 100%);
+  border-color: #ffffff1c;
+  border-right: 1px solid #ffffff1c;
+  color: #e9edf3;
+  scrollbar-color: #45414a transparent;
+  scrollbar-width: thin;
+}
+.workspace :global(.sr-dashboard-hero) { background: #151821; border-color: #ffffff25; box-shadow: inset 0 2px rgba(255,118,0,.24); border-radius: 16px; }
+.workspace :global(.sr-dashboard-hero > .pointer-events-none) { display: none; }
+.workspace :global(.dashboard-card), .workspace :global(.dashboard-glass) { border-color: #ffffff25; box-shadow: 0 8px 24px #0002; }
+.workspace :global(.dashboard-table) { font-variant-numeric: tabular-nums; }
+.workspace :global(.dashboard-table th) { padding-block: 14px; font-size: 11px; font-weight: 650; letter-spacing: .05em; }
+.workspace :global(.dashboard-table td) { padding-block: 18px; }
+.workspace :global(.btn-dashboard-primary) { background: #ff7600; color: #0c0e14; box-shadow: none; border-color: #ff7600; }
+.workspace :is(a,button,input,select,textarea,summary):focus-visible { outline: 2px solid #ffb17a; outline-offset: 3px; }
+.pageHeader { padding-bottom: 20px; border-bottom: 1px solid #ffffff20; margin-bottom: 8px; }
+.pageHeader h1 { font-weight: 650; letter-spacing: -.035em; font-size: clamp(26px,3vw,36px); }
+.pageHeader p { line-height: 1.7; max-width: 640px; }
+.sectionTitle { border-color: #ffffff20; }
+.sectionTitle h2 { font-weight: 650; font-size: 15px; }
+.badge { font-variant-numeric: tabular-nums; border-radius: 6px; min-height: 26px; }
+@media (max-width: 600px) { .pageHeader { padding-bottom: 16px; } }
+@media (max-width: 1023px) { .workspace :global(#dashboard-main-content) { min-width: 0; padding-bottom: calc(4.25rem + env(safe-area-inset-bottom)); } }
+@media (prefers-reduced-motion: reduce) {
+  .workspace :global(.dashboard-sidebar) *, .workspace :global([data-dashboard-bottom-nav]) * { scroll-behavior: auto; transition-duration: 0.01ms !important; animation-duration: 0.01ms !important; }
+}
 
 /* Customer-only foundations. Payment QR plates and gateway overlays retain
    their own styles; no colour remapping of arbitrary utility classes. */
@@ -105,7 +123,8 @@
 @media (max-height: 480px) { .dialogOverlay { padding-top: 16px; } .dialogSurface { max-height: calc(100dvh - 32px - env(safe-area-inset-bottom)); } }
 .workspaceLabel { display: none; min-width: 0; color: #a8afbd; font-size: 12px; }
 .workspaceLabel span { display: block; margin-top: 3px; color: #f4f5f7; font-size: 14px; font-weight: 600; }
-@media (min-width: 1024px) { .workspaceLabel { display: block; } }
+/* Leave the narrow desktop header to its money and account controls. */
+@media (min-width: 1440px) { .workspaceLabel { display: block; } }
 
 .serviceSearch { display: flex; flex-wrap: wrap; align-items: center; gap: 12px; margin-top: 20px; }
 .serviceSearch label { flex: 1 1 220px; min-width: 0; }
@@ -125,4 +144,10 @@
 @media (prefers-reduced-motion: reduce) {
   .navGroup > summary > svg { transition: none; }
   .navLink, .workspace :global(.btn-dashboard-primary), .workspace :global(.btn-dashboard-secondary) { transition: none; }
+}
+
+/* Keep customer form fields comfortably readable at phone widths. */
+@media (max-width: 767px) {
+  .workspace :global(.dashboard-premium-page) :is(input:not([type="checkbox"]):not([type="radio"]), select, textarea) { font-size: max(1rem, 1em); }
+  .workspace :global(#dashboard-main-content) { min-width: 0; width: 100%; }
 }
