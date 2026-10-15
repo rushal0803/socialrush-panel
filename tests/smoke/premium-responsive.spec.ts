@@ -461,6 +461,50 @@ for (const width of [390, 1440]) {
   });
 }
 
+test("dashboard display currency supports keyboard selection without payment actions", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  let releaseDetection!: () => void;
+  let markDetectionStarted!: () => void;
+  const detectionStarted = new Promise<void>(resolve => { markDetectionStarted = resolve; });
+  const detectionReleased = new Promise<void>(resolve => { releaseDetection = resolve; });
+  await page.route("**/api/display-currency", async route => {
+    markDetectionStarted();
+    await detectionReleased;
+    await route.fulfill({ json: { currency: "INR" } });
+  });
+  await page.setViewportSize({ width: 320, height: 640 });
+  await page.goto("/dashboard/new-order");
+  const currency = page.getByRole("combobox", { name: "Display currency" });
+  await expect(currency).toBeVisible();
+  await expect(currency).toHaveAccessibleDescription("Display preference only. Wallet ledger and payments remain in INR.");
+  await detectionStarted;
+  await currency.selectOption("INR");
+  await currency.focus();
+  await page.keyboard.press("ArrowDown");
+  await page.keyboard.press("Tab");
+  await expect(currency).toHaveValue("USD");
+  await expect.poll(async () => (await context.cookies()).find(cookie => cookie.name === "socialrush_display_currency")?.value).toBe("USD");
+  const detectionResponse = page.waitForResponse("**/api/display-currency");
+  releaseDetection();
+  await (await detectionResponse).finished();
+  await page.evaluate(() => new Promise<void>(resolve => requestAnimationFrame(() => requestAnimationFrame(() => resolve()))));
+  await expect(currency).toHaveValue("USD");
+  await page.reload();
+  await expect(currency).toHaveValue("USD");
+  await currency.selectOption("INR");
+  await expect(currency).toHaveValue("INR");
+  fs.mkdirSync(outputRoot, { recursive: true });
+  for (const width of [320, 360, 375, 390, 430, 768, 1024, 1280, 1440, 1920]) {
+    await page.setViewportSize({ width, height: 900 });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth <= innerWidth), `header overflow at ${width}px`).toBe(true);
+    const bounds = await currency.boundingBox();
+    expect(bounds).not.toBeNull();
+    expect(bounds!.x).toBeGreaterThanOrEqual(0);
+    expect(bounds!.x + bounds!.width).toBeLessThanOrEqual(width);
+    if ([320, 390, 1440].includes(width)) await page.screenshot({ path: path.join(outputRoot, `currency-header-${width}.png`) });
+  }
+});
+
 test("dashboard drawer preserves every destination and closes after query navigation", async ({ page, context, baseURL }) => {
   await authenticate(context, baseURL!);
   await page.setViewportSize({ width: 320, height: 480 });

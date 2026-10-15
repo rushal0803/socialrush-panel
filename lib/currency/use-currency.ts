@@ -1,5 +1,5 @@
 "use client";
-import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useState, type ReactNode } from "react";
+import { createContext, createElement, useCallback, useContext, useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { DISPLAY_CURRENCY_COOKIE, isCurrency, setClientCurrencyRates, type Currency, type CurrencyRates } from "@/lib/currency";
 
 type State = { currency: Currency; setCurrency: (currency: Currency) => void; rates: CurrencyRates; ratesLoading: boolean; ratesSource: "server"; ratesUpdatedAt: number };
@@ -15,9 +15,10 @@ const hasRate = (rates: CurrencyRates, currency: Currency) =>
 
 export function CurrencyProvider({ children, initialCurrency = "INR", rates: initialRates = { INR: 1 } }: { children: ReactNode; initialCurrency?: Currency; rates?: CurrencyRates }) {
  const [currency, setValue] = useState(initialCurrency);
+ const userSelectedCurrency = useRef(false);
  const [rates, setRates] = useState(initialRates);
  const [ratesLoading, setRatesLoading] = useState(false);
- const setCurrency = useCallback((value: Currency) => { setValue(value); document.cookie = `${DISPLAY_CURRENCY_COOKIE}=${value}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`; }, []);
+ const setCurrency = useCallback((value: Currency) => { userSelectedCurrency.current = true; setValue(value); document.cookie = `${DISPLAY_CURRENCY_COOKIE}=${value}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`; }, []);
 
  useEffect(() => {
    let active = true;
@@ -39,7 +40,7 @@ export function CurrencyProvider({ children, initialCurrency = "INR", rates: ini
      fetch("/api/display-currency", { cache: "no-store" })
        .then((response) => response.ok ? response.json() : null)
        .then((payload) => {
-         if (!active || !isCurrency(payload?.currency)) return;
+         if (!active || userSelectedCurrency.current || !isCurrency(payload?.currency)) return;
          setValue(payload.currency);
          document.cookie = `${DISPLAY_CURRENCY_COOKIE}=${payload.currency}; Path=/; Max-Age=31536000; SameSite=Lax; Secure`;
        })
