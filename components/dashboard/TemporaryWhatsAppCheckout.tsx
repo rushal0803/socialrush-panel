@@ -205,7 +205,7 @@ function prepareTemporaryCheckout(upiConfigured: boolean) {
 export default function TemporaryWhatsAppCheckout() {
   const pathname = usePathname();
   const active = ACTIVE_ROUTES.has(pathname);
-  const upiId = MANUAL_UPI_ID;
+  const upiId = process.env.NEXT_PUBLIC_UPI_ID?.trim() ? MANUAL_UPI_ID : "";
   const payeeName = MANUAL_UPI_PAYEE_NAME;
   const upiConfigured = Boolean(upiId);
   const [modalOpen, setModalOpen] = useState(false);
