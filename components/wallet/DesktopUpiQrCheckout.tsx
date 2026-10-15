@@ -4,9 +4,9 @@ import { useMemo, useRef, useState } from "react";
 import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { checkoutAmountPrefill, safeCheckoutReturnPath } from "@/lib/cro/checkout-optimization";
+import { MANUAL_UPI_ID as UPI_ID, MANUAL_UPI_PAYEE_NAME as PAYEE } from "@/lib/payments/manual-upi-config";
 
-const UPI_ID = "8860330771@pthdfc";
-const PAYEE = "Rushal";
+
 const USDT_ADDRESS = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
 const QUICK_AMOUNTS = [100, 500, 1000, 2000, 5000];
 
