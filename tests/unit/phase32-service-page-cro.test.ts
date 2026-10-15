@@ -162,3 +162,12 @@ test("Instagram Comments displays unavailable pricing, prevents submit and prese
   assert.match(page,/isOrderableInstagramCommentsService\(live\)/);
   assert.match(page,/referenceQuantity/);
 });
+
+test("Instagram Comments campaign preview does not falsely claim readiness when live facts are missing", () => {
+  const landing = read("components/marketing/InstagramCommentsLanding.tsx");
+  assert.match(landing, /\["Status",serviceReady\?"Ready to configure":"Live service details unavailable"\]/);
+  assert.match(landing, /\["Quantity",serviceReady\?n\(qty\):"—"\]/);
+  assert.match(landing, /Service setup is paused until live pricing and availability can be verified/);
+  assert.match(landing, /serviceReady\?"border-emerald-400\/25/);
+  assert.doesNotMatch(landing, /\["Status","Ready to configure"\]/);
+});
