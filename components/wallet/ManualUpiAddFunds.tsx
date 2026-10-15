@@ -2,9 +2,9 @@
 
 import { useEffect, useMemo, useRef, useState } from "react";
 import Link from "next/link";
+import { MANUAL_UPI_ID as UPI_ID, MANUAL_UPI_PAYEE_NAME as PAYEE } from "@/lib/payments/manual-upi-config";
 
-const UPI_ID = "8860330771@pthdfc";
-const PAYEE = "Rushal";
+
 const USDT_TRC20_ADDRESS = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
 const BANK_TRANSFER = {
   bankName: "Canara Bank",
