@@ -290,13 +290,13 @@ export default function NewOrderPage() {
     void fetch("/api/order-draft", { credentials: "same-origin" }).then(async (response) => response.ok ? response.json() as Promise<{ data?: { platform: string; service_code: string; quantity: number; target: string | null } | null }> : { data: null }).then(({ data }) => {
       if (!active || !data) return;
       const draftPlatform = platformFromQuery(data.platform);
-      const service = serviceFromQuery(data.service_code, draftPlatform, liveServices);
+      const service = serviceFromQuery(data.service_code, draftPlatform, mergeCustomerOrderServices());
       if (!service) { setResumeNotice("This exact service is currently unavailable. Please choose another option from the same platform."); if (draftPlatform) setPlatform(draftPlatform); return; }
       setPlatform(service.platform); setSelectedService(service); setQuantityInput(cleanQuantity(String(data.quantity))); setTargetLink(data.target || ""); setPollAnswerNumber(""); setCheckoutStep(3); setResumeNotice("Your saved configuration is restored. Please review the current price before continuing.");
       track("order_started", { step: "draft_resumed", service_code: service.code, platform: service.platform });
     }).catch(() => undefined);
     return () => { active = false; };
-  }, [liveServices, searchParams]);
+  }, [searchParams]);
 
   useEffect(() => {
     if (repeatRequested) setRepeatConfirmed(false);

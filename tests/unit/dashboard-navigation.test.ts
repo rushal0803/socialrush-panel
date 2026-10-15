@@ -67,7 +67,10 @@ test("wallet balance and money actions precede lengthy payment-confidence explan
   assert.ok(summaryPosition >= 0 && confidencePosition > summaryPosition, "show wallet balance and money actions before the supplementary confidence dashboard");
   assert.match(walletPage, /<WalletAddFundsRedirect \/>/);
   assert.ok(walletLayout.indexOf("{children}") < walletLayout.indexOf('<PaymentConfidenceExperience mode="wallet" />'));
-  assert.match(walletPage, /#add-funds\{display:none!important\}/);
+  assert.doesNotMatch(walletPage, /#add-funds\{display:none!important\}/);
+  const wallet = source("components/wallet/WalletDashboard.tsx");
+  assert.doesNotMatch(wallet, /<section id="add-funds"/);
+  assert.match(wallet, /href="\/dashboard\/add-funds"/);
 });
 
 test("narrow desktop header preserves action space and uses the shared route helper correctly", () => {

@@ -25,23 +25,23 @@ export default async function DashboardPage() {
   if (!user) redirect("/login?next=%2Fdashboard");
   const userId = user.id;
   const results = await Promise.allSettled([
-    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).order("created_at", { ascending: false }).limit(5),
-    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).in("status", activeStatuses),
-    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "completed"),
+    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible", { count: "exact" }).eq("user_id", userId).order("created_at", { ascending: false }).limit(5),
+    Promise.resolve(null), // Active count accompanies result 10; no second round trip.
+    Promise.resolve(null), // Completed count accompanies result 16.
     supabase.from("transactions").select("id, amount, type, status, payment_method, created_at").eq("user_id", userId).order("created_at", { ascending: false }).limit(4),
     supabase.from("support_tickets").select("id, subject, status, updated_at, order_id").eq("user_id", userId).order("updated_at", { ascending: false }).limit(1),
     supabase.from("support_tickets").select("id", { count: "exact", head: true }).eq("user_id", userId).in("status", ["open", "waiting_for_support", "waiting_for_customer", "answered"]),
     supabase.from("customer_reward_events").select("id, amount, status, created_at").eq("user_id", userId).eq("status", "credited").order("created_at", { ascending: false }).limit(1),
     supabase.from("saved_social_profiles").select("id, label, platform, public_url, last_used_at, created_at").eq("user_id", userId).order("last_used_at", { ascending: false, nullsFirst: false }).limit(3),
     supabase.from("order_drafts").select("platform, service_code, quantity, updated_at").eq("user_id", userId).maybeSingle(),
-    supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId),
-    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).in("status", activeStatuses).order("created_at", { ascending: false }).limit(4),
+    Promise.resolve(null), // Total count accompanies result 0.
+    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible", { count: "exact" }).eq("user_id", userId).in("status", activeStatuses).order("created_at", { ascending: false }).limit(4),
     supabase.from("customer_favourites").select("service_id, services(code,status,name)").eq("user_id", userId).order("created_at", { ascending: false }).limit(3),
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("status", "pending"),
     supabase.from("orders").select("id", { count: "exact", head: true }).eq("user_id", userId).eq("payment_status", "verification_pending"),
     supabase.from("services").select("code,name,platform,rate,min,status,is_active,accepts_new_orders").in("code", ["instagram-likes", "facebook-followers", "instagram-followers"]),
     supabase.from("checkout_intents").select("id,service_code,quantity,destination_link,total_paise,created_at,expires_at").eq("user_id", userId).eq("status", "created").is("order_id", null).gte("created_at", new Date(Date.now()-7*864e5).toISOString()).order("created_at", { ascending: false }).limit(1).maybeSingle(),
-    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible").eq("user_id", userId).eq("status", "completed").order("created_at", { ascending: false }).limit(10),
+    supabase.from("orders").select("id, service_name, platform, link, quantity, status, charge, created_at, progress_percent, refill_eligible", { count: "exact" }).eq("user_id", userId).eq("status", "completed").order("created_at", { ascending: false }).limit(10),
     supabase.from("reward_programme_rules").select("enabled,manual_approval,minimum_order_amount,new_customer_reward").eq("id", true).maybeSingle(),
     supabase.from("orders")
       .select("id", { count: "exact", head: true })
@@ -52,8 +52,10 @@ export default async function DashboardPage() {
     supabase.from("first_order_bonus_experiment_assignments").select("variant").eq("user_id", userId).maybeSingle(),
   ]);
   const value = <T,>(index: number, fallback: T) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ data: T }>).value.data ?? fallback : fallback;
-  const count = (index: number) => results[index].status === "fulfilled" ? (results[index] as PromiseFulfilledResult<{ count: number | null }>).value.count ?? 0 : 0;
-  const failed = (index: number) => { const result = results[index]; return result.status === "rejected" || Boolean((result.value as { error?: unknown }).error); };
+  // Keep the downstream signal mapping stable while sharing exact counts with rows.
+  const sourceIndex = (index: number) => index === 1 ? 10 : index === 2 ? 16 : index === 9 ? 0 : index;
+  const count = (index: number) => { const result = results[sourceIndex(index)]; return result.status === "fulfilled" ? (result.value as { count?: number | null } | null)?.count ?? 0 : 0; };
+  const failed = (index: number) => { const result = results[sourceIndex(index)]; return result.status === "rejected" || Boolean((result.value as { error?: unknown } | null)?.error); };
 
   const mapOrder = (row: RawOrder) => { const serviceName = row.service_name || "Growth service"; const platform = row.platform || "other"; const quantity = Number(row.quantity || 0); return { id: row.id, serviceName, platform, quantity, status: row.status || "pending", price: Number(row.charge || 0), createdAt: row.created_at, progress: row.progress_percent == null ? null : Number(row.progress_percent), refillEligible: Boolean(row.refill_eligible), repeatHref: buildRepeatOrderHref({ serviceName, platform, quantity, link: row.link || "" }, customerOrderServices) }; };
   const orders = value<RawOrder[]>(0, []).map(mapOrder);

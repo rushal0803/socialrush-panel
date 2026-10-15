@@ -1,0 +1,83 @@
+{
+  "note": "Production localhost, Chromium 1440x900, reduced motion, no throttling, synthetic read-only Supabase transport; 5 repeat clicks/route. Not field CWV/INP or live database latency.",
+  "comparison": [
+    {
+      "route": "/dashboard",
+      "beforeP75": 999.0882999999958,
+      "afterP75": 222.3267999999989,
+      "beforeJsBytes": 295817,
+      "afterJsBytes": 296910,
+      "beforeLcp": 4276,
+      "afterLcp": 1044,
+      "beforeCls": 0,
+      "afterCls": 0,
+      "beforeDomNodes": 736,
+      "afterDomNodes": 713
+    },
+    {
+      "route": "/dashboard/new-order",
+      "beforeP75": 333.7980000000025,
+      "afterP75": 242.31860000000233,
+      "beforeJsBytes": 324051,
+      "afterJsBytes": 325145,
+      "beforeLcp": 452,
+      "afterLcp": 580,
+      "beforeCls": 0,
+      "afterCls": 0,
+      "beforeDomNodes": 451,
+      "afterDomNodes": 449
+    },
+    {
+      "route": "/dashboard/orders",
+      "beforeP75": 216.53859999999986,
+      "afterP75": 196.71880000000237,
+      "beforeJsBytes": 304421,
+      "afterJsBytes": 305682,
+      "beforeLcp": 748,
+      "afterLcp": 312,
+      "beforeCls": 0.06945973588605968,
+      "afterCls": 0,
+      "beforeDomNodes": 568,
+      "afterDomNodes": 572
+    },
+    {
+      "route": "/dashboard/wallet",
+      "beforeP75": 997.3130999999994,
+      "afterP75": 254.53039999999964,
+      "beforeJsBytes": 314134,
+      "afterJsBytes": 297418,
+      "beforeLcp": 1012,
+      "afterLcp": 608,
+      "beforeCls": 0,
+      "afterCls": 0,
+      "beforeDomNodes": 893,
+      "afterDomNodes": 724
+    },
+    {
+      "route": "/dashboard/billing",
+      "beforeP75": 289.08179999999993,
+      "afterP75": 228.74489999999787,
+      "beforeJsBytes": 304722,
+      "afterJsBytes": 295629,
+      "beforeLcp": 544,
+      "afterLcp": 504,
+      "beforeCls": 0,
+      "afterCls": 0,
+      "beforeDomNodes": 502,
+      "afterDomNodes": 502
+    },
+    {
+      "route": "/dashboard/packages",
+      "beforeP75": 1014.585500000001,
+      "afterP75": 984.9292000000023,
+      "beforeJsBytes": 308192,
+      "afterJsBytes": 309285,
+      "beforeLcp": 400,
+      "afterLcp": 548,
+      "beforeCls": 0,
+      "afterCls": 0,
+      "beforeDomNodes": 457,
+      "afterDomNodes": 455
+    }
+  ]
+}

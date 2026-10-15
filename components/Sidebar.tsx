@@ -2,14 +2,14 @@
 
 import Link from "next/link";
 import { usePathname, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import Logo from "./Logo";
 import { logout } from "@/app/auth/actions";
-import { createClient } from "@/lib/supabase/client";
+import { useDashboardBalance } from "@/components/dashboard/DashboardBalanceProvider";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { groupDashboardLinks, isDashboardLinkActive, isWorkspaceRoute } from "@/lib/dashboard/navigation";
+import DashboardNavLink from "@/components/dashboard/DashboardNavLink";
 
 function NavIcon({ name }: { name: string }) {
   const paths: Record<string, ReactNode> = {
@@ -95,7 +95,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
       const active = isDashboardLinkActive(pathname, item.href, query);
       const primaryAction = item.href === "/dashboard/new-order";
       return (
-        <Link
+        <DashboardNavLink
           key={item.href}
           href={item.href}
           onClick={onNavigate}
@@ -109,7 +109,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
           <span className={`shrink-0 ${active ? "text-[#251002]" : primaryAction ? "text-orange-300" : "text-slate-400 group-hover:text-orange-200"}`}><NavIcon name={item.icon} /></span>
           <span className="min-w-0 flex-1 break-words">{item.label}</span>
           {active ? <span aria-hidden="true" className="h-1.5 w-1.5 shrink-0 rounded-full bg-[#251002]" /> : null}
-        </Link>
+        </DashboardNavLink>
       );
     });
   }
@@ -119,7 +119,7 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
       <p className="px-3 pb-1 pt-1 text-[10px] font-bold uppercase tracking-[.15em] text-slate-400">
         {group === "Main" ? "Essentials" : group === "Money" ? "Payments & billing" : group}
       </p>
-      <div className="grid gap-1">{renderItems(groups[group])}</div>
+      <div className={mobile && (group === "Account" || group === "Help") ? "grid grid-cols-2 gap-1" : "grid gap-1"}>{renderItems(groups[group])}</div>
     </section>
   );
 
@@ -147,40 +147,11 @@ export function NavLinks({ mobile = false, onNavigate }: { mobile?: boolean; onN
 
 export default function Sidebar({
   initialBalance,
-  userId,
 }: {
   initialBalance: number;
-  userId: string;
 }) {
   const { currency, rates } = usePreferredCurrency("INR");
-  const [balance, setBalance] = useState<number>(initialBalance);
-
-  useEffect(() => {
-    const supabase = createClient();
-
-    const handleBalance = (event: Event) => {
-      setBalance(Number((event as CustomEvent<number>).detail ?? 0));
-    };
-
-    window.addEventListener("wallet-balance-updated", handleBalance);
-
-    const channel = supabase
-      .channel("sidebar-balance")
-      .on(
-        "postgres_changes",
-        { event: "UPDATE", schema: "public", table: "profiles" },
-        (payload) => {
-          const row = payload.new as { id?: string; balance?: number | string };
-          if (row.id === userId) setBalance(Number(row.balance ?? 0));
-        },
-      )
-      .subscribe();
-
-    return () => {
-      window.removeEventListener("wallet-balance-updated", handleBalance);
-      void supabase.removeChannel(channel);
-    };
-  }, [userId]);
+  const balance = useDashboardBalance(initialBalance);
 
   return (
     <aside className="dashboard-sidebar hidden h-screen w-[17.5rem] shrink-0 flex-col overflow-y-auto overscroll-contain px-3 py-5 lg:sticky lg:top-0 lg:flex">

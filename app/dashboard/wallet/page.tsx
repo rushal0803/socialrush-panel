@@ -23,5 +23,5 @@ export default async function WalletPage() {
     transactions,
     orders,
   };
-  return <><WalletAddFundsRedirect /><style>{`#add-funds{display:none!important}`}</style><WalletDashboard initial={initial} /><PaymentConfidencePanel transactions={transactions} walletBalance={initial.balance} /></>;
+  return <><WalletAddFundsRedirect /><WalletDashboard initial={initial} /><PaymentConfidencePanel transactions={transactions} walletBalance={initial.balance} /></>;
 }
