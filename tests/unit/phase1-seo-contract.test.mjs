@@ -42,14 +42,16 @@ test("legacy commercial URLs redirect and apex host resolves to www", () => {
   assert.match(nextConfig, /destination: "https:\/\/www\.getsocialrush\.com\/:path\*"/);
 });
 
-test("declared public sitemap routes remain backed by known route classes", () => {
-  const matches = sitemap.match(/const publicRoutes = \\[([\\s\\S]*?)\\] as const;/);
-  assert.ok(matches, "public sitemap inventory missing");
-  const paths = [...matches[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+test("declared public sitemap routes remain well-formed and unique", () => {
+  const start = sitemap.indexOf("const publicRoutes = [");
+  const end = sitemap.indexOf("] as const;", start);
+  assert.ok(start >= 0 && end > start, "public sitemap inventory missing");
+  const inventory = sitemap.slice(start, end);
+  const paths = [...inventory.matchAll(/"([^"]+)"/g)].map((m) => m[1]);
   assert.equal(new Set(paths).size, paths.length, "duplicate public sitemap routes");
   for (const path of paths) {
     assert.ok(path.startsWith("/"), `invalid public route ${path}`);
-    assert.ok(!path.includes("?") && !path.includes("#"), `query/fragment in sitemap path: ${path}`);
+    assert.ok(!path.includes("?") && !path.includes("#"), `query or fragment in sitemap route: ${path}`);
   }
   assert.ok(paths.includes("/tools/social-media-growth-planner"));
   assert.ok(paths.includes("/buy-youtube-watch-hours-india"));
