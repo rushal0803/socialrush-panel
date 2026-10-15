@@ -3,6 +3,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { track } from "@/lib/analytics/events";
+import { MANUAL_UPI_ID, MANUAL_UPI_PAYEE_NAME } from "@/lib/payments/manual-upi-config";
 
 const DEFAULT_WHATSAPP_URL = "https://wa.me/918860330771";
 const RECOVERY_TTL_MS = 30 * 60 * 1000;
@@ -82,8 +83,8 @@ export default function ProfessionalUpiCheckout() {
   const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const upiId = process.env.NEXT_PUBLIC_UPI_ID?.trim() || "";
-  const payeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME?.trim() || "SocialRUSH";
+  const upiId = MANUAL_UPI_ID;
+  const payeeName = MANUAL_UPI_PAYEE_NAME;
 
   const snapshot = useMemo<OrderSnapshot | null>(() => {
     if (pathname !== "/dashboard/order-summary") return null;
