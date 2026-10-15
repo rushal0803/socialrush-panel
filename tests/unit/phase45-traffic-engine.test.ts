@@ -258,3 +258,53 @@ test("Phase 16 records return page visits while keeping organic landings once pe
     }
   }
 });
+
+test("Phase 18 counts repeat deliberate order actions without duplicating impressions", async () => {
+  const names = ["window", "location", "navigator", "document"] as const;
+  const previous = names.map((name) => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const);
+  const beacons: Blob[] = [];
+  const storage = new Map<string, string>();
+  const navigation = {
+    doNotTrack: "0",
+    sendBeacon: (_url: string, payload: Blob) => { beacons.push(payload); return true; },
+  };
+  try {
+    for (const [name, value] of Object.entries({
+      window: {
+        crypto: { randomUUID: () => "512047cb-27ea-4bbc-9ab0-29d27db43633" },
+        location: { hostname: "www.getsocialrush.com", search: "" },
+        sessionStorage: {
+          getItem: (key: string) => storage.get(key) ?? null,
+          setItem: (key: string, value: string) => { storage.set(key, value); },
+        },
+      },
+      location: { pathname: "/phase18-repeat-order-actions" },
+      navigator: navigation,
+      document: { referrer: "" },
+    })) Object.defineProperty(globalThis, name, { configurable: true, value });
+
+    const properties = { service_code: "instagram-followers", platform: "instagram", quantity: 1000, surface: "service_order_card" };
+    track("package_viewed", properties);
+    track("package_viewed", properties); // Still one impression, not two.
+    track("package_selected", properties);
+    track("package_selected", properties); // User returned and selected again.
+    track("new_order_clicked", properties);
+    track("new_order_clicked", properties); // User intentionally continued again.
+    const payloads = await Promise.all(beacons.map(async (blob) => JSON.parse(await blob.text())));
+    assert.deepEqual(payloads.map((row) => row.event), [
+      "package_viewed", "package_selected", "package_selected", "new_order_clicked", "new_order_clicked",
+    ]);
+    assert.ok(payloads.every((row) => row.pagePath === "/phase18-repeat-order-actions"));
+    assert.equal(new Set(payloads.map((row) => row.sessionId)).size, 1);
+
+    navigation.doNotTrack = "1";
+    track("new_order_clicked", properties);
+    track("package_selected", properties);
+    assert.equal(beacons.length, 5, "Do Not Track must continue to suppress clicks");
+  } finally {
+    for (const [name, descriptor] of previous) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else Reflect.deleteProperty(globalThis, name);
+    }
+  }
+});
