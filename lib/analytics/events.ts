@@ -100,6 +100,12 @@ type ClientAttribution = {
 
 const ATTRIBUTION_KEY = "sr_first_touch_attribution_v1";
 const sent = new Set<string>();
+// These events originate from deliberate user interactions; a later click with
+// identical selections is still a real order-funnel action, not an effect remount.
+const repeatableInteractionEvents = new Set<ClientAnalyticsEvent>([
+  "package_selected",
+  "new_order_clicked",
+]);
 
 const safePath = () =>
   typeof location === "undefined" ? "/" : location.pathname.slice(0, 300);
@@ -237,7 +243,7 @@ export function track(
   // views on the same URL for the lifetime of this document.
   // Organic landings, however, must be counted once per document even if the
   // analytics component remounts on a different client-side route.
-  if (event !== "page_viewed") {
+  if (event !== "page_viewed" && !repeatableInteractionEvents.has(event)) {
     const key =
       event === "organic_landing_view"
         ? event
