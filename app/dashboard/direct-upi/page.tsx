@@ -4,6 +4,7 @@ import DirectUpiPaymentClient from "@/components/dashboard/DirectUpiPaymentClien
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { MANUAL_UPI_ID, MANUAL_UPI_PAYEE_NAME } from "@/lib/payments/manual-upi-config";
 
 export const dynamic = "force-dynamic";
 
@@ -44,8 +45,8 @@ export default async function DirectUpiPage({ searchParams: searchParamsPromise 
 
   const service = getServiceById(intent.service_code);
   const serviceName = service?.name || intent.service_code.split("-").map((part: string) => part.charAt(0).toUpperCase() + part.slice(1)).join(" ");
-  const upiId = "8860330771@pthdfc";
-  const payeeName = "Rushal";
+  const upiId = MANUAL_UPI_ID;
+  const payeeName = MANUAL_UPI_PAYEE_NAME;
   const usdtTrc20Address = "TEu618wJ54USgsQSWhUnHbd9xFeMRUfCSz";
   let usdtAmount: number | null = null;
   try {

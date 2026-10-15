@@ -12,7 +12,7 @@
     "perf:compare": "node scripts/performance-compare.cjs",
     "perf:dashboard": "node scripts/dashboard-navigation-benchmark.cjs",
     "perf:dashboard:report": "node scripts/dashboard-performance-report.cjs",
-    "test:dashboard": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/dashboard-navigation.test.ts tests/unit/dashboard-order-history.test.ts tests/unit/payment-confidence.test.ts tests/unit/manual-wallet-review-contract.test.mjs tests/unit/live-service-row.test.ts tests/unit/live-service-batch.test.cjs tests/unit/currency-localization.test.ts",
+    "test:dashboard": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/dashboard-navigation.test.ts tests/unit/dashboard-order-history.test.ts tests/unit/payment-confidence.test.ts tests/unit/manual-wallet-review-contract.test.mjs tests/unit/manual-upi-qr-recipient.test.ts tests/unit/live-service-row.test.ts tests/unit/live-service-batch.test.cjs tests/unit/currency-localization.test.ts",
     "test:live-service-facts": "node --experimental-strip-types --test tests/unit/live-service-row.test.ts tests/unit/live-service-batch.test.cjs",
     "seo:check": "node scripts/seo-health-check.mjs",
     "seo:technical": "node scripts/seo-sitewide-technical-audit.mjs",
