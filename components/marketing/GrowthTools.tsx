@@ -34,7 +34,7 @@ function AuditResult({ audit, platform, audience, share }: { audit: ReturnType<t
 }
 
 export function GrowthPlannerTool() {
-  return <ToolShell eyebrow="Catalog-based planner" title="Smart Goal & Budget Planner" text="Make a clear, budget-aware next-step plan using currently active SocialRUSH catalog services."><Suspense fallback={<p className="text-sm text-slate-300" role="status">Loading the interactive planner…</p>}><GrowthPlannerForm /></Suspense></ToolShell>;
+  return <ToolShell eyebrow="Catalog-based planner" title="Smart Goal & Budget Planner" text="Make a clear, budget-aware next-step plan using currently active SocialRUSH catalog services."><section aria-label="Planner instructions" className="mb-5 rounded-2xl border border-white/10 bg-[#111522] p-5 text-sm leading-7 text-slate-300"><h2 className="text-lg font-bold text-white">Plan your social media budget</h2><p className="mt-2">Choose Instagram, YouTube, Facebook or X, select a goal and enter your budget to compare estimated service quantities. The planner uses catalog pricing for estimates; it does not predict organic reach, sales or guaranteed results.</p></section><Suspense fallback={<p className="text-sm text-slate-300" role="status">Loading the interactive planner…</p>}><GrowthPlannerForm /></Suspense></ToolShell>;
 }
 
 function GrowthPlannerForm() {
