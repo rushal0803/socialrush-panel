@@ -42,6 +42,19 @@ test("legacy commercial URLs redirect and apex host resolves to www", () => {
   assert.match(nextConfig, /destination: "https:\/\/www\.getsocialrush\.com\/:path\*"/);
 });
 
+test("declared public sitemap routes remain backed by known route classes", () => {
+  const matches = sitemap.match(/const publicRoutes = \\[([\\s\\S]*?)\\] as const;/);
+  assert.ok(matches, "public sitemap inventory missing");
+  const paths = [...matches[1].matchAll(/"([^"]+)"/g)].map((m) => m[1]);
+  assert.equal(new Set(paths).size, paths.length, "duplicate public sitemap routes");
+  for (const path of paths) {
+    assert.ok(path.startsWith("/"), `invalid public route ${path}`);
+    assert.ok(!path.includes("?") && !path.includes("#"), `query/fragment in sitemap path: ${path}`);
+  }
+  assert.ok(paths.includes("/tools/social-media-growth-planner"));
+  assert.ok(paths.includes("/buy-youtube-watch-hours-india"));
+});
+
 test("dynamic tool and comparison pages declare self canonicals and safe JSON-LD", () => {
   const toolPage = read("app/tools/[slug]/page.tsx");
   const comparisonPage = read("app/compare/[competitor]/page.tsx");
