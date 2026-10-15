@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { usePathname } from "next/navigation";
+import { MANUAL_UPI_ID, MANUAL_UPI_PAYEE_NAME } from "@/lib/payments/manual-upi-config";
 
 const DEFAULT_WHATSAPP_URL = "https://wa.me/918860330771";
 const ACTIVE_ROUTES = new Set(["/dashboard/new-order", "/dashboard/order-summary"]);
@@ -204,8 +205,8 @@ function prepareTemporaryCheckout(upiConfigured: boolean) {
 export default function TemporaryWhatsAppCheckout() {
   const pathname = usePathname();
   const active = ACTIVE_ROUTES.has(pathname);
-  const upiId = process.env.NEXT_PUBLIC_UPI_ID?.trim() || "";
-  const payeeName = process.env.NEXT_PUBLIC_UPI_PAYEE_NAME?.trim() || "SocialRUSH";
+  const upiId = MANUAL_UPI_ID;
+  const payeeName = MANUAL_UPI_PAYEE_NAME;
   const upiConfigured = Boolean(upiId);
   const [modalOpen, setModalOpen] = useState(false);
   const [snapshot, setSnapshot] = useState<OrderSnapshot | null>(null);
