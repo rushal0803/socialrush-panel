@@ -9,6 +9,7 @@ async function loadRates(): Promise<CurrencyRates> {
   try {
     const response = await fetch(providerUrl, {
       next: { revalidate: 21600 },
+      signal: AbortSignal.timeout(4000),
       headers: { Accept: "application/json" },
     });
     if (!response.ok) throw new Error(`FX provider returned ${response.status}`);
