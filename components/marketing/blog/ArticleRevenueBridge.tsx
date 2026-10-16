@@ -10,6 +10,11 @@ export default function ArticleRevenueBridge({ articleSlug, cluster }: Props) {
   if (!cluster) return null;
 
   const primary = cluster.serviceLinks.slice(0, 3);
+  // Link additional, relevant service options from informational articles without
+  // replacing the existing primary conversion paths or creating new pages.
+  const related = cluster.serviceLinks
+    .filter((item) => !primary.some((current) => current.href === item.href))
+    .slice(0, 3);
 
   return (
     <section className="mt-8 rounded-[30px] border border-orange-400/20 bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.14),transparent_38%),#0E121B] p-6 shadow-[0_18px_40px_rgba(0,0,0,.22)] sm:p-7">
@@ -33,6 +38,20 @@ export default function ArticleRevenueBridge({ articleSlug, cluster }: Props) {
           </TrackedLink>
         ))}
       </div>
+      {related.length > 0 ? (
+        <nav aria-label="More related services" className="mt-4">
+          <p className="text-xs font-bold text-slate-300">More {cluster.label} services</p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {related.map((item) => (
+              <TrackedLink key={item.href} href={item.href} event="blog_service_cta_clicked"
+                metadata={{ article_slug: articleSlug, destination: item.href, surface: "article_related_services" }}
+                className="inline-flex min-h-10 items-center rounded-xl border border-white/10 px-3 py-2 text-xs font-semibold text-orange-200 transition hover:border-orange-400/40">
+                {item.label}
+              </TrackedLink>
+            ))}
+          </div>
+        </nav>
+      ) : null}
       <div className="mt-4 flex flex-wrap gap-3">
         <TrackedLink href="/packages" event="blog_service_cta_clicked" metadata={{ article_slug: articleSlug, destination: "/packages", surface: "article_revenue_bridge" }} className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/[.04] px-4 py-2.5 text-sm font-bold text-white transition hover:border-orange-400/60">Compare larger packages</TrackedLink>
         <TrackedLink href="/for-agencies#bulk-lead-engine" event="blog_service_cta_clicked" metadata={{ article_slug: articleSlug, destination: "/for-agencies#bulk-lead-engine", surface: "article_revenue_bridge" }} className="inline-flex min-h-11 items-center rounded-xl border border-white/10 bg-white/[.04] px-4 py-2.5 text-sm font-bold text-white transition hover:border-orange-400/60">Agency / recurring requirement</TrackedLink>
