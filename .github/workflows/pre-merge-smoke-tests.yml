@@ -30,6 +30,8 @@ jobs:
       - run: npx tsc --noEmit
       - name: Complete unit regressions and live catalogue equivalence
         run: npm run test:unit && npm run test:live-service-facts
+      - name: Phase 1 canonical and crawl contract tests
+        run: node --test tests/unit/phase1-seo-contract.test.mjs
       - name: Verify PR 624 blog image assets
         run: node scripts/seo-blog-assets-check.mjs
       - name: Package quantities, wallet states and customer navigation contracts
