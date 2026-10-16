@@ -17,7 +17,7 @@ export const SERVICE_PRICES = {
   "youtube-comments": 0,
   // Watch Hours is enabled and priced only from its active Supabase row.
   "youtube-watch-hours": 0,
-  "facebook-followers": 299,
+  "facebook-followers": 499,
   "facebook-likes": 149,
   "facebook-views": 99,
   "facebook-shares": 499,
