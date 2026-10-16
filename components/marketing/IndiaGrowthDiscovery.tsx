@@ -8,6 +8,12 @@ const moneyPages = [
   { title: "Buy LinkedIn Followers India", text: "Review current LinkedIn follower pricing and the public-link order flow for profiles or company pages.", href: "/linkedin-followers" },
   { title: "Buy Facebook Followers India", text: "Explore the current Facebook follower path for supported public pages and profiles.", href: "/buy-facebook-followers-india" },
   { title: "Buy TikTok Followers India", text: "Review the active TikTok follower service, quantity rules and public-profile requirements.", href: "/tiktok-followers" },
+  { title: "Instagram Comments India", text: "Check comment order requirements and available quantities before choosing a campaign.", href: "/buy-instagram-comments-india" },
+  { title: "Instagram Saves India", text: "Explore save options for eligible public Instagram posts.", href: "/buy-instagram-saves-india" },
+  { title: "Instagram Shares India", text: "Review available share options and public post link requirements.", href: "/buy-instagram-shares-india" },
+  { title: "YouTube Comments India", text: "Compare comment options and check the required YouTube video link.", href: "/buy-youtube-comments-india" },
+  { title: "YouTube Watch Hours India", text: "Review watch-hour service details and qualifying public video requirements.", href: "/buy-youtube-watch-hours-india" },
+  { title: "Facebook Group Members India", text: "Check group membership service availability and campaign requirements.", href: "/buy-facebook-group-members-india" },
 ];
 
 const highValuePaths = [
