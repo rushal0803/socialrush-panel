@@ -1,7 +1,7 @@
 import Link from "next/link";
 import {
-  Activity, ArrowRight, Bot, Bug, CheckCircle2, ClipboardCheck,
-  ExternalLink, FileSearch, Mail, Radar, ShieldCheck, TriangleAlert,
+  Activity, ArrowRight, Bot, Bug, ClipboardCheck,
+  ExternalLink, FileSearch, Mail, ShieldCheck, TriangleAlert,
   Users, Workflow,
 } from "lucide-react";
 import { createClient } from "@/lib/supabase/server";
