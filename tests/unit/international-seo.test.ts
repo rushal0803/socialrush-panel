@@ -149,3 +149,9 @@ test("sitemap keeps both international hubs and published country service paths 
   assert.match(source, /\.\.\.internationalHubPaths/);
   assert.match(source, /\.\.\.countryServicePaths/);
 });
+
+test("international service pages distinguish currency display from geographic audience targeting", () => {
+  const source = fs.readFileSync(new URL("../../components/marketing/services/CountryServiceLandingPage.tsx", import.meta.url), "utf8");
+  assert.match(source, /country-specific page or currency display does not imply/);
+  assert.match(source, /actual audience-targeting options/);
+});
