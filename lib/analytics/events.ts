@@ -126,6 +126,26 @@ const searchSource = (hostname: string) => {
   return undefined;
 };
 
+/** Organic acquisition must begin on a public page, not a customer account
+ * or ordering route—even when the initial document had a search referrer. */
+const privateOrganicLandingRoots = new Set([
+  "dashboard", "admin", "api", "auth", "login", "register", "forgot-password",
+  "reset-password", "verify-email", "account", "wallet", "orders", "billing",
+  "new-campaign", "order-summary", "checkout", "order", "payment",
+]);
+
+export function isPublicOrganicLandingPath(pathname: string): boolean {
+  const path = pathname.split(/[?#]/, 1)[0];
+  if (!path.startsWith("/") || path.startsWith("//")) return false;
+  const segments = path.split("/").filter(Boolean);
+  const root = segments[0]?.toLowerCase();
+  if (!root) return true;
+  if (privateOrganicLandingRoots.has(root)) return false;
+  if (root === "packages" && ["summary", "checkout"].includes(segments[1]?.toLowerCase() ?? "")) return false;
+  if (root === "support" && segments.length > 1) return false;
+  return true;
+}
+
 /** Recognize an external search-engine document referrer without transmitting its URL. */
 export function isOrganicSearchReferrer(referrerUrl: string, currentHostname: string): boolean {
   if (!referrerUrl || !currentHostname) return false;

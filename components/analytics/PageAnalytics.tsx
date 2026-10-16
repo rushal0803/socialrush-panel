@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useRef } from "react";
-import { isOrganicSearchReferrer, primeAttribution, track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
+import { isOrganicSearchReferrer, isPublicOrganicLandingPath, primeAttribution, track, type ClientAnalyticsEvent } from "@/lib/analytics/events";
 
 export default function PageAnalytics() {
   const path = usePathname();
@@ -21,7 +21,7 @@ export default function PageAnalytics() {
     // Referrer URLs and search terms are never sent.
     if (!checkedInitialLanding.current) {
       checkedInitialLanding.current = true;
-      if (isOrganicSearchReferrer(document.referrer, window.location.hostname)) {
+      if (isOrganicSearchReferrer(document.referrer, window.location.hostname) && isPublicOrganicLandingPath(path)) {
         track("organic_landing_view", { referrer_type: "search" });
       }
     }

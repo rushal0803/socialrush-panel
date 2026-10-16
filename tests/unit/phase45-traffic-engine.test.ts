@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { isOrganicSearchReferrer, track } from "../../lib/analytics/events.ts";
+import { isOrganicSearchReferrer, isPublicOrganicLandingPath, track } from "../../lib/analytics/events.ts";
 import { createClientAnalyticsSessionIdProvider, isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "../../lib/analytics/session.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
@@ -95,6 +95,25 @@ test("Phase 8 identifies only external search referrers for organic landings", (
   ]) {
     assert.equal(isOrganicSearchReferrer(referrer, host), false, referrer);
   }
+});
+
+test("Phase 20 excludes private or auth paths from public organic landing acquisition", () => {
+  for (const path of ["/", "/youtube-subscribers", "/buy-instagram-followers-india", "/packages", "/support", "/blog/how-to-grow", "/us"]) {
+    assert.equal(isPublicOrganicLandingPath(path), true, path);
+  }
+  for (const path of [
+    "/dashboard", "/dashboard/direct-upi", "/dashboard/orders/example",
+    "/admin/dashboard", "/api/analytics", "/auth/callback",
+    "/login?next=/dashboard/new-order", "/register", "/forgot-password",
+    "/reset-password", "/verify-email", "/wallet", "/orders",
+    "/billing", "/new-campaign", "/order-summary", "/checkout",
+    "/payment", "/packages/summary", "/packages/checkout", "/support/private",
+    "//external.invalid/path", "https://external.invalid/path",
+  ]) {
+    assert.equal(isPublicOrganicLandingPath(path), false, path);
+  }
+  const analytics = read("components/analytics/PageAnalytics.tsx");
+  assert.match(analytics, /isOrganicSearchReferrer\(document\.referrer, window\.location\.hostname\) && isPublicOrganicLandingPath\(path\)/);
 });
 
 test("Phase 8 tracks organic landings once per document but page views on navigation", () => {
