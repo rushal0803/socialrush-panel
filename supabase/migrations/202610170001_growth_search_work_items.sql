@@ -21,6 +21,9 @@ create table if not exists public.growth_search_work_items (
     check (evidence_source in ('search_console','site_audit','geo_audit','manual')),
   evidence_date date,
   resolution_note text check (char_length(resolution_note) <= 2000),
+  constraint growth_search_resolution_evidence_check check (
+    status not in ('verified','closed') or char_length(btrim(coalesce(resolution_note,''))) >= 12
+  ),
   verified_at timestamptz,
   created_by uuid not null references auth.users(id),
   updated_by uuid references auth.users(id),
@@ -39,7 +42,7 @@ create index if not exists growth_search_work_items_queue_idx
 alter table public.growth_search_work_items enable row level security;
 
 -- Never expose work items to visitors or ordinary logged-in customers.
-revoke all on public.growth_search_work_items from anon;
+revoke all on public.growth_search_work_items from anon, authenticated;
 grant select, insert, update on public.growth_search_work_items to authenticated;
 
 create policy "Admins can read growth search work items"
