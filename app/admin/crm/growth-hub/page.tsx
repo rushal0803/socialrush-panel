@@ -45,10 +45,11 @@ const sections = [
     title: "SEO recovery",
     eyebrow: "Google & organic search",
     description: "Check technical eligibility, investigate indexing, improve commercial pages and review keyword changes from real Search Console exports.",
-    href: "/admin/seo/indexation",
-    cta: "Open indexation",
+    href: "/admin/crm/growth-hub/recovery",
+    cta: "Open recovery queue",
     icon: FileSearch,
     quickLinks: [
+      { href: "/admin/seo/indexation", label: "Indexation" },
       { href: "/admin/seo/ctr", label: "Search snippets" },
       { href: "/admin/seo/competitors", label: "Competitors" },
       { href: "/admin/seo/content", label: "Content" },
@@ -62,6 +63,7 @@ const sections = [
     cta: "Open AI-search audit",
     icon: Bot,
     quickLinks: [
+      { href: "/admin/crm/growth-hub/recovery", label: "SEO / GEO queue" },
       { href: "/admin/seo/authority", label: "Authority graph" },
       { href: "/admin/seo/digital-pr", label: "Digital PR" },
     ],
