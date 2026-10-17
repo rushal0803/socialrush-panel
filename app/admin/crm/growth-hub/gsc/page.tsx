@@ -98,7 +98,7 @@ export default async function GscImportPage({ searchParams }:{searchParams:Promi
       </article>
       <article className="rounded-2xl border border-white/10 bg-[#111] p-5 sm:p-6">
         <div className="flex gap-2"><SearchCheck size={21} className="text-orange-300"/><h2 className="text-lg font-black">Import Page Indexing → Examples CSV</h2></div>
-        <p className="mt-2 text-xs leading-5 text-[#A8AFBD]">Export the URL examples for a single exclusion reason. Choose the exact reason from Search Console. Don't combine different reasons in one file.</p>
+        <p className="mt-2 text-xs leading-5 text-[#A8AFBD]">Export the URL examples for a single exclusion reason. Choose the exact reason from Search Console. Do not combine different reasons in one file.</p>
         <form action={importGscCsv} className="mt-5 space-y-4">
           <input type="hidden" name="report_kind" value="indexing_examples"/>
           <div><label htmlFor="index-reason" className={labelClass}>Exclusion category</label>
