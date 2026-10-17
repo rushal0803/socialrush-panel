@@ -82,7 +82,7 @@ export default async function SearchRecoveryQueue() {
         <h1 className="mt-2 text-3xl font-black">SEO & GEO Recovery Queue</h1>
         <p className="mt-3 max-w-3xl text-sm leading-6 text-[#C6CCD5]">
           Track a real issue against a canonical service page, assign priority, record its source and require evidence before verification.
-          Work items represent investigation status, not Google's confirmed indexing state or AI-search placement.
+          Work items represent investigation status, not Google&apos;s confirmed indexing state or AI-search placement.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           <Link href="/admin/seo/indexation" className="rounded-lg border border-white/15 px-3 py-2 text-xs font-bold text-[#D1D5DB] hover:bg-white/10">Technical indexation <ArrowRight size={13} className="ml-1 inline" /></Link>
