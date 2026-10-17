@@ -47,7 +47,7 @@ test("rejects private, external, encoded, query and traversal paths", () => {
     "https://www.getsocialrush.com/services",
     "//attacker.example",
     "/admin/crm", "/api/cron",
-    "/dashboard", "/wallet", "/account",
+    "/dashboard", "/wallet", "/account", "/checkout", "/settings", "/notifications",
     "/services?platform=instagram", "/services#top",
     "/services/../../etc", "/%2Fadmin", "/Services",
   ]) {
