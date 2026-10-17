@@ -30,7 +30,7 @@ export function normalizeRecoveryPath(input: string): string {
     candidate.length > 180 ||
     !/^\/(?:[a-z0-9]+(?:[-/][a-z0-9]+)*)?$/.test(candidate) ||
     candidate.includes("//") ||
-    /(?:^|\/)(?:admin|api|auth|account|dashboard|wallet|billing|login|register|orders|new-campaign|order-summary)(?:\/|$)/.test(candidate)
+    /(?:^|\/)(?:admin|api|auth|account|dashboard|wallet|billing|login|register|orders|checkout|payments|settings|profile|notifications|new-campaign|order-summary)(?:\/|$)/.test(candidate)
   ) {
     throw new Error("Use a clean, public SocialRUSH path such as /buy-instagram-comments-india.");
   }
