@@ -1,4 +1,5 @@
 import Link from "next/link";
+import ServiceSearchDecisionGuide from "@/components/seo/ServiceSearchDecisionGuide";
 import {
   ArrowRight,
   BadgeIndianRupee,
@@ -237,7 +238,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "Facebook Group Members India", serviceType: "Facebook Group Members service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock", url: pageUrl } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [["Do I need my Facebook password?", "No. Only the exact accessible Facebook Group URL is required. Never share a password, OTP, or recovery code."], ["Which Facebook Group URL should I submit?", "Submit the exact facebook.com/groups/... URL. Facebook Page, profile, and post URLs are not accepted."], ["Does the group need to be accessible?", "Keep the submitted Facebook Group accessible and do not change its privacy settings while the order is processing."], ["Do group members guarantee activity or engagement?", "No. The service does not guarantee discussions, engagement, reach, sales, retention, or other platform outcomes."]].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} /></PublicShell>;
+    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} /><ServiceSearchDecisionGuide service="facebook-group-members" /></PublicShell>;
   }
   if (slug === "buy-youtube-comments-india") {
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
@@ -257,7 +258,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /></PublicShell>;
+    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /><ServiceSearchDecisionGuide service="youtube-comments" /></PublicShell>;
   }
   if (slug === "buy-instagram-shares-india") {
     const shareUrl = `${SEO_SITE_URL}${canonicalPath}`;
@@ -272,7 +273,7 @@ export default async function IndiaServiceLandingPage({
       { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell serviceExperience>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /></PublicShell>;
+    return <PublicShell serviceExperience>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /><ServiceSearchDecisionGuide service="instagram-shares" /></PublicShell>;
   }
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;

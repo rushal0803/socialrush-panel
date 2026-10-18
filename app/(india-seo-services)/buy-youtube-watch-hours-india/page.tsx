@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
+import ServiceSearchDecisionGuide from "@/components/seo/ServiceSearchDecisionGuide";
 import BlogShell from "@/components/marketing/PublicShell";
 import YouTubeWatchHoursWorkspace from "@/components/marketing/YouTubeWatchHoursWorkspace";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
@@ -14,8 +15,8 @@ const faqs = [
 
 export const metadata: Metadata = {
   ...createPageMetadata({
-    title: "Buy YouTube Watch Hours India | Live INR Plans | SocialRUSH",
-    description: "Buy YouTube watch hours in India with live INR pricing, public-video ordering, watch-time estimates, delivery details and dashboard tracking.",
+    title: "Buy YouTube Watch Hours India | INR Pricing | SocialRUSH",
+    description: "Buy YouTube watch hours in India for public videos. Check INR pricing, viewing-time estimates and delivery terms. Monetization is not guaranteed.",
     path,
     keywords: ["buy YouTube watch hours India", "YouTube watch hours service India"],
   }),
@@ -28,5 +29,5 @@ export default async function YouTubeWatchHoursPage() {
     { "@type": "Service", name: "YouTube Watch Hours", serviceType: "YouTube watch-hours service", url: `https://www.getsocialrush.com${path}`, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: "https://www.getsocialrush.com" }, description: "Public YouTube video watch-time campaign service with live pricing and dashboard tracking." },
     { "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
   ] }).replace(/</g, "\\u003c");
-  return <BlogShell serviceExperience><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "YouTube Growth", path: "/youtube-growth-india" }, { name: "YouTube Watch Hours", path }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeWatchHoursWorkspace facts={live} /></BlogShell>;
+  return <BlogShell serviceExperience><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "YouTube Growth", path: "/youtube-growth-india" }, { name: "YouTube Watch Hours", path }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeWatchHoursWorkspace facts={live} /><ServiceSearchDecisionGuide service="youtube-watch-hours" /></BlogShell>;
 }
