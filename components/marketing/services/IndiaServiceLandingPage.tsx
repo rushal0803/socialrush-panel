@@ -253,7 +253,7 @@ export default async function IndiaServiceLandingPage({
       ["Can I track my order?", "Yes. After checkout, your SocialRUSH dashboard keeps your order status and record together."],
     ];
     const schemas = [
-      { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Services", item: `${SEO_SITE_URL}/services` }, { "@type": "ListItem", position: 3, name: "YouTube Comments", item: pageUrl }] },
+      { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "YouTube Growth", item: `${SEO_SITE_URL}/youtube-growth-india` }, { "@type": "ListItem", position: 3, name: "YouTube Comments", item: pageUrl }] },
       { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
