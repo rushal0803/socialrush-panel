@@ -288,7 +288,7 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(tiktok.description ?? "", /TikTok followers in India/i);
   assert.match(metadataTitle(telegram), /Buy Telegram Members India \| Live INR Plans/);
   assert.match(telegram.description ?? "", /live INR pricing/i);
-  assert.match(metadataTitle(instagramLikes), /Buy Instagram Likes in India \\| INR Pricing/);
+  assert.match(metadataTitle(instagramLikes), /Buy Instagram Likes in India \| INR Pricing/);
   assert.match(instagramLikes.description ?? "", /live INR pricing/i);
   for (const metadata of [instagramViews, instagramComments, instagramSaves, instagramShares]) {
     assert.match(metadataTitle(metadata), /Buy Instagram (Likes|Views|Comments|Saves|Shares) India \| Live INR Plans/);
