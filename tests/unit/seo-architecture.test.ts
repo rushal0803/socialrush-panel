@@ -1522,7 +1522,7 @@ test("six indexing-priority service pages have distinct search snippets and usef
     else assert.equal(String(getIndiaServiceMetadata(("buy-" + code + "-india") as Parameters<typeof getIndiaServiceMetadata>[0], path).alternates?.canonical), "https://www.getsocialrush.com" + path);
   }
   assert.match(guide, /Monetization is never guaranteed/);
-  assert.match(guide, /does not guarantee algorithmic recommendations/);
+  assert.match(guide, /Neither guarantees algorithmic recommendations/);
   assert.match(guide, /facebook.com\/groups\/\.\.\./);
   assert.match(instagramCommentsRoute, /ServiceSearchDecisionGuide service="instagram-comments"/);
   assert.match(instagramSavesLanding, /ServiceSearchDecisionGuide service="instagram-saves"/);
