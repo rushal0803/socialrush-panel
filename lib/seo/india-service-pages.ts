@@ -670,7 +670,7 @@ export function getIndiaServiceMetadata(
           : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
-      ? "Buy X / Twitter Followers India | INR Plans | SocialRUSH"
+      ? "Buy Twitter Followers India (X) | INR Plans | SocialRUSH"
       : null;
 
   
@@ -681,7 +681,9 @@ export function getIndiaServiceMetadata(
   const tiktokTitle = slug === "buy-tiktok-followers-india" ? "Buy TikTok Followers in India | Live ₹ Plans | SocialRUSH" : title;
   return {
     title: { absolute: tiktokTitle }, 
-    description: slug === "buy-linkedin-followers-india"
+    description: slug === "buy-twitter-followers-india"
+      ? "Buy Twitter followers in India (X) with live INR prices, public-profile ordering, delivery and refill details. Check your total before checkout."
+      : slug === "buy-linkedin-followers-india"
       ? "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed."
       : slug === "buy-instagram-likes-india"
         ? "Buy Instagram likes in India for public posts and Reels. Compare 1,000 likes in INR, quantity limits, delivery and refill terms. No password required."
