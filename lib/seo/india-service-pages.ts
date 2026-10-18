@@ -635,7 +635,7 @@ export function getIndiaServiceMetadata(
       : null;
   const instagramLikesTitle =
     slug === "buy-instagram-likes-india"
-      ? "Buy Instagram Likes India | Live INR Plans | SocialRUSH"
+      ? "Buy Instagram Likes in India | INR Pricing | SocialRUSH"
       : null;
   const instagramEngagementTitle =
     slug === "buy-instagram-views-india"
@@ -686,7 +686,7 @@ export function getIndiaServiceMetadata(
       : slug === "buy-linkedin-followers-india"
       ? "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed."
       : slug === "buy-instagram-likes-india"
-        ? "Buy Instagram likes in India for public posts and Reels. Compare 1,000 likes in INR, quantity limits, delivery and refill terms. No password required."
+        ? "Buy Instagram likes in India with live INR pricing. Choose a public post or Reel, review delivery and refill terms, and check your exact total before checkout."
         : buildCommercialSearchDescription({ serviceName: page.serviceName, destination: page.destination }),
     keywords: [
       `Buy ${page.serviceName} India`,
