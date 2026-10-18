@@ -288,7 +288,9 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(tiktok.description ?? "", /TikTok followers in India/i);
   assert.match(metadataTitle(telegram), /Buy Telegram Members India \| Live INR Plans/);
   assert.match(telegram.description ?? "", /live INR pricing/i);
-  for (const metadata of [instagramLikes, instagramViews, instagramComments, instagramSaves, instagramShares]) {
+  assert.match(metadataTitle(instagramLikes), /Buy Instagram Likes in India \\| INR Pricing/);
+  assert.match(instagramLikes.description ?? "", /live INR pricing/i);
+  for (const metadata of [instagramViews, instagramComments, instagramSaves, instagramShares]) {
     assert.match(metadataTitle(metadata), /Buy Instagram (Likes|Views|Comments|Saves|Shares) India \| Live INR Plans/);
     assert.match(metadata.description ?? "", /live INR pricing|Compare .* in INR/i);
   }
@@ -1384,4 +1386,20 @@ test("Twitter follower recovery keeps keyword intent and a crawlable canonical h
   assert.match(landingSource, /document\.addEventListener\("visibilitychange", syncPreview\)/);
   assert.match(landingSource, /prefers-reduced-motion: reduce/);
   assert.match(landingSource, /1200\)/);
+});
+
+
+test("Instagram Likes canonical page has one breadcrumb owner and consistent search snippet", () => {
+  const canonicalRoute = readFileSync(new URL("../../app/(seo-services)/[service]/page.tsx", import.meta.url), "utf8");
+  const likesSource = readFileSync(new URL("../../app/(india-seo-services)/buy-instagram-likes-india/page.tsx", import.meta.url), "utf8");
+  const schemaSource = readFileSync(new URL("../../components/seo/IndiaCommercialServiceJsonLd.tsx", import.meta.url), "utf8");
+  const metadata = getIndiaServiceMetadata("buy-instagram-likes-india", "/instagram-likes");
+  assert.equal(metadataTitle(metadata), "Buy Instagram Likes in India | INR Pricing | SocialRUSH");
+  assert.match(metadata.description ?? "", /public post or Reel/i);
+  assert.equal(String(metadata.alternates?.canonical), "https://www.getsocialrush.com/instagram-likes");
+  assert.match(canonicalRoute, /IndiaCommercialServiceJsonLd code="instagram-likes"/);
+  assert.match(schemaSource, /<BreadcrumbJsonLd/);
+  assert.doesNotMatch(likesSource, /const breadcrumbSchema|schema\(breadcrumbSchema\)/);
+  assert.match(likesSource, /"@type": "FAQPage"/);
+  assert.match(likesSource, /<InstagramLikesOrderPanel compact \/>/);
 });
