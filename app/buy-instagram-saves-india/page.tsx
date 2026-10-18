@@ -8,8 +8,8 @@ const path = "/buy-instagram-saves-india";
 
 export const metadata: Metadata = {
   ...createPageMetadata({
-    title: "Buy Instagram Saves India | Live INR Plans | SocialRUSH",
-    description: "Buy Instagram saves in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
+    title: "Buy Instagram Saves in India | INR Pricing | SocialRUSH",
+    description: "Buy Instagram saves for public posts or Reels in India. Compare live INR rates, quantity limits and delivery terms before checkout. No password needed.",
     path,
     keywords: ["buy Instagram saves India", "Instagram saves service India"],
   }),
