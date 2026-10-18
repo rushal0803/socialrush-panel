@@ -641,15 +641,15 @@ export function getIndiaServiceMetadata(
     slug === "buy-instagram-views-india"
       ? "Buy Instagram Views India | Live INR Plans | SocialRUSH"
       : slug === "buy-instagram-comments-india"
-        ? "Buy Instagram Comments India | Live INR Plans | SocialRUSH"
+        ? "Buy Instagram Comments India | Posts & Reels | SocialRUSH"
         : slug === "buy-instagram-saves-india"
-          ? "Buy Instagram Saves India | Live INR Plans | SocialRUSH"
+          ? "Buy Instagram Saves in India | INR Pricing | SocialRUSH"
           : slug === "buy-instagram-shares-india"
-            ? "Buy Instagram Shares India | Live INR Plans | SocialRUSH"
+            ? "Buy Instagram Shares in India | INR Pricing | SocialRUSH"
             : null;
   const facebookTitle =
     slug === "buy-facebook-group-members-india"
-      ? "Buy Facebook Group Members India | Live INR Plans | SocialRUSH"
+      ? "Buy Facebook Group Members India | Pricing | SocialRUSH"
       : slug === "buy-facebook-followers-india"
       ? "Buy Facebook Followers India | Plans in ₹ | SocialRUSH"
       : slug === "buy-facebook-likes-india"
@@ -666,7 +666,7 @@ export function getIndiaServiceMetadata(
       : slug === "buy-youtube-likes-india"
         ? "Buy YouTube Likes India | Live INR Plans | SocialRUSH"
         : slug === "buy-youtube-comments-india"
-          ? "Buy YouTube Comments India | Live INR Plans | SocialRUSH"
+          ? "Buy YouTube Comments India | Videos & Shorts | SocialRUSH"
           : `Buy ${page.serviceName} India | SocialRUSH`;
   const twitterTitle =
     slug === "buy-twitter-followers-india"
@@ -687,7 +687,17 @@ export function getIndiaServiceMetadata(
       ? "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed."
       : slug === "buy-instagram-likes-india"
         ? "Buy Instagram likes in India with live INR pricing. Choose a public post or Reel, review delivery and refill terms, and check your exact total before checkout."
-        : buildCommercialSearchDescription({ serviceName: page.serviceName, destination: page.destination }),
+        : slug === "buy-instagram-comments-india"
+          ? "Buy Instagram comments for public posts or Reels in India. Check quantity limits, live INR totals and delivery terms before ordering. No password needed."
+          : slug === "buy-instagram-saves-india"
+            ? "Buy Instagram saves for public posts or Reels in India. Compare live INR rates, quantity limits and delivery terms before checkout. No password needed."
+            : slug === "buy-instagram-shares-india"
+              ? "Buy Instagram shares in India for eligible public posts or Reels. Review live INR pricing, link requirements and delivery terms before checkout."
+              : slug === "buy-youtube-comments-india"
+                ? "Buy YouTube comments in India for public videos or Shorts. Compare quantity limits, live INR pricing and delivery terms before placing your order."
+                : slug === "buy-facebook-group-members-india"
+                  ? "Buy Facebook Group members in India. Check group URL requirements, live INR pricing, delivery and refill terms before ordering. Keep your group accessible."
+                  : buildCommercialSearchDescription({ serviceName: page.serviceName, destination: page.destination }),
     keywords: [
       `Buy ${page.serviceName} India`,
       `Buy ${page.serviceName}`,
