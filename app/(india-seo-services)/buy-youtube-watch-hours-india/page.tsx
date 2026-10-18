@@ -28,5 +28,5 @@ export default async function YouTubeWatchHoursPage() {
     { "@type": "Service", name: "YouTube Watch Hours", serviceType: "YouTube watch-hours service", url: `https://www.getsocialrush.com${path}`, areaServed: "IN", provider: { "@type": "Organization", name: "SocialRUSH", url: "https://www.getsocialrush.com" }, description: "Public YouTube video watch-time campaign service with live pricing and dashboard tracking." },
     { "@type": "FAQPage", mainEntity: faqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
   ] }).replace(/</g, "\\u003c");
-  return <BlogShell serviceExperience><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "Services", path: "/services?platform=youtube" }, { name: "YouTube Watch Hours", path }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeWatchHoursWorkspace facts={live} /></BlogShell>;
+  return <BlogShell serviceExperience><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "YouTube Growth", path: "/youtube-growth-india" }, { name: "YouTube Watch Hours", path }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><YouTubeWatchHoursWorkspace facts={live} /></BlogShell>;
 }
