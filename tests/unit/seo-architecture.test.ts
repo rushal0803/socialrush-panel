@@ -1535,3 +1535,29 @@ test("six indexing-priority service pages have distinct search snippets and usef
   assert.match(sharesRoute, /eligible public posts or Reels/);
   assert.match(youtubeWatchHoursRoute, /Monetization is not guaranteed/);
 });
+
+test("creator calculators provide accurate contextual service links without implying ranking or eligibility", () => {
+  const route = readFileSync(new URL("../../app/tools/[slug]/page.tsx", import.meta.url), "utf8");
+  const catalogue = readFileSync(new URL("../../lib/tools/catalog.ts", import.meta.url), "utf8");
+  assert.match(route, /"youtube-watch-time-calculator": \{/);
+  assert.match(route, /"instagram-engagement-rate-calculator": \{/);
+  assert.match(route, /This calculator estimates hours from your own inputs/);
+  assert.match(route, /not an official YouTube Analytics value/);
+  assert.match(route, /independently decides Partner Program eligibility/);
+  assert.match(route, /paid activity does not guarantee organic reach/);
+  assert.match(route, /<ToolsContent activeSlug=\{params.slug\} \/>/);
+  assert.match(route, /aria-label="Related service requirements"/);
+  const targets = [
+    ["/buy-youtube-watch-hours-india", "youtube"],
+    ["/youtube-views", "youtube"],
+    ["/buy-instagram-comments-india", "instagram"],
+    ["/buy-instagram-saves-india", "instagram"],
+    ["/buy-instagram-shares-india", "instagram"],
+  ] as const;
+  for (const [href, platform] of targets) {
+    assert.ok(route.includes('href: "' + href + '"'), "tool page links to " + href);
+    assert.ok(contentClusters[platform].serviceLinks.some((link) => link.href === href), "tool destination has canonical content-cluster ownership: " + href);
+  }
+  assert.match(catalogue, /slug: "youtube-watch-time-calculator"/);
+  assert.match(catalogue, /slug: "instagram-engagement-rate-calculator"/);
+});
