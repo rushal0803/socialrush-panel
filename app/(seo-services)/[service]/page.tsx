@@ -117,7 +117,7 @@ export default async function CanonicalServicePage({
   if (slug === "buy-twitter-followers-india") {
     const faqs = getIndiaServiceFaqs(slug);
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
-    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "X / Twitter Services", path: "/services?platform=twitter" }, { name: "X / Twitter Followers", path: "/twitter-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><IndiaCommercialServiceJsonLd code="twitter-followers" name="X / Twitter Followers" path="/twitter-followers" platform="Twitter" serviceType="X / Twitter followers service" /><TwitterFollowersLanding /><MoneyPageAuthorityLinks platform="twitter" /></>;
+    return <><BreadcrumbJsonLd items={[{ name: "Home", path: "/" }, { name: "X / Twitter Services", path: "/x-growth-india" }, { name: "X / Twitter Followers", path: "/twitter-followers" }]} /><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: schema }} /><IndiaCommercialServiceJsonLd code="twitter-followers" name="X / Twitter Followers" path="/twitter-followers" platform="Twitter" serviceType="X / Twitter followers service" /><TwitterFollowersLanding /><MoneyPageAuthorityLinks platform="twitter" /></>;
   }
 
   return (

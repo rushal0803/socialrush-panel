@@ -278,7 +278,7 @@ test("priority India pages keep Search Console query language in metadata", () =
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
-  assert.match(metadataTitle(twitter), /Buy X \/ Twitter Followers India/);
+  assert.match(metadataTitle(twitter), /Buy Twitter Followers India \(X\)/);
   assert.match(twitter.description ?? "", /Buy Twitter\/X followers in India/i);
   assert.match(metadataTitle(facebook), /Buy Facebook Followers India/);
   assert.match(facebook.description ?? "", /live INR pricing/i);
@@ -1371,4 +1371,17 @@ test("phase 13 editorial guides give platform-specific actionable advice beyond 
     for (const heading of headings) assert.ok(article.sections.some(s => s.heading === heading), `${slug}: missing ${heading}`);
     assert.ok(article.sections.length >= 10, `${slug}: maintain detailed non-duplicate guidance`);
   }
+});
+
+
+test("Twitter follower recovery keeps keyword intent and a crawlable canonical hub breadcrumb", () => {
+  const metadataSource = readFileSync(new URL("../../lib/seo/india-service-pages.ts", import.meta.url), "utf8");
+  const serviceSource = readFileSync(new URL("../../app/(seo-services)/[service]/page.tsx", import.meta.url), "utf8");
+  const landingSource = readFileSync(new URL("../../components/marketing/TwitterFollowersLanding.tsx", import.meta.url), "utf8");
+  assert.match(metadataSource, /Buy Twitter Followers India \(X\) \| INR Plans \| SocialRUSH/);
+  assert.match(serviceSource, /name: "X \/ Twitter Services", path: "\/x-growth-india"/);
+  assert.match(landingSource, /href="\/x-growth-india" className="hover:text-white"/);
+  assert.match(landingSource, /document\.addEventListener\("visibilitychange", syncPreview\)/);
+  assert.match(landingSource, /prefers-reduced-motion: reduce/);
+  assert.match(landingSource, /1200\)/);
 });
