@@ -278,7 +278,7 @@ test("priority India pages keep Search Console query language in metadata", () =
 
   assert.match(metadataTitle(youtube), /Buy YouTube Subscribers India/);
   assert.match(youtube.description ?? "", /live INR pricing/i);
-  assert.match(metadataTitle(twitter), /Buy X \/ Twitter Followers India/);
+  assert.match(metadataTitle(twitter), /Buy Twitter Followers India \(X\)/);
   assert.match(twitter.description ?? "", /Buy Twitter\/X followers in India/i);
   assert.match(metadataTitle(facebook), /Buy Facebook Followers India/);
   assert.match(facebook.description ?? "", /live INR pricing/i);
