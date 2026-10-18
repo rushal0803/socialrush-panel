@@ -290,17 +290,23 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(telegram.description ?? "", /live INR pricing/i);
   assert.match(metadataTitle(instagramLikes), /Buy Instagram Likes in India \| INR Pricing/);
   assert.match(instagramLikes.description ?? "", /live INR pricing/i);
-  for (const metadata of [instagramViews, instagramComments, instagramSaves, instagramShares]) {
-    assert.match(metadataTitle(metadata), /Buy Instagram (Likes|Views|Comments|Saves|Shares) India \| Live INR Plans/);
-    assert.match(metadata.description ?? "", /live INR pricing|Compare .* in INR/i);
+  assert.match(metadataTitle(instagramViews), /Buy Instagram Views India \| Live INR Plans/);
+  assert.match(instagramViews.description ?? "", /live INR pricing/i);
+  assert.equal(metadataTitle(instagramComments), "Buy Instagram Comments India | Posts & Reels | SocialRUSH");
+  assert.equal(metadataTitle(instagramSaves), "Buy Instagram Saves in India | INR Pricing | SocialRUSH");
+  assert.equal(metadataTitle(instagramShares), "Buy Instagram Shares in India | INR Pricing | SocialRUSH");
+  for (const metadata of [instagramComments, instagramSaves, instagramShares]) {
+    assert.match(metadata.description ?? "", /public posts? or Reels? in India|eligible public posts or Reels/i);
   }
   assert.match(String(instagramLikes.alternates?.canonical), /\/instagram-likes$/);
   assert.match(String(instagramViews.alternates?.canonical), /\/instagram-views$/);
   assert.match(instagramViewsSource, /const path="\/instagram-views"/);
-  for (const metadata of [facebookLikes, facebookViews, facebookShares, facebookGroupMembers]) {
-    assert.match(metadataTitle(metadata), /Buy Facebook (Likes|Views|Shares|Group Members) India \| Live INR Plans/);
+  for (const metadata of [facebookLikes, facebookViews, facebookShares]) {
+    assert.match(metadataTitle(metadata), /Buy Facebook (Likes|Views|Shares) India \| Live INR Plans/);
     assert.match(metadata.description ?? "", /live INR pricing/i);
   }
+  assert.equal(metadataTitle(facebookGroupMembers), "Buy Facebook Group Members India | Pricing | SocialRUSH");
+  assert.match(facebookGroupMembers.description ?? "", /group URL requirements/i);
   assert.match(String(facebookShares.alternates?.canonical), /\/buy-facebook-shares-india$/);
   assert.match(middlewareSource, /\.\.\.commercialCanonicalRedirects/);
   assert.equal(commercialCanonicalRedirects["/services/facebook-shares"], "/buy-facebook-shares-india");
@@ -309,17 +315,19 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(String(linkedinLikes.alternates?.canonical), /\/linkedin-likes$/);
   assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
-  assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| Live INR Plans \| SocialRUSH/);
+  assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| INR Pricing \| SocialRUSH/);
   assert.match(watchHoursSource, /"@type": "FAQPage"/);
   for (const [metadata, canonical, service] of [
     [youtubeViews, "/youtube-views", "Views"],
     [youtubeLikes, "/youtube-likes", "Likes"],
-    [youtubeComments, "/buy-youtube-comments-india", "Comments"],
   ] as const) {
     assert.match(metadataTitle(metadata), new RegExp(`Buy YouTube ${service} India \\| Live INR Plans`));
     assert.match(metadata.description ?? "", /live INR pricing/i);
     assert.match(String(metadata.alternates?.canonical), new RegExp(`${canonical}$`));
   }
+  assert.equal(metadataTitle(youtubeComments), "Buy YouTube Comments India | Videos & Shorts | SocialRUSH");
+  assert.match(youtubeComments.description ?? "", /public videos or Shorts/i);
+  assert.match(String(youtubeComments.alternates?.canonical), /\/buy-youtube-comments-india$/);
   assert.match(canonicalServiceSource, /YouTubeEngagementJsonLd code="youtube-views"/);
   assert.match(youtubeLikesSource, /YouTubeEngagementJsonLd code="youtube-likes"/);
   assert.match(youtubeEngagementSchemaSource, /"@type": "Service"/);
@@ -1477,4 +1485,53 @@ test("YouTube Comments and Watch Hours point breadcrumbs to the canonical growth
   for (const path of ["/buy-youtube-comments-india", "/buy-youtube-watch-hours-india"]) {
     assert.ok(crawlPriorityServiceLinks.some(link => link.href === path) || searchPlanningLinks.some(link => link.href === path));
   }
+});
+
+test("six indexing-priority service pages have distinct search snippets and useful buyer decision guidance", () => {
+  const source = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
+  const guide = source("components/seo/ServiceSearchDecisionGuide.tsx");
+  const snippetSource = source("lib/seo/india-service-pages.ts");
+  const instagramCommentsRoute = source("app/buy-instagram-comments-india/page.tsx");
+  const instagramSavesLanding = source("components/marketing/services/InstagramSavesLanding.tsx");
+  const sharedLanding = source("components/marketing/services/IndiaServiceLandingPage.tsx");
+  const youtubeWatchHoursRoute = source("app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx");
+  const savesRoute = source("app/buy-instagram-saves-india/page.tsx");
+  const sharesRoute = source("app/buy-instagram-shares-india/page.tsx");
+  const paths = [
+    ["instagram-comments", "/buy-instagram-comments-india"],
+    ["instagram-saves", "/buy-instagram-saves-india"],
+    ["instagram-shares", "/buy-instagram-shares-india"],
+    ["youtube-comments", "/buy-youtube-comments-india"],
+    ["youtube-watch-hours", "/buy-youtube-watch-hours-india"],
+    ["facebook-group-members", "/buy-facebook-group-members-india"],
+  ] as const;
+  for (const [code, path] of paths) {
+    assert.match(guide, new RegExp('"' + code + '": \\{'), "unique guide exists: " + path);
+    const title = code === "youtube-watch-hours"
+      ? youtubeWatchHoursRoute.match(/title: "([^"]+)"/)?.[1]
+      : code === "instagram-saves" ? savesRoute.match(/title: "([^"]+)"/)?.[1]
+      : code === "instagram-shares" ? sharesRoute.match(/title: "([^"]+)"/)?.[1]
+      : metadataTitle(getIndiaServiceMetadata(("buy-" + code + "-india") as Parameters<typeof getIndiaServiceMetadata>[0], path));
+    assert.ok(title?.startsWith("Buy "), "commercial title remains: " + path);
+    assert.ok(title.length <= 65, "title is readable: " + path);
+    assert.ok(title.includes("SocialRUSH"), "title includes brand: " + path);
+    const canonical = code === "instagram-saves" || code === "instagram-shares" || code === "youtube-watch-hours"
+      ? (code === "instagram-saves" ? savesRoute : code === "instagram-shares" ? sharesRoute : youtubeWatchHoursRoute)
+      : null;
+    if (canonical) assert.ok(canonical.includes('const path = "' + path + '"'), "explicit canonical path preserved: " + path);
+    else assert.equal(String(getIndiaServiceMetadata(("buy-" + code + "-india") as Parameters<typeof getIndiaServiceMetadata>[0], path).alternates?.canonical), "https://www.getsocialrush.com" + path);
+  }
+  assert.match(guide, /Monetization is never guaranteed/);
+  assert.match(guide, /does not guarantee algorithmic recommendations/);
+  assert.match(guide, /facebook.com\/groups\/\.\.\./);
+  assert.match(instagramCommentsRoute, /ServiceSearchDecisionGuide service="instagram-comments"/);
+  assert.match(instagramSavesLanding, /ServiceSearchDecisionGuide service="instagram-saves"/);
+  assert.match(youtubeWatchHoursRoute, /ServiceSearchDecisionGuide service="youtube-watch-hours"/);
+  for (const code of ["instagram-shares", "youtube-comments", "facebook-group-members"]) {
+    assert.ok(sharedLanding.includes('ServiceSearchDecisionGuide service="' + code + '"'));
+  }
+  assert.match(snippetSource, /slug === "buy-youtube-comments-india"/);
+  assert.match(savesRoute, /public posts or Reels in India/);
+  assert.match(sharesRoute, /eligible public posts or Reels/);
+  assert.match(youtubeWatchHoursRoute, /Monetization is not guaranteed/);
 });
