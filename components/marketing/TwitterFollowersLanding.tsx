@@ -43,7 +43,7 @@ export default function TwitterFollowersLanding() {
     // This preview is decorative: avoid frequent page-wide rerenders while the
     // customer is using the order builder, the tab is hidden, or motion is reduced.
     const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-    let timer: ReturnType<typeof setInterval> | undefined;
+    let timer: number | undefined;
 
     const stop = () => {
       if (timer !== undefined) window.clearInterval(timer);
