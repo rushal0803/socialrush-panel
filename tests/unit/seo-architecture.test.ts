@@ -1403,3 +1403,62 @@ test("Instagram Likes canonical page has one breadcrumb owner and consistent sea
   assert.match(likesSource, /"@type": "FAQPage"/);
   assert.match(likesSource, /<InstagramLikesOrderPanel compact \/>/);
 });
+
+
+test("uncrawled Instagram Saves, Shares and Facebook Group Members pages render one live-fact schema owner", () => {
+  const source = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
+  const savesRoute = source("app/buy-instagram-saves-india/page.tsx");
+  const sharesRoute = source("app/buy-instagram-shares-india/page.tsx");
+  const facebookRoute = source("app/(india-seo-services)/buy-facebook-group-members-india/page.tsx");
+  const savesLanding = source("components/marketing/services/InstagramSavesLanding.tsx");
+  const serviceLanding = source("components/marketing/services/IndiaServiceLandingPage.tsx");
+
+  for (const [routeName, routeSource] of [
+    ["Instagram Saves", savesRoute],
+    ["Instagram Shares", sharesRoute],
+    ["Facebook Group Members", facebookRoute],
+  ] as const) {
+    assert.doesNotMatch(routeSource, /IndiaCommercialServiceJsonLd/, routeName + ": avoid duplicate Service and BreadcrumbList graphs");
+    assert.match(routeSource, /MoneyPageAuthorityLinks/, routeName + ": retain contextual service links");
+  }
+
+  assert.match(savesRoute, /<InstagramSavesLanding live=\{live\}/);
+  assert.match(sharesRoute, /<IndiaServiceLandingPage slug="buy-instagram-shares-india"/);
+  assert.match(facebookRoute, /<IndiaServiceLandingPage slug="buy-facebook-group-members-india"/);
+
+  const savesSchemaStart = savesLanding.indexOf('const schema = { "@context": "https://schema.org"');
+  const savesSchemaEnd = savesLanding.indexOf('return <PublicShell', savesSchemaStart);
+  assert.ok(savesSchemaStart >= 0 && savesSchemaEnd > savesSchemaStart);
+  const savesSchema = savesLanding.slice(savesSchemaStart, savesSchemaEnd);
+  assert.match(savesSchema, /"@type": "BreadcrumbList"/);
+  assert.match(savesSchema, /"@type": "Service"/);
+  assert.match(savesSchema, /"@type": "FAQPage"/);
+  assert.match(savesSchema, /service && Number\.isFinite\(service\.rate\)/);
+  assert.match(savesSchema, /instagram-growth-india/);
+
+  const facebookStart = serviceLanding.indexOf('if (slug === "buy-facebook-group-members-india")');
+  const facebookEnd = serviceLanding.indexOf('if (slug === "buy-youtube-comments-india")', facebookStart);
+  const sharesStart = serviceLanding.indexOf('if (slug === "buy-instagram-shares-india")');
+  const sharesEnd = serviceLanding.indexOf('  const available =', sharesStart);
+  assert.ok(facebookStart >= 0 && facebookEnd > facebookStart);
+  assert.ok(sharesStart >= 0 && sharesEnd > sharesStart);
+  for (const [name, block, hub] of [
+    ["Facebook Group Members", serviceLanding.slice(facebookStart, facebookEnd), "facebook-growth-india"],
+    ["Instagram Shares", serviceLanding.slice(sharesStart, sharesEnd), "instagram-growth-india"],
+  ] as const) {
+    assert.match(block, /"@type": "BreadcrumbList"/, name);
+    assert.match(block, /"@type": "Service"/, name);
+    assert.match(block, /"@type": "FAQPage"/, name);
+    assert.match(block, /live\?\.available && Number\.isFinite\(live\.rate\)/, name);
+    assert.ok(block.includes(hub), name + ": breadcrumb links to indexable platform hub");
+  }
+
+  for (const [slug, path] of [
+    ["buy-instagram-saves-india", "/buy-instagram-saves-india"],
+    ["buy-instagram-shares-india", "/buy-instagram-shares-india"],
+    ["buy-facebook-group-members-india", "/buy-facebook-group-members-india"],
+  ] as const) {
+    const meta = getIndiaServiceMetadata(slug, path);
+    assert.equal(String(meta.alternates?.canonical), "https://www.getsocialrush.com" + path);
+  }
+});
