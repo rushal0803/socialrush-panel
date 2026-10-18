@@ -682,7 +682,7 @@ export function getIndiaServiceMetadata(
   return {
     title: { absolute: tiktokTitle }, 
     description: slug === "buy-twitter-followers-india"
-      ? "Buy Twitter followers in India (X) with live INR prices, public-profile ordering, delivery and refill details. Check your total before checkout."
+      ? "Buy Twitter/X followers in India with live INR pricing, public-profile ordering and clear delivery and refill details. Check your total before checkout."
       : slug === "buy-linkedin-followers-india"
       ? "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed."
       : slug === "buy-instagram-likes-india"
