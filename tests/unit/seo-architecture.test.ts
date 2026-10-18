@@ -1561,3 +1561,43 @@ test("creator calculators provide accurate contextual service links without impl
   assert.match(catalogue, /slug: "youtube-watch-time-calculator"/);
   assert.match(catalogue, /slug: "instagram-engagement-rate-calculator"/);
 });
+
+
+test("educational blog guides link to all six priority service destinations with accurate caveats", () => {
+  const choice = getArticleBySlug("choose-the-right-social-media-service");
+  const campaign = getArticleBySlug("how-social-media-growth-campaigns-work");
+  assert.ok(choice, "service-selection blog article exists");
+  assert.ok(campaign, "campaign-workflow blog article exists");
+
+  const choices = [
+    ...choice.sections.map((section) => section.contextualLink?.href).filter(Boolean),
+    ...(choice.relatedLinks ?? []).map((link) => link.href),
+  ];
+  const campaigns = [
+    ...campaign.sections.map((section) => section.contextualLink?.href).filter(Boolean),
+    ...(campaign.relatedLinks ?? []).map((link) => link.href),
+  ];
+  const targets = [
+    "/buy-instagram-comments-india",
+    "/buy-instagram-saves-india",
+    "/buy-instagram-shares-india",
+    "/buy-youtube-comments-india",
+    "/buy-youtube-watch-hours-india",
+    "/buy-facebook-group-members-india",
+  ];
+  for (const href of targets) {
+    assert.equal([...choices, ...campaigns].filter((item) => item === href).length, 1, "one editorial link to " + href);
+    assert.ok(crawlPriorityServiceLinks.some((service) => service.href === href) || searchPlanningLinks.some((service) => service.href === href), "priority destination exists: " + href);
+  }
+
+  assert.ok(choice.sections.some((section) => section.heading === "Compare Instagram comments, saves and shares"));
+  assert.ok(choice.sections.some((section) => section.heading === "Distinguish Facebook Groups from Facebook Pages"));
+  assert.ok(campaign.sections.some((section) => section.heading === "Match YouTube comments to a video, not a channel"));
+  assert.ok(campaign.sections.some((section) => section.heading === "Separate watch-time estimates from monetization eligibility"));
+
+  const text = [...choice.sections, ...campaign.sections].map((section) => section.body).join(" ");
+  assert.match(text, /does not guarantee distribution/);
+  assert.match(text, /does not guarantee discussion or active community participation/);
+  assert.match(text, /YouTube moderates comments independently/);
+  assert.match(text, /Purchased or promotional watch time should never be assumed to qualify for monetization/);
+});
