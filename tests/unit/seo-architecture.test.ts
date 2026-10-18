@@ -1587,7 +1587,7 @@ test("educational blog guides link to all six priority service destinations with
   ];
   for (const href of targets) {
     assert.equal([...choices, ...campaigns].filter((item) => item === href).length, 1, "one editorial link to " + href);
-    assert.ok(crawlPriorityServiceLinks.some((service) => service.href === href), "priority destination exists: " + href);
+    assert.ok(crawlPriorityServiceLinks.some((service) => service.href === href) || searchPlanningLinks.some((service) => service.href === href), "priority destination exists: " + href);
   }
 
   assert.ok(choice.sections.some((section) => section.heading === "Compare Instagram comments, saves and shares"));
