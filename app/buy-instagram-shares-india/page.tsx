@@ -1,8 +1,11 @@
 import type { Metadata } from "next";
-import IndiaServiceLandingPage from "@/components/marketing/services/IndiaServiceLandingPage";
-import { createPageMetadata } from "@/lib/seo/metadata";
+import PublicShell from "@/components/marketing/PublicShell";
+import InteractiveHomepageShell from "@/components/marketing/InteractiveHomepageShell";
+import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
 import IndiaCommercialServiceJsonLd from "@/components/seo/IndiaCommercialServiceJsonLd";
 import MoneyPageAuthorityLinks from "@/components/seo/MoneyPageAuthorityLinks";
+import { getLiveServiceFacts } from "@/lib/seo/live-service";
+import { createPageMetadata } from "@/lib/seo/metadata";
 
 const path = "/buy-instagram-shares-india";
 
@@ -16,6 +19,24 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-export default function BuyInstagramSharesIndiaPage() {
-  return <><IndiaCommercialServiceJsonLd code="instagram-shares" name="Instagram Shares" path={path} platform="Instagram" serviceType="Instagram shares service" /><IndiaServiceLandingPage slug="buy-instagram-shares-india" canonicalPath={path} /><MoneyPageAuthorityLinks platform="instagram" /></>;
+export default async function BuyInstagramSharesIndiaPage() {
+  const live = await getLiveServiceFacts("instagram", "Instagram Shares");
+
+  return (
+    <PublicShell>
+      <IndiaCommercialServiceJsonLd
+        code="instagram-shares"
+        name="Instagram Shares"
+        path={path}
+        platform="Instagram"
+        serviceType="Instagram shares service"
+      />
+      <InteractiveHomepageShell>
+        <div className="service-money-page">
+          <InstagramSharesLanding live={live} />
+          <MoneyPageAuthorityLinks platform="instagram" />
+        </div>
+      </InteractiveHomepageShell>
+    </PublicShell>
+  );
 }
