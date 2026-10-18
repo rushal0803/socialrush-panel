@@ -1462,3 +1462,19 @@ test("uncrawled Instagram Saves, Shares and Facebook Group Members pages render 
     assert.equal(String(meta.alternates?.canonical), "https://www.getsocialrush.com" + path);
   }
 });
+
+test("YouTube Comments and Watch Hours point breadcrumbs to the canonical growth hub", () => {
+  const commentsLanding = readFileSync(new URL("../../components/marketing/services/IndiaServiceLandingPage.tsx", import.meta.url), "utf8");
+  const watchPage = readFileSync(new URL("../../app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx", import.meta.url), "utf8");
+  const commentsStart = commentsLanding.indexOf('if (slug === "buy-youtube-comments-india")');
+  const commentsEnd = commentsLanding.indexOf('if (slug === "buy-instagram-shares-india")', commentsStart);
+  assert.ok(commentsStart >= 0 && commentsEnd > commentsStart);
+  const comments = commentsLanding.slice(commentsStart, commentsEnd);
+  assert.ok(comments.includes('name: "YouTube Growth", item: `${SEO_SITE_URL}/youtube-growth-india`'));
+  assert.ok(!comments.includes('name: "Services", item: `${SEO_SITE_URL}/services`'));
+  assert.ok(watchPage.includes('name: "YouTube Growth", path: "/youtube-growth-india"'));
+  assert.ok(!watchPage.includes('name: "Services", path: "/services?platform=youtube"'));
+  for (const path of ["/buy-youtube-comments-india", "/buy-youtube-watch-hours-india"]) {
+    assert.ok(crawlPriorityServiceLinks.some(link => link.href === path) || searchPlanningLinks.some(link => link.href === path));
+  }
+});
