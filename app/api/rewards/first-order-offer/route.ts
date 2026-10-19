@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
-import { buildFirstOrderContext } from "@/lib/cro/first-order-conversion";
+import { buildFirstOrderContext, FIRST_ORDER_NON_QUALIFYING_STATES } from "@/lib/cro/first-order-conversion";
 
 export async function GET() {
   const db = await createClient();
@@ -18,7 +18,10 @@ export async function GET() {
       .maybeSingle(),
     db.from("orders")
       .select("status,payment_status")
-      .eq("user_id", user.id),
+      .eq("user_id", user.id)
+      .or(`status.is.null,status.not.in.(${FIRST_ORDER_NON_QUALIFYING_STATES.join(",")})`)
+      .or(`payment_status.is.null,payment_status.not.in.(${FIRST_ORDER_NON_QUALIFYING_STATES.join(",")})`)
+      .limit(1),
     db.from("first_order_bonus_experiment_assignments")
       .select("variant")
       .eq("user_id", user.id)

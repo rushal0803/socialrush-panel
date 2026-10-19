@@ -94,3 +94,19 @@ test("Phase 34 keeps dashboard and builder on the same first-order path", () => 
   assert.match(builder, /Start with a clear four-step order review/);
   assert.match(builder, /step: "first_order_entry"/);
 });
+
+test("Phase 34 reward endpoint limits qualifying-order lookup without changing reward rules", () => {
+  const api = read("app/api/rewards/first-order-offer/route.ts");
+  assert.match(api, /FIRST_ORDER_NON_QUALIFYING_STATES/);
+  assert.match(api, /status\.is\.null,status\.not\.in\./);
+  assert.match(api, /payment_status\.is\.null,payment_status\.not\.in\./);
+  assert.match(api, /\.limit\(1\)/);
+  assert.match(api, /buildFirstOrderContext\(rules, orders \|\| \[\]\)/);
+  assert.equal(isQualifyingFirstOrderState({ status: null, payment_status: null }), true);
+  assert.equal(isQualifyingFirstOrderState({ status: "pending", payment_status: "refunded" }), false);
+  assert.equal(isQualifyingFirstOrderState({ status: "cancelled", payment_status: null }), false);
+  assert.deepEqual(buildFirstOrderContext({ enabled: true, manual_approval: false, minimum_order_amount: 500, new_customer_reward: 100 }, [
+    { status: "failed", payment_status: "failed" },
+    { status: "completed", payment_status: "paid" },
+  ]), { firstOrder: false, eligible: false });
+});
