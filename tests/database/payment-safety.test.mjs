@@ -29,6 +29,7 @@ const transition=(db,id,status='cancelled')=>scalar(db,'select admin_update_orde
 test('read-only reconciliation flags candidate anomalies without changing records',async()=>{
   const db=await fixture();try{
     await db.query("insert into transactions(user_id,amount,type,status) values($1,10,'credit','completed'),($1,5,'refund','completed')",[user]);
+    await db.query("insert into transactions(user_id,amount,type,status,metadata) values($1,7,'refund','completed','{\"refund_kind\":\"wallet_deposit\"}')",[user]);
     await db.query("insert into orders(user_id,service_id,charge,quantity,status,payment_status,completed_at) values($1,1,10,100,'completed','paid',null),($1,1,20,100,'completed','paid',now())",[user]);
     const before=await scalar(db,'select count(*) from transactions');
     const results=await db.exec(await sqlFile('scripts/finance-reconciliation-readonly.sql'));
@@ -36,6 +37,7 @@ test('read-only reconciliation flags candidate anomalies without changing record
     assert.ok(report);
     assert.equal(report.counts.orphan_credit_candidate,1);
     assert.equal(report.counts.unmatched_service_refund,1);
+    assert.equal(report.counts.unmatched_gateway_refund,1);
     assert.equal(report.counts.missing_recognition_date,1);
     assert.equal(report.counts.missing_verified_supplier_cost,1);
     assert.equal(await scalar(db,'select count(*) from transactions'),before);

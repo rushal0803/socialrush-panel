@@ -22,7 +22,7 @@ Continue branch `feat/payment-revenue-safety-20261020`, draft PR [#702](https://
 | Finance / dashboard regressions | PASS | Finance: 31 application + 13 SQL tests; dashboard: 37. Includes new read-only reconciliation regression. Counts overlap other suites. |
 | Local TypeScript / lint / production build | PASS | Full standalone TypeScript, lint (existing warnings) and fixture-backed local production build exit 0. No production credentials or deployment. Final rerun status recorded below. |
 | Local browser fixture checks | PASS | Seven selected customer funding/order/history checks plus rerun of wallet-details test passed in Chromium. The latter verifies mobile focus/pending state, downloaded CSV pending impact = 0, 1440px table/overflow, and pending confirmation. Updated stale expected dialog wording to current wallet statement wording. Synthetic sessions/mocked transport, not Auth certification. |
-| Final published-head CI | NOT TESTED | Recheck after the last verification change is pushed. |
+| Published-head CI snapshot | PASS | Full [run 39658922044](https://github.com/rushal0803/socialrush-panel/actions/runs/39658922044) passed for `28b5ccc9`; new native [job 119433534470](https://github.com/rushal0803/socialrush-panel/actions/runs/39660967496/job/119433534470) passed for `ff1bfe9b`. Later evidence/tool-only changes require a fresh head check; the final PR description records that exact result without changing the commit being checked. |
 
 ## Native concurrency evidence
 
@@ -52,7 +52,7 @@ if ($LASTEXITCODE -ne 0) { throw 'Reconciliation failed; do not use partial outp
 
 Configure the service and password through PostgreSQL's local service/password files, never in command arguments, git, screenshots or PR logs. Retain results privately; output includes opaque financial record IDs. Check exit status, complete row visibility and snapshot provenance before review. No automatic follow-up writes are included.
 
-The SQL uses a repeatable-read, read-only transaction, bounded statement/lock timeouts and rollback. It returns counts and at most 20 IDs per category: provenance-free credits, unmatched service refunds, duplicate ledger/payment references, multiple refunds per order, incomplete gateway references, missing recognition dates/cost evidence, refunded orders without ledger events and unresolved/mismatched gateway settlements.
+The SQL uses a repeatable-read, read-only transaction, bounded statement/lock timeouts and rollback. It returns counts and at most 20 IDs per category: provenance-free credits, unmatched service and gateway refunds, duplicate ledger/payment references, multiple refunds per order, incomplete gateway references, missing recognition dates/cost evidence, refunded orders without ledger events and unresolved/mismatched gateway settlements.
 
 Flags are **candidates**. Manual credits or multiple partial refunds may be legitimate. No opening-balance attestation, bank/provider statement match, tax/fee audit or historical balance correction is implied. An empty result only clears these checks for that source and visibility.
 
@@ -63,3 +63,5 @@ Flags are **candidates**. Manual credits or multiple partial refunds may be legi
 3. Approve a historical snapshot and SELECT-only source; run the provided tool and manually review candidates against bank/provider/order evidence. Obtain verified supplier costs and an approved revenue-recognition policy.
 4. Run authenticated mobile and desktop browser flows against that stack: wallet history and CSV effects, order confirmation, admin cancellation/review, pending/manual-review/error displays, focus/overflow and retries. Attach sanitized screenshots and request/database evidence. Test failures must retain pending records and show recoverable outcomes.
 5. Re-run release gates after any fix, then seek separate rollout review. This phase does not authorize production deployment or enabling live refunds.
+
+Final local evidence: standalone TypeScript and lint exit 0; lint retains existing warnings. `npm run build:finance-safe` exits 0 and generates 315/315 pages. All 615 unit tests pass; finance checks are 31 application plus 13 SQL; dashboard checks are 37. Seven initial browser fixture checks and the wallet-detail/CSV rerun pass. Local logs are ignored under `artifacts/phase12-*`; they are not production data or deployment artifacts. Final exact-head CI evidence is maintained in PR #702, avoiding a self-referential report-only commit/retest loop.

@@ -20,6 +20,15 @@ with findings as (
     and coalesce(t.metadata->>'refund_kind','') not in ('wallet_deposit','deposit_reservation_release')
     and coalesce(t.description,'')<>'Payment refunded to original method'
   union all
+  select 'unmatched_gateway_refund',t.id::text,'External refund has no consistent durable request or legacy source credit'
+  from public.transactions t where t.type='refund' and t.status='completed' and (
+    (t.metadata->>'refund_kind'='wallet_deposit' and not exists(
+      select 1 from public.gateway_refund_requests r where r.id::text=t.metadata->>'refund_request_id'
+        and r.user_id=t.user_id and r.amount=t.amount and r.provider_refund_id=t.provider_refund_id and r.status='completed'))
+    or (t.description='Payment refunded to original method' and not exists(
+      select 1 from public.transactions source where source.type='credit' and source.status='completed'
+        and source.user_id=t.user_id and source.amount=t.amount and source.provider_refund_id=t.provider_refund_id)))
+  union all
   select 'duplicate_ledger_key',min(t.id::text),'Repeated nonempty ledger business key'
   from public.transactions t where nullif(t.ledger_entry_key,'') is not null
   group by t.ledger_entry_key having count(*)>1

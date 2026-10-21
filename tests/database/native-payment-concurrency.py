@@ -195,4 +195,8 @@ assert run(auth(OTHER) + 'select admin_revenue_report(now(),now());', False).ret
 assert value(auth(OTHER) + 'select count(*) from orders;') == '0'
 assert run('set role anon; select * from gateway_refund_requests;', False).returncode != 0
 print('PASS native SQL role/ownership checks; full Supabase stack remains a separate gate')
+report = json.loads(run((ROOT / 'scripts/finance-reconciliation-readonly.sql').read_text(encoding='utf-8')).stdout.strip())
+assert report['counts'] == {}, report
+assert balance() == 160 and count('transactions', "type='refund'") == 2
+print('PASS read-only reconciliation on valid native records: no false anomalies or financial changes')
 print('PASS all native financial concurrency scenarios')
