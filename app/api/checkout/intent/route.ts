@@ -1,7 +1,7 @@
 import { NextResponse, type NextRequest } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
-import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
+import { validateQuantity, type ServiceCode } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
@@ -195,6 +195,8 @@ export async function POST(request: NextRequest) {
     .from("services")
     .select("id, rate, min, max, accepts_new_orders, health_status")
     .eq("status", "active")
+    .eq("is_active", true)
+    .eq("accepts_new_orders", true)
     .order("id", { ascending: true })
     .limit(1);
   matchedServiceQuery = packageGroup ? matchedServiceQuery.eq("id", packageGroup.databaseServiceId) : matchedServiceQuery.eq("code", service.code);
@@ -205,8 +207,8 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please choose another service." }, { status: 409 });
   }
 
-  let totalPaise = calculateServiceTotalPaise(service.code, requestedQuantity);
-  if (packageSelection || liveCatalogServiceCodes.has(service.code) || cryptoServiceCodes.has(service.code)) {
+  let totalPaise: number;
+  {
     if (!matchedService) return NextResponse.json({ error: `${service.name} is not currently available.` }, { status: 409 });
     const liveQuantityError = validateQuantity(requestedQuantity, {
       minQuantity: Number(matchedService.min),

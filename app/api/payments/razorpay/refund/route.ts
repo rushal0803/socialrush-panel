@@ -1,29 +1,50 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createAdminClient } from "@/lib/supabase/admin";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdminApi } from "@/lib/admin/require-admin-api";
 import { razorpayRequest } from "@/lib/payments/razorpay";
-
-type Refund = { id: string };
+import { processGatewayRefund, type GatewayRefund, type RefundDependencies, type RefundRequest } from "@/lib/payments/gateway-refund";
+import { isUuid, rateLimit, requireJson, requireSameOrigin } from "@/lib/security/request";
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient();
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
-  if (profile?.role !== "admin") return NextResponse.json({ error: "Admin access required" }, { status: 403 });
+  const auth = await requireAdminApi();
+  if ("response" in auth) return auth.response;
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request); if (jsonError) return jsonError;
+  const limited = rateLimit(request, "gateway-refund", 10, 60_000, auth.user.id); if (limited) return limited;
+  // Roll out only after migration + reconciliation tests. No unsafe legacy fallback.
+  if (process.env.GATEWAY_REFUNDS_ENABLED !== "true") return NextResponse.json({ error: "Gateway refunds require rollout approval. No refund was submitted." }, { status: 503 });
   const body = await request.json().catch(() => null) as { transactionId?: string } | null;
-  if (!body?.transactionId) return NextResponse.json({ error: "Transaction ID is required" }, { status: 422 });
-  const { data: transaction } = await supabase.from("transactions").select("id, user_id, provider_payment_id, amount").eq("id", body.transactionId).single();
-  if (!transaction?.provider_payment_id) return NextResponse.json({ error: "Refundable payment not found" }, { status: 404 });
-  const { data: wallet } = await supabase.from("profiles").select("balance").eq("id", transaction.user_id).single();
-  if (Number(wallet?.balance ?? 0) < Number(transaction.amount)) return NextResponse.json({ error: "Wallet balance is below the refundable amount" }, { status: 409 });
+  if (!isUuid(body?.transactionId)) return NextResponse.json({ error: "A valid transaction ID is required" }, { status: 422 });
+  const db = auth.supabase;
+  const record: RefundDependencies["record"] = async (id, status, providerId, reason) => {
+    const { data, error } = await db.rpc("record_wallet_gateway_refund", {
+      p_request_id: id, p_status: status, p_provider_refund_id: providerId, p_reason: reason,
+    });
+    if (error) throw new Error("Refund persistence unavailable");
+    return data as RefundRequest;
+  };
   try {
-    const refund = await razorpayRequest<Refund>(`/payments/${transaction.provider_payment_id}/refund`, { method: "POST", body: JSON.stringify({ amount: Math.round(Number(transaction.amount) * 100), notes: { transaction_id: transaction.id } }) });
-    const admin = createAdminClient();
-    const { error } = await admin.rpc("admin_refund_wallet_payment", { p_transaction_id: transaction.id, p_provider_refund_id: refund.id });
-    if (error) return NextResponse.json({ error: error.message }, { status: 400 });
-    return NextResponse.json({ data: { refundId: refund.id } });
-  } catch (error) {
-    return NextResponse.json({ error: error instanceof Error ? error.message : "Refund failed" }, { status: 503 });
+    const { data, error } = await db.rpc("request_wallet_gateway_refund", { p_transaction_id: body!.transactionId });
+    if (error) return NextResponse.json({ error: "Deposit is not eligible, balance is insufficient, or refund storage is unavailable. No new provider request was sent." }, { status: 409 });
+    const result = await processGatewayRefund(data as RefundRequest, {
+      record,
+      claim: async id => {
+        const { data: claimed, error: claimError } = await db.rpc("claim_wallet_gateway_refund", { p_request_id: id });
+        if (claimError) throw new Error("Refund claim unavailable");
+        return claimed === true;
+      },
+      payment: id => razorpayRequest(`/payments/${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(10_000) }),
+      create: (id, amount, requestId) => razorpayRequest<GatewayRefund>(`/payments/${encodeURIComponent(id)}/refund`, {
+        method: "POST", signal: AbortSignal.timeout(15_000),
+        body: JSON.stringify({ amount, receipt: requestId, notes: { refund_request_id: requestId } }),
+      }),
+      fetchRefund: id => razorpayRequest<GatewayRefund>(`/refunds/${encodeURIComponent(id)}`, { signal: AbortSignal.timeout(10_000) }),
+      list: async (id, skip) => (await razorpayRequest<{ items: GatewayRefund[] }>(`/payments/${encodeURIComponent(id)}/refunds?count=100&skip=${skip}`, { signal: AbortSignal.timeout(10_000) })).items,
+    });
+    return NextResponse.json({ data: { requestId: result.id, status: result.status, refundId: result.provider_refund_id,
+      manualReviewRequired: result.status === "manual_review" } }, {
+      status: ["completed", "failed"].includes(result.status) ? 200 : 202, headers: { "Cache-Control": "no-store" },
+    });
+  } catch {
+    return NextResponse.json({ error: "Refund outcome requires reconciliation. Do not submit another payment or issue a refund outside this request." }, { status: 503 });
   }
 }

@@ -28,6 +28,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: Payment and revenue safety in isolated PostgreSQL fixtures
+        run: npm run test:finance
       - name: Complete unit regressions and live catalogue equivalence
         run: npm run test:unit && npm run test:live-service-facts
       - name: Phase 1 canonical and crawl contract tests
