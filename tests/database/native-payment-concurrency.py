@@ -14,13 +14,15 @@ ROOT = Path(__file__).resolve().parents[2]
 assert os.environ.get('PGHOST') in ('127.0.0.1', 'localhost'), 'Local fixture only'
 assert os.environ.get('PGDATABASE') == 'finance_concurrency_fixture', 'Dedicated empty database required'
 CMD = ['psql', '-X', '-qAt', '-v', 'ON_ERROR_STOP=1']
+SAFE_ENV = {k: v for k, v in os.environ.items() if k not in ('PGSERVICE', 'PGSERVICEFILE', 'PGOPTIONS')}
+SAFE_ENV['PGHOSTADDR'] = '127.0.0.1'  # Do not let an inherited hostaddr override loopback.
 ADMIN = '11111111-1111-4111-8111-111111111111'
 USER = '22222222-2222-4222-8222-222222222222'
 OTHER = '33333333-3333-4333-8333-333333333333'
 
 
 def run(sql, check=True):
-    result = subprocess.run(CMD, input=sql, text=True, capture_output=True, timeout=25)
+    result = subprocess.run(CMD, input=sql, text=True, capture_output=True, timeout=25, env=SAFE_ENV)
     if check and result.returncode:
         raise AssertionError(result.stderr)
     return result
@@ -84,7 +86,7 @@ def count(table, where='true'):
 
 def held_race(lock_sql, calls):
     """Hold a real transaction open, observe blocked backends, then release it."""
-    holder = subprocess.Popen(CMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    holder = subprocess.Popen(CMD, stdin=subprocess.PIPE, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, env=SAFE_ENV)
     holder.stdin.write("begin; set application_name='finance_holder';" + lock_sql + "\n")
     holder.stdin.flush()
     deadline = time.monotonic() + 5

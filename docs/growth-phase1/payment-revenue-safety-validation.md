@@ -1,5 +1,7 @@
 # Phase 1.1 verification — 22 October 2026
 
+**Phase 1.2 continuation:** [financial-staging-verification.md](financial-staging-verification.md) contains the current release-readiness matrix, native independent-session PostgreSQL evidence, full unit discovery, fixture browser/CSV checks, reconciliation instructions and remaining external gates. The native-concurrency gap below describes the original Phase 1.1 run and is now closed for the tested interleavings. Full Supabase, gateway sandbox and historical-source gates remain blocked; production readiness is not approved.
+
 Implementation and file groups: [payment-revenue-safety.md](payment-revenue-safety.md). Branch: `feat/payment-revenue-safety-20261020`. This report concerns the new implementation; the earlier Phase 1 `validation.md` remains the historical audit result.
 
 | Check | Outcome / scope |
