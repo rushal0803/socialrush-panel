@@ -161,6 +161,33 @@ jobs:
           PGPASSWORD: wallet_fixture_only
         run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/manual-wallet-review.integration.sql
 
+  financial-concurrency:
+    name: Native PostgreSQL financial concurrency (independent sessions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: finance_fixture_only
+          POSTGRES_DB: finance_concurrency_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exercise exact financial migration with independent backends
+        env:
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          PGDATABASE: finance_concurrency_fixture
+          PGPASSWORD: finance_fixture_only
+        run: python3 tests/database/native-payment-concurrency.py
+
   perf-evidence:
     name: PR 630 mobile/desktop performance evidence (non-release)
     if: ${{ github.event.pull_request.number == 630 }}
