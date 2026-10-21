@@ -111,6 +111,7 @@ def held_race(lock_sql, calls):
 for file in ['tests/database/payment-safety-fixture.sql',
              'supabase/migrations/202607250001_checkout_intents.sql',
              'supabase/migrations/202606190006_fintech_wallet.sql',
+             'supabase/migrations/20261003033000_harden_wallet_payment_settlement.sql',
              'supabase/migrations/20260926173543_agency_checkout_attribution.sql',
              'supabase/migrations/20261005190934_verify_wallet_split_checkout_safety.sql',
              'supabase/migrations/20261019214002_payment_revenue_safety.sql']:
@@ -192,6 +193,11 @@ print('PASS injected deadlock: victim transaction rolled back, survivor and retr
 
 # This is SQL-role security coverage, deliberately not labelled PostgREST/Auth QA.
 assert run(auth(OTHER) + 'select admin_revenue_report(now(),now());', False).returncode != 0
+for role in ('anon', 'authenticated'):
+    for fn in ('credit_verified_payment', 'credit_wallet_payment_system'):
+        denied = run(f"set role {role}; select {fn}('order_fixture','pay_fixture');", False)
+        assert denied.returncode != 0 and 'permission denied' in denied.stderr, denied.stderr
+assert value("select has_function_privilege('service_role','credit_wallet_payment_system(text,text)','execute');") == 't'
 assert value(auth(OTHER) + 'select count(*) from orders;') == '0'
 assert run('set role anon; select * from gateway_refund_requests;', False).returncode != 0
 print('PASS native SQL role/ownership checks; full Supabase stack remains a separate gate')
