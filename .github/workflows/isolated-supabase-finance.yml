@@ -1,0 +1,25 @@
+name: Isolated Supabase financial integration
+on:
+  pull_request:
+    branches: [main]
+permissions:
+  contents: read
+jobs:
+  integration:
+    name: Offline Auth, PostgREST and active financial RLS
+    runs-on: ubuntu-24.04
+    timeout-minutes: 18
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - name: Run synthetic stack with no external network
+        run: python3 tests/integration/offline_supabase.py
+      - name: Retain sanitized gate evidence only
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: offline-supabase-finance
+          path: artifacts/offline-supabase/report.json
+          if-no-files-found: error
+          retention-days: 7

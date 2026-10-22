@@ -17,6 +17,8 @@ Service wireframe, DOM order: `breadcrumb / H1 + factual summary / availability 
 
 ## Implementation-ready tickets (future separate growth changes)
 
+23 October staging constraint: presentation-only service-page and SEO/CRO work does not require local Docker or paid Supabase. Prepare each future review against existing routes and approved catalog/copy; retain the current quote/payment components unchanged. Start with UI-01, SEO-01 and CRO-01 as separate growth review units. No growth implementation is included in financial PR #702. Read-only prototypes may use clearly synthetic examples; never publish invented prices, delivery claims, rankings or uplift forecasts. Baseline data and copy evidence remain owner inputs, independent of the financial CI stack.
+
 | ID | Scope and acceptance criteria | Measurement / dependencies |
 |---|---|---|
 | UI-01 | Build reusable service presentation shell around unchanged quote component; preserve route, API inputs, request IDs and totals. Responsive screenshots at 320/390/1440px; keyboard/zoom; no horizontal overflow or sticky obstruction. | Approved copy evidence and brand components; service-to-quote funnel using existing consent-approved events. |
