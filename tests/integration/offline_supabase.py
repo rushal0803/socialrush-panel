@@ -117,6 +117,15 @@ def main():
     sql("create table public.offline_cron_sentinel(n int);")
     failed = None
     for item in manifest['migrations']:
+        if item['file'] == '202609020001_update_follower_service_pricing.sql':
+            baseline = ROOT / 'supabase/clean-install/v1/services-timestamp.sql'
+            before = sql("select md5(coalesce(jsonb_agg(to_jsonb(s)-'updated_at' order by id)::text,'')) from services s").stdout
+            orders_before = sql("select md5(coalesce(jsonb_agg(to_jsonb(o) order by id)::text,'')) from orders o").stdout
+            sql("set socialrush.clean_install='v1';" + baseline.read_text())
+            assert sql("select md5(coalesce(jsonb_agg(to_jsonb(s)-'updated_at' order by id)::text,'')) from services s").stdout == before
+            assert sql("select md5(coalesce(jsonb_agg(to_jsonb(o) order by id)::text,'')) from orders o").stdout == orders_before
+            report['clean_install_baseline'] = {'version': 'v1', 'file': str(baseline.relative_to(ROOT)),
+                'sha256': hashlib.sha256(baseline.read_bytes()).hexdigest(), 'data_preservation': 'PASS'}
         result = sql((ROOT / 'supabase/migrations' / item['file']).read_text(), check=False)
         report['migrations'].append({'file': item['file'], 'result': 'PASS' if result.returncode == 0 else 'FAIL'})
         if result.returncode:
@@ -125,7 +134,7 @@ def main():
             report['replay_error'] = result.stderr[-1800:].replace(PW, '[ephemeral-secret]').replace(JWT, '[ephemeral-secret]')
             break
     if not failed:
-        report['full_replay'] = 'PASS: all 121 unchanged migrations'
+        report['full_replay'] = 'PASS: clean-install baseline v1 plus all 121 unchanged migrations; NOT unmodified history or production upgrade'
     assert sql('show cron.launch_active_jobs').stdout.strip() == 'off'
     sql("select cron.schedule('offline-sentinel', '* * * * *', 'insert into public.offline_cron_sentinel values(1)');")
     time.sleep(65)

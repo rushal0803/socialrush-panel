@@ -1,0 +1,11 @@
+# Phase 1.7 — full replay and application integration
+
+23 October 2026. Existing branch/draft PR #702, starting head `e65c56917abc9f57109851db42876f3166b38a93`. No local Docker, paid infrastructure, production access, merge or deployment.
+
+The historical services dependency and options are documented in [clean-install baseline v1](../../supabase/clean-install/v1/README.md). Original 121 migration bytes remain hash-verified. Baseline data-preservation, explicit-context, idempotency and wrong-type regressions are required. Fresh-install results must say **baseline + unchanged history**, not raw history or production upgrade. Production upgrade remains unverified pending approved schema evidence.
+
+The existing network-none Actions boundary remains mandatory: loopback only, no external routes/host ports/socket or credentials, disabled cron before SQL, synthetic Vault prerequisite and sentinel. Each replay records every successful filename and stops at the first failure. No later gate or curated schema can substitute for completed baseline-history replay. Additional compatibility findings and exact final-head results are recorded in PR #702.
+
+Only after complete replay may actual Next.js application tests run. These must use real Auth sessions and PostgREST, with no `packages-test-backend` fixture preload, against the same contained namespace. Browser/API credentials are ephemeral. Desired coverage: login/session, Admin/A/B permissions, quotes/wallet/manual receipt submissions, retries/duplicate references, server-created orders, refund/cancellation, history/revenue and mobile/desktop. Public page fixtures or direct SQL/RPC calls alone do not close that gate. If full replay stops, application integration is BLOCKED at that exact dependency; do not claim those journeys ran.
+
+Final release matrix must separately record: raw-history expected failure; explicit baseline compatibility; completed baseline-history replay or its first error; real-JWT API integration; actual Next.js browser/server actions; existing full regression CI; production upgrade evidence. Financial scope remains wallet/manual UPI/bank/conditional USDT. Retired gateway integrations are Not Applicable. Historical table/function definitions are retained, not exercised as providers.
