@@ -21,7 +21,7 @@ IMAGES = {'db': 'supabase/postgres:17.6.1.136',
 PREFIX = 'sr-offline-' + secrets.token_hex(4)
 DB = PREFIX + '-db'
 PW, JWT = secrets.token_hex(24), secrets.token_hex(32)
-report = {'head': os.environ.get('GITHUB_SHA'), 'synthetic_only': True,
+report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(), 'synthetic_only': True,
           'images': IMAGES, 'isolation': 'NOT TESTED', 'full_replay': 'NOT TESTED',
           'integration': 'NOT TESTED', 'production_access': False, 'migrations': []}
 containers = []
@@ -40,7 +40,7 @@ def run(args, data=None, check=True):
 
 def sql(text, check=True):
     return run(['docker', 'exec', '-i', DB, 'psql', '-X', '-qAt', '-v',
-                'ON_ERROR_STOP=1', '-U', 'postgres', '-d', 'postgres'], text, check)
+                'ON_ERROR_STOP=1', '-U', 'supabase_admin', '-d', 'postgres'], text, check)
 
 
 def start(name, image, env, command=(), anchor=False):
