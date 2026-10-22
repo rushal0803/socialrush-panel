@@ -1,3 +1,5 @@
+> **SUPERSEDED PAYMENT SCOPE — 22 October 2026:** Razorpay/Cashfree development, configuration and sandbox work are stopped. Provider release gates are **Not Applicable**, not Passed. Provider instructions below are historical only; do not execute them. Use [the current active-payment release scope](active-payment-release.md). Wallet/manual flows, historical records and shared safety dependencies remain in scope.
+
 # Phase 1.1: Make refunds, wallet checkout and revenue reporting transaction-safe
 
 Cancellation previously changed order status before crediting the wallet, and gateway refunds could succeed externally before local settlement failed. This change makes order refunds and manual split checkout atomic in PostgreSQL, reserves funds before a single gateway refund submission, reconciles uncertain responses without reissuing them, and validates captured wallet payments against their exact funding record.

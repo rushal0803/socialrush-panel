@@ -1,9 +1,10 @@
 {
   "schemaVersion": 1,
-  "sourceCommit": "aecf1bcb66a2ac9e218231203dbb1c3c8cd091e3",
+  "baselineCommit": "d34f46ee2a060f1a71afb14cd187dc71b38b323d",
+  "additionalMigration": "20261022103153_retire_obsolete_gateway_operations.sql",
   "hashFormat": "SHA256 of UTF-8 SQL normalized to LF",
   "replayExecuted": false,
-  "migrationCount": 120,
+  "migrationCount": 121,
   "migrations": [
     {
       "file": "202606190001_initial_schema.sql",
@@ -630,6 +631,11 @@
     {
       "file": "20261019214002_payment_revenue_safety.sql",
       "sha256": "db1fb5f3286967436d3b0ca30d979dc55a4aa5c1aa4e48fc3cd46631f048a12c",
+      "review": []
+    },
+    {
+      "file": "20261022103153_retire_obsolete_gateway_operations.sql",
+      "sha256": "4c30d1022b8c06666395d574c0f2b3acb2e77745d7b51e26b2b226b11998ad86",
       "review": []
     }
   ]

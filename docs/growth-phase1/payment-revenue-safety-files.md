@@ -1,3 +1,5 @@
+> **SUPERSEDED PAYMENT SCOPE — 22 October 2026:** Razorpay/Cashfree development, configuration and sandbox work are stopped. Provider release gates are **Not Applicable**, not Passed. Provider instructions below are historical only; do not execute them. Use [the current active-payment release scope](active-payment-release.md). Wallet/manual flows, historical records and shared safety dependencies remain in scope.
+
 # Phase 1.1 changed files
 
 Implementation review branch; excludes pre-existing untracked Phase 1 audit/inventory artifacts. No local environment values, build output or logs are included.

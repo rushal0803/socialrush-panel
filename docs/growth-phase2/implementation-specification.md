@@ -1,6 +1,14 @@
+> **Current payment strategy:** wallet + manual UPI/bank transfer and conditional USDT TRC20 only. Razorpay/Cashfree are retired and their sandbox/configuration work is Not Applicable. Do not reintroduce gateways through Phase 2.
+
 # SocialRUSH growth Phase 2 — implementation specification
 
 Prepared 22 October 2026. **Planning artifact only. No Phase 2 feature implementation, migration, experiment, branch, PR or deployment is authorized by this document.** Future implementation belongs in separately reviewed growth work after the financial gates pass. This is distinct from the older presentation project documented in `docs/premium-phase2-design.md`; do not overwrite that history or assume its delivery status.
+
+## Business objective and measurement
+
+Scale toward **₹10,00,000 monthly refund-adjusted recognized service revenue**, subject to finance approval of the recognition policy. Wallet deposits are funding, not revenue. Current baseline, supplier-cost coverage and attainable demand are unknown; this is a target, not a forecast or profit claim.
+
+Illustrative monthly arithmetic: at net recognized AOV ₹500, the target requires 2,000 orders; at ₹1,000, 1,000 orders; at ₹2,000, 500 orders. These are scenarios, not validated prices, package recommendations or acquisition forecasts. Track contribution only with verified costs and mature refund cohorts. Prioritize trustworthy mobile service discovery and checkout, explicit packages/agency offers, SEO intent alignment and repeat-customer retention.
 
 ## Product outcome and prerequisites
 
@@ -8,7 +16,7 @@ Improve qualified service discovery, mobile checkout completion, earned order va
 
 Prerequisites before implementation affecting purchases: Phase 1.3 mandatory financial gates passed, approved staging accounts and supplier-cost evidence, agreed cancellation/refill/partial-delivery policy, reliable catalog availability, and a reviewed financial reporting baseline. Presentation-only work may be designed in parallel, but must not conceal unavailable services or imply a successful payment.
 
-Preserve current routes, canonical ownership, session/role checks, historical order prices, UPI/manual funding workflows, wallet idempotency, atomic refunds, gateway default-off controls and unknown-cost handling. Reuse existing dark/orange tokens and shared components. Do not introduce a second client-side price source, an alternative ledger or direct browser financial writes.
+Preserve current routes, canonical ownership, session/role checks, historical order prices, UPI/manual funding workflows, wallet idempotency, atomic refunds, gateway retirement controls and unknown-cost handling. Reuse existing dark/orange tokens and shared components. Do not introduce a second client-side price source, an alternative ledger or direct browser financial writes.
 
 ## Work packages and acceptance
 
@@ -26,7 +34,7 @@ Preserve current routes, canonical ownership, session/role checks, historical or
 
 1. Visitor selects an available service and valid quantity/public destination. Server resolves the live service, limits, eligibility and approved discount; it returns an expiring immutable quote/intent. A display-currency change never changes the INR ledger amount.
 2. Review shows the complete deliverable, destination, all components, charge, wallet application and external balance. User can revise before committing. Link/payment errors retain safe entered data without storing secrets.
-3. Wallet-only confirmation uses the existing atomic guarded deduction. Manual split creates order, reference claim, wallet effect and intent completion together. An external gateway path follows the approved funding contract; UI success derives from verified backend state, not redirect arrival.
+3. Wallet-only confirmation uses the existing atomic guarded deduction. Manual split creates order, reference claim, wallet effect and intent completion together. An external manual payment path follows the approved funding contract; UI success derives from verified backend state, not redirect arrival.
 4. Network timeout shows pending/retry with the same request identity. Idempotent retry returns the existing legitimate order; mismatched request content cannot create another charge. No aggressive automatic retries of external operations.
 5. Confirmation/tracking separates received, verification pending, processing, completed, failed and refunded states. Refund status comes from durable backend/audit state. Repeat/refill actions are explicit and use current eligibility.
 
@@ -57,7 +65,7 @@ Metric definitions for finance/product approval:
 
 1. **Contract/baseline review:** catalog parity, financial gate results, quote/refund/business policies, metric definitions, missing data and sample sizes. Produce a baseline artifact from approved data only; do not invent an uplift target.
 2. **Service template and SEO handoff:** G2-01/G2-05 with existing service routes and availability guards. Capture desktop/mobile evidence and check indexing metadata. Reuse patterns rather than copying one page per service.
-3. **Checkout usability:** G2-02 with separate wallet/manual/external pending journeys. Validate real staging Auth/API/DB state and retry invariants before measuring conversion.
+3. **Checkout usability:** G2-02 with separate wallet/manual/manual/USDT pending journeys. Validate real staging Auth/API/DB state and retry invariants before measuring conversion.
 4. **AOV/bundle design and implementation:** G2-03/G2-04 only after allocation/atomicity/cancellation review and verified costs. Prototype comparison UI first; money logic ships in a separately reviewed unit with backward-compatible migrations where needed.
 5. **Retention and analytics:** G2-06/G2-07 with consent, cohort maturity, no-repeat-charge protection and reconciled reporting. Link funnel diagnostics to backend truth rather than replacing accounting.
 
@@ -66,7 +74,7 @@ Each unit needs a scope-specific design/QA review and its own future change requ
 ## QA and release acceptance
 
 - Unit/contract tests for availability, quote/discount/rounding/expiry, bundle allocation, cohort definitions and idempotent analytics ingestion. Avoid tests that only match arbitrary class names or duplicate implementation.
-- Native/PostgREST concurrency tests for repeated checkout and multi-item reservation failure; injected order/ledger failures must roll back all financial effects. Refund retry never credits twice or issues a second external refund.
+- Native/PostgREST concurrency tests for repeated checkout and multi-item reservation failure; injected order/ledger failures must roll back all financial effects. Wallet refund retry never credits twice; retired gateways cannot be invoked.
 - Real staging roles: anonymous/A/B/admin permission matrix, cross-owner ID attempts, browser key exposure checks and server-only credentials. New tables require reviewed grants and RLS; do not copy broad authenticated policies.
 - Browser desktop/mobile/keyboard/reduced-motion/zoom journeys: discovery → quote → review → wallet/manual pending → order → refund/history → export → explicit reorder. Include slow network, expired session/intent, unavailable catalog, insufficient balance and unknown provider outcome.
 - SEO checks for canonicals, indexability, redirects, sitemap, structured data, internal links and rendered price consistency. Compare bundle/service pages against server catalog state.

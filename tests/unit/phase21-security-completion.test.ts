@@ -22,8 +22,8 @@ test("Phase 21 completion keeps privileged admin RPCs on the server-only service
   assert.match(crmActions, /adminSupabase:createAdminClient\(\)/);
   assert.match(crmActions, /adminSupabase\.rpc\("admin_run_crm_automation"/);
   // New RPCs independently check the authenticated admin inside PostgreSQL.
-  assert.match(refundRoute, /await requireAdminApi\(\)/);
-  assert.match(refundRoute, /db\.rpc\("request_wallet_gateway_refund"/);
+  assert.match(refundRoute, /status: 410/);
+  assert.doesNotMatch(refundRoute, /\.rpc\(|razorpayRequest/);
   assert.doesNotMatch(refundRoute, /admin_refund_wallet_payment/);
   assert.match(orderRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(orderRoute, /saveInitialCount\(createAdminClient\(\),/);

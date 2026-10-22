@@ -16,6 +16,8 @@ async function fixture() {
   await db.exec(await sqlFile('supabase/migrations/20260926173543_agency_checkout_attribution.sql'));
   await db.exec(await sqlFile('supabase/migrations/20261005190934_verify_wallet_split_checkout_safety.sql'));
   await db.exec(await sqlFile('supabase/migrations/20261019214002_payment_revenue_safety.sql'));
+  await db.exec(await sqlFile('supabase/migrations/202610110001_admin_manual_wallet_atomic_review.sql'));
+  await db.exec(await sqlFile('supabase/migrations/20261022103153_retire_obsolete_gateway_operations.sql'));
   await db.exec(`grant select on checkout_intents to authenticated;
     insert into profiles(id,email,role,balance) values('${admin}','admin@example.invalid','admin',0),('${user}','u@example.invalid','user',100),('${other}','o@example.invalid','user',0);
     insert into services(id,code,name,platform,rate,min,max) values(1,'facebook-followers','Facebook Followers','facebook',499,100,100000);
@@ -26,6 +28,23 @@ const scalar=async(db,sql,params=[])=>Object.values((await db.query(sql,params))
 const order=async(db,charge=30,status='processing',payment='paid')=>scalar(db,
   'insert into orders(user_id,service_id,charge,status,payment_status,quantity,link) values($1,1,$2,$3,$4,100,\'https://example.invalid\') returning id',[user,charge,status,payment]);
 const transition=(db,id,status='cancelled')=>scalar(db,'select admin_update_order_financial($1,$2)',[id,JSON.stringify({status})]);
+
+test('all active manual funding methods require evidence and credit only once',async()=>{
+  const db=await fixture();try{
+    for(const method of ['manual_upi','manual_bank_transfer','manual_usdt_trc20']){
+      const tx=await scalar(db,"insert into transactions(user_id,amount,type,status,payment_method,provider_payment_id) values($1,20,'credit','pending',$2,$3) returning id",[user,method,method+'12345678']);
+      await db.exec('set role authenticated');
+      await assert.rejects(scalar(db,"select admin_review_manual_wallet_payment($1,'approve',$2,'Verified synthetic receipt evidence')",[tx,method+'12345678']),/permission denied/);
+      await db.exec(`reset role; set request.jwt.claims='{"role":"service_role"}'; set role service_role;`);
+      await assert.rejects(scalar(db,"select admin_review_manual_wallet_payment($1,'approve','wrong','Verified synthetic receipt evidence')",[tx]),/does not match/);
+      await scalar(db,"select admin_review_manual_wallet_payment($1,'approve',$2,'Verified synthetic receipt evidence')",[tx,method+'12345678']);
+      await assert.rejects(scalar(db,"select admin_review_manual_wallet_payment($1,'approve',$2,'Verified synthetic receipt evidence')",[tx,method+'12345678']),/Pending manual deposit not found/);
+      await db.exec('reset role');
+    }
+    assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),160);
+    assert.equal(Number(await scalar(db,"select count(*) from transactions where status='completed'")),3);
+  }finally{await db.close();}
+});
 
 test('read-only reconciliation flags candidate anomalies without changing records',async()=>{
   const db=await fixture();try{
@@ -85,28 +104,27 @@ test('SQL honors historical refund without issuing another credit',async()=>{
   }finally{await db.close();}
 });
 
-test('SQL gateway reservation, claim, completion and failed release are idempotent',async()=>{
+test('retired gateway operations cannot reserve funds or mutate historical payments',async()=>{
   const db=await fixture();try{
-    const tx=await scalar(db,"insert into transactions(user_id,amount,type,status,payment_method,provider_order_id,provider_payment_id) values($1,40,'credit','completed','upi','order_test','pay_test') returning id",[user]);
-    const r=await scalar(db,'select request_wallet_gateway_refund($1)',[tx]);
-    const duplicate=await scalar(db,'select request_wallet_gateway_refund($1)',[tx]);
-    assert.equal(duplicate.id,r.id);
-    assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),60);
-    const claims=await Promise.all(Array.from({length:8},()=>scalar(db,'select claim_wallet_gateway_refund($1)',[r.id])));
-    assert.equal(claims.filter(Boolean).length,1);
-    await scalar(db,"select record_wallet_gateway_refund($1,'manual_review',null,'timeout')",[r.id]);
-    await scalar(db,"select record_wallet_gateway_refund($1,'completed','rfnd_test',null)",[r.id]);
-    await scalar(db,"select record_wallet_gateway_refund($1,'completed','rfnd_test',null)",[r.id]);
-    assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),60);
-    assert.equal(Number(await scalar(db,"select count(*) from transactions where type='refund'")),1);
+    const tx=await scalar(db,"insert into transactions(user_id,amount,type,status,payment_method,provider_order_id,provider_payment_id) values($1,40,'credit','completed','upi','order_history','pay_history') returning id",[user]);
+    await assert.rejects(scalar(db,'select request_wallet_gateway_refund($1)',[tx]),/retired/);
+    for(const role of ['anon','authenticated','service_role']){
+      await db.exec('set role '+role);
+      await assert.rejects(scalar(db,'select request_wallet_gateway_refund($1)',[tx]),/permission denied/);
+      await assert.rejects(scalar(db,"select create_wallet_payment(40,'upi','order_new')"),/permission denied/);
+      await db.exec('reset role');
+    }
+    assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),100);
+    assert.equal(Number(await scalar(db,'select count(*) from transactions')),1);
+    assert.equal(Number(await scalar(db,'select count(*) from gateway_refund_requests')),0);
     assert.equal(await scalar(db,'select status from transactions where id=$1',[tx]),'completed');
-    const t2=await scalar(db,"insert into transactions(user_id,amount,type,status,payment_method,provider_order_id,provider_payment_id) values($1,20,'credit','completed','upi','order_fail','pay_fail') returning id",[user]);
-    const fail=await scalar(db,'select request_wallet_gateway_refund($1)',[t2]);
-    await scalar(db,'select claim_wallet_gateway_refund($1)',[fail.id]);
-    await scalar(db,"select record_wallet_gateway_refund($1,'failed','rfnd_failed',null)",[fail.id]);
-    await scalar(db,"select record_wallet_gateway_refund($1,'failed','rfnd_failed',null)",[fail.id]);
-    assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),60);
-    assert.ok(Number(await scalar(db,'select count(*) from gateway_refund_audit'))>=6);
+    // Existing uncertain history is retained; retirement never guesses a release.
+    const request=await scalar(db,"insert into gateway_refund_requests(transaction_id,user_id,provider_payment_id,amount,status,requested_by) values($1,$2,'pay_history',40,'manual_review',$3) returning id",[tx,user,admin]);
+    const audit=await scalar(db,'select count(*) from gateway_refund_audit');
+    await db.exec(await sqlFile('supabase/migrations/20261022103153_retire_obsolete_gateway_operations.sql'));
+    assert.equal(await scalar(db,'select status from gateway_refund_requests where id=$1',[request]),'manual_review');
+    assert.equal(await scalar(db,'select count(*) from gateway_refund_audit'),audit);
+    assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),100);
   }finally{await db.close();}
 });
 
@@ -118,7 +136,7 @@ test('RLS: customer ownership, read-only intents, admin-only refund RPCs and int
     assert.equal(Number(await scalar(db,'select count(*) from profiles')),1);
     assert.equal(Number(await scalar(db,'select count(*) from gateway_refund_requests')),0);
     await assert.rejects(scalar(db,'select admin_update_order_financial(gen_random_uuid(),\'{}\')'),/Admin access required/);
-    await assert.rejects(scalar(db,'select request_wallet_gateway_refund(gen_random_uuid())'),/Admin access required/);
+    await assert.rejects(scalar(db,'select request_wallet_gateway_refund(gen_random_uuid())'),/permission denied/);
     await assert.rejects(scalar(db,"select credit_verified_payment('order_fixture','pay_fixture')"),/permission denied/);
     await assert.rejects(scalar(db,"select credit_wallet_payment_system('order_fixture','pay_fixture')"),/permission denied/);
     await assert.rejects(scalar(db,"select admin_revenue_report(now()-interval '1 day',now())"),/Admin access required/);
@@ -204,13 +222,13 @@ test('legacy wallet uses current catalog, rejects service mismatch and never ove
   }finally{await db.close();}
 });
 
-test('failed gateway reservation and stale admin updates leave financial records untouched',async()=>{
+test('retired gateway request and stale admin updates leave financial records untouched',async()=>{
   const db=await fixture();try{
     const id=await order(db);
     await assert.rejects(scalar(db,'select admin_update_order_financial($1,$2,$3,$4)',[id,JSON.stringify({status:'cancelled'}),'pending','paid']),/changed during review/);
     assert.equal(await scalar(db,'select status from orders where id=$1',[id]),'processing');
     const tx=await scalar(db,"insert into transactions(user_id,amount,type,status,payment_method,provider_order_id,provider_payment_id) values($1,200,'credit','completed','upi','order_large','pay_large') returning id",[user]);
-    await assert.rejects(scalar(db,'select request_wallet_gateway_refund($1)',[tx]),/Insufficient available wallet balance/);
+    await assert.rejects(scalar(db,'select request_wallet_gateway_refund($1)',[tx]),/retired/);
     assert.equal(Number(await scalar(db,'select balance from profiles where id=$1',[user])),100);
     assert.equal(Number(await scalar(db,'select count(*) from gateway_refund_requests')),0);
   }finally{await db.close();}

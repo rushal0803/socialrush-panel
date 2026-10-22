@@ -114,7 +114,9 @@ for file in ['tests/database/payment-safety-fixture.sql',
              'supabase/migrations/20261003033000_harden_wallet_payment_settlement.sql',
              'supabase/migrations/20260926173543_agency_checkout_attribution.sql',
              'supabase/migrations/20261005190934_verify_wallet_split_checkout_safety.sql',
-             'supabase/migrations/20261019214002_payment_revenue_safety.sql']:
+             'supabase/migrations/20261019214002_payment_revenue_safety.sql',
+             'supabase/migrations/202610110001_admin_manual_wallet_atomic_review.sql',
+             'supabase/migrations/20261022103153_retire_obsolete_gateway_operations.sql']:
     run((ROOT / file).read_text(encoding='utf-8'))
 print('ENGINE', value('select version();'))
 run('grant select on checkout_intents to authenticated;')
@@ -152,18 +154,21 @@ assert balance() == 130
 print('PASS failure rollback and successful retry')
 
 seed()
-tx = value(f"insert into transactions(user_id,amount,type,status,payment_method,provider_order_id,provider_payment_id) values('{USER}',40,'credit','completed','upi','order_fixture','pay_fixture') returning id;")
-request = auth(ADMIN) + f"select request_wallet_gateway_refund('{tx}');"
-results = held_race(f"select 1 from transactions where id='{tx}' for update;", [request] * 4)
-success(results, 4)
-assert balance() == 60 and count('gateway_refund_requests') == 1
-rid = value('select id from gateway_refund_requests;')
-claims = race([auth(ADMIN) + f"select claim_wallet_gateway_refund('{rid}');"] * 6)
-success(claims, 6)
-assert sum(r.stdout.strip() == 't' for r in claims) == 1
-success(race([auth(ADMIN) + f"select record_wallet_gateway_refund('{rid}','completed','rfnd_fixture',null);"] * 4), 4)
-assert balance() == 60 and count('transactions', "type='refund'") == 1
-print('PASS concurrent gateway reserve/claim/settlement: one reservation, one submission permit, one settlement')
+for role in ('anon', 'authenticated', 'service_role'):
+    denied = run(f"set role {role}; select request_wallet_gateway_refund(gen_random_uuid());", False)
+    assert denied.returncode != 0 and 'permission denied' in denied.stderr
+assert balance() == 100 and count('gateway_refund_requests') == 0
+print('PASS retired gateway RPCs denied; no reservation or balance mutation')
+
+for method in ('manual_upi', 'manual_bank_transfer', 'manual_usdt_trc20'):
+    seed()
+    tx = value(f"insert into transactions(user_id,amount,type,status,payment_method,provider_payment_id) values('{USER}',20,'credit','pending','{method}','MANUALREF123456') returning id;")
+    approve = "set request.jwt.claims='{\"role\":\"service_role\"}'; set role service_role;" + f"select admin_review_manual_wallet_payment('{tx}','approve','MANUALREF123456','Verified synthetic receipt evidence');"
+    results = held_race(f"select 1 from transactions where id='{tx}' for update;", [approve] * 4)
+    success(results, 1)
+    assert all(r.returncode == 0 or 'Pending manual deposit not found' in r.stderr for r in results)
+    assert balance() == 120 and count('transactions', "status='completed'") == 1
+print('PASS concurrent UPI/bank/USDT approval: one evidenced credit per deposit')
 
 seed(0)
 a, b = intent(), intent()
