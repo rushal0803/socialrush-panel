@@ -16,7 +16,9 @@ test('versioned baseline preserves rates/order totals and supplies the historica
     await db.exec("set socialrush.clean_install='v1';"+baseline);
     assert.deepEqual((await db.query('select id,code,name,rate from services order by id')).rows,before);
     assert.equal((await db.query('select updated_at from services limit 1')).rows[0].updated_at,null);
+    await db.exec("update services set updated_at='2020-01-01T00:00:00Z' where id=2;");
     await db.exec(baseline); // Explicitly idempotent; existing timestamps preserved.
+    assert.equal(new Date((await db.query('select updated_at from services where id=2')).rows[0].updated_at).toISOString(),'2020-01-01T00:00:00.000Z');
     await db.exec(pricing); // Original bytes, synthetic data only.
     assert.equal(Number((await db.query('select rate from services where id=1')).rows[0].rate),799);
     assert.equal(Number((await db.query('select charge from orders')).rows[0].charge),42);

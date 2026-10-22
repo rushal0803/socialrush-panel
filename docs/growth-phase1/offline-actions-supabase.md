@@ -1,5 +1,7 @@
 # Temporary GitHub Actions Supabase verification
 
+Phase 1.7 update: [current baseline/full-history report](full-replay-application-1.7.md). Incomplete full replay now fails the CI gate even when supplementary curated integration passes; the older green-partial behavior described below is historical evidence only.
+
 23 October 2026. Existing financial branch and draft PR #702 only. No local Docker, paid Supabase upgrade, linked hosted project, production credential, deployment or production SQL is used.
 
 ## Isolation contract — before migration replay

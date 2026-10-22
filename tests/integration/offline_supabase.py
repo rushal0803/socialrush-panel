@@ -23,7 +23,8 @@ DB = PREFIX + '-db'
 PW, JWT = secrets.token_hex(24), secrets.token_hex(32)
 report = {'head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(), 'synthetic_only': True,
           'images': IMAGES, 'isolation': 'NOT TESTED', 'full_replay': 'NOT TESTED',
-          'integration': 'NOT TESTED', 'production_access': False, 'migrations': []}
+          'integration': 'NOT TESTED', 'application_integration': 'NOT TESTED',
+          'production_access': False, 'migrations': []}
 containers = []
 
 
@@ -141,6 +142,7 @@ def main():
     assert sql('select count(*) from public.offline_cron_sentinel').stdout.strip() == '0'
     report['cron_sentinel'] = 'PASS: no execution over at least 65 seconds'
     if failed:
+        report['application_integration'] = 'BLOCKED: incomplete baseline-history replay at ' + failed
         # Supplementary coverage, clearly NOT full-history compatibility. This
         # database is disposable, with no customer identities created yet.
         sql('drop schema public cascade; create schema public; grant usage on schema public to anon,authenticated,service_role;')
@@ -191,6 +193,9 @@ if __name__ == '__main__':
         code = 1
         report['error'] = str(exc)
     finally:
+        # Partial replay fails the gate even if supplementary curated tests pass.
+        if not str(report['full_replay']).startswith('PASS:'):
+            code = 1
         for name in reversed(containers):
             run(['docker', 'rm', '-fv', name], check=False)
         OUT.parent.mkdir(parents=True, exist_ok=True)

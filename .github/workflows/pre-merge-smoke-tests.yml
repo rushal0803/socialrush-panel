@@ -39,6 +39,8 @@ jobs:
       - run: npx tsc --noEmit
       - name: Payment and revenue safety in isolated PostgreSQL fixtures
         run: npm run test:finance
+      - name: Explicit clean-install baseline regressions
+        run: node --test tests/database/clean-install-baseline.test.mjs
       - name: Complete unit regressions and live catalogue equivalence
         run: npm run test:unit:all && npm run test:live-service-facts
       - name: Phase 1 canonical and crawl contract tests
