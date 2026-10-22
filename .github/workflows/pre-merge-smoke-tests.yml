@@ -12,6 +12,13 @@ jobs:
   smoke:
     name: Typecheck, CRM pipeline tests, international SEO, build, and smoke test
     runs-on: ubuntu-latest
+    # Matches package-lock.json. Avoid flaky runner apt mirrors during setup.
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+      options: --init --ipc=host
+    defaults:
+      run:
+        shell: bash
     # Attempt 2 of run 39770559066 exhausted 15m during smoke after slow
     # Chromium dependencies. Budget setup/build + full tests + diagnostics.
     timeout-minutes: 35
@@ -64,9 +71,8 @@ jobs:
       - run: npm run test:payment-confidence
       - run: npm run test:phase12
       - run: npm run build
-      - name: Install Chromium for smoke tests
-        timeout-minutes: 10
-        run: npx playwright install --with-deps chromium
+      - name: Verify bundled Playwright browser version
+        run: node -e "if(require('@playwright/test/package.json').version !== '1.62.1') throw new Error('Update the pinned Playwright container to match package-lock.json')"
       - name: Complete Playwright smoke suite
         timeout-minutes: 12
         env:

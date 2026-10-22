@@ -14,6 +14,8 @@ Diagnostics artifact `12423142681` was downloaded locally for inspection (synthe
 
 ## Release matrix
 
+Follow-up run `39776597724` at `7385ae867029fd32f2a270881a85fe3b9ea94034` passed TypeScript/regressions/build and both database jobs but exposed a separate infrastructure failure: Azure Ubuntu apt downloads repeatedly stalled (`Ign` entries for system packages), exhausting the 10-minute browser-install limit before tests started. The repair uses the [official Playwright image](https://playwright.dev/docs/docker), pinned to `v1.62.1-noble` to match the installed lockfile package. It includes browser system dependencies and avoids apt installation during the job. A package-version guard fails on future drift. The container uses the recommended init/shared-memory options; no tests are skipped. Job/Playwright limits and complete diagnostics remain in force. This changes the CI execution environment only; final results still require the new exact-head run.
+
 | Gate | Status at preparation |
 |---|---|
 | Starting-head TypeScript, unit/finance, build, native wallet concurrency | PASS, as recorded in preceding verification |
