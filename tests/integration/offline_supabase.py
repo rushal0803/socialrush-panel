@@ -158,6 +158,12 @@ def main():
         sql("insert into categories(name) values('Offline synthetic integration'); insert into services(category_id,code,name,platform,rate,min,max,status,is_active,accepts_new_orders,health_status) select id,'offline-integration','Offline synthetic service','facebook',500,100,1000,'active',true,true,'stable' from categories where name='Offline synthetic integration';")
     else:
         sql("insert into services(code,name,platform,rate,min,max) values('offline-integration','Offline synthetic service','facebook',500,100,1000);")
+    # Test-only fault injected after the RPC deducts funds, at order insertion.
+    sql("""create function public.offline_reject_order() returns trigger language plpgsql as $$
+      begin if new.link='https://example.invalid/rollback' then raise exception 'Synthetic order insert failure'; end if;
+      return new; end $$;
+      create trigger offline_reject_order before insert on public.orders
+      for each row execute function public.offline_reject_order();""")
     start(PREFIX + '-rest', IMAGES['rest'], {
         'PGRST_DB_URI': f'postgres://authenticator:{PW}@127.0.0.1:5432/postgres',
         'PGRST_DB_SCHEMAS': 'public', 'PGRST_DB_ANON_ROLE': 'anon',

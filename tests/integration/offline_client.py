@@ -114,10 +114,10 @@ def integration():
           'customer revenue RPC denied')
     sid = request(3000, '/services?code=eq.offline-integration&select=id', service)[1][0]['id']
 
-    def wallet(reqid=None):
+    def wallet(reqid=None, link='https://example.invalid/synthetic'):
         return request(3000, '/rpc/checkout_campaign_with_wallet', a, {
             'p_service_id': sid, 'p_service_code': 'offline-integration',
-            'p_link': 'https://example.invalid/synthetic', 'p_quantity': 100,
+            'p_link': link, 'p_quantity': 100,
             'p_request_id': reqid or str(uuid.uuid4())})
 
     rid = str(uuid.uuid4())
@@ -141,6 +141,12 @@ def integration():
     with ThreadPoolExecutor(4) as pool:
         results = list(pool.map(lambda _: request(3000, '/rpc/admin_update_order_financial', admin, patch), range(4)))
     check(all(s == 200 for s, _ in results) and balance() == 50, 'real admin concurrent refund credits exactly once')
+    before_orders = request(3000, '/orders?select=id', a)[1]
+    before_ledger = request(3000, '/transactions?select=id', a)[1]
+    check(wallet(link='https://example.invalid/rollback')[0] >= 400, 'injected post-deduction order failure returned')
+    check(balance() == 50 and request(3000, '/orders?select=id', a)[1] == before_orders
+          and request(3000, '/transactions?select=id', a)[1] == before_ledger,
+          'failed order insert rolls back deduction, order and ledger')
 
     for method in ['manual_upi', 'manual_bank_transfer', 'manual_usdt_trc20']:
         ref = 'SYNTHETIC-' + uuid.uuid4().hex
@@ -161,9 +167,38 @@ def integration():
             'type': 'credit', 'status': 'pending', 'payment_method': method, 'provider_payment_id': ref.lower()})
         check(status >= 400, method + ' cross-customer case-normalized duplicate denied')
     check(balance() == 110, 'final wallet invariant after three manual credits')
+
+    # Real owner JWT submits each active manual split receipt via PostgREST.
+    for method in ['upi', 'bank_transfer', 'usdt_trc20']:
+        rid = str(uuid.uuid4())
+        intent = {'user_id': users[1], 'client_request_id': rid, 'service_id': sid,
+                  'service_code': 'offline-integration', 'quantity': 100,
+                  'destination_link': 'https://example.invalid/manual', 'total_paise': 15000}
+        check(request(3000, '/checkout_intents', a, intent)[0] >= 400,
+              method + ' customer cannot create trusted quote')
+        status, rows = request(3000, '/checkout_intents', service, intent)
+        check(status == 201, method + ' server creates synthetic trusted intent')
+        iid = rows[0]['id']
+        args = {'p_intent_id': iid, 'p_client_request_id': rid, 'p_expected_wallet': 110,
+                'p_utr': 'OFFLINE-' + uuid.uuid4().hex,
+                'p_payment_reference': 'SR-' + uuid.uuid4().hex.upper(), 'p_payment_method': method}
+        check(request(3000, '/rpc/submit_manual_checkout_atomic', b, args)[0] >= 400,
+              method + ' B cannot submit A intent')
+        with ThreadPoolExecutor(3) as pool:
+            results = list(pool.map(lambda _: request(3000, '/rpc/submit_manual_checkout_atomic', a, args), range(3)))
+        check(all(s == 200 for s, _ in results), method + ' concurrent manual submission idempotent')
+        orders = {data['order']['id'] for _, data in results}
+        check(len(orders) == 1 and balance() == 0 and all(data['remaining'] == 40 for _, data in results),
+              method + ' one pending order and one exact split debit')
+        oid = next(iter(orders))
+        patch = {'p_order_id': oid, 'p_patch': {'status': 'cancelled'}}
+        check(request(3000, '/rpc/admin_update_order_financial', admin, patch)[0] == 200 and balance() == 110,
+              method + ' rejection refunds only debited wallet, not unpaid external amount')
     status, revenue = request(3000, '/rpc/admin_revenue_report', admin,
                               {'p_since': '2026-01-01', 'p_until': '2026-12-31'})
     check(status == 200 and isinstance(revenue, dict), 'admin revenue RPC succeeds with Auth JWT')
+    check(float(revenue['gross']) == 0 and float(revenue['net']) == 0,
+          'manual deposits and unrecognized/cancelled orders are not earned revenue')
     print(json.dumps({'result': 'PASS', 'checks': checks,
                       'limitations': ['No Next.js session/server-action/browser QA',
                                       'No real receipt/transfer, FX provider or supplier',
