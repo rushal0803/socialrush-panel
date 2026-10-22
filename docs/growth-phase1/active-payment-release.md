@@ -31,6 +31,8 @@ Production deployment metadata identifies `main` commit `36c085044cd785dfee5679d
 
 The frozen functions raise a retirement error even for direct owner execution. Public/anon/authenticated/service roles have no execution grants for gateway reservation/claim/settlement or old gateway wallet creation/refund helpers. They remain named for compatibility and auditability. Existing unresolved reservations, if any, require approved read-only accounting review; retirement never assumes they are zero or releases them automatically.
 
+The retained manual adapter now uses the protected, unexpired server quote total for every service instead of rejecting it against static/current prices. Current catalog availability/quantity and wallet sufficiency still apply; foreign owners, invalid totals/states and paused services fail. Missing/failed/nonfinite wallet reads return 503 rather than treating an unknown balance as zero and prompting an unnecessary external transfer. Request-level tests exercise these cases with no provider dependency.
+
 ## Revised release checklist
 
 | Gate | Status / required evidence |
