@@ -1,5 +1,7 @@
 # Phase 1.2 financial staging verification — 22 October 2026
 
+**Current staging preparation:** [Phase 1.3 readiness](staging-readiness.md) adds current environment-scope evidence, replay hazards, resource requirements and the execution/rollback runbook. Existing fixture passes below do not close the remote integration gates.
+
 Release decision: **BLOCKED — do not merge, deploy or enable live gateway refunds.**
 Continue branch `feat/payment-revenue-safety-20261020`, draft PR [#702](https://github.com/rushal0803/socialrush-panel/pull/702).
 
