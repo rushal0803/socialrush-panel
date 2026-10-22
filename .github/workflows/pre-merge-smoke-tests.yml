@@ -12,7 +12,9 @@ jobs:
   smoke:
     name: Typecheck, CRM pipeline tests, international SEO, build, and smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Attempt 2 of run 39770559066 exhausted 15m during smoke after slow
+    # Chromium dependencies. Budget setup/build + full tests + diagnostics.
+    timeout-minutes: 35
     env:
       # Smoke tests exercise auth-aware UI without needing a real Supabase project.
       # Pointing these at the local test server keeps unauthenticated requests
@@ -63,8 +65,13 @@ jobs:
       - run: npm run test:phase12
       - run: npm run build
       - name: Install Chromium for smoke tests
+        timeout-minutes: 10
         run: npx playwright install --with-deps chromium
-      - run: npm run test:smoke
+      - name: Complete Playwright smoke suite
+        timeout-minutes: 12
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: artifacts/service-final/smoke-results.json
+        run: npm run test:smoke -- --global-timeout=660000 --reporter=github,json
       - name: Authenticated customer search, navigation and wallet review (fixture only)
         timeout-minutes: 3
         env:
@@ -126,6 +133,8 @@ jobs:
         with:
           name: playwright-smoke-diagnostics
           path: |
+            test-results/
+            artifacts/service-final/smoke-results.json
             test-results/seo-q4*320x700-chromium*/
             test-results/seo-q4*out-of-sitemap-chromium*/
             test-results/seo-q4*/error-context.md
