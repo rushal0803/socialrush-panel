@@ -55,7 +55,9 @@ test("one-click order approval derives transaction reference from stored submiss
   assert.match(route, /auth\.user\.id/);
   assert.match(route, /currentOrder\.customer_note/);
   assert.match(route, /body\?\.receiptVerified !== true/);
-  assert.match(route, /\.eq\("payment_status", currentOrder\.payment_status\)/);
+  assert.match(route, /updateOrderFinancially\(auth\.supabase, params\.id, update, currentOrder\)/);
+  const writer = readFileSync("lib/admin/refund-order.ts", "utf8");
+  assert.match(writer, /p_expected_payment: expected\.payment_status/);
   assert.doesNotMatch(ui, /setVerifiedTransactionId|setVerificationNote/);
   assert.match(ui, /disabled=\{busy \|\| !receiptVerified\}/);
 });

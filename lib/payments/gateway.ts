@@ -1,6 +1,6 @@
 // This is the single policy for every new customer payment. Historical
-// Razorpay verification, webhook, reconciliation, and refund operations are
-// deliberately separate from this policy.
-export const NEW_CUSTOMER_PAYMENT_GATEWAY = "cashfree" as const;
+// Historical verification/webhook compatibility is separate; new provider
+// creation and refund operations are retired.
+export const NEW_CUSTOMER_PAYMENT_GATEWAY = "manual" as const;
 export const RAZORPAY_NEW_PAYMENT_DISABLED_MESSAGE =
-  "Razorpay is disabled for new payments. Use Cashfree.";
+  "Gateway payments are retired. Use wallet or manual checkout.";

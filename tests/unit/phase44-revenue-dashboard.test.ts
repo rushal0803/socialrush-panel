@@ -45,7 +45,7 @@ test("Phase 44 keeps the existing analytics page as the single revenue command c
   assert.match(page, /buildVerifiedRevenueDashboard/);
   assert.match(page, /RevenueIntelligencePanel dashboard=\{revenueDashboard\}/);
   assert.match(panel, /Phase 44 · Verified revenue intelligence/);
-  assert.match(panel, /verified paid-order records and completed refund transactions/);
+  assert.match(panel, /recognized completed-order records and linked service refund transactions/);
   assert.match(panel, /not presented as lifetime customer LTV/);
 });
 

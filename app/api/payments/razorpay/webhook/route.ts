@@ -2,6 +2,7 @@ import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { verifyHmac } from "@/lib/payments/razorpay";
 import { recordTrustedEvent } from "@/lib/analytics/server";
+import { validateWalletCapture } from "@/lib/payments/wallet-validation";
 
 type WebhookPayload = {
   event?: string;
@@ -48,6 +49,16 @@ export async function POST(request: NextRequest) {
         if (error) return NextResponse.json({ error: "Checkout settlement failed" }, { status: 500 });
         await recordTrustedEvent({ eventName: "payment_completed", customerId: checkoutPayment.user_id, pagePath: "/dashboard/new-order", eventId: `payment:${payment.id}`, metadata: { method: "razorpay", amount_minor: Number(checkoutPayment.amount_paise), currency: "INR", checkout_intent_id: checkoutPayment.id } });
         return NextResponse.json({ received: true });
+      }
+      const { data: walletPayment, error: walletReadError } = await admin.from("transactions")
+        .select("amount,status,type,payment_method,provider_payment_id")
+        .eq("provider_order_id", payment.order_id).maybeSingle();
+      if (walletReadError) return NextResponse.json({ error: "Wallet payment lookup unavailable" }, { status: 503 });
+      if (!walletPayment || !validateWalletCapture(payment, {
+        providerOrderId: payment.order_id, amount: walletPayment.amount,
+        paymentMethod: walletPayment.payment_method, type: walletPayment.type, status: walletPayment.status,
+      }) || (walletPayment.provider_payment_id && walletPayment.provider_payment_id !== payment.id)) {
+        return NextResponse.json({ error: "Wallet payment details mismatch" }, { status: 409 });
       }
       const { error } = await admin.rpc("credit_wallet_payment_system", {
         p_provider_order_id: payment.order_id,

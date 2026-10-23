@@ -3,6 +3,7 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { razorpayConfig, razorpayRequest, verifyHmac } from "@/lib/payments/razorpay";
 import { recordTrustedEvent } from "@/lib/analytics/server";
+import { validateWalletCapture } from "@/lib/payments/wallet-validation";
 
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
@@ -15,13 +16,16 @@ export async function POST(request: NextRequest) {
     if (!verifyHmac(`${body.razorpay_order_id}|${body.razorpay_payment_id}`, body.razorpay_signature, keySecret)) return NextResponse.json({ error: "We could not confirm this payment response. Please check Wallet before trying again." }, { status: 400 });
     const { data: transaction } = await supabase
       .from("transactions")
-      .select("amount,status")
+      .select("amount,status,type,payment_method,provider_payment_id")
       .eq("provider_order_id", body.razorpay_order_id)
       .eq("user_id", user.id)
       .maybeSingle();
     if (!transaction) return NextResponse.json({ error: "We could not find a pending payment for this account." }, { status: 404 });
     const payment = await razorpayRequest<{ order_id?: string; amount?: number; currency?: string; status?: string }>(`/payments/${encodeURIComponent(body.razorpay_payment_id)}`);
-    if (payment.order_id !== body.razorpay_order_id || payment.status !== "captured" || payment.currency !== "INR" || payment.amount !== Math.round(Number(transaction.amount) * 100)) {
+    if (!validateWalletCapture({ ...payment, id: body.razorpay_payment_id }, {
+      providerOrderId: body.razorpay_order_id, amount: transaction.amount,
+      paymentMethod: transaction.payment_method, type: transaction.type, status: transaction.status,
+    }) || (transaction.provider_payment_id && transaction.provider_payment_id !== body.razorpay_payment_id)) {
       return NextResponse.json({ error: "Payment confirmation is still processing. Do not pay again; check Wallet or contact support with your payment reference." }, { status: 409 });
     }
     const admin = createAdminClient();
