@@ -91,7 +91,7 @@ export default async function PricingPage() {
     <section aria-labelledby="service-link-requirements" className="relative mx-auto max-w-7xl px-5 pb-16 sm:px-6 lg:px-8">
       <div className="rounded-3xl border border-white/10 bg-[#101116] p-6 sm:p-8">
         <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Beyond the displayed rate</p>
-        <h2 id="service-link-requirements" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Check each service's link and delivery requirements</h2>
+        <h2 id="service-link-requirements" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Check individual service link and delivery requirements</h2>
         <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">Pricing alone cannot tell you whether a public post, video or group is eligible. Choose the exact service below to review its destination, quantity and support requirements. The live order panel provides the current rate and final total.</p>
         <div className="mt-7 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
           {serviceRequirementLinks.map((item) => (
