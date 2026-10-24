@@ -20,6 +20,8 @@ yarn-debug.log*
 yarn-error.log*
 /test-results/
 /artifacts/
+# Private reviewed CRM inputs: never tracked or uploaded as CI artifacts.
+/.private-crm-evidence/
 /.codex-redesign-dev.*.log
 .DS_Store
 *.pem

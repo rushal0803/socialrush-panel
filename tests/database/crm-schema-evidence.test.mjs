@@ -27,3 +27,24 @@ test('inventory explicitly reports missing foundation objects',async()=>{
     assert.ok(row.evidence.every(x=>!x.exists));
   }finally{await db.close();}
 });
+
+test('RLS does not restrict TRUNCATE; a separate privilege is required on disposable tables',async()=>{
+  const db=new PGlite();try{
+    // Generic synthetic fixture, not a reconstruction of either CRM relation.
+    await db.exec(`create role synthetic_customer nologin;
+      create table synthetic_privilege_probe(id integer primary key);
+      insert into synthetic_privilege_probe values(1);
+      alter table synthetic_privilege_probe enable row level security;
+      grant usage on schema public to synthetic_customer;
+      grant select, delete on synthetic_privilege_probe to synthetic_customer;
+      set role synthetic_customer;`);
+    assert.equal((await db.query('delete from synthetic_privilege_probe returning id')).rows.length,0);
+    await assert.rejects(db.exec('truncate synthetic_privilege_probe'), /permission denied/);
+    await db.exec(`reset role;
+      grant truncate on synthetic_privilege_probe to synthetic_customer;
+      set role synthetic_customer;
+      truncate synthetic_privilege_probe;
+      reset role;`);
+    assert.equal((await db.query('select count(*)::int as count from synthetic_privilege_probe')).rows[0].count,0);
+  }finally{await db.close();}
+});
