@@ -1,5 +1,7 @@
 # CRM chronology and private review preparation
 
+**Update:** The owner subsequently supplied a private local artifact. See [derived foundation and verification](crm-foundation-verification.md). The pending-artifact statements below describe the earlier preparation stage.
+
 25 October 2026. Branch `feat/payment-revenue-safety-20261020`, existing draft PR #702. This document contains **repository-derived facts and a review method only**. No private production export, definitions, grant findings, counts or credentials are reproduced. Receipt of a private artifact is pending; no evidence-supported CRM foundation has been generated or published.
 
 ## What the repository establishes

@@ -127,6 +127,14 @@ def main():
             assert sql("select md5(coalesce(jsonb_agg(to_jsonb(o) order by id)::text,'')) from orders o").stdout == orders_before
             report['clean_install_baseline'] = {'version': 'v1', 'file': str(baseline.relative_to(ROOT)),
                 'sha256': hashlib.sha256(baseline.read_bytes()).hexdigest(), 'data_preservation': 'PASS'}
+        if item['file'] == '202609020002_crm_reply_automation.sql':
+            foundation = ROOT / 'supabase/clean-install/v1/crm-foundation.sql'
+            sql("set socialrush.clean_install='v1';" + foundation.read_text())
+            assert sql("select count(*) from information_schema.columns where table_schema='public' and table_name='crm_leads' and column_name='priority'").stdout.strip() == '0'
+            assert sql("select bool_and(not has_table_privilege(r,t,'TRUNCATE')) from unnest(array['anon','authenticated']) r cross join unnest(array['public.crm_leads','public.crm_lead_contacts']) t").stdout.strip() == 't'
+            report['crm_foundation'] = {'version': 'v1', 'sha256': hashlib.sha256(foundation.read_bytes()).hexdigest(),
+                'scope': 'current-state reconstruction minus later priority; CRUD-only client grants; not production parity',
+                'pre_priority': 'PASS', 'client_truncate_denied': 'PASS'}
         result = sql((ROOT / 'supabase/migrations' / item['file']).read_text(), check=False)
         report['migrations'].append({'file': item['file'], 'result': 'PASS' if result.returncode == 0 else 'FAIL'})
         if result.returncode:
