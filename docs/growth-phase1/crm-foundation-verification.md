@@ -32,13 +32,21 @@ Actual catalog grant findings remain private. The security concern is actionable
 |---|---|
 | Private file integrity and metadata comparison | PASS locally; private evidence excluded from publication |
 | Focused baseline/catalog/privilege regressions | PASS: 7 tests; original reply migration executed without edits |
-| Context/existing-table rejection | PASS; transaction rolls back and existing synthetic rows remain unchanged |
+| Context/existing-table rejection and failure after CREATE | PASS; transaction rolls back on missing policy helper and existing synthetic rows remain unchanged |
 | Synthetic constraints/indexes/RLS/anon/authenticated/TRUNCATE | PASS locally in PGlite; not production effective-access certification |
-| Full 121-file replay | PENDING isolated GitHub Actions; earlier missing-foundation failure is historical evidence, not a current pass |
+| Full 121-file replay | FAIL: [run 40136977758](https://github.com/rushal0803/socialrush-panel/actions/runs/40136977758), tested implementation head `5a9cd0d38eb918c47e37faaefe09285159ba0d97`; 49 passed, file 50 missing `public.crm_outreach_settings`, 71 later files unattempted |
 | Real Next.js full-stack financial journeys | BLOCKED until complete replay succeeds |
 | Production upgrade compatibility / effective permission certification | BLOCKED; no live execution or additional evidence scope |
 
 CI preserves network-none/loopback-only operation, disabled cron before replay, no production credentials, no external services, and synthetic-only records. It records the derived foundation hash and checks priority absence and client TRUNCATE denial before the original migration. Existing mandatory failure reporting remains enabled. Supplementary curated Auth checks cannot turn an incomplete full-history replay into PASS.
+
+On that tested head, native PostgreSQL concurrency and wallet approval/replay jobs passed (121000454894 / 121000455062). Isolated job 121000454817 verified priority absence and effective client TRUNCATE denial before executing original migration 49 successfully. Network checks and the 65-second no-execution cron sentinel passed. All 62 supplementary real Auth/PostgREST assertions passed on the explicitly labelled curated fixture. [Sanitized run artifact](https://github.com/rushal0803/socialrush-panel/actions/runs/40136977758/artifacts/12577835917) contains no private catalog input. No actual Next.js full-stack journey ran. Standard CI for this implementation head passed TypeScript and production build and was running browser smoke when this evidence was recorded; consult PR #702 for final exact-head results. Local TypeScript and lint passed (existing lint warnings, no errors). The private equivalence comparison also passed after the entire unchanged reply migration, including its restored priority column/check.
+
+## Exact next missing prerequisite
+
+Migration `202609020003_resend_crm_integration.sql` inserts into and updates `public.crm_outreach_settings` but never creates it. The two-table private evidence does not define this relation. Current repository SQL search and reachable-history `git log --all -i -G 'create[[:space:]]+(table|function).*crm_outreach_settings' -- '*.sql' '*.md' '*.txt'` found no creation definition; this bounded search does not inspect archive internals or inaccessible sources. The immediate requirement is an authoritative definition of this table, including columns/defaults/checks/keys/indexes/RLS/grants/triggers and referenced dependencies. Do not infer it from the INSERT column list. Migration 51 also consumes outreach messages; later migrations require additional CRM objects/helper definitions. Recover the dependency closure rather than promising that one more table will complete history.
+
+Preferred next input: existing authoritative SQL/schema artifact through the reviewed private channel. Otherwise separately approve a catalog-only inspection for this exact additional object and identified prerequisite definitions, keeping output private and excluding all rows/secrets/function bodies until specifically reviewed. Existing authorization covers reading the supplied local file, not fresh remote collection. No database connection, collection or new production permission change is authorized or executed here.
 
 ## Rollback and next gate
 

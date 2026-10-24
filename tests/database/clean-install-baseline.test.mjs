@@ -46,6 +46,13 @@ test('CRM reconstruction requires explicit clean-install context and is atomic o
     await assert.rejects(db.exec(crm),/Explicit clean-install/);
     await db.exec('rollback;');
     assert.equal((await db.query("select to_regclass('public.crm_leads') r")).rows[0].r,null);
+    await db.exec(`create role anon; create role authenticated; create role service_role;
+      create table profiles(id uuid primary key); set socialrush.clean_install='v1';`);
+    // Fail after the first table/indexes have been created: the policy helper is absent.
+    await assert.rejects(db.exec(crm),/is_admin/);
+    await db.exec('rollback;');
+    assert.equal((await db.query("select to_regclass('public.crm_leads') r")).rows[0].r,null);
+    assert.equal((await db.query("select to_regclass('public.crm_lead_contacts') r")).rows[0].r,null);
   }finally{await db.close();}
 });
 test('versioned baseline preserves rates/order totals and supplies the historical dependency',async()=>{
