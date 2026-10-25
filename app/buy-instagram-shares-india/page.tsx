@@ -8,7 +8,7 @@ const path = "/buy-instagram-shares-india";
 export const metadata: Metadata = {
   ...createPageMetadata({
     title: "Buy Instagram Shares in India | INR Pricing | SocialRUSH",
-    description: "Buy Instagram shares in India for eligible public posts or Reels. Review live INR pricing, link requirements and delivery terms before checkout.",
+    description: "Buy Instagram shares in India for public posts or Reels. Compare live INR prices, delivery and no-refill terms, and link requirements before checkout.",
     path,
     keywords: ["buy Instagram shares India", "Instagram shares service India"],
   }),
