@@ -49,7 +49,7 @@ test("discovery fallback retains remaining search budget and counts both searche
   const { fileURLToPath } = await import("node:url");
   const { dirname, resolve } = await import("node:path");
   const code = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "../../lib/crm/prospect-discovery.ts"), "utf8");
-  assert.match(code, /names\.size === 0 && remaining > searchCount/);
+  assert.match(code, /names\.size === 0 && remaining - searchCount >= 2/);
   assert.match(code, /remaining - searchCount/);
   assert.match(code, /discoveredCount \+= fallbackResults\.length/);
 });
