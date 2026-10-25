@@ -78,6 +78,7 @@ const sections = [
     quickLinks: [
       { href: "/admin/crm/leads", label: "Leads" },
       { href: "/admin/crm/prospecting", label: "Prospecting" },
+      { href: "/admin/crm/acquisition-insights", label: "Acquisition insights" },
       { href: "/admin/crm/replies", label: "Replies" },
     ],
   },
