@@ -318,13 +318,13 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     delivery: "Current estimate shown with the active service",
     refill: "Current terms shown with the active service",
     packageService: "comments",
-    intro: "Review YouTube comments packages for eligible public videos and Shorts, with live INR pricing, video-link checks and dashboard tracking."
+    intro: "Review YouTube comments packages for eligible public videos and Shorts, with live INR pricing, video-link checks and dashboard tracking.",
     overview: "Select YouTube Comments, enter the correct public video URL, choose an available quantity, then review the exact order details before payment.",
-    value: "An added comment count is not verified audience interest. YouTube moderation can change visibility, and comments alone do not guarantee reach, ranking, watch hours or monetization."
+    value: "An added comment count is not verified audience interest. YouTube moderation can change visibility, and comments alone do not guarantee reach, ranking, watch hours or monetization.",
     safety: "Submit only the correct public YouTube video URL. SocialRUSH does not require your Google password or channel access; keep the video public while the order is processing.",
-    deliveryCopy: "The live catalog determines delivery estimates and eligible refill or support terms; no delivery speed, custom wording or comment retention is guaranteed without explicit service terms."
-    metaDescription: "Buy YouTube comments in India for eligible videos and Shorts. Check live INR prices, video URL rules, delivery, moderation and support terms before checkout."
-    ogDescription: "Compare YouTube comments in India: live prices, public video or Short links, moderation limits and service terms."
+    deliveryCopy: "The live catalog determines delivery estimates and eligible refill or support terms; no delivery speed, custom wording or comment retention is guaranteed without explicit service terms.",
+    metaDescription: "Buy YouTube comments in India for eligible videos and Shorts. Check live INR prices, video URL rules, delivery, moderation and support terms before checkout.",
+    ogDescription: "Compare YouTube comments in India: live prices, public video or Short links, moderation limits and service terms.",
     audiences: ["Video creators", "Educators", "Music channels", "Businesses"],
     related: ["buy-youtube-subscribers-india", "buy-youtube-likes-india", "buy-youtube-views-india"],
   },
