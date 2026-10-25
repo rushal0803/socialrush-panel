@@ -27,6 +27,7 @@ import { blogArticles } from "@/components/marketing/blog/blogData";
 import { getLiveServiceFacts } from "@/lib/seo/live-service";
 import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLanding";
 import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
+import InstagramSharesBuyerGuide from "@/components/seo/InstagramSharesBuyerGuide";
 import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
@@ -267,13 +268,17 @@ export default async function IndiaServiceLandingPage({
       ["Which Instagram URL should I use?", "Use the exact public Instagram post or Reel URL. A profile URL is not accepted for this service."],
       ["Can I use a Reel URL?", "Yes. Public Instagram Reel and post URLs are supported by the service validation."],
       ["Do Instagram Shares guarantee more views or reach?", "No. This service does not guarantee organic reach, recommendations, virality, or platform outcomes."],
+      ["Do shares come from Indian accounts?", "No. INR pricing for Indian customers does not guarantee Indian accounts, geographic targeting or a relevant audience."],
+      ["Is an Instagram Shares order eligible for refill?", "The public catalog lists no refill. Check the current active service terms before ordering, as retention and replacement are not guaranteed."],
+      ["Does buying Instagram shares guarantee new followers or sales?", "No. A share count does not guarantee authentic messages, new followers, website visits, customers or sales."],
+      ["Can buying shares have platform risks?", "Yes. Artificial engagement may be removed and may violate Instagram rules. It is not a substitute for valuable content and genuinely interested audiences."],
     ];
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Instagram Growth", item: `${SEO_SITE_URL}/instagram-growth-india` }, { "@type": "ListItem", position: 3, name: "Instagram Shares", item: shareUrl }] },
       { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell serviceExperience>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} /><ServiceSearchDecisionGuide service="instagram-shares" /></PublicShell>;
+    return <PublicShell serviceExperience>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} buyerGuide={<InstagramSharesBuyerGuide />} /><ServiceSearchDecisionGuide service="instagram-shares" /></PublicShell>;
   }
   const available = Boolean(live?.available);
   const currentPrice = live?.rate;
