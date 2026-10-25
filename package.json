@@ -36,7 +36,7 @@
     "test:country-service-seo": "node --experimental-strip-types --test tests/unit/country-service-seo.test.ts",
     "test:cro": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/cro-personalization.test.ts",
     "test:related-services": "node --experimental-strip-types --test tests/unit/related-services.test.ts",
-    "test:crm-pipeline": "node --experimental-strip-types --test tests/unit/sales-pipeline.test.ts tests/unit/crm-outreach-autopilot.test.ts tests/unit/crm-resend-delivery-contract.test.mjs tests/unit/growth-recovery-queue.test.ts",
+    "test:crm-pipeline": "node --experimental-strip-types --test tests/unit/sales-pipeline.test.ts tests/unit/crm-outreach-autopilot.test.ts tests/unit/crm-resend-delivery-contract.test.mjs tests/unit/growth-recovery-queue.test.ts tests/unit/acquisition-insights.test.ts",
     "test:payment-confidence": "node --experimental-strip-types --test tests/unit/payment-confidence.test.ts tests/unit/manual-wallet-review-contract.test.mjs",
     "test:phase12": "node --experimental-strip-types --test tests/unit/phase12-quality.test.ts",
     "seo:instagram-tech": "node scripts/seo-instagram-technical-check.mjs",
