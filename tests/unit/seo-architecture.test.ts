@@ -313,7 +313,7 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(metadataTitle(linkedinLikes), /Buy LinkedIn Likes India \| Live INR Plans/);
   assert.match(linkedinLikes.description ?? "", /live INR pricing/i);
   assert.match(String(linkedinLikes.alternates?.canonical), /\/linkedin-likes$/);
-  assert.match(instagramSource, /Buy Instagram Followers India \| Live ₹ Plans \| SocialRUSH/);
+  assert.match(instagramSource, /Buy Instagram Followers India \| Pricing & Terms \| SocialRUSH/);
   assert.match(instagramSource, /How much do Instagram followers cost in India\?/);
   assert.match(watchHoursSource, /Buy YouTube Watch Hours India \| INR Pricing \| SocialRUSH/);
   assert.match(watchHoursSource, /"@type": "FAQPage"/);
