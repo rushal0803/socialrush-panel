@@ -8,6 +8,8 @@ type Props = {
   path: string;
   platform: string;
   serviceType: string;
+  /** False when live availability cannot be verified during static rendering. */
+  includeOffer?: boolean;
 };
 
 export default function IndiaCommercialServiceJsonLd({
@@ -16,6 +18,7 @@ export default function IndiaCommercialServiceJsonLd({
   path,
   platform,
   serviceType,
+  includeOffer = true,
 }: Props) {
   const service = getServiceById(code);
   const pageUrl = new URL(path, `${SEO_SITE_URL}/`).toString();
@@ -32,7 +35,7 @@ export default function IndiaCommercialServiceJsonLd({
     provider: {
       "@id": `${SEO_SITE_URL}/#organization`,
     },
-    ...(service && service.pricePer1000 > 0
+    ...(includeOffer && service && service.pricePer1000 > 0
       ? {
           offers: {
             "@type": "Offer",
