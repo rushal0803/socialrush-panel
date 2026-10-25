@@ -63,7 +63,7 @@ export default async function CanonicalServicePage({
   // Instagram Likes has a purpose-built conversion page. Its order builder reads
   // the exact `instagram-likes` catalog entry used by Services and New Order.
   if (slug === "buy-instagram-likes-india") return <><IndiaCommercialServiceJsonLd code="instagram-likes" name="Instagram Likes" path="/instagram-likes" platform="Instagram" serviceType="Instagram likes service" /><InstagramLikesPage /><MoneyPageAuthorityLinks platform="instagram" /></>;
-  if (slug === "buy-instagram-views-india") return <><IndiaCommercialServiceJsonLd code="instagram-views" name="Instagram Views" path="/instagram-views" platform="Instagram" serviceType="Instagram views service" /><InstagramViewsPage /><MoneyPageAuthorityLinks platform="instagram" /></>;
+  if (slug === "buy-instagram-views-india") return <><IndiaCommercialServiceJsonLd code="instagram-views" name="Instagram Views" path="/instagram-views" platform="Instagram" serviceType="Instagram views service" includeOffer={false} /><InstagramViewsPage /><MoneyPageAuthorityLinks platform="instagram" /></>;
   // The canonical route is /youtube-likes; reuse the dedicated visual
   // experience instead of the generic India template.
   if (slug === "buy-youtube-likes-india") return <><YouTubeLikesPage /><MoneyPageAuthorityLinks platform="youtube" /></>;
