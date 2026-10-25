@@ -26,7 +26,7 @@ function formatRunTime(value?: string | null) {
 export default async function ProspectingPage() {
   const s = await createClient();
 
-  const [{ data: rows = [] }, { data: latestRun }] = await Promise.all([
+  const [{ data: rows = [] }, { data: latestRun }, { data: outreachSettings }] = await Promise.all([
     s
       .from("crm_lead_candidates")
       .select("*")
@@ -41,6 +41,7 @@ export default async function ProspectingPage() {
       .order("started_at", { ascending: false })
       .limit(1)
       .maybeSingle(),
+    s.from("crm_outreach_settings").select("enabled,auto_send,global_daily_send_limit").limit(1).maybeSingle(),
   ]);
 
   const n = (f: (x: any) => boolean) => rows.filter(f).length;
@@ -69,9 +70,9 @@ export default async function ProspectingPage() {
           </h1>
 
           <p className="mt-2 text-sm text-[#9CA3AF]">
-            Phase 3 discovers businesses automatically. No
-            candidate is contacted or promoted without admin
-            approval.
+            Discovery researches prospects. Eligible leads may be enrolled
+            automatically when Autopilot is enabled. Compliance, opt-out and
+            suppression safeguards remain mandatory.
           </p>
         </div>
 
@@ -97,8 +98,11 @@ export default async function ProspectingPage() {
             </h2>
 
             <p className="mt-1 text-xs text-[#9CA3AF]">
-              Daily schedule: 08:05 AM IST · Auto Send remains
-              OFF.
+              Automated discovery · Outbound auto-send:{" "}
+              {outreachSettings?.enabled && outreachSettings?.auto_send ? "ON" : "OFF"}
+              {outreachSettings?.enabled && outreachSettings?.auto_send
+                ? ` · ${outreachSettings.global_daily_send_limit} email(s)/day maximum`
+                : ""}.
             </p>
           </div>
 
