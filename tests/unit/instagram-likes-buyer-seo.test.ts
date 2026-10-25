@@ -12,7 +12,7 @@ const guide = readFileSync("components/seo/InstagramLikesBuyingChecklist.tsx", "
 test("Instagram Likes buyer-intent page preserves canonical and two keyword intents", () => {
   assert.equal(canonicalIndiaServicePaths["buy-instagram-likes-india"], "/instagram-likes");
   const metadata = getIndiaServiceMetadata("buy-instagram-likes-india", "/instagram-likes");
-  assert.match(String(metadata.title && typeof metadata.title === "object" ? metadata.title.absolute : metadata.title), /Buy Instagram Likes in India/);
+  assert.match(JSON.stringify(metadata.title), /Buy Instagram Likes in India/);
   assert.equal(metadata.alternates?.canonical, "https://www.getsocialrush.com/instagram-likes");
   assert.match(metadata.description ?? "", /Buy Instagram likes in India/);
   assert.match(page, /<InstagramLikesBuyingChecklist \/>/);
@@ -33,8 +33,8 @@ test("Instagram Likes SEO guidance matches the catalog and states important limi
   assert.match(page, /Can I order likes using only my Instagram profile link/);
   assert.match(page, /Instagram likes for posts and Reels in India/);
   assert.doesNotMatch(page, /Indian Instagram likes for public posts and Reels/);
-  assert.match(guide, /does not guarantee likes from Indian accounts/);
+  assert.match(guide, /not guaranteed to come from Indian accounts/);
   assert.match(guide, /Artificial engagement can be removed/);
-  assert.match(guide, /active service rate and terms/);
+  assert.match(guide, /final price, availability, delivery window/);
   assert.match(guide, /instagram.com\/reel\//);
 });
