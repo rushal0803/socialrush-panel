@@ -156,13 +156,13 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     delivery: "1–24 hours",
     refill: "No refill",
     packageService: "comments",
-    intro: "Boost conversations and social proof on your Instagram posts and reels with a clear, premium comment engagement service for India.",
+    intro: "Compare Instagram comment packages for public posts and Reels. Check the current INR order total, link requirements and active delivery and no-refill terms before paying.",
     overview: "Choose a quantity, enter the correct public post or Reel URL, review transparent INR pricing, and track the order from your SocialRUSH dashboard.",
-    value: "Visible comments can support the presentation of public posts and Reels while you continue publishing relevant content for your audience.",
+    value: "A visible comment count is not proof of genuine audience conversations, Indian commenters, relevance or guaranteed organic reach. Compare current service terms before ordering.",
     safety: "Only a public Instagram post or Reel URL is required. SocialRUSH never asks for your password, login, or OTP.",
-    deliveryCopy: "Delivery is typically estimated at 1–24 hours and can vary with order size, public-link availability, and current service load.",
+    deliveryCopy: "The catalog lists an indicative 1–24 hour delivery estimate and no refill. Confirm live availability, delivery and support terms for your exact order before payment.",
     metaDescription: "Buy Instagram comments in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
-    ogDescription: "Order Instagram comments in India with live INR pricing, public post or Reel link ordering, and SocialRUSH dashboard tracking.",
+    ogDescription: "Review public Instagram comment packages, INR pricing, delivery estimates and no-refill terms before choosing a post or Reel order.",
     audiences: ["Creators", "Reel publishers", "Brands", "Social media teams"],
     related: ["buy-instagram-followers-india", "buy-instagram-likes-india", "buy-instagram-views-india", "buy-instagram-saves-india", "buy-instagram-shares-india"],
   },
@@ -690,7 +690,7 @@ export function getIndiaServiceMetadata(
         : slug === "buy-instagram-views-india"
         ? "Buy Instagram views in India with live INR pricing when available. Compare public Reel link requirements, delivery and refill terms before checkout."
         : slug === "buy-instagram-comments-india"
-          ? "Buy Instagram comments for public posts or Reels in India. Check quantity limits, live INR totals and delivery terms before ordering. No password needed."
+          ? "Buy Instagram comments for public posts or Reels in India. Compare INR totals, public links, 1–24 hour delivery estimate and no-refill terms."
           : slug === "buy-instagram-saves-india"
             ? "Buy Instagram saves for public posts or Reels in India. Compare live INR rates, quantity limits and delivery terms before checkout. No password needed."
             : slug === "buy-instagram-shares-india"
