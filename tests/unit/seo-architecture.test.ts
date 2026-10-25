@@ -1623,7 +1623,7 @@ test("trust-and-engagement blog distinguishes authentic interactions from servic
   assert.ok(article.sections.some((section) => section.heading === "Comments: conversation quality matters more than a counter"));
   assert.ok(article.sections.some((section) => section.heading === "Saves: repeat usefulness is different from visible activity"));
   assert.ok(article.sections.some((section) => section.heading === "Shares: measure what happens after content is shared"));
-  const text = [article.intro, ...article.sections.map((section) => section.body)].join(" ");
+  const text = [article.intro, ...article.sections.flatMap((section) => [section.body, ...(section.tips ?? [])])].join(" ");
   assert.match(text, /paid activity, is not evidence of genuine customer interest/);
   assert.match(text, /purchased saves as proof of authentic audience trust/);
   assert.match(text, /share activity does not guarantee reach or recommendations/);
