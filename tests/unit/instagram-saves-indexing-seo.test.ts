@@ -28,7 +28,7 @@ test("Instagram Saves buyer guide distinguishes catalog references from live che
   assert.equal(catalog?.requiresLiveCatalogFacts, true);
   assert.match(buyerGuide, /getServiceById\("instagram-saves"\)/);
   assert.match(buyerGuide, /final quantity, price and availability/);
-  assert.match(buyerGuide, /do not guarantee Indian users/);
+  assert.match(buyerGuide, /does not guarantee Indian users/);
   assert.match(buyerGuide, /may violate Instagram rules/);
   assert.match(buyerGuide, /live order builder/);
   assert.match(landing, /Are saves guaranteed to come from India/);
