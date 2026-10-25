@@ -12,7 +12,16 @@ jobs:
   smoke:
     name: Typecheck, CRM pipeline tests, international SEO, build, and smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Matches package-lock.json. Avoid flaky runner apt mirrors during setup.
+    container:
+      image: mcr.microsoft.com/playwright:v1.62.1-noble
+      options: --init --ipc=host
+    defaults:
+      run:
+        shell: bash
+    # Attempt 2 of run 39770559066 exhausted 15m during smoke after slow
+    # Chromium dependencies. Budget setup/build + full tests + diagnostics.
+    timeout-minutes: 35
     env:
       # Smoke tests exercise auth-aware UI without needing a real Supabase project.
       # Pointing these at the local test server keeps unauthenticated requests
@@ -28,8 +37,12 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: Payment and revenue safety in isolated PostgreSQL fixtures
+        run: npm run test:finance
+      - name: Explicit clean-install baseline regressions
+        run: node --test tests/database/clean-install-baseline.test.mjs tests/database/crm-schema-evidence.test.mjs
       - name: Complete unit regressions and live catalogue equivalence
-        run: npm run test:unit && npm run test:live-service-facts
+        run: npm run test:unit:all && npm run test:live-service-facts
       - name: Phase 1 canonical and crawl contract tests
         run: node --test tests/unit/phase1-seo-contract.test.mjs
       - name: Verify PR 624 blog image assets
@@ -60,16 +73,20 @@ jobs:
       - run: npm run test:payment-confidence
       - run: npm run test:phase12
       - run: npm run build
-      - name: Install Chromium for smoke tests
-        run: npx playwright install --with-deps chromium
-      - run: npm run test:smoke
+      - name: Verify bundled Playwright browser version
+        run: node -e "if(require('@playwright/test/package.json').version !== '1.62.1') throw new Error('Update the pinned Playwright container to match package-lock.json')"
+      - name: Complete Playwright smoke suite
+        timeout-minutes: 12
+        env:
+          PLAYWRIGHT_JSON_OUTPUT_NAME: artifacts/service-final/smoke-results.json
+        run: npm run test:smoke -- --global-timeout=660000 --reporter=github,json
       - name: Authenticated customer search, navigation and wallet review (fixture only)
         timeout-minutes: 3
         env:
           RESPONSIVE_PAYMENT_FIXTURE: '1'
           DASHBOARD_UPGRADE_AUDIT: '1'
           RESPONSIVE_STAGE: customer-release-gate
-        run: npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding' --workers=2 --global-timeout=150000
+        run: npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding|dashboard wallet details' --workers=2 --global-timeout=150000
       - name: Attach customer workspace regression evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -124,6 +141,8 @@ jobs:
         with:
           name: playwright-smoke-diagnostics
           path: |
+            test-results/
+            artifacts/service-final/smoke-results.json
             test-results/seo-q4*320x700-chromium*/
             test-results/seo-q4*out-of-sitemap-chromium*/
             test-results/seo-q4*/error-context.md
@@ -158,6 +177,33 @@ jobs:
         env:
           PGPASSWORD: wallet_fixture_only
         run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/manual-wallet-review.integration.sql
+
+  financial-concurrency:
+    name: Native PostgreSQL financial concurrency (independent sessions)
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    services:
+      postgres:
+        image: postgres:17
+        env:
+          POSTGRES_PASSWORD: finance_fixture_only
+          POSTGRES_DB: finance_concurrency_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Exercise exact financial migration with independent backends
+        env:
+          PGHOST: 127.0.0.1
+          PGUSER: postgres
+          PGDATABASE: finance_concurrency_fixture
+          PGPASSWORD: finance_fixture_only
+        run: python3 tests/database/native-payment-concurrency.py
 
   perf-evidence:
     name: PR 630 mobile/desktop performance evidence (non-release)

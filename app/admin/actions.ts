@@ -4,7 +4,7 @@ import { revalidatePath } from "next/cache";
 import { redirect } from "next/navigation";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
+import { updateOrderFinancially } from "@/lib/admin/refund-order";
 
 async function requireAdmin() {
   const supabase = await createClient();
@@ -134,7 +134,7 @@ export async function deleteCategory(formData: FormData) {
 }
 
 export async function updateOrder(formData: FormData) {
-  const { supabase, adminSupabase } = await requireAdmin();
+  const { supabase } = await requireAdmin();
 
   const orderId = text(formData, "id");
   const nextStatus = text(formData, "status");
@@ -160,23 +160,12 @@ export async function updateOrder(formData: FormData) {
     throw new Error("Verify the incoming payment through the dedicated approval workflow before fulfillment.");
   }
 
-  await supabase
-    .from("orders")
-    .update({
-      status: nextStatus,
-      provider_order_id: providerOrderId,
-      admin_notes: adminNotes,
-      start_count: Number.isFinite(startCount) ? Math.max(0, startCount) : 0,
-      remains: Number.isFinite(remains) ? Math.max(0, remains) : 0,
-    })
-    .eq("id", orderId);
-
-  const refundStatuses = new Set(["cancelled", "refunded"]);
-  const shouldRefund = refundStatuses.has(nextStatus) && !refundStatuses.has(currentOrder.status);
-
-  if (shouldRefund) {
-    await refundOrderToWalletOnce(adminSupabase, currentOrder);
-  }
+  const { error } = await updateOrderFinancially(supabase, orderId, {
+    status: nextStatus, provider_order_id: providerOrderId, admin_note: adminNotes,
+    starting_count: Number.isFinite(startCount) ? Math.max(0, startCount) : 0,
+    remaining_count: Number.isFinite(remains) ? Math.max(0, remains) : 0,
+  }, currentOrder);
+  if (error) throw new Error("Order update and refund could not be confirmed. Refresh before retrying.");
 
   revalidatePath("/admin/orders"); revalidatePath("/admin");
 }

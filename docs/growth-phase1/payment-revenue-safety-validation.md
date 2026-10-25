@@ -1,0 +1,42 @@
+> **SUPERSEDED PAYMENT SCOPE — 22 October 2026:** Razorpay/Cashfree development, configuration and sandbox work are stopped. Provider release gates are **Not Applicable**, not Passed. Provider instructions below are historical only; do not execute them. Use [the current active-payment release scope](active-payment-release.md). Wallet/manual flows, historical records and shared safety dependencies remain in scope.
+
+# Phase 1.1 verification — 22 October 2026
+
+**Phase 1.3 continuation:** [staging-readiness.md](staging-readiness.md) records discovered resource identity/scopes, failed isolation and replay preflights, exact missing resources, and the staging setup/rollback procedure. Remote integration remains blocked; no production financial data was queried. Growth Phase 2 is a separate specification only.
+
+**Phase 1.2 continuation:** [financial-staging-verification.md](financial-staging-verification.md) contains the current release-readiness matrix, native independent-session PostgreSQL evidence, full unit discovery, fixture browser/CSV checks, reconciliation instructions and remaining external gates. The native-concurrency gap below describes the original Phase 1.1 run and is now closed for the tested interleavings. Full Supabase, gateway sandbox and historical-source gates remain blocked; production readiness is not approved.
+
+Implementation and file groups: [payment-revenue-safety.md](payment-revenue-safety.md). Branch: `feat/payment-revenue-safety-20261020`. This report concerns the new implementation; the earlier Phase 1 `validation.md` remains the historical audit result.
+
+| Check | Outcome / scope |
+|---|---|
+| Full standalone TypeScript | Passed, exit 0: `node node_modules/typescript/bin/tsc --noEmit --incremental false`. No interrupt was used on the successful verification. |
+| Existing unit suite | 237 passed, 0 failed. |
+| Finance application/security contracts | 31 passed, 0 failed, including 9 new behavior tests. |
+| Isolated PostgreSQL SQL tests | 12 passed, 0 failed, using the exact new migration and relevant existing migrations in disposable PGlite fixtures. |
+| Dashboard/payment confidence regressions | 37 passed, 0 failed. Some contract tests overlap the finance suite; counts are per command, not summed as unique tests. |
+| Lint | Passed with existing unused-variable, hook dependency and image warnings. Next lint deprecation and Supabase Edge Runtime dependency warnings remain. No new lint errors. |
+| Local production build | Passed, exit 0, after the final wallet statement changes; all 315 static-page generation tasks completed. Uses `npm run build:finance-safe`; no deployment occurred. |
+| Whitespace | `git diff --check` passed. Windows LF/CRLF conversion notices are informational. |
+
+SQL coverage includes atomic cancellation/ledger/balance rollback, duplicate requests, unpaid cancellation, historical refund preservation, gateway reserve/claim/settle/release retries, anon/customer access denials, authenticated-admin mutation, intent-write denial, receipt ownership, >1,000-row aggregation, negative net revenue, missing/verified supplier costs, wallet double-submission, payload mismatch, order insertion failure, split-only cancellation/rejection, current legacy catalog rates, insufficient funds, stale admin review, atomic manual order submission and cross-flow/case-insensitive receipt duplication.
+
+Application tests exercise concurrent gateway workers (one POST), lost provider responses, local settlement failure after provider success, receipt-based recovery, pending versus processed results, missing/ambiguous/mismatched reconciliation, prior partial refund detection, captured wallet amount/currency/identity/type validation, IST boundaries, duplicate report IDs, and wallet statement balance effects for external versus wallet refunds.
+
+## Remaining release gates
+
+- No native PostgreSQL or Docker was available. PGlite serializes transactions on one session, so native independent-session contention, lock waits and deadlocks remain unverified. Client-concurrent test success is not proof of multi-session behavior.
+- Existing ownership and new RLS policies/grants were exercised in non-production SQL fixtures. No complete Supabase stack replay, PostgREST/Auth integration or deployed RLS state was certified.
+- No real or provider-sandbox payment/refund was sent. Provider test-mode API contracts, pagination and delayed refund statuses need a dedicated sandbox verification run.
+- Historical orphan credits/reservations, unmatched refunds and missing recognition timestamps need read-only reconciliation before corrective action. Historical rows were not backfilled or rewritten.
+- Verified supplier costs were not available from production. The cost evidence table is intentionally empty outside fixtures; missing coverage produces unavailable margin rather than an estimate.
+- No authenticated browser visual QA was performed for the wallet statement change. Its display/CSV uses the tested common balance-effect helper; full browser-to-database QA belongs in the isolated Supabase environment.
+- The audit uses `completed_at` as an operational recognition assumption, not an independently audited finance ledger. Partial earnings, fees, taxes, FX and supplier reimbursements need an approved accounting policy.
+
+## Safety and publication
+
+The migration file was generated by the installed Supabase CLI and applied only inside disposable in-memory tests. No `db push`, remote SQL, production record changes, real gateway calls, merges or deploy commands were used.
+
+Gateway refunds remain default-off via `GATEWAY_REFUNDS_ENABLED=false`. The exact review branch is excluded from Vercel Git deployment in `vercel.json`. The workflow addition only runs isolated tests. The safe-build output is for local verification and must not be deployed.
+
+The draft PR description is prepared in `payment-revenue-safety-pr.md`; the published URL, if available, is supplied in the delivery message. Earlier untracked Phase 1 inventory/audit artifacts are preserved separately, rather than silently bundled into this financial implementation.

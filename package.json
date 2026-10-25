@@ -3,6 +3,9 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
+    "test:unit:all": "node scripts/run-all-unit-tests.cjs",
+    "test:finance": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/payment-revenue-safety.test.ts tests/unit/active-payment-policy.test.mjs tests/unit/phase21-security-completion.test.ts tests/unit/manual-wallet-review-contract.test.mjs tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase46-revenue-engine.test.ts && node --test tests/database/payment-safety.test.mjs",
+    "build:finance-safe": "node scripts/finance-safe-build.cjs",
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
@@ -55,6 +58,7 @@
     "resend": "^6.25.0"
   },
   "devDependencies": {
+    "@electric-sql/pglite": "0.3.14",
     "@playwright/test": "^1.62.1",
     "@types/node": "^20.16.11",
     "@types/react": "^19.0.0",

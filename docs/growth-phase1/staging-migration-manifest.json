@@ -1,0 +1,642 @@
+{
+  "schemaVersion": 1,
+  "baselineCommit": "d34f46ee2a060f1a71afb14cd187dc71b38b323d",
+  "additionalMigration": "20261022103153_retire_obsolete_gateway_operations.sql",
+  "hashFormat": "SHA256 of UTF-8 SQL normalized to LF",
+  "replayExecuted": false,
+  "migrationCount": 121,
+  "migrations": [
+    {
+      "file": "202606190001_initial_schema.sql",
+      "sha256": "981888c1780ec68c3c313090082e929192bf4a655eb0dd2064dd7e6e39f6572c",
+      "review": []
+    },
+    {
+      "file": "202606190002_admin_functions.sql",
+      "sha256": "f739c4600287aeb984a7f69304317f70e311e1f826d0ff44ea8c3aeacd3a7b4d",
+      "review": []
+    },
+    {
+      "file": "202606190003_growth_platform_rebrand.sql",
+      "sha256": "c2bda49a8b17ef938368fc55bb4c920b8b04ee4e7ffc99e92914dc48167f218c",
+      "review": []
+    },
+    {
+      "file": "202606190004_campaign_packages.sql",
+      "sha256": "e9d177aea4838db0a0a6e9e8d2b999645664e41d9a7a10c24b97da441f63270a",
+      "review": []
+    },
+    {
+      "file": "202606190005_professional_service_catalog.sql",
+      "sha256": "c54304e3b9728546838a030eba1d0d4f8e7c496df69b30d936b9bcff85fc0c1a",
+      "review": []
+    },
+    {
+      "file": "202606190006_fintech_wallet.sql",
+      "sha256": "1e3cbf2c2edfb27032a6857dc46bb1240c65f2e11bad929027af2293f38a429b",
+      "review": []
+    },
+    {
+      "file": "202606190007_account_settings.sql",
+      "sha256": "c2d692ef2475f2e8bca616d1c39b5bd5bcf6af7bfa08e67a6468c9012f32214a",
+      "review": []
+    },
+    {
+      "file": "202606200001_order_operations.sql",
+      "sha256": "ae3b8c58ce5c51841c7cd86a437243056c5d3b777938b6576e482ec189f10fd7",
+      "review": []
+    },
+    {
+      "file": "202606210001_profile_self_healing.sql",
+      "sha256": "e515ec61f8befa34b24ed046caddc91c496ab1050dfd88290a5ace38b5d3b97f",
+      "review": []
+    },
+    {
+      "file": "202606210002_client_portal.sql",
+      "sha256": "5e3f68239614065a6832ca47739b9cf7bc393a7de9bbfbbcf6582fa75f62a5e1",
+      "review": []
+    },
+    {
+      "file": "202606220001_wallet_campaign_checkout.sql",
+      "sha256": "ada56e0adbada48d0cd93200bd19f8d4823ae6307a8ab759032ef92336c2bc65",
+      "review": []
+    },
+    {
+      "file": "202606260001_smm_order_flow_upgrade.sql",
+      "sha256": "746880e423b3d6019fce802683aa423bf1e4b7e444bea6320b42b1acf1f1ece1",
+      "review": []
+    },
+    {
+      "file": "202606260002_service_catalog_full_sync.sql",
+      "sha256": "db8db75c6c6293863810aa1273307acdfdec7508fa22ff91a5b125948d79a072",
+      "review": []
+    },
+    {
+      "file": "202606270001_admin_portal_completion.sql",
+      "sha256": "9933660a166b7cde3b6bed302937a579545388de4b39361099e4bbe1a898c330",
+      "review": []
+    },
+    {
+      "file": "202606280001_international_payment_methods.sql",
+      "sha256": "67fd3cc006e983a310c7b0f558cd5e81f3687923157541e21c495e53a5d5b292",
+      "review": []
+    },
+    {
+      "file": "202606280002_order_shortfall_payments.sql",
+      "sha256": "5de5ac0b79b8644e788c9a42ee19a58edb708ef46837b0669fdf79610c692cb9",
+      "review": []
+    },
+    {
+      "file": "202606290001_fix_instagram_views_rate.sql",
+      "sha256": "71fdaba814b673a1919f1690d6dc9c939d47c101ccaafb3f3c5c8d1fc6a8d878",
+      "review": []
+    },
+    {
+      "file": "202606290002_central_service_pricing.sql",
+      "sha256": "4ea4aaee2ce2f172c12734d60536d40d5c5723f4a6277b5d93ae701681e3eeef",
+      "review": []
+    },
+    {
+      "file": "202606300001_wallet_payment_method_normalization.sql",
+      "sha256": "1007509bdc26b489a5bcbd552bbce407a32e14e9f1fb8a241c2edfb64a0efede",
+      "review": []
+    },
+    {
+      "file": "202607010001_wallet_payment_method_aliases.sql",
+      "sha256": "cab7651fcd4edf510acce70a49e3c922180146fb486db8c67abf347d15ec2f67",
+      "review": []
+    },
+    {
+      "file": "202607010002_allow_razorpay_wallet_method.sql",
+      "sha256": "c320163d52563b56a4aa7346119fb8b04a465f5cdd04f2178484f98e1698d53e",
+      "review": []
+    },
+    {
+      "file": "202607010003_order_fulfillment_tracking.sql",
+      "sha256": "c50e3255192516559e6688f48d09d7f4c19ea7e0814f03a47d0f90c6c64e7e5b",
+      "review": []
+    },
+    {
+      "file": "202607250001_checkout_intents.sql",
+      "sha256": "41f09859184f1db68dc0ee1cfeffca531072b240c324f95280e1661e3fddbd44",
+      "review": []
+    },
+    {
+      "file": "202607290001_checkout_intent_wallet_checkout.sql",
+      "sha256": "446aab62a7020640c17cf4eacdbe94d76896295d01e45404a0a0731668cc6bc2",
+      "review": []
+    },
+    {
+      "file": "202607300001_checkout_intent_shortfall_payments.sql",
+      "sha256": "16793e11bf1a0fe6132b3122175d8c5867e02d4eece58160508c5c1c55477eaf",
+      "review": []
+    },
+    {
+      "file": "202607310001_service_health_monitoring.sql",
+      "sha256": "f353bd75ff2a6ab979375a9564c4382ea37efe36506b1deee56e5ad4ef86739a",
+      "review": []
+    },
+    {
+      "file": "202607310002_secure_order_support_tickets.sql",
+      "sha256": "3f5d1b17c58da4b746a8eab7f347f27aa2b1c89c8434992fa43d76f2c7cd0661",
+      "review": []
+    },
+    {
+      "file": "202607310003_verified_reviews_case_studies.sql",
+      "sha256": "078aadd880ef182633754ff3b7c14b3d06308e7258a24e2d1cb09d4f4934837e",
+      "review": []
+    },
+    {
+      "file": "202607310004_customer_retention_rewards.sql",
+      "sha256": "8ef9dddb249ca30ae333dcea046982484eac6b9edd19063d70a07cec8b5b015e",
+      "review": []
+    },
+    {
+      "file": "202608010001_analytics_conversion_tracking.sql",
+      "sha256": "4877fcca86fdde406da7af6a06568658dd4891303414eb5a0bb786bd550423f6",
+      "review": []
+    },
+    {
+      "file": "202608030001_secure_order_refill_requests.sql",
+      "sha256": "3e12d61cc2008fc56fbd0bbfd23c30ff49eb3538a0248c27c4520abda95aace1",
+      "review": []
+    },
+    {
+      "file": "202608030002_support_customer_experience.sql",
+      "sha256": "67fdc48cdb81458cae9dc312fd665adb5e70c98a88624527080c449b52798a88",
+      "review": []
+    },
+    {
+      "file": "202608030003_checkout_catalog_snapshot_consistency.sql",
+      "sha256": "21273c0e050937de1d4ed266fade324558cb9202a524eab678bf70777503b5b2",
+      "review": []
+    },
+    {
+      "file": "202608050001_analytics_funnel_taxonomy.sql",
+      "sha256": "4f261f1804537304c3097cd6f7b6a239db2cd519620b80b48e4893184a89580e",
+      "review": []
+    },
+    {
+      "file": "202608070001_unified_public_order_reference.sql",
+      "sha256": "d659c1a67211823744eaa934c6df369b2c32f48898d243cd09fc144934b91792",
+      "review": []
+    },
+    {
+      "file": "202608070002_operational_incidents.sql",
+      "sha256": "014e39bdd2cd28282edbe4d08c9a29c4d2a0059e3e5b5ccd5b0a9f93cf505d61",
+      "review": []
+    },
+    {
+      "file": "202608090001_cashfree_wallet_payments.sql",
+      "sha256": "ba270174eae4b8a4ca3236103fe3baf83ee42154371e7d5eb6a7b0fd38588e3e",
+      "review": []
+    },
+    {
+      "file": "202608120001_cashfree_checkout_intent_payments.sql",
+      "sha256": "f92f548f2a6d87afb75f750f023d866c713eacca9d3470c68414197efe261644",
+      "review": []
+    },
+    {
+      "file": "202608120002_cashfree_checkout_payment_session.sql",
+      "sha256": "1997c7ae55f7e7ae6f4d524575a9e776df2c17db125b07a3a57c09bb2c348912",
+      "review": []
+    },
+    {
+      "file": "202608120003_settle_cashfree_checkout_intent_payment.sql",
+      "sha256": "d62fd3137bcc9f44ca72499fa5ac3f48507b2264351e2dd557ede5b943806c13",
+      "review": []
+    },
+    {
+      "file": "202608120004_cashfree_checkout_payment_attempts.sql",
+      "sha256": "4b75c039ef4d47231f601cb03bd00865abef4be34388d8984912f5defc2e74a8",
+      "review": []
+    },
+    {
+      "file": "202608240001_customer_email_automation.sql",
+      "sha256": "4416603ad9b528de0221df87804e0dd87fdca1d55ccb38792dd8cdf39fe7377d",
+      "review": []
+    },
+    {
+      "file": "202608250001_schedule_customer_email_dispatch.sql",
+      "sha256": "e9a4a46bf3f9e781b626d74b353d79d51bfb2a9023d2c297dce916e920ee24a5",
+      "review": [
+        "cron",
+        "vault",
+        "outbound-http",
+        "production-origin-literal"
+      ]
+    },
+    {
+      "file": "202608250002_order_drafts.sql",
+      "sha256": "d4e329360d09892ac64c820ecb8b822fc69db005fd7c30a2236d766fbae43b7f",
+      "review": []
+    },
+    {
+      "file": "20260825080813_customer_notifications.sql",
+      "sha256": "c1687303d038b4ec9e8e5567931d018de0c633acbb5d6d8fa87e9063a8d96c36",
+      "review": []
+    },
+    {
+      "file": "202608300001_add_canonical_service_codes.sql",
+      "sha256": "7b56add20fe3d8d6ec718726e3eae4959f9c28c1d1fd30c55137996c6336f010",
+      "review": []
+    },
+    {
+      "file": "202608300002_agency_workspace.sql",
+      "sha256": "63c7d9ef1f89ef6ea5100abff45e87e1ea83e9bfdd4c296a111375b0676d09ba",
+      "review": []
+    },
+    {
+      "file": "202609020001_update_follower_service_pricing.sql",
+      "sha256": "0624bf08d6104616ded7631c4807c9533afee8d3182ff1957aada8a1aa9bb631",
+      "review": []
+    },
+    {
+      "file": "202609020002_crm_reply_automation.sql",
+      "sha256": "4f0ad28c3ec26e90bc2f0cad6f0d1f31fd0d90d5e714ee2f7391489672524d2c",
+      "review": []
+    },
+    {
+      "file": "202609020003_resend_crm_integration.sql",
+      "sha256": "a1cbee0f6a7f4b4ea08884e6db806a38865da5bb6192b1072a1ad86bc905d065",
+      "review": []
+    },
+    {
+      "file": "202609030001_crm_professional_email_formatting.sql",
+      "sha256": "2408b887b83a0e41af2bac126039f2804eecca6b1992ba3bc96f0543c7c35ffa",
+      "review": []
+    },
+    {
+      "file": "202609030002_crm_resend_webhook_retry_safety.sql",
+      "sha256": "5987510649682ca510ad7d36431d664030212d903c0b42ab229b02cb009d1346",
+      "review": []
+    },
+    {
+      "file": "202609030003_twitter_crypto_services.sql",
+      "sha256": "6ade283fe42021b06cc659dfe643704fb323e34a70fce1f4cb5f735a77d9e6ff",
+      "review": []
+    },
+    {
+      "file": "202609030004_twitter_standard_services.sql",
+      "sha256": "41dc67cea39186e5ef4a445a61c9b66618611955c9ee5742c8a1c1f7cf517181",
+      "review": []
+    },
+    {
+      "file": "202609030005_telegram_standard_services.sql",
+      "sha256": "f2812a32845f9fbe36a50b643c7434fa3159b4b67a3365c02b874e2c98755d8a",
+      "review": []
+    },
+    {
+      "file": "202609040001_tiktok_standard_services.sql",
+      "sha256": "ab6d21dac22162489798dd476c2fcdec9be7723ba93a026f7e2ff3b79d1db404",
+      "review": []
+    },
+    {
+      "file": "202609040002_linkedin_usa_services.sql",
+      "sha256": "2e88799456fbbccbbd3c061dc3412dba68f023706d48e686ab2a8986af4bdd28",
+      "review": []
+    },
+    {
+      "file": "202609040003_crm_autopilot_phase_1.sql",
+      "sha256": "0ba4db8a044b08fe1a814ec0ea548e54a0029d883bae6b9815eb604d8dfa2a3b",
+      "review": [
+        "cron"
+      ]
+    },
+    {
+      "file": "202609040004_crm_autopilot_suppression_guard.sql",
+      "sha256": "96cc4b24410af14e781786bcfd7b41f09c545ab76a6f5f727cb6212287a6e952",
+      "review": []
+    },
+    {
+      "file": "202609040005_crm_autopilot_operational_cleanup.sql",
+      "sha256": "bb99c24c9cb4e0a1da822f13b629819ac31d22274d5030a40210428d657dd74d",
+      "review": []
+    },
+    {
+      "file": "202609050001_crm_autopilot_phase_2.sql",
+      "sha256": "02597093a1600b710d9be6c5a1f0cf7198f7cb68da3ac4067e2645245c9b9966",
+      "review": [
+        "cron"
+      ]
+    },
+    {
+      "file": "202609050002_crm_autopilot_phase_2_completion.sql",
+      "sha256": "75db300812394dd36fd08b86c3cf230a98f0493608cfd3bb1150483b656fdd63",
+      "review": [
+        "cron"
+      ]
+    },
+    {
+      "file": "202609050003_crm_autopilot_phase_2_refresh_fix.sql",
+      "sha256": "78dea8db5935878d0d81f5edd1a925929a7e9b6854f2ed5426d1347116d07d77",
+      "review": []
+    },
+    {
+      "file": "202609050004_crm_autopilot_phase_3_discovery.sql",
+      "sha256": "60c35a662d7c88f5c2a5619207eb7568a56de0cded4be1e719b32699c7100ed3",
+      "review": []
+    },
+    {
+      "file": "202609060001_crm_phase3_discovery_quality_fix.sql",
+      "sha256": "3704b8d11611f96c89c6be456a85ef645ac64bef2f24b9a22e01c960020a5d4d",
+      "review": []
+    },
+    {
+      "file": "202609060002_customer_lifecycle_retention.sql",
+      "sha256": "7bd846537899f922ccde43c8e7a475f165345efc5dba9085532355532a7f3f62",
+      "review": []
+    },
+    {
+      "file": "202609060003_harden_customer_lifecycle_retention.sql",
+      "sha256": "b47aa990e101a937d07282eeff24180f63579d76be3a14c82020f661a25a29a9",
+      "review": []
+    },
+    {
+      "file": "202609060004_finalize_lifecycle_safety.sql",
+      "sha256": "3f63df31398eeaa77560476e3dc0da88d9a9671c1910e12f04e7b2e3af54ff21",
+      "review": []
+    },
+    {
+      "file": "202609060005_lifecycle_admin_config_rls.sql",
+      "sha256": "2edff023fed795ae97d44caf7cdba8155701242683915073c6ce4d91d5bc5d14",
+      "review": []
+    },
+    {
+      "file": "202609060006_admin_lifecycle_metrics_access.sql",
+      "sha256": "6a61948db45262f038578eaca9a3717d8ea822134cc2a40d7daa80fc65c6a084",
+      "review": []
+    },
+    {
+      "file": "202609060007_restrict_customer_email_rpc_privileges.sql",
+      "sha256": "4523280d128294dd8fc84cc76374a7bab527fb189266204024682a59fbac7457",
+      "review": []
+    },
+    {
+      "file": "202609060008_lifecycle_activation_boundary.sql",
+      "sha256": "b93d190cfa627a4ae6db8b304dc14f20c7664913f30c5dc04459e98b90ef98de",
+      "review": []
+    },
+    {
+      "file": "20260914032325_harden_customer_email_dispatch_retries.sql",
+      "sha256": "b3f22f98369d1066ed3efc492454b09c9625b982e2ae4dddc3744ef957a9c456",
+      "review": [
+        "cron",
+        "vault",
+        "outbound-http",
+        "production-origin-literal"
+      ]
+    },
+    {
+      "file": "20260914032954_restore_customer_email_queue_priority.sql",
+      "sha256": "5302077ebfae1dd7e004aa40850964532f61a07834dc4f4731bb14b41f1d7aae",
+      "review": []
+    },
+    {
+      "file": "202609250001_manual_bank_transfer_payments.sql",
+      "sha256": "44230586778d519791f2da40067188b33752385de8e95506244b535137c85f98",
+      "review": []
+    },
+    {
+      "file": "20260925085439_first_order_recovery_funnel.sql",
+      "sha256": "b64b56138b0325d35800bc87ef195b811a621f6f2fd0cdb820d903e84008ce6d",
+      "review": []
+    },
+    {
+      "file": "20260925091223_abandoned_order_recovery.sql",
+      "sha256": "eef71c233610fe680f80e3d7576f6e4d734da021663e9fa31721e65f13afb5b3",
+      "review": []
+    },
+    {
+      "file": "20260925091710_restrict_abandoned_order_email_rpc.sql",
+      "sha256": "e5ee5d7d975ed69f566c952abe0e448e689f2abf97742f272bba0c608fa3400f",
+      "review": []
+    },
+    {
+      "file": "20260925101023_first_order_wallet_bonus.sql",
+      "sha256": "441e706e59937389fb675ae4cc4b4cac76722bacc4e8e12755bb34161d178aa4",
+      "review": []
+    },
+    {
+      "file": "20260925125500_fix_first_order_bonus_transaction_id.sql",
+      "sha256": "277257c0b3e3762e7d77511b0dd75e7144ee4e50ca07321636d87529273cf86e",
+      "review": []
+    },
+    {
+      "file": "20260925130000_persist_registration_marketing_consent.sql",
+      "sha256": "6537a3344fc03a1993dec1714612c81f1ae580f36fc4222f0db7c236e9c960e0",
+      "review": []
+    },
+    {
+      "file": "20260925131234_admin_read_order_drafts_for_conversion_metrics.sql",
+      "sha256": "49d217322cb9c4f9d89959be04018e2c608232ae756ebe338851073bd42ace07",
+      "review": []
+    },
+    {
+      "file": "20260925173815_lock_internal_trigger_functions.sql",
+      "sha256": "fa77d9bfb26a4bc154bcd41448019af2f985552fe7f5b3f5d13cba25a259bc8f",
+      "review": []
+    },
+    {
+      "file": "20260925174007_harden_public_views_and_function_paths.sql",
+      "sha256": "0a287817fa6f50ec89d9600643d3c599e87d0ca8f64240b6783ca0d24867e8dd",
+      "review": []
+    },
+    {
+      "file": "20260925174223_restrict_sensitive_rpc_execution.sql",
+      "sha256": "30859cd977e2cb7f68f6214025ae2cd65904ddb69b6fea9d8ca2c0a3622ef9ab",
+      "review": []
+    },
+    {
+      "file": "20260925174356_restrict_operational_incident_rpc.sql",
+      "sha256": "1e2d94b8994f8b826faeac2be3d025c75bb0ffc37e9f06cfa3c4ec2e5c2851c5",
+      "review": []
+    },
+    {
+      "file": "20260925181626_abandoned_order_in_app_notifications.sql",
+      "sha256": "b8e70fbbf2b32d370c43346afab7542882ed0e3405392ff0f1cf39f184dd5edf",
+      "review": [
+        "cron"
+      ]
+    },
+    {
+      "file": "20260925182159_first_order_in_app_nudges.sql",
+      "sha256": "e8e40edfaae997ec4e39c954aa47aba380c238c52eeae19fcd9f6798e0c8e89c",
+      "review": [
+        "cron"
+      ]
+    },
+    {
+      "file": "20260926103001_sync_analytics_event_taxonomy.sql",
+      "sha256": "08b6f1c2e04098aa3c318c71a851e518094a66fc9d64707916302418afd86438",
+      "review": []
+    },
+    {
+      "file": "20260926173543_agency_checkout_attribution.sql",
+      "sha256": "521f4149b94e4759559bd65ace9c4af17879890ef2f54f3ee3e1ac3c874f077d",
+      "review": []
+    },
+    {
+      "file": "20260926174203_agency_campaign_assignment_attribution.sql",
+      "sha256": "730780750a4e086d252ab4b3304d201eb6b9cd2941e65a8f47538b41bc26fbc1",
+      "review": []
+    },
+    {
+      "file": "20260926180651_reseller_monthly_plans.sql",
+      "sha256": "1624760b81bbe58e8a34a70ecaff7d030dca45510074d98ca1a565ade8a3f4c4",
+      "review": []
+    },
+    {
+      "file": "20260926182026_reseller_monthly_plan_review_dates.sql",
+      "sha256": "31f89ae4465784abbc575383888a2543f701a43aa033959259d27b59bf525fbd",
+      "review": []
+    },
+    {
+      "file": "20260929171137_phase8c_refill_status_notifications.sql",
+      "sha256": "7cdabd5494fca04177d041efb798f7f4e1183b56420f17ab2640f16ec637dc4e",
+      "review": []
+    },
+    {
+      "file": "20261002093000_crm_autonomous_outreach_phase4.sql",
+      "sha256": "d4792b7913e1db7875930f2f4bc0ff8dadd24c97e92c861224fa57add9538f9b",
+      "review": [
+        "cron",
+        "vault",
+        "outbound-http",
+        "production-origin-literal"
+      ]
+    },
+    {
+      "file": "20261002094500_fix_first_order_wallet_bonus_trigger.sql",
+      "sha256": "0c749741401774c6e26a363973779de98eb4987e0804b1f8389313727ffa8bfe",
+      "review": []
+    },
+    {
+      "file": "20261002100500_first_order_bonus_in_app_nudge.sql",
+      "sha256": "5fad899eb0772fa0fb33c161d489b32d0558a42d79edd955a2681bc23446ce87",
+      "review": []
+    },
+    {
+      "file": "20261003033000_harden_wallet_payment_settlement.sql",
+      "sha256": "e5126f6a1126ed0d5f56fbe3c4f918dab561fed29ffba72815694a798693aa5d",
+      "review": []
+    },
+    {
+      "file": "20261004054011_phase21_allow_service_role_privileged_rpcs.sql",
+      "sha256": "c64858ae3b2ef8d25f23284082fb3d4d9f555613b5ef994f17f721527f5661c2",
+      "review": []
+    },
+    {
+      "file": "20261004104600_phase21_revoke_privileged_rpc_execution.sql",
+      "sha256": "4af3fad0e59bdc3fc0234dd9129483494b979e42d4537609b0b383531844ac7a",
+      "review": []
+    },
+    {
+      "file": "20261004162130_fix_abandoned_checkout_recovery.sql",
+      "sha256": "6708d6f2d052a66a250b668435be6ff8d55ff50bd0e3807f3621f00315214e77",
+      "review": []
+    },
+    {
+      "file": "202610050001_wallet_split_manual_payment.sql",
+      "sha256": "21bae496b55db47b087933e27d5300cd477b21801e5581c0942a56f9d51e7f01",
+      "review": []
+    },
+    {
+      "file": "20261005190934_verify_wallet_split_checkout_safety.sql",
+      "sha256": "127e148b7c82577b65a3146d19043fd51e21b08cea892b58a050240bf6c074ab",
+      "review": []
+    },
+    {
+      "file": "20261006192842_update_youtube_subscriber_price_6999.sql",
+      "sha256": "95d7ae88bc5256bb22766c3ae86842e5e64f64eec268a1f67eee10f9493e7eaa",
+      "review": []
+    },
+    {
+      "file": "20261007093425_remove_duplicate_first_order_bonus_triggers.sql",
+      "sha256": "4a457dc25c7422f8895113f8cf64c785c27fc02357fd32e461b071dbb76a05a1",
+      "review": []
+    },
+    {
+      "file": "20261007094424_upgrade_abandoned_order_in_app_recovery.sql",
+      "sha256": "f076917ae70c423330c0408253e14cee01e551d2a2750efad3f33c3b3cd39ff2",
+      "review": []
+    },
+    {
+      "file": "20261007094855_align_first_order_nudge_experiment_copy.sql",
+      "sha256": "1d739d8883faa26d8ab2fbbfc738b7bdde4dfff38cf252748799c43f2978a9ad",
+      "review": []
+    },
+    {
+      "file": "20261007094943_guard_abandoned_nudge_bonus_experiment.sql",
+      "sha256": "e5228616cbd38ee22d330e82b71b03df2217686e50d379651944ec72b4c0a6fe",
+      "review": []
+    },
+    {
+      "file": "20261008132000_phase43_referral_growth_loop.sql",
+      "sha256": "875413bd88624e177dc4427a45202f403e9d765f39cfdea7143c4310587bb6eb",
+      "review": []
+    },
+    {
+      "file": "20261008163500_phase45_traffic_measurement.sql",
+      "sha256": "5e0da781cf52df39dce60b8b0b5f2eb84b0b49298658f0ca42bf6f8715023c83",
+      "review": []
+    },
+    {
+      "file": "20261009153000_crm_lead_autopilot_v2.sql",
+      "sha256": "0e69fca487899b058fef351e4076fdba88374afb5a4907f869994038539c0245",
+      "review": [
+        "cron"
+      ]
+    },
+    {
+      "file": "20261010154500_promote_verified_qualified_crm_candidates.sql",
+      "sha256": "a3212fb56b3c9cde03ac314ea7a8dbe2a5d009931ecd78ae468fcbc053e52919",
+      "review": []
+    },
+    {
+      "file": "20261010154800_fix_crm_candidate_promotion_activity_type.sql",
+      "sha256": "af8460892c71ee79bc2875e2eed6578225cecb174bc8536419356c79e6d07d13",
+      "review": []
+    },
+    {
+      "file": "202610110001_admin_manual_wallet_atomic_review.sql",
+      "sha256": "2f45835d87ac86d5fa9589bee3154e2191ef7bed23998b4555001862d1d7d37f",
+      "review": []
+    },
+    {
+      "file": "20261011162000_customer_email_delivery_telemetry.sql",
+      "sha256": "000cd92c343e548a5b3300810d2b685e779774358753c733665ceb5072bf3b78",
+      "review": []
+    },
+    {
+      "file": "202610130001_order_notification_outbox.sql",
+      "sha256": "2e773b6805d78a94aa9c0a0b6c9139501bd1542516b8067166c9777394996aaf",
+      "review": []
+    },
+    {
+      "file": "202610130002_order_notification_test_recipient_guard.sql",
+      "sha256": "12a81cbf7432e42b1a5cb285cd60703e7749d6a307708e5b49ab613fef4406ed",
+      "review": []
+    },
+    {
+      "file": "202610160001_facebook_followers_price_499.sql",
+      "sha256": "f6d47ec6a9831434a5181def07f41b084c4772af245053696a216234a43704c3",
+      "review": []
+    },
+    {
+      "file": "202610170001_growth_search_work_items.sql",
+      "sha256": "33aba6e071f88eb58e862a559528b7b27c9c3616245680e4d68fcbca52d0ae29",
+      "review": []
+    },
+    {
+      "file": "20261019214002_payment_revenue_safety.sql",
+      "sha256": "db1fb5f3286967436d3b0ca30d979dc55a4aa5c1aa4e48fc3cd46631f048a12c",
+      "review": []
+    },
+    {
+      "file": "20261022103153_retire_obsolete_gateway_operations.sql",
+      "sha256": "4c30d1022b8c06666395d574c0f2b3acb2e77745d7b51e26b2b226b11998ad86",
+      "review": []
+    }
+  ]
+}

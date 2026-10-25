@@ -4,10 +4,11 @@ import { createClient } from "@/lib/supabase/server";
 import { buildVerifiedRevenueDashboard } from "@/lib/analytics/revenue-dashboard";
 import {
   buildMonthlyRevenueGoal,
-  indiaMonthKey,
   MONTHLY_REVENUE_TARGET,
   TARGET_AOV,
 } from "@/lib/analytics/revenue-goal-engine";
+
+import { indiaMonthStart, type FinancialReport } from "@/lib/analytics/financial-report";
 
 export const dynamic = "force-dynamic";
 
@@ -21,44 +22,16 @@ const money = (value: number) =>
 export default async function RevenueGoalPage() {
   const db = await createClient();
   const now = new Date();
-  const currentMonth = indiaMonthKey(now);
-  const since = new Date(now.getTime() - 40 * 86_400_000).toISOString();
-
-  const [ordersResult, transactionsResult] = await Promise.all([
-    db
-      .from("orders")
-      .select("id,user_id,platform,service_name,charge,status,payment_status,created_at")
-      .gte("created_at", since),
-    db
-      .from("transactions")
-      .select("amount,type,status,created_at")
-      .gte("created_at", since),
-  ]);
-
-  const paidOrders = (ordersResult.data ?? []).filter(
-    (order) =>
-      order.status !== "failed" &&
-      order.status !== "cancelled" &&
-      ["paid", "completed"].includes(order.payment_status ?? "") &&
-      indiaMonthKey(order.created_at) === currentMonth,
-  );
-
-  const refundRows = (transactionsResult.data ?? []).filter(
-    (transaction) =>
-      transaction.type === "refund" &&
-      transaction.status === "completed" &&
-      indiaMonthKey(transaction.created_at) === currentMonth,
-  );
-
-  const grossRevenue = paidOrders.reduce((sum, order) => sum + Math.max(0, Number(order.charge ?? 0) || 0), 0);
-  const refunds = refundRows.reduce((sum, transaction) => sum + Math.max(0, Number(transaction.amount ?? 0) || 0), 0);
-  const netRevenue = Math.max(0, grossRevenue - refunds);
+  const since = indiaMonthStart(now);
+  const { data, error } = await db.rpc("admin_revenue_report", { p_since: since, p_until: now.toISOString() });
+  if (error || !data) throw new Error("Financial reporting unavailable. No partial revenue totals can be shown.");
+  const financial = data as FinancialReport;
+  const paidOrders = financial.orders;
+  const grossRevenue = financial.gross;
+  const refunds = financial.refundAmount;
+  const netRevenue = financial.net;
   const aov = paidOrders.length ? grossRevenue / paidOrders.length : 0;
-
-  const revenueDashboard = buildVerifiedRevenueDashboard({
-    paidOrders,
-    refunds: refundRows.map((row) => ({ amount: row.amount, created_at: row.created_at })),
-  });
+  const revenueDashboard = buildVerifiedRevenueDashboard({ paidOrders, refunds: financial.refunds });
 
   const top = revenueDashboard.platforms[0] ?? null;
   const dashboard = buildMonthlyRevenueGoal({
@@ -75,10 +48,11 @@ export default async function RevenueGoalPage() {
       : null,
   });
 
-  const hasDataError = Boolean(ordersResult.error || transactionsResult.error);
+  const hasDataError = financial.unclassifiedRefunds > 0 || financial.missingRecognitionOrders > 0 || financial.unreconciledRefundedOrders > 0;
 
   return (
     <main className="mx-auto max-w-[1650px] p-4 pb-20 sm:p-8">
+      <p className="mb-4 text-sm text-amber-100">Earned revenue is recognized at completed_at. Deposits and unearned order refunds are excluded. Unclassified refunds: {financial.unclassifiedRefunds}; missing completion dates: {financial.missingRecognitionOrders}. Gross margin: {financial.grossMargin === null ? "Unavailable: verified supplier costs missing" : money(financial.grossMargin)}.</p>
       <header className="flex flex-col gap-4 xl:flex-row xl:items-end xl:justify-between">
         <div>
           <p className="text-xs font-black uppercase tracking-[.2em] text-orange-300">
@@ -105,18 +79,18 @@ export default async function RevenueGoalPage() {
         <p>{dashboard.note}</p>
         {hasDataError ? (
           <p className="mt-2 text-amber-100">
-            One or more verified revenue queries failed. Do not use this dashboard for decisions until the data source is healthy.
+            Historical refund or completion records require reconciliation. Do not use this dashboard for scaling decisions until the flagged records are reviewed.
           </p>
         ) : null}
       </section>
 
       <section className="mt-6 grid gap-3 sm:grid-cols-2 xl:grid-cols-6">
         {[
-          ["MTD net revenue", money(dashboard.netRevenue), "Verified paid orders minus completed refunds"],
+          ["MTD net revenue", money(dashboard.netRevenue), "Recognized completed orders minus linked service refunds"],
           ["₹5L progress", dashboard.progressPct.toFixed(1) + "%", money(dashboard.targetGap) + " remaining"],
           ["Verified AOV", dashboard.aov ? money(dashboard.aov) : "—", `Operating target ${money(TARGET_AOV)}+`],
-          ["Paid orders", dashboard.paidOrders.toLocaleString("en-IN"), "Current India calendar month"],
-          ["Repeat revenue", dashboard.repeatRevenueShare.toFixed(1) + "%", "Second-and-later paid-order contribution"],
+          ["Recognized orders", dashboard.paidOrders.toLocaleString("en-IN"), "Current India calendar month"],
+          ["Repeat revenue", dashboard.repeatRevenueShare.toFixed(1) + "%", "Second-and-later recognized-order contribution"],
           ["Daily net avg.", money(dashboard.observedDailyRevenue), `Target pace ${money(dashboard.targetDailyRevenue)}/day`],
         ].map(([label, value, note]) => (
           <article key={label} className="rounded-2xl border border-white/10 bg-[#111111] p-5">
@@ -156,7 +130,7 @@ export default async function RevenueGoalPage() {
             <h2 className="font-bold text-white">Revenue quality</h2>
           </div>
           <div className="mt-4 space-y-3">
-            <Metric label="Gross revenue" value={money(dashboard.grossRevenue)} note="Before completed refunds" />
+            <Metric label="Gross revenue" value={money(dashboard.grossRevenue)} note="Before linked recognized-service refunds" />
             <Metric label="Completed refunds" value={money(dashboard.refunds)} note="Subtracted from target progress" />
             <Metric label="Multi-order customers" value={dashboard.multiOrderCustomerRate.toFixed(1) + "%"} note="Identified customers with 2+ paid orders in month" />
             <Metric
@@ -192,7 +166,7 @@ export default async function RevenueGoalPage() {
           <p className="mt-1 text-xs text-[#8B93A1]">Ranked from verified current-month revenue signals and existing growth systems.</p>
         </div>
         <div className="divide-y divide-white/10">
-          {dashboard.signals.map((signal) => (
+          {(hasDataError ? [] : dashboard.signals).map((signal) => (
             <div key={signal.title} className="grid gap-3 p-5 md:grid-cols-[110px_1fr_auto] md:items-start">
               <span className="w-fit rounded-full border border-white/10 px-2.5 py-1 text-[10px] font-black uppercase tracking-wide text-[#D1D5DB]">{signal.status}</span>
               <div>

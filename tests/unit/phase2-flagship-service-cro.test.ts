@@ -21,7 +21,7 @@ test("Phase 2 blocks unverified protected live services from the public order fo
 test("Phase 2 keeps public catalog CTA and pricing behind the same live guard", () => {
   const source = read("components/marketing/services/PremiumCatalogServiceLanding.tsx");
   assert.match(source, /canStartServiceOrder/);
-  assert.match(source, /canStartOrder \? <Link href=\{orderHref\}/);
+  assert.match(source, /canStartOrder \? <Link href=\{primaryOrderHref\}/);
   assert.match(source, /!canStartOrder \? <aside/);
   assert.match(source, /Currently unavailable/);
 });

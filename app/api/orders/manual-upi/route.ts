@@ -72,38 +72,15 @@ export async function POST(request: NextRequest) {
   if (existingWalletPaymentError) return NextResponse.json({ error: "Unable to verify this transaction ID right now. Please try again." }, { status: 503 });
   if (existingWalletPayment) return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for a wallet payment." }, { status: 409 });
 
-  const { data: walletResult, error: walletError } = await supabase.rpc("apply_wallet_to_manual_checkout", {
-    p_intent_id: intentId,
-    p_client_request_id: clientRequestId,
-    p_expected_wallet: expectedWalletApplied,
+  const { data: submission, error: submissionError } = await supabase.rpc("submit_manual_checkout_atomic", {
+    p_intent_id: intentId, p_client_request_id: clientRequestId, p_expected_wallet: expectedWalletApplied,
+    p_utr: utr, p_payment_reference: paymentReference, p_payment_method: paymentMethod,
   });
-  if (walletError) {
-    const message = String(walletError.message || "").toLowerCase();
-    const stale = message.includes("wallet balance changed");
-    return NextResponse.json({ error: stale ? "Your wallet balance changed. Please return to checkout and refresh the payment amount before paying." : "Unable to apply your wallet balance right now. Please try again." }, { status: stale ? 409 : 503 });
+  if (submissionError || !submission?.order) {
+    return NextResponse.json({ error: "We could not confirm this payment request. Retry the same checkout or contact support before paying again." }, { status: 409 });
   }
-  const split = (walletResult || {}) as { wallet_applied?: number; remaining?: number };
-  const walletApplied = Number(split.wallet_applied || 0);
-  const remaining = Number(split.remaining || 0);
-  if (!Number.isFinite(walletApplied) || !Number.isFinite(remaining) || remaining <= 0) return NextResponse.json({ error: "This order no longer requires an external payment. Please return to checkout and place it using your wallet." }, { status: 409 });
-
-  const quantity = Number(intent.quantity);
-  const charge = Number(intent.total_paise) / 100;
-  const unitPrice = Math.round((charge * 1000 / quantity) * 10000) / 10000;
-  const methodLabel = paymentMethod === "bank_transfer" ? "Bank transfer (IMPS/NEFT)" : paymentMethod === "usdt_trc20" ? "USDT (TRC20)" : "UPI";
-  const customerNote = `${methodLabel} payment submitted for verification. Payment Ref: ${paymentReference}. UTR: ${utr}. Wallet applied: INR ${walletApplied.toFixed(2)}. External amount: INR ${remaining.toFixed(2)}.`;
-
-  const { data: order, error: orderError } = await admin.from("orders").insert({ user_id: user.id, service_id: service.id, service_name: service.name, platform: service.platform, link: intent.destination_link, quantity, unit_price: unitPrice, charge, status: "pending", payment_status: "verification_pending", package_name: intent.package_name || "Custom", client_request_id: clientRequestId, notes: intent.notes, customer_note: customerNote, client_id: intent.client_id, campaign_id: intent.campaign_id }).select("id,public_order_id,status,payment_status").single();
-  if (orderError || !order) {
-    if (orderError?.code === "23505") {
-      const { data: raced } = await admin.from("orders").select("id,public_order_id,status,payment_status").eq("user_id", user.id).eq("client_request_id", clientRequestId).maybeSingle();
-      if (raced) return NextResponse.json({ data: raced, duplicate: true });
-    }
-    return NextResponse.json({ error: "Unable to save your payment verification request. Your wallet application is preserved; please retry this same checkout or contact support." }, { status: 503 });
-  }
-
-  const { error: completeError } = await admin.from("checkout_intents").update({ status: "completed", order_id: order.id, completed_at: new Date().toISOString(), updated_at: new Date().toISOString() }).eq("id", intent.id).eq("status", "created");
-  if (completeError) console.error("[MANUAL_PAYMENT_INTENT_COMPLETE_ERROR]", completeError);
+  const { order, walletApplied, remaining, orderTotal: charge, duplicate } = submission;
+  if (duplicate) return NextResponse.json({ data: order, duplicate: true }, { headers: { "Cache-Control": "no-store" } });
   revalidatePath("/dashboard/orders"); revalidatePath(`/dashboard/orders/${order.id}`); revalidatePath("/admin/orders");
   await recordTrustedEvent({ eventName: "order_created", customerId: user.id, pagePath: "/dashboard/direct-upi", eventId: `manual-payment-order:${order.id}`, metadata: { order_id: order.id, method: paymentMethod, currency: "INR", service_code: intent.service_code, platform: service.platform, value: charge, wallet_applied: walletApplied, external_payment: remaining, payment_status: "verification_pending" } });
   return NextResponse.json({ data: order, duplicate: false, payment: { orderTotal: charge, walletApplied, remaining } }, { status: 201, headers: { "Cache-Control": "no-store" } });

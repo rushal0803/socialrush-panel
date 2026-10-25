@@ -12,7 +12,7 @@ export default function RevenueIntelligencePanel({ dashboard }: { dashboard: Ver
         <div>
           <p className="text-xs font-black uppercase tracking-[.16em] text-violet-300">Phase 44 · Verified revenue intelligence</p>
           <h2 className="mt-2 text-xl font-black text-white">Revenue trend, platform mix &amp; customer contribution</h2>
-          <p className="mt-1 max-w-4xl text-xs leading-5 text-slate-500">Built only from verified paid-order records and completed refund transactions. Multi-order contribution means second-and-later paid orders inside the selected range; it is not presented as lifetime customer LTV.</p>
+          <p className="mt-1 max-w-4xl text-xs leading-5 text-slate-500">Built only from recognized completed-order records and linked service refund transactions. Multi-order contribution means second-and-later paid orders inside the selected range; it is not presented as lifetime customer LTV.</p>
         </div>
         <span className="w-fit rounded-full border border-violet-400/20 bg-violet-500/10 px-3 py-2 text-xs font-black text-violet-200">
           {qualityIssues ? String(qualityIssues) + " data-quality flag" + (qualityIssues === 1 ? "" : "s") : "Verified inputs clean"}
@@ -31,7 +31,7 @@ export default function RevenueIntelligencePanel({ dashboard }: { dashboard: Ver
           <div className="flex items-end justify-between gap-3">
             <div>
               <h3 className="text-sm font-black text-white">Daily verified revenue</h3>
-              <p className="mt-1 text-[11px] leading-5 text-slate-500">Net = paid-order gross minus completed refunds recorded on that day.</p>
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">Net = earned order consideration minus linked recognized-service refunds recorded on that day.</p>
             </div>
             <span className="text-[10px] uppercase tracking-wide text-slate-500">Asia/Kolkata</span>
           </div>

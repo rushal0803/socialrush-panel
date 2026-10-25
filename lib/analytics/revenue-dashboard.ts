@@ -8,6 +8,7 @@ export type VerifiedRevenueOrder = Readonly<{
 }>;
 
 export type VerifiedRefund = Readonly<{
+  id?: string;
   amount: number | string | null;
   created_at: string;
 }>;
@@ -56,7 +57,10 @@ export function buildVerifiedRevenueDashboard({ paidOrders, refunds }: { paidOrd
   let missingPlatformOrders = 0;
   let missingCustomerOrders = 0;
 
+  const seenOrders = new Set<string>();
   for (const order of paidOrders) {
+    if (seenOrders.has(order.id)) continue;
+    seenOrders.add(order.id);
     const amount = asAmount(order.charge);
     if (!amount) invalidChargeOrders += 1;
     gross += amount;
@@ -82,7 +86,10 @@ export function buildVerifiedRevenueDashboard({ paidOrders, refunds }: { paidOrd
     }
   }
 
+  const seenRefunds = new Set<string>();
   for (const refund of refunds) {
+    if (refund.id && seenRefunds.has(refund.id)) continue;
+    if (refund.id) seenRefunds.add(refund.id);
     const amount = asAmount(refund.amount);
     const day = dateKey(refund.created_at);
     const dailyRow = daily.get(day) ?? { date: day, gross: 0, refunds: 0, net: 0, orders: 0 };
@@ -90,7 +97,7 @@ export function buildVerifiedRevenueDashboard({ paidOrders, refunds }: { paidOrd
     daily.set(day, dailyRow);
   }
 
-  const dailyRows = [...daily.values()].map((row) => ({ ...row, net: Math.max(0, row.gross - row.refunds) })).sort((a, b) => a.date.localeCompare(b.date));
+  const dailyRows = [...daily.values()].map((row) => ({ ...row, net: row.gross - row.refunds })).sort((a, b) => a.date.localeCompare(b.date));
   const platforms = [...platformMap.entries()].map(([platform, row]) => ({
     platform, revenue: row.revenue, orders: row.orders,
     aov: row.orders ? row.revenue / row.orders : 0,
