@@ -55,7 +55,7 @@ export default function InstagramLikesBuyingChecklist() {
             <div className="mt-3 flex flex-wrap gap-4 text-sm font-semibold text-orange-200">
               <Link href="/blog/instagram-followers-vs-likes-india" className="underline underline-offset-4">Followers vs. likes guide</Link>
               <Link href="/blog/instagram-followers-vs-engagement" className="underline underline-offset-4">Engagement explained</Link>
-              <a href="https://transparency.meta.com/policies/community-standards/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Meta's platform standards</a>
+              <a href="https://transparency.meta.com/policies/community-standards/" target="_blank" rel="noopener noreferrer" className="underline underline-offset-4">Meta&apos;s platform standards</a>
             </div>
           </div>
           <div className="md:text-right">
