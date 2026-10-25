@@ -11,6 +11,20 @@ export type CompanySeed = { companyName: string; title: string; url: string; des
 export type OfficialResolution = { website: { domain: string; websiteUrl: string }; score: number; reasons: string[] };
 export type RankedCompanySeed = CompanySeed & { seedFitScore: number; seedFitReasons: string[]; seedRejectedReason?: string; selectedForResolution?: boolean };
 
+/** Try a company-focused query when broad Brave results provide no safe company seeds. */
+export function directCompanyDiscoveryQuery(segment: string, countryName: string) {
+  const phrases: Record<string, string> = {
+    "marketing agency": "digital marketing agency",
+    "e-commerce brand": "D2C ecommerce brand",
+    startup: "software startup",
+    "creator business": "creator management agency",
+    "professional services": "professional consulting firm",
+  };
+  const niche = (phrases[segment.toLowerCase()] || segment).replace(/[^a-z0-9 -]/gi, " ").trim().slice(0, 80);
+  const country = countryName.replace(/[^a-z -]/gi, " ").trim().slice(0, 40);
+  return country + ' "' + niche + '" "contact us" -top -best -directory -ranking -jobs';
+}
+
 const HARD_REJECT_PATTERN = /\b(news|times|journal|magazine|directory|database|wiki|jobs?|careers?|job board|events?|conference|association|federation|forum|community|newsletter|insights|reports?|rankings?|startup news|business news)\b/i;
 const ARTICLE_PATTERN = /\b(top companies|best startups|companies in india|top \d+|best \d+|\d+ startups?|how to|what is)\b|^\s*\d+\s+/i;
 const SEGMENT_SIGNALS: Record<string, string[]> = { "marketing agency": ["agency", "marketing", "digital", "growth", "performance", "creative", "advertising", "social media", "branding"], "e-commerce brand": ["brand", "d2c", "consumer", "ecommerce", "e-commerce", "retail", "beauty", "skincare", "fashion", "wellness", "food", "lifestyle", "home"], startup: ["saas", "software", "platform", "technology", "technologies", "tech", "fintech", "app", "ai", "cloud", "startup", "solution", "solutions"], "creator business": ["creator", "influencer", "talent", "management", "creator agency", "influencer marketing", "content studio"], "professional services": ["consulting", "advisory", "consultancy", "services", "firm", "studio", "solutions"] };

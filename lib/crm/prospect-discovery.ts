@@ -2,7 +2,7 @@ import "server-only";
 import { createHash } from "node:crypto";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { normalizeDomain } from "@/lib/crm/prospecting";
-import { companySeedFromResult, normalizeCompanyName, resolveOfficialWebsite, selectCompanySeeds } from "@/lib/crm/prospect-discovery-resolver";
+import { companySeedFromResult, directCompanyDiscoveryQuery, normalizeCompanyName, resolveOfficialWebsite, selectCompanySeeds } from "@/lib/crm/prospect-discovery-resolver";
 import { enrichOfficialBusinessWebsite } from "@/lib/crm/prospect-enrichment";
 
 type DiscoveryTrigger = "cron" | "manual";
@@ -106,8 +106,38 @@ export async function runProspectDiscovery({ trigger, createdBy = null }: { trig
   }
   try {
     searchCount++; const seedResults = await braveSearch(apiKey, seed, Number(settings.results_per_search || 10)); discoveredCount = seedResults.length; audit.seed_results_discovered = seedResults.length;
-    const names = new Map<string, NonNullable<ReturnType<typeof companySeedFromResult>>>(); for (const result of seedResults) { const company = companySeedFromResult(result); if (!company) { invalidCount++; continue; } names.set(normalizeCompanyName(company.companyName), company); }
-    audit.names_extracted = names.size; const ranked = selectCompanySeeds([...names.values()], seed.segment, Math.min(MAX_RESOLUTIONS_PER_RUN, Math.max(0, remaining - 1)), MINIMUM_SEED_FIT_SCORE); const selected = ranked.filter((company) => company.selectedForResolution); audit.ranked_company_seeds = ranked.map(({ companyName, seedFitScore, seedFitReasons, seedRejectedReason, selectedForResolution }) => ({ company_name: companyName, seedFitScore, seedFitReasons, seedRejectedReason: seedRejectedReason || null, selected_for_resolution: selectedForResolution })); audit.seed_names_rejected_before_resolution = ranked.filter((company) => company.seedRejectedReason || company.seedFitScore < MINIMUM_SEED_FIT_SCORE).length; invalidCount += Number(audit.seed_names_rejected_before_resolution); audit.names_considered_for_resolution = selected.length;
+
+    const names = new Map<string, NonNullable<ReturnType<typeof companySeedFromResult>>>();
+    const addSeeds = (results: BraveResult[]) => {
+      for (const result of results) {
+        const company = companySeedFromResult(result);
+        if (!company) { invalidCount++; continue; }
+        names.set(normalizeCompanyName(company.companyName), company);
+      }
+    };
+    addSeeds(seedResults);
+    // Spend the fallback only if no safe seed exists and the daily search budget allows it.
+    if (names.size === 0 && remaining - searchCount >= 2) {
+      const fallbackQuery = directCompanyDiscoveryQuery(seed.segment, seed.countryName);
+      audit.fallback_seed_query = fallbackQuery;
+      searchCount++;
+      try {
+        const fallbackResults = await braveSearch(apiKey, { ...seed, query: fallbackQuery }, Number(settings.results_per_search || 10));
+        audit.fallback_seed_results = fallbackResults.length;
+        discoveredCount += fallbackResults.length;
+        addSeeds(fallbackResults);
+      } catch (fallbackError) {
+        errorCount++;
+        firstError ||= fallbackError instanceof Error ? fallbackError.message : "Fallback company search failed.";
+      }
+    }
+    audit.names_extracted = names.size;
+    const ranked = selectCompanySeeds([...names.values()], seed.segment, Math.min(MAX_RESOLUTIONS_PER_RUN, Math.max(0, remaining - searchCount)), MINIMUM_SEED_FIT_SCORE);
+    const selected = ranked.filter((company) => company.selectedForResolution);
+    audit.ranked_company_seeds = ranked.map(({ companyName, seedFitScore, seedFitReasons, seedRejectedReason, selectedForResolution }) => ({ company_name: companyName, seedFitScore, seedFitReasons, seedRejectedReason: seedRejectedReason || null, selected_for_resolution: selectedForResolution }));
+    audit.seed_names_rejected_before_resolution = ranked.filter((company) => company.seedRejectedReason || company.seedFitScore < MINIMUM_SEED_FIT_SCORE).length;
+    invalidCount += Number(audit.seed_names_rejected_before_resolution);
+    audit.names_considered_for_resolution = selected.length;
     for (const company of selected) { const query = officialSiteQuery(company.companyName, seed.countryName), resolutionItem = { ...seed, query }; searchCount++; try { const results = await braveSearch(apiKey, resolutionItem, Number(settings.results_per_search || 10)); const hit = results.map((result) => ({ result, resolution: resolveOfficialWebsite(company.companyName, result) })).find((item) => item.resolution);
       if (!hit?.resolution) { invalidCount++; audit.resolutions.push({ company_name: company.companyName, seed_result_title: company.title, seed_result_url: company.url, resolution_query: query, skipped_reason: "no_high_confidence_official_site" }); continue; }
       const { website, score, reasons } = hit.resolution; audit.official_sites_resolved = Number(audit.official_sites_resolved) + 1; if (known.has(website.domain)) { duplicateCount++; audit.resolutions.push({ company_name: company.companyName, resolution_query: query, selected_official_url: website.websiteUrl, resolver_confidence_score: score, confidence_reasons: reasons, skipped_reason: "known_domain_duplicate" }); continue; }
