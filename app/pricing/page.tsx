@@ -31,6 +31,17 @@ const pricingAuthoritySchema = JSON.stringify({
   })),
 }).replace(/</g, "\\u003c");
 
+// Discovery links complement the live price calculator; they never advertise a
+// fixed price, delivery guarantee or live availability on this page.
+const serviceRequirementLinks = [
+  { platform: "Instagram", label: "Instagram Comments", href: "/buy-instagram-comments-india", detail: "Check public post or Reel links and comment visibility rules." },
+  { platform: "Instagram", label: "Instagram Saves", href: "/buy-instagram-saves-india", detail: "Review post or Reel eligibility and how saves differ from likes." },
+  { platform: "Instagram", label: "Instagram Shares", href: "/buy-instagram-shares-india", detail: "Compare share requirements and service limits for public content." },
+  { platform: "YouTube", label: "YouTube Comments", href: "/buy-youtube-comments-india", detail: "Use an individual public video or Short, not a channel link." },
+  { platform: "YouTube", label: "YouTube Watch Hours", href: "/buy-youtube-watch-hours-india", detail: "Review public-video requirements; estimated hours do not guarantee monetization." },
+  { platform: "Facebook", label: "Facebook Group Members", href: "/buy-facebook-group-members-india", detail: "Check Facebook Group URLs, access settings and participation limits." },
+] as const;
+
 export default async function PricingPage() {
   const liveOnlyCodes = new Set(["linkedin-usa-connections", "linkedin-usa-post-likes", "linkedin-usa-endorsements", "linkedin-usa-followers", "linkedin-usa-group-members", "linkedin-usa-custom-comments", "linkedin-usa-reposts", "twitter-likes", "twitter-views", "twitter-retweets", "twitter-crypto-followers", "twitter-crypto-likes", "twitter-crypto-retweets", "twitter-crypto-custom-comments", "telegram-post-views", "telegram-post-reactions", "telegram-poll-votes", "tiktok-followers", "tiktok-likes", "tiktok-views", "tiktok-custom-comments", "tiktok-story-views", "tiktok-saves"]);
   const liveDefinitions = [
@@ -77,6 +88,26 @@ export default async function PricingPage() {
     <SmmPricingIndiaAuthority />
     <AffordableSmmIndiaAuthority />
     <section id="pricing-catalog" className="relative mx-auto max-w-7xl px-5 py-14 sm:px-6 lg:px-8 lg:py-20"><PricingGrid serviceCatalog={serviceCatalog} /></section>
+    <section aria-labelledby="service-link-requirements" className="relative mx-auto max-w-7xl px-5 pb-16 sm:px-6 lg:px-8">
+      <div className="rounded-3xl border border-white/10 bg-[#101116] p-6 sm:p-8">
+        <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Beyond the displayed rate</p>
+        <h2 id="service-link-requirements" className="mt-3 text-2xl font-black tracking-tight sm:text-3xl">Check individual service link and delivery requirements</h2>
+        <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">Pricing alone cannot tell you whether a public post, video or group is eligible. Choose the exact service below to review its destination, quantity and support requirements. The live order panel provides the current rate and final total.</p>
+        <div className="mt-7 grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {serviceRequirementLinks.map((item) => (
+            <article key={item.href} className="rounded-2xl border border-white/10 bg-white/[.035] p-5">
+              <p className="text-[10px] font-bold uppercase tracking-[.13em] text-slate-400">{item.platform}</p>
+              <h3 className="mt-2 text-lg font-black">
+                <Link href={item.href} className="inline-flex min-h-11 items-center text-orange-200 underline-offset-4 hover:underline">
+                  {item.label}
+                </Link>
+              </h3>
+              <p className="mt-2 text-sm leading-6 text-slate-300">{item.detail}</p>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
     <section className="relative mx-auto grid max-w-7xl gap-4 px-5 pb-14 sm:px-6 lg:grid-cols-2 lg:px-8"><div className="rounded-3xl border border-orange-400/25 bg-orange-500/[.07] p-7"><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Custom service</p><h2 className="mt-3 text-2xl font-black">Choose exactly what you need</h2><ul className="mt-4 space-y-2 text-sm text-slate-300"><li>Choose an exact service</li><li>Set a valid quantity</li><li>See your calculated total</li></ul><Link href="/services" className="mt-6 inline-flex min-h-11 items-center font-black text-orange-200">Explore Services →</Link></div><div className="rounded-3xl border border-white/10 bg-white/[.04] p-7"><p className="text-[10px] font-black uppercase tracking-[.18em] text-slate-400">Ready-made package</p><h2 className="mt-3 text-2xl font-black">Compare a pre-set campaign</h2><ul className="mt-4 space-y-2 text-sm text-slate-300"><li>Pre-set quantity</li><li>Clear total price</li><li>Quick selection</li></ul><Link href="/packages" className="mt-6 inline-flex min-h-11 items-center font-black text-orange-200">View Packages →</Link></div></section>
     <section className="relative mx-auto max-w-7xl px-5 pb-14 sm:px-6 lg:px-8"><div className="rounded-3xl border border-white/10 bg-[#101116] p-6 sm:p-8"><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Pricing clarity</p><h2 className="mt-3 text-2xl font-black">Why service rates can vary</h2><div className="mt-5 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">{["Service type","Platform","Quantity","Delivery profile","Refill/support terms","Display currency"].map((item) => <span key={item} className="rounded-xl border border-white/[.07] bg-white/[.03] p-3 text-sm font-bold text-slate-200">{item}</span>)}</div></div></section>
     <section className="relative mx-auto max-w-7xl px-5 pb-20 sm:px-6 lg:px-8"><div className="grid gap-8 lg:grid-cols-[.75fr_1.25fr]"><div><p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Questions, answered</p><h2 className="mt-3 text-3xl font-black tracking-tight">How to read SocialRUSH pricing</h2><p className="mt-4 text-sm leading-7 text-slate-400"><strong className="text-orange-200">₹799 / 1K</strong> means ₹799 is the current rate for 1,000 units. Your final total depends on the validated quantity you select.</p></div><div className="space-y-2">{faqs.map(({ question, answer }) => <details key={question} className="group rounded-2xl border border-white/10 bg-white/[.035] p-4 open:bg-white/[.06]"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-bold">{question}<span className="text-xl text-orange-300 group-open:rotate-45">+</span></summary><p className="pt-3 text-sm leading-6 text-slate-400">{answer}</p></details>)}</div></div></section>

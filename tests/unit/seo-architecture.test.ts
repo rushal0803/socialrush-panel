@@ -1601,3 +1601,25 @@ test("educational blog guides link to all six priority service destinations with
   assert.match(text, /YouTube moderates comments independently/);
   assert.match(text, /Purchased or promotional watch time should never be assumed to qualify for monetization/);
 });
+
+
+test("pricing hub links to six canonical service requirement pages without overriding live rates", () => {
+  const source = readFileSync(new URL("../../app/pricing/page.tsx", import.meta.url), "utf8");
+  const hrefs = [
+    "/buy-instagram-comments-india",
+    "/buy-instagram-saves-india",
+    "/buy-instagram-shares-india",
+    "/buy-youtube-comments-india",
+    "/buy-youtube-watch-hours-india",
+    "/buy-facebook-group-members-india",
+  ];
+  for (const href of hrefs) {
+    assert.equal(source.split('href: "' + href + '"').length - 1, 1, "exactly one curated link to " + href);
+    assert.ok(crawlPriorityServiceLinks.some((item) => item.href === href) || searchPlanningLinks.some((item) => item.href === href), "valid canonical SEO destination " + href);
+  }
+  assert.match(source, /serviceRequirementLinks\.map\(\(item\) =>/);
+  assert.match(source, /serviceCatalog=\{serviceCatalog\}/, "current catalog pricing is still passed to the pricing grid");
+  assert.match(source, /getLiveServiceFacts\(/, "existing live catalog lookup preserved");
+  assert.match(source, /estimated hours do not guarantee monetization/, "YPP eligibility is not promised");
+  assert.match(source, /Pricing alone cannot tell you whether a public post, video or group is eligible/);
+});
