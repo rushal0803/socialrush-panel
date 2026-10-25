@@ -65,6 +65,7 @@ export default function InstagramCommentsBuyingGuide() {
             <div className="mt-3 flex flex-wrap gap-4 text-sm font-semibold text-orange-200">
               <Link href="/instagram-likes" className="underline underline-offset-4">Compare Instagram likes</Link>
               <Link href="/instagram-views" className="underline underline-offset-4">Compare Reel views</Link>
+              <Link href="/buy-instagram-saves-india" className="underline underline-offset-4">Instagram save packages</Link>
               <Link href="/blog/instagram-followers-vs-engagement" className="underline underline-offset-4">Understand engagement</Link>
             </div>
           </div>
