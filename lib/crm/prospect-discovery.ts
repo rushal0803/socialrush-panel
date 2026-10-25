@@ -117,7 +117,7 @@ export async function runProspectDiscovery({ trigger, createdBy = null }: { trig
     };
     addSeeds(seedResults);
     // Spend the fallback only if no safe seed exists and the daily search budget allows it.
-    if (names.size === 0 && remaining > searchCount) {
+    if (names.size === 0 && remaining - searchCount >= 2) {
       const fallbackQuery = directCompanyDiscoveryQuery(seed.segment, seed.countryName);
       audit.fallback_seed_query = fallbackQuery;
       searchCount++;
