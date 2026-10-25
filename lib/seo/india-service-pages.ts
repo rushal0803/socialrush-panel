@@ -156,13 +156,13 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     delivery: "1–24 hours",
     refill: "No refill",
     packageService: "comments",
-    intro: "Compare Instagram comment packages for public posts and Reels. Check the current INR order total, link requirements and active delivery and no-refill terms before paying."
+    intro: "Compare Instagram comment packages for public posts and Reels. Check the current INR order total, link requirements and active delivery and no-refill terms before paying.",
     overview: "Choose a quantity, enter the correct public post or Reel URL, review transparent INR pricing, and track the order from your SocialRUSH dashboard.",
-    value: "A visible comment count is not proof of genuine audience conversations, Indian commenters, relevance or guaranteed organic reach. Compare current service terms before ordering."
+    value: "A visible comment count is not proof of genuine audience conversations, Indian commenters, relevance or guaranteed organic reach. Compare current service terms before ordering.",
     safety: "Only a public Instagram post or Reel URL is required. SocialRUSH never asks for your password, login, or OTP.",
-    deliveryCopy: "The catalog lists an indicative 1–24 hour delivery estimate and no refill. Confirm live availability, delivery and support terms for your exact order before payment."
+    deliveryCopy: "The catalog lists an indicative 1–24 hour delivery estimate and no refill. Confirm live availability, delivery and support terms for your exact order before payment.",
     metaDescription: "Buy Instagram comments in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
-    ogDescription: "Review public Instagram comment packages, INR pricing, delivery estimates and no-refill terms before choosing a post or Reel order."
+    ogDescription: "Review public Instagram comment packages, INR pricing, delivery estimates and no-refill terms before choosing a post or Reel order.",
     audiences: ["Creators", "Reel publishers", "Brands", "Social media teams"],
     related: ["buy-instagram-followers-india", "buy-instagram-likes-india", "buy-instagram-views-india", "buy-instagram-saves-india", "buy-instagram-shares-india"],
   },
