@@ -12,8 +12,8 @@ const faqs = [
   ["What are YouTube watch hours?", "Watch hours describe time watched on a video. This service uses public-video viewing activity; YouTube independently calculates reporting and eligibility."],
   ["Which YouTube link should I submit?", "Submit the exact public YouTube video URL, not a channel URL."],
   ["Can this guarantee YouTube monetization?", "No. YouTube decides eligible public watch hours, channel eligibility, policy compliance and Partner Program approval."],
-  ["How are watch-hour estimates calculated?", "Illustrative hours equal view quantity times video minutes times an assumed average percentage viewed, divided by 60. They are not delivered or monetization-eligible hours."],
-  ["Do Shorts or ad campaigns count toward the 4,000-hour threshold?", "No. YouTube excludes Shorts watch time and ad-campaign watch time from its long-form public watch-hours threshold."],
+  ["How are estimates calculated?", "Illustrative hours equal view quantity times video minutes times an assumed average percentage viewed, divided by 60. They are not delivered or monetization-eligible hours."],
+  ["Do Shorts and paid campaigns count toward the 4,000-hour YPP threshold?", "No. YouTube excludes Shorts watch time and ad-campaign watch time from its long-form public watch-hours threshold."],
   ["Are estimated watch hours guaranteed by the order?", "No. Estimates are planning illustrations only. YouTube verifies engagement and independently determines qualified watch time."],
 ] as const;
 
