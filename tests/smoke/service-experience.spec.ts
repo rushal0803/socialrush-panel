@@ -9,10 +9,13 @@ test("reference order validates input and preserves selection through login", as
   const card = page.locator("[data-service-order-card]");
   const proceed = card.getByRole("link", { name: "Continue to Secure Order" });
   await expect(card).toBeVisible();
-  await expect(card.locator('strong[aria-live="polite"]')).toHaveText("\u20b979.90");
+  // Default minimum is 100 units at ₹999.90 per 1,000.
+  await expect(card.locator('strong[aria-live="polite"]')).toHaveText("₹99.99");
+  await expect(card.locator("dl").getByText("No refill", { exact: true })).toBeVisible();
   await proceed.click();
   await expect(card.locator('[aria-invalid="true"]')).toHaveCount(1);
   await card.getByLabel("Custom quantity").fill("1000");
+  await expect(card.locator('strong[aria-live="polite"]')).toHaveText("₹999.90");
   await card.getByLabel(/Enter your Instagram/).fill("https://youtube.com/watch?v=wrong");
   await proceed.click();
   await expect(card.locator('[role="alert"]')).toContainText(/Instagram/);

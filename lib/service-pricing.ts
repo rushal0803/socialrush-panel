@@ -1,5 +1,5 @@
 export const SERVICE_PRICES = {
-  "instagram-followers": 799,
+  "instagram-followers": 999.90,
   "instagram-likes": 249,
   "instagram-views": 30,
   "instagram-comments": 499,

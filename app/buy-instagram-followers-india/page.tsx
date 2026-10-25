@@ -20,8 +20,8 @@ const path = "/buy-instagram-followers-india", url = `${SEO_SITE_URL}${path}`, s
 const chips = ["No Password Required", "Secure Checkout", "Fast Delivery", "Order Tracking", "INR Pricing"];
 const faqs = [
   ["How much do Instagram followers cost in India?", "The live order builder shows the current INR rate and calculates the exact total for your selected quantity before checkout. Use it instead of relying on an old or static price list."],
-  ["What are Instagram Followers India?", "Instagram Followers India is a SocialRUSH service page for customers ordering Instagram follower packages in INR. India pricing does not by itself mean every delivered account is India-based; review the active service information before ordering."],
-  ["How do I order?", "Choose a quantity in the live order builder, paste the correct public Instagram profile URL, review the total, delivery estimate and refill information, then continue to secure checkout."],
+  ["What are Instagram Real Followers?", "Instagram Real Followers is the name of this SocialRUSH service. The rate is ₹999.90 per 1,000 followers with no refill support. We do not guarantee followers from India, engagement, or retention; review the live checkout terms before ordering."],
+  ["How do I order?", "Choose a quantity in the live order builder, paste the correct public Instagram profile URL, review the total and delivery estimate, and note that this service has no refill support before checkout."],
   ["Which profile URL should I use?", "Use the complete public URL of the Instagram profile where followers should be delivered, such as https://instagram.com/yourprofile. Check that it is the correct profile before continuing."],
   ["Do I need my password?", "No. SocialRUSH only needs a public Instagram profile URL for this service. We never ask for your Instagram password, OTP, or recovery code."],
   ["How long does delivery take?", "The current delivery estimate is shown in the live order builder before checkout. Timing can vary with the selected quantity, service availability and profile accessibility."],
