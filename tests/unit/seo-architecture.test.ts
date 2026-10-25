@@ -289,7 +289,7 @@ test("priority India pages keep Search Console query language in metadata", () =
   assert.match(metadataTitle(telegram), /Buy Telegram Members India \| Live INR Plans/);
   assert.match(telegram.description ?? "", /live INR pricing/i);
   assert.match(metadataTitle(instagramLikes), /Buy Instagram Likes in India \| INR Pricing/);
-  assert.match(instagramLikes.description ?? "", /live INR pricing/i);
+  assert.match(instagramLikes.description ?? "", /INR prices, delivery and refill eligibility/i);
   assert.match(metadataTitle(instagramViews), /Buy Instagram Views India \| Live INR Plans/);
   assert.match(instagramViews.description ?? "", /live INR pricing/i);
   assert.equal(metadataTitle(instagramComments), "Buy Instagram Comments India | Posts & Reels | SocialRUSH");
@@ -1403,7 +1403,7 @@ test("Instagram Likes canonical page has one breadcrumb owner and consistent sea
   const schemaSource = readFileSync(new URL("../../components/seo/IndiaCommercialServiceJsonLd.tsx", import.meta.url), "utf8");
   const metadata = getIndiaServiceMetadata("buy-instagram-likes-india", "/instagram-likes");
   assert.equal(metadataTitle(metadata), "Buy Instagram Likes in India | INR Pricing | SocialRUSH");
-  assert.match(metadata.description ?? "", /public post or Reel/i);
+  assert.match(metadata.description ?? "", /public posts and Reels/i);
   assert.equal(String(metadata.alternates?.canonical), "https://www.getsocialrush.com/instagram-likes");
   assert.match(canonicalRoute, /IndiaCommercialServiceJsonLd code="instagram-likes"/);
   assert.match(schemaSource, /<BreadcrumbJsonLd/);
