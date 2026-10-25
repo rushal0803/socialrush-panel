@@ -54,6 +54,7 @@ export default function InstagramViewsBuyingGuide() {
               <Link href="/instagram-likes" className="underline underline-offset-4">Compare Instagram likes</Link>
               <Link href="/buy-instagram-comments-india" className="underline underline-offset-4">Instagram comment packages</Link>
               <Link href="/buy-instagram-saves-india" className="underline underline-offset-4">Instagram save packages</Link>
+              <Link href="/buy-instagram-shares-india" className="underline underline-offset-4">Instagram share packages</Link>
               <Link href="/blog/instagram-followers-vs-engagement" className="underline underline-offset-4">Understand engagement</Link>
             </div>
           </div>
