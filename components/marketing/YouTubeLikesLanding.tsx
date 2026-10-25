@@ -60,6 +60,7 @@ export default function YouTubeLikesLanding() {
           <Link href="/youtube-subscribers" className="text-orange-300 hover:text-orange-200">YouTube Subscribers →</Link>
           <Link href="/youtube-views" className="text-orange-300 hover:text-orange-200">YouTube Views →</Link>
           <Link href="/buy-youtube-comments-india" className="text-orange-300 hover:text-orange-200">YouTube Comments →</Link>
+          <Link href="/buy-youtube-watch-hours-india" className="text-orange-300 hover:text-orange-200">YouTube Watch Hours eligibility →</Link>
           <Link href="/youtube-growth-india" className="text-orange-300 hover:text-orange-200">YouTube Growth India →</Link>
           <Link href="/pricing" className="text-orange-300 hover:text-orange-200">Compare live pricing →</Link>
           <Link href="/refund-policy" className="text-orange-300 hover:text-orange-200">Refund policy →</Link>
