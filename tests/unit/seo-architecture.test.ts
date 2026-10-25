@@ -1601,3 +1601,36 @@ test("educational blog guides link to all six priority service destinations with
   assert.match(text, /YouTube moderates comments independently/);
   assert.match(text, /Purchased or promotional watch time should never be assumed to qualify for monetization/);
 });
+
+
+test("public-link and campaign-mistake guides distinguish five canonical service requirements", () => {
+  const safety = getArticleBySlug("why-public-link-ordering-is-safer");
+  const mistakes = getArticleBySlug("social-media-campaign-mistakes-to-avoid");
+  assert.ok(safety, "public-link safety blog exists");
+  assert.ok(mistakes, "campaign-mistake blog exists");
+  const expected = [
+    [safety, "Instagram comment orders need a post or Reel link", "/buy-instagram-comments-india"],
+    [safety, "YouTube comments need a specific video or Short", "/buy-youtube-comments-india"],
+    [safety, "Facebook Group links are different from Page links", "/buy-facebook-group-members-india"],
+    [mistakes, "Mistake 4: Treating saved-post activity as audience intent", "/buy-instagram-saves-india"],
+    [mistakes, "Mistake 5: Assuming watch-time estimates qualify for monetization", "/buy-youtube-watch-hours-india"],
+  ] as const;
+  for (const [article, heading, href] of expected) {
+    const section = article.sections.find((entry) => entry.heading === heading);
+    assert.ok(section, "unique explanatory section: " + heading);
+    assert.equal(section.contextualLink?.href, href, "link attached to its explanation: " + heading);
+    assert.equal(article.sections.filter((entry) => entry.contextualLink?.href === href).length, 1, "no repeated inline link: " + href);
+    assert.ok(
+      crawlPriorityServiceLinks.some((target) => target.href === href) ||
+      searchPlanningLinks.some((target) => target.href === href),
+      "canonical service target is a crawl priority: " + href,
+    );
+  }
+  const safetyText = safety.sections.map((section) => section.body).join(" ");
+  assert.match(safetyText, /post or Reel link/);
+  assert.match(safetyText, /channel link is not a video destination/);
+  assert.match(safetyText, /Facebook Group uses its own address/);
+  const mistakesText = mistakes.sections.map((section) => section.body).join(" ");
+  assert.match(mistakesText, /not interchangeable with reach, sales/);
+  assert.match(mistakesText, /should not be assumed to satisfy monetization requirements/);
+});
