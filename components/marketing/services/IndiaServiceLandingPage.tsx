@@ -29,6 +29,7 @@ import TelegramFollowersLanding from "@/components/marketing/TelegramFollowersLa
 import InstagramSharesLanding from "@/components/marketing/services/InstagramSharesLanding";
 import InstagramSharesBuyerGuide from "@/components/seo/InstagramSharesBuyerGuide";
 import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
+import YouTubeCommentsBuyerGuide from "@/components/seo/YouTubeCommentsBuyerGuide";
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
@@ -253,13 +254,16 @@ export default async function IndiaServiceLandingPage({
       ["Can I use a channel URL?", "No. This service requires a specific public video or Short URL, not a channel URL."],
       ["How are YouTube Comments priced?", "The live rate and calculated total are shown before you continue to secure checkout."],
       ["Can I track my order?", "Yes. After checkout, your SocialRUSH dashboard keeps your order status and record together."],
+      ["What if comments are disabled or held for review?", "A creator may restrict comments and YouTube may filter, hold or remove them. Confirm the video accepts comments; visibility is not guaranteed."],
+      ["Do packages guarantee Indian commenters or custom text?", "No. INR pricing does not guarantee commenters in India, targeted viewers, custom text or meaningful conversations unless explicitly supported in the active service terms."],
+      ["Can comments disappear after an order?", "Yes. YouTube moderation and policy enforcement can change comment visibility or retention. Check current refill and support terms rather than assuming replacement."],
     ];
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "YouTube Growth", item: `${SEO_SITE_URL}/youtube-growth-india` }, { "@type": "ListItem", position: 3, name: "YouTube Comments", item: pageUrl }] },
       { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} /><ServiceSearchDecisionGuide service="youtube-comments" /></PublicShell>;
+    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} buyerGuide={<YouTubeCommentsBuyerGuide />} /><ServiceSearchDecisionGuide service="youtube-comments" /></PublicShell>;
   }
   if (slug === "buy-instagram-shares-india") {
     const shareUrl = `${SEO_SITE_URL}${canonicalPath}`;
