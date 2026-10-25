@@ -85,7 +85,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     serviceName: "Instagram Likes",
     unitName: "likes",
     destination: "public Instagram post or reel link",
-    delivery: "0–24 hours",
+    delivery: "1–3 days",
     refill: "Available on eligible services",
     packageService: "likes",
     intro:
@@ -99,9 +99,9 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     deliveryCopy:
       "Like delivery begins after confirmation and depends on campaign size and content availability. Keep the selected post public throughout delivery.",
     metaDescription:
-      "Buy Instagram likes in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
+      "Buy Instagram likes in India for public posts and Reels. Compare INR pricing, delivery and refill eligibility, and confirm the active order terms before payment.",
     ogDescription:
-      "Improve visible Instagram post and reel engagement with clear pricing, public-link ordering and reliable SocialRUSH support in India.",
+      "Compare Instagram post and Reel like orders with clear INR estimates, public-link requirements and service-specific delivery and refill terms.",
     audiences: ["Reel creators", "Influencers", "Product brands", "Social teams"],
     related: [
       "buy-instagram-followers-india",
@@ -686,7 +686,7 @@ export function getIndiaServiceMetadata(
       : slug === "buy-linkedin-followers-india"
       ? "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed."
       : slug === "buy-instagram-likes-india"
-        ? "Buy Instagram likes in India with live INR pricing. Choose a public post or Reel, review delivery and refill terms, and check your exact total before checkout."
+        ? "Buy Instagram likes in India for public posts and Reels. Compare INR prices, delivery and refill eligibility, and review the total before checkout. No password."
         : slug === "buy-instagram-comments-india"
           ? "Buy Instagram comments for public posts or Reels in India. Check quantity limits, live INR totals and delivery terms before ordering. No password needed."
           : slug === "buy-instagram-saves-india"
