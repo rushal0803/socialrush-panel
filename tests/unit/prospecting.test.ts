@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 import { canPromoteCandidate, normalizeDomain, normalizeEmail, normalizeLeadCompanyType, parseProspectingCsv } from "../../lib/crm/prospecting.ts";
 import { getDiscoveryWebsite, isLowQualityDiscoveryResult } from "../../lib/crm/prospect-discovery-filters.ts";
-import { companySeedFromResult, extractCompanyNameFromLinkedInTitle, normalizeCompanyComparison, rankCompanySeeds, resolveOfficialWebsite, selectCompanySeeds } from "../../lib/crm/prospect-discovery-resolver.ts";
+import { companySeedFromResult, directCompanyDiscoveryQuery, extractCompanyNameFromLinkedInTitle, normalizeCompanyComparison, rankCompanySeeds, resolveOfficialWebsite, selectCompanySeeds } from "../../lib/crm/prospect-discovery-resolver.ts";
 import { istDateTimeInputToIso } from "../../lib/crm/operational.ts";
 
 test("normalizes domains and emails for duplicate lookup",()=>{assert.equal(normalizeDomain(" https://WWW.Acme.com/path "),"acme.com");assert.equal(normalizeEmail(" SALES@Acme.COM "),"sales@acme.com")});
@@ -35,3 +35,21 @@ test("seed ranking keeps concise legitimate-looking company names",()=>{for(cons
 test("seed ranking applies current segment signals",()=>{assert.ok(rankCompanySeeds([seed("Acme Digital", "A performance marketing agency")],"marketing agency")[0].seedFitScore>=70);assert.ok(rankCompanySeeds([seed("CloudWorks", "SaaS software platform")],"startup")[0].seedFitScore>=70)});
 test("seed selection ranks strong companies ahead of publications and permits fewer than three",()=>{const selected=selectCompanySeeds([seed("SaaS News"),seed("CloudWorks","SaaS software platform")],"startup",3);assert.equal(selected[0].companyName,"CloudWorks");assert.equal(selected.filter(x=>x.selectedForResolution).length,1)});
 test("seed selection resolution budget remains capped at three",()=>{const selected=selectCompanySeeds(["Alpha SaaS","Beta Software","Gamma Tech","Delta Platform"].map(name=>seed(name,"software platform")),"startup",3);assert.equal(selected.filter(x=>x.selectedForResolution).length,3)});
+
+test("discovery fallback targets company websites, not rankings", () => {
+  const query = directCompanyDiscoveryQuery("marketing agency", "India");
+  assert.ok(query.includes('"digital marketing agency"'));
+  assert.ok(query.includes('"contact us"'));
+  assert.ok(query.includes("-directory"));
+  assert.ok(!query.includes("undefined"));
+  assert.ok(directCompanyDiscoveryQuery("beauty brand", "India").includes('"beauty brand"'));
+});
+test("discovery fallback retains remaining search budget and counts both searches", async () => {
+  const { readFileSync } = await import("node:fs");
+  const { fileURLToPath } = await import("node:url");
+  const { dirname, resolve } = await import("node:path");
+  const code = readFileSync(resolve(dirname(fileURLToPath(import.meta.url)), "../../lib/crm/prospect-discovery.ts"), "utf8");
+  assert.match(code, /names\.size === 0 && remaining > searchCount/);
+  assert.match(code, /remaining - searchCount/);
+  assert.match(code, /discoveredCount \+= fallbackResults\.length/);
+});
