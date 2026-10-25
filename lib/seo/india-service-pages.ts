@@ -119,7 +119,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     serviceName: "Instagram Views",
     unitName: "views",
     destination: "public Instagram reel or video link",
-    delivery: "0–12 hours",
+    delivery: "1–3 days",
     refill: "Service terms shown before checkout",
     packageService: "views",
     intro:
@@ -131,11 +131,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     safety:
       "No password or account access is required. Submit only a public reel or video URL and keep the content available while delivery is underway.",
     deliveryCopy:
-      "View campaigns generally begin quickly after confirmation. Actual completion depends on quantity, content availability, and platform conditions.",
+      "Delivery timing depends on the active service, quantity, content availability, and platform conditions. Confirm the current estimate during order review.",
     metaDescription:
       "Buy Instagram views in India with live INR pricing, public Reel or video link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription:
-      "Support Instagram reel and video visibility with transparent view packages, public-link ordering and fast SocialRUSH delivery in India.",
+      "Compare Instagram Reel and video view packages with public-link ordering, current availability and service-specific delivery terms.",
     audiences: ["Reel creators", "Artists", "Small businesses", "Campaign teams"],
     related: [
       "buy-instagram-followers-india",
@@ -687,6 +687,8 @@ export function getIndiaServiceMetadata(
       ? "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed."
       : slug === "buy-instagram-likes-india"
         ? "Buy Instagram likes in India for public posts and Reels. Compare INR prices, delivery and refill eligibility, and review the total before checkout. No password."
+        : slug === "buy-instagram-views-india"
+        ? "Buy Instagram views in India with live INR pricing when available. Compare public Reel link requirements, delivery and refill terms before checkout."
         : slug === "buy-instagram-comments-india"
           ? "Buy Instagram comments for public posts or Reels in India. Check quantity limits, live INR totals and delivery terms before ordering. No password needed."
           : slug === "buy-instagram-saves-india"
