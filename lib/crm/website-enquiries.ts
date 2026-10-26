@@ -12,7 +12,7 @@ export function websiteEnquiryCategory(raw: unknown, service: string): WebsiteEn
 export function websiteEnquirySource(raw: string) {
   try {
     const url = new URL(raw, "https://www.getsocialrush.com");
-    if (url.pathname !== "/contact") return "/contact";
+    if (url.origin !== "https://www.getsocialrush.com" || url.pathname !== "/contact") return "/contact";
     const params = new URLSearchParams();
     for (const key of ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term"]) {
       const clean = (url.searchParams.get(key) || "").trim().replace(/[^a-zA-Z0-9_.-]/g, "").slice(0, 50);
