@@ -113,8 +113,8 @@ export async function POST(request: Request) {
       reply_draft: websiteEnquiryReplyDraft(name, category),
       marketing_opt_in: false,
     }).select("id").single();
-    if (error) {
-      console.error("[contact] enquiry persistence failed", { code: error.code || "db_error" });
+    if (error || !data?.id) {
+      console.error("[contact] enquiry persistence failed", { code: error?.code || "db_error" });
     } else {
       savedEnquiryId = data.id;
     }
