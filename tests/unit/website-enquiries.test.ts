@@ -41,3 +41,13 @@ test("website form persistence only suggests drafts; auto-send not activated", (
   assert.match(action, /profile\?\.role !== "admin"/);
   assert.doesNotMatch(action, /emails\.send|sendEmail\(|resend\.send|fetch\(.*resend/);
 });
+
+test("contact category is captured and CRM safely precedes optional support notification", () => {
+  const dir = dirname(fileURLToPath(import.meta.url));
+  const form = readFileSync(resolve(dir, "../../components/marketing/contact/ContactPageContent.tsx"), "utf8");
+  const contact = readFileSync(resolve(dir, "../../app/api/contact/route.ts"), "utf8");
+  assert.match(form, /name="category" value=\{category\}/);
+  assert.ok(contact.indexOf('from("crm_website_enquiries").insert') < contact.indexOf('fetch("https:\/\/api.resend.com\/emails"'));
+  assert.match(contact, /safeSavedResponse/);
+  assert.match(contact, /notification_status: status/);
+});
