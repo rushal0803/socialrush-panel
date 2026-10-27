@@ -31,6 +31,8 @@ import InstagramSharesBuyerGuide from "@/components/seo/InstagramSharesBuyerGuid
 import YouTubeCommentsWorkspace from "@/components/marketing/YouTubeCommentsWorkspace";
 import YouTubeCommentsBuyerGuide from "@/components/seo/YouTubeCommentsBuyerGuide";
 import FacebookGroupMembersWorkspace from "@/components/marketing/FacebookGroupMembersWorkspace";
+import FacebookGroupMembersBuyerGuide from "@/components/seo/FacebookGroupMembersBuyerGuide";
+import { facebookGroupMembersFaqs } from "@/lib/seo/facebook-group-members-faq";
 import ServiceOrderStickyCta from "@/components/marketing/services/ServiceOrderStickyCta";
 import ServiceLandingOrderBuilder from "@/components/marketing/services/ServiceLandingOrderBuilder";
 import DeliveryRefillIntentSection from "@/components/seo/DeliveryRefillIntentSection";
@@ -238,9 +240,9 @@ export default async function IndiaServiceLandingPage({
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Facebook Growth", item: `${SEO_SITE_URL}/facebook-growth-india` }, { "@type": "ListItem", position: 3, name: "Facebook Group Members", item: pageUrl }] },
       { "@context": "https://schema.org", "@type": "Service", name: "Facebook Group Members India", serviceType: "Facebook Group Members service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock", url: pageUrl } } : {}) },
-      { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: [["Do I need my Facebook password?", "No. Only the exact accessible Facebook Group URL is required. Never share a password, OTP, or recovery code."], ["Which Facebook Group URL should I submit?", "Submit the exact facebook.com/groups/... URL. Facebook Page, profile, and post URLs are not accepted."], ["Does the group need to be accessible?", "Keep the submitted Facebook Group accessible and do not change its privacy settings while the order is processing."], ["Do group members guarantee activity or engagement?", "No. The service does not guarantee discussions, engagement, reach, sales, retention, or other platform outcomes."]].map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
+      { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: facebookGroupMembersFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
-    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} /><ServiceSearchDecisionGuide service="facebook-group-members" /></PublicShell>;
+    return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} buyerGuide={<FacebookGroupMembersBuyerGuide />} /><ServiceSearchDecisionGuide service="facebook-group-members" /></PublicShell>;
   }
   if (slug === "buy-youtube-comments-india") {
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
