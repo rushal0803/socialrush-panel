@@ -30,7 +30,7 @@ test("Canonical landing renders original server-readable buyer guidance without 
   assert.match(guide, /Buy Facebook Group members in India: check the group link/);
   assert.match(guide, /facebook.com\/groups\/\.\.\./);
   assert.match(guide, /A private group is not automatically eligible/);
-  assert.match(guide, /admin approvals/);
+  assert.match(guide, /[Aa]dmin approvals/);
   assert.match(guide, /INR pricing for India does not mean every member is based in India/);
   assert.match(guide, /Meta may limit or remove inauthentic engagement/);
   assert.doesNotMatch(guide, /application\/ld\+json/);
