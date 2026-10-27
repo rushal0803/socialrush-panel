@@ -493,15 +493,15 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Provide the exact post URL, choose the required quantity, review the INR total, and monitor progress from your dashboard.",
     value:
-      "Visible likes can strengthen the presentation of page updates, product posts, announcements, events, and community content.",
+      "Likes show a reaction count, not verified attention, business results or authentic discussion. Relevance and real community interactions matter more than the displayed number.",
     safety:
       "No Facebook login or password is required. The campaign uses only the public post URL submitted during checkout.",
     deliveryCopy:
       "Like delivery generally starts after confirmation. Timing depends on order size, post visibility, and current service conditions.",
     metaDescription:
-      "Buy Facebook likes in India with live INR pricing, public post-link ordering, no password required and SocialRUSH dashboard tracking.",
+      "Buy Facebook Likes in India for eligible public posts. Compare current INR pricing, link requirements, delivery and account-origin limitations.",
     ogDescription:
-      "Support Facebook post engagement with transparent like packages and no-password SocialRUSH ordering in India.",
+      "Compare Facebook Likes packages in India with public-post eligibility, transparent prices, delivery guidance and secure ordering.",
     audiences: ["Business pages", "Event teams", "Creators", "Communities"],
     related: [
       "buy-facebook-followers-india",
