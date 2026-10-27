@@ -467,13 +467,13 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     delivery: "Shown with the active service",
     refill: "Shown with the active service",
     packageService: "group-members",
-    intro: "Buy Facebook Group Members in India with transparent pricing, secure checkout, clear delivery estimates, and dashboard order tracking from SocialRUSH.",
+    intro: "Review Facebook Group member packages in India, accessible group-link requirements, current INR pricing and delivery terms before checkout.",
     overview: "Select the active Facebook Group Members service, enter the correct accessible group URL, choose a quantity, and review the live details before checkout.",
-    value: "A visible group size can support community-building campaigns and social proof alongside useful moderation and member-focused content.",
+    value: "Member totals are different from active community participation. Group membership alone does not guarantee discussion, retention, organic reach, local leads or sales.",
     safety: "Facebook Group must be public or accessible as required by the service. Enter the correct Facebook Group URL and do not change privacy settings while the order is processing.",
-    deliveryCopy: "Delivery time may vary depending on service load. Keep the submitted group accessible and its privacy settings unchanged while processing.",
-    metaDescription: "Buy Facebook Group Members in India with live INR pricing, an accessible group-link workflow, secure checkout and dashboard tracking.",
-    ogDescription: "Buy Facebook Group Members in India with transparent service details and SocialRUSH dashboard tracking.",
+    deliveryCopy: "Service timing and refill coverage depend on the active catalog. Group access, admin approval and privacy changes can affect fulfillment; check current terms before ordering.",
+    metaDescription: "Buy Facebook Group members in India. Review group URL requirements, admin approvals, live INR pricing, delivery and refill terms before checkout.",
+    ogDescription: "Compare Facebook Group members in India with live pricing, group-access requirements, privacy considerations and dashboard tracking.",
     audiences: ["Community builders", "Local groups", "Creators", "Brands"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india"],
   },
@@ -698,7 +698,7 @@ export function getIndiaServiceMetadata(
               : slug === "buy-youtube-comments-india"
                 ? "Buy YouTube comments in India for public videos or Shorts. Compare quantity limits, live INR pricing and delivery terms before placing your order."
                 : slug === "buy-facebook-group-members-india"
-                  ? "Buy Facebook Group members in India. Check group URL requirements, live INR pricing, delivery and refill terms before ordering. Keep your group accessible."
+                  ? page.metaDescription
                   : buildCommercialSearchDescription({ serviceName: page.serviceName, destination: page.destination }),
     keywords: [
       `Buy ${page.serviceName} India`,
