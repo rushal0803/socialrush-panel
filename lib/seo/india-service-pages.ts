@@ -472,7 +472,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     value: "Member totals are different from active community participation. Group membership alone does not guarantee discussion, retention, organic reach, local leads or sales.",
     safety: "Facebook Group must be public or accessible as required by the service. Enter the correct Facebook Group URL and do not change privacy settings while the order is processing.",
     deliveryCopy: "Service timing and refill coverage depend on the active catalog. Group access, admin approval and privacy changes can affect fulfillment; check current terms before ordering.",
-    metaDescription: "Buy Facebook Group members in India: check live INR pricing, eligible group links, admin approvals, delivery and refill terms before checkout.",
+    metaDescription: "Buy Facebook Group members in India. Review group URL requirements, admin approvals, live INR pricing, delivery and refill terms before checkout.",
     ogDescription: "Compare Facebook Group members in India with live pricing, group-access requirements, privacy considerations and dashboard tracking.",
     audiences: ["Community builders", "Local groups", "Creators", "Brands"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india"],
