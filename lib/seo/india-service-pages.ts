@@ -698,7 +698,7 @@ export function getIndiaServiceMetadata(
               : slug === "buy-youtube-comments-india"
                 ? "Buy YouTube comments in India for public videos or Shorts. Compare quantity limits, live INR pricing and delivery terms before placing your order."
                 : slug === "buy-facebook-group-members-india"
-                  ? "Buy Facebook Group members in India. Check group URL requirements, live INR pricing, delivery and refill terms before ordering. Keep your group accessible."
+                  ? page.metaDescription
                   : buildCommercialSearchDescription({ serviceName: page.serviceName, destination: page.destination }),
     keywords: [
       `Buy ${page.serviceName} India`,
