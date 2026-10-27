@@ -467,13 +467,13 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     delivery: "Shown with the active service",
     refill: "Shown with the active service",
     packageService: "group-members",
-    intro: "Compare Facebook Group Members in India for eligible accessible groups, with live INR prices, current delivery terms and dashboard order tracking."
+    intro: "Compare Facebook Group Members in India for eligible accessible groups, with live INR prices, current delivery terms and dashboard order tracking.",
     overview: "Select the active Facebook Group Members service, enter the correct accessible group URL, choose a quantity, and review the live details before checkout.",
-    value: "A visible group size is not a measure of relevant participation, authentic discussion or long-term retention. Community quality also depends on content, rules and group moderation."
+    value: "A visible group size is not a measure of relevant participation, authentic discussion or long-term retention. Community quality also depends on content, rules and group moderation.",
     safety: "Facebook Group must be public or accessible as required by the service. Enter the correct Facebook Group URL and do not change privacy settings while the order is processing.",
-    deliveryCopy: "Check current delivery and refill terms with the active service. Group admins and Facebook can approve, reject or remove memberships; delivery and retention are not guaranteed."
-    metaDescription: "Buy Facebook Group Members in India. Check live INR pricing, group link eligibility, privacy requirements, delivery and support terms before ordering."
-    ogDescription: "Compare Facebook Group Members packages in India, accessible group links, live prices, delivery and membership limits."
+    deliveryCopy: "Check current delivery and refill terms with the active service. Group admins and Facebook can approve, reject or remove memberships; delivery and retention are not guaranteed.",
+    metaDescription: "Buy Facebook Group Members in India. Check live INR pricing, group link eligibility, privacy requirements, delivery and support terms before ordering.",
+    ogDescription: "Compare Facebook Group Members packages in India, accessible group links, live prices, delivery and membership limits.",
     audiences: ["Community builders", "Local groups", "Creators", "Brands"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india"],
   },
