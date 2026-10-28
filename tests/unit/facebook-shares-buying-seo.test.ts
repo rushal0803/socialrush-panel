@@ -11,7 +11,8 @@ test("Facebook Shares retains canonical routing and commercial SEO metadata", ()
   assert.equal(canonicalIndiaServicePaths["buy-facebook-shares-india"], "/buy-facebook-shares-india");
   const metadata = getIndiaServiceMetadata("buy-facebook-shares-india");
   assert.equal(metadata.alternates?.canonical, "https://www.getsocialrush.com/buy-facebook-shares-india");
-  assert.match(String(metadata.description), /public post links/);
+  assert.match(String(metadata.description), /Facebook shares/i);
+  assert.match(source, /Buy Facebook shares in India: check eligible public post links/);
   assert.match(route, /getIndiaServiceMetadata\("buy-facebook-shares-india"\)/);
   assert.match(route, /<IndiaServiceLandingPage slug="buy-facebook-shares-india"/);
 });
