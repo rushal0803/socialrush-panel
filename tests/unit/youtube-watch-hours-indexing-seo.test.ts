@@ -4,6 +4,7 @@ import { readFileSync } from "node:fs";
 import { canonicalIndiaServicePaths } from "../../lib/seo/canonical-india-services.ts";
 import { getServiceById } from "../../lib/smm-service-catalog.ts";
 import { youtubeWatchHoursFaqs } from "../../lib/seo/youtube-watch-hours-faq.ts";
+import { validateOrderLink } from "../../lib/order-link-validator.ts";
 
 const read = (path: string) => readFileSync(path, "utf8");
 const route = read("app/(india-seo-services)/buy-youtube-watch-hours-india/page.tsx");
@@ -85,4 +86,14 @@ test("Watch-hours public URL eligibility is restricted to long-form video IDs", 
   assert.match(workspace, /u\.hostname === "youtu\.be"/);
   assert.doesNotMatch(workspace, /\^\\\/shorts/);
   assert.match(workspace, /const orderHref = validUrl \?/);
+});
+
+
+test("Shared dashboard validation rejects Shorts and accepts only valid long-form video IDs", () => {
+  const check = (destinationUrl: string) => validateOrderLink({ platform: "youtube", serviceCode: "youtube-watch-hours", destinationUrl });
+  assert.equal(check("https://www.youtube.com/watch?v=dQw4w9WgXcQ").valid, true);
+  assert.equal(check("https://youtu.be/dQw4w9WgXcQ").valid, true);
+  for (const value of ["https://youtube.com/shorts/dQw4w9WgXcQ", "https://youtube.com/watch?v=bad", "https://youtube.com/playlist?list=abc", "https://youtube.com/watch", "https://youtu.be/not-valid"]) {
+    assert.equal(check(value).valid, false, value);
+  }
 });
