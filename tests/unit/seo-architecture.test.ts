@@ -1601,3 +1601,33 @@ test("educational blog guides link to all six priority service destinations with
   assert.match(text, /YouTube moderates comments independently/);
   assert.match(text, /Purchased or promotional watch time should never be assumed to qualify for monetization/);
 });
+
+
+test("trust-and-engagement blog distinguishes authentic interactions from service counts", () => {
+  const article = getArticleBySlug("consistent-engagement-builds-trust");
+  assert.ok(article, "trust guide is published");
+  const targets = [
+    "/buy-instagram-comments-india",
+    "/buy-instagram-saves-india",
+    "/buy-instagram-shares-india",
+    "/tools/instagram-engagement-rate-calculator",
+  ];
+  const editorial = article.sections.filter((section) => section.contextualLink);
+  for (const href of targets) {
+    assert.equal(
+      editorial.filter((section) => section.contextualLink?.href === href).length,
+      1,
+      "one relevant in-content link to " + href,
+    );
+  }
+  assert.ok(article.sections.some((section) => section.heading === "Comments: conversation quality matters more than a counter"));
+  assert.ok(article.sections.some((section) => section.heading === "Saves: repeat usefulness is different from visible activity"));
+  assert.ok(article.sections.some((section) => section.heading === "Shares: measure what happens after content is shared"));
+  const text = [article.intro, ...article.sections.flatMap((section) => [section.body, ...(section.tips ?? [])])].join(" ");
+  assert.match(text, /paid activity, is not evidence of genuine customer interest/);
+  assert.match(text, /purchased saves as proof of authentic audience trust/);
+  assert.match(text, /share activity does not guarantee reach or recommendations/);
+  assert.match(text, /the result should not be treated as a measure of audience authenticity/);
+  const blogSource = readFileSync(new URL("../../components/marketing/blog/blogData.ts", import.meta.url), "utf8");
+  assert.match(blogSource, /heading: "Consistency Makes Audience Feedback Easier to Understand"/);
+});
