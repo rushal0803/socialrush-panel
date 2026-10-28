@@ -33,6 +33,15 @@ export function validateOrderLink({ platform, serviceCode, destinationUrl }: Inp
 
   let url: URL;
   try { url = new URL(/^https?:\/\//i.test(value) ? value : `https://${value}`); } catch { return { valid: false, severity: "error", detectedType: null, message: rule.error }; }
+  if (serviceCode === "youtube-watch-hours") {
+    const host = url.hostname.toLowerCase();
+    const validId = (id: string | null) => Boolean(id && /^[A-Za-z0-9_-]{11}$/.test(id));
+    const longForm = (["youtube.com", "www.youtube.com", "m.youtube.com"].includes(host) && url.pathname === "/watch" && validId(url.searchParams.get("v")))
+      || (host === "youtu.be" && /^\\/[A-Za-z0-9_-]{11}\\/?$/.test(url.pathname));
+    if (!longForm || !["http:", "https:"].includes(url.protocol)) {
+      return { valid: false, severity: "error", detectedType: null, message: "Enter an exact public long-form YouTube video URL. Shorts, playlists and channels are not supported for watch hours.", suggestion: rule.helper };
+    }
+  }
   const detectedType = detectType(platform, url);
   const contentService = /(likes|views|comments|saves|shares|watch-hours|reactions|votes)/.test(serviceCode) && serviceCode !== "tiktok-story-views";
   const accountService = /(followers|subscribers|members)/.test(serviceCode);
