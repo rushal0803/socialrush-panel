@@ -745,6 +745,15 @@ export function getIndiaServiceMetadata(
 export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
   const page = getIndiaServicePage(slug);
   if (slug === "buy-linkedin-followers-india") return [...linkedInFollowersFaqs];
+  if (slug === "buy-facebook-shares-india") return [
+    { question: "Which Facebook link should I submit for shares?", answer: "Submit the exact publicly accessible Facebook post permalink, not a Page homepage, profile link or private group. Check active service eligibility before ordering." },
+    { question: "Will Facebook shares guarantee more reach or website visitors?", answer: "No. A visible share count does not verify distribution, genuine interest, referrals, conversions or algorithmic recommendations." },
+    { question: "How much do Facebook shares cost in India?", answer: "Check the active service rate, quantity limits and INR total at checkout. Do not rely on a fixed example price." },
+    { question: "How long does Facebook share delivery take?", answer: "Delivery timing depends on the active service terms, quantity and whether the post remains publicly accessible. No universal timeframe is guaranteed." },
+    { question: "Do shares come from Indian Facebook accounts?", answer: "Indian account origin is not guaranteed unless the specific live service explicitly provides and supports that targeting." },
+    { question: "Is a Facebook password needed?", answer: "No. Only the eligible public post link is required. Never share passwords, login details or one-time codes." },
+  ];
+
   if (slug === "buy-twitter-followers-india") {
     return [
       { question: "How can I buy Twitter/X followers in India?", answer: "Choose a Twitter/X follower package, provide the correct public profile link, review the current INR total, and complete the order through your SocialRUSH account." },
