@@ -77,3 +77,12 @@ test("YouTube engagement service guides cross-link to the canonical Watch Hours 
     assert.match(read(path), /href="\/buy-youtube-watch-hours-india"/, `missing canonical inbound link from ${path}`);
   }
 });
+
+
+test("Watch-hours public URL eligibility is restricted to long-form video IDs", () => {
+  assert.match(workspace, /u\.pathname === "\/watch"/);
+  assert.match(workspace, /u\.searchParams\.get\("v"\)/);
+  assert.match(workspace, /u\.hostname === "youtu\.be"/);
+  assert.doesNotMatch(workspace, /\^\\\/shorts/);
+  assert.match(workspace, /const orderHref = validUrl \?/);
+});
