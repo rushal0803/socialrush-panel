@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { getIndiaServiceMetadata, indiaServicePages } from "../../lib/seo/india-service-pages.ts";
+import { getIndiaServiceMetadata } from "../../lib/seo/india-service-pages.ts";
 import { canonicalIndiaServicePaths } from "../../lib/seo/canonical-india-services.ts";
 
 const source = readFileSync("lib/seo/india-service-pages.ts", "utf8");
