@@ -12,7 +12,7 @@ type Facts = { id: number; rate: number; min: number; max: number; deliveryTime:
 const defaultOrderHref = "/dashboard/new-order?platform=youtube&service=youtube-watch-hours";
 const inr = (value: number) => `₹${Math.round(value).toLocaleString("en-IN")}`;
 const whatsapp = "https://wa.me/918860330771";
-function validVideoUrl(value: string) { try { const u = new URL(value); return ["youtube.com", "www.youtube.com", "m.youtube.com", "youtu.be"].includes(u.hostname) && (/^\/watch/.test(u.pathname) || /^\/shorts\//.test(u.pathname) || (u.hostname === "youtu.be" && /^\/[\w-]+/.test(u.pathname))); } catch { return false; } }
+function validVideoUrl(value: string) { try { const u = new URL(value); if (u.protocol !== "https:" && u.protocol !== "http:") return false; if (["youtube.com", "www.youtube.com", "m.youtube.com"].includes(u.hostname)) return u.pathname === "/watch" && /^[A-Za-z0-9_-]{11}$/.test(u.searchParams.get("v") ?? ""); return u.hostname === "youtu.be" && /^\/[A-Za-z0-9_-]{11}\/?$/.test(u.pathname); } catch { return false; } }
 
 export default function YouTubeWatchHoursWorkspace({ facts, buyerGuide }: { facts: Facts; buyerGuide?: ReactNode }) {
   const live = facts?.available ? facts : null;
