@@ -543,7 +543,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     packageService: "shares",
     intro: "Support the visible distribution of an eligible public Facebook post with a clear, trackable shares campaign for India.",
     overview: "Choose a quantity, submit the exact public Facebook post URL, review the live INR total and service details, then track the order from your dashboard.",
-    value: "Visible share activity can complement useful public content while creators, businesses and community teams continue building genuine audience relationships.",
+    value: "Share counts show an action, not verified reach, referrals, authentic interest or business results. Compare post-level shares with independent Facebook insights and actual referral traffic when evaluating a campaign.",
     safety: "Only the public Facebook post URL is required. SocialRUSH never asks for your Facebook password, login, OTP or private account access.",
     deliveryCopy: "Delivery follows the current service estimate and depends on order size and post availability. Keep the submitted post public while processing.",
     metaDescription: "Buy Facebook shares in India with live INR pricing, public post-link ordering, no password required, refill details and dashboard tracking.",
