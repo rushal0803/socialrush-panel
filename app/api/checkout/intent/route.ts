@@ -4,6 +4,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
+import { validateOrderLink } from "@/lib/order-link-validator";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { getLivePackageGroups } from "@/lib/package-catalog.server";
 import { PACKAGE_DISCOUNTS } from "@/lib/package-discounts";
@@ -139,6 +140,10 @@ export async function POST(request: NextRequest) {
   }
   const linkError = linkRules[service.code] ? validateCampaignLink(link, linkRules[service.code]) : null;
   if (linkError) return NextResponse.json({ error: linkError }, { status: 400 });
+  if (service.code === "youtube-watch-hours") {
+    const checkedLink = validateOrderLink({ platform: "youtube", serviceCode: service.code, destinationUrl: link });
+    if (!checkedLink.valid) return NextResponse.json({ error: checkedLink.message }, { status: 400 });
+  }
 
   const requestedQuantity = quantity as number;
   // Live-catalog services use their active Supabase rows for limits and rate.
