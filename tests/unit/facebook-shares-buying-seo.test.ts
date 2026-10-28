@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { getIndiaServiceMetadata } from "../../lib/seo/india-service-pages.ts";
+import { getIndiaServiceMetadata, getIndiaServiceFaqs } from "../../lib/seo/india-service-pages.ts";
 import { canonicalIndiaServicePaths } from "../../lib/seo/canonical-india-services.ts";
 
 const source = readFileSync("lib/seo/india-service-pages.ts", "utf8");
@@ -27,4 +27,14 @@ test("Facebook Shares has accurate eligibility and no reach or delivery guarante
   assert.match(text, /does not promise organic distribution or Indian accounts/);
   assert.match(text, /not verified reach, referrals, authentic interest or business results/);
   assert.doesNotMatch(text, /guaranteed Indian shares|guaranteed reach/i);
+});
+
+test("Facebook Shares buyer FAQs answer eligibility, pricing and honest reach questions", () => {
+  const faqs = getIndiaServiceFaqs("buy-facebook-shares-india");
+  assert.equal(faqs.length, 6);
+  assert.ok(faqs.some(({ question }) => question.includes("Facebook link")));
+  assert.ok(faqs.some(({ answer }) => answer.includes("does not verify distribution")));
+  assert.ok(faqs.some(({ answer }) => answer.includes("INR total")));
+  assert.ok(faqs.some(({ answer }) => answer.includes("not guaranteed")));
+  assert.ok(faqs.some(({ answer }) => answer.includes("Never share passwords")));
 });
