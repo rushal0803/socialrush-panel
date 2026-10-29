@@ -440,7 +440,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Select the campaign size, submit the correct public destination, review pricing, and keep delivery records organized in one account.",
     value:
-      "Visible follower growth can support page credibility for local businesses, communities, creators, and established brands.",
+      "Follower counts alone do not establish authentic community trust, engagement, qualified reach or business results. Evaluate real page interactions and audience feedback separately from purchased follower activity.",
     safety:
       "SocialRUSH never needs your Facebook password. Submit only the public page or profile link requested for the selected service.",
     deliveryCopy:
