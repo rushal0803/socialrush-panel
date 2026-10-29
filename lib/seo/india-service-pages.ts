@@ -567,7 +567,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Select a package, submit the correct public invite or channel link, confirm the total, and track delivery through SocialRUSH.",
     value:
-      "A more established member count can support first impressions when people evaluate a public channel or community before joining.",
+      "A displayed member count alone does not prove an active community, meaningful discussion, audience trust or business results. Compare genuine participation and community feedback separately from promotional member activity.",
     safety:
       "No Telegram account password or admin login is requested. Use a valid public channel or group link and keep it accessible.",
     deliveryCopy:
