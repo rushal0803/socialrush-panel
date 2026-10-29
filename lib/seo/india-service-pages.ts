@@ -537,16 +537,16 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     platformKey: "facebook",
     serviceName: "Facebook Shares",
     unitName: "shares",
-    destination: "public Facebook post URL",
+    destination: "exact publicly accessible Facebook post URL (not a profile, Page homepage or private group link)",
     delivery: "1–5 days",
     refill: "Refill eligible",
     packageService: "shares",
     intro: "Support the visible distribution of an eligible public Facebook post with a clear, trackable shares campaign for India.",
-    overview: "Choose a quantity, submit the exact public Facebook post URL, review the live INR total and service details, then track the order from your dashboard.",
-    value: "Visible share activity can complement useful public content while creators, businesses and community teams continue building genuine audience relationships.",
+    overview: "Confirm your Facebook post is publicly accessible, copy its exact post permalink (not a profile or Page homepage), and review active service eligibility, quantity, live INR total and delivery terms before ordering. Keep the post public while processing.",
+    value: "Share counts show an action, not verified reach, referrals, authentic interest or business results. Compare post-level shares with independent Facebook insights and actual referral traffic when evaluating a campaign.",
     safety: "Only the public Facebook post URL is required. SocialRUSH never asks for your Facebook password, login, OTP or private account access.",
-    deliveryCopy: "Delivery follows the current service estimate and depends on order size and post availability. Keep the submitted post public while processing.",
-    metaDescription: "Buy Facebook shares in India with live INR pricing, public post-link ordering, no password required, refill details and dashboard tracking.",
+    deliveryCopy: "Delivery speed, eligibility and refill coverage depend on the active service terms and post availability, not a universal guarantee. Keep the exact submitted post public and accessible; sharing activity does not promise organic distribution or Indian accounts.",
+    metaDescription: "Buy Facebook shares in India: check eligible public post links, live INR pricing, delivery and refill terms. No password needed; reach is not guaranteed.",
     ogDescription: "Order Facebook shares in India with live INR pricing, public post-link ordering, delivery details and SocialRUSH dashboard tracking.",
     audiences: ["Creators", "Facebook pages", "Local businesses", "Social media teams"],
     related: ["buy-facebook-followers-india", "buy-facebook-likes-india", "buy-facebook-views-india", "buy-facebook-group-members-india"],
@@ -745,6 +745,15 @@ export function getIndiaServiceMetadata(
 export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
   const page = getIndiaServicePage(slug);
   if (slug === "buy-linkedin-followers-india") return [...linkedInFollowersFaqs];
+  if (slug === "buy-facebook-shares-india") return [
+    { question: "Which Facebook link should I submit for shares?", answer: "Submit the exact publicly accessible Facebook post permalink, not a Page homepage, profile link or private group. Check active service eligibility before ordering." },
+    { question: "Will Facebook shares guarantee more reach or website visitors?", answer: "No. A visible share count does not verify distribution, genuine interest, referrals, conversions or algorithmic recommendations." },
+    { question: "How much do Facebook shares cost in India?", answer: "Check the active service rate, quantity limits and INR total at checkout. Do not rely on a fixed example price." },
+    { question: "How long does Facebook share delivery take?", answer: "Delivery timing depends on the active service terms, quantity and whether the post remains publicly accessible. No universal timeframe is guaranteed." },
+    { question: "Do shares come from Indian Facebook accounts?", answer: "Indian account origin is not guaranteed unless the specific live service explicitly provides and supports that targeting." },
+    { question: "Is a Facebook password needed?", answer: "No. Only the eligible public post link is required. Never share passwords, login details or one-time codes." },
+  ];
+
   if (slug === "buy-twitter-followers-india") {
     return [
       { question: "How can I buy Twitter/X followers in India?", answer: "Choose a Twitter/X follower package, provide the correct public profile link, review the current INR total, and complete the order through your SocialRUSH account." },
