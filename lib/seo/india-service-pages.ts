@@ -565,11 +565,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     intro:
       "Build a stronger visible Telegram community with a structured member campaign for Indian channels, groups, educators, and brands.",
     overview:
-      "Select a package, submit the correct public invite or channel link, confirm the total, and track delivery through SocialRUSH.",
+      "Choose the intended Telegram channel or group, verify that its public link is accessible, review the selected quantity and live INR total, then track delivery through SocialRUSH. India-focused search does not guarantee India-based members.",
     value:
       "A displayed member count alone does not prove an active community, meaningful discussion, audience trust or business results. Compare genuine participation and community feedback separately from promotional member activity.",
     safety:
-      "No Telegram account password or admin login is requested. Use a valid public channel or group link and keep it accessible.",
+      "Never share a Telegram password, login code or admin credentials. Submit only an eligible publicly accessible channel or group URL and keep the destination accessible during delivery.",
     deliveryCopy:
       "Member delivery depends on package size and invite availability. Eligible refill details are displayed before you place the order.",
     metaDescription:
