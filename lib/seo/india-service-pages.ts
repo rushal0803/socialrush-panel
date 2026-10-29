@@ -745,6 +745,14 @@ export function getIndiaServiceMetadata(
 export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
   const page = getIndiaServicePage(slug);
   if (slug === "buy-linkedin-followers-india") return [...linkedInFollowersFaqs];
+  if (slug === "buy-facebook-views-india") return [
+    { question: "Which Facebook video link is eligible?", answer: "Submit the exact publicly accessible Facebook video permalink or eligible public video-post URL. A Page homepage, private post or unrelated profile link is not a valid substitute." },
+    { question: "Do Facebook video views guarantee organic reach?", answer: "No. Displayed views do not verify unique reach, meaningful watch time, authentic interest, website visits or sales. Review independent video insights." },
+    { question: "How much do Facebook views cost in India?", answer: "Review the current service rate, supported quantity and INR total in the order builder before paying. Example prices may be outdated." },
+    { question: "What determines delivery time and refill support?", answer: "The active service terms, selected quantity and video accessibility govern delivery and refill eligibility. No universal delivery deadline is guaranteed." },
+    { question: "Will all views come from Indian accounts?", answer: "India-origin viewers are not guaranteed unless the chosen live service specifically supports that targeting." },
+    { question: "Do I need to provide a Facebook password?", answer: "No. Submit only the eligible public video link. Never share passwords, recovery codes or OTPs." },
+  ];
   if (slug === "buy-facebook-shares-india") return [
     { question: "Which Facebook link should I submit for shares?", answer: "Submit the exact publicly accessible Facebook post permalink, not a Page homepage, profile link or private group. Check active service eligibility before ordering." },
     { question: "Will Facebook shares guarantee more reach or website visitors?", answer: "No. A visible share count does not verify distribution, genuine interest, referrals, conversions or algorithmic recommendations." },
