@@ -521,10 +521,10 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Refill eligible",
     packageService: "views",
     intro: "Build a clear Facebook video views order with public-link submission, live catalog pricing, and dashboard tracking.",
-    overview: "Choose a quantity, paste the exact public Facebook video or post URL, review the live total, and track the order from SocialRUSH.",
-    value: "A clear ordering workflow helps creators, pages, and teams coordinate public video campaigns alongside their content work.",
+    overview: "Use the exact publicly accessible Facebook video permalink or eligible video-post URL, not a Page homepage or private post. Review service compatibility, selected quantity, current INR total and delivery terms before checkout.",
+    value: "Displayed Facebook view counts are not proof of unique people reached, sustained watch time, authentic interest or business results. Compare video-level insights and referral outcomes separately from ordered views.",
     safety: "SocialRUSH never asks for your Facebook password, login, or OTP. Submit only the public video or post link required by the service.",
-    deliveryCopy: "Delivery follows the current service estimate shown before checkout and can vary with quantity and public-link availability.",
+    deliveryCopy: "Delivery and refill eligibility follow the active service terms and can change with video accessibility and quantity. Views are not guaranteed to come from Indian accounts or produce organic reach.",
     metaDescription: "Buy Facebook views in India with live INR pricing, public video-link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription: "Order Facebook video views in India with transparent pricing, public-link submission, service details and dashboard tracking.",
     audiences: ["Video creators", "Facebook pages", "Local businesses", "Social media teams"],
@@ -745,6 +745,14 @@ export function getIndiaServiceMetadata(
 export function getIndiaServiceFaqs(slug: IndiaServiceSlug) {
   const page = getIndiaServicePage(slug);
   if (slug === "buy-linkedin-followers-india") return [...linkedInFollowersFaqs];
+  if (slug === "buy-facebook-views-india") return [
+    { question: "Which Facebook video link is eligible?", answer: "Submit the exact publicly accessible Facebook video permalink or eligible public video-post URL. A Page homepage, private post or unrelated profile link is not a valid substitute." },
+    { question: "Do Facebook video views guarantee organic reach?", answer: "No. Displayed views do not verify unique reach, meaningful watch time, authentic interest, website visits or sales. Review independent video insights." },
+    { question: "How much do Facebook views cost in India?", answer: "Review the current service rate, supported quantity and INR total in the order builder before paying. Example prices may be outdated." },
+    { question: "What determines delivery time and refill support?", answer: "The active service terms, selected quantity and video accessibility govern delivery and refill eligibility. No universal delivery deadline is guaranteed." },
+    { question: "Will all views come from Indian accounts?", answer: "India-origin viewers are not guaranteed unless the chosen live service specifically supports that targeting." },
+    { question: "Do I need to provide a Facebook password?", answer: "No. Submit only the eligible public video link. Never share passwords, recovery codes or OTPs." },
+  ];
   if (slug === "buy-facebook-shares-india") return [
     { question: "Which Facebook link should I submit for shares?", answer: "Submit the exact publicly accessible Facebook post permalink, not a Page homepage, profile link or private group. Check active service eligibility before ordering." },
     { question: "Will Facebook shares guarantee more reach or website visitors?", answer: "No. A visible share count does not verify distribution, genuine interest, referrals, conversions or algorithmic recommendations." },
