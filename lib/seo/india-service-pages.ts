@@ -257,7 +257,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Submit the exact public video URL, choose a suitable quantity, confirm the displayed total, and monitor delivery from your account.",
     value:
-      "Visible engagement can support video presentation alongside strong titles, thumbnails, watch time, and useful audience-focused content.",
+      "Displayed like counts alone do not prove authentic engagement, meaningful watch time, viewer satisfaction or recommendation performance. Review YouTube Analytics and genuine audience feedback separately.",
     safety:
       "Only a public video URL is needed. Your channel password, Google credentials, and private account access are never required.",
     deliveryCopy:
