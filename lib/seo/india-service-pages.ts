@@ -438,9 +438,9 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     intro:
       "Build a stronger visible Facebook audience for a public page or profile with a clear, trackable follower campaign in India.",
     overview:
-      "Select the campaign size, submit the correct public destination, review pricing, and keep delivery records organized in one account.",
+      "Check that your public Facebook Page or eligible profile URL is correct and accessible, then review the selected quantity, current INR total, delivery estimate and refill terms before checkout. Followers are not guaranteed to be India-based.",
     value:
-      "Visible follower growth can support page credibility for local businesses, communities, creators, and established brands.",
+      "Follower counts alone do not establish authentic community trust, engagement, qualified reach or business results. Evaluate real page interactions and audience feedback separately from purchased follower activity.",
     safety:
       "SocialRUSH never needs your Facebook password. Submit only the public page or profile link requested for the selected service.",
     deliveryCopy:
