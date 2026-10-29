@@ -524,7 +524,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview: "Use the exact publicly accessible Facebook video permalink or eligible video-post URL, not a Page homepage or private post. Review service compatibility, selected quantity, current INR total and delivery terms before checkout.",
     value: "Displayed Facebook view counts are not proof of unique people reached, sustained watch time, authentic interest or business results. Compare video-level insights and referral outcomes separately from ordered views.",
     safety: "SocialRUSH never asks for your Facebook password, login, or OTP. Submit only the public video or post link required by the service.",
-    deliveryCopy: "Delivery and refill eligibility follow the active service terms and can change with video accessibility and quantity. Views are not guaranteed to come from Indian accounts or produce organic reach."
+    deliveryCopy: "Delivery and refill eligibility follow the active service terms and can change with video accessibility and quantity. Views are not guaranteed to come from Indian accounts or produce organic reach.",
     metaDescription: "Buy Facebook views in India with live INR pricing, public video-link ordering, no password required and SocialRUSH dashboard tracking.",
     ogDescription: "Order Facebook video views in India with transparent pricing, public-link submission, service details and dashboard tracking.",
     audiences: ["Video creators", "Facebook pages", "Local businesses", "Social media teams"],
