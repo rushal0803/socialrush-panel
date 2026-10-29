@@ -374,7 +374,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     intro:
       "Support visible engagement on selected LinkedIn posts with a professional campaign for Indian founders, experts, and business pages.",
     overview:
-      "Submit the exact public post URL, select the campaign quantity, review the total, and monitor progress without sharing account access.",
+      "Submit the exact publicly accessible LinkedIn post URL, select a quantity, check the live INR total and current delivery/refill terms, and monitor order progress. India-focused pricing does not guarantee likes from Indian accounts.",
     value:
       "Displayed likes alone do not establish authentic professional interest, qualified reach, meaningful discussion, leads or sales. Evaluate post analytics and genuine audience feedback separately.",
     safety:
