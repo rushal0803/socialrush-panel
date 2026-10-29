@@ -123,11 +123,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Service terms shown before checkout",
     packageService: "views",
     intro:
-      "Increase the visible reach of eligible Instagram reels and video posts through an affordable, trackable campaign in India.",
+      "Order displayed views for eligible public Instagram Reels and videos with clear package selection and order tracking. View counts do not guarantee unique reach, watch time or organic discovery.",
     overview:
       "Paste the exact public reel or video URL, choose the campaign size, review the total, and keep every order update organized in one dashboard.",
     value:
-      "A stronger visible view count can help videos present more confidently when audiences discover your profile, campaign, or creative portfolio.",
+      "Displayed view counts are not proof of genuine viewer interest, unique audience reach, engagement, followers or sales. Evaluate audience insights and authentic feedback separately.",
     safety:
       "No password or account access is required. Submit only a public reel or video URL and keep the content available while delivery is underway.",
     deliveryCopy:
