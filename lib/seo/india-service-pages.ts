@@ -286,11 +286,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Service coverage shown before order",
     packageService: "views",
     intro:
-      "Support the visible reach of public YouTube videos with a carefully managed view campaign for Indian channels and businesses.",
+      "Compare view-count packages for eligible public YouTube videos with live service terms and order tracking. View counts do not guarantee unique reach, audience retention or recommendations.",
     overview:
       "Choose a campaign quantity, paste the correct video URL, review pricing and delivery, and follow status updates from your dashboard.",
     value:
-      "A stronger visible view count can complement discoverable titles, thumbnails, descriptions, playlists, and consistent publishing.",
+      "A displayed view count is not proof of authentic interest, meaningful watch time, higher rankings, monetization eligibility or sales. Review YouTube Analytics separately.",
     safety:
       "No channel password is required. Submit only the public video link and keep it available without changing visibility during delivery.",
     deliveryCopy:
