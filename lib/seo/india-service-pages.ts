@@ -376,7 +376,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Submit the exact public post URL, select the campaign quantity, review the total, and monitor progress without sharing account access.",
     value:
-      "Visible post engagement can strengthen the presentation of useful insights, company updates, launches, and thought-leadership content.",
+      "Displayed likes alone do not establish authentic professional interest, qualified reach, meaningful discussion, leads or sales. Evaluate post analytics and genuine audience feedback separately.",
     safety:
       "Your LinkedIn password is never needed. The service works from the public post URL supplied during checkout.",
     deliveryCopy:
