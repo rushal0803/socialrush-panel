@@ -340,7 +340,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Available on eligible services",
     packageService: "followers",
     intro:
-      "Compare LinkedIn follower packages for eligible public profiles or company pages, with current INR pricing, destination requirements and service terms before checkout.",
+      "Compare LinkedIn Profile Followers packages using a supported public profile URL. Company pages require a separately confirmed compatible service; review live INR pricing and terms before checkout.",
     overview:
       "Provide the correct public destination, choose a campaign size, review the exact INR total, and track every status update from SocialRUSH.",
     value:
@@ -352,7 +352,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     metaDescription:
       "Buy LinkedIn followers in India with live INR package pricing, gradual delivery, no-password ordering and dashboard tracking from SocialRUSH.",
     ogDescription:
-      "Strengthen LinkedIn profile or company-page visibility with clear follower packages and tracked SocialRUSH delivery in India.",
+      "Compare LinkedIn profile follower packages with live INR pricing, eligible public-profile URLs and dashboard order tracking in India.",
     audiences: ["Founders", "Consultants", "Company pages", "B2B agencies"],
     related: [
       "buy-linkedin-likes-india",
