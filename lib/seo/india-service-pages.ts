@@ -408,7 +408,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Choose from current X follower packages, submit a public X or Twitter profile URL, review the live INR total, and track the order through your SocialRUSH dashboard.",
     value:
-      "A more established visible audience can support profile presentation when people discover your commentary, launches, and public conversations.",
+      "Displayed follower counts alone do not demonstrate genuine X/Twitter engagement, qualified reach, trust, leads or sales. Review meaningful replies, audience insights and organic performance separately.",
     safety:
       "No Twitter/X password is required. Keep the submitted profile public and avoid changing its handle while delivery is active.",
     deliveryCopy:
