@@ -340,11 +340,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Available on eligible services",
     packageService: "followers",
     intro:
-      "Build a stronger visible professional audience for a LinkedIn profile or company page with a structured India-focused campaign.",
+      "Compare LinkedIn follower packages for eligible public profiles or company pages, with current INR pricing, destination requirements and service terms before checkout.",
     overview:
       "Provide the correct public destination, choose a campaign size, review the exact INR total, and track every status update from SocialRUSH.",
     value:
-      "A more established follower count can support professional presentation for founders, consultants, recruiters, and company pages.",
+      "Follower counts alone do not establish authentic professional interest, qualified reach, leads or business credibility. Review engagement and audience analytics separately.",
     safety:
       "No LinkedIn password or private account access is required. Use only the public profile or company page URL requested at checkout.",
     deliveryCopy:
