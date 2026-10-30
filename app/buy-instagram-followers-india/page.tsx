@@ -31,6 +31,7 @@ const faqs = [
   ["Can I track my order?", "Yes. After ordering, you can follow your order through the existing SocialRUSH dashboard workflow."],
   ["Can I order for a private account?", "No. This service requires a public Instagram profile. Keep the profile publicly accessible while delivery is in progress."],
   ["Can followers guarantee engagement?", "No. A follower order does not guarantee likes, comments, reach, or other engagement outcomes."],
+  ["Does a higher follower count prove a genuine audience?", "No. Displayed followers alone do not prove real audience interest, qualified reach, sales or organic engagement. Review Instagram Insights separately."],
   ["Can followers guarantee sales?", "No. Sales depend on many factors beyond follower count, including your offer, audience, content and customer experience."],
 ] as const;
 const steps = [["01","Choose quantity","Select a package or enter the exact number you need."],["02","Paste Instagram profile","Add the public profile URL for your order."],["03","Review live price","See the current INR total and service information."],["04","Secure checkout","Continue through the protected SocialRUSH order flow."],["05","Delivery starts","The active delivery estimate is shown before you order."],["06","Track order","Follow your order from the SocialRUSH dashboard."]] as const;
