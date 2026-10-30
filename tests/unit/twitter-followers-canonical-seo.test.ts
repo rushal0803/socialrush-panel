@@ -19,3 +19,10 @@ test("Twitter Followers shared copy avoids guaranteed engagement and sales claim
   assert.match(section, /Displayed follower counts alone do not demonstrate genuine X\/Twitter engagement/);
   assert.match(section, /qualified reach, trust, leads or sales/);
 });
+
+test("Canonical X/Twitter landing includes an honest geographic-targeting FAQ", () => {
+  const landing = readFileSync("components/marketing/TwitterFollowersLanding.tsx", "utf8");
+  assert.match(landing, /Are Twitter followers guaranteed to be from India/);
+  assert.match(landing, /does not guarantee followers from Indian accounts/);
+  assert.match(landing, /follower order does not guarantee/i);
+});
