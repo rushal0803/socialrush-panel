@@ -179,7 +179,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     packageService: "saves",
     intro: "Strengthen post and Reel engagement signals with Instagram save activity through a clear, secure ordering experience for India.",
     overview: "Choose a quantity within the active service limits, submit the exact public post or Reel URL, review the current details, and track the order from your SocialRUSH dashboard.",
-    value: "Save activity can complement the presentation of public content while you continue publishing useful, audience-focused posts and Reels.",
+    value: "Displayed saves alone do not prove genuine audience interest, increased organic reach, qualified engagement or sales. Evaluate authentic post insights and audience feedback separately.",
     safety: "Only a public Instagram post or Reel URL is required. SocialRUSH never asks for your password, login, or OTP.",
     deliveryCopy: "The active service shows its current delivery estimate and any eligible refill terms before you place an order.",
     metaDescription: "Buy Instagram saves in India with live INR pricing, public post or Reel link ordering, no password required and SocialRUSH dashboard tracking.",
