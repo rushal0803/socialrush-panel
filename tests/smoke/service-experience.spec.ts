@@ -46,7 +46,7 @@ for (const width of [320, 375, 390, 430, 768, 1024, 1440, 1920]) {
     if (width === 390 || width === 1440) await page.screenshot({ path: `test-results/service-reference-${width}.png`, fullPage: false });
     const schemas = await page.locator('script[type="application/ld+json"]').allTextContents();
     const faq = schemas.map(value => JSON.parse(value)).find(value => value["@type"] === "FAQPage");
-    expect(faq.mainEntity).toHaveLength(13);
+    expect(faq.mainEntity).toHaveLength(14);
     for (const entry of faq.mainEntity) await expect(page.getByText(entry.acceptedAnswer.text, { exact: true })).toHaveCount(1);
   });
 }
