@@ -14,7 +14,7 @@ const path = "/buy-youtube-watch-hours-india";
 export const metadata: Metadata = {
   ...createPageMetadata({
     title: "Buy YouTube Watch Hours India | INR Pricing | SocialRUSH",
-    description: "Buy YouTube watch hours in India for public videos. Check live INR pricing, estimate limitations and policy risks. Monetization is not guaranteed.",
+    description: "Compare YouTube watch-hours services in India: live INR pricing, eligible public video URLs and estimates. Purchased watch time may not count toward monetization.",
     path,
     keywords: ["buy YouTube watch hours India", "YouTube watch hours service India"],
   }),
