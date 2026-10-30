@@ -32,6 +32,14 @@ export const tiktokFollowersFaqs = [
     answer: "Current refill eligibility and support details are shown in the active service information and order summary. Check those details before placing an order.",
   },
   {
+    question: "Are TikTok followers guaranteed to be based in India?",
+    answer: "No. India-focused pricing does not guarantee followers from Indian accounts. Check the exact service description and availability before checkout.",
+  },
+  {
+    question: "Does a higher TikTok follower count guarantee engagement or reach?",
+    answer: "No. Displayed followers alone do not guarantee authentic engagement, qualified reach, watch time, sales or organic growth.",
+  },
+  {
     question: "Can businesses and creators use the service?",
     answer: "The service is designed for creators, personal brands, businesses, agencies, and other users with an eligible public TikTok profile.",
   },

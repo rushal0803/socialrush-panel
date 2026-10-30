@@ -599,7 +599,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     overview:
       "Choose a suitable campaign quantity, paste your public TikTok profile URL, review the total, and follow delivery from your dashboard.",
     value:
-      "A stronger visible audience can improve profile presentation alongside consistent short-form publishing and recognizable creative direction.",
+      "Displayed follower totals alone do not prove genuine interest, authentic engagement, qualified reach or sales. Check service availability and applicable platform restrictions before ordering.",
     safety:
       "Your TikTok password is never required. Keep the submitted profile public and avoid changing its username during campaign delivery.",
     deliveryCopy:
