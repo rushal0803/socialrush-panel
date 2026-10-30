@@ -31,6 +31,7 @@ const faqs = [
   ["How long does delivery take?", `The active service estimate is ${service?.deliveryTime ?? "shown before checkout"}. Timing can vary with quantity and profile availability.`],
   ["Is refill or support available?", `The current catalog lists ${service?.refillPolicy ?? "the current service terms"}. Confirm the applicable detail in your order summary.`],
   ["Can followers guarantee engagement or impressions?", "No. A follower order does not guarantee impressions, likes, reposts, engagement, reach, trending placement, leads, or organic growth."],
+  ["Are Twitter followers guaranteed to be from India?", "No. India-focused pricing does not guarantee followers from Indian accounts. Check the selected service terms before ordering."],
 ] as const;
 
 export default function TwitterFollowersLanding() {
