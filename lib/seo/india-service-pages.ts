@@ -489,7 +489,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Service terms shown before order",
     packageService: "likes",
     intro:
-      "Support visible engagement on public Facebook posts with an accessible campaign for Indian pages, creators, and businesses.",
+      "Compare Facebook Like packages for eligible public posts or videos, with live INR pricing, link requirements and delivery terms before checkout. Likes do not guarantee reach or customers.",
     overview:
       "Provide the exact post URL, choose the required quantity, review the INR total, and monitor progress from your dashboard.",
     value:
