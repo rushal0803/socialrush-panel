@@ -55,11 +55,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Available on eligible packages",
     packageService: "followers",
     intro:
-      "Build stronger visible profile credibility with an organized Instagram follower campaign for Indian creators, brands, and businesses.",
+      "Compare Instagram follower packages for eligible public profiles in India, with live INR pricing, current delivery details and applicable refill terms before checkout.",
     overview:
       "Choose a suitable quantity, submit your public profile URL, review the exact INR total, and follow delivery from your SocialRUSH dashboard.",
     value:
-      "A more established follower count can support the first impression visitors receive when evaluating your public profile and content.",
+      "Displayed follower counts alone do not establish genuine audience interest, engagement, qualified reach or sales. Review organic account insights and authentic audience feedback separately.",
     safety:
       "SocialRUSH never asks for your Instagram password. Keep the submitted profile public and avoid changing its username while delivery is active.",
     deliveryCopy:
