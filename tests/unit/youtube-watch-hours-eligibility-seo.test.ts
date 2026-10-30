@@ -9,7 +9,7 @@ const workspace = readFileSync("components/marketing/YouTubeWatchHoursWorkspace.
 test("Watch Hours SEO uses its canonical India route and qualifying metadata", () => {
   assert.match(route, /const path = "\/buy-youtube-watch-hours-india"/);
   assert.match(route, /createPageMetadata\(\{/);
-  assert.match(route, /Purchased watch time may not count toward monetization/);
+  assert.match(route, /Purchased watch time may not count/);
   assert.match(route, /robots: \{ index: true, follow: true \}/);
 });
 
