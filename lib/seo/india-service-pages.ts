@@ -220,11 +220,11 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     refill: "Available on eligible packages",
     packageService: "subscribers",
     intro:
-      "Strengthen visible channel authority with a gradual YouTube subscriber campaign designed for Indian creators, educators, and brands.",
+      "Compare YouTube subscriber packages for eligible public channels, with current INR totals, delivery estimates and applicable refill terms before checkout.",
     overview:
       "Choose a package, submit your public channel URL, review the INR campaign total, and track subscriber delivery from your SocialRUSH account.",
     value:
-      "A more established subscriber count can improve channel presentation when viewers evaluate your library, niche authority, and publishing consistency.",
+      "Subscriber counts alone do not establish genuine viewer interest, watch time, monetization eligibility, channel authority or organic reach. Review YouTube Analytics and audience feedback separately.",
     safety:
       "SocialRUSH requires only your public channel link. Never provide a YouTube or Google password to place a subscriber campaign.",
     deliveryCopy:
