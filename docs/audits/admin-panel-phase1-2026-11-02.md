@@ -31,3 +31,12 @@ No live payment, checkout, customer, email, database, or SEO production mutation
 - [ ] Local tests and typecheck
 - [ ] Preview deployment verified
 - [ ] Security remediation reviewed
+
+## 2026-11-02 follow-up: privileged functions and CRM runtime
+- The live `public.record_analytics_event` function is `SECURITY DEFINER` and executable by `anon` and `authenticated`. Its implementation validates an event allowlist, requires a session for anonymous calls, caps metadata at 2 KB, and enforces a per-identity 120-events/hour threshold. A caller-supplied anonymous session UUID may be changed; this is not an effective global anti-abuse limit. Review rate limiting at the edge and owner permissions before proposing a grant change. Do not revoke anonymous execution without tracing public analytics callers.
+- The security advisor currently reports 1 anonymously executable and 21 authenticated executable SECURITY DEFINER functions. Some authenticated functions enforce `auth.uid()` ownership checks; review each caller and function before altering grants.
+- CRM automation run records: 64 completed, latest 2026-11-02 02:30 UTC. Prospect discovery: 61 completed, 2 partial, 2 skipped, latest completed 2026-11-02 02:55 UTC.
+- Outreach message status counts: 7 sent, 4 delivered, 1 bounced, 10 drafts. These are persisted statuses, not independently verified provider outcomes.
+- Outreach settings: enabled=true, auto_send=false, global_daily_send_limit=10, autopilot_daily_enroll_limit=10, autopilot_max_sends_per_run=3, autopilot_pause_on_complaint=true. Preserve auto_send=false.
+- Safe application fix: show "Unavailable" rather than "Off" when automation settings cannot be loaded. Added read-only monitoring regression tests and included them in `test:crm-pipeline`.
+- No database grants, functions, policies, customer records or outreach settings were changed.
