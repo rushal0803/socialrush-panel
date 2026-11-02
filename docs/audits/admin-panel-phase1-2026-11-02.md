@@ -59,3 +59,10 @@ No live payment, checkout, customer, email, database, or SEO production mutation
 - The other inspected BEFORE INSERT triggers (`calculate_order_progress`, `reject_paused_service_order`) likewise do not assign `charge`. Combined with `charge NOT NULL` and no default, the legacy `place_order` and `place_campaign` SQL bodies appear incompatible with current schema.
 - GitHub code search for `place_order(`, `place_campaign(`, and `create_wallet_payment` returned no indexed results; **absence of search results is not proof of zero callers**. Need full repository grep or route inventory before altering privileges or checkout.
 - Production was not modified and no checkout was executed.
+
+## Full repository caller inventory — verified CI log
+- GitHub Actions run 41489477219 succeeded, including `test:crm-pipeline`, payment-confidence tests, production build, browser smoke tests and isolated wallet checks.
+- The scanner's `runtimeCandidates` output contains **one** application reference: `app/api/payments/cashfree/order/route.ts` calls `supabase.rpc("create_wallet_payment", ...)`. `place_order` and `place_campaign` produced no application-code matches for the scanner's patterns.
+- Non-runtime references include SQL migration definitions and permission restrictions, plus scanner tests. This is pattern-based evidence, not proof that dynamic or differently qualified callers do not exist.
+- Inspected Cashfree route: authenticated POST creates a Cashfree order using provider credentials, then calls `create_wallet_payment` with `p_method: "cashfree"`. It has configuration gates, but **no explicit retirement guard** in the route. Do not infer that it is publicly usable without checking configuration and routing; do not invoke it or initiate payments.
+- Recommended next step: inspect deployment configuration and current customer UI references to the Cashfree route. Do not re-enable, disable, or change payments without isolated regression coverage and owner approval.
