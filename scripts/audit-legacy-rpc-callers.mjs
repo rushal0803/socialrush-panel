@@ -1,5 +1,5 @@
-import { readdirSync, readFileSync, statSync } from "node:fs";
-import { join, relative } from "node:path";
+import { readdirSync, readFileSync } from "node:fs";
+import { join, relative, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
@@ -27,7 +27,7 @@ function walk(dir, results) {
   }
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === fileURLToPath(new URL("file://" + process.argv[1], import.meta.url))) {
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
   const results = [];
   walk(root, results);
   console.log(JSON.stringify({ audit: "legacy-rpc-callers", matches: results }, null, 2));
