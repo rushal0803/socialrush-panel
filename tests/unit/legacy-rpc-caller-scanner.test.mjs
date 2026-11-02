@@ -1,6 +1,6 @@
 import { test } from "node:test";
 import assert from "node:assert/strict";
-import { scanLegacyRpcReferences } from "../../scripts/audit-legacy-rpc-callers.mjs";
+import { scanLegacyRpcReferences, scanRepository } from "../../scripts/audit-legacy-rpc-callers.mjs";
 
 test("legacy checkout scanner identifies actual RPC calls", () => {
   assert.deepEqual(scanLegacyRpcReferences('await db.rpc("place_order", { p_service_id: 1 })'), ["place_order"]);
@@ -9,4 +9,10 @@ test("legacy checkout scanner identifies actual RPC calls", () => {
 });
 test("scanner does not confuse unrelated words with checkout calls", () => {
   assert.deepEqual(scanLegacyRpcReferences("const place_order = true;"), []);
+});
+
+test("report repository-wide legacy RPC references without changing checkout", () => {
+  const matches = scanRepository();
+  console.log("Legacy RPC caller audit:", JSON.stringify(matches));
+  assert.ok(Array.isArray(matches));
 });
