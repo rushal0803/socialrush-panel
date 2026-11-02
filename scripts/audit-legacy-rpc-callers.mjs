@@ -4,6 +4,7 @@ import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("../", import.meta.url));
 const skip = new Set([".git", ".next", "node_modules", "coverage", "playwright-report", "test-results"]);
+const nonRuntimeRoots = new Set(["tests", "scripts", "docs", "supabase", "migrations"]);
 const supported = /\.(?:ts|tsx|js|jsx|mjs|cjs|sql)$/;
 const patterns = [
   { name: "place_order", regex: /(?:rpc\s*\(\s*["'`]place_order["'`]|\bpublic\.place_order\s*\()/g },
@@ -30,7 +31,10 @@ function walk(dir, results) {
 export function scanRepository() {
   const results = [];
   walk(root, results);
-  return results;
+  return {
+    runtimeCandidates: results.filter(({ path }) => !nonRuntimeRoots.has(path.split(/[\\/]/)[0])),
+    nonRuntimeReferences: results.filter(({ path }) => nonRuntimeRoots.has(path.split(/[\\/]/)[0])),
+  };
 }
 
 if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
