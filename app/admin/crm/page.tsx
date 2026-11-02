@@ -45,7 +45,7 @@ export default async function CrmOverviewPage(){
   // Supabase returns at most 1,000 rows by default; warn instead of silently claiming an exact total.
   const followUpCountMayBeTruncated=follow.length>=1000;
   const customerCountMayBeTruncated=profiles.length>=1000;
-  const queryFailures=[["Customers",pr],["Orders",or],["CRM profiles",cr],["Follow-ups",fr],["Support tickets",sr],["Refills",rr],["Drafts",dr],["Rewards",rw],["Reward rules",rules],["Analytics",ar],["Experiments",exp]].filter(([,result])=>result.error).map(([name])=>name);
+  const queryFailures=[["Customers",pr.error],["Orders",or.error],["CRM profiles",cr.error],["Follow-ups",fr.error],["Support tickets",sr.error],["Refills",rr.error],["Drafts",dr.error],["Rewards",rw.error],["Reward rules",rules.error],["Analytics",ar.error],["Experiments",exp.error]].filter(([,error])=>Boolean(error)).map(([name])=>name);
   const high=crmRows.filter(x=>x.priority==="high");
   const neverOrdered=sum.filter(x=>x.m.validOrders===0);
   const newCustomers=sum.filter(x=>x.p.created_at>=since);
