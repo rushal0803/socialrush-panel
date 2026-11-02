@@ -40,3 +40,10 @@ No live payment, checkout, customer, email, database, or SEO production mutation
 - Outreach settings: enabled=true, auto_send=false, global_daily_send_limit=10, autopilot_daily_enroll_limit=10, autopilot_max_sends_per_run=3, autopilot_pause_on_complaint=true. Preserve auto_send=false.
 - Safe application fix: show "Unavailable" rather than "Off" when automation settings cannot be loaded. Added read-only monitoring regression tests and included them in `test:crm-pipeline`.
 - No database grants, functions, policies, customer records or outreach settings were changed.
+
+## Privileged RPC triage — follow-up (read-only)
+- Live permissions inventory confirms 21 `SECURITY DEFINER` functions callable by `authenticated`, of which `record_analytics_event` is also callable by `anon`. These are advisor exposure warnings, not proof that every function is exploitable.
+- `is_admin()` checks the caller's `auth.uid()` against `profiles.role = 'admin'`; `request_review_removal()` scopes its update to `user_id = auth.uid()`. Their privileged execution is not by itself a demonstrated authorization bypass.
+- `place_order()` validates `auth.uid()`, active service, quantity and wallet balance; however, the live function's `INSERT INTO public.orders (user_id, service_id, link, quantity)` omits the calculated `charge` even though it deducts that charge from the wallet and logs a transaction. Inspect column defaults, constraints, current callers and isolated database tests before deciding whether this is an actual accounting inconsistency. No live orders were placed.
+- `create_wallet_payment()` still recognizes legacy payment methods such as card, netbanking and cashfree. Determine whether this RPC is still reachable by active customer flows before proposing restrictions. Do not modify payment processing without dedicated regression and owner approval.
+- `record_analytics_event()` anonymous grant remains unchanged; application-level origin checks do not prevent direct Supabase RPC calls. Proposed database remediation needs caller inventory, staging verification and explicit approval.
