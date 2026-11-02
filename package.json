@@ -42,7 +42,8 @@
     "seo:instagram-tech": "node scripts/seo-instagram-technical-check.mjs",
     "seo:instagram-sitemap": "node scripts/seo-instagram-sitemap-check.mjs",
     "test:order-notifications": "node --experimental-strip-types --test tests/unit/order-notification-policy.test.ts tests/unit/order-notification-integration-contract.test.mjs",
-    "audit:legacy-rpc-callers": "node scripts/audit-legacy-rpc-callers.mjs"
+    "audit:legacy-rpc-callers": "node scripts/audit-legacy-rpc-callers.mjs",
+    "test:cashfree-retirement": "node --test tests/unit/cashfree-retirement-contract.test.mjs"
   },
   "dependencies": {
     "@supabase/ssr": "^0.6.1",
