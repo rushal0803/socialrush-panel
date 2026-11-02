@@ -27,8 +27,12 @@ function walk(dir, results) {
   }
 }
 
-if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+export function scanRepository() {
   const results = [];
   walk(root, results);
-  console.log(JSON.stringify({ audit: "legacy-rpc-callers", matches: results }, null, 2));
+  return results;
+}
+
+if (process.argv[1] && fileURLToPath(import.meta.url) === resolve(process.argv[1])) {
+  console.log(JSON.stringify({ audit: "legacy-rpc-callers", matches: scanRepository() }, null, 2));
 }
