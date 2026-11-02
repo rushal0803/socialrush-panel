@@ -14,5 +14,6 @@ test("scanner does not confuse unrelated words with checkout calls", () => {
 test("report repository-wide legacy RPC references without changing checkout", () => {
   const matches = scanRepository();
   console.log("Legacy RPC caller audit:", JSON.stringify(matches));
-  assert.ok(Array.isArray(matches));
+  assert.ok(Array.isArray(matches.runtimeCandidates));
+  assert.ok(Array.isArray(matches.nonRuntimeReferences));
 });
