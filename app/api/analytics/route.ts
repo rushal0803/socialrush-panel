@@ -120,7 +120,7 @@ export async function POST(request: NextRequest) {
 
   const db = await createClient();
   try {
-    await db.rpc("record_analytics_event", {
+    const { error: analyticsError } = await db.rpc("record_analytics_event", {
       p_event_name: body.event,
       p_session_id: session,
       p_page_path: trim(body.pagePath, 300) || "/",
@@ -159,6 +159,11 @@ export async function POST(request: NextRequest) {
       p_referring_domain: referringDomain,
       p_metadata: metadata,
     });
+    if (analyticsError) {
+      // Supabase RPC errors are returned as data, not thrown exceptions.
+      // Log only the stable error code; never log customer metadata or attribution.
+      console.warn("Analytics event write failed", { code: analyticsError.code || "unknown" });
+    }
   } catch {
     /* Analytics never blocks navigation. */
   }
