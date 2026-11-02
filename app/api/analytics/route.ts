@@ -41,6 +41,13 @@ const trim = (value: unknown, length: number) =>
 export async function POST(request: NextRequest) {
   const jsonError = requireJson(request, 8_192);
   if (jsonError) return jsonError;
+  // Browser beacons should originate from this site; direct RPC grants are audited separately.
+  const origin = request.headers.get("origin");
+  if (origin) {
+    let sameOrigin = false;
+    try { sameOrigin = new URL(origin).origin === request.nextUrl.origin; } catch { /* Reject malformed origins. */ }
+    if (!sameOrigin) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
   const limited = rateLimit(request, "analytics", 120, 60_000);
   if (limited) return limited;
 
