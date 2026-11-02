@@ -53,3 +53,9 @@ No live payment, checkout, customer, email, database, or SEO production mutation
 - `public.orders.charge` is `NOT NULL` and has **no column default**. `place_order()` and `place_campaign()` omit `charge` in their insert statements. A new call to either function would normally fail the NOT NULL constraint unless an applicable BEFORE INSERT trigger supplies a value.
 - Inspected order triggers: `calculate_order_progress()` changes progress/status fields only; `reject_paused_service_order()` validates service availability; `assign_public_order_id()` still needs inspection for any unexpected charge assignment. Do not assume historical orders used these legacy RPCs.
 - No test orders or wallet transactions were created. Recommended follow-up: inspect remaining BEFORE INSERT trigger, trace legacy RPC callers, and add isolated SQL regression tests before proposing a migration.
+
+## Order trigger verification and caller-search limits
+- Inspected `public.assign_public_order_id()` live definition: it only generates/immutably protects `public_order_id`; it does **not** set `orders.charge`.
+- The other inspected BEFORE INSERT triggers (`calculate_order_progress`, `reject_paused_service_order`) likewise do not assign `charge`. Combined with `charge NOT NULL` and no default, the legacy `place_order` and `place_campaign` SQL bodies appear incompatible with current schema.
+- GitHub code search for `place_order(`, `place_campaign(`, and `create_wallet_payment` returned no indexed results; **absence of search results is not proof of zero callers**. Need full repository grep or route inventory before altering privileges or checkout.
+- Production was not modified and no checkout was executed.
