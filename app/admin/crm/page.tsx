@@ -44,6 +44,8 @@ export default async function CrmOverviewPage(){
   const overdue=follow.filter(x=>x.due_at<now);
   // Supabase returns at most 1,000 rows by default; warn instead of silently claiming an exact total.
   const followUpCountMayBeTruncated=follow.length>=1000;
+  const customerCountMayBeTruncated=profiles.length>=1000;
+  const queryFailures=[["Customers",pr],["Orders",or],["CRM profiles",cr],["Follow-ups",fr],["Support tickets",sr],["Refills",rr],["Drafts",dr],["Rewards",rw],["Reward rules",rules],["Analytics",ar],["Experiments",exp]].filter(([,result])=>result.error).map(([name])=>name);
   const high=crmRows.filter(x=>x.priority==="high");
   const neverOrdered=sum.filter(x=>x.m.validOrders===0);
   const newCustomers=sum.filter(x=>x.p.created_at>=since);
@@ -108,6 +110,8 @@ export default async function CrmOverviewPage(){
 
   const issues=[
     followUpCountMayBeTruncated&&"Pending follow-up counts may be incomplete (1,000-row limit)",
+    customerCountMayBeTruncated&&"Customer metrics may be incomplete (1,000-row limit)",
+    queryFailures.length>0&&`Some CRM data could not be loaded: ${queryFailures.join(", ")}. Do not rely on the displayed metrics until the queries recover.`,
     overdue.length&&`${overdue.length} overdue follow-up${overdue.length>1?"s":""}`,
     high.length&&`${high.length} high-priority customer${high.length>1?"s":""}`,
     (sr.data||[]).filter((x:any)=>!["closed","resolved"].includes(String(x.status).toLowerCase())).length&&`${(sr.data||[]).filter((x:any)=>!["closed","resolved"].includes(String(x.status).toLowerCase())).length} open support issue${(sr.data||[]).length>1?"s":""}`,
