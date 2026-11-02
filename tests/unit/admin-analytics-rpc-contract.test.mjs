@@ -17,3 +17,10 @@ test("analytics error diagnostics omit raw customer event and attribution data",
 test("analytics failures do not block navigation", () => {
   assert.match(source, /new NextResponse\(null,\s*\{\s*status:\s*204\s*\}\)/);
 });
+
+test("analytics endpoint rejects cross-origin browser posts before the RPC", () => {
+  assert.match(source, /request\.headers\.get\("origin"\)/);
+  assert.match(source, /new URL\(origin\)\.origin === request\.nextUrl\.origin/);
+  assert.match(source, /Invalid request origin\./);
+  assert.ok(source.indexOf('request.headers.get("origin")') < source.indexOf('db.rpc("record_analytics_event"'));
+});
