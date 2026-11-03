@@ -85,6 +85,7 @@ export default async function SearchRecoveryQueue() {
           Work items represent investigation status, not Google&apos;s confirmed indexing state or AI-search placement.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
+          <Link href="/admin/crm/growth-hub/gsc" className="rounded-lg border border-white/15 px-3 py-2 text-xs font-bold text-[#D1D5DB] hover:bg-white/10">Import GSC CSV <ArrowRight size={13} className="ml-1 inline" /></Link>
           <Link href="/admin/seo/indexation" className="rounded-lg border border-white/15 px-3 py-2 text-xs font-bold text-[#D1D5DB] hover:bg-white/10">Technical indexation <ArrowRight size={13} className="ml-1 inline" /></Link>
           <Link href="/admin/seo/aeo" className="rounded-lg border border-white/15 px-3 py-2 text-xs font-bold text-[#D1D5DB] hover:bg-white/10">AI-search readiness <ArrowRight size={13} className="ml-1 inline" /></Link>
           <a target="_blank" rel="noreferrer" href="https://search.google.com/search-console" className="rounded-lg border border-white/15 px-3 py-2 text-xs font-bold text-[#D1D5DB] hover:bg-white/10">Search Console <ExternalLink size={13} className="ml-1 inline" /></a>

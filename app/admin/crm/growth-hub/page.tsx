@@ -49,6 +49,7 @@ const sections = [
     cta: "Open recovery queue",
     icon: FileSearch,
     quickLinks: [
+      { href: "/admin/crm/growth-hub/gsc", label: "Search Console CSV" },
       { href: "/admin/seo/indexation", label: "Indexation" },
       { href: "/admin/seo/ctr", label: "Search snippets" },
       { href: "/admin/seo/competitors", label: "Competitors" },
