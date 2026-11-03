@@ -69,9 +69,9 @@ test("Phase 46 prioritizes pace, AOV and repeat revenue when they are weak", () 
 
 test("Phase 46 reads verified paid orders and completed refunds without changing commerce logic", () => {
   const page = read("app/admin/growth/revenue/page.tsx");
-  assert.match(page, /\["paid", "completed"\]\.includes\(order\.payment_status/);
-  assert.match(page, /transaction\.type === "refund"/);
-  assert.match(page, /transaction\.status === "completed"/);
+  assert.match(page, /db\.rpc\("admin_revenue_report"/);
+  assert.match(page, /financial\.refundAmount/);
+  assert.match(page, /financial\.net/);
   assert.match(page, /buildVerifiedRevenueDashboard/);
   assert.match(page, /does not alter prices, wallet balances, payment amounts, fulfillment rules or order submission behavior/);
 });

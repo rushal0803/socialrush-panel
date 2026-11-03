@@ -1,21 +1,24 @@
-import { NextResponse } from "next/server";
+import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { requireAdminApi } from "@/lib/admin/require-admin-api";
-import { refundOrderToWalletOnce } from "@/lib/admin/refund-order";
+import { updateOrderFinancially } from "@/lib/admin/refund-order";
 import { recordTrustedEvent } from "@/lib/analytics/server";
 import { orderNotificationEvents } from "@/lib/orders/notification-policy";
 import { enqueueOrderNotice } from "@/lib/orders/notification-outbox";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { requireJson, requireSameOrigin } from "@/lib/security/request";
 
 const statuses = new Set([
   "pending", "processing", "in_progress", "partial", "completed", "cancelled",
   "refunded", "failed", "refill_requested", "refilling",
 ]);
 
-export async function POST(request: Request, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
+export async function POST(request: NextRequest, { params: paramsPromise }: { params: Promise<{ id: string }> }) {
   const params = await paramsPromise;
   const auth = await requireAdminApi();
   if ("response" in auth) return auth.response;
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request); if (jsonError) return jsonError;
   const body = (await request.json().catch(() => null)) as { status?: string; note?: string; receiptVerified?: boolean; verifiedTransactionId?: string } | null;
   const status = String(body?.status ?? "").toLowerCase();
   if (!statuses.has(status)) return NextResponse.json({ error: "Unsupported order status" }, { status: 422 });
@@ -56,7 +59,7 @@ export async function POST(request: Request, { params: paramsPromise }: { params
     update.admin_note = String(body.note).trim().slice(0, 2000) || null;
   }
 
-  const { data, error } = await auth.supabase.from("orders").update(update).eq("id", params.id).eq("payment_status", currentOrder.payment_status).eq("status", currentOrder.status).select("*").maybeSingle();
+  const { data, error, refund } = await updateOrderFinancially(auth.supabase, params.id, update, currentOrder);
   if (error) return NextResponse.json({ error: error.message }, { status: 400 });
   if (!data) return NextResponse.json({ error: "Order changed during review. Refresh and try again." }, { status: 409 });
 
@@ -101,28 +104,6 @@ export async function POST(request: Request, { params: paramsPromise }: { params
       });
     } catch (analyticsError) {
       console.error("[MANUAL_UPI_PAYMENT_FAILED_ANALYTICS_ERROR]", analyticsError);
-    }
-  }
-
-  let refund: Awaited<ReturnType<typeof refundOrderToWalletOnce>> | null = null;
-  if (
-    (status === "cancelled" || status === "refunded") &&
-    currentOrder.payment_status === "paid" &&
-    currentOrder.status !== "cancelled" &&
-    currentOrder.status !== "refunded"
-  ) {
-    try {
-      refund = await refundOrderToWalletOnce(auth.supabase, currentOrder, "Refund for cancelled order");
-    } catch (refundError) {
-      return NextResponse.json(
-        {
-          error:
-            refundError instanceof Error
-              ? `Order status updated, but wallet refund failed: ${refundError.message}`
-              : "Order status updated, but wallet refund failed.",
-        },
-        { status: 500 },
-      );
     }
   }
 

@@ -914,13 +914,25 @@ test("dashboard wallet details trap focus and preserve unverified status", async
   await trigger.click();
   const dialog=page.getByRole("dialog",{name:"Transaction Details",exact:true});
   await expect(dialog).toBeVisible();
-  await expect(dialog.getByText("No completed wallet impact",{exact:true})).toBeVisible();
+  await expect(dialog.getByText("No wallet balance change",{exact:true})).toBeVisible();
   await expect(dialog.getByRole("button",{name:"Close transaction details"})).toBeFocused();
   for(let i=0;i<8;i++){await page.keyboard.press(i<4?"Tab":"Shift+Tab");await expect.poll(()=>dialog.evaluate(el=>el.contains(document.activeElement))).toBe(true);}
   await page.keyboard.press("Escape");
   await expect(dialog).toHaveCount(0);
   await expect(trigger).toBeFocused();
   await expect.poll(()=>page.evaluate(()=>document.body.style.position)).not.toBe("fixed");
+  const downloadPromise=page.waitForEvent("download");
+  await page.getByRole("button",{name:"Download CSV",exact:true}).click();
+  const download=await downloadPromise;
+  expect(download.suggestedFilename()).toBe("socialrush-wallet-statement.csv");
+  const csv=fs.readFileSync((await download.path())!,"utf8");
+  expect(csv.split("\n")[0]).toContain('"Balance impact"');
+  const pendingLine=csv.split("\n").find(line=>line.includes('"pending"'));
+  expect(pendingLine).toBeTruthy();
+  expect(pendingLine).toMatch(/,"0"$/);
+  await page.setViewportSize({width:1440,height:900});
+  await expect(page.locator("#transactions table")).toBeVisible();
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth)).toBe(true);
   await page.route("**/api/payments/cashfree/verify",route=>route.fulfill({json:{data:{status:"pending",balance:null}}}));
   await page.goto("/dashboard/wallet?cashfree_order_id=fixture-pending");
   await expect(page.locator("main").getByRole("alert")).toContainText("still being verified");

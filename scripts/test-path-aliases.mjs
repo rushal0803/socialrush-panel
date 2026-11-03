@@ -4,6 +4,12 @@ import { registerHooks } from 'node:module';
 import { existsSync, statSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 registerHooks({ resolve(specifier, context, nextResolve) {
+  // Next supplies this marker during its build. Unit tests run outside Next's
+  // resolver and use the same empty server implementation, never client code.
+  if (specifier === 'server-only') return nextResolve(new URL('../node_modules/next/dist/compiled/server-only/empty.js', import.meta.url).href, context);
+  // Package CommonJS modules use Node's native relative-path resolution, not
+  // application TypeScript aliases or file-URL rewriting.
+  if (context.parentURL?.includes('/node_modules/')) return nextResolve(specifier, context);
   const alias = specifier.startsWith('@/');
   const relative = specifier.startsWith('./') || specifier.startsWith('../');
   if (!alias && !relative) return nextResolve(specifier, context);

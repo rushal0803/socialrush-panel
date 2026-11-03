@@ -59,7 +59,7 @@ test("unauthenticated dashboard routes redirect to login", async ({ page }) => {
   }
 });
 
-test("production CSP retains required Supabase and Cashfree allowances without Razorpay checkout", async ({ request }) => {
+test("production CSP retains Supabase and historical compatibility allowances without Razorpay checkout", async ({ request }) => {
   const response = await request.get("/");
   expect(response.ok()).toBeTruthy();
   const csp = response.headers()["content-security-policy"];
@@ -71,12 +71,12 @@ test("production CSP retains required Supabase and Cashfree allowances without R
   expect(csp).not.toContain("razorpay.com");
 });
 
-test("former Razorpay order endpoints reject new customer payments", async ({ request }) => {
-  for (const path of ["/api/payments/razorpay/order", "/api/razorpay/create-order", "/api/checkout/payment"]) {
+test("retired gateway order endpoints reject new payments and direct customers to active methods", async ({ request }) => {
+  for (const path of ["/api/payments/razorpay/order", "/api/razorpay/create-order", "/api/checkout/payment", "/api/payments/cashfree/order"]) {
     const response = await request.post(path, { data: {} });
     expect(response.status(), `${path} must be permanently unavailable for new payments`).toBe(410);
     await expect(response.json()).resolves.toMatchObject({
-      error: "Razorpay is disabled for new payments. Use Cashfree.",
+      error: "Gateway payments are retired. Use wallet or manual checkout.",
     });
   }
 });

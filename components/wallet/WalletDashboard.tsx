@@ -6,6 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { formatCurrency, getCurrencyDisclaimer } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { paymentMethodLabel } from "@/lib/payments/methods";
+import { walletAmountPrefix, walletBalanceEffect } from "@/lib/payments/wallet-ledger";
 import dynamic from "next/dynamic";
 const WalletTransactionDialog = dynamic(() => import("./WalletTransactionDialog"));
 
@@ -413,7 +414,7 @@ export default function WalletDashboard({
   }), [dateFilter, initial.transactions, methodFilter, statusFilter, transactionFilter, transactionSearch]);
   const downloadStatement = () => {
     const quote = (value: unknown) => `"${String(value ?? "").replaceAll('"', '""')}"`;
-    const rows = filteredTransactions.map((item) => [new Date(item.created_at).toISOString(), item.type, item.status, item.description || paymentMethodLabel(item.payment_method || item.type), item.metadata?.order_id || item.provider_payment_id || item.provider_order_id || item.provider_refund_id || item.id, item.type === "debit" ? -Number(item.amount) : Number(item.amount)]);
+    const rows = filteredTransactions.map((item) => [new Date(item.created_at).toISOString(), item.type, item.status, item.description || paymentMethodLabel(item.payment_method || item.type), item.metadata?.order_id || item.provider_payment_id || item.provider_order_id || item.provider_refund_id || item.id, walletBalanceEffect(item)]);
     const csv = [["Date", "Type", "Status", "Description", "Reference", "Balance impact"], ...rows].map((row) => row.map(quote).join(",")).join("\n");
     const href = URL.createObjectURL(new Blob([csv], { type: "text/csv;charset=utf-8" })); const link = document.createElement("a"); link.href = href; link.download = "socialrush-wallet-statement.csv"; link.click(); URL.revokeObjectURL(href);
   };
@@ -613,7 +614,7 @@ export default function WalletDashboard({
                       Amount
                     </p>
                     <p className={`mt-2 text-sm font-black ${item.type === "debit" ? "text-white" : "text-emerald-300"}`}>
-                      {item.type === "debit" ? "-" : "+"}
+                      {walletAmountPrefix(item)}
                       {money(item.amount)}
                     </p>
                   </div>
@@ -658,7 +659,7 @@ export default function WalletDashboard({
                       {paymentMethodLabel(item.payment_method || item.description || item.type)}
                     </td>
                     <td className={`px-6 py-4 font-black ${item.type === "debit" ? "text-white" : "text-emerald-300"}`}>
-                      {item.type === "debit" ? "-" : "+"}
+                      {walletAmountPrefix(item)}
                       {money(item.amount)}
                     </td>
                     <td className="px-6 py-4">

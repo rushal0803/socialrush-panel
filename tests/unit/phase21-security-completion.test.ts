@@ -16,13 +16,15 @@ test("Phase 21 completion keeps privileged admin RPCs on the server-only service
   assert.match(adminActions, /adminSupabase\.rpc\("admin_adjust_balance"/);
   assert.match(adminActions, /adminSupabase\.rpc\("admin_set_user_blocked"/);
   assert.match(adminActions, /adminSupabase\.rpc\("admin_review_payment"/);
-  assert.match(adminActions, /refundOrderToWalletOnce\(adminSupabase,/);
+  assert.match(adminActions, /updateOrderFinancially\(supabase, orderId,/);
 
   assert.match(crmActions, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(crmActions, /adminSupabase:createAdminClient\(\)/);
   assert.match(crmActions, /adminSupabase\.rpc\("admin_run_crm_automation"/);
-  assert.match(refundRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
-  assert.match(refundRoute, /admin\.rpc\("admin_refund_wallet_payment"/);
+  // New RPCs independently check the authenticated admin inside PostgreSQL.
+  assert.match(refundRoute, /status: 410/);
+  assert.doesNotMatch(refundRoute, /\.rpc\(|razorpayRequest/);
+  assert.doesNotMatch(refundRoute, /admin_refund_wallet_payment/);
   assert.match(orderRoute, /import \{ createAdminClient \} from "@\/lib\/supabase\/admin"/);
   assert.match(orderRoute, /saveInitialCount\(createAdminClient\(\),/);
   assert.doesNotMatch(orderRoute, /saveInitialCount\(supabase,/);

@@ -1,39 +1,8 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { calculateServiceTotalPaise, validateQuantity, type ServiceCode } from "@/lib/service-pricing";
-import { getServiceById } from "@/lib/smm-service-catalog";
+import { validateQuantity } from "@/lib/service-pricing";
 import { requireJson, requireSameOrigin, isUuid, rateLimit } from "@/lib/security/request";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
-
-const liveCatalogServiceCodes = new Set<ServiceCode>([
-  "instagram-followers",
-  "instagram-saves",
-  "instagram-shares",
-  "youtube-comments",
-  "youtube-watch-hours",
-  "facebook-group-members",
-  "linkedin-followers",
-  "linkedin-usa-connections",
-  "linkedin-usa-post-likes",
-  "linkedin-usa-endorsements",
-  "linkedin-usa-followers",
-  "linkedin-usa-group-members",
-  "linkedin-usa-custom-comments",
-  "linkedin-usa-reposts",
-  "x-followers",
-  "twitter-likes",
-  "twitter-views",
-  "twitter-retweets",
-  "telegram-post-views",
-  "telegram-post-reactions",
-  "telegram-poll-votes",
-  "tiktok-followers",
-  "tiktok-likes",
-  "tiktok-views",
-  "tiktok-custom-comments",
-  "tiktok-story-views",
-  "tiktok-saves",
-]);
 
 const DIRECT_UPI_PREFIX = "socialrush_direct_upi:";
 
@@ -69,41 +38,36 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Checkout currency is invalid." }, { status: 409 });
   }
 
-  const service = getServiceById(intent.service_code);
-  const isLiveCatalogService = Boolean(service && liveCatalogServiceCodes.has(service.code));
-  if (!service || (!service.isActive && !isLiveCatalogService)) {
-    return NextResponse.json({ error: "The saved checkout details are no longer valid. Please review your order." }, { status: 409 });
-  }
-
   const { data: databaseService } = await admin
     .from("services")
-    .select("id,rate,min,max,accepts_new_orders,health_status,status")
+    .select("id,min,max,is_active,accepts_new_orders,health_status,status")
     .eq("id", intent.service_id)
     .maybeSingle();
 
-  if (!databaseService || databaseService.status !== "active" || !databaseService.accepts_new_orders || databaseService.health_status === "paused") {
+  if (!databaseService || databaseService.status !== "active" || databaseService.is_active === false || !databaseService.accepts_new_orders || databaseService.health_status === "paused") {
     return NextResponse.json({ error: "This service is temporarily unavailable. Please choose another service." }, { status: 409 });
   }
 
-  const quantityError = isLiveCatalogService
-    ? validateQuantity(Number(intent.quantity), { minQuantity: Number(databaseService.min), maxQuantity: Number(databaseService.max) })
-    : validateQuantity(Number(intent.quantity), service);
-  const recalculatedTotalPaise = isLiveCatalogService
-    ? Math.round((Number(intent.quantity) * Number(databaseService.rate) * 100) / 1000)
-    : calculateServiceTotalPaise(service.code as ServiceCode, Number(intent.quantity));
-
-  if (quantityError || recalculatedTotalPaise <= 0 || recalculatedTotalPaise !== Number(intent.total_paise)) {
+  const quantityError = validateQuantity(Number(intent.quantity), { minQuantity: Number(databaseService.min), maxQuantity: Number(databaseService.max) });
+  // Only trusted server-created, owner-scoped intents supply prices. Preserve the
+  // immutable quote until expiry; do not reprice it with a static/current rate.
+  const quotedTotalPaise = Number(intent.total_paise);
+  if (quantityError || !Number.isSafeInteger(quotedTotalPaise) || quotedTotalPaise <= 0) {
     return NextResponse.json({ error: "The saved checkout details are no longer valid. Please review your order." }, { status: 409 });
   }
 
-  const { data: profile } = await admin
+  const { data: profile, error: profileError } = await admin
     .from("profiles")
     .select("balance")
     .eq("id", user.id)
     .maybeSingle();
-  const walletBalancePaise = Math.max(Math.round(Number(profile?.balance || 0) * 100), 0);
+  const balance = Number(profile?.balance);
+  if (profileError || !profile || !Number.isFinite(balance) || balance < 0 || !Number.isSafeInteger(Math.round(balance * 100))) {
+    return NextResponse.json({ error: "Unable to verify your wallet balance. Please retry before paying." }, { status: 503 });
+  }
+  const walletBalancePaise = Math.round(balance * 100);
 
-  if (walletBalancePaise >= recalculatedTotalPaise) {
+  if (walletBalancePaise >= quotedTotalPaise) {
     return NextResponse.json(
       { error: "Your wallet already covers this order.", code: "WALLET_SUFFICIENT" },
       { status: 409 },
@@ -119,7 +83,7 @@ export async function POST(request: NextRequest) {
         orderId: intent.id,
         paymentSessionId: `${DIRECT_UPI_PREFIX}${intent.id}`,
         returnUrl: returnUrl.toString(),
-        amountPaise: recalculatedTotalPaise,
+        amountPaise: quotedTotalPaise,
         environment: "production",
         method: "upi",
         duplicate: false,

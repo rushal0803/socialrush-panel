@@ -6,6 +6,7 @@ import DashboardDialog from "@/components/dashboard/DashboardDialog";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { paymentMethodLabel } from "@/lib/payments/methods";
+import { walletAmountPrefix, walletBalanceEffect } from "@/lib/payments/wallet-ledger";
 import type { WalletTransaction } from "./WalletDashboard";
 
 export default function WalletTransactionDialog({ item, onClose }: { item: WalletTransaction; onClose: () => void }) {
@@ -14,13 +15,14 @@ export default function WalletTransactionDialog({ item, onClose }: { item: Walle
   const closeRef = useRef<HTMLButtonElement>(null);
   const close = useCallback(() => onClose(), [onClose]);
   const money = formatCurrency(item.amount, currency, rates);
+  const effect = walletBalanceEffect(item);
   const rows = [
     ["Transaction ID", item.id],
     ["Payment reference", item.provider_payment_id || item.provider_order_id || item.provider_refund_id || "Not available"],
     ["Payment method", paymentMethodLabel(item.payment_method || item.type)],
     ["Type", item.type],
-    ["Amount", `${item.type === "debit" ? "−" : "+"}${money}`],
-    ["Wallet impact", item.status === "completed" ? `${item.type === "debit" ? "Debit" : "Credit"} ${money}` : "No completed wallet impact"],
+    ["Amount", `${walletAmountPrefix(item)}${money}`],
+    ["Wallet impact", effect ? `${effect < 0 ? "Debit" : "Credit"} ${money}` : "No wallet balance change"],
     ["Status", item.status],
     ["Related order", String(item.metadata?.order_id || "Not linked")],
     ["Created", new Date(item.created_at).toLocaleString("en-IN")],
