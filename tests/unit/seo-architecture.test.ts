@@ -15,6 +15,7 @@ import { buildCommercialSearchDescription } from "../../lib/seo/search-snippets.
 import { growthPlatformDecisionPoints, growthPlatformIndiaKeywords } from "../../lib/seo/growth-platform-intent.ts";
 import { commercialCanonicalRedirects, hasUniqueQueryOwnership, isCommercialAliasPath, transactionalQueryOwners } from "../../lib/seo/query-ownership.ts";
 import { PHASE5_AGENCY_RESELLER_UPDATE, PHASE5_PLATFORM_SMM_UPDATE, PHASE5_PRICING_INTENT_UPDATE, PHASE5_SAFE_ORDERING_UPDATE, PHASE5_SIGNIFICANT_UPDATE, PHASE5_SOCIAL_GROWTH_UPDATE, PHASE5_SOCIAL_SERVICES_UPDATE, phase5SearchFreshnessPaths, searchFreshnessLastmod } from "../../lib/seo/search-freshness.ts";
+import { verifiedContentUpdates, VERIFIED_CONTENT_RELEASE_DATE } from "../../lib/seo/verified-content-updates.ts";
 import { buildDeliveryRefillIntentCopy, deliveryRefillIntentKeywords } from "../../lib/seo/delivery-refill-intent.ts";
 import { buildOrderRequirementCopy, orderRequirementIntentKeywords } from "../../lib/seo/order-requirements-intent.ts";
 import { smmPanelIndiaCriteria, smmPanelIndiaKeywords, smmPanelPlatformSummary } from "../../lib/seo/smm-panel-intent.ts";
@@ -1600,4 +1601,37 @@ test("educational blog guides link to all six priority service destinations with
   assert.match(text, /does not guarantee discussion or active community participation/);
   assert.match(text, /YouTube moderates comments independently/);
   assert.match(text, /Purchased or promotional watch time should never be assumed to qualify for monetization/);
+});
+
+
+test("sitemap uses real October 19 releases for updated priority pages only", () => {
+  const expected = [
+    "/buy-instagram-comments-india",
+    "/buy-instagram-saves-india",
+    "/buy-instagram-shares-india",
+    "/buy-youtube-comments-india",
+    "/buy-youtube-watch-hours-india",
+    "/buy-facebook-group-members-india",
+    "/tools/instagram-engagement-rate-calculator",
+    "/tools/youtube-watch-time-calculator",
+    "/blog/choose-the-right-social-media-service",
+    "/blog/how-social-media-growth-campaigns-work",
+  ];
+  assert.equal(VERIFIED_CONTENT_RELEASE_DATE, "2026-10-19");
+  assert.deepEqual(Object.keys(verifiedContentUpdates).sort(), [...expected].sort());
+  assert.equal(new Set(expected).size, 10);
+
+  const sitemapSource = readFileSync(new URL("../../app/sitemap.xml/route.ts", import.meta.url), "utf8");
+  assert.match(sitemapSource, /Object\.entries\(verifiedContentUpdates\)/);
+  assert.match(sitemapSource, /if \(!previous \|\| releasedOn > previous\) lastModified\.set\(path, releasedOn\)/);
+  assert.doesNotMatch(sitemapSource, /lastModified\.set\(path, new Date\(/);
+
+  const originalFreshness = searchFreshnessLastmod["/buy-instagram-comments-india"];
+  assert.equal(originalFreshness, PHASE5_SIGNIFICANT_UPDATE, "historical phase-5 date remains unchanged");
+  for (const path of expected) {
+    assert.match(path, /^\//);
+    assert.ok(!path.includes("?") && !isCommercialAliasPath(path), "canonical public URL: " + path);
+    assert.equal(verifiedContentUpdates[path], VERIFIED_CONTENT_RELEASE_DATE, path);
+  }
+  assert.equal(verifiedContentUpdates["/buy-instagram-followers-india"], undefined, "no invented freshness for unaffected pages");
 });

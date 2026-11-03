@@ -10,6 +10,7 @@ import { createAdminClient } from "@/lib/supabase/admin";
 import { countryServicePaths, internationalHubPaths } from "@/lib/seo/international";
 import { isCommercialAliasPath } from "@/lib/seo/query-ownership";
 import { searchFreshnessLastmod } from "@/lib/seo/search-freshness";
+import { verifiedContentUpdates } from "@/lib/seo/verified-content-updates";
 
 export const revalidate = 21600;
 
@@ -156,6 +157,12 @@ export async function GET() {
   const lastModified = new Map<string, string>(Object.entries(searchFreshnessLastmod));
   uniqueBlogArticles.forEach((article) => {
     if (article.updatedAt) lastModified.set(`/blog/${article.slug}`, article.updatedAt);
+  });
+  // Verified releases can supersede historical dates, but never override a newer
+  // editorial updatedAt. Never use the current request time as sitemap lastmod.
+  Object.entries(verifiedContentUpdates).forEach(([path, releasedOn]) => {
+    const previous = lastModified.get(path);
+    if (!previous || releasedOn > previous) lastModified.set(path, releasedOn);
   });
   approvedCaseStudies.forEach((study) => {
     if (study.published_at) lastModified.set(`/case-studies/${study.slug}`, study.published_at);
