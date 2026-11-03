@@ -1,4 +1,6 @@
 import { NextResponse } from "next/server";
+import { createAdminClient } from "@/lib/supabase/admin";
+import { websiteEnquiryCategory, websiteEnquiryReplyDraft, websiteEnquirySource } from "@/lib/crm/website-enquiries";
 
 export const runtime = "nodejs";
 
@@ -64,7 +66,7 @@ export async function POST(request: Request) {
   const whatsapp = cleanText(payload.whatsapp, 40);
   const service = cleanText(payload.service, 140);
   const message = cleanText(payload.message, 2000);
-  const source = cleanText(payload.source, 200) || "/contact";
+  const source = websiteEnquirySource(cleanText(payload.source, 200) || "/contact");
   const submittedAt = new Date().toISOString();
 
   if (name.length < 2) {
@@ -95,6 +97,45 @@ export async function POST(request: Request) {
     );
   }
 
+  const category = websiteEnquiryCategory(payload.category, service);
+  // Server-only durable inbox. Never treat an inbound request as marketing opt-in.
+  // If migration is not yet deployed, preserve the existing support email route.
+  let savedEnquiryId: string | null = null;
+  try {
+    const { data, error } = await createAdminClient().from("crm_website_enquiries").insert({
+      full_name: name,
+      email,
+      whatsapp,
+      service,
+      category,
+      message,
+      source,
+      reply_draft: websiteEnquiryReplyDraft(name, category),
+      marketing_opt_in: false,
+    }).select("id").single();
+    if (error || !data?.id) {
+      console.error("[contact] enquiry persistence failed", { code: error?.code || "db_error" });
+    } else {
+      savedEnquiryId = data.id;
+    }
+  } catch {
+    console.error("[contact] enquiry persistence unavailable");
+  }
+  const updateNotification = async (status: "sent" | "failed" | "skipped") => {
+    if (!savedEnquiryId) return;
+    try {
+      const { error } = await createAdminClient().from("crm_website_enquiries")
+        .update({ notification_status: status, updated_at: new Date().toISOString() })
+        .eq("id", savedEnquiryId);
+      if (error) console.error("[contact] notification status update failed", { code: error.code || "db_error" });
+    } catch {
+      console.error("[contact] notification status update unavailable");
+    }
+  };
+  const safeSavedResponse = {
+    message: "Your enquiry has been received and saved for our support team to review.",
+  };
+
   const resendApiKey = process.env.RESEND_API_KEY;
   const supportEmail = process.env.CONTACT_TO_EMAIL || process.env.SUPPORT_EMAIL || "support@getsocialrush.com";
   const fromEmail = process.env.CONTACT_FROM_EMAIL || "SocialRUSH Website <onboarding@resend.dev>";
@@ -106,6 +147,10 @@ export async function POST(request: Request) {
 
   if (missingConfig.length > 0) {
     console.warn("[contact] missing email configuration", { missingConfig });
+    if (savedEnquiryId) {
+      await updateNotification("skipped");
+      return NextResponse.json(safeSavedResponse);
+    }
     return NextResponse.json(
       { error: "Contact email is not configured yet. Please use WhatsApp support or try again later." },
       { status: 503 },
@@ -127,7 +172,9 @@ export async function POST(request: Request) {
     message,
   ].join("\n");
 
-  const response = await fetch("https://api.resend.com/emails", {
+  let response: Response;
+  try {
+    response = await fetch("https://api.resend.com/emails", {
     method: "POST",
     headers: {
       Authorization: `Bearer ${resendApiKey}`,
@@ -142,7 +189,17 @@ export async function POST(request: Request) {
     }),
   });
 
+  } catch {
+    await updateNotification("failed");
+    console.error("[contact] notification network failure");
+    return savedEnquiryId
+      ? NextResponse.json(safeSavedResponse)
+      : NextResponse.json({ error: "Unable to send your enquiry right now. Please use WhatsApp support or try again later." }, { status: 502 });
+  }
   if (!response.ok) {
+    await updateNotification("failed");
+    if (savedEnquiryId) return NextResponse.json(safeSavedResponse);
+
     console.error("[contact] resend delivery failure", {
       status: response.status,
       service,
@@ -155,6 +212,7 @@ export async function POST(request: Request) {
     );
   }
 
+  await updateNotification("sent");
   console.info("[contact] enquiry delivered", {
     service,
     source,
