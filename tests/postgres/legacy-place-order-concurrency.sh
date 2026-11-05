@@ -35,7 +35,7 @@ if [[ "$first_status" != 0 || "$second_status" == 0 ]]; then
 fi
 grep -q 'Insufficient balance' /tmp/legacy-second.log
 psql -X -v ON_ERROR_STOP=1 -At <<'SQL' | grep -qx '250|1|1'
-SELECT balance::text || '|' ||
+SELECT balance::integer::text || '|' ||
   (SELECT count(*) FROM public_fixture.orders)::text || '|' ||
   (SELECT count(*) FROM public_fixture.transactions)::text
 FROM public_fixture.profiles;
