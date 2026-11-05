@@ -3,7 +3,7 @@
 BEGIN;
 CREATE SCHEMA auth;
 CREATE SCHEMA public_fixture;
-CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $$ SELECT '00000000-0000-4000-8000-000000000001'::uuid $$;
+CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $ SELECT CASE WHEN current_setting('fixture.unauthenticated', true) = 'on' THEN NULL::uuid ELSE '00000000-0000-4000-8000-000000000001'::uuid END $;
 CREATE TABLE public_fixture.services (id bigint PRIMARY KEY, status text NOT NULL, min integer NOT NULL, max integer NOT NULL, rate numeric NOT NULL);
 CREATE TABLE public_fixture.profiles (id uuid PRIMARY KEY, balance numeric(14,2) NOT NULL);
 CREATE TABLE public_fixture.orders (id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id uuid NOT NULL, service_id bigint NOT NULL, link text NOT NULL, quantity integer NOT NULL, charge numeric(14,2) NOT NULL);
@@ -70,6 +70,14 @@ BEGIN
  EXCEPTION WHEN raise_exception THEN
   IF SQLERRM <> 'A valid target link is required' THEN RAISE; END IF;
  END;
+ PERFORM set_config('fixture.unauthenticated', 'on', true);
+ BEGIN
+  PERFORM public_fixture.place_order(1,'https://example.test/unauthenticated',1000);
+  RAISE EXCEPTION 'expected authentication rejection';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM <> 'Authentication required' THEN RAISE; END IF;
+ END;
+ PERFORM set_config('fixture.unauthenticated', 'off', true);
  IF (SELECT count(*) FROM public_fixture.orders) <> 1 OR (SELECT balance FROM public_fixture.profiles) <> 500
  THEN RAISE EXCEPTION 'failed request mutated wallet or orders'; END IF;
 END $test$;
