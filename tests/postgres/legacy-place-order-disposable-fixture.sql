@@ -102,6 +102,64 @@ BEGIN
   RAISE EXCEPTION 'replay-risk fixture did not debit twice';
  END IF;
 END $replay_test$;
+-- Separate disposable keyed-checkout model; does not alter legacy place_order.
+CREATE TABLE public_fixture.keyed_orders (
+ id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+ user_id uuid NOT NULL, request_id uuid NOT NULL, service_id bigint NOT NULL,
+ link text NOT NULL, quantity integer NOT NULL, charge numeric(14,2) NOT NULL,
+ UNIQUE(user_id,request_id)
+);
+CREATE FUNCTION public_fixture.keyed_checkout(p_request_id uuid,p_service_id bigint,p_link text,p_quantity integer)
+RETURNS bigint LANGUAGE plpgsql AS $keyed$
+DECLARE v_user uuid:=auth.uid(); v_existing public_fixture.keyed_orders%rowtype;
+ v_service public_fixture.services%rowtype; v_charge numeric(14,2); v_balance numeric(14,2); v_id bigint;
+BEGIN
+ IF v_user IS NULL THEN RAISE EXCEPTION 'Authentication required'; END IF;
+ IF p_request_id IS NULL THEN RAISE EXCEPTION 'Request key required'; END IF;
+ IF p_quantity IS NULL OR nullif(trim(p_link),'') IS NULL THEN RAISE EXCEPTION 'Invalid request'; END IF;
+ -- Serialize all wallet operations per user, including same-key retries.
+ SELECT balance INTO v_balance FROM public_fixture.profiles WHERE id=v_user FOR UPDATE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'Profile not found'; END IF;
+ SELECT * INTO v_existing FROM public_fixture.keyed_orders WHERE user_id=v_user AND request_id=p_request_id;
+ IF FOUND THEN
+  IF v_existing.service_id<>p_service_id OR v_existing.link<>trim(p_link) OR v_existing.quantity<>p_quantity
+  THEN RAISE EXCEPTION 'Request key payload mismatch'; END IF;
+  RETURN v_existing.id;
+ END IF;
+ SELECT * INTO v_service FROM public_fixture.services WHERE id=p_service_id AND status='active';
+ IF NOT FOUND THEN RAISE EXCEPTION 'Service is unavailable'; END IF;
+ IF p_quantity<v_service.min OR p_quantity>v_service.max THEN RAISE EXCEPTION 'Invalid quantity'; END IF;
+ v_charge:=round((p_quantity::numeric/1000)*v_service.rate,2);
+ IF v_balance<v_charge THEN RAISE EXCEPTION 'Insufficient balance'; END IF;
+ UPDATE public_fixture.profiles SET balance=balance-v_charge WHERE id=v_user;
+ INSERT INTO public_fixture.keyed_orders(user_id,request_id,service_id,link,quantity,charge)
+ VALUES(v_user,p_request_id,p_service_id,trim(p_link),p_quantity,v_charge) RETURNING id INTO v_id;
+ INSERT INTO public_fixture.transactions(user_id,amount,type,status)
+ VALUES(v_user,v_charge,'debit','completed');
+ RETURN v_id;
+END $keyed$;
+DO $keyed_test$
+DECLARE v_id bigint; v_orders integer; v_tx integer; v_balance numeric;
+BEGIN
+ SELECT count(*) INTO v_tx FROM public_fixture.transactions;
+ SELECT balance INTO v_balance FROM public_fixture.profiles;
+ v_id:=public_fixture.keyed_checkout('11111111-1111-4111-8111-111111111111',1,'https://example.test/keyed',100);
+ IF public_fixture.keyed_checkout('11111111-1111-4111-8111-111111111111',1,' https://example.test/keyed ',100)<>v_id
+ THEN RAISE EXCEPTION 'retry returned different order'; END IF;
+ IF (SELECT count(*) FROM public_fixture.keyed_orders)<>1
+ OR (SELECT count(*) FROM public_fixture.transactions)<>v_tx+1
+ OR (SELECT balance FROM public_fixture.profiles)<>v_balance-50
+ THEN RAISE EXCEPTION 'keyed retry caused duplicate debit'; END IF;
+ BEGIN
+  PERFORM public_fixture.keyed_checkout('11111111-1111-4111-8111-111111111111',1,'https://example.test/changed',100);
+  RAISE EXCEPTION 'expected payload mismatch';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM<>'Request key payload mismatch' THEN RAISE; END IF;
+ END;
+ IF (SELECT count(*) FROM public_fixture.keyed_orders)<>1
+ OR (SELECT count(*) FROM public_fixture.transactions)<>v_tx+1
+ THEN RAISE EXCEPTION 'mismatched retry changed records'; END IF;
+END $keyed_test$;
 -- Simulate a downstream AFTER INSERT trigger failure, without real notifications.
 CREATE FUNCTION public_fixture.reject_order_after_insert() RETURNS trigger LANGUAGE plpgsql AS $trigger$
 BEGIN
