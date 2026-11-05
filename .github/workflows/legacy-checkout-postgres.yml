@@ -5,6 +5,7 @@ on:
     paths:
       - 'tests/postgres/legacy-place-order-disposable-fixture.sql'
       - '.github/workflows/legacy-checkout-postgres.yml'
+      - 'tests/postgres/legacy-place-order-concurrency.sh'
   workflow_dispatch:
 
 permissions:
@@ -44,3 +45,12 @@ jobs:
         run: |
           psql -X -v ON_ERROR_STOP=1 -f tests/postgres/legacy-place-order-disposable-fixture.sql
           test "$(psql -X -Atqc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public_fixture'")" = "0"
+
+      - name: Run simultaneous wallet purchase regression
+        env:
+          PGHOST: localhost
+          PGPORT: '5432'
+          PGUSER: postgres
+          PGPASSWORD: fixture_only_password
+          PGDATABASE: legacy_checkout_fixture
+        run: bash tests/postgres/legacy-place-order-concurrency.sh
