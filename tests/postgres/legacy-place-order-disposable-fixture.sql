@@ -73,6 +73,36 @@ BEGIN
  IF (SELECT count(*) FROM public_fixture.orders) <> 1 OR (SELECT balance FROM public_fixture.profiles) <> 500
  THEN RAISE EXCEPTION 'failed request mutated wallet or orders'; END IF;
 END $test$;
+-- Simulate a downstream AFTER INSERT trigger failure, without real notifications.
+CREATE FUNCTION public_fixture.reject_order_after_insert() RETURNS trigger LANGUAGE plpgsql AS $trigger$
+BEGIN
+ RAISE EXCEPTION 'simulated downstream order event failure';
+END $trigger$;
+CREATE TRIGGER fixture_order_event_failure AFTER INSERT ON public_fixture.orders
+FOR EACH ROW EXECUTE FUNCTION public_fixture.reject_order_after_insert();
+DO $rollback_test$
+DECLARE v_before_balance numeric; v_before_orders integer; v_before_transactions integer;
+BEGIN
+ SELECT balance INTO v_before_balance FROM public_fixture.profiles;
+ SELECT count(*) INTO v_before_orders FROM public_fixture.orders;
+ SELECT count(*) INTO v_before_transactions FROM public_fixture.transactions;
+ BEGIN
+  PERFORM public_fixture.place_order(1,'https://example.test/trigger-test',100);
+  RAISE EXCEPTION 'expected downstream trigger failure';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM <> 'simulated downstream order event failure' THEN RAISE; END IF;
+ END;
+ IF (SELECT balance FROM public_fixture.profiles) <> v_before_balance THEN
+  RAISE EXCEPTION 'wallet changed after downstream trigger failure';
+ END IF;
+ IF (SELECT count(*) FROM public_fixture.orders) <> v_before_orders THEN
+  RAISE EXCEPTION 'order persisted after downstream trigger failure';
+ END IF;
+ IF (SELECT count(*) FROM public_fixture.transactions) <> v_before_transactions THEN
+  RAISE EXCEPTION 'transaction persisted after downstream trigger failure';
+ END IF;
+END $rollback_test$;
 ROLLBACK;
--- The fixture deliberately omits production triggers, concurrency, grants and RLS.
+-- This fixture simulates a trigger exception; it does not reproduce production
+-- notification/bonus triggers, concurrency, grants, RLS or external side effects.
 -- It proves only that the corrected INSERT and basic wallet rollback work in isolation.
