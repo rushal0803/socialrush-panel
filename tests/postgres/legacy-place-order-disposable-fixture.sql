@@ -81,6 +81,27 @@ BEGIN
  IF (SELECT count(*) FROM public_fixture.orders) <> 1 OR (SELECT balance FROM public_fixture.profiles) <> 500
  THEN RAISE EXCEPTION 'failed request mutated wallet or orders'; END IF;
 END $test$;
+-- Document existing legacy RPC replay risk: without an idempotency key,
+-- two identical requests can both debit the wallet. This is a risk-demonstration
+-- test, NOT a desired security behavior or a production authorization.
+DO $replay_test$
+DECLARE v_before_orders integer; v_before_transactions integer; v_before_balance numeric;
+BEGIN
+ SELECT count(*) INTO v_before_orders FROM public_fixture.orders;
+ SELECT count(*) INTO v_before_transactions FROM public_fixture.transactions;
+ SELECT balance INTO v_before_balance FROM public_fixture.profiles;
+ PERFORM public_fixture.place_order(1,'https://example.test/same-target',100);
+ PERFORM public_fixture.place_order(1,'https://example.test/same-target',100);
+ IF (SELECT count(*) FROM public_fixture.orders) <> v_before_orders + 2 THEN
+  RAISE EXCEPTION 'replay-risk fixture did not create two orders';
+ END IF;
+ IF (SELECT count(*) FROM public_fixture.transactions) <> v_before_transactions + 2 THEN
+  RAISE EXCEPTION 'replay-risk fixture did not create two debits';
+ END IF;
+ IF (SELECT balance FROM public_fixture.profiles) <> v_before_balance - 100 THEN
+  RAISE EXCEPTION 'replay-risk fixture did not debit twice';
+ END IF;
+END $replay_test$;
 -- Simulate a downstream AFTER INSERT trigger failure, without real notifications.
 CREATE FUNCTION public_fixture.reject_order_after_insert() RETURNS trigger LANGUAGE plpgsql AS $trigger$
 BEGIN
