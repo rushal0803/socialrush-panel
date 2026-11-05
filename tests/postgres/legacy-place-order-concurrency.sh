@@ -40,4 +40,32 @@ SELECT balance::integer::text || '|' ||
   (SELECT count(*) FROM public_fixture.transactions)::text
 FROM public_fixture.profiles;
 SQL
+# Install only the keyed fixture model (not its DO test) in the disposable DB.
+sed -n '/^CREATE TABLE public_fixture.keyed_orders (/,/^END $keyed$;/p' "$fixture" | psql -X -v ON_ERROR_STOP=1
+set +e
+psql -X -v ON_ERROR_STOP=1 -At -c "SELECT public_fixture.keyed_checkout('22222222-2222-4222-8222-222222222222',1,'https://example.test/retry',100)" > /tmp/keyed-first.log 2>&1 &
+keyed_first=$!
+sleep 0.3
+psql -X -v ON_ERROR_STOP=1 -At -c "SELECT public_fixture.keyed_checkout('22222222-2222-4222-8222-222222222222',1,'https://example.test/retry',100)" > /tmp/keyed-second.log 2>&1 &
+keyed_second=$!
+wait "$keyed_first"; keyed_first_status=$?
+wait "$keyed_second"; keyed_second_status=$?
+set -e
+if [[ "$keyed_first_status" != 0 || "$keyed_second_status" != 0 ]]; then
+  echo "Expected both same-key retry calls to succeed" >&2
+  cat /tmp/keyed-first.log /tmp/keyed-second.log >&2
+  exit 1
+fi
+first_id=$(tail -n 1 /tmp/keyed-first.log)
+second_id=$(tail -n 1 /tmp/keyed-second.log)
+if [[ "$first_id" != "$second_id" || -z "$first_id" ]]; then
+  echo "Same-key concurrent retry returned different order IDs" >&2
+  exit 1
+fi
+psql -X -v ON_ERROR_STOP=1 -At <<'SQL' | grep -qx '200|1|2'
+SELECT balance::integer::text || '|' ||
+  (SELECT count(*) FROM public_fixture.keyed_orders)::text || '|' ||
+  (SELECT count(*) FROM public_fixture.transactions)::text
+FROM public_fixture.profiles;
+SQL
 psql -X -v ON_ERROR_STOP=1 -c 'DROP SCHEMA public_fixture CASCADE; DROP SCHEMA auth CASCADE;'
