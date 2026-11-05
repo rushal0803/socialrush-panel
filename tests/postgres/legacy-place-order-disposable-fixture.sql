@@ -48,6 +48,28 @@ BEGIN
  EXCEPTION WHEN raise_exception THEN
   IF SQLERRM <> 'Invalid quantity' THEN RAISE; END IF;
  END;
+ BEGIN PERFORM public_fixture.place_order(1,'https://example.test/post',99);
+  RAISE EXCEPTION 'expected minimum quantity rejection';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM <> 'Invalid quantity' THEN RAISE; END IF;
+ END;
+ BEGIN PERFORM public_fixture.place_order(1,'https://example.test/post',10001);
+  RAISE EXCEPTION 'expected maximum quantity rejection';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM <> 'Invalid quantity' THEN RAISE; END IF;
+ END;
+ UPDATE public_fixture.services SET status='paused' WHERE id=1;
+ BEGIN PERFORM public_fixture.place_order(1,'https://example.test/post',1000);
+  RAISE EXCEPTION 'expected paused service rejection';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM <> 'Service is unavailable' THEN RAISE; END IF;
+ END;
+ UPDATE public_fixture.services SET status='active' WHERE id=1;
+ BEGIN PERFORM public_fixture.place_order(1,'  ',1000);
+  RAISE EXCEPTION 'expected invalid target rejection';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM <> 'A valid target link is required' THEN RAISE; END IF;
+ END;
  IF (SELECT count(*) FROM public_fixture.orders) <> 1 OR (SELECT balance FROM public_fixture.profiles) <> 500
  THEN RAISE EXCEPTION 'failed request mutated wallet or orders'; END IF;
 END $test$;
