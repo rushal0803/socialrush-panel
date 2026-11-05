@@ -3,7 +3,7 @@
 BEGIN;
 CREATE SCHEMA auth;
 CREATE SCHEMA public_fixture;
-CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $ SELECT CASE WHEN current_setting('fixture.unauthenticated', true) = 'on' THEN NULL::uuid ELSE '00000000-0000-4000-8000-000000000001'::uuid END $;
+CREATE FUNCTION auth.uid() RETURNS uuid LANGUAGE sql STABLE AS $auth_uid$ SELECT CASE WHEN current_setting('fixture.unauthenticated', true) = 'on' THEN NULL::uuid ELSE '00000000-0000-4000-8000-000000000001'::uuid END $auth_uid$;
 CREATE TABLE public_fixture.services (id bigint PRIMARY KEY, status text NOT NULL, min integer NOT NULL, max integer NOT NULL, rate numeric NOT NULL);
 CREATE TABLE public_fixture.profiles (id uuid PRIMARY KEY, balance numeric(14,2) NOT NULL);
 CREATE TABLE public_fixture.orders (id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY, user_id uuid NOT NULL, service_id bigint NOT NULL, link text NOT NULL, quantity integer NOT NULL, charge numeric(14,2) NOT NULL);
