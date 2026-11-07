@@ -142,7 +142,26 @@ async function fetchHtml(url: URL, businessDomain: string) {
     if (!type.includes("text/html") && !type.includes("application/xhtml+xml")) return null;
     const contentLength = Number(response.headers.get("content-length") || 0);
     if (contentLength > MAX_HTML_BYTES) return null;
-    return { html: (await response.text()).slice(0, MAX_HTML_BYTES), finalUrl: finalUrl.toString() };
+    // Enforce the byte limit while reading: response.text() would buffer an
+    // arbitrarily large response before slicing it, even without Content-Length.
+    if (!response.body) return null;
+    const reader = response.body.getReader();
+    const chunks: Uint8Array[] = [];
+    let bytesRead = 0;
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        bytesRead += value.byteLength;
+        if (bytesRead > MAX_HTML_BYTES) return null;
+        chunks.push(value);
+      }
+    } finally {
+      await reader.cancel().catch(() => {});
+      reader.releaseLock();
+    }
+    const html = new TextDecoder().decode(Buffer.concat(chunks));
+    return { html, finalUrl: finalUrl.toString() };
   } catch {
     return null;
   } finally {
