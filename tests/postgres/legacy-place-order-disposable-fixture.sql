@@ -160,6 +160,90 @@ BEGIN
  OR (SELECT count(*) FROM public_fixture.transactions)<>v_tx+1
  THEN RAISE EXCEPTION 'mismatched retry changed records'; END IF;
 END $keyed_test$;
+-- Model manual split-payment recovery, not the production RPC implementation.
+CREATE TABLE public_fixture.manual_intents (
+ id uuid PRIMARY KEY, user_id uuid NOT NULL, request_id uuid NOT NULL,
+ status text NOT NULL DEFAULT 'created', order_id bigint
+);
+CREATE TABLE public_fixture.manual_wallet_applications (
+ intent_id uuid PRIMARY KEY, user_id uuid NOT NULL, amount numeric(14,2) NOT NULL
+);
+CREATE TABLE public_fixture.manual_orders (
+ id bigint GENERATED ALWAYS AS IDENTITY PRIMARY KEY, intent_id uuid NOT NULL UNIQUE,
+ user_id uuid NOT NULL, request_id uuid NOT NULL, payment_ref text NOT NULL,
+ UNIQUE(user_id,request_id)
+);
+CREATE FUNCTION public_fixture.apply_manual_wallet(p_intent uuid,p_request uuid,p_expected numeric)
+RETURNS numeric LANGUAGE plpgsql AS $manual_wallet$
+DECLARE v_user uuid:=auth.uid(); v_intent public_fixture.manual_intents%rowtype;
+ v_existing numeric; v_balance numeric; v_apply numeric;
+BEGIN
+ IF v_user IS NULL THEN RAISE EXCEPTION 'Authentication required'; END IF;
+ SELECT * INTO v_intent FROM public_fixture.manual_intents
+ WHERE id=p_intent AND user_id=v_user AND request_id=p_request FOR UPDATE;
+ IF NOT FOUND OR v_intent.status<>'created' THEN RAISE EXCEPTION 'Invalid manual intent'; END IF;
+ SELECT amount INTO v_existing FROM public_fixture.manual_wallet_applications WHERE intent_id=p_intent;
+ IF FOUND THEN RETURN v_existing; END IF;
+ SELECT balance INTO v_balance FROM public_fixture.profiles WHERE id=v_user FOR UPDATE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'Missing wallet'; END IF;
+ v_apply:=least(v_balance,coalesce(p_expected,0));
+ IF v_apply<0 THEN RAISE EXCEPTION 'Invalid wallet application'; END IF;
+ UPDATE public_fixture.profiles SET balance=balance-v_apply WHERE id=v_user;
+ INSERT INTO public_fixture.manual_wallet_applications VALUES(p_intent,v_user,v_apply);
+ RETURN v_apply;
+END $manual_wallet$;
+CREATE FUNCTION public_fixture.submit_manual_order(p_intent uuid,p_request uuid,p_ref text,p_fail_insert boolean DEFAULT false,p_fail_completion boolean DEFAULT false)
+RETURNS bigint LANGUAGE plpgsql AS $manual_order$
+DECLARE v_user uuid:=auth.uid(); v_intent public_fixture.manual_intents%rowtype;
+ v_order public_fixture.manual_orders%rowtype; v_id bigint;
+BEGIN
+ SELECT * INTO v_intent FROM public_fixture.manual_intents
+ WHERE id=p_intent AND user_id=v_user AND request_id=p_request FOR UPDATE;
+ IF NOT FOUND THEN RAISE EXCEPTION 'Invalid manual intent'; END IF;
+ SELECT * INTO v_order FROM public_fixture.manual_orders WHERE intent_id=p_intent;
+ IF FOUND THEN
+  IF v_order.payment_ref<>p_ref THEN RAISE EXCEPTION 'Payment reference mismatch'; END IF;
+  RETURN v_order.id;
+ END IF;
+ IF NOT EXISTS(SELECT 1 FROM public_fixture.manual_wallet_applications WHERE intent_id=p_intent)
+ THEN RAISE EXCEPTION 'Wallet not applied'; END IF;
+ IF p_fail_insert THEN RAISE EXCEPTION 'Simulated insert failure'; END IF;
+ INSERT INTO public_fixture.manual_orders(intent_id,user_id,request_id,payment_ref)
+ VALUES(p_intent,v_user,p_request,p_ref) RETURNING id INTO v_id;
+ IF p_fail_completion THEN RETURN v_id; END IF;
+ UPDATE public_fixture.manual_intents SET status='completed',order_id=v_id WHERE id=p_intent;
+ RETURN v_id;
+END $manual_order$;
+INSERT INTO public_fixture.manual_intents(id,user_id,request_id)
+VALUES('33333333-3333-4333-8333-333333333333',auth.uid(),'44444444-4444-4444-8444-444444444444');
+DO $manual_recovery$
+DECLARE v_before numeric; v_id bigint;
+BEGIN
+ SELECT balance INTO v_before FROM public_fixture.profiles WHERE id=auth.uid();
+ IF public_fixture.apply_manual_wallet('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444',25)<>25
+ THEN RAISE EXCEPTION 'wallet amount wrong'; END IF;
+ BEGIN
+  PERFORM public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-ABC12345',true);
+  RAISE EXCEPTION 'expected insert failure';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM<>'Simulated insert failure' THEN RAISE; END IF;
+ END;
+ IF public_fixture.apply_manual_wallet('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444',25)<>25
+ THEN RAISE EXCEPTION 'wallet retry mismatch'; END IF;
+ v_id:=public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-ABC12345',false,true);
+ IF public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-ABC12345')<>v_id
+ THEN RAISE EXCEPTION 'existing order not returned'; END IF;
+ BEGIN
+  PERFORM public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-DIFFERENT');
+  RAISE EXCEPTION 'expected payment reference mismatch';
+ EXCEPTION WHEN raise_exception THEN
+  IF SQLERRM<>'Payment reference mismatch' THEN RAISE; END IF;
+ END;
+ IF (SELECT balance FROM public_fixture.profiles WHERE id=auth.uid())<>v_before-25
+ OR (SELECT count(*) FROM public_fixture.manual_wallet_applications)<>1
+ OR (SELECT count(*) FROM public_fixture.manual_orders)<>1
+ THEN RAISE EXCEPTION 'manual retry changed wallet or order count'; END IF;
+END $manual_recovery$;
 -- Simulate a downstream AFTER INSERT trigger failure, without real notifications.
 CREATE FUNCTION public_fixture.reject_order_after_insert() RETURNS trigger LANGUAGE plpgsql AS $trigger$
 BEGIN
