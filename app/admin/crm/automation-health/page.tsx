@@ -70,7 +70,7 @@ export default async function AutomationHealthPage(){
    <Metric label="Unknown delivery · all time" value={customerUnknown.count??"Unavailable"}/>
    <Metric label="Resend delivery webhooks · all time" value={deliveryWebhooks.count??"Unavailable"}/>
    <Metric label="Failed webhooks · all time" value={webhookFailures.count??"Unavailable"}/>
-   <Metric label="Automatic sending" value={outreachSettings.data?.enabled&&outreachSettings.data?.auto_send?"On":"Off"}/>
+   <Metric label="Automatic sending" value={outreachSettings.error||!outreachSettings.data?"Unavailable":outreachSettings.data.enabled&&outreachSettings.data.auto_send?"On":"Off"}/>
    <Metric label="Daily email cap" value={outreachSettings.data?.global_daily_send_limit??"Unavailable"}/>
    <Metric label="Daily lead-enrollment cap" value={outreachSettings.data?.autopilot_daily_enroll_limit??"Unavailable"}/>
   </section>
