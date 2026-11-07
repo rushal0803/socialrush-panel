@@ -142,7 +142,7 @@ async function fetchHtml(url: URL, businessDomain: string) {
     if (!type.includes("text/html") && !type.includes("application/xhtml+xml")) return null;
     const contentLength = Number(response.headers.get("content-length") || 0);
     if (contentLength > MAX_HTML_BYTES) return null;
-    // Enforce the byte limit while reading: response.text() would buffer an
+    // Enforce the byte limit while reading: full-body decoding would buffer an
     // arbitrarily large response before slicing it, even without Content-Length.
     if (!response.body) return null;
     const reader = response.body.getReader();
