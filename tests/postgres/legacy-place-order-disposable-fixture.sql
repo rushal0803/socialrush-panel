@@ -203,6 +203,12 @@ BEGIN
  SELECT * INTO v_order FROM public_fixture.manual_orders WHERE intent_id=p_intent;
  IF FOUND THEN
   IF v_order.payment_ref<>p_ref THEN RAISE EXCEPTION 'Payment reference mismatch'; END IF;
+  -- Repair an incomplete intent completion when the order was already inserted.
+  IF v_intent.status='created' THEN
+   UPDATE public_fixture.manual_intents SET status='completed',order_id=v_order.id WHERE id=p_intent;
+  ELSIF v_intent.status<>'completed' OR v_intent.order_id IS DISTINCT FROM v_order.id THEN
+   RAISE EXCEPTION 'Manual intent/order conflict';
+  END IF;
   RETURN v_order.id;
  END IF;
  IF NOT EXISTS(SELECT 1 FROM public_fixture.manual_wallet_applications WHERE intent_id=p_intent)
@@ -233,6 +239,9 @@ BEGIN
  v_id:=public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-ABC12345',false,true);
  IF public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-ABC12345')<>v_id
  THEN RAISE EXCEPTION 'existing order not returned'; END IF;
+ IF NOT EXISTS (SELECT 1 FROM public_fixture.manual_intents
+  WHERE id='33333333-3333-4333-8333-333333333333' AND status='completed' AND order_id=v_id)
+ THEN RAISE EXCEPTION 'manual intent not reconciled on retry'; END IF;
  BEGIN
   PERFORM public_fixture.submit_manual_order('33333333-3333-4333-8333-333333333333','44444444-4444-4444-8444-444444444444','UTR-DIFFERENT');
   RAISE EXCEPTION 'expected payment reference mismatch';
