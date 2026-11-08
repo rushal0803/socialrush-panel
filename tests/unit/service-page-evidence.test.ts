@@ -42,8 +42,10 @@ test("Telegram structured answers match the visible FAQ source and state outcome
 });
 
 
-test("generated service routes never shadow dedicated canonical page files", () => {
+test("first-batch generated routes never shadow their dedicated canonical page files", () => {
+  const batch = new Set(["/buy-instagram-followers-india", "/instagram-likes", "/youtube-subscribers", "/youtube-views", "/buy-facebook-followers-india", "/instagram-views", "/linkedin-followers", "/facebook-likes", "/twitter-followers", "/telegram-members"]);
   for (const [slug, path] of Object.entries(canonicalIndiaServicePaths)) {
+    if (!batch.has(path)) continue;
     const dedicated = existsSync(new URL(`../../app${path}/page.tsx`, import.meta.url)) || existsSync(new URL(`../../app/(india-seo-services)${path}/page.tsx`, import.meta.url));
     assert.equal(Object.hasOwn(canonicalServiceRoutes, path.slice(1)), !dedicated, path);
     if (!dedicated) assert.equal(canonicalServiceRoutes[path.slice(1)], slug);

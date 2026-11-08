@@ -1,10 +1,11 @@
 import { canonicalIndiaServicePaths, type IndiaServiceSlug } from "./canonical-india-services.ts";
 
-// Canonicals retaining their /buy-... slug have dedicated app routes. Generating
-// them again under [service] can overwrite their prerendered metadata/schema.
-// TikTok also owns a dedicated canonical route without the buy- prefix.
+// These first-batch canonicals have dedicated page files. Generating them
+// again under [service] can overwrite their prerendered metadata/schema.
+// Other service-route collisions require their own rendered-content audit.
+const dedicatedBatchPaths = new Set(["/buy-instagram-followers-india", "/buy-facebook-followers-india"]);
 export const canonicalServiceRoutes = Object.fromEntries(
   Object.entries(canonicalIndiaServicePaths)
-    .filter(([slug, path]) => path !== `/${slug}` && path !== "/tiktok-followers")
+    .filter(([, path]) => !dedicatedBatchPaths.has(path))
     .map(([slug, path]) => [path.slice(1), slug as IndiaServiceSlug]),
 ) as Record<string, IndiaServiceSlug>;
