@@ -7,6 +7,14 @@ const referenceUnits: Readonly<Record<string, string>> = {
   "/linkedin-followers": "followers",
   "/facebook-likes": "likes",
   "/telegram-members": "members",
+  "/youtube-likes": "likes",
+  "/facebook-views": "views",
+  "/linkedin-likes": "likes",
+  "/buy-instagram-saves-india": "saves",
+  "/buy-instagram-shares-india": "shares",
+  "/buy-youtube-comments-india": "comments",
+  "/buy-facebook-shares-india": "shares",
+  "/buy-facebook-group-members-india": "members",
 };
 
 export function servicePriceSpecification(path: string, pricePer1000: number) {
