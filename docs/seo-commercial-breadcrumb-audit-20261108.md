@@ -23,3 +23,11 @@ Local production build and preview HTML must confirm Telegram and LinkedIn each 
 ## Boundaries and remaining audit
 
 Independent branch from production main. No database writes, payment changes, content mass generation, sitemap edits, redirect creation, indexing submissions or production deployment. Do not create `/telegram-growth-india` merely to satisfy the broken breadcrumb; use the real catalog page. The site-wide orphan-page graph, official Rich Results Test, Google URL Inspection and observed AI citations remain separate verification work. A breadcrumb fix is not proof that a service page is indexed or ranks competitively.
+
+## Public link-graph follow-up
+
+Fetched all 172 sitemap URLs successfully and extracted anchor hrefs from the response HTML. A breadth-first traversal from `/` using only those fetched URLs reached 169. All 69 inventoried service/platform pages were reached. `/press` and `/tools/social-media-growth-planner` had no non-self incoming anchors in this fetched set; `/partners` was linked only from the unreached `/press` page.
+
+These are graph observations from the sitemap crawl, not proof that no other non-sitemap page links to these routes. Add Partners and Press under the shared footer's Company group, and Growth Planner under Resources. These are existing public 200/indexable/self-canonical sitemap pages, not new SEO pages. The footer emits real HTML links on public pages and uses the same link data for its responsive layouts. Do not change the sitemap or invent redirect routes for this fix.
+
+After build and preview, verify that homepage response HTML contains all three destinations. That closes these three gaps in the captured graph; production must be rechecked only after an approved release. The previous graph remains the production baseline until then.
