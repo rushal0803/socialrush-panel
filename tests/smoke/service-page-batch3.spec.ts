@@ -64,6 +64,7 @@ for (const path of paths) {
       }
       expect(await page.title()).toMatch(/Twitter|X/);
       expect(html).toMatch(/Buy Twitter|Crypto Followers/);
+      expect(html).not.toContain('Use the exact public YouTube video URL');
       // Existing live-only service policy: never invent a structured offer.
       expect(schemas.filter(node => node['@type'] === 'Offer')).toHaveLength(0);
     } else {
