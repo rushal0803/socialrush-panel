@@ -1,6 +1,7 @@
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { getCommercialServiceBreadcrumbs, hasRouteOwnedCommercialBreadcrumb } from "@/lib/seo/commercial-service-breadcrumbs";
 
 type Props = {
   code: string;
@@ -48,20 +49,14 @@ export default function IndiaCommercialServiceJsonLd({
       : {}),
   };
 
-  // /twitter-followers already renders a purpose-built breadcrumb schema in its
-  // route so its visible Twitter/X breadcrumb and JSON-LD stay aligned. Avoid
-  // emitting a second BreadcrumbList from this shared commercial schema helper.
-  const shouldRenderBreadcrumb = path !== "/twitter-followers";
+  // Reuse a route's existing visible breadcrumb rather than emitting a second trail.
+  const shouldRenderBreadcrumb = !hasRouteOwnedCommercialBreadcrumb(path);
 
   return (
     <>
       {shouldRenderBreadcrumb ? (
         <BreadcrumbJsonLd
-          items={[
-            { name: "Home", path: "/" },
-            { name: `${platform} Growth India`, path: `/${platform.toLowerCase()}-growth-india` },
-            { name, path },
-          ]}
+          items={getCommercialServiceBreadcrumbs(platform, name, path)}
         />
       ) : null}
       <script
