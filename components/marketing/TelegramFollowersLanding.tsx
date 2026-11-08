@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { telegramMembersFaqs } from "@/lib/seo/telegram-members-faq";
 import { useMemo, useState } from "react";
 import {
   ArrowRight, Check, ChevronDown, CirclePause,
@@ -25,15 +26,7 @@ type LiveServiceFacts = { rate: number; min: number; max: number; deliveryTime: 
 
 const fallback = getServiceById("telegram-members");
 const breadcrumbs = getCommercialServiceBreadcrumbs("Telegram", "Telegram Members", "/telegram-members");
-const faqs = [
-  ["How do I order Telegram members in India?", "Choose a member quantity, enter the correct public Telegram channel or group link, review the live INR total, and continue through the secure SocialRUSH order flow."],
-  ["Do I need to share my Telegram password?", "No. SocialRUSH only needs the public Telegram channel or group URL required by the service. Never share a password, OTP, phone login, or recovery code."],
-  ["Can I order for a Telegram channel or group?", "Yes, when the destination is a valid public Telegram channel or group link supported by the service. Check that the link opens correctly before ordering."],
-  ["How do I track my order?", "Once your order is placed, its status and details remain available in your SocialRUSH dashboard."],
-  ["How long does delivery take?", "The current delivery estimate is displayed alongside the active service before you continue to checkout. Timing can vary by quantity and link availability."],
-  ["What happens if my link is private or incorrect?", "A private, inaccessible, or incorrect link may prevent the order from being processed. Confirm the public destination before submitting it, then contact support with your order ID if you need help."],
-  ["Is refill or support available?", "The current refill or support information is displayed with the active service. Check the service details before placing your order because eligibility can vary."],
-];
+const faqs = telegramMembersFaqs;
 
 export default function TelegramFollowersLanding({ live }: { live: LiveServiceFacts | null }) {
   const service = fallback;
@@ -89,7 +82,7 @@ export default function TelegramFollowersLanding({ live }: { live: LiveServiceFa
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           <article className="rounded-2xl border border-orange-400/20 bg-white/[.035] p-5">
             <h3 className="text-lg font-black text-white">Members</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-400">Use members when the main gap is visible audience size around a public channel or group. This is a community-size signal, not a guarantee of post activity or replies.</p>
+            <p className="mt-3 text-sm leading-7 text-slate-400">A member package changes a displayed count on an eligible public channel or group. It does not establish authentic audience interest or guarantee that members will read posts, reply or stay. Compare post views and useful conversations separately.</p>
             <a href="#order" className="mt-5 inline-flex min-h-11 items-center font-black text-orange-200 underline decoration-orange-300/35 underline-offset-4">Build a members order</a>
           </article>
           <article className="rounded-2xl border border-sky-300/20 bg-white/[.035] p-5">
