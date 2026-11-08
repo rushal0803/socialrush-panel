@@ -6,6 +6,8 @@ on:
       - 'tests/postgres/legacy-place-order-disposable-fixture.sql'
       - '.github/workflows/legacy-checkout-postgres.yml'
       - 'tests/postgres/legacy-place-order-concurrency.sh'
+      - 'docs/audits/place-order-charge-correction-REVIEW-ONLY.sql'
+      - 'tests/unit/place-order-charge-review-contract.test.mjs'
   workflow_dispatch:
 
 permissions:
