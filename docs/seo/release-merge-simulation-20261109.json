@@ -1,0 +1,26 @@
+[
+  {
+    "left": "35fcaf731447a948b69a9ae917b5af596d22711e",
+    "right": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+    "returncode": 0,
+    "output": "8977d395ff70e87fb8ff55b9da48eda28ea60fa4\n"
+  },
+  {
+    "left": "f3a5ee594157f2d4520d3a0ed6de9429b99b05c8",
+    "right": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+    "returncode": 0,
+    "output": "e5b85cbb7f485ec32736291432d73d76df1edd2d\n"
+  },
+  {
+    "left": "f37d396fee50f65e5096286bb0f33c481c6e288b",
+    "right": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+    "returncode": 0,
+    "output": "b1630ea615305ff337b22054d9e535029a9d0142\n"
+  },
+  {
+    "left": "31ab8613c49b61459a8fc48b0cfb0a0062cd3197",
+    "right": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+    "returncode": 0,
+    "output": "85dd21120ba2d892e466bb491a49919f318158d1\n"
+  }
+]
