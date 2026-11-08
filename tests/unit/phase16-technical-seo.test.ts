@@ -1,4 +1,5 @@
 import test from "node:test";
+import { structuredType } from "../../scripts/lib/seo-jsonld.mjs";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 
@@ -70,4 +71,29 @@ test("phase 16 production audit is wired into the weekly monitor and npm scripts
   assert.match(workflow, /node scripts\/seo-instagram-technical-check\.mjs/);
   assert.equal(packageJson.scripts["seo:instagram-tech"], "node scripts/seo-instagram-technical-check.mjs");
   assert.match(packageJson.scripts["test:unit"], /phase16-technical-seo\.test\.ts/);
+});
+
+
+test("schema checks accept compact, spaced, graph and array JSON-LD", () => {
+  for (const data of [
+    '{"@type":"Service"}',
+    '{ "@type" : "Service" }',
+    '{"@graph":[{"@type":"Service"}]}',
+    '[{"@type":["Thing","Service"]}]',
+  ]) {
+    assert.equal(structuredType(`<script type="application/ld+json">${data}</script>`, "Service"), true);
+  }
+  assert.equal(structuredType(`<script id='schema' type = 'application/ld+json'>{"@type":"BlogPosting"}</script>`, "BlogPosting"), true);
+});
+
+test("schema checks reject missing, malformed and non-JSON-LD evidence", () => {
+  for (const html of [
+    '<script type="application/ld+json">{"@type":"Organization"}</script>',
+    '<script type="application/ld+json">{"@type":"Service",}</script>',
+    '<script type="application/json">{"@type":"Service"}</script>',
+    '<p>{"@type":"Service"}</p>',
+    '<script type="application/ld+json">{"description":"Service"}</script>',
+  ]) {
+    assert.equal(structuredType(html, "Service"), false);
+  }
 });
