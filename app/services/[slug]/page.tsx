@@ -1,4 +1,5 @@
-import { dedicatedCatalogBatchSlugs } from "@/lib/seo/dedicated-catalog-batch-routes";
+import { xServiceBuyerFaqs } from "@/lib/seo/x-service-buyer-faqs";
+import { createCatalogServiceMetadata } from "@/lib/seo/catalog-service-metadata";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -105,8 +106,8 @@ function getFaqs(slug: string, title: string, price: string, delivery: string) {
 
 export async function generateStaticParams() {
   return [
-    ...growthServices.filter((service) => !dedicatedCatalogBatchSlugs.has(service.slug)).map((service) => ({ slug: service.slug })),
-    ...activeSmmServices.filter((service) => !dedicatedCatalogBatchSlugs.has(service.code)).map((service) => ({ slug: service.code })),
+    ...growthServices.map((service) => ({ slug: service.slug })),
+    ...activeSmmServices.map((service) => ({ slug: service.code })),
     { slug: "smm-panel-india" },
   ];
 }
@@ -117,6 +118,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const params = await paramsPromise;
+  if (Object.hasOwn(xServiceBuyerFaqs, params.slug)) return createCatalogServiceMetadata(params.slug);
   if (params.slug === "linkedin-usa-followers") {
     const title = "Buy LinkedIn USA Followers | SocialRUSH";
     const description =
@@ -638,8 +640,10 @@ export default async function ServiceSeoPage({
   if (params.slug === "facebook-views") {
     permanentRedirect("/facebook-views");
   }
-  const seo = getSeoData(params.slug);
-  if (!seo) notFound();
+  const existingSeo = getSeoData(params.slug);
+  if (!existingSeo) notFound();
+  const buyerFaqs = xServiceBuyerFaqs[params.slug];
+  const seo = buyerFaqs ? { ...existingSeo, faqs: [...buyerFaqs.map(([question, answer]) => ({ question, answer })), ...existingSeo.faqs] } : existingSeo;
   const catalogService = activeSmmServices.find((service) => service.code === params.slug);
   const cro = catalogService ? getServicePageCroConfig(catalogService) : null;
   const hasBasePrice =

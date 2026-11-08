@@ -1,4 +1,3 @@
-import { xServiceBuyerFaqs } from "@/lib/seo/x-service-buyer-faqs";
 import Link from "next/link";
 import PlatformIcon from "@/components/PlatformIcon";
 import CurrencyAmount from "@/components/currency/CurrencyAmount";
@@ -59,7 +58,6 @@ export default async function PremiumCatalogServiceLanding({ serviceCode, canoni
   const deliveryAnswer = !canStartOrder ? "Delivery details are unavailable while this service is inactive. Please check available services." : hasSpecificDeliveryEstimate ? `The current service estimate is ${service.deliveryTime}. Timing can vary with quantity, destination availability and current service conditions.` : "The current delivery estimate is shown in the service details before checkout. Timing can vary with quantity, destination availability and current service conditions.";
 
   const faq: ReadonlyArray<readonly [string, string]> = [
-    ...(xServiceBuyerFaqs[serviceCode] ?? []),
     [`How do I order ${faqName}?`, `Choose your quantity, enter the correct ${target} link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard.`],
     [`Which link should I submit for ${faqName}?`, `Use the direct link for the eligible ${target}. Check the URL carefully before payment and keep the destination public and available while the order is processing.`],
     ["Do I need to share my password?", "No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN."],

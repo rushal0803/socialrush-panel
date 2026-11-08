@@ -1,5 +1,5 @@
 {
-  "environment": "local production build with isolated fixture backend; not hosted QA",
+  "environment": "corrected local production build and isolated backend; X protected live-order handoff preserved",
   "pages": [
     {
       "path": "/instagram-growth-india",
@@ -17,10 +17,10 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"vg43onix7v3n8d\"",
+        "ETag": "\"p5qf8o5g6k3n8d\"",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "170103",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Instagram Growth Services in India | SocialRUSH",
@@ -147,10 +147,10 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"10sqlzu16114f7j\"",
+        "ETag": "\"cmo7jzgujt4f7j\"",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "206361",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Facebook Growth India | Followers, Likes, Views & Shares | SocialRUSH",
@@ -349,10 +349,10 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"1fctm31sx83wrg\"",
+        "ETag": "\"fk4xk9vlad3wrg\"",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "182454",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "YouTube Growth Services India | Subscribers, Views & Watch Hours | SocialRUSH",
@@ -544,10 +544,10 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"yx3xjbeh4w3q44\"",
+        "ETag": "\"13153kt69aw3q44\"",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "173838",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "LinkedIn Growth Services India | SocialRUSH",
@@ -734,10 +734,10 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"15bhid9rdje2nnp\"",
+        "ETag": "\"hhcmt6o3ny2nnp\"",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "123999",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "TikTok Growth Resources in India | SocialRUSH",
@@ -858,10 +858,10 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"2quaelc0lw3c3v\"",
+        "ETag": "\"15fj4id83gb3c3v\"",
         "Content-Type": "text/html; charset=utf-8",
         "Content-Length": "155701",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Twitter / X Growth Services India | Followers, Likes, Reposts & Views | SocialRUSH",
@@ -992,15 +992,15 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"oissezvzio3aiv\"",
+        "ETag": "\"pk5sp9n45o2sgr\"",
         "Content-Type": "text/html; charset=utf-8",
-        "Content-Length": "153625",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Content-Length": "130213",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Buy Twitter (X) Likes | X Likes Service | SocialRUSH",
       "h1": [
-        "Buy Twitter (X) Likes"
+        "Twitter / X Likes"
       ],
       "description": "Buy Twitter (X) likes for eligible public posts with transparent pricing, clear service requirements and dashboard order tracking from SocialRUSH.",
       "robots": "index, follow",
@@ -1051,39 +1051,15 @@
         {
           "@context": "https://schema.org",
           "@type": "Service",
-          "name": "Buy Twitter (X) Likes",
-          "description": "Add likes to an eligible public X post using its direct post link. Review the current rate, quantity range, delivery estimate and refill terms before ordering.",
+          "name": "twitter likes | SocialRUSH",
+          "description": "Order twitter / x likes from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
           "provider": {
             "@type": "Organization",
             "name": "SocialRUSH",
             "url": "https://www.getsocialrush.com"
           },
-          "serviceType": "Buy Twitter (X) Likes",
-          "url": "https://www.getsocialrush.com/services/twitter-likes"
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.getsocialrush.com/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Services",
-              "item": "https://www.getsocialrush.com/services"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "Buy Twitter (X) Likes",
-              "item": "https://www.getsocialrush.com/services/twitter-likes"
-            }
-          ]
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Likes"
         },
         {
           "@context": "https://schema.org",
@@ -1107,67 +1083,59 @@
             },
             {
               "@type": "Question",
-              "name": "How do I order Twitter (X) likes?",
+              "name": "How do I buy Twitter / X Likes?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Choose your quantity, enter the correct public X post link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard."
+                "text": "Open Packages or New Order, choose Twitter / X Likes, add your public link, and confirm the checkout flow."
               }
             },
             {
               "@type": "Question",
-              "name": "Which link should I submit for Twitter (X) likes?",
+              "name": "Is this page suitable for India?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Use the direct link for the eligible public X post. Check the URL carefully before payment and keep the destination public and available while the order is processing."
+                "text": "Yes. This page targets buyers searching for twitter likes and related SMM panel services in India."
               }
             },
             {
               "@type": "Question",
-              "name": "Do I need to share my password?",
+              "name": "Can I track the order?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN."
+                "text": "Yes. You can track status from the dashboard after checkout."
               }
             },
             {
               "@type": "Question",
-              "name": "How much do Twitter (X) likes cost?",
+              "name": "What is the starting price?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Live pricing is unavailable while this service is inactive. Check the available service catalog for current options."
+                "text": "Starting price is Live pricing in secure order with delivery around Estimate shown before checkout."
               }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
             },
             {
-              "@type": "Question",
-              "name": "How long does delivery take?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Delivery details are unavailable while this service is inactive. Please check available services."
-              }
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
             },
             {
-              "@type": "Question",
-              "name": "What is the refill policy?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Refill terms can be confirmed when the service is available again. Review active service conditions before payment."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why does this page mention both Twitter and X?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "X is the platform formerly known as Twitter, so this page uses both names where they help describe the same likes service."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Do Twitter (X) likes guarantee reach, followers, sales or ranking?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No. SocialRUSH does not guarantee organic reach, follower growth, sales, leads, search visibility or other platform outcomes from an engagement order."
-              }
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Likes",
+              "item": "https://www.getsocialrush.com/services/twitter-likes"
             }
           ]
         }
@@ -1179,12 +1147,11 @@
         "/ae",
         "/au",
         "/blog",
-        "/blog/twitter-followers-price-in-india",
-        "/blog/why-public-link-ordering-is-safer",
         "/ca",
         "/case-studies",
         "/compare",
         "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-likes",
         "/faq",
         "/for-agencies",
         "/for-brands",
@@ -1200,14 +1167,6 @@
         "/register",
         "/reviews",
         "/services",
-        "/services/twitter-crypto-custom-comments",
-        "/services/twitter-crypto-followers",
-        "/services/twitter-crypto-likes",
-        "/services/twitter-crypto-retweets",
-        "/services/twitter-likes",
-        "/services/twitter-retweets",
-        "/services/twitter-views",
-        "/services/twitter-x",
         "/services?platform=facebook",
         "/services?platform=instagram",
         "/services?platform=linkedin",
@@ -1221,10 +1180,8 @@
         "/tools",
         "/tools/social-media-growth-planner",
         "/trust",
-        "/twitter-followers",
         "/uk",
-        "/us",
-        "/x-growth-india"
+        "/us"
       ]
     },
     {
@@ -1243,15 +1200,15 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"ofl7zwv37y3ai5\"",
+        "ETag": "\"kaag04gt242sg1\"",
         "Content-Type": "text/html; charset=utf-8",
-        "Content-Length": "153599",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Content-Length": "130187",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Buy Twitter (X) Views | X Views Service | SocialRUSH",
       "h1": [
-        "Buy Twitter (X) Views"
+        "Twitter / X Views"
       ],
       "description": "Buy Twitter (X) views for eligible public posts with transparent pricing, public-link ordering, clear requirements and dashboard tracking.",
       "robots": "index, follow",
@@ -1302,39 +1259,15 @@
         {
           "@context": "https://schema.org",
           "@type": "Service",
-          "name": "Buy Twitter (X) Views",
-          "description": "Order views for an eligible public X post. Check the current rate, quantity limits, delivery estimate and service requirements before checkout.",
+          "name": "twitter views | SocialRUSH",
+          "description": "Order twitter / x views from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
           "provider": {
             "@type": "Organization",
             "name": "SocialRUSH",
             "url": "https://www.getsocialrush.com"
           },
-          "serviceType": "Buy Twitter (X) Views",
-          "url": "https://www.getsocialrush.com/services/twitter-views"
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.getsocialrush.com/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Services",
-              "item": "https://www.getsocialrush.com/services"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "Buy Twitter (X) Views",
-              "item": "https://www.getsocialrush.com/services/twitter-views"
-            }
-          ]
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Views"
         },
         {
           "@context": "https://schema.org",
@@ -1358,67 +1291,59 @@
             },
             {
               "@type": "Question",
-              "name": "How do I order Twitter (X) views?",
+              "name": "How do I buy Twitter / X Views?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Choose your quantity, enter the correct public X post link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard."
+                "text": "Open Packages or New Order, choose Twitter / X Views, add your public link, and confirm the checkout flow."
               }
             },
             {
               "@type": "Question",
-              "name": "Which link should I submit for Twitter (X) views?",
+              "name": "Is this page suitable for India?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Use the direct link for the eligible public X post. Check the URL carefully before payment and keep the destination public and available while the order is processing."
+                "text": "Yes. This page targets buyers searching for twitter views and related SMM panel services in India."
               }
             },
             {
               "@type": "Question",
-              "name": "Do I need to share my password?",
+              "name": "Can I track the order?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN."
+                "text": "Yes. You can track status from the dashboard after checkout."
               }
             },
             {
               "@type": "Question",
-              "name": "How much do Twitter (X) views cost?",
+              "name": "What is the starting price?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Live pricing is unavailable while this service is inactive. Check the available service catalog for current options."
+                "text": "Starting price is Live pricing in secure order with delivery around Estimate shown before checkout."
               }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
             },
             {
-              "@type": "Question",
-              "name": "How long does delivery take?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Delivery details are unavailable while this service is inactive. Please check available services."
-              }
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
             },
             {
-              "@type": "Question",
-              "name": "What is the refill policy?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Refill terms can be confirmed when the service is available again. Review active service conditions before payment."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why does this page mention both Twitter and X?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "People still commonly search for Twitter views even though Twitter is now called X; both terms refer to the same platform here."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Do Twitter (X) views guarantee reach, followers, sales or ranking?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No. SocialRUSH does not guarantee organic reach, follower growth, sales, leads, search visibility or other platform outcomes from an engagement order."
-              }
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Views",
+              "item": "https://www.getsocialrush.com/services/twitter-views"
             }
           ]
         }
@@ -1430,12 +1355,11 @@
         "/ae",
         "/au",
         "/blog",
-        "/blog/twitter-followers-price-in-india",
-        "/blog/why-public-link-ordering-is-safer",
         "/ca",
         "/case-studies",
         "/compare",
         "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-views",
         "/faq",
         "/for-agencies",
         "/for-brands",
@@ -1451,14 +1375,6 @@
         "/register",
         "/reviews",
         "/services",
-        "/services/twitter-crypto-custom-comments",
-        "/services/twitter-crypto-followers",
-        "/services/twitter-crypto-likes",
-        "/services/twitter-crypto-retweets",
-        "/services/twitter-likes",
-        "/services/twitter-retweets",
-        "/services/twitter-views",
-        "/services/twitter-x",
         "/services?platform=facebook",
         "/services?platform=instagram",
         "/services?platform=linkedin",
@@ -1472,10 +1388,8 @@
         "/tools",
         "/tools/social-media-growth-planner",
         "/trust",
-        "/twitter-followers",
         "/uk",
-        "/us",
-        "/x-growth-india"
+        "/us"
       ]
     },
     {
@@ -1494,15 +1408,15 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"wvzi6eauxt3awf\"",
+        "ETag": "\"erl5jzqkaw2soo\"",
         "Content-Type": "text/html; charset=utf-8",
-        "Content-Length": "154113",
-        "Date": "Sun, 08 Nov 2026 18:42:02 GMT",
+        "Content-Length": "130498",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Buy Twitter Retweets / X Reposts | SocialRUSH",
       "h1": [
-        "Buy Twitter Retweets / X Reposts"
+        "Twitter / X Retweets"
       ],
       "description": "Order Twitter retweets, now commonly called X reposts, for eligible public posts with transparent pricing, clear requirements and dashboard tracking.",
       "robots": "index, follow",
@@ -1553,39 +1467,15 @@
         {
           "@context": "https://schema.org",
           "@type": "Service",
-          "name": "Buy Twitter Retweets / X Reposts",
-          "description": "Order repost activity for an eligible public X post. Retweets are now called reposts on X; review the current rate, quantity limits and service conditions before checkout.",
+          "name": "twitter retweets | SocialRUSH",
+          "description": "Order twitter / x retweets from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
           "provider": {
             "@type": "Organization",
             "name": "SocialRUSH",
             "url": "https://www.getsocialrush.com"
           },
-          "serviceType": "Buy Twitter Retweets / X Reposts",
-          "url": "https://www.getsocialrush.com/services/twitter-retweets"
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.getsocialrush.com/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Services",
-              "item": "https://www.getsocialrush.com/services"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "Buy Twitter Retweets / X Reposts",
-              "item": "https://www.getsocialrush.com/services/twitter-retweets"
-            }
-          ]
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Retweets"
         },
         {
           "@context": "https://schema.org",
@@ -1609,67 +1499,59 @@
             },
             {
               "@type": "Question",
-              "name": "How do I order Twitter retweets / X reposts?",
+              "name": "How do I buy Twitter / X Retweets?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Choose your quantity, enter the correct public X post link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard."
+                "text": "Open Packages or New Order, choose Twitter / X Retweets, add your public link, and confirm the checkout flow."
               }
             },
             {
               "@type": "Question",
-              "name": "Which link should I submit for Twitter retweets / X reposts?",
+              "name": "Is this page suitable for India?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Use the direct link for the eligible public X post. Check the URL carefully before payment and keep the destination public and available while the order is processing."
+                "text": "Yes. This page targets buyers searching for twitter retweets and related SMM panel services in India."
               }
             },
             {
               "@type": "Question",
-              "name": "Do I need to share my password?",
+              "name": "Can I track the order?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN."
+                "text": "Yes. You can track status from the dashboard after checkout."
               }
             },
             {
               "@type": "Question",
-              "name": "How much do Twitter retweets / X reposts cost?",
+              "name": "What is the starting price?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Live pricing is unavailable while this service is inactive. Check the available service catalog for current options."
+                "text": "Starting price is Live pricing in secure order with delivery around Estimate shown before checkout."
               }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
             },
             {
-              "@type": "Question",
-              "name": "How long does delivery take?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Delivery details are unavailable while this service is inactive. Please check available services."
-              }
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
             },
             {
-              "@type": "Question",
-              "name": "What is the refill policy?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Refill terms can be confirmed when the service is available again. Review active service conditions before payment."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Why does this page mention both Twitter and X?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Twitter called this action a retweet. X now calls it a repost, so both terms are used naturally on this page."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Do Twitter retweets / X reposts guarantee reach, followers, sales or ranking?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No. SocialRUSH does not guarantee organic reach, follower growth, sales, leads, search visibility or other platform outcomes from an engagement order."
-              }
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Retweets",
+              "item": "https://www.getsocialrush.com/services/twitter-retweets"
             }
           ]
         }
@@ -1681,12 +1563,11 @@
         "/ae",
         "/au",
         "/blog",
-        "/blog/twitter-followers-price-in-india",
-        "/blog/why-public-link-ordering-is-safer",
         "/ca",
         "/case-studies",
         "/compare",
         "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-retweets",
         "/faq",
         "/for-agencies",
         "/for-brands",
@@ -1702,14 +1583,6 @@
         "/register",
         "/reviews",
         "/services",
-        "/services/twitter-crypto-custom-comments",
-        "/services/twitter-crypto-followers",
-        "/services/twitter-crypto-likes",
-        "/services/twitter-crypto-retweets",
-        "/services/twitter-likes",
-        "/services/twitter-retweets",
-        "/services/twitter-views",
-        "/services/twitter-x",
         "/services?platform=facebook",
         "/services?platform=instagram",
         "/services?platform=linkedin",
@@ -1723,10 +1596,8 @@
         "/tools",
         "/tools/social-media-growth-planner",
         "/trust",
-        "/twitter-followers",
         "/uk",
-        "/us",
-        "/x-growth-india"
+        "/us"
       ]
     },
     {
@@ -1745,15 +1616,15 @@
         "x-nextjs-prerender": "1",
         "x-nextjs-stale-time": "300",
         "Cache-Control": "s-maxage=31536000",
-        "ETag": "\"44ix8zdaor39qd\"",
+        "ETag": "\"cfmivczheh2t1p\"",
         "Content-Type": "text/html; charset=utf-8",
-        "Content-Length": "152599",
-        "Date": "Sun, 08 Nov 2026 18:42:03 GMT",
+        "Content-Length": "130967",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
         "Connection": "close"
       },
       "title": "Twitter (X) Crypto Followers Service | SocialRUSH",
       "h1": [
-        "Twitter (X) Crypto Followers"
+        "Twitter / X Crypto-Based Followers"
       ],
       "description": "Explore the Twitter (X) crypto followers service with current pricing, quantity limits, public-profile requirements and dashboard order tracking.",
       "robots": "index, follow",
@@ -1804,39 +1675,15 @@
         {
           "@context": "https://schema.org",
           "@type": "Service",
-          "name": "Twitter (X) Crypto Followers",
-          "description": "A specialist follower option for eligible public X profiles in the crypto niche. Review current availability, quantity limits and service conditions before ordering.",
+          "name": "twitter crypto followers | SocialRUSH",
+          "description": "Order twitter / x crypto-based followers from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
           "provider": {
             "@type": "Organization",
             "name": "SocialRUSH",
             "url": "https://www.getsocialrush.com"
           },
-          "serviceType": "Twitter (X) Crypto Followers",
-          "url": "https://www.getsocialrush.com/services/twitter-crypto-followers"
-        },
-        {
-          "@context": "https://schema.org",
-          "@type": "BreadcrumbList",
-          "itemListElement": [
-            {
-              "@type": "ListItem",
-              "position": 1,
-              "name": "Home",
-              "item": "https://www.getsocialrush.com/"
-            },
-            {
-              "@type": "ListItem",
-              "position": 2,
-              "name": "Services",
-              "item": "https://www.getsocialrush.com/services"
-            },
-            {
-              "@type": "ListItem",
-              "position": 3,
-              "name": "Twitter (X) Crypto Followers",
-              "item": "https://www.getsocialrush.com/services/twitter-crypto-followers"
-            }
-          ]
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Crypto-Based Followers"
         },
         {
           "@context": "https://schema.org",
@@ -1860,59 +1707,59 @@
             },
             {
               "@type": "Question",
-              "name": "How do I order Twitter (X) crypto followers?",
+              "name": "How do I buy Twitter / X Crypto-Based Followers?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Choose your quantity, enter the correct public X profile link, review the exact total and current service details, then continue to checkout. You can track the order from the SocialRUSH dashboard."
+                "text": "Open Packages or New Order, choose Twitter / X Crypto-Based Followers, add your public link, and confirm the checkout flow."
               }
             },
             {
               "@type": "Question",
-              "name": "Which link should I submit for Twitter (X) crypto followers?",
+              "name": "Is this page suitable for India?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Use the direct link for the eligible public X profile. Check the URL carefully before payment and keep the destination public and available while the order is processing."
+                "text": "Yes. This page targets buyers searching for twitter crypto followers and related SMM panel services in India."
               }
             },
             {
               "@type": "Question",
-              "name": "Do I need to share my password?",
+              "name": "Can I track the order?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "No. SocialRUSH only requires the eligible public link needed for this service. Never share your password, OTP, recovery code or UPI PIN."
+                "text": "Yes. You can track status from the dashboard after checkout."
               }
             },
             {
               "@type": "Question",
-              "name": "How much do Twitter (X) crypto followers cost?",
+              "name": "What is the starting price?",
               "acceptedAnswer": {
                 "@type": "Answer",
-                "text": "Live pricing is unavailable while this service is inactive. Check the available service catalog for current options."
+                "text": "Starting price is Live pricing in secure order with delivery around Up to 1K/day."
               }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
             },
             {
-              "@type": "Question",
-              "name": "How long does delivery take?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Delivery details are unavailable while this service is inactive. Please check available services."
-              }
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
             },
             {
-              "@type": "Question",
-              "name": "What is the refill policy?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "Refill terms can be confirmed when the service is available again. Review active service conditions before payment."
-              }
-            },
-            {
-              "@type": "Question",
-              "name": "Do Twitter (X) crypto followers guarantee reach, followers, sales or ranking?",
-              "acceptedAnswer": {
-                "@type": "Answer",
-                "text": "No. SocialRUSH does not guarantee organic reach, follower growth, sales, leads, search visibility or other platform outcomes from an engagement order."
-              }
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Crypto-Based Followers",
+              "item": "https://www.getsocialrush.com/services/twitter-crypto-followers"
             }
           ]
         }
@@ -1924,12 +1771,11 @@
         "/ae",
         "/au",
         "/blog",
-        "/blog/twitter-followers-price-in-india",
-        "/blog/why-public-link-ordering-is-safer",
         "/ca",
         "/case-studies",
         "/compare",
         "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-crypto-followers",
         "/faq",
         "/for-agencies",
         "/for-brands",
@@ -1945,14 +1791,6 @@
         "/register",
         "/reviews",
         "/services",
-        "/services/twitter-crypto-custom-comments",
-        "/services/twitter-crypto-followers",
-        "/services/twitter-crypto-likes",
-        "/services/twitter-crypto-retweets",
-        "/services/twitter-likes",
-        "/services/twitter-retweets",
-        "/services/twitter-views",
-        "/services/twitter-x",
         "/services?platform=facebook",
         "/services?platform=instagram",
         "/services?platform=linkedin",
@@ -1966,10 +1804,8 @@
         "/tools",
         "/tools/social-media-growth-planner",
         "/trust",
-        "/twitter-followers",
         "/uk",
-        "/us",
-        "/x-growth-india"
+        "/us"
       ]
     }
   ]

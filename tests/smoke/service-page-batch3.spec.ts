@@ -42,25 +42,14 @@ for (const path of paths) {
         await detail.locator('summary').click();
         await expect(detail.locator('p')).toHaveText(answer);
       }
-      const card = page.locator('[data-service-order-card]');
-      if (process.env.BATCH3_REQUIRE_ACTIVE_FIXTURE === '1') await expect(card).toHaveCount(1);
-      if (await page.getByText('Currently unavailable', { exact: true }).count()) {
-        await expect(card).toHaveCount(0);
-        await expect(page.getByRole('link', { name: 'Continue to Secure Order' })).toHaveCount(0);
-      } else {
-      await expect(card).toHaveCount(1);
-      await card.getByLabel('Custom quantity').fill('1000');
-      const expectedRates: Record<string, string> = { 'twitter-likes': '₹499.00', 'twitter-views': '₹49.00', 'twitter-retweets': '₹599.00', 'twitter-crypto-followers': '₹4,999.00' };
-      await expect(card.locator('strong[aria-live="polite"]')).toHaveText(expectedRates[slug]);
-      const target = slug === 'twitter-crypto-followers' ? 'https://x.com/socialrushqa' : 'https://x.com/socialrushqa/status/1234567890';
-      await card.locator('input[inputmode="url"]').fill(target);
-      const proceed = card.getByRole('link', { name: 'Continue to Secure Order' });
-      const href = await proceed.getAttribute('href');
-      const selection = new URL(href!, 'http://localhost');
-      expect(selection.pathname).toBe('/dashboard/new-order');
-      expect(selection.searchParams.get('service')).toBe(slug);
-      expect(selection.searchParams.get('quantity')).toBe('1000');
-      expect(selection.searchParams.get('link')).toBe(target);
+      await expect(page.locator('[data-service-order-card]')).toHaveCount(0);
+      await expect(page.getByText('Live pricing in secure order', { exact: true }).first()).toBeVisible();
+      for (const selector of ['[data-service-primary-cta="live-dashboard"]', '[data-service-live-handoff]']) {
+        const href = await page.locator(selector).getAttribute('href');
+        const selection = new URL(href!, 'http://localhost');
+        expect(selection.pathname).toBe('/dashboard/new-order');
+        expect(selection.searchParams.get('platform')).toBe('x');
+        expect(selection.searchParams.get('service')).toBe(slug);
       }
       expect(await page.title()).toMatch(/Twitter|X/);
       expect(html).toMatch(/Buy Twitter|Crypto Followers/);

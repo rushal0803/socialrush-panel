@@ -1,15 +1,18 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
-import { dedicatedCatalogBatchSlugs } from "../../lib/seo/dedicated-catalog-batch-routes.ts";
+import { createCatalogServiceMetadata } from "../../lib/seo/catalog-service-metadata.ts";
 import { platformBuyerDecisions } from "../../lib/seo/platform-buyer-decisions.ts";
 import { xServiceBuyerFaqs } from "../../lib/seo/x-service-buyer-faqs.ts";
 
 test("audited X canonical owners exist and buyer questions retain distinct intent", () => {
-  assert.equal(dedicatedCatalogBatchSlugs.size, 4);
-  for (const slug of dedicatedCatalogBatchSlugs) {
+  assert.equal(Object.keys(xServiceBuyerFaqs).length, 4);
+  for (const slug of Object.keys(xServiceBuyerFaqs)) {
     assert.ok(existsSync(new URL(`../../app/services/${slug}/page.tsx`, import.meta.url)));
     assert.equal(xServiceBuyerFaqs[slug].length, 2);
+    const metadata = createCatalogServiceMetadata(slug);
+    assert.match((metadata.title as { absolute: string }).absolute, /Twitter|X/);
+    assert.equal(metadata.alternates?.canonical, `/services/${slug}`);
   }
   assert.match(xServiceBuyerFaqs['twitter-views'][0][1], /unique viewers/);
   assert.match(xServiceBuyerFaqs['twitter-crypto-followers'][0][1], /does not verify/);

@@ -138,6 +138,7 @@ jobs:
             artifacts/service-evidence/
             artifacts/service-evidence-batch2/
             test-results/service-page-batch2*/
+            test-results/service-page-batch3*/
             test-results/service-page-evidence*/
           retention-days: 7
           if-no-files-found: warn
