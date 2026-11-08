@@ -1,0 +1,19 @@
+{
+  "observed_at_utc": "2026-11-08T19:46:28.450063+00:00",
+  "plain_get_no_bypass": [
+    {
+      "url": "https://socialrush-panel-nfsdaqtnp-rushalthakur240-6255s-projects.vercel.app",
+      "status": 200,
+      "final_url": "https://vercel.com/login [SSO query omitted]",
+      "sso_redirect": true
+    },
+    {
+      "url": "https://socialrush-panel-k1lmzezak-rushalthakur240-6255s-projects.vercel.app",
+      "status": 200,
+      "final_url": "https://vercel.com/login [SSO query omitted]",
+      "sso_redirect": true
+    }
+  ],
+  "desktop_status": "remote_desktop enabled, state unknown; no desktop js or open_in_codex tool offered",
+  "result": "BLOCKED: authenticated hosted/mobile QA not performed"
+}
