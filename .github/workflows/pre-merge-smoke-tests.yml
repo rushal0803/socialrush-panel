@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+      - chore/seo-foundation-release-20261108
+      - seo/service-evidence-batch1-20261108
+      - seo/service-evidence-batch2-20261108
 
 permissions:
   contents: read
