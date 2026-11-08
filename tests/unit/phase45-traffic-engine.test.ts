@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { isOrganicSearchReferrer, isPublicOrganicLandingPath, primeAttribution, track } from "../../lib/analytics/events.ts";
+import { isOrganicSearchReferrer, isOrganicSearchLanding, isPublicOrganicLandingPath, primeAttribution, track } from "../../lib/analytics/events.ts";
 import { createClientAnalyticsSessionIdProvider, isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "../../lib/analytics/session.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
@@ -113,7 +113,7 @@ test("Phase 20 excludes private or auth paths from public organic landing acquis
     assert.equal(isPublicOrganicLandingPath(path), false, path);
   }
   const analytics = read("components/analytics/PageAnalytics.tsx");
-  assert.match(analytics, /isOrganicSearchReferrer\(document\.referrer, window\.location\.hostname\) && isPublicOrganicLandingPath\(path\)/);
+  assert.match(analytics, /isOrganicSearchLanding\(document\.referrer, window\.location\.hostname, path, window\.location\.search\)/);
 });
 
 test("Phase 8 tracks organic landings once per document but page views on navigation", () => {
@@ -121,7 +121,7 @@ test("Phase 8 tracks organic landings once per document but page views on naviga
   assert.match(analytics, /const checkedInitialLanding = useRef\(false\)/);
   assert.match(analytics, /if \(!checkedInitialLanding\.current\) \{/);
   assert.match(analytics, /checkedInitialLanding\.current = true/);
-  assert.match(analytics, /isOrganicSearchReferrer\(document\.referrer, window\.location\.hostname\)/);
+  assert.match(analytics, /isOrganicSearchLanding\(document\.referrer, window\.location\.hostname, path, window\.location\.search\)/);
   assert.match(analytics, /track\("organic_landing_view", \{ referrer_type: "search" \}\)/);
   assert.match(analytics, /track\("page_viewed"\)/);
 });
@@ -367,6 +367,57 @@ test("first-touch storage preserves Google app referrals, search and explicit pa
       assert.equal(result.landingPath, "/instagram-likes");
       assert.equal(result.referringDomain, new URL(scenario.referrer).hostname);
       assert.equal(JSON.stringify(result).includes("gclid"), false, "do not store click identifiers or full referrer URLs");
+    }
+  } finally {
+    for (const [name, descriptor] of previous) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else Reflect.deleteProperty(globalThis, name);
+    }
+  }
+});
+
+
+test("organic landing eligibility excludes paid clicks and competing campaign attribution", () => {
+  const google = "https://www.google.co.in/search?q=socialrush";
+  const host = "www.getsocialrush.com";
+  for (const query of [
+    "?gclid=click", "?gbraid=click", "?wbraid=click", "?dclid=click", "?msclkid=click",
+    "?gclid=", "?gclid=x&utm_medium=organic", "?utm_medium=cpc", "?utm_medium=paid",
+    "?utm_medium=EMAIL", "?utm_source=newsletter", "?utm_source=facebook&utm_medium=organic",
+  ]) assert.equal(isOrganicSearchLanding(google, host, "/instagram-likes", query), false, query);
+  for (const query of ["", "?page=2", "?utm_source=Google&utm_medium=Organic", "?utm_medium=organic"]) {
+    assert.equal(isOrganicSearchLanding(google, host, "/instagram-likes", query), true, query);
+  }
+  assert.equal(isOrganicSearchLanding(google, host, "/dashboard", ""), false);
+  assert.equal(isOrganicSearchLanding("https://accounts.google.com/", host, "/", ""), false);
+  assert.equal(isOrganicSearchLanding("https://example.com/", host, "/", "?utm_medium=organic"), false);
+  assert.equal(isOrganicSearchLanding("", host, "/", "?utm_source=google&utm_medium=organic"), false);
+});
+
+test("new paid click markers override stale stored organic attribution without storing identifiers", () => {
+  const names = ["window", "location", "navigator", "document"] as const;
+  const previous = names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const);
+  try {
+    for (const key of ["gclid", "gbraid", "wbraid", "dclid", "msclkid"]) {
+      const storage = new Map<string, string>([["sr_first_touch_attribution_v1", JSON.stringify({ source: "google", medium: "organic", landingPath: "/old" })]]);
+      const browser = {
+        location: { hostname: "www.getsocialrush.com", search: `?${key}=private-click-token` },
+        sessionStorage: { getItem: (name: string) => storage.get(name) ?? null, setItem: (name: string, value: string) => storage.set(name, value) },
+      };
+      for (const [name, value] of Object.entries({ window: browser, location: { pathname: "/instagram-likes" }, navigator: { doNotTrack: "0" }, document: { referrer: "https://www.google.com/" } })) {
+        Object.defineProperty(globalThis, name, { configurable: true, value });
+      }
+      primeAttribution();
+      const raw = storage.get("sr_first_touch_attribution_v1")!;
+      const result = JSON.parse(raw);
+      assert.equal(result.medium, "paid", key);
+      assert.equal(result.source, key === "msclkid" ? "bing" : "google", key);
+      assert.equal(result.landingPath, "/instagram-likes");
+      assert.equal(raw.includes("private-click-token"), false);
+      assert.equal(raw.includes(key), false);
+      browser.location.search = "";
+      primeAttribution();
+      assert.equal(storage.get("sr_first_touch_attribution_v1"), raw, "ordinary navigation preserves established attribution");
     }
   } finally {
     for (const [name, descriptor] of previous) {
