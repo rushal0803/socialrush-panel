@@ -1,3 +1,5 @@
+import ServiceRequirementLinks from "@/components/seo/ServiceRequirementLinks";
+import { batch4ServiceFaqs } from "@/lib/seo/service-batch4-content";
 import { xServiceBuyerFaqs } from "@/lib/seo/x-service-buyer-faqs";
 import { createCatalogServiceMetadata } from "@/lib/seo/catalog-service-metadata";
 import type { Metadata } from "next";
@@ -118,7 +120,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const params = await paramsPromise;
-  if (Object.hasOwn(xServiceBuyerFaqs, params.slug)) return createCatalogServiceMetadata(params.slug);
+  if (Object.hasOwn(xServiceBuyerFaqs, params.slug) || Object.hasOwn(batch4ServiceFaqs, params.slug)) return createCatalogServiceMetadata(params.slug);
   if (params.slug === "linkedin-usa-followers") {
     const title = "Buy LinkedIn USA Followers | SocialRUSH";
     const description =
@@ -642,7 +644,7 @@ export default async function ServiceSeoPage({
   }
   const existingSeo = getSeoData(params.slug);
   if (!existingSeo) notFound();
-  const buyerFaqs = xServiceBuyerFaqs[params.slug];
+  const buyerFaqs = xServiceBuyerFaqs[params.slug] ?? batch4ServiceFaqs[params.slug];
   const seo = buyerFaqs ? { ...existingSeo, faqs: [...buyerFaqs.map(([question, answer]) => ({ question, answer })), ...existingSeo.faqs] } : existingSeo;
   const catalogService = activeSmmServices.find((service) => service.code === params.slug);
   const cro = catalogService ? getServicePageCroConfig(catalogService) : null;
@@ -808,18 +810,15 @@ export default async function ServiceSeoPage({
           <section className="grid gap-6 lg:grid-cols-[1.2fr_.8fr]">
             <article className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
               <h2 className="text-2xl font-black text-[#0B0B0F]">
-                Why this page matters
+                {batch4ServiceFaqs[params.slug] ? "Review the action before ordering" : "Why this page matters"}
               </h2>
               <p className="mt-4 text-sm leading-7 text-[#111827]">
-                This landing page is built to rank for buyer intent terms,
-                explain the service quickly, and link people into the right
-                conversion path without extra friction.
+                {batch4ServiceFaqs[params.slug] ? "Confirm the exact public destination and supported action in the live order flow. Review quantity limits, delivery conditions and refund terms before payment. Keep purchased counts separate from voluntary audience feedback when measuring a campaign." : "This landing page is built to rank for buyer intent terms, explain the service quickly, and link people into the right conversion path without extra friction."}
               </p>
               <div className="mt-6 space-y-3 text-sm leading-7 text-[#111827]">
                 <p>Ideal for: {seo.audience.join(", ")}</p>
                 <p>
-                  Internal links: Home, Services, Packages, Pricing, Blog, FAQ,
-                  and Contact.
+                  {batch4ServiceFaqs[params.slug] ? "Use the related service requirements below to compare actions that use different destinations." : "Internal links: Home, Services, Packages, Pricing, Blog, FAQ, and Contact."}
                 </p>
               </div>
             </article>
@@ -857,6 +856,7 @@ export default async function ServiceSeoPage({
             </aside>
           </section>
 
+          <ServiceRequirementLinks serviceCode={params.slug} />
           <section className="rounded-[28px] border border-white/80 bg-white/90 p-6 shadow-[0_18px_42px_-30px_rgba(15,23,42,.38)] sm:p-8">
             <h2 className="text-2xl font-black text-[#0B0B0F]">
               Frequently Asked Questions
