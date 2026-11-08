@@ -121,47 +121,67 @@ async function hasMx(email: string) {
   }
 }
 
+const MAX_REDIRECTS = 3;
+
 async function fetchHtml(url: URL, businessDomain: string) {
-  if (!domainMatches(url.hostname, businessDomain) || !(await publicHostname(url.hostname))) return null;
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), FETCH_TIMEOUT_MS);
   try {
-    const response = await fetch(url, {
-      headers: {
-        Accept: "text/html,application/xhtml+xml",
-        "User-Agent": "SocialRUSH-ProspectResearch/1.0 (+https://www.getsocialrush.com)",
-      },
-      cache: "no-store",
-      redirect: "follow",
-      signal: controller.signal,
-    });
-    if (!response.ok) return null;
-    const finalUrl = new URL(response.url);
-    if (!domainMatches(finalUrl.hostname, businessDomain)) return null;
-    const type = response.headers.get("content-type") || "";
-    if (!type.includes("text/html") && !type.includes("application/xhtml+xml")) return null;
-    const contentLength = Number(response.headers.get("content-length") || 0);
-    if (contentLength > MAX_HTML_BYTES) return null;
-    // Enforce the byte limit while reading: full-body decoding would buffer an
-    // arbitrarily large response before slicing it, even without Content-Length.
-    if (!response.body) return null;
-    const reader = response.body.getReader();
-    const chunks: Uint8Array[] = [];
-    let bytesRead = 0;
-    try {
-      while (true) {
-        const { done, value } = await reader.read();
-        if (done) break;
-        bytesRead += value.byteLength;
-        if (bytesRead > MAX_HTML_BYTES) return null;
-        chunks.push(value);
+    let currentUrl = url;
+    for (let redirects = 0; redirects <= MAX_REDIRECTS; redirects++) {
+      // Never let fetch automatically follow a redirect before validating its target.
+      if (!["https:", "http:"].includes(currentUrl.protocol)
+        || currentUrl.username || currentUrl.password
+        || !domainMatches(currentUrl.hostname, businessDomain)
+        || !(await publicHostname(currentUrl.hostname))) return null;
+      const response = await fetch(currentUrl, {
+        headers: {
+          Accept: "text/html,application/xhtml+xml",
+          "User-Agent": "SocialRUSH-ProspectResearch/1.0 (+https://www.getsocialrush.com)",
+        },
+        cache: "no-store",
+        redirect: "manual",
+        signal: controller.signal,
+      });
+      if ([301, 302, 303, 307, 308].includes(response.status)) {
+        const location = response.headers.get("location");
+        if (!location || redirects === MAX_REDIRECTS) {
+          await response.body?.cancel().catch(() => {});
+          return null;
+        }
+        const nextUrl = new URL(location, currentUrl);
+        await response.body?.cancel().catch(() => {});
+        currentUrl = nextUrl;
+        continue;
       }
-    } finally {
-      await reader.cancel().catch(() => {});
-      reader.releaseLock();
+      if (!response.ok) return null;
+      const finalUrl = new URL(response.url);
+      if (!domainMatches(finalUrl.hostname, businessDomain)) return null;
+      const type = response.headers.get("content-type") || "";
+      if (!type.includes("text/html") && !type.includes("application/xhtml+xml")) return null;
+      const contentLength = Number(response.headers.get("content-length") || 0);
+      if (contentLength > MAX_HTML_BYTES) return null;
+      // Limit response bytes while streaming, even when Content-Length is absent.
+      if (!response.body) return null;
+      const reader = response.body.getReader();
+      const chunks: Uint8Array[] = [];
+      let bytesRead = 0;
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          bytesRead += value.byteLength;
+          if (bytesRead > MAX_HTML_BYTES) return null;
+          chunks.push(value);
+        }
+      } finally {
+        await reader.cancel().catch(() => {});
+        reader.releaseLock();
+      }
+      const html = new TextDecoder().decode(Buffer.concat(chunks));
+      return { html, finalUrl: finalUrl.toString() };
     }
-    const html = new TextDecoder().decode(Buffer.concat(chunks));
-    return { html, finalUrl: finalUrl.toString() };
+    return null;
   } catch {
     return null;
   } finally {
