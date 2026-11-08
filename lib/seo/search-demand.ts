@@ -30,3 +30,13 @@ export function serviceUnitFromCode(serviceCode: string) {
   };
   return labels[unit] || unit;
 }
+
+// Preserve paise in public planning examples, matching the live INR rate.
+export function formatQuantityPlanningInr(value: number) {
+  return new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    minimumFractionDigits: 2,
+    maximumFractionDigits: 2,
+  }).format(value);
+}
