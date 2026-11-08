@@ -105,7 +105,18 @@ for (const width of [320, 390, 1440]) {
   });
 }
 
-test("all three conversion paths preserve destinations and first-party tracking", async ({ page }) => {
+test("all three conversion paths preserve destinations and first-party tracking", async ({ page, baseURL }) => {
+  // Exercise production collection on a reserved hostname, serving every byte
+  // from the owned local fixture server. No production request is performed.
+  const testOrigin = 'http://analytics.example.test';
+  await page.route(`${testOrigin}/**`, async route => {
+    const url = new URL(route.request().url());
+    if (route.request().method() !== 'GET') return route.abort();
+    const response = await route.fetch({ url: `${baseURL}${url.pathname}${url.search}`, maxRedirects: 0 });
+    const headers = response.headers();
+    if (headers['content-security-policy']) headers['content-security-policy'] = headers['content-security-policy'].split(';').filter(value => value.trim() !== 'upgrade-insecure-requests').join(';');
+    return route.fulfill({ response, headers });
+  });
   await page.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { get: () => "0" }));
   const events: Array<{ event: string; metadata?: { surface?: string; step?: string } }> = [];
   await page.route("**/api/analytics", route => {
@@ -118,7 +129,7 @@ test("all three conversion paths preserve destinations and first-party tracking"
     { title: "I want to compare services", href: "/services", step: "compare" },
     { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
   ]) {
-    await page.goto("/");
+    await page.goto(`${testOrigin}/`);
     const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
     await expect(link).toHaveAttribute("href", path.href);
     await link.click();

@@ -4,6 +4,9 @@ on:
   pull_request:
     branches:
       - main
+      - chore/seo-foundation-release-20261108
+      - seo/service-evidence-batch1-20261108
+      - seo/service-evidence-batch2-20261108
 
 permissions:
   contents: read
@@ -30,6 +33,8 @@ jobs:
       - run: npx tsc --noEmit
       - name: Complete unit regressions and live catalogue equivalence
         run: npm run test:unit && npm run test:live-service-facts
+      - name: Analytics collection environment regressions
+        run: node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/analytics-collection-environment.test.ts
       - name: Phase 1 canonical and crawl contract tests
         run: node --test tests/unit/phase1-seo-contract.test.mjs
       - name: Verify PR 624 blog image assets
