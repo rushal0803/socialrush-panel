@@ -1,3 +1,4 @@
+import { servicePriceSpecification } from "@/lib/seo/service-price-specification";
 import BreadcrumbJsonLd from "@/components/seo/BreadcrumbJsonLd";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 import { getServiceById } from "@/lib/smm-service-catalog";
@@ -42,6 +43,7 @@ export default function IndiaCommercialServiceJsonLd({
             "@type": "Offer",
             priceCurrency: "INR",
             price: service.pricePer1000,
+            ...servicePriceSpecification(path, service.pricePer1000),
             availability: "https://schema.org/InStock",
             url: pageUrl,
           },
