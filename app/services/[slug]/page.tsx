@@ -1,3 +1,4 @@
+import { dedicatedCatalogBatchSlugs } from "@/lib/seo/dedicated-catalog-batch-routes";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound, permanentRedirect } from "next/navigation";
@@ -104,8 +105,8 @@ function getFaqs(slug: string, title: string, price: string, delivery: string) {
 
 export async function generateStaticParams() {
   return [
-    ...growthServices.map((service) => ({ slug: service.slug })),
-    ...activeSmmServices.map((service) => ({ slug: service.code })),
+    ...growthServices.filter((service) => !dedicatedCatalogBatchSlugs.has(service.slug)).map((service) => ({ slug: service.slug })),
+    ...activeSmmServices.filter((service) => !dedicatedCatalogBatchSlugs.has(service.code)).map((service) => ({ slug: service.code })),
     { slug: "smm-panel-india" },
   ];
 }
