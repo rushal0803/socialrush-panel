@@ -20,3 +20,14 @@ test("prospect enrichment retains request timeout and safe response checks", () 
   assert.match(source, /reader\.releaseLock\(\)/);
   assert.match(source, /controller\.abort\(\)/);
 });
+
+test("prospect redirects are manually followed with bounded hops and preflight validation", () => {
+  assert.match(source, /const MAX_REDIRECTS = 3/);
+  assert.match(source, /redirect: "manual"/);
+  assert.match(source, /new URL\(location, currentUrl\)/);
+  assert.match(source, /redirects === MAX_REDIRECTS/);
+  assert.match(source, /!domainMatches\(currentUrl\.hostname, businessDomain\)/);
+  assert.match(source, /!\(await publicHostname\(currentUrl\.hostname\)\)/);
+  assert.match(source, /currentUrl\.username \|\| currentUrl\.password/);
+  assert.doesNotMatch(source, /redirect: "follow"/);
+});
