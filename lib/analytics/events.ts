@@ -117,7 +117,10 @@ const clip = (value: string | null | undefined, length: number) => {
 
 const searchSource = (hostname: string) => {
   const host = hostname.toLowerCase().replace(/^www\./, "");
-  if (/(^|\.)google\./.test(host)) return "google";
+  // Search uses the public root/country hosts and dedicated search surfaces.
+  // Other Google products (accounts, mail, docs, ads, etc.) are referrals.
+  // Anchor the whole hostname so google.com.example cannot count as search.
+  if (/^(?:(?:images|news|search)\.)?google\.(?:com|cat|[a-z]{2}|(?:co|com)\.[a-z]{2})$/.test(host)) return "google";
   if (/(^|\.)bing\.com$/.test(host)) return "bing";
   if (/(^|\.)duckduckgo\.com$/.test(host)) return "duckduckgo";
   if (/(^|\.)search\.yahoo\./.test(host) || /(^|\.)yahoo\./.test(host)) return "yahoo";

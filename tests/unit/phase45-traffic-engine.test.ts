@@ -1,7 +1,7 @@
 import test from "node:test";
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { isOrganicSearchReferrer, isPublicOrganicLandingPath, track } from "../../lib/analytics/events.ts";
+import { isOrganicSearchReferrer, isPublicOrganicLandingPath, primeAttribution, track } from "../../lib/analytics/events.ts";
 import { createClientAnalyticsSessionIdProvider, isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "../../lib/analytics/session.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
@@ -320,6 +320,54 @@ test("Phase 18 counts repeat deliberate order actions without duplicating impres
     track("new_order_clicked", properties);
     track("package_selected", properties);
     assert.equal(beacons.length, 5, "Do Not Track must continue to suppress clicks");
+  } finally {
+    for (const [name, descriptor] of previous) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else Reflect.deleteProperty(globalThis, name);
+    }
+  }
+});
+
+
+test("Google account, app and lookalike domains are not organic search", () => {
+  for (const host of [
+    "accounts.google.com", "accounts.google.co.in", "mail.google.com",
+    "drive.google.com", "docs.google.com", "calendar.google.com",
+    "translate.google.com", "ads.google.com", "google.com.evil.example",
+    "www.google.com.evil.example", "google.evil.com", "notgoogle.com",
+  ]) assert.equal(isOrganicSearchReferrer(`https://${host}/`, "www.getsocialrush.com"), false, host);
+  for (const host of [
+    "www.google.com", "google.co.in", "www.google.co.uk", "google.com.au",
+    "www.google.de", "www.google.cat", "www.google.co.jp", "images.google.com", "news.google.co.in",
+  ]) assert.equal(isOrganicSearchReferrer(`https://${host}/`, "www.getsocialrush.com"), true, host);
+});
+
+test("first-touch storage preserves Google app referrals, search and explicit paid campaigns", () => {
+  const names = ["window", "location", "navigator", "document"] as const;
+  const previous = names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const);
+  try {
+    for (const scenario of [
+      { referrer: "https://accounts.google.com/", search: "", source: "accounts.google.com", medium: "referral" },
+      { referrer: "https://www.google.co.in/", search: "", source: "google", medium: "organic" },
+      { referrer: "https://www.google.com/", search: "?gclid=test", source: "google", medium: "paid" },
+      { referrer: "https://accounts.google.com/", search: "?utm_source=newsletter&utm_medium=email", source: "newsletter", medium: "email" },
+    ]) {
+      const storage = new Map<string, string>();
+      Object.defineProperty(globalThis, "window", { configurable: true, value: {
+        location: { hostname: "www.getsocialrush.com", search: scenario.search },
+        sessionStorage: { getItem: (key: string) => storage.get(key) ?? null, setItem: (key: string, value: string) => storage.set(key, value) },
+      } });
+      Object.defineProperty(globalThis, "location", { configurable: true, value: { pathname: "/instagram-likes" } });
+      Object.defineProperty(globalThis, "navigator", { configurable: true, value: { doNotTrack: "0" } });
+      Object.defineProperty(globalThis, "document", { configurable: true, value: { referrer: scenario.referrer } });
+      primeAttribution();
+      const result = JSON.parse(storage.get("sr_first_touch_attribution_v1")!);
+      assert.equal(result.source, scenario.source, scenario.referrer);
+      assert.equal(result.medium, scenario.medium, scenario.referrer);
+      assert.equal(result.landingPath, "/instagram-likes");
+      assert.equal(result.referringDomain, new URL(scenario.referrer).hostname);
+      assert.equal(JSON.stringify(result).includes("gclid"), false, "do not store click identifiers or full referrer URLs");
+    }
   } finally {
     for (const [name, descriptor] of previous) {
       if (descriptor) Object.defineProperty(globalThis, name, descriptor);
