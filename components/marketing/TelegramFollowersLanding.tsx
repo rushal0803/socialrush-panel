@@ -20,9 +20,11 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { validateQuantity } from "@/lib/service-pricing";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { getCommercialServiceBreadcrumbs } from "@/lib/seo/commercial-service-breadcrumbs";
 type LiveServiceFacts = { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; available: boolean };
 
 const fallback = getServiceById("telegram-members");
+const breadcrumbs = getCommercialServiceBreadcrumbs("Telegram", "Telegram Members", "/telegram-members");
 const faqs = [
   ["How do I order Telegram members in India?", "Choose a member quantity, enter the correct public Telegram channel or group link, review the live INR total, and continue through the secure SocialRUSH order flow."],
   ["Do I need to share my Telegram password?", "No. SocialRUSH only needs the public Telegram channel or group URL required by the service. Never share a password, OTP, phone login, or recovery code."],
@@ -60,7 +62,7 @@ export default function TelegramFollowersLanding({ live }: { live: LiveServiceFa
     <section className="relative overflow-hidden bg-[#07080D] px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
       <div className="pointer-events-none absolute left-[-12rem] top-0 h-[32rem] w-[32rem] rounded-full bg-orange-500/15 blur-[130px]" /><div className="pointer-events-none absolute right-[-10rem] top-12 h-[28rem] w-[28rem] rounded-full bg-sky-500/15 blur-[130px]" />
       <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.05fr_.95fr]">
-        <div><span className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-[10px] font-black tracking-[.16em] text-sky-100"><Send className="h-3.5 w-3.5" /> TELEGRAM MEMBERS SERVICE</span>
+        <div><nav aria-label="Breadcrumb" className="mb-5 text-xs font-bold text-slate-300"><ol className="flex flex-wrap items-center gap-x-2 gap-y-1">{breadcrumbs.map((item, index) => <li key={item.path} className="flex items-center gap-2">{index > 0 ? <span aria-hidden="true">/</span> : null}{index === breadcrumbs.length - 1 ? <span aria-current="page" className="text-white">{item.name}</span> : <Link href={item.path} className="inline-flex min-h-11 items-center rounded px-1 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300">{item.name}</Link>}</li>)}</ol></nav><span className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-[10px] font-black tracking-[.16em] text-sky-100"><Send className="h-3.5 w-3.5" /> TELEGRAM MEMBERS SERVICE</span>
           <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.04] tracking-[-.05em] text-white sm:text-6xl">Buy Telegram <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Members</span> in India</h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">SocialRUSH provides Telegram growth services for India. Choose a member package, order online with transparent INR pricing, and submit only the public channel or group link required by the service—never your Telegram password.</p>
           <div className="mt-7 flex flex-wrap gap-2 text-xs font-bold text-slate-200">{["No Password Required", "Transparent Pricing", "Order Tracking"].map(x => <span key={x} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[.05] px-3 py-2"><Check className="h-3.5 w-3.5 text-orange-300" />{x}</span>)}</div>
