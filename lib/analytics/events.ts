@@ -1,3 +1,4 @@
+import { isInternalAnalyticsHost } from "./collection-environment.ts";
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
 import { getBrowserAnalyticsSessionId } from "./session.ts";
 
@@ -273,7 +274,7 @@ function getFirstTouchAttribution(): ClientAttribution {
 }
 
 export function primeAttribution() {
-  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  if (typeof window === "undefined" || navigator.doNotTrack === "1" || isInternalAnalyticsHost(window.location.hostname)) return;
   void getFirstTouchAttribution();
 }
 
@@ -281,7 +282,7 @@ export function track(
   event: ClientAnalyticsEvent,
   metadata: AnalyticsProperties = {},
 ) {
-  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  if (typeof window === "undefined" || navigator.doNotTrack === "1" || isInternalAnalyticsHost(window.location.hostname)) return;
 
   // Count real return visits (A -> B -> A) instead of deduplicating all page
   // views on the same URL for the lifetime of this document.
