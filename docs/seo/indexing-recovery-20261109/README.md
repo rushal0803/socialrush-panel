@@ -8,7 +8,7 @@ The owner supplied the 18 affected URLs directly in chat: 17 requested HTML URLs
 
 Production baseline: main `35fcaf731447a948b69a9ae917b5af596d22711e`. [Live audit](live-audit.json) records capture time, requested/final URLs, redirect statuses, relevant response headers, title/description, canonicals, meta robots, robots.txt access, sitemap membership, H1 count, and observed inbound links. Comparison crawl covered 172 sitemap entries plus two service aliases. Source comparison uses the effective article intro/sections/tips, excluding site navigation/footer; [pair comparisons](content-comparisons.json) record the reproducible five-word-shingle Jaccard diagnostic. It is not a Google duplicate score or evidence that two pages rank for the same query.
 
-**16 requested URLs are canonical 200 owners. The seventeenth is an existing 308 alias to one of those owners.** All 16 owners have one H1, self canonical, index/follow meta, no response X-Robots-Tag noindex, Googlebot/Bingbot access and existing sitemap membership. Their titles are distinct across canonical owners. They are technically eligible based on the fetched responses; these checks do not establish current indexing or Google-selected canonicals. No pages are classified as orphaned from this sitemap-anchored crawl: counts below are distinct contextual/main-content source URLs, not popularity or link-quality scores. Links outside the crawled set are not included.
+**16 requested URLs are canonical 200 owners. The seventeenth is an existing 308 alias to one of those owners.** All 16 owners have one H1, self canonical, index/follow meta, no response X-Robots-Tag noindex, Googlebot/Bingbot access and existing sitemap membership. Their titles are distinct across canonical owners. They are technically eligible based on the fetched responses; these live HTTP checks do not establish current indexing or Google-selected canonicals. The separately supplied indexed Inspection below reports a matching Google-selected canonical for `/linkedin-likes` only. No pages are classified as orphaned from this sitemap-anchored crawl: counts below are distinct contextual/main-content source URLs, not popularity or link-quality scores. Links outside the crawled set are not included.
 
 ## Every requested HTML URL
 
@@ -16,7 +16,7 @@ The test label **C** means the new HTTP/canonical/robots/sitemap ownership check
 
 | Requested path | Current finding and contextual inbound pages | Intent / competing content decision | Action in this draft | Tests / Google evidence |
 |---|---|---|---|---|
-| `/linkedin-likes` | 200, self canonical; 12 contextual sources. `/services/linkedin-likes` redirects 301 and `/buy-linkedin-likes-india` redirects 308 to this owner. | Transactional public-post likes; distinct from followers, generic LinkedIn hub and a USA-specific catalog option. No new commercial owner justified. | Tighten profile/company/repost eligibility and interpretation of ordered likes; keep all existing commercial terms and prior buyer guidance. | C + R; I1/I2/I3, including comparison with the USA post-like page. |
+| `/linkedin-likes` | 200, self canonical; 12 contextual sources. `/services/linkedin-likes` redirects 301 and `/buy-linkedin-likes-india` redirects 308 to this owner. | Transactional public-post likes; distinct from followers, generic LinkedIn hub and a USA-specific catalog option. No new commercial owner justified. | Tighten profile/company/repost eligibility and interpretation of ordered likes; keep all existing commercial terms and prior buyer guidance. | C + R; I1 supplied in the owner Inspection snapshot below (referring page not supplied); I2/I3 still required, including comparison with the USA post-like page. |
 | `/blog/social-media-campaign-mistakes-to-avoid` | 200, self canonical; 4 sources. Original audience/landing/review checklist followed by template planning material. | Cross-platform campaign execution, unlike trust/social-proof or service-specific purchase guides. Similar vocabulary is insufficient grounds for consolidation. | Retain article text in this prioritized draft. Generic end matter remains a lower-priority editorial candidate; obtain exact query pairs before further consolidation decisions. | C; I1/I2/I3. |
 | `/blog/instagram-followers-vs-engagement` | 200, self canonical; 15 sources. Substantive comparison sections, FAQs and measurement tools. | Followers versus response metrics; different job from a pricing page or local acquisition plan. | Retain article text. Retain comparison as the educational owner and link to it from the revised guides. | C; I1/I2/I3 versus followers-vs-likes and the transactional follower page. |
 | `/blog/consistent-engagement-builds-trust` | 200, self canonical; 8 sources. Useful comments/saves/shares examples and an explicit authenticity caveat, plus generic planning material. | Ongoing voluntary conversations and trust; not a substitute for the small-business proof inventory. | Retain this draft; no canonical consolidation justified. Generic FAQs/end matter may receive a later editorial pass without assuming the page must index. | C; I1/I2/I3 versus small-business social proof. |
@@ -62,6 +62,30 @@ No catalog/rate, payment gateway, order builder, validator, authentication, data
 - At report creation: TypeScript PASS; authority graph audit PASS; configured unit suite **261 PASS / 0 FAIL / 0 SKIPPED**; lint PASS with inherited warnings; payment confidence **14 PASS**. The first focused attempt exposed the obsolete ten-section assertion; it was corrected as described and the focused rerun passed. Final local production build PASS; **25 targeted browser checks PASS / 0 FAIL / 0 SKIPPED** after the illustration/CTA corrections, including all-17 URL ownership and the LinkedIn invalid-link/login return contract. Build ID `0rJZCYMlI_gNxPjrSUU9i`. [Checks](local-checks.json), [browser result](browser-result.json), [browser output](browser-output.txt), and [byte-preservation evidence](preservation.json). Representative [YouTube guide](youtube-views-mobile.png) and [LinkedIn service](linkedin-likes-mobile.png) fixture screenshots were visually inspected. Remote exact-head CI and preview statuses are recorded separately in the PR body. No pending, skipped or blocked check is represented as a pass.
 
 Protected hosted preview rendering remains a separate gate: the existing Vercel fetch mechanism was previously rejected because it creates/reuses a prohibited share link, and no no-share authenticated browser channel is available here. Do not treat local fixture results or a READY deployment as authenticated hosted QA. No new protection bypass or production deployment is performed.
+
+## Official URL Inspection evidence supplied for LinkedIn Likes
+
+Received from the owner on **9 November 2026** as a transcription of official indexed-page URL Inspection. The underlying screenshot was not attached in this message and has not been independently reviewed here. Inspection capture time and the displayed crawl timezone were not supplied; retain the displayed time without assuming UTC or IST. [Structured evidence](linkedin-likes-url-inspection-owner-evidence.json).
+
+| Field | Owner-supplied official result |
+|---|---|
+| Inspected URL | `https://www.getsocialrush.com/linkedin-likes` |
+| Status | **URL is not on Google** |
+| Reason | **Crawled — currently not indexed** |
+| Last crawl, as displayed | **September 7, 2026, 5:29:22 AM**; timezone unspecified |
+| Crawled as | Googlebot smartphone |
+| Crawl allowed | Yes |
+| Page fetch | Successful |
+| Indexing allowed | Yes |
+| Sitemap | `https://www.getsocialrush.com/sitemap.xml` |
+| User-declared canonical | `https://www.getsocialrush.com/linkedin-likes` |
+| Google-selected canonical | **Inspected URL**, resolving to the same `/linkedin-likes` URL |
+
+This replaces the earlier “Google-selected canonical unknown” finding **for this service URL only, in the supplied indexed Inspection snapshot**. There is no observed crawl-permission, fetch, indexing-permission or canonical mismatch in that evidence. It does not prove the current HTML was rendered by Google, identify the exclusion cause, establish a content-quality verdict, or guarantee inclusion. No alternative canonical selection is reported for this snapshot.
+
+The draft improvements were made **after Google's last recorded crawl and have not been deployed**. They cannot explain that exclusion, and their effectiveness has not been evaluated by a subsequent production crawl. Content usefulness, duplication and link-strength explanations remain hypotheses. Retain the current canonical and existing service route; do not add a speculative redirect, noindex or crawler-policy change.
+
+For `/linkedin-likes`, I1 is now supplied for the fields above. Referring-page detail, inspection capture time/timezone and a separate **Live Test/render result** remain unavailable; I3 query/page comparison evidence remains required. The six revised articles still need their own official indexed URL Inspection results; do not generalize this service result to them. Any later owner-approved release must be assessed against a subsequent recorded crawl and fresh Inspection. **No indexing request was submitted.**
 
 ## Google evidence still required for each URL
 
