@@ -3,6 +3,10 @@ import { activeSmmServices, platformMeta } from "@/lib/smm-service-catalog";
 import { SEO_SITE_URL } from "@/lib/seo/metadata";
 
 const serviceSeoOverrides: Record<string, { title: string; description: string; keywords: string[] }> = {
+  "telegram-post-views": {"title": "Telegram Post Views | Public Message Requirements | SocialRUSH", "description": "Review Telegram post views for eligible public messages: direct post links, view-count limits, current pricing and dashboard order tracking.", "keywords": []},
+  "telegram-post-reactions": {"title": "Telegram Post Reactions | Emoji & Link Requirements | SocialRUSH", "description": "Compare Telegram post reactions with supported emoji checks, exact public message requirements, current service terms and dashboard tracking.", "keywords": []},
+  "telegram-poll-votes": {"title": "Telegram Poll Votes | Poll & Answer Option Checks | SocialRUSH", "description": "Review Telegram poll vote requirements, supported poll types and answer options. Check current pricing and understand why purchased votes are not survey evidence.", "keywords": []},
+
   "twitter-likes": {
     title: "Buy Twitter (X) Likes | X Likes Service | SocialRUSH",
     description: "Buy Twitter (X) likes for eligible public posts with transparent pricing, clear service requirements and dashboard order tracking from SocialRUSH.",
