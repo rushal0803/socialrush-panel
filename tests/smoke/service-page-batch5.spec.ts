@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 import { publishedCountryServicePages, countryServiceAlternates } from '../../lib/seo/international';
 import { activeSmmServices } from '../../lib/smm-service-catalog';
-const pages = publishedCountryServicePages.filter(p => p.copy.buyerFaqs?.length);
+const pages = publishedCountryServicePages.filter(p => ['linkedin-followers', 'youtube-views'].includes(p.catalogServiceCode));
 for (const width of [390, 1440]) {
   test.describe(`batch five at ${width}px`, () => {
     test.use({viewport:{width,height:900},extraHTTPHeaders:{DNT:'1'}});

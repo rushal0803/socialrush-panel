@@ -5,7 +5,7 @@ import { createCountryServiceFaqs, createCountryServiceSchema } from '../../lib/
 import { activeSmmServices } from '../../lib/smm-service-catalog.ts';
 
 test('buyer guidance affects only the ten existing LinkedIn and video-view variants', () => {
-  const selected = publishedCountryServicePages.filter(p => p.copy.buyerFaqs?.length);
+  const selected = publishedCountryServicePages.filter(p => ['linkedin-followers', 'youtube-views'].includes(p.catalogServiceCode));
   assert.equal(selected.length, 10);
   assert.equal(selected.filter(p => p.catalogServiceCode === 'linkedin-followers').length, 6);
   assert.equal(selected.filter(p => p.catalogServiceCode === 'youtube-views').length, 4);

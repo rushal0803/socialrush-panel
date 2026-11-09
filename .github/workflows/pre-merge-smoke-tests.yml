@@ -10,6 +10,7 @@ on:
       - seo/service-evidence-batch3-20261109
       - chore/seo-composed-release-20261109
       - seo/service-evidence-batch5-20261109
+      - seo/crawled-not-indexed-recovery-20261109
 
 permissions:
   contents: read
