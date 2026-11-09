@@ -28,7 +28,7 @@ Run against an owned local production build:
 SEO_TRANSPORT_ORIGIN=http://127.0.0.1:3004 npm run seo:check
 ```
 
-The reviewed91-entry contract is shared by the health monitor and a browser/API regression. The regression independently checks canonical ownership, all redirect statuses/targets/query preservation and rendered destination canonicals, plus a negative localhost-host control. Four unit checks verify normal hosted requests, safe transport configuration and real loopback Host/protocol/query delivery. The pre-commit monitor passed128/128 against the #758 build under production-host simulation.
+The reviewed91-entry contract is shared by the health monitor and a browser/API regression. Existing architecture guards read both the entry point and imported contract, assert that the entry point imports/executes it, and retain every alias/freshness assertion. The regression independently checks canonical ownership, all redirect statuses/targets/query preservation and rendered destination canonicals, plus a negative localhost-host control. Four unit checks verify normal hosted requests, safe transport configuration and real loopback Host/protocol/query delivery. The pre-commit monitor passed128/128 against the #758 build under production-host simulation.
 
 ## Validation and release gates
 
