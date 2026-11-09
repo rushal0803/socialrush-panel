@@ -81,7 +81,7 @@ Content usefulness/duplication and low contextual link counts are plausible sele
 
 ## AI and bot visibility
 
-The live robots policy explicitly permits OAI-SearchBot and permits Googlebot/Bingbot under the wildcard group; account/admin/API/checkout protections remain blocked. All 27 checked public URLs are allowed by this policy, return public initial HTML with meaningful content and crawlable links. This checks declared policy and ordinary HTTP accessibility, not verified bot-IP fetch behavior, Google's rendered crawl, Bing index inclusion or AI retrieval/citations. No citation, endorsement, ranking or AI traffic outcome is claimed. No crawler rules were changed.
+The live robots policy explicitly permits OAI-SearchBot and permits Googlebot/Bingbot under the wildcard group; account/admin/API/checkout protections remain blocked. All 27 checked public URLs are allowed by this policy, return public initial HTML with meaningful content and crawlable links. This checks declared policy and ordinary HTTP accessibility, not verified bot-IP fetch behavior, Google's rendered crawl, Bing index inclusion or AI retrieval/citations. No citation, endorsement, ranking or AI traffic outcome is claimed. [User-agent HTTP simulation](bot-http-check.json) returned 200, one canonical and initial H1 for all 21 combinations (seven priority URLs × three agent strings). This does not authenticate real crawler identities or prove actual bot fetches. No crawler rules were changed.
 
 ## Validation and next safe release steps
 

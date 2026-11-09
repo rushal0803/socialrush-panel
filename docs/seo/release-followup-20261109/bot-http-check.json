@@ -1,0 +1,216 @@
+{
+  "captured_utc": "2026-11-09T14:04:45.206063+00:00",
+  "limitation": "User-agent simulation, not verified bot IP or actual search-engine fetch",
+  "rows": [
+    {
+      "path": "/linkedin-likes",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/linkedin-likes"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/linkedin-likes",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/linkedin-likes"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/linkedin-likes",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/linkedin-likes"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/instagram-followers-price-in-india",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/instagram-followers-price-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/instagram-followers-price-in-india",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/instagram-followers-price-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/instagram-followers-price-in-india",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/instagram-followers-price-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/youtube-views-price-in-india",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/youtube-views-price-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/youtube-views-price-in-india",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/youtube-views-price-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/youtube-views-price-in-india",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/youtube-views-price-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/how-to-grow-instagram-followers-in-india",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/how-to-grow-instagram-followers-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/how-to-grow-instagram-followers-in-india",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/how-to-grow-instagram-followers-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/how-to-grow-instagram-followers-in-india",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/how-to-grow-instagram-followers-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/how-to-increase-instagram-followers-safely-in-india",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/how-to-increase-instagram-followers-safely-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/how-to-increase-instagram-followers-safely-in-india",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/how-to-increase-instagram-followers-safely-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/how-to-increase-instagram-followers-safely-in-india",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/how-to-increase-instagram-followers-safely-in-india"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/linkedin-profile-growth-tips-for-business-owners",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/linkedin-profile-growth-tips-for-business-owners"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/linkedin-profile-growth-tips-for-business-owners",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/linkedin-profile-growth-tips-for-business-owners"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/linkedin-profile-growth-tips-for-business-owners",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/linkedin-profile-growth-tips-for-business-owners"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/linkedin-growth-tips-personal-brands",
+      "claimed_user_agent": "Googlebot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/linkedin-growth-tips-personal-brands"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/linkedin-growth-tips-personal-brands",
+      "claimed_user_agent": "Bingbot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/linkedin-growth-tips-personal-brands"
+      ],
+      "has_h1": true
+    },
+    {
+      "path": "/blog/linkedin-growth-tips-personal-brands",
+      "claimed_user_agent": "OAI-SearchBot",
+      "status": 200,
+      "x_robots_tag": null,
+      "canonical": [
+        "https://www.getsocialrush.com/blog/linkedin-growth-tips-personal-brands"
+      ],
+      "has_h1": true
+    }
+  ]
+}

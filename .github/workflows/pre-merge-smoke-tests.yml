@@ -148,6 +148,7 @@ jobs:
             test-results/service-page-batch3*/
             test-results/service-page-batch4*/
             test-results/service-page-batch5*/
+            test-results/service-page-batch6*/
             test-results/indexing-recovery*/
             test-results/service-page-evidence*/
           retention-days: 7
