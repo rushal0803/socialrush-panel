@@ -1,0 +1,1812 @@
+{
+  "environment": "corrected local production build and isolated backend; X protected live-order handoff preserved",
+  "pages": [
+    {
+      "path": "/instagram-growth-india",
+      "status": 200,
+      "final_url": "http://localhost:3001/instagram-growth-india",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"p5qf8o5g6k3n8d\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "170103",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Instagram Growth Services in India | SocialRUSH",
+      "h1": [
+        "Build a smarter Instagram growth strategy in India."
+      ],
+      "description": "Explore Instagram growth services in India for followers, likes, views, comments, saves and shares. Compare goals and choose the right option.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/instagram-growth-india"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/blog/best-time-to-post-on-instagram-india",
+        "/blog/how-to-grow-instagram-followers-organically-india",
+        "/blog/instagram-followers-price-in-india",
+        "/blog/instagram-followers-vs-engagement",
+        "/blog/instagram-followers-vs-likes-india",
+        "/blog/instagram-views-vs-reach",
+        "/buy-instagram-comments-india",
+        "/buy-instagram-followers-india",
+        "/buy-instagram-saves-india",
+        "/buy-instagram-shares-india",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/instagram-likes",
+        "/instagram-views",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/instagram-caption-counter",
+        "/tools/instagram-engagement-rate-calculator",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/facebook-growth-india",
+      "status": 200,
+      "final_url": "http://localhost:3001/facebook-growth-india",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"cmo7jzgujt4f7j\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "206361",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Facebook Growth India | Followers, Likes, Views & Shares | SocialRUSH",
+      "h1": [
+        "Build a stronger",
+        " ",
+        "Facebook growth system",
+        " ",
+        "in India."
+      ],
+      "description": "Explore Facebook growth services in India for followers, likes, views, shares and group members. Compare goals and choose the right SocialRUSH option.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/facebook-growth-india"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Creator Growth",
+              "item": "https://www.getsocialrush.com/creator-growth"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Facebook Growth India",
+              "item": "https://www.getsocialrush.com/facebook-growth-india"
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the best Facebook growth service in India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no single best service for every Facebook page. Followers support visible audience size, likes support engagement and views support video visibility. The right option depends on the campaign objective."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Should I buy Facebook followers or engagement first?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "It depends on your current page. A newer page may focus on building visible audience size, while an established page may benefit more from supporting specific posts or videos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does SocialRUSH guarantee Facebook reach or sales?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Facebook reach, recommendations, leads and sales depend on many factors outside SocialRUSH. Promotional services should support a broader content and marketing strategy."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need to provide my Facebook password?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. SocialRUSH uses the relevant public Facebook page, post or video link for supported services. Never provide your Facebook password or private login information."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track my Facebook order?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Supported order information and status can be viewed through the SocialRUSH customer dashboard after an order is placed."
+              }
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/blog/facebook-followers-price-in-india",
+        "/blog/facebook-followers-vs-engagement-india",
+        "/blog/facebook-page-growth-tips-for-local-businesses",
+        "/blog/how-small-businesses-build-social-proof-online",
+        "/buy-facebook-followers-india",
+        "/buy-facebook-group-members-india",
+        "/buy-facebook-shares-india",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/facebook-likes",
+        "/facebook-views",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/creator-growth-checklist",
+        "/tools/creator-growth-goal-planner",
+        "/tools/social-media-growth-budget-calculator",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/youtube-growth-india",
+      "status": 200,
+      "final_url": "http://localhost:3001/youtube-growth-india",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"fk4xk9vlad3wrg\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "182454",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "YouTube Growth Services India | Subscribers, Views & Watch Hours | SocialRUSH",
+      "h1": [
+        "YouTube Growth Services India: compare subscribers, views and watch hours."
+      ],
+      "description": "Compare YouTube growth services in India for subscribers, views, likes, comments and watch hours. Choose by goal, review live details and compare the right service before ordering.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/youtube-growth-india"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "YouTube Growth India",
+              "item": "https://www.getsocialrush.com/youtube-growth-india"
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the best YouTube growth service in India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no single best service for every channel. Subscribers support visible channel size, views support video visibility, likes and comments support engagement, while watch hours serve a different objective. Choose according to your current goal."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Should I focus on subscribers or views first?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "It depends on your channel. A new channel may care more about building its subscriber base, while a channel with an existing audience may focus on increasing visibility and engagement around specific videos."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can buying YouTube services guarantee monetization?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. SocialRUSH does not guarantee YouTube monetization, revenue, ranking, recommendations or channel approval. YouTube applies its own eligibility, policy and review requirements."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need to provide my YouTube password?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. SocialRUSH services use the relevant public YouTube channel or video link. Never provide your Google or YouTube password."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track my YouTube order?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. Supported order information and status can be viewed through the SocialRUSH customer dashboard after ordering."
+              }
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/blog/how-to-get-1000-youtube-subscribers",
+        "/blog/how-to-promote-new-youtube-channel-in-india",
+        "/blog/is-it-safe-to-buy-youtube-subscribers",
+        "/blog/is-it-safe-to-buy-youtube-views",
+        "/blog/youtube-subscribers-price-in-india",
+        "/blog/youtube-subscribers-vs-views-india",
+        "/blog/youtube-views-price-in-india",
+        "/buy-youtube-comments-india",
+        "/buy-youtube-watch-hours-india",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/social-media-growth-planner",
+        "/tools/youtube-engagement-rate-calculator",
+        "/tools/youtube-revenue-calculator",
+        "/tools/youtube-thumbnail-preview",
+        "/trust",
+        "/uk",
+        "/us",
+        "/youtube-likes",
+        "/youtube-subscribers",
+        "/youtube-views"
+      ]
+    },
+    {
+      "path": "/linkedin-growth-india",
+      "status": 200,
+      "final_url": "http://localhost:3001/linkedin-growth-india",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"13153kt69aw3q44\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "173838",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "LinkedIn Growth Services India | SocialRUSH",
+      "h1": [
+        "                 Build a stronger",
+        " ",
+        "                 ",
+        "                   professional presence                 ",
+        " ",
+        "                 on LinkedIn.               "
+      ],
+      "description": "Explore LinkedIn growth services in India for followers and likes. Compare professional audience and engagement goals to choose the right option.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/linkedin-growth-india"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Creator Growth",
+              "item": "https://www.getsocialrush.com/creator-growth"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "LinkedIn Growth India",
+              "item": "https://www.getsocialrush.com/linkedin-growth-india"
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "What is the best LinkedIn growth service in India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "There is no single best service for every account. LinkedIn followers support visible audience size, while LinkedIn likes support visible engagement around individual public posts."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Should I focus on followers or engagement first?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "If your profile has strong positioning but a very small visible audience, follower growth may be more relevant. If you already have an audience but posts receive little interaction, focus more on content and engagement."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does SocialRUSH guarantee LinkedIn leads or sales?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Leads, sales, reach, hiring outcomes and business opportunities depend on many factors outside SocialRUSH."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Do I need to provide my LinkedIn password?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Supported SocialRUSH services use the relevant public LinkedIn profile, company page or post link. Never provide your password or OTP."
+              }
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/blog/linkedin-followers-vs-connections",
+        "/blog/linkedin-followers-vs-engagement-india",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/linkedin-followers",
+        "/linkedin-likes",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services/linkedin",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/creator-growth-goal-planner",
+        "/tools/social-media-growth-budget-calculator",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/tiktok-growth-india",
+      "status": 200,
+      "final_url": "http://localhost:3001/tiktok-growth-india",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"hhcmt6o3ny2nnp\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "123999",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "TikTok Growth Resources in India | SocialRUSH",
+      "h1": [
+        "Build a clearer ",
+        "TikTok",
+        " growth plan."
+      ],
+      "description": "Explore practical TikTok growth resources and relevant follower and engagement options for Indian creators, brands and agencies.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/tiktok-growth-india"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/blog/best-social-media-growth-services-for-indian-creators",
+        "/blog/social-media-campaign-mistakes-to-avoid",
+        "/blog/social-media-growth-strategy-indian-creators",
+        "/blog/why-public-link-ordering-is-safer",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tiktok-followers",
+        "/tools",
+        "/tools/creator-growth-goal-planner",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/x-growth-india",
+      "status": 200,
+      "final_url": "http://localhost:3001/x-growth-india",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"15fj4id83gb3c3v\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "155701",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Twitter / X Growth Services India | Followers, Likes, Reposts & Views | SocialRUSH",
+      "h1": [
+        "Build a clearer ",
+        "X / Twitter",
+        " growth plan."
+      ],
+      "description": "Compare Twitter / X growth services in India for followers, likes, reposts and views. Match account growth or post engagement to the right public-link service.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/x-growth-india"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/blog/how-social-media-growth-campaigns-work",
+        "/blog/is-it-safe-to-buy-twitter-followers",
+        "/blog/social-media-campaign-budget-planning-india",
+        "/blog/twitter-followers-price-in-india",
+        "/blog/why-public-link-ordering-is-safer",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services/twitter-crypto-custom-comments",
+        "/services/twitter-crypto-followers",
+        "/services/twitter-crypto-likes",
+        "/services/twitter-crypto-retweets",
+        "/services/twitter-likes",
+        "/services/twitter-retweets",
+        "/services/twitter-views",
+        "/services/twitter-x",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/creator-growth-goal-planner",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/twitter-followers",
+        "/uk",
+        "/us",
+        "/x-growth-india"
+      ]
+    },
+    {
+      "path": "/services/twitter-likes",
+      "status": 200,
+      "final_url": "http://localhost:3001/services/twitter-likes",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"pk5sp9n45o2sgr\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "130213",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Buy Twitter (X) Likes | X Likes Service | SocialRUSH",
+      "h1": [
+        "Twitter / X Likes"
+      ],
+      "description": "Buy Twitter (X) likes for eligible public posts with transparent pricing, clear service requirements and dashboard order tracking from SocialRUSH.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/services/twitter-likes"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "twitter likes | SocialRUSH",
+          "description": "Order twitter / x likes from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
+          "provider": {
+            "@type": "Organization",
+            "name": "SocialRUSH",
+            "url": "https://www.getsocialrush.com"
+          },
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Likes"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Do X likes include reposts or new followers?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. A post-like package concerns the selected eligible public post. Reposts and profile followers are separate services; likes do not establish endorsement, genuine audience interest or website visits."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can likes disappear after delivery?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Platform filtering or account changes can alter visible counts. Check the selected service's current refill conditions before ordering; a refund or replacement is subject to the published conditions, not an automatic guarantee."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I buy Twitter / X Likes?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Open Packages or New Order, choose Twitter / X Likes, add your public link, and confirm the checkout flow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this page suitable for India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. This page targets buyers searching for twitter likes and related SMM panel services in India."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track the order?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can track status from the dashboard after checkout."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the starting price?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Starting price is Live pricing in secure order with delivery around Estimate shown before checkout."
+              }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Likes",
+              "item": "https://www.getsocialrush.com/services/twitter-likes"
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-likes",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/services/twitter-views",
+      "status": 200,
+      "final_url": "http://localhost:3001/services/twitter-views",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"kaag04gt242sg1\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "130187",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Buy Twitter (X) Views | X Views Service | SocialRUSH",
+      "h1": [
+        "Twitter / X Views"
+      ],
+      "description": "Buy Twitter (X) views for eligible public posts with transparent pricing, public-link ordering, clear requirements and dashboard tracking.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/services/twitter-views"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "twitter views | SocialRUSH",
+          "description": "Order twitter / x views from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
+          "provider": {
+            "@type": "Organization",
+            "name": "SocialRUSH",
+            "url": "https://www.getsocialrush.com"
+          },
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Views"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Are X post views unique people or complete video watches?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A post view count alone does not establish unique viewers, complete video viewing or time spent reading. Review the selected service's counting conditions and use X analytics to assess retention and meaningful activity separately."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Will post views send visitors to my website?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Views on an X post are not website sessions or conversions. Measure outbound clicks, verified website visits and paid orders independently; no package guarantees those outcomes."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I buy Twitter / X Views?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Open Packages or New Order, choose Twitter / X Views, add your public link, and confirm the checkout flow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this page suitable for India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. This page targets buyers searching for twitter views and related SMM panel services in India."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track the order?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can track status from the dashboard after checkout."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the starting price?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Starting price is Live pricing in secure order with delivery around Estimate shown before checkout."
+              }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Views",
+              "item": "https://www.getsocialrush.com/services/twitter-views"
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-views",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/services/twitter-retweets",
+      "status": 200,
+      "final_url": "http://localhost:3001/services/twitter-retweets",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"erl5jzqkaw2soo\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "130498",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Buy Twitter Retweets / X Reposts | SocialRUSH",
+      "h1": [
+        "Twitter / X Retweets"
+      ],
+      "description": "Order Twitter retweets, now commonly called X reposts, for eligible public posts with transparent pricing, clear requirements and dashboard tracking.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/services/twitter-retweets"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "twitter retweets | SocialRUSH",
+          "description": "Order twitter / x retweets from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
+          "provider": {
+            "@type": "Organization",
+            "name": "SocialRUSH",
+            "url": "https://www.getsocialrush.com"
+          },
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Retweets"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Does an X repost package include quote posts or comments?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Do not assume it does. Reposts concern the supported repost action on the selected public post. Quote posts, customer-supplied comments, likes and followers are different actions; confirm the selected service's exact scope."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Will reposts guarantee organic distribution?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. Repost counts do not establish authentic recommendations, a particular audience location, website visits or sales. Check X's rules and the selected service's delivery and refill conditions before ordering."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I buy Twitter / X Retweets?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Open Packages or New Order, choose Twitter / X Retweets, add your public link, and confirm the checkout flow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this page suitable for India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. This page targets buyers searching for twitter retweets and related SMM panel services in India."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track the order?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can track status from the dashboard after checkout."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the starting price?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Starting price is Live pricing in secure order with delivery around Estimate shown before checkout."
+              }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Retweets",
+              "item": "https://www.getsocialrush.com/services/twitter-retweets"
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-retweets",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    },
+    {
+      "path": "/services/twitter-crypto-followers",
+      "status": 200,
+      "final_url": "http://localhost:3001/services/twitter-crypto-followers",
+      "headers": {
+        "X-Content-Type-Options": "nosniff",
+        "X-Frame-Options": "SAMEORIGIN",
+        "Referrer-Policy": "strict-origin-when-cross-origin",
+        "Strict-Transport-Security": "max-age=31536000; includeSubDomains; preload",
+        "Permissions-Policy": "camera=(), microphone=(), geolocation=(), browsing-topics=()",
+        "Content-Security-Policy": "default-src 'self'; script-src 'self' 'unsafe-inline' https://sdk.cashfree.com; style-src 'self' 'unsafe-inline'; connect-src 'self' https://*.supabase.co wss://*.supabase.co https://open.er-api.com https://sandbox.cashfree.com https://api.cashfree.com https://sdk.cashfree.com; frame-src 'self' https://sandbox.cashfree.com https://api.cashfree.com; img-src 'self' data: blob: https:; font-src 'self' data: https:; base-uri 'self'; object-src 'none'; frame-ancestors 'self'; form-action 'self' https://sandbox.cashfree.com https://api.cashfree.com; upgrade-insecure-requests",
+        "Vary": "rsc, next-router-state-tree, next-router-prefetch, next-router-segment-prefetch, Accept-Encoding",
+        "x-nextjs-cache": "HIT",
+        "x-nextjs-prerender": "1",
+        "x-nextjs-stale-time": "300",
+        "Cache-Control": "s-maxage=31536000",
+        "ETag": "\"cfmivczheh2t1p\"",
+        "Content-Type": "text/html; charset=utf-8",
+        "Content-Length": "130967",
+        "Date": "Sun, 08 Nov 2026 19:10:25 GMT",
+        "Connection": "close"
+      },
+      "title": "Twitter (X) Crypto Followers Service | SocialRUSH",
+      "h1": [
+        "Twitter / X Crypto-Based Followers"
+      ],
+      "description": "Explore the Twitter (X) crypto followers service with current pricing, quantity limits, public-profile requirements and dashboard order tracking.",
+      "robots": "index, follow",
+      "canonical": [
+        "https://www.getsocialrush.com/services/twitter-crypto-followers"
+      ],
+      "schemas": [
+        {
+          "@context": "https://schema.org",
+          "@type": "Organization",
+          "@id": "https://www.getsocialrush.com/#organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+          "sameAs": [
+            "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+            "https://www.facebook.com/share/18VDDFqWzY/"
+          ],
+          "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+91-88603-30771",
+            "contactType": "customer support",
+            "areaServed": "IN",
+            "availableLanguage": [
+              "English",
+              "Hindi"
+            ]
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "WebSite",
+          "@id": "https://www.getsocialrush.com/#website",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com",
+          "publisher": {
+            "@id": "https://www.getsocialrush.com/#organization"
+          },
+          "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+              "@type": "EntryPoint",
+              "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+          }
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "Service",
+          "name": "twitter crypto followers | SocialRUSH",
+          "description": "Order twitter / x crypto-based followers from SocialRUSH with current service facts loaded in the secure order flow, dashboard tracking, and public-link guidance.",
+          "provider": {
+            "@type": "Organization",
+            "name": "SocialRUSH",
+            "url": "https://www.getsocialrush.com"
+          },
+          "areaServed": "IN",
+          "serviceType": "Twitter / X Crypto-Based Followers"
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "FAQPage",
+          "mainEntity": [
+            {
+              "@type": "Question",
+              "name": "Does the crypto label verify followers as investors?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "No. A catalog label does not verify account expertise, genuine cryptocurrency interest, financial capacity or intent to invest. Do not present ordered follower counts as evidence of investor demand or endorsement."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Does this follower package include activity on my X posts?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "A follower package concerns the eligible public profile. Likes, reposts and comments on individual posts are separate services. A larger displayed follower count does not guarantee engagement, retained followers or sales."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "How do I buy Twitter / X Crypto-Based Followers?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Open Packages or New Order, choose Twitter / X Crypto-Based Followers, add your public link, and confirm the checkout flow."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Is this page suitable for India?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. This page targets buyers searching for twitter crypto followers and related SMM panel services in India."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "Can I track the order?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Yes. You can track status from the dashboard after checkout."
+              }
+            },
+            {
+              "@type": "Question",
+              "name": "What is the starting price?",
+              "acceptedAnswer": {
+                "@type": "Answer",
+                "text": "Starting price is Live pricing in secure order with delivery around Up to 1K/day."
+              }
+            }
+          ]
+        },
+        {
+          "@context": "https://schema.org",
+          "@type": "BreadcrumbList",
+          "itemListElement": [
+            {
+              "@type": "ListItem",
+              "position": 1,
+              "name": "Home",
+              "item": "https://www.getsocialrush.com/"
+            },
+            {
+              "@type": "ListItem",
+              "position": 2,
+              "name": "Services",
+              "item": "https://www.getsocialrush.com/services"
+            },
+            {
+              "@type": "ListItem",
+              "position": 3,
+              "name": "Twitter / X Crypto-Based Followers",
+              "item": "https://www.getsocialrush.com/services/twitter-crypto-followers"
+            }
+          ]
+        }
+      ],
+      "links": [
+        "/",
+        "/#how-it-works",
+        "/about",
+        "/ae",
+        "/au",
+        "/blog",
+        "/ca",
+        "/case-studies",
+        "/compare",
+        "/contact",
+        "/dashboard/new-order?platform=x&service=twitter-crypto-followers",
+        "/faq",
+        "/for-agencies",
+        "/for-brands",
+        "/for-creators",
+        "/login",
+        "/login?next=/dashboard/new-order",
+        "/packages",
+        "/partners",
+        "/press",
+        "/pricing",
+        "/privacy-policy",
+        "/refund-policy",
+        "/register",
+        "/reviews",
+        "/services",
+        "/services?platform=facebook",
+        "/services?platform=instagram",
+        "/services?platform=linkedin",
+        "/services?platform=telegram",
+        "/services?platform=tiktok",
+        "/services?platform=x",
+        "/services?platform=youtube",
+        "/sg",
+        "/support",
+        "/terms-and-conditions",
+        "/tools",
+        "/tools/social-media-growth-planner",
+        "/trust",
+        "/uk",
+        "/us"
+      ]
+    }
+  ]
+}

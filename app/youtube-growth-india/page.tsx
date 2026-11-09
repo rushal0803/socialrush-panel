@@ -1,3 +1,4 @@
+import PlatformBuyerDecisions from "@/components/seo/PlatformBuyerDecisions";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -409,6 +410,6 @@ export default function YouTubeGrowthIndiaPage() {
           </div>
         </section>
       </div></InteractiveHomepageShell>
-    </PublicShell>
+    <PlatformBuyerDecisions platform="youtube" /></PublicShell>
   );
 }

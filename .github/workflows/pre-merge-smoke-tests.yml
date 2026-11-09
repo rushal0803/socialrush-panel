@@ -6,6 +6,7 @@ on:
       - main
       - chore/seo-foundation-release-20261108
       - seo/service-evidence-batch1-20261108
+      - seo/service-evidence-batch2-20261108
 
 permissions:
   contents: read
@@ -137,6 +138,7 @@ jobs:
             artifacts/service-evidence/
             artifacts/service-evidence-batch2/
             test-results/service-page-batch2*/
+            test-results/service-page-batch3*/
             test-results/service-page-evidence*/
           retention-days: 7
           if-no-files-found: warn
