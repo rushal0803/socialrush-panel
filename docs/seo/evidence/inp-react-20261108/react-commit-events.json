@@ -1,0 +1,1395 @@
+{
+  "profilingBuild": true,
+  "fixture": true,
+  "fieldEvidence": false,
+  "rows": [
+    {
+      "cpu": 4,
+      "stage": "early",
+      "run": 0,
+      "before": {
+        "at": 940,
+        "commits": 0
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 7.1000000005587935,
+          "baseDuration": 4,
+          "startTime": 1232.5999999996275,
+          "commitTime": 1287.9000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 60.09999999962747,
+          "baseDuration": 52.00000000093132,
+          "startTime": 1222.7999999998137,
+          "commitTime": 1287.9000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 7.900000000372529,
+          "baseDuration": 56.20000000204891,
+          "startTime": 1337.2999999998137,
+          "commitTime": 1346.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 56.20000000204891,
+          "startTime": 1350.2999999998137,
+          "commitTime": 1351.4000000003725
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 3.7999999998137355,
+          "baseDuration": 3.7999999998137355,
+          "startTime": 1364.2999999998137,
+          "commitTime": 1368.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 3.7999999998137355,
+          "baseDuration": 56.000000001862645,
+          "startTime": 1364.2000000001863,
+          "commitTime": 1368.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 56.000000001862645,
+          "startTime": 1390.2999999998137,
+          "commitTime": 1392.7000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 46.80000000167638,
+          "startTime": 1405.4000000003725,
+          "commitTime": 1405.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.20000000018626451,
+          "baseDuration": 47.000000001862645,
+          "startTime": 1427.9000000003725,
+          "commitTime": 1428.5999999996275
+        }
+      ],
+      "events": [
+        {
+          "at": 1201.7000000001863,
+          "name": "pointerdown",
+          "duration": 200,
+          "processing": 133.6000000005588,
+          "inputDelay": 16.09999999962747,
+          "interaction": 8295,
+          "tag": "path"
+        },
+        {
+          "at": 1201.7000000001863,
+          "name": "pointerup",
+          "duration": 200,
+          "processing": 0.7999999998137355,
+          "inputDelay": 159.70000000018626,
+          "interaction": 8295,
+          "tag": "path"
+        },
+        {
+          "at": 1201.7000000001863,
+          "name": "click",
+          "duration": 200,
+          "processing": 11.700000000186265,
+          "inputDelay": 160.5,
+          "interaction": 8295,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 4,
+      "stage": "early",
+      "run": 1,
+      "before": {
+        "at": 608.3999999994412,
+        "commits": 0
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 54.799999999813735,
+          "baseDuration": 50.30000000074506,
+          "startTime": 919,
+          "commitTime": 1023.3999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 108.09999999962747,
+          "baseDuration": 96.59999999962747,
+          "startTime": 907.2999999998137,
+          "commitTime": 1023.3999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 10.400000000372529,
+          "baseDuration": 101.79999999981374,
+          "startTime": 1082.199999999255,
+          "commitTime": 1094.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 101.79999999981374,
+          "startTime": 1100.199999999255,
+          "commitTime": 1101.0999999996275
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 5.400000000372529,
+          "baseDuration": 5.500000000931323,
+          "startTime": 1118.199999999255,
+          "commitTime": 1123.699999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 5.400000000372529,
+          "baseDuration": 57,
+          "startTime": 1118.0999999996275,
+          "commitTime": 1123.699999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 57,
+          "startTime": 1156.3999999994412,
+          "commitTime": 1157.199999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 4.7000000001862645,
+          "baseDuration": 58.299999999813735,
+          "startTime": 1217.699999999255,
+          "commitTime": 1223
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 58.200000000186265,
+          "startTime": 1237.2999999998137,
+          "commitTime": 1237.5
+        }
+      ],
+      "events": [
+        {
+          "at": 875.8999999994412,
+          "name": "pointerdown",
+          "duration": 280,
+          "processing": 199.8999999994412,
+          "inputDelay": 25.40000000037253,
+          "interaction": 8783,
+          "tag": "path"
+        },
+        {
+          "at": 875.8999999994412,
+          "name": "pointerup",
+          "duration": 280,
+          "processing": 0,
+          "inputDelay": 238.5,
+          "interaction": 8783,
+          "tag": "path"
+        },
+        {
+          "at": 875.8999999994412,
+          "name": "click",
+          "duration": 280,
+          "processing": 14,
+          "inputDelay": 239.29999999981374,
+          "interaction": 8783,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 4,
+      "stage": "early",
+      "run": 2,
+      "before": {
+        "at": 779.0999999996275,
+        "commits": 0
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 6.1000000005587935,
+          "baseDuration": 5.2999999998137355,
+          "startTime": 1036.699999999255,
+          "commitTime": 1082.699999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 50.600000001490116,
+          "baseDuration": 42.40000000037253,
+          "startTime": 1028.3999999994412,
+          "commitTime": 1082.699999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 7.699999999254942,
+          "baseDuration": 44.09999999962747,
+          "startTime": 1143.3999999994412,
+          "commitTime": 1153.699999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 44.09999999962747,
+          "startTime": 1157.7999999998137,
+          "commitTime": 1157.8999999994412
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 4.5,
+          "baseDuration": 4.400000000372529,
+          "startTime": 1172.2999999998137,
+          "commitTime": 1176.8999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 4.5,
+          "baseDuration": 43.200000000186265,
+          "startTime": 1172.2999999998137,
+          "commitTime": 1176.8999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 43.200000000186265,
+          "startTime": 1208.5999999996275,
+          "commitTime": 1209
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 41.5,
+          "startTime": 1252.5,
+          "commitTime": 1252.699999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 41.59999999962747,
+          "startTime": 1258.2999999998137,
+          "commitTime": 1258.3999999994412
+        }
+      ],
+      "events": [
+        {
+          "at": 1005.3999999994412,
+          "name": "pointerdown",
+          "duration": 208,
+          "processing": 138.40000000037253,
+          "inputDelay": 15.299999999813735,
+          "interaction": 7441,
+          "tag": "path"
+        },
+        {
+          "at": 1005.3999999994412,
+          "name": "pointerup",
+          "duration": 208,
+          "processing": 0.7999999998137355,
+          "inputDelay": 163.90000000037253,
+          "interaction": 7441,
+          "tag": "path"
+        },
+        {
+          "at": 1005.3999999994412,
+          "name": "click",
+          "duration": 208,
+          "processing": 10.900000000372529,
+          "inputDelay": 165.5,
+          "interaction": 7441,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 4,
+      "stage": "mounted",
+      "run": 0,
+      "before": {
+        "at": 1055,
+        "commits": 2
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 44.59999999869615,
+          "baseDuration": 43.1999999973923,
+          "startTime": 900.7999999998137,
+          "commitTime": 989.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 126.59999999869615,
+          "baseDuration": 109.6999999973923,
+          "startTime": 844.0999999996275,
+          "commitTime": 989.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 1.599999999627471,
+          "baseDuration": 110.59999999776483,
+          "startTime": 1089.8999999994412,
+          "commitTime": 1093.3999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 110.59999999776483,
+          "startTime": 1129.3999999994412,
+          "commitTime": 1129.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 110.69999999832362,
+          "startTime": 1152.199999999255,
+          "commitTime": 1152.2999999998137
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 9.299999999813735,
+          "baseDuration": 8.799999999813735,
+          "startTime": 1264.3999999994412,
+          "commitTime": 1274.3999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 9.299999999813735,
+          "baseDuration": 76.30000000074506,
+          "startTime": 1264,
+          "commitTime": 1274.3999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 5.900000000372529,
+          "baseDuration": 58.70000000204891,
+          "startTime": 1308,
+          "commitTime": 1315.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 2.2000000001862645,
+          "baseDuration": 58.70000000204891,
+          "startTime": 1316.8999999994412,
+          "commitTime": 1319.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.20000000018626451,
+          "baseDuration": 55.90000000130385,
+          "startTime": 1350.3999999994412,
+          "commitTime": 1350.5999999996275
+        }
+      ],
+      "events": [
+        {
+          "at": 1239.3999999994412,
+          "name": "pointerdown",
+          "duration": 88,
+          "processing": 3.7999999998137355,
+          "inputDelay": 14.600000000558794,
+          "interaction": 182,
+          "tag": "path"
+        },
+        {
+          "at": 1240.0999999996275,
+          "name": "pointerup",
+          "duration": 80,
+          "processing": 0.599999999627471,
+          "inputDelay": 21.5,
+          "interaction": 182,
+          "tag": "path"
+        },
+        {
+          "at": 1240.0999999996275,
+          "name": "click",
+          "duration": 80,
+          "processing": 20,
+          "inputDelay": 22.200000000186265,
+          "interaction": 182,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 4,
+      "stage": "mounted",
+      "run": 1,
+      "before": {
+        "at": 1036.6000000005588,
+        "commits": 2
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 47.5,
+          "baseDuration": 44.20000000111759,
+          "startTime": 900.7000000001863,
+          "commitTime": 984.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 119.3999999994412,
+          "baseDuration": 105.49999999813735,
+          "startTime": 849.6000000005588,
+          "commitTime": 984.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 3.599999999627471,
+          "baseDuration": 107.99999999813735,
+          "startTime": 1060.9000000003725,
+          "commitTime": 1064.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 107.99999999813735,
+          "startTime": 1097.6000000005588,
+          "commitTime": 1097.6000000005588
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 108.09999999869615,
+          "startTime": 1117.7999999998137,
+          "commitTime": 1118.6000000005588
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 5.2999999998137355,
+          "baseDuration": 5.2000000001862645,
+          "startTime": 1204.7000000001863,
+          "commitTime": 1211.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 6.599999999627471,
+          "baseDuration": 69.09999999776483,
+          "startTime": 1204.7000000001863,
+          "commitTime": 1211.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 5.5,
+          "baseDuration": 52.19999999925494,
+          "startTime": 1240,
+          "commitTime": 1245.7000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 52.19999999925494,
+          "startTime": 1247,
+          "commitTime": 1248.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 50.69999999925494,
+          "startTime": 1253.1000000005588,
+          "commitTime": 1253.2000000001863
+        }
+      ],
+      "events": [
+        {
+          "at": 1183.9000000003725,
+          "name": "pointerdown",
+          "duration": 72,
+          "processing": 3.599999999627471,
+          "inputDelay": 11.799999999813735,
+          "interaction": 9708,
+          "tag": "path"
+        },
+        {
+          "at": 1183.9000000003725,
+          "name": "pointerup",
+          "duration": 72,
+          "processing": 0.8999999994412065,
+          "inputDelay": 17.700000000186265,
+          "interaction": 9708,
+          "tag": "path"
+        },
+        {
+          "at": 1183.9000000003725,
+          "name": "click",
+          "duration": 72,
+          "processing": 15.900000000372529,
+          "inputDelay": 19.09999999962747,
+          "interaction": 9708,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 4,
+      "stage": "mounted",
+      "run": 2,
+      "before": {
+        "at": 1064.9000000003725,
+        "commits": 2
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 52.59999999962747,
+          "baseDuration": 48.5,
+          "startTime": 897.0999999996275,
+          "commitTime": 992.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 133.00000000093132,
+          "baseDuration": 122.1000000005588,
+          "startTime": 827.5999999996275,
+          "commitTime": 992.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 2.599999999627471,
+          "baseDuration": 123.59999999962747,
+          "startTime": 1101.2000000001863,
+          "commitTime": 1104.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 123.59999999962747,
+          "startTime": 1146.2000000001863,
+          "commitTime": 1146.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 1,
+          "baseDuration": 124.59999999962747,
+          "startTime": 1200.0999999996275,
+          "commitTime": 1201.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 11.400000000372529,
+          "baseDuration": 106.20000000111759,
+          "startTime": 1286.0999999996275,
+          "commitTime": 1297.5999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 104.90000000223517,
+          "startTime": 1313.7999999998137,
+          "commitTime": 1314.2999999998137
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 4.799999998882413,
+          "baseDuration": 4.799999998882413,
+          "startTime": 1378.5,
+          "commitTime": 1384
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 4.799999998882413,
+          "baseDuration": 61.20000000111759,
+          "startTime": 1378.5,
+          "commitTime": 1384
+        }
+      ],
+      "events": [
+        {
+          "at": 1341.2000000001863,
+          "name": "pointerdown",
+          "duration": 80,
+          "processing": 3,
+          "inputDelay": 29.09999999962747,
+          "interaction": 2428,
+          "tag": "path"
+        },
+        {
+          "at": 1341.2999999998137,
+          "name": "pointerup",
+          "duration": 80,
+          "processing": 0.09999999962747097,
+          "inputDelay": 34.10000000055879,
+          "interaction": 2428,
+          "tag": "path"
+        },
+        {
+          "at": 1341.2999999998137,
+          "name": "click",
+          "duration": 80,
+          "processing": 9.299999999813735,
+          "inputDelay": 36,
+          "interaction": 2428,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 6,
+      "stage": "early",
+      "run": 0,
+      "before": {
+        "at": 1079.7999999998137,
+        "commits": 0
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 82.20000000018626,
+          "baseDuration": 76,
+          "startTime": 1377.5,
+          "commitTime": 1529.0999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 168.80000000167638,
+          "baseDuration": 157.30000000353903,
+          "startTime": 1352.8999999994412,
+          "commitTime": 1529.0999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 11.399999998509884,
+          "baseDuration": 157.90000000223517,
+          "startTime": 1622.5999999996275,
+          "commitTime": 1639.0999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 157.90000000223517,
+          "startTime": 1646.0999999996275,
+          "commitTime": 1646.5999999996275
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 8.199999999254942,
+          "baseDuration": 8.099999999627471,
+          "startTime": 1671,
+          "commitTime": 1680.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 8.299999999813735,
+          "baseDuration": 90.00000000186265,
+          "startTime": 1670.8999999994412,
+          "commitTime": 1680.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.20000000018626451,
+          "baseDuration": 90.00000000186265,
+          "startTime": 1720,
+          "commitTime": 1721.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 87.3000000026077,
+          "startTime": 1800.3999999994412,
+          "commitTime": 1800.5999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 87.30000000353903,
+          "startTime": 1934.2999999998137,
+          "commitTime": 1934.5999999996275
+        }
+      ],
+      "events": [
+        {
+          "at": 1313.0999999996275,
+          "name": "pointerdown",
+          "duration": 408,
+          "processing": 308.70000000018626,
+          "inputDelay": 26.700000000186265,
+          "interaction": 4763,
+          "tag": "path"
+        },
+        {
+          "at": 1313.2999999998137,
+          "name": "pointerup",
+          "duration": 408,
+          "processing": 0.5,
+          "inputDelay": 353.8999999994412,
+          "interaction": 4763,
+          "tag": "path"
+        },
+        {
+          "at": 1313.2999999998137,
+          "name": "click",
+          "duration": 408,
+          "processing": 20.40000000037253,
+          "inputDelay": 355.3999999994412,
+          "interaction": 4763,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 6,
+      "stage": "early",
+      "run": 1,
+      "before": {
+        "at": 1093.5,
+        "commits": 0
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 10.400000000372529,
+          "baseDuration": 6.499999999068677,
+          "startTime": 1435.6000000005588,
+          "commitTime": 1511.9000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 83.5,
+          "baseDuration": 67.39999999757856,
+          "startTime": 1421.7999999998137,
+          "commitTime": 1511.9000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 14.700000000186265,
+          "baseDuration": 73.49999999720603,
+          "startTime": 1598.9000000003725,
+          "commitTime": 1617
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 73.49999999720603,
+          "startTime": 1623.9000000003725,
+          "commitTime": 1624.7000000001863
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 6.7999999998137355,
+          "baseDuration": 6.7999999998137355,
+          "startTime": 1644.6000000005588,
+          "commitTime": 1651.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 6.7999999998137355,
+          "baseDuration": 73.79999999795109,
+          "startTime": 1644.6000000005588,
+          "commitTime": 1651.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 1.099999999627471,
+          "baseDuration": 73.79999999795109,
+          "startTime": 1688.6000000005588,
+          "commitTime": 1689.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.5,
+          "baseDuration": 70.49999999813735,
+          "startTime": 1742.2000000001863,
+          "commitTime": 1743.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 70.09999999776483,
+          "startTime": 1792.9000000003725,
+          "commitTime": 1793.1000000005588
+        }
+      ],
+      "events": [
+        {
+          "at": 1389.7000000001863,
+          "name": "pointerdown",
+          "duration": 304,
+          "processing": 213.90000000037253,
+          "inputDelay": 22,
+          "interaction": 2123,
+          "tag": "path"
+        },
+        {
+          "at": 1389.7000000001863,
+          "name": "pointerup",
+          "duration": 304,
+          "processing": 0.09999999962747097,
+          "inputDelay": 251.5,
+          "interaction": 2123,
+          "tag": "path"
+        },
+        {
+          "at": 1389.7000000001863,
+          "name": "click",
+          "duration": 304,
+          "processing": 17.700000000186265,
+          "inputDelay": 251.70000000018626,
+          "interaction": 2123,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 6,
+      "stage": "early",
+      "run": 2,
+      "before": {
+        "at": 1124.5,
+        "commits": 0
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 16.200000000186265,
+          "baseDuration": 11.800000000745058,
+          "startTime": 1474.7999999998137,
+          "commitTime": 1565.6000000005588
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 102.29999999795109,
+          "baseDuration": 86.1000000005588,
+          "startTime": 1457.9000000003725,
+          "commitTime": 1565.6000000005588
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 14.799999999813735,
+          "baseDuration": 87.59999999962747,
+          "startTime": 1660,
+          "commitTime": 1677.4000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 87.59999999962747,
+          "startTime": 1688.6000000005588,
+          "commitTime": 1689.9000000003725
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 8.200000000186265,
+          "baseDuration": 8.200000000186265,
+          "startTime": 1717,
+          "commitTime": 1726.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 8.200000000186265,
+          "baseDuration": 83.99999999906868,
+          "startTime": 1717,
+          "commitTime": 1726.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.7000000001862645,
+          "baseDuration": 83.99999999906868,
+          "startTime": 1772,
+          "commitTime": 1774.1000000005588
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.10000000055879354,
+          "baseDuration": 81.79999999981374,
+          "startTime": 1868.2999999998137,
+          "commitTime": 1869.9000000003725
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 81.8999999994412,
+          "startTime": 1875.2000000001863,
+          "commitTime": 1875.2999999998137
+        }
+      ],
+      "events": [
+        {
+          "at": 1363.2000000001863,
+          "name": "pointerdown",
+          "duration": 408,
+          "processing": 243.5,
+          "inputDelay": 85,
+          "interaction": 1134,
+          "tag": "path"
+        },
+        {
+          "at": 1363.2000000001863,
+          "name": "pointerup",
+          "duration": 408,
+          "processing": 0.8999999994412065,
+          "inputDelay": 348.20000000018626,
+          "interaction": 1134,
+          "tag": "path"
+        },
+        {
+          "at": 1363.2000000001863,
+          "name": "click",
+          "duration": 408,
+          "processing": 22.100000000558794,
+          "inputDelay": 350.09999999962747,
+          "interaction": 1134,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 6,
+      "stage": "mounted",
+      "run": 0,
+      "before": {
+        "at": 1464.2999999998137,
+        "commits": 2
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 69.90000000037253,
+          "baseDuration": 63.70000000111759,
+          "startTime": 1261.699999999255,
+          "commitTime": 1390.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 180.3000000026077,
+          "baseDuration": 158.50000000093132,
+          "startTime": 1185.699999999255,
+          "commitTime": 1390.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 1.3999999994412065,
+          "baseDuration": 158.29999999981374,
+          "startTime": 1500.2999999998137,
+          "commitTime": 1504.199999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 158.29999999981374,
+          "startTime": 1550.0999999996275,
+          "commitTime": 1550.199999999255
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 158.3999999994412,
+          "startTime": 1578,
+          "commitTime": 1578.0999999996275
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 10.200000000186265,
+          "baseDuration": 9.000000000931323,
+          "startTime": 1714.8999999994412,
+          "commitTime": 1725.0999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 10.200000000186265,
+          "baseDuration": 103.69999999925494,
+          "startTime": 1714.7999999998137,
+          "commitTime": 1725.0999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 6.300000000745058,
+          "baseDuration": 76.1000000005588,
+          "startTime": 1764.7999999998137,
+          "commitTime": 1773.0999999996275
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 0,
+          "baseDuration": 76.1000000005588,
+          "startTime": 1774.199999999255,
+          "commitTime": 1774.3999999994412
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 6.7999999998137355,
+          "baseDuration": 78.70000000111759,
+          "startTime": 1805.7999999998137,
+          "commitTime": 1812.699999999255
+        }
+      ],
+      "events": [
+        {
+          "at": 1685,
+          "name": "pointerdown",
+          "duration": 96,
+          "processing": 5.800000000745058,
+          "inputDelay": 16.699999999254942,
+          "interaction": 4205,
+          "tag": "path"
+        },
+        {
+          "at": 1685,
+          "name": "pointerup",
+          "duration": 96,
+          "processing": 0.5,
+          "inputDelay": 26.699999999254942,
+          "interaction": 4205,
+          "tag": "path"
+        },
+        {
+          "at": 1685,
+          "name": "click",
+          "duration": 96,
+          "processing": 20.90000000037253,
+          "inputDelay": 28.09999999962747,
+          "interaction": 4205,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 6,
+      "stage": "mounted",
+      "run": 1,
+      "before": {
+        "at": 1422.1000000005588,
+        "commits": 2
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 73.3999999994412,
+          "baseDuration": 70.49999999813735,
+          "startTime": 1201.6000000005588,
+          "commitTime": 1340
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 178.8999999994412,
+          "baseDuration": 154.6999999973923,
+          "startTime": 1127.7000000001863,
+          "commitTime": 1340
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 4.7000000001862645,
+          "baseDuration": 156.89999999757856,
+          "startTime": 1461.1000000005588,
+          "commitTime": 1466.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 156.89999999757856,
+          "startTime": 1515.1000000005588,
+          "commitTime": 1515.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 156.99999999720603,
+          "startTime": 1616.6000000005588,
+          "commitTime": 1618.1000000005588
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 10.399999999441206,
+          "baseDuration": 10.399999999441206,
+          "startTime": 1697.7000000001863,
+          "commitTime": 1709.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 11.099999999627471,
+          "baseDuration": 96.89999999850988,
+          "startTime": 1697.7000000001863,
+          "commitTime": 1709.2999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 7.999999999068677,
+          "baseDuration": 77.99999999534339,
+          "startTime": 1752.2999999998137,
+          "commitTime": 1761.7999999998137
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "nested-update",
+          "actualDuration": 0,
+          "baseDuration": 77.99999999534339,
+          "startTime": 1765.1000000005588,
+          "commitTime": 1766.7000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.20000000018626451,
+          "baseDuration": 75.79999999608845,
+          "startTime": 1818.7999999998137,
+          "commitTime": 1819.1000000005588
+        }
+      ],
+      "events": [
+        {
+          "at": 1663.6000000005588,
+          "name": "pointerdown",
+          "duration": 96,
+          "processing": 5.2000000001862645,
+          "inputDelay": 20.799999999813735,
+          "interaction": 6131,
+          "tag": "path"
+        },
+        {
+          "at": 1663.6000000005588,
+          "name": "pointerup",
+          "duration": 96,
+          "processing": 0,
+          "inputDelay": 30.59999999962747,
+          "interaction": 6131,
+          "tag": "path"
+        },
+        {
+          "at": 1663.6000000005588,
+          "name": "click",
+          "duration": 96,
+          "processing": 24.90000000037253,
+          "inputDelay": 32.19999999925494,
+          "interaction": 6131,
+          "tag": "path"
+        }
+      ]
+    },
+    {
+      "cpu": 6,
+      "stage": "mounted",
+      "run": 2,
+      "before": {
+        "at": 1625.9000000003725,
+        "commits": 2
+      },
+      "quantity": "101",
+      "commits": [
+        {
+          "id": "instagram-marketing-card",
+          "phase": "mount",
+          "actualDuration": 84.8999999994412,
+          "baseDuration": 81.69999999832362,
+          "startTime": 1338.300000000745,
+          "commitTime": 1511.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "mount",
+          "actualDuration": 231.69999999646097,
+          "baseDuration": 210.39999999850988,
+          "startTime": 1231.7000000001863,
+          "commitTime": 1511.2000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 15.299999999813735,
+          "baseDuration": 224.19999999832362,
+          "startTime": 1681.300000000745,
+          "commitTime": 1712.300000000745
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 224.19999999832362,
+          "startTime": 1807,
+          "commitTime": 1807.5
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.09999999962747097,
+          "baseDuration": 224.2999999979511,
+          "startTime": 1912.1000000005588,
+          "commitTime": 1912.2000000001863
+        },
+        {
+          "id": "instagram-marketing-card",
+          "phase": "update",
+          "actualDuration": 10.299999999813735,
+          "baseDuration": 10.299999999813735,
+          "startTime": 2023.300000000745,
+          "commitTime": 2035.7000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 22.5,
+          "baseDuration": 108.89999999850988,
+          "startTime": 2012.1000000005588,
+          "commitTime": 2035.7000000001863
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0,
+          "baseDuration": 108.89999999850988,
+          "startTime": 2079.5,
+          "commitTime": 2082.100000000559
+        },
+        {
+          "id": "app-client-tree",
+          "phase": "update",
+          "actualDuration": 0.20000000018626451,
+          "baseDuration": 104.29999999888241,
+          "startTime": 2122,
+          "commitTime": 2122.4000000003725
+        }
+      ],
+      "events": [
+        {
+          "at": 1960.7000000001863,
+          "name": "pointerdown",
+          "duration": 120,
+          "processing": 7.900000000372529,
+          "inputDelay": 34.200000000186265,
+          "interaction": 1696,
+          "tag": "path"
+        },
+        {
+          "at": 1960.7000000001863,
+          "name": "pointerup",
+          "duration": 120,
+          "processing": 1.400000000372529,
+          "inputDelay": 46.5,
+          "interaction": 1696,
+          "tag": "path"
+        },
+        {
+          "at": 1960.7000000001863,
+          "name": "click",
+          "duration": 120,
+          "processing": 38.5,
+          "inputDelay": 48.10000000055879,
+          "interaction": 1696,
+          "tag": "path"
+        }
+      ]
+    }
+  ]
+}

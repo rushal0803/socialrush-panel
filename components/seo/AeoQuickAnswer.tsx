@@ -16,8 +16,8 @@ export default function AeoQuickAnswer({
   minQuantity,
 }: Props) {
   const priceAnswer =
-    pricePer1000 !== null
-      ? `₹${pricePer1000.toLocaleString("en-IN")} per 1,000`
+    pricePer1000 !== null && Number.isFinite(pricePer1000) && pricePer1000 > 0
+      ? `₹${pricePer1000.toLocaleString("en-IN", { minimumFractionDigits: 2, maximumFractionDigits: 2 })} per 1,000`
       : "See the current confirmed price in Packages";
   const quantityAnswer =
     minQuantity > 0
@@ -36,7 +36,7 @@ export default function AeoQuickAnswer({
           What should I know before ordering {serviceName} in India?
         </h2>
         <p className="mt-3 max-w-4xl text-sm leading-7 text-[#374151] sm:text-base">
-          SocialRUSH {serviceName} campaigns use a {destination}. No social media password is required.
+          SocialRUSH {serviceName} campaigns use the {destination}. No social media password is required.
           Review the current price, quantity, delivery estimate and refill information before checkout, then track the order from your dashboard.
         </p>
         <dl className="mt-5 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">

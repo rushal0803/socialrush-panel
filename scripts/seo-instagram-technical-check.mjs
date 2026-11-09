@@ -1,5 +1,7 @@
 #!/usr/bin/env node
 
+import { structuredType } from "./lib/seo-jsonld.mjs";
+
 const BASE_URL = new URL(process.env.SEO_BASE_URL || "https://www.getsocialrush.com");
 const REQUEST_TIMEOUT_MS = 30000;
 const CONCURRENCY = 4;
@@ -96,10 +98,6 @@ function hasNoindex(response, html) {
     /<meta\b[^>]*content=["'][^"']*noindex[^"']*["'][^>]*name=["']robots["']/i.test(html);
 }
 
-function structuredType(html, type) {
-  const safe = type.replace(/[.*+?^$()|[\]\\]/g, "\\$&");
-  return new RegExp("[\\\"']@type[\\\"']\\\\s*:\\\\s*[\\\"']" + safe + "[\\\"']", "i").test(html);
-}
 
 function internalLinks(html) {
   const links = new Set();

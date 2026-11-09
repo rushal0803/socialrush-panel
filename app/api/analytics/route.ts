@@ -1,3 +1,4 @@
+import { shouldIgnoreAnalyticsCollection } from "@/lib/analytics/collection-environment";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { clientAnalyticsEvents } from "@/lib/analytics/events";
@@ -39,6 +40,10 @@ const trim = (value: unknown, length: number) =>
   typeof value === "string" ? value.trim().slice(0, length) || null : null;
 
 export async function POST(request: NextRequest) {
+  // Return before parsing, session allocation or any database access.
+  if (shouldIgnoreAnalyticsCollection(request.nextUrl.hostname, process.env.VERCEL_ENV)) {
+    return new NextResponse(null, { status: 204 });
+  }
   const jsonError = requireJson(request, 8_192);
   if (jsonError) return jsonError;
   const limited = rateLimit(request, "analytics", 120, 60_000);

@@ -18,34 +18,117 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: 24
       - name: Check local blog image assets
-        run: node scripts/seo-blog-assets-check.mjs
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node scripts/seo-blog-assets-check.mjs 2>&1 | tee artifacts/seo-monitor/check-01.log
       - name: Check production SEO health
-        run: node scripts/seo-health-check.mjs
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node scripts/seo-health-check.mjs 2>&1 | tee artifacts/seo-monitor/check-02.log
       - name: Check full-sitemap technical SEO
-        run: node scripts/seo-sitewide-technical-audit.mjs
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node scripts/seo-sitewide-technical-audit.mjs 2>&1 | tee artifacts/seo-monitor/check-03.log
       - name: Check keyword ownership consistency
-        run: node --experimental-strip-types scripts/seo-keyword-ownership-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types scripts/seo-keyword-ownership-check.ts 2>&1 | tee artifacts/seo-monitor/check-04.log
       - name: Check SEO content engine consistency
-        run: node --experimental-strip-types scripts/seo-content-engine-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types scripts/seo-content-engine-check.ts 2>&1 | tee artifacts/seo-monitor/check-05.log
       - name: Check internal authority graph
-        run: node --experimental-strip-types --import ./scripts/test-path-aliases.mjs scripts/seo-authority-graph-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types --import ./scripts/test-path-aliases.mjs scripts/seo-authority-graph-check.ts 2>&1 | tee artifacts/seo-monitor/check-06.log
       - name: Check competitor intelligence freshness
-        run: node --experimental-strip-types scripts/seo-competitor-intelligence-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types scripts/seo-competitor-intelligence-check.ts 2>&1 | tee artifacts/seo-monitor/check-07.log
       - name: Check India regional expansion guardrails
-        run: node --experimental-strip-types scripts/seo-india-expansion-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types scripts/seo-india-expansion-check.ts 2>&1 | tee artifacts/seo-monitor/check-08.log
       - name: Check international SEO integrity
-        run: node --experimental-strip-types scripts/seo-international-integrity-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types scripts/seo-international-integrity-check.ts 2>&1 | tee artifacts/seo-monitor/check-09.log
       - name: Check Digital PR asset and outreach guardrails
-        run: node --experimental-strip-types scripts/seo-digital-pr-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types scripts/seo-digital-pr-check.ts 2>&1 | tee artifacts/seo-monitor/check-10.log
       - name: Check content distribution integrity
-        run: node --experimental-strip-types --import ./scripts/test-path-aliases.mjs scripts/seo-content-distribution-check.ts
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node --experimental-strip-types --import ./scripts/test-path-aliases.mjs scripts/seo-content-distribution-check.ts 2>&1 | tee artifacts/seo-monitor/check-11.log
       - name: Check SERP snippet CTR health
-        run: node scripts/seo-serp-ctr-audit.mjs
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node scripts/seo-serp-ctr-audit.mjs 2>&1 | tee artifacts/seo-monitor/check-12.log
       - name: Check AI search and AEO readiness
-        run: npm run seo:aeo
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          npm run seo:aeo 2>&1 | tee artifacts/seo-monitor/check-13.log
       - name: Check Phase 16 Instagram technical SEO
-        run: node scripts/seo-instagram-technical-check.mjs
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node scripts/seo-instagram-technical-check.mjs 2>&1 | tee artifacts/seo-monitor/check-14.log
       - name: Check Phase 17 Instagram sitemap integrity
-        run: node scripts/seo-instagram-sitemap-check.mjs
+        if: ${{ !cancelled() }}
+        shell: bash
+        run: |
+          set -o pipefail
+          mkdir -p artifacts/seo-monitor
+          node scripts/seo-instagram-sitemap-check.mjs 2>&1 | tee artifacts/seo-monitor/check-15.log
+      - name: Retain SEO monitor evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-monitor-evidence
+          path: artifacts/seo-monitor/
+          retention-days: 14
+          if-no-files-found: warn
