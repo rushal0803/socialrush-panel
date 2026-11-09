@@ -60,6 +60,7 @@ for(const width of [390,1440]) {
         const raw=await (await request.get(`/blog/${slug}`)).text();
         const nodes=schemaNodes(raw);
         const faq=nodes.find(n=>n['@type']==='FAQPage');
+        if(['how-to-grow-instagram-followers-in-india','instagram-followers-price-in-india'].includes(slug)) await expect(page.locator('#article-body a[href="/buy-instagram-followers-india"]').first()).toBeVisible();
         expect(nodes.filter(n=>n['@type']==='FAQPage')).toHaveLength(1);
         const initialText=await page.evaluate(html=>new DOMParser().parseFromString(html,'text/html').body.textContent??'',raw);
         for(const section of article.sections) expect(initialText).toContain(section.heading);

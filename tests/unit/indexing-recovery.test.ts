@@ -80,3 +80,11 @@ test('guide CTA follows the declared intent while preserving every platform serv
   assert.equal(links.length,contentClusters.youtube.serviceLinks.length);
   assert.equal(getGuideServiceLinks('youtube','/blog/how-to-get-1000-youtube-subscribers')[0].href,'/youtube-subscribers');
 });
+
+
+test('rewritten Instagram guides retain contextual commercial links inside article sections',()=>{
+  for(const slug of ['how-to-grow-instagram-followers-in-india','instagram-followers-price-in-india']) {
+    const article=getArticleBySlug(slug)!;
+    assert.ok(article.sections.some(s=>s.contextualLink?.href==='/buy-instagram-followers-india'),`${slug}: do not relocate a contextual body link only to related resources`);
+  }
+});
