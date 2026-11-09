@@ -27,17 +27,17 @@ export function ArticleHeroVisual({ category, title, variant = "hero" }: VisualP
   const type = kind(category, title);
   const isPayment = type === "payment";
   const Icon = type === "youtube" ? Play : type === "seo" ? Search : type === "payment" ? CreditCard : type === "linkedin" ? UserRound : type === "facebook" ? UserRound : BarChart3;
-  return <div aria-hidden="true" className={`relative isolate overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${palettes[type]} ${variant === "hero" ? "min-h-[260px] sm:min-h-[320px]" : "min-h-[180px]"}`}>
+  return <figure data-article-illustration className="m-0"><div aria-hidden="true" className={`relative isolate overflow-hidden rounded-3xl border border-white/10 bg-gradient-to-br ${palettes[type]} ${variant === "hero" ? "min-h-[260px] sm:min-h-[320px]" : "min-h-[180px]"}`}>
     <div className="absolute inset-0 bg-[radial-gradient(circle_at_85%_12%,rgba(255,255,255,.17),transparent_30%),linear-gradient(135deg,rgba(8,10,18,.1),rgba(8,10,18,.75))]" />
     <div className="absolute -right-12 -top-12 h-52 w-52 rounded-full border border-white/15" /><div className="absolute right-8 top-10 h-24 w-24 rounded-full border border-white/10" />
     <div className="relative mx-auto grid max-w-sm gap-3 p-5 pt-10 sm:p-8 sm:pt-14">
       <div className="rounded-2xl border border-white/15 bg-[#0B0F19]/85 p-4 shadow-2xl backdrop-blur">
-        <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-orange-200"><Icon className="h-5 w-5" /></span><div><p className="text-xs font-black text-white">Campaign overview</p><p className="mt-1 text-[10px] font-semibold text-white/60">Live growth check</p></div><span className="ml-auto h-2.5 w-2.5 rounded-full bg-emerald-300" /></div>
-        <div className="mt-5 grid grid-cols-3 gap-2">{["Reach", "Growth", "Status"].map((label, index) => <div key={label} className="rounded-xl bg-white/[.06] p-2.5"><div className="h-1.5 w-8 rounded bg-white/25" /><div className="mt-3 text-sm font-black text-white">{index === 2 ? "Live" : ["+24%", "1.2K"][index]}</div></div>)}</div>
+        <div className="flex items-center gap-3"><span className="grid h-10 w-10 place-items-center rounded-xl bg-white/10 text-orange-200"><Icon className="h-5 w-5" /></span><div><p className="text-xs font-black text-white">Planning illustration</p><p className="mt-1 text-[10px] font-semibold text-white/60">Example layout</p></div><span className="ml-auto h-2.5 w-2.5 rounded-full bg-emerald-300" /></div>
+        <div className="mt-5 grid grid-cols-3 gap-2">{["Destination", "Quantity", "Review"].map((label, index) => <div key={label} className="rounded-xl bg-white/[.06] p-2.5"><p className="text-[9px] font-semibold text-white/60">{label}</p><div className="mt-3 text-sm font-black text-white">{["Check", "Compare", "Confirm"][index]}</div></div>)}</div>
       </div>
       {isPayment ? <div className="flex items-center gap-2 rounded-2xl border border-emerald-300/25 bg-emerald-400/10 p-3 text-xs font-bold text-emerald-100"><ShieldCheck className="h-4 w-4 shrink-0" /> Public link only · PIN and password stay private</div> : <div className="flex items-center gap-2 rounded-2xl border border-white/10 bg-[#0B0F19]/70 p-3 text-xs font-bold text-white/80"><Check className="h-4 w-4 text-orange-200" /> A focused guide for better decisions</div>}
     </div>
-  </div>;
+  </div><figcaption className="mt-2 text-xs leading-5 text-slate-400">Illustration only. No measured campaign results are shown.</figcaption></figure>;
 }
 
 export function ArticleFlowDiagram({ category, title }: VisualProps) {

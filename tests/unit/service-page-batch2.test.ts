@@ -33,7 +33,7 @@ test("buyer answers and FAQ schemas share exact wording without static price cla
   for (const service of ["facebook-views", "linkedin-likes"] as const) {
     const data = engagementBuyerChecks[service];
     const schema = engagementBuyerFaqSchema(service);
-    assert.equal(schema.mainEntity.length, 3);
+    assert.equal(schema.mainEntity.length, service === "linkedin-likes" ? 5 : 3);
     schema.mainEntity.forEach((question, index) => {
       assert.equal(question.name, data.questions[index][0]);
       assert.equal(question.acceptedAnswer.text, data.questions[index][1]);

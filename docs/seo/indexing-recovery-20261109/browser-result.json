@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "command": "playwright test tests/smoke/indexing-recovery.spec.ts tests/smoke/service-page-batch2.spec.ts --workers=2",
+  "build_id": "0rJZCYMlI_gNxPjrSUU9i"
+}

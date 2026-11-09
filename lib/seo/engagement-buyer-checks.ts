@@ -16,6 +16,8 @@ export const engagementBuyerChecks = {
   "linkedin-likes": {
     heading: "What do LinkedIn likes tell you?",
     questions: [
+      ["Which LinkedIn post types should I verify before ordering?", "Use the exact public post permalink and confirm whether the selected service supports a personal-profile post, company-page post or repost. Public visibility alone does not establish compatibility. Do not submit a profile homepage, private group post or login-only destination as a substitute."],
+      ["Can purchased LinkedIn likes validate a message or offer?", "No. Ordered likes are not an independent test of an audience's preferences. Keep them separate from voluntary comments, saves, profile visits and genuine enquiries when evaluating a post. A count does not establish unique readers, reading time or qualified demand."],
       ["Will LinkedIn post likes increase my follower count?", "Likes and followers are different services. A post-like package applies to the selected public post; it does not include new profile followers or company-page followers. Check the exact post destination before ordering."],
       ["Do likes prove professional credibility or buyer interest?", "No. A like count alone does not prove that decision-makers read your post, endorse your work or want to buy from you. Evaluate relevant conversations, profile visits and qualified enquiries independently."],
       ["Are LinkedIn likes guaranteed to be Indian or relevant to my industry?", "No. Ordering in INR does not guarantee Indian accounts, an industry match, organic distribution, leads or sales. Review the service's supported targeting and LinkedIn's rules before ordering."],
