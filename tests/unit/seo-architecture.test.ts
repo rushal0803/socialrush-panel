@@ -1379,7 +1379,8 @@ test("phase 13 editorial guides give platform-specific actionable advice beyond 
     const article = getArticleBySlug(slug);
     assert.ok(article, `${slug} remains a live canonical article`);
     for (const heading of headings) assert.ok(article.sections.some(s => s.heading === heading), `${slug}: missing ${heading}`);
-    assert.ok(article.sections.length >= 10, `${slug}: maintain detailed non-duplicate guidance`);
+    assert.ok(article.sections.length >= headings.length + 3, `${slug}: retain core advice and the named practical sections`);
+    assert.equal(new Set(article.sections.map(section => section.heading)).size, article.sections.length);
   }
 });
 

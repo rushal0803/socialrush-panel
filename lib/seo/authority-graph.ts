@@ -132,6 +132,14 @@ export function getGuideAuthorityServiceHrefs(platform: ContentPlatform, guidePa
   return primary ? [canonicalAuthorityPath(primary.href)] : [];
 }
 
+/** Preserve every service link while placing the guide's explicit intent first. */
+export function getGuideServiceLinks(platform: ContentPlatform, guidePath: string) {
+  const links = contentClusters[platform].serviceLinks;
+  const preferred = getGuideAuthorityServiceHrefs(platform, guidePath);
+  return [...preferred.flatMap(href => links.filter(item => canonicalAuthorityPath(item.href) === href)), ...links]
+    .filter((item, index, all) => all.findIndex(candidate => canonicalAuthorityPath(candidate.href) === canonicalAuthorityPath(item.href)) === index);
+}
+
 export function getGuideAuthorityTargets(
   platform: ContentPlatform | null,
   guidePath: string,

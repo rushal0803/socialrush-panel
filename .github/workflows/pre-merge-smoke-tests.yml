@@ -9,6 +9,7 @@ on:
       - seo/service-evidence-batch2-20261108
       - seo/service-evidence-batch3-20261109
       - chore/seo-composed-release-20261109
+      - seo/service-evidence-batch5-20261109
 
 permissions:
   contents: read
@@ -17,7 +18,8 @@ jobs:
   smoke:
     name: Typecheck, CRM pipeline tests, international SEO, build, and smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # The expanded SSR/content recovery matrix follows a ~13.5-minute baseline run.
+    timeout-minutes: 20
     env:
       # Smoke tests exercise auth-aware UI without needing a real Supabase project.
       # Pointing these at the local test server keeps unauthenticated requests
@@ -145,6 +147,7 @@ jobs:
             test-results/service-page-batch3*/
             test-results/service-page-batch4*/
             test-results/service-page-batch5*/
+            test-results/indexing-recovery*/
             test-results/service-page-evidence*/
           retention-days: 7
           if-no-files-found: warn

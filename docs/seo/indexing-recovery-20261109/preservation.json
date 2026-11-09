@@ -1,0 +1,26 @@
+{
+  "base": "0d3740e520736d54ee5025bdb0f35eaaa0db5389",
+  "unchanged_files": [
+    {
+      "path": "lib/smm-service-catalog.ts",
+      "sha256": "c2c55777be1725fa3f5ff276563a7a34df2729c116a4df5109518b9d4f27588e"
+    },
+    {
+      "path": "lib/service-pricing.ts",
+      "sha256": "8252ad22cdac1ef7893726ccc62b0dff37486940047da653b82a9506a0e4f304"
+    },
+    {
+      "path": "lib/order-service-experience.ts",
+      "sha256": "4164afaecfc052dfd162524fd31e45ab363ac98a78a765397f7786798a2e2fae"
+    },
+    {
+      "path": "app/services/linkedin-likes/page.tsx",
+      "sha256": "c46b4f1788d96e01468435721d57156bd92298deb062ba3a1b8edcc3e85921bb"
+    },
+    {
+      "path": "next.config.mjs",
+      "sha256": "ee2754a5c82078a186450697281fdaa8df2662966811ed23f146969f63b63ef6"
+    }
+  ],
+  "linkedin_order_builder_byte_identical": true
+}
