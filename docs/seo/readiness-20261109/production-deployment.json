@@ -1,0 +1,10 @@
+{
+  "content": [
+    {
+      "type": "text",
+      "text": "{\n  \"result\": {\n    \"deployments\": {\n      \"pagination\": {\n        \"count\": 1,\n        \"next\": 1793366791842,\n        \"prev\": 1793366791842\n      },\n      \"deployments\": [\n        {\n          \"id\": \"dpl_CxsGCeYtp8AoBsMjYAvpgWCrtKMC\",\n          \"name\": \"socialrush-panel\",\n          \"url\": \"socialrush-panel-6o9j2dou6-rushalthakur240-6255s-projects.vercel.app\",\n          \"created\": 1793366791842,\n          \"state\": \"READY\",\n          \"target\": \"production\",\n          \"creator\": {\n            \"uid\": \"3WFEGNoqavHIaOCRUBUKVF0p\",\n            \"username\": \"rushalthakur240-6255\"\n          },\n          \"meta\": {\n            \"githubCommitRef\": \"main\",\n            \"githubCommitSha\": \"35fcaf731447a948b69a9ae917b5af596d22711e\",\n            \"githubCommitMessage\": \"Merge pull request #741 from rushal0803/seo/linkedin-followers-buyer-trust-20261030\\n\\nSEO: LinkedIn Followers professional trust and buyer-intent audit\",\n            \"githubRepo\": \"socialrush-panel\",\n            \"githubOrg\": \"rushal0803\"\n          },\n          \"inspectorUrl\": \"https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/CxsGCeYtp8AoBsMjYAvpgWCrtKMC\",\n          \"isRollbackCandidate\": true\n        }\n      ]\n    }\n  }\n}"
+    }
+  ],
+  "structuredContent": null,
+  "isError": false
+}

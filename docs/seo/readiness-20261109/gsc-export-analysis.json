@@ -1,0 +1,593 @@
+{
+  "performance_filters": [
+    {
+      "Filter": "Search type",
+      "Value": "Web (text-based)"
+    },
+    {
+      "Filter": "Date",
+      "Value": "Last 3 months"
+    }
+  ],
+  "performance_date_range": [
+    "2026-08-08",
+    "2026-11-07"
+  ],
+  "performance_total": {
+    "days": 92,
+    "clicks": 11303,
+    "impressions": 73632,
+    "ctr_pct": 15.350662755323771,
+    "approx_impression_weighted_position": 9.789196273359408
+  },
+  "row_counts": {
+    "chart": 92,
+    "pages": 87,
+    "queries": 1000,
+    "countries": 160,
+    "devices": 3
+  },
+  "row_sums": {
+    "page_clicks": 11321,
+    "query_clicks": 7302,
+    "page_impressions": 77412,
+    "query_impressions": 46076
+  },
+  "windows": {
+    "current28": {
+      "days": 28,
+      "clicks": 5062,
+      "impressions": 34924,
+      "ctr_pct": 14.494330546329174,
+      "approx_impression_weighted_position": 9.430712404077426,
+      "start": "2026-10-11",
+      "end": "2026-11-07",
+      "click_change_pct": 14.473089099954773,
+      "impression_change_pct": 37.172034564022006
+    },
+    "prior28": {
+      "days": 28,
+      "clicks": 4422,
+      "impressions": 25460,
+      "ctr_pct": 17.36842105263158,
+      "approx_impression_weighted_position": 7.149823252160251,
+      "start": "2026-09-13",
+      "end": "2026-10-10"
+    },
+    "current7": {
+      "days": 7,
+      "clicks": 1176,
+      "impressions": 8778,
+      "ctr_pct": 13.397129186602871,
+      "approx_impression_weighted_position": 11.932239690134427,
+      "start": "2026-11-01",
+      "end": "2026-11-07",
+      "click_change_pct": -2.7295285359801524,
+      "impression_change_pct": -8.045254556882464
+    },
+    "prior7": {
+      "days": 7,
+      "clicks": 1209,
+      "impressions": 9546,
+      "ctr_pct": 12.664990571967316,
+      "approx_impression_weighted_position": 10.017735177037503,
+      "start": "2026-10-25",
+      "end": "2026-10-31"
+    }
+  },
+  "top_pages": [
+    {
+      "Top pages": "https://www.getsocialrush.com/youtube-subscribers",
+      "Clicks": "5816",
+      "Impressions": "26368",
+      "CTR": "22.06%",
+      "Position": "6.93"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/buy-instagram-followers-india",
+      "Clicks": "2350",
+      "Impressions": "17991",
+      "CTR": "13.06%",
+      "Position": "10.02"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/instagram-likes",
+      "Clicks": "1076",
+      "Impressions": "11253",
+      "CTR": "9.56%",
+      "Position": "10.58"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/buy-facebook-followers-india",
+      "Clicks": "521",
+      "Impressions": "3108",
+      "CTR": "16.76%",
+      "Position": "9.15"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/",
+      "Clicks": "455",
+      "Impressions": "1287",
+      "CTR": "35.35%",
+      "Position": "4.53"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/linkedin-followers",
+      "Clicks": "382",
+      "Impressions": "2664",
+      "CTR": "14.34%",
+      "Position": "9.2"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/instagram-views",
+      "Clicks": "244",
+      "Impressions": "1799",
+      "CTR": "13.56%",
+      "Position": "10.95"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/twitter-followers",
+      "Clicks": "120",
+      "Impressions": "1119",
+      "CTR": "10.72%",
+      "Position": "10.55"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/telegram-members",
+      "Clicks": "97",
+      "Impressions": "929",
+      "CTR": "10.44%",
+      "Position": "15.41"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/facebook-likes",
+      "Clicks": "65",
+      "Impressions": "818",
+      "CTR": "7.95%",
+      "Position": "7.8"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/youtube-views",
+      "Clicks": "38",
+      "Impressions": "583",
+      "CTR": "6.52%",
+      "Position": "13.8"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/youtube-likes",
+      "Clicks": "34",
+      "Impressions": "439",
+      "CTR": "7.74%",
+      "Position": "12.87"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/linkedin-likes",
+      "Clicks": "16",
+      "Impressions": "58",
+      "CTR": "27.59%",
+      "Position": "7.47"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/services/facebook-views",
+      "Clicks": "14",
+      "Impressions": "90",
+      "CTR": "15.56%",
+      "Position": "15.42"
+    },
+    {
+      "Top pages": "https://www.getsocialrush.com/tiktok-followers",
+      "Clicks": "12",
+      "Impressions": "237",
+      "CTR": "5.06%",
+      "Position": "54.37"
+    }
+  ],
+  "top_queries": [
+    {
+      "Top queries": "buy youtube subscribers",
+      "Clicks": "921",
+      "Impressions": "4225",
+      "CTR": "21.8%",
+      "Position": "5.94"
+    },
+    {
+      "Top queries": "youtube subscriber buy",
+      "Clicks": "434",
+      "Impressions": "1126",
+      "CTR": "38.54%",
+      "Position": "3.91"
+    },
+    {
+      "Top queries": "youtube subscribers buy",
+      "Clicks": "415",
+      "Impressions": "1305",
+      "CTR": "31.8%",
+      "Position": "4.27"
+    },
+    {
+      "Top queries": "buy subscribers",
+      "Clicks": "360",
+      "Impressions": "1022",
+      "CTR": "35.23%",
+      "Position": "3.73"
+    },
+    {
+      "Top queries": "buy subscribers youtube",
+      "Clicks": "279",
+      "Impressions": "779",
+      "CTR": "35.82%",
+      "Position": "4.06"
+    },
+    {
+      "Top queries": "buy instagram followers india",
+      "Clicks": "275",
+      "Impressions": "1674",
+      "CTR": "16.43%",
+      "Position": "8.14"
+    },
+    {
+      "Top queries": "socialrush",
+      "Clicks": "195",
+      "Impressions": "305",
+      "CTR": "63.93%",
+      "Position": "2.32"
+    },
+    {
+      "Top queries": "social rush",
+      "Clicks": "168",
+      "Impressions": "279",
+      "CTR": "60.22%",
+      "Position": "1.58"
+    },
+    {
+      "Top queries": "youtube subscribe buy",
+      "Clicks": "131",
+      "Impressions": "540",
+      "CTR": "24.26%",
+      "Position": "5.2"
+    },
+    {
+      "Top queries": "instagram followers buy india",
+      "Clicks": "117",
+      "Impressions": "567",
+      "CTR": "20.63%",
+      "Position": "7.69"
+    },
+    {
+      "Top queries": "buy subscribers for youtube",
+      "Clicks": "76",
+      "Impressions": "243",
+      "CTR": "31.28%",
+      "Position": "3.4"
+    },
+    {
+      "Top queries": "buy youtube subscriber",
+      "Clicks": "76",
+      "Impressions": "202",
+      "CTR": "37.62%",
+      "Position": "4.26"
+    },
+    {
+      "Top queries": "youtube buy subscribers",
+      "Clicks": "73",
+      "Impressions": "255",
+      "CTR": "28.63%",
+      "Position": "4.69"
+    },
+    {
+      "Top queries": "buy youtube subscribers india",
+      "Clicks": "70",
+      "Impressions": "413",
+      "CTR": "16.95%",
+      "Position": "4.18"
+    },
+    {
+      "Top queries": "how to buy instagram followers in india",
+      "Clicks": "69",
+      "Impressions": "316",
+      "CTR": "21.84%",
+      "Position": "3.35"
+    }
+  ],
+  "countries": [
+    {
+      "Country": "India",
+      "Clicks": "10702",
+      "Impressions": "60878",
+      "CTR": "17.58%",
+      "Position": "8.89"
+    },
+    {
+      "Country": "United States",
+      "Clicks": "101",
+      "Impressions": "5433",
+      "CTR": "1.86%",
+      "Position": "13.31"
+    },
+    {
+      "Country": "United Arab Emirates",
+      "Clicks": "51",
+      "Impressions": "394",
+      "CTR": "12.94%",
+      "Position": "7.44"
+    },
+    {
+      "Country": "United Kingdom",
+      "Clicks": "35",
+      "Impressions": "703",
+      "CTR": "4.98%",
+      "Position": "14"
+    },
+    {
+      "Country": "Pakistan",
+      "Clicks": "32",
+      "Impressions": "336",
+      "CTR": "9.52%",
+      "Position": "12.46"
+    },
+    {
+      "Country": "Nepal",
+      "Clicks": "31",
+      "Impressions": "207",
+      "CTR": "14.98%",
+      "Position": "6.1"
+    },
+    {
+      "Country": "Canada",
+      "Clicks": "25",
+      "Impressions": "516",
+      "CTR": "4.84%",
+      "Position": "16.51"
+    },
+    {
+      "Country": "Germany",
+      "Clicks": "21",
+      "Impressions": "244",
+      "CTR": "8.61%",
+      "Position": "11.54"
+    },
+    {
+      "Country": "Saudi Arabia",
+      "Clicks": "21",
+      "Impressions": "153",
+      "CTR": "13.73%",
+      "Position": "8.46"
+    },
+    {
+      "Country": "Australia",
+      "Clicks": "19",
+      "Impressions": "314",
+      "CTR": "6.05%",
+      "Position": "24.7"
+    }
+  ],
+  "devices": [
+    {
+      "Device": "Mobile",
+      "Clicks": "9405",
+      "Impressions": "54005",
+      "CTR": "17.42%",
+      "Position": "6.79"
+    },
+    {
+      "Device": "Desktop",
+      "Clicks": "1800",
+      "Impressions": "19153",
+      "CTR": "9.4%",
+      "Position": "18.33"
+    },
+    {
+      "Device": "Tablet",
+      "Clicks": "98",
+      "Impressions": "474",
+      "CTR": "20.68%",
+      "Position": "5.81"
+    }
+  ],
+  "coverage_latest": {
+    "Date": "2026-11-06",
+    "Not indexed": "174",
+    "Indexed": "62",
+    "Impressions": "1082"
+  },
+  "coverage_recent": [
+    {
+      "Date": "2026-10-28",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1532"
+    },
+    {
+      "Date": "2026-10-29",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1517"
+    },
+    {
+      "Date": "2026-10-30",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1154"
+    },
+    {
+      "Date": "2026-10-31",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1530"
+    },
+    {
+      "Date": "2026-11-01",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1370"
+    },
+    {
+      "Date": "2026-11-02",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1545"
+    },
+    {
+      "Date": "2026-11-03",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1375"
+    },
+    {
+      "Date": "2026-11-04",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1292"
+    },
+    {
+      "Date": "2026-11-05",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "989"
+    },
+    {
+      "Date": "2026-11-06",
+      "Not indexed": "174",
+      "Indexed": "62",
+      "Impressions": "1082"
+    }
+  ],
+  "coverage_issues": [
+    {
+      "Reason": "Page with redirect",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "29"
+    },
+    {
+      "Reason": "Blocked by robots.txt",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "15"
+    },
+    {
+      "Reason": "Alternate page with proper canonical tag",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "14"
+    },
+    {
+      "Reason": "Duplicate without user-selected canonical",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "4"
+    },
+    {
+      "Reason": "Crawled - currently not indexed",
+      "Source": "Google systems",
+      "Validation": "Not Started",
+      "Pages": "18"
+    },
+    {
+      "Reason": "Excluded by \u2018noindex\u2019 tag",
+      "Source": "Website",
+      "Validation": "N/A",
+      "Pages": "0"
+    },
+    {
+      "Reason": "Discovered - currently not indexed",
+      "Source": "Google systems",
+      "Validation": "Passed",
+      "Pages": "94"
+    }
+  ],
+  "coverage_metadata": [
+    {
+      "Property": "Sitemap",
+      "Value": "All known pages"
+    }
+  ],
+  "remaining_candidates_performance": [
+    {
+      "path": "/ae/buy-instagram-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/ae/buy-youtube-subscribers",
+      "performance_row": null
+    },
+    {
+      "path": "/au/buy-instagram-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/au/buy-youtube-subscribers",
+      "performance_row": null
+    },
+    {
+      "path": "/ca/buy-instagram-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/ca/buy-youtube-subscribers",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-connections",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-custom-comments",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-endorsements",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-group-members",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-post-likes",
+      "performance_row": null
+    },
+    {
+      "path": "/services/linkedin-usa-reposts",
+      "performance_row": null
+    },
+    {
+      "path": "/sg/buy-instagram-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/sg/buy-youtube-subscribers",
+      "performance_row": null
+    },
+    {
+      "path": "/tiktok-followers",
+      "performance_row": {
+        "Top pages": "https://www.getsocialrush.com/tiktok-followers",
+        "Clicks": "12",
+        "Impressions": "237",
+        "CTR": "5.06%",
+        "Position": "54.37"
+      }
+    },
+    {
+      "path": "/uk/buy-instagram-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/uk/buy-youtube-subscribers",
+      "performance_row": null
+    },
+    {
+      "path": "/us/buy-instagram-followers",
+      "performance_row": null
+    },
+    {
+      "path": "/us/buy-youtube-subscribers",
+      "performance_row": null
+    }
+  ]
+}

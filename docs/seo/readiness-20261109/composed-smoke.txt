@@ -1,0 +1,612 @@
+
+> socialrush-panel@1.0.0 test:smoke
+> playwright test --workers=4
+
+
+Running 371 tests using 4 workers
+
+(node:2308) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2315) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2309) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:2321) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓    1 [chromium] › tests/smoke/analytics-preview-exclusion.spec.ts:3:5 › local collection is a no-op even before JSON/body processing (689ms)
+  ✓    3 [chromium] › tests/smoke/cashfree-customer.spec.ts:4:5 › direct Cashfree checkout keeps a saved valid phone when available (48ms)
+  ✓    4 [chromium] › tests/smoke/cashfree-direct-status.spec.ts:4:5 › failed Cashfree direct payment is terminal and does not look pending (175ms)
+  ✓    6 [chromium] › tests/smoke/cashfree-direct-status.spec.ts:9:5 › a processable newest Cashfree attempt stays pending with an older failed attempt (24ms)
+  ✓    2 [chromium] › tests/smoke/cashfree-customer.spec.ts:8:5 › direct Cashfree checkout uses a non-user fallback when no valid phone is saved (210ms)
+  ✓    7 [chromium] › tests/smoke/cashfree-direct-status.spec.ts:16:5 › a newer terminal Cashfree attempt overrides stale pending attempts (71ms)
+  ✓    8 [chromium] › tests/smoke/cashfree-direct-status.spec.ts:27:5 › captured Cashfree success remains eligible for existing idempotent settlement (81ms)
+  ✓    5 [chromium] › tests/smoke/analytics-preview-exclusion.spec.ts:13:5 › local conversion navigation sends no collection beacons (6.8s)
+  ✓   11 [chromium] › tests/smoke/homepage-hydration.spec.ts:6:9 › homepage hydration in de-DE › server and client quantity formatting agree (7.6s)
+  ✓   10 [chromium] › tests/smoke/homepage-hydration.spec.ts:6:9 › homepage hydration in en-IN › server and client quantity formatting agree (7.7s)
+  ✓    9 [chromium] › tests/smoke/homepage-hydration.spec.ts:6:9 › homepage hydration in en-US › server and client quantity formatting agree (8.3s)
+  ✓   12 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 320px with reachable review (5.7s)
+  ✓   14 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 320px with reachable review (5.1s)
+  ✓   13 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 360px with reachable review (5.6s)
+  ✓   15 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 360px with reachable review (5.1s)
+  ✓   19 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 390px with reachable review (3.9s)
+  ✓   16 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 375px with reachable review (5.0s)
+  ✓   17 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 375px with reachable review (4.8s)
+  ✓   18 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 390px with reachable review (5.1s)
+  ✓   21 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 412px with reachable review (4.6s)
+  ✓   22 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 430px with reachable review (5.0s)
+  ✓   20 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 412px with reachable review (5.5s)
+  ✓   23 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 430px with reachable review (4.7s)
+  ✓   25 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 768px with reachable review (4.6s)
+  ✓   24 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 768px with reachable review (6.1s)
+  ✓   26 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 1024px with reachable review (6.4s)
+  ✓   27 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 1024px with reachable review (6.3s)
+  ✓   29 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 1280px with reachable review (5.8s)
+  ✓   28 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 1280px with reachable review (6.8s)
+  ✓   31 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 1440px with reachable review (5.6s)
+  ✓   30 [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › public packages fit 1440px with reachable review (7.0s)
+  ✓   33 [chromium] › tests/smoke/packages-v2.spec.ts:97:5 › logged-out checkout preserves package and link through login (4.8s)
+  ✓   34 [chromium] › tests/smoke/packages-v2.spec.ts:108:5 › wallet checkout uses an intent; price tampering and mismatched quantities are rejected (7.6s)
+  ✓   35 [chromium] › tests/smoke/packages-v2.spec.ts:132:5 › insufficient wallet directs to add funds without sending an order (7.4s)
+  ✓   37 [chromium] › tests/smoke/packages-v2.spec.ts:169:5 › a changed server total blocks the order until the customer reviews pricing (6.0s)
+  ✓   32 [chromium] › tests/smoke/packages-v2.spec.ts:83:5 › every supported platform and live-priced service has selectable packages (15.4s)
+  ✓   38 [chromium] › tests/smoke/packages-v2.spec.ts:182:5 › switching services clears service-specific checkout inputs (7.9s)
+  ✓   40 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:3:5 › public navigation intent warms code without fetching live route data (6.8s)
+  ✓   42 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:34:5 › directory informational sections and FAQ remain in server HTML (1.4s)
+  ✓   41 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:17:5 › lazy comparison preserves selections, filters and trigger focus (7.9s)
+  ✓   36 [chromium] › tests/smoke/packages-v2.spec.ts:145:5 › server validates package intents across platforms and live-only services (23.4s)
+  ✓   43 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:47:7 › deferred mobile content remains reachable on / (8.3s)
+  ✓   45 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:47:7 › deferred mobile content remains reachable on /packages (4.7s)
+  ✓   44 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:47:7 › deferred mobile content remains reachable on /services (9.4s)
+  ✓   39 [chromium] › tests/smoke/packages-v2.spec.ts:197:5 › all supported service choices remain contained and selectable at 320px (24.4s)
+/packages accumulated layout shifts including scroll: 0
+  ✓   48 [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /packages (16.1s)
+  ✓   50 [chromium] › tests/smoke/performance-rendering.spec.ts:3:5 › packages hero is readable before JavaScript hydration (2.2s)
+  ✓   51 [chromium] › tests/smoke/performance-rendering.spec.ts:26:5 › article revenue links remain in server-rendered HTML (276ms)
+  ✓   52 [chromium] › tests/smoke/performance-rendering.spec.ts:35:5 › discovery and packages do not download the article-only bridge (5.3s)
+  ✓   53 [chromium] › tests/smoke/phase12-mobile-a11y.spec.ts:7:7 › Phase 12 mobile and accessibility safeguards › public shell exposes a keyboard skip link (5.9s)
+  ✓   54 [chromium] › tests/smoke/phase12-mobile-a11y.spec.ts:19:9 › Phase 12 mobile and accessibility safeguards › core public routes avoid horizontal document overflow at 320px (7.7s)
+  ✓   55 [chromium] › tests/smoke/phase12-mobile-a11y.spec.ts:19:9 › Phase 12 mobile and accessibility safeguards › core public routes avoid horizontal document overflow at 360px (12.3s)
+  ✓   56 [chromium] › tests/smoke/phase12-mobile-a11y.spec.ts:19:9 › Phase 12 mobile and accessibility safeguards › core public routes avoid horizontal document overflow at 390px (8.4s)
+/buy-instagram-followers-india accumulated layout shifts including scroll: 0.0003937640491177025
+  ✓   49 [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /buy-instagram-followers-india (56.0s)
+/services accumulated layout shifts including scroll: 0.011134237591853802
+  ✓   58 [chromium] › tests/smoke/phase12-mobile-a11y.spec.ts:33:7 › Phase 12 mobile and accessibility safeguards › coarse-pointer form controls keep accessible tap height (3.4s)
+  ✓   57 [chromium] › tests/smoke/phase12-mobile-a11y.spec.ts:19:9 › Phase 12 mobile and accessibility safeguards › core public routes avoid horizontal document overflow at 430px (13.5s)
+  ✘   46 [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on / (1.1m)
+  ✘   47 [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /services (1.2m)
+(node:4062) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4079) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   59 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:16:9 › Phase 19 Instagram mobile-first UX › canonical Instagram money pages avoid document overflow at 320px (16.2s)
+  ✓   60 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:16:9 › Phase 19 Instagram mobile-first UX › canonical Instagram money pages avoid document overflow at 360px (15.6s)
+  ✓   63 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:30:7 › Phase 19 Instagram mobile-first UX › mobile order dock clears WhatsApp and hides at the order builder (12.1s)
+  ✓   64 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:56:9 › Phase 19 Instagram mobile-first UX › Instagram Followers order inputs stay at 16px or larger on mobile (5.3s)
+  ✓   61 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:16:9 › Phase 19 Instagram mobile-first UX › canonical Instagram money pages avoid document overflow at 390px (17.0s)
+  ✓   66 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:56:9 › Phase 19 Instagram mobile-first UX › Instagram Views order inputs stay at 16px or larger on mobile (3.8s)
+  ✓   65 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:56:9 › Phase 19 Instagram mobile-first UX › Instagram Likes order inputs stay at 16px or larger on mobile (5.1s)
+  ✓   62 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:16:9 › Phase 19 Instagram mobile-first UX › canonical Instagram money pages avoid document overflow at 430px (18.8s)
+  ✓   68 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:56:9 › Phase 19 Instagram mobile-first UX › Instagram Saves order inputs stay at 16px or larger on mobile (4.4s)
+  ✓   67 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:56:9 › Phase 19 Instagram mobile-first UX › Instagram Comments order inputs stay at 16px or larger on mobile (5.4s)
+  ✓   69 [chromium] › tests/smoke/phase19-instagram-mobile-ux.spec.ts:56:9 › Phase 19 Instagram mobile-first UX › Instagram Shares order inputs stay at 16px or larger on mobile (4.3s)
+  ✓   70 [chromium] › tests/smoke/phase20-instagram-cro.spec.ts:11:9 › Phase 20 Instagram conversion path › /buy-instagram-followers-india exposes truthful quantity decisions and readiness (5.8s)
+  ✓   71 [chromium] › tests/smoke/phase20-instagram-cro.spec.ts:11:9 › Phase 20 Instagram conversion path › /instagram-likes exposes truthful quantity decisions and readiness (6.1s)
+  ✓   73 [chromium] › tests/smoke/phase20-instagram-cro.spec.ts:11:9 › Phase 20 Instagram conversion path › /instagram-views exposes truthful quantity decisions and readiness (6.3s)
+  ✓   76 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:63:7 › Phase 22 responsive completion matrix › auth controls keep mobile-safe sizing across customer and admin auth (12.7s)
+  ✓   75 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:49:7 › Phase 22 responsive completion matrix › representative pages remain usable in tablet landscape (16.9s)
+  ✓   77 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:87:7 › Phase 22 responsive completion matrix › country hub CTA and platform directory remain reachable on a 320px phone (4.7s)
+  ✓   78 [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:4:7 › Phase 32 service-page CRO system › static catalog service exposes inline exact-service builder (6.0s)
+  ✓   79 [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:23:7 › Phase 32 service-page CRO system › protected live-fact service avoids stale static price and hands off to live order (5.2s)
+  ✓   80 [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:47:9 › Phase 5 protected catalog landing journeys › /services/tiktok-likes keeps a safe 390px mobile order journey (3.2s)
+  ✓   81 [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:47:9 › Phase 5 protected catalog landing journeys › /services/telegram-post-views keeps a safe 390px mobile order journey (3.0s)
+  ✓   82 [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:47:9 › Phase 5 protected catalog landing journeys › /services/twitter-crypto-retweets keeps a safe 390px mobile order journey (2.7s)
+  ✘   74 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on tablet-portrait (32.3s)
+  ✓   83 [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:91:7 › Phase 5 protected catalog landing journeys › specialty crypto comments never render the generic inline builder (3.4s)
+  ✘   72 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on small-phone (36.5s)
+  ✓   84 [chromium] › tests/smoke/phase33-package-psychology.spec.ts:3:5 › Packages use honest labels and keep checkout reachable (3.0s)
+(node:4906) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   85 [chromium] › tests/smoke/phase41-digital-pr.spec.ts:7:7 › Phase 41 press page is usable on desktop (2.7s)
+(node:4948) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   88 [chromium] › tests/smoke/phase41-digital-pr.spec.ts:7:7 › Phase 41 press page is usable on mobile (3.0s)
+  ✓   86 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 360px (19.1s)
+  ✓   87 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 375px (19.6s)
+  ✓   90 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 390px (23.8s)
+  ✓   89 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 320px (25.1s)
+  ✓   91 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 412px (24.5s)
+  ✓   92 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 430px (25.1s)
+  ✓   93 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 768px (22.1s)
+  ✓   94 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 1024px (24.5s)
+  ✓   96 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 1440px (21.2s)
+  ✓   95 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 1280px (23.6s)
+  ✘   98 [chromium] › tests/smoke/premium-design.spec.ts:23:5 › hero actions, sample labels and keyboard focus are understandable (13.4s)
+  ✓  100 [chromium] › tests/smoke/premium-design.spec.ts:62:5 › login feature heading retains accessible contrast on its dark surface (3.4s)
+(node:5884) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   97 [chromium] › tests/smoke/premium-design.spec.ts:7:7 › premium presentation remains usable at 1920px (27.3s)
+  ✓   99 [chromium] › tests/smoke/premium-design.spec.ts:38:5 › premium redesign keeps graphite surfaces and orange CTA instead of cream panels (13.0s)
+  ✓  104 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (25.7s)
+  ✓  103 [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 1440px (29.8s)
+  ✘  101 [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 390px (35.1s)
+  ✘  102 [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 320px (32.2s)
+(node:6246) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:6252) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  105 [chromium] › tests/smoke/premium-design.spec.ts:143:7 › desktop header navigation labels never wrap at 1280px (7.1s)
+  ✓  106 [chromium] › tests/smoke/premium-design.spec.ts:143:7 › desktop header navigation labels never wrap at 1440px (8.9s)
+  ✓  109 [chromium] › tests/smoke/premium-phase2.spec.ts:6:7 › phase 2 public pages stay crawlable and readable at 390px (10.5s)
+  ✓  108 [chromium] › tests/smoke/premium-phase2.spec.ts:6:7 › phase 2 public pages stay crawlable and readable at 320px (11.5s)
+  ✓  107 [chromium] › tests/smoke/premium-design.spec.ts:143:7 › desktop header navigation labels never wrap at 1920px (13.3s)
+  -  113 [chromium] › tests/smoke/premium-responsive.spec.ts:42:5 › public legal aliases preserve permanent redirects
+  -  114 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 320px
+  -  115 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 360px
+  -  116 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 375px
+  -  117 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 390px
+  -  118 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 412px
+  -  119 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 430px
+  -  120 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 480px
+  -  121 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 600px
+  -  122 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 768px
+  -  123 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 820px
+  -  124 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 1024px
+  -  125 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 1280px
+  -  126 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 1366px
+  -  127 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 1440px
+  -  128 [chromium] › tests/smoke/premium-responsive.spec.ts:51:7 › public layouts at 1920px
+  -  129 [chromium] › tests/smoke/premium-responsive.spec.ts:109:5 › mobile navigation contains search focus and restores navigation after resize
+  -  130 [chromium] › tests/smoke/premium-responsive.spec.ts:144:5 › mobile navigation keeps repeated Tab navigation inside the dialog
+  -  131 [chromium] › tests/smoke/premium-responsive.spec.ts:160:5 › dashboard drawer remains keyboard accessible on a short phone
+  -  132 [chromium] › tests/smoke/premium-responsive.spec.ts:196:5 › public lab rendering metrics
+  -  133 [chromium] › tests/smoke/premium-responsive.spec.ts:282:5 › customer service search recovers from an empty result
+  -  134 [chromium] › tests/smoke/premium-responsive.spec.ts:307:5 › customer orders prioritize filters and preserve tracking and repeat handoff
+  -  135 [chromium] › tests/smoke/premium-responsive.spec.ts:363:5 › customer billing details preserve pending status, focus and filter recovery
+  -  136 [chromium] › tests/smoke/premium-responsive.spec.ts:405:7 › dashboard search request budget and dialog at 390px
+  -  137 [chromium] › tests/smoke/premium-responsive.spec.ts:405:7 › dashboard search request budget and dialog at 1440px
+  -  138 [chromium] › tests/smoke/premium-responsive.spec.ts:464:5 › dashboard display currency supports keyboard selection without payment actions
+  -  139 [chromium] › tests/smoke/premium-responsive.spec.ts:508:5 › dashboard drawer preserves every destination and closes after query navigation
+  -  140 [chromium] › tests/smoke/premium-responsive.spec.ts:543:5 › customer funding confirmation remains pending after browser-only mocked submission
+  -  141 [chromium] › tests/smoke/premium-responsive.spec.ts:585:5 › customer funding starts with amount selection at every requested width
+  -  142 [chromium] › tests/smoke/premium-responsive.spec.ts:604:5 › customer order review keeps readable labels and summary amounts
+  -  143 [chromium] › tests/smoke/premium-responsive.spec.ts:666:5 › dashboard search retries only on request and cancels when dismissed
+  -  144 [chromium] › tests/smoke/premium-responsive.spec.ts:711:7 › order review preserves the wallet split with balance 0
+  -  145 [chromium] › tests/smoke/premium-responsive.spec.ts:711:7 › order review preserves the wallet split with balance 200
+  -  146 [chromium] › tests/smoke/premium-responsive.spec.ts:711:7 › order review preserves the wallet split with balance 100000
+  -  147 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 320px
+  -  148 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 360px
+  -  149 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 375px
+  -  150 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 390px
+  -  151 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 412px
+  -  152 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 430px
+  -  153 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 480px
+  -  154 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 600px
+  -  155 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 768px
+  -  156 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 820px
+  -  157 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 1024px
+  -  158 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 1280px
+  -  159 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 1366px
+  -  160 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 1440px
+  -  161 [chromium] › tests/smoke/premium-responsive.spec.ts:761:7 › authenticated layouts at 1920px
+  -  162 [chromium] › tests/smoke/premium-responsive.spec.ts:840:5 › short landscape and 200% zoom equivalent retain readable public and dashboard controls
+  -  163 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 320px
+  -  164 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 360px
+  -  165 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 375px
+  -  166 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 390px
+  -  167 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 412px
+  -  168 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 430px
+  -  169 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 480px
+  -  170 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 600px
+  -  171 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 768px
+  -  172 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 820px
+  -  173 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 1024px
+  -  174 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 1280px
+  -  175 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 1366px
+  -  176 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 1440px
+  -  177 [chromium] › tests/smoke/premium-responsive.spec.ts:855:7 › payment instructions at 1920px
+  -  178 [chromium] › tests/smoke/premium-responsive.spec.ts:905:5 › dashboard wallet details trap focus and preserve unverified status
+  -  179 [chromium] › tests/smoke/premium-responsive.spec.ts:930:5 › dashboard shell shares balance updates without browser order loading
+  ✓  110 [chromium] › tests/smoke/premium-phase2.spec.ts:6:7 › phase 2 public pages stay crawlable and readable at 1440px (9.9s)
+  ✓  111 [chromium] › tests/smoke/premium-phase2.spec.ts:23:5 › support navigation and reviews empty-state remain truthful (6.1s)
+  ✓  112 [chromium] › tests/smoke/premium-phase2.spec.ts:35:5 › creator tools keep category selection and search accessible (5.1s)
+  ✓  182 [chromium] › tests/smoke/production-safety.spec.ts:40:5 › authentication forms are available (5.7s)
+  ✓  184 [chromium] › tests/smoke/production-safety.spec.ts:62:5 › production CSP retains required Supabase and Cashfree allowances without Razorpay checkout (61ms)
+  ✓  185 [chromium] › tests/smoke/production-safety.spec.ts:74:5 › former Razorpay order endpoints reject new customer payments (195ms)
+  ✓  183 [chromium] › tests/smoke/production-safety.spec.ts:53:5 › unauthenticated dashboard routes redirect to login (7.9s)
+  ✓  181 [chromium] › tests/smoke/production-safety.spec.ts:29:5 › homepage public navigation reaches services and packages (12.0s)
+  ✓  180 [chromium] › tests/smoke/production-safety.spec.ts:15:5 › public routes render meaningful content without application errors (15.5s)
+  ✓  187 [chromium] › tests/smoke/service-experience.spec.ts:7:5 › reference order validates input and preserves selection through login (7.0s)
+  ✓  188 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 320px and retains crawlable SEO (6.3s)
+  ✓  186 [chromium] › tests/smoke/production-safety.spec.ts:84:5 › case studies links remain valid at supported mobile and desktop widths (12.0s)
+  ✓  189 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 375px and retains crawlable SEO (5.8s)
+  ✓  191 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 430px and retains crawlable SEO (6.0s)
+  ✓  190 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 390px and retains crawlable SEO (6.4s)
+  ✓  192 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 1024px and retains crawlable SEO (5.5s)
+  ✓  193 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 768px and retains crawlable SEO (6.0s)
+  ✓  195 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 1920px and retains crawlable SEO (6.1s)
+  ✓  194 [chromium] › tests/smoke/service-experience.spec.ts:35:7 › reference page fits 1440px and retains crawlable SEO (6.8s)
+  ✓  197 [chromium] › tests/smoke/service-experience.spec.ts:81:7 › /instagram-likes carries its quantity and correct destination to order review (6.2s)
+  ✓  196 [chromium] › tests/smoke/service-experience.spec.ts:54:5 › mobile order action clears support and can be dismissed (8.4s)
+  ✓  198 [chromium] › tests/smoke/service-experience.spec.ts:81:7 › /instagram-views carries its quantity and correct destination to order review (6.1s)
+  ✓  199 [chromium] › tests/smoke/service-experience.spec.ts:81:7 › /youtube-subscribers carries its quantity and correct destination to order review (8.3s)
+  ✓  200 [chromium] › tests/smoke/service-experience.spec.ts:81:7 › /us/buy-youtube-views carries its quantity and correct destination to order review (8.5s)
+  ✓  201 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: instagram 390px (7.4s)
+  ✓  203 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: youtube 390px (6.7s)
+  ✓  202 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: instagram 1440px (10.1s)
+  ✓  205 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: linkedin 390px (6.4s)
+  ✓  204 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: youtube 1440px (11.0s)
+  ✓  207 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: facebook 390px (7.9s)
+  ✓  206 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: linkedin 1440px (9.6s)
+  ✓  208 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: facebook 1440px (9.7s)
+  ✓  209 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: x 390px (6.1s)
+  ✓  211 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: tiktok 390px (6.3s)
+  ✓  210 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: x 1440px (8.7s)
+  ✓  213 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: telegram 390px (5.8s)
+  ✓  212 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: tiktok 1440px (8.5s)
+  ✓  217 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /youtube-likes (3.4s)
+  ✓  214 [chromium] › tests/smoke/service-final-verification.spec.ts:17:7 › final visual and runtime review: telegram 1440px (8.2s)
+  ✓  215 [chromium] › tests/smoke/service-final-verification.spec.ts:92:38 › logged-out signup preserves selection at 390px (7.3s)
+  ✓  216 [chromium] › tests/smoke/service-final-verification.spec.ts:92:38 › logged-out signup preserves selection at 1440px (7.2s)
+  ✓  220 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-youtube-watch-hours-india (3.4s)
+  ✓  221 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-instagram-comments-india (3.3s)
+  ✓  219 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /linkedin-likes (5.6s)
+  ✓  218 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /facebook-views (6.7s)
+  ✓  222 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-instagram-saves-india (3.5s)
+  ✓  223 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-instagram-shares-india (2.9s)
+  ✓  224 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-youtube-comments-india (3.3s)
+  ✓  225 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-facebook-shares-india (3.8s)
+  ✓  226 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-facebook-group-members-india (2.6s)
+  ✓  227 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /instagram-growth-india (6.2s)
+  ✓  228 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /facebook-growth-india (6.0s)
+  ✓  229 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /youtube-growth-india (6.1s)
+  ✓  230 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /linkedin-growth-india (6.6s)
+  ✓  231 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /tiktok-growth-india (3.8s)
+  ✓  232 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /x-growth-india (5.9s)
+  ✓  233 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /services/twitter-likes (7.8s)
+  ✓  235 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /services/twitter-retweets (8.0s)
+  ✓  234 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /services/twitter-views (11.8s)
+  ✓  236 [chromium] › tests/smoke/service-page-batch3.spec.ts:9:7 › batch-three mobile rendered evidence /services/twitter-crypto-followers (9.4s)
+  ✓  237 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/telegram-post-views (11.2s)
+  ✓  238 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/telegram-post-reactions (11.4s)
+  ✓  239 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/telegram-poll-votes (10.1s)
+  ✓  240 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/twitter-crypto-likes (12.3s)
+  ✓  241 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/twitter-crypto-retweets (9.6s)
+  ✓  243 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/telegram (6.9s)
+  ✓  244 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/twitter-x (5.1s)
+  ✓  242 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/twitter-crypto-custom-comments (12.9s)
+  ✓  247 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /buy-instagram-followers-india (3.2s)
+  ✓  245 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/linkedin (6.0s)
+  ✓  246 [chromium] › tests/smoke/service-page-batch4.spec.ts:7:7 › batch-four initial HTML, mobile guidance and schema /services/tiktok (6.0s)
+  ✓  248 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /instagram-likes (3.8s)
+  ✓  250 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /youtube-views (4.1s)
+  ✓  249 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /youtube-subscribers (4.7s)
+  ✓  251 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /buy-facebook-followers-india (4.0s)
+  ✓  252 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /instagram-views (4.5s)
+  ✓  253 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /linkedin-followers (3.1s)
+  ✓  255 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /twitter-followers (3.8s)
+  ✓  254 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /facebook-likes (4.0s)
+  ✓  256 [chromium] › tests/smoke/service-page-evidence.spec.ts:8:7 › service evidence and mobile layout /telegram-members (9.0s)
+  ✓  257 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 320px (11.9s)
+  ✓  259 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 375px (13.7s)
+  ✓  258 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 360px (14.1s)
+  ✓  260 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 390px (12.4s)
+  ✓  262 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 430px (10.6s)
+  ✓  261 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 412px (14.1s)
+  ✓  263 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 600px (11.7s)
+  ✓  264 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 768px (12.4s)
+  ✓  268 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest instagram order CTA retains service and quantity (5.1s)
+  ✓  265 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 1024px (15.2s)
+  ✓  266 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 1280px (15.8s)
+  ✓  267 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 1440px (15.8s)
+  ✓  269 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest youtube order CTA retains service and quantity (6.0s)
+  ✓  270 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest facebook order CTA retains service and quantity (5.7s)
+  ✓  271 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest linkedin order CTA retains service and quantity (7.0s)
+  ✓  272 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest x order CTA retains service and quantity (6.9s)
+  ✓  273 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest tiktok order CTA retains service and quantity (5.1s)
+  ✓  274 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest telegram order CTA retains service and quantity (4.7s)
+  ✓  275 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in instagram order CTA retains service and quantity (5.9s)
+  ✓  277 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in facebook order CTA retains service and quantity (5.1s)
+  ✓  276 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in youtube order CTA retains service and quantity (6.3s)
+  ✓  278 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in linkedin order CTA retains service and quantity (6.6s)
+  ✓  280 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in tiktok order CTA retains service and quantity (6.4s)
+(node:8892) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  281 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in telegram order CTA retains service and quantity (7.8s)
+  ✓  279 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in x order CTA retains service and quantity (10.2s)
+(node:8912) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8959) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  282 [chromium] › tests/smoke/services-v2.spec.ts:97:5 › search, real categories, missing health and saved activity remain usable (8.7s)
+(node:9064) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  285 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 375x812 (23.8s)
+  ✓  284 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 360x760 (25.2s)
+  ✓  283 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 320x700 (27.9s)
+  ✓  286 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 390x844 (24.6s)
+  ✓  287 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 412x915 (20.8s)
+  ✓  288 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 430x932 (19.8s)
+  ✓  290 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 1024x768 (19.7s)
+  ✓  289 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 768x1024 (21.3s)
+  ✓  294 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /partners at 320 (4.8s)
+  ✓  293 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /help-center at 320 (6.3s)
+  ✓  292 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /social-media-growth-india at 320 (14.6s)
+  ✓  296 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/youtube-subscriber-growth-rate-calculator at 320 (6.5s)
+  ✓  295 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/creator-growth-goal-planner at 320 (7.8s)
+  ✓  291 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:122:5 › Q4 Phase 1 SEO browser release gate › growth planner interaction 1440x900 (20.7s)
+  ✓  299 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /partners at 390 (5.4s)
+  ✓  298 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /help-center at 390 (5.9s)
+  ✓  301 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/youtube-subscriber-growth-rate-calculator at 390 (8.1s)
+  ✓  300 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/creator-growth-goal-planner at 390 (9.4s)
+  ✓  297 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /social-media-growth-india at 390 (19.0s)
+  ✓  304 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /partners at 768 (4.5s)
+  ✓  303 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /help-center at 768 (6.0s)
+  ✓  306 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/youtube-subscriber-growth-rate-calculator at 768 (5.7s)
+  ✓  305 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/creator-growth-goal-planner at 768 (7.4s)
+  ✓  302 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /social-media-growth-india at 768 (20.2s)
+  ✓  309 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /partners at 1024 (3.5s)
+  ✓  308 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /help-center at 1024 (5.7s)
+  ✓  310 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/creator-growth-goal-planner at 1024 (8.5s)
+  ✓  311 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/youtube-subscriber-growth-rate-calculator at 1024 (5.5s)
+  ✓  314 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /partners at 1440 (5.4s)
+  ✓  307 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /social-media-growth-india at 1024 (21.0s)
+  ✓  313 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /help-center at 1440 (6.6s)
+  ✓  315 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/creator-growth-goal-planner at 1440 (5.6s)
+  ✓  316 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /tools/youtube-subscriber-growth-rate-calculator at 1440 (5.9s)
+  ✓  317 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › us YouTube subscriber responsive page at 320 (6.8s)
+  ✓  312 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:223:7 › Q4 Phase 1 SEO browser release gate › corrected public URL /social-media-growth-india at 1440 (18.1s)
+  ✓  318 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › uk YouTube subscriber responsive page at 320 (8.9s)
+  ✓  319 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ca YouTube subscriber responsive page at 320 (9.2s)
+  ✓  320 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › au YouTube subscriber responsive page at 320 (11.5s)
+  ✓  321 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ae YouTube subscriber responsive page at 320 (10.7s)
+  ✓  323 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › us YouTube subscriber responsive page at 390 (9.1s)
+  ✓  322 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › sg YouTube subscriber responsive page at 320 (13.4s)
+  ✓  324 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › uk YouTube subscriber responsive page at 390 (12.0s)
+  ✓  325 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ca YouTube subscriber responsive page at 390 (11.9s)
+  ✓  326 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › au YouTube subscriber responsive page at 390 (10.3s)
+  ✓  327 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ae YouTube subscriber responsive page at 390 (11.0s)
+  ✓  329 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › us YouTube subscriber responsive page at 768 (10.6s)
+  ✓  328 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › sg YouTube subscriber responsive page at 390 (11.6s)
+  ✓  330 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › uk YouTube subscriber responsive page at 768 (12.9s)
+  ✓  331 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ca YouTube subscriber responsive page at 768 (13.5s)
+  ✓  333 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ae YouTube subscriber responsive page at 768 (10.2s)
+  ✓  332 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › au YouTube subscriber responsive page at 768 (13.0s)
+  ✓  334 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › sg YouTube subscriber responsive page at 768 (13.3s)
+  ✓  335 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › us YouTube subscriber responsive page at 1440 (12.9s)
+  ✓  336 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › uk YouTube subscriber responsive page at 1440 (13.1s)
+  ✓  337 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ca YouTube subscriber responsive page at 1440 (14.8s)
+  ✓  341 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:263:3 › Q4 Phase 1 SEO browser release gate › legacy planner URL redirects permanently to the one canonical tool (3.9s)
+  ✓  338 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › au YouTube subscriber responsive page at 1440 (14.2s)
+(node:10670) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10679) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  339 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › ae YouTube subscriber responsive page at 1440 (13.1s)
+  ✓  340 [chromium] › tests/smoke/seo-q4-phase1-release.spec.ts:247:7 › Q4 Phase 1 SEO browser release gate › sg YouTube subscriber responsive page at 1440 (13.2s)
+(node:10758) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10795) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  342 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /instagram-likes at 320px (5.3s)
+  ✓  343 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-instagram-followers-india at 320px (5.4s)
+  ✓  344 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-facebook-followers-india at 320px (7.0s)
+  ✓  346 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /twitter-followers at 320px (6.7s)
+  ✓  345 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /linkedin-followers at 320px (7.5s)
+  ✓  347 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /instagram-likes at 390px (5.5s)
+  ✓  348 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-instagram-followers-india at 390px (5.4s)
+  ✓  350 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /linkedin-followers at 390px (6.4s)
+  ✓  349 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-facebook-followers-india at 390px (7.3s)
+  ✓  351 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /twitter-followers at 390px (6.7s)
+  ✓  352 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /instagram-likes at 768px (7.1s)
+  ✓  353 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-instagram-followers-india at 768px (5.9s)
+  ✓  355 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /linkedin-followers at 768px (6.1s)
+  ✓  354 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-facebook-followers-india at 768px (6.9s)
+  ✓  356 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /twitter-followers at 768px (6.0s)
+  ✓  358 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-instagram-followers-india at 1440px (5.8s)
+  ✓  359 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /buy-facebook-followers-india at 1440px (6.3s)
+  ✓  357 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /instagram-likes at 1440px (8.1s)
+  ✓  360 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /linkedin-followers at 1440px (6.6s)
+  ✓  362 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:47:7 › Q4 Phase 2 subscriber guide price-neutral SSR at 390px (3.7s)
+  ✓  363 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:47:7 › Q4 Phase 2 subscriber guide price-neutral SSR at 1440px (4.9s)
+  ✓  361 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:12:9 › Q4 Phase 2 money-page content /twitter-followers at 1440px (6.8s)
+  ✓  364 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide instagram-followers-vs-likes-india (4.6s)
+  ✓  365 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide best-time-to-post-on-instagram-india (4.7s)
+  ✓  367 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide how-to-grow-instagram-followers-in-india (3.1s)
+  ✓  366 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide instagram-followers-price-in-india (3.9s)
+  ✓  369 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide linkedin-followers-for-business-growth (3.9s)
+  ✓  370 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide twitter-followers-price-in-india (3.9s)
+  ✓  368 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide facebook-page-growth-tips-for-local-businesses (4.7s)
+  ✓  371 [chromium] › tests/smoke/seo-q4-phase2-ranking.spec.ts:76:7 › Q4 Phase 2 contextual guide youtube-channel-readiness-checklist (3.7s)
+[smoke server] owned process 2239 exited
+
+
+  1) [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on / 
+
+    Test timeout of 60000ms exceeded.
+
+    Error: page.waitForTimeout: Test timeout of 60000ms exceeded.
+
+      20 |     for (let step=0;step<160;step++) {
+      21 |       const bottom=await page.evaluate(() => { scrollBy(0,420); return scrollY+innerHeight>=document.documentElement.scrollHeight-2; });
+    > 22 |       await page.waitForTimeout(60);
+         |                  ^
+      23 |       if(bottom)break;
+      24 |     }
+      25 |     await page.locator("footer").scrollIntoViewIfNeeded();
+        at /workspace/work/socialrush-panel/tests/smoke/performance-mobile-scroll.spec.ts:22:18
+
+    Error Context: test-results/performance-mobile-scroll--5a87b-ing-keeps-stable-layout-on--chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/performance-mobile-scroll--5a87b-ing-keeps-stable-layout-on--chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/performance-mobile-scroll--5a87b-ing-keeps-stable-layout-on--chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  2) [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /services 
+
+    Test timeout of 60000ms exceeded.
+
+    Error Context: test-results/performance-mobile-scroll--a4b23-s-stable-layout-on-services-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/performance-mobile-scroll--a4b23-s-stable-layout-on-services-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/performance-mobile-scroll--a4b23-s-stable-layout-on-services-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  3) [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on small-phone 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+      - navigating to "http://localhost:3001/telegram-members", waiting until "load"
+
+
+      28 |
+      29 | async function expectNoDocumentOverflow(page: import("@playwright/test").Page, path: string) {
+    > 30 |   await page.goto(path);
+         |              ^
+      31 |   await expect(page.locator("body")).not.toHaveText("");
+      32 |   const dimensions = await page.evaluate(() => ({
+      33 |     viewport: document.documentElement.clientWidth,
+        at expectNoDocumentOverflow (/workspace/work/socialrush-panel/tests/smoke/phase22-responsive-completion.spec.ts:30:14)
+        at /workspace/work/socialrush-panel/tests/smoke/phase22-responsive-completion.spec.ts:44:15
+
+    Error Context: test-results/phase22-responsive-complet-b43cf-oid-overflow-on-small-phone-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase22-responsive-complet-b43cf-oid-overflow-on-small-phone-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase22-responsive-complet-b43cf-oid-overflow-on-small-phone-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  4) [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on tablet-portrait 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: Test timeout of 30000ms exceeded.
+    Call log:
+      - navigating to "http://localhost:3001/telegram-members", waiting until "load"
+
+
+      28 |
+      29 | async function expectNoDocumentOverflow(page: import("@playwright/test").Page, path: string) {
+    > 30 |   await page.goto(path);
+         |              ^
+      31 |   await expect(page.locator("body")).not.toHaveText("");
+      32 |   const dimensions = await page.evaluate(() => ({
+      33 |     viewport: document.documentElement.clientWidth,
+        at expectNoDocumentOverflow (/workspace/work/socialrush-panel/tests/smoke/phase22-responsive-completion.spec.ts:30:14)
+        at /workspace/work/socialrush-panel/tests/smoke/phase22-responsive-completion.spec.ts:44:15
+
+    Error Context: test-results/phase22-responsive-complet-294a5-overflow-on-tablet-portrait-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/phase22-responsive-complet-294a5-overflow-on-tablet-portrait-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/phase22-responsive-complet-294a5-overflow-on-tablet-portrait-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  5) [chromium] › tests/smoke/premium-design.spec.ts:23:5 › hero actions, sample labels and keyboard focus are understandable 
+
+    Error: route.fetch: read ECONNRESET
+    Call log:
+      - → GET http://localhost:3001/login
+        - user-agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/151.0.7922.34 Safari/537.36
+        - accept: text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7
+        - accept-encoding: gzip,deflate,br
+        - accept-language: en-US
+        - upgrade-insecure-requests: 1
+        - sec-ch-ua: "Not=A?Brand";v="99", "HeadlessChrome";v="151", "Chromium";v="151"
+        - sec-ch-ua-mobile: ?0
+        - sec-ch-ua-platform: "Windows"
+
+
+       at fixtures.ts:13
+
+      11 |       await context.route(`${new URL(baseURL).origin}/**`, async route => {
+      12 |         if (route.request().resourceType() !== "document" || route.request().method() !== "GET") return route.continue();
+    > 13 |         const response = await route.fetch({ maxRedirects: 0 });
+         |                                      ^
+      14 |         // Windows WebKit cannot fulfill an intercepted redirect response.
+      15 |         // Let the browser follow the real redirect; intercept its final document.
+      16 |         if (response.status() >= 300 && response.status() < 400) return route.continue();
+        at /workspace/work/socialrush-panel/tests/smoke/fixtures.ts:13:38
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+      - navigating to "http://localhost:3001/login", waiting until "load"
+
+
+      28 |   await page.keyboard.press("Tab");
+      29 |   await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
+    > 30 |   await page.goto("/login");
+         |              ^
+      31 |   await page.locator('input[name="email"]').focus();
+      32 |   await expect(page.locator('input[name="email"]')).toBeFocused();
+      33 |   await page.keyboard.press("Tab");
+        at /workspace/work/socialrush-panel/tests/smoke/premium-design.spec.ts:30:14
+
+    Error Context: test-results/premium-design-hero-action-481c6-rd-focus-are-understandable-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/premium-design-hero-action-481c6-rd-focus-are-understandable-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/premium-design-hero-action-481c6-rd-focus-are-understandable-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  6) [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 320px 
+
+    Test timeout of 30000ms exceeded.
+
+    Error Context: test-results/premium-design-preview-aut-ba145-ion-stays-readable-at-320px-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/premium-design-preview-aut-ba145-ion-stays-readable-at-320px-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/premium-design-preview-aut-ba145-ion-stays-readable-at-320px-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7) [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 390px 
+
+    Test timeout of 30000ms exceeded.
+
+    Error Context: test-results/premium-design-preview-aut-c6e63-ion-stays-readable-at-390px-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    test-results/premium-design-preview-aut-c6e63-ion-stays-readable-at-390px-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace test-results/premium-design-preview-aut-c6e63-ion-stays-readable-at-390px-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  7 failed
+    [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on / 
+    [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /services 
+    [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on small-phone 
+    [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on tablet-portrait 
+    [chromium] › tests/smoke/premium-design.spec.ts:23:5 › hero actions, sample labels and keyboard focus are understandable 
+    [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 320px 
+    [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 390px 
+  67 skipped
+  297 passed (12.8m)
+npm notice
+npm notice New major version of npm available! 11.9.0 -> 12.2.2
+npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2
+npm notice To update run: npm install -g npm@12.2.2
+npm notice

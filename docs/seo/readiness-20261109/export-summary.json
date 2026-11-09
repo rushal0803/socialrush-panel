@@ -1,0 +1,96 @@
+{
+  "sha256": {
+    "getsocialrush.com-Performance-on-Search-2026-11-09.zip": "5aeae324ac9a5fbeab0c9fda6195c6752f0b2384df70af77ca5d441097de8890",
+    "getsocialrush.com-Coverage-2026-11-09.zip": "932c4a15ff420db21881dacfe4f81cf8e768c0a0110523f76c17034107b99707"
+  },
+  "filters": [
+    {
+      "Filter": "Search type",
+      "Value": "Web (text-based)"
+    },
+    {
+      "Filter": "Date",
+      "Value": "Last 3 months"
+    }
+  ],
+  "performance_range": [
+    "2026-08-08",
+    "2026-11-07"
+  ],
+  "current28": {
+    "start": "2026-10-11",
+    "end": "2026-11-07",
+    "days": 28,
+    "clicks": 5062,
+    "impressions": 34924,
+    "ctr_pct": 14.494330546329174,
+    "click_change_pct": 14.473089099954773,
+    "impression_change_pct": 37.172034564022006
+  },
+  "prior28": {
+    "start": "2026-09-13",
+    "end": "2026-10-10",
+    "days": 28,
+    "clicks": 4422,
+    "impressions": 25460,
+    "ctr_pct": 17.36842105263158
+  },
+  "query_rows": 1000,
+  "page_rows": 87,
+  "latest_coverage": {
+    "Date": "2026-11-06",
+    "Not indexed": "174",
+    "Indexed": "62",
+    "Impressions": "1082"
+  },
+  "coverage_reasons": [
+    {
+      "Reason": "Page with redirect",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "29"
+    },
+    {
+      "Reason": "Blocked by robots.txt",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "15"
+    },
+    {
+      "Reason": "Alternate page with proper canonical tag",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "14"
+    },
+    {
+      "Reason": "Duplicate without user-selected canonical",
+      "Source": "Website",
+      "Validation": "Not Started",
+      "Pages": "4"
+    },
+    {
+      "Reason": "Crawled - currently not indexed",
+      "Source": "Google systems",
+      "Validation": "Not Started",
+      "Pages": "18"
+    },
+    {
+      "Reason": "Excluded by \u2018noindex\u2019 tag",
+      "Source": "Website",
+      "Validation": "N/A",
+      "Pages": "0"
+    },
+    {
+      "Reason": "Discovered - currently not indexed",
+      "Source": "Google systems",
+      "Validation": "Passed",
+      "Pages": "94"
+    }
+  ],
+  "limitations": [
+    "Query rows may be capped and anonymized; missing rows are not zero demand.",
+    "Page and property aggregation can differ; do not sum page rows as property totals.",
+    "Coverage totals do not identify affected URLs or Google-selected canonicals.",
+    "Report dates and filters are retained; no timezone conversion or causal release claim."
+  ]
+}

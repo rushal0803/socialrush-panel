@@ -1,0 +1,4 @@
+{
+  "exit": 0,
+  "command": "playwright test --last-failed --workers=1"
+}

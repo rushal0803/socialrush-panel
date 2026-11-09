@@ -1,0 +1,56 @@
+[
+  {
+    "profile": "early-6x.cpuprofile.gz",
+    "total_sampled_ms": 2150.587,
+    "top_buckets": [
+      {
+        "name": "(program)",
+        "ms": 945.497
+      },
+      {
+        "name": "http://localhost:3012/_next/static/chunks/deddd6ab-e803f6b312ad5e53.js",
+        "ms": 293.252
+      },
+      {
+        "name": "http://localhost:3012/_next/static/chunks/webpack-80543bdb98a9ac67.js",
+        "ms": 236.406
+      },
+      {
+        "name": "(idle)",
+        "ms": 170.595
+      },
+      {
+        "name": "http://localhost:3012/_next/static/chunks/8180-35705dc6882b2ffb.js",
+        "ms": 146.296
+      }
+    ],
+    "preserved_source_maps": 0
+  },
+  {
+    "profile": "mounted-6x.cpuprofile.gz",
+    "total_sampled_ms": 2189.885,
+    "top_buckets": [
+      {
+        "name": "(program)",
+        "ms": 1056.421
+      },
+      {
+        "name": "(idle)",
+        "ms": 259.365
+      },
+      {
+        "name": "http://localhost:3012/_next/static/chunks/deddd6ab-e803f6b312ad5e53.js",
+        "ms": 227.099
+      },
+      {
+        "name": "http://localhost:3012/_next/static/chunks/webpack-80543bdb98a9ac67.js",
+        "ms": 203.004
+      },
+      {
+        "name": "http://localhost:3012/_next/static/chunks/8180-35705dc6882b2ffb.js",
+        "ms": 130.366
+      }
+    ],
+    "preserved_source_maps": 0
+  }
+]

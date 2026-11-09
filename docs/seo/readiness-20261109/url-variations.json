@@ -1,0 +1,30 @@
+[
+  {
+    "requested": "http://getsocialrush.com/",
+    "final": "https://www.getsocialrush.com/",
+    "status": 200,
+    "x_robots_tag": null,
+    "content_type": "text/html; charset=utf-8"
+  },
+  {
+    "requested": "https://getsocialrush.com/",
+    "final": "https://www.getsocialrush.com/",
+    "status": 200,
+    "x_robots_tag": null,
+    "content_type": "text/html; charset=utf-8"
+  },
+  {
+    "requested": "https://www.getsocialrush.com/us/buy-linkedin-followers/",
+    "final": "https://www.getsocialrush.com/us/buy-linkedin-followers",
+    "status": 200,
+    "x_robots_tag": null,
+    "content_type": "text/html; charset=utf-8"
+  },
+  {
+    "requested": "https://www.getsocialrush.com/us/buy-linkedin-followers?utm_source=qa-readonly",
+    "final": "https://www.getsocialrush.com/us/buy-linkedin-followers?utm_source=qa-readonly",
+    "status": 200,
+    "x_robots_tag": null,
+    "content_type": "text/html; charset=utf-8"
+  }
+]
