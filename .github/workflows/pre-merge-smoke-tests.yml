@@ -8,6 +8,7 @@ on:
       - seo/service-evidence-batch1-20261108
       - seo/service-evidence-batch2-20261108
       - seo/service-evidence-batch3-20261109
+      - chore/seo-composed-release-20261109
 
 permissions:
   contents: read
@@ -143,6 +144,7 @@ jobs:
             test-results/service-page-batch2*/
             test-results/service-page-batch3*/
             test-results/service-page-batch4*/
+            test-results/service-page-batch5*/
             test-results/service-page-evidence*/
           retention-days: 7
           if-no-files-found: warn
