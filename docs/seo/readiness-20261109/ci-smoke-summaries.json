@@ -1,0 +1,22 @@
+{
+  "754": {
+    "head": "cb8523a639c0cd62b63a860f9af8df7502cf886c",
+    "run": 42585685136,
+    "conclusion": "success",
+    "smoke_passed": 304,
+    "smoke_skipped": 67,
+    "customer_fixture_passed": 14
+  },
+  "755": {
+    "head": "0d3740e520736d54ee5025bdb0f35eaaa0db5389",
+    "run": 42585985878,
+    "conclusion": "success",
+    "smoke_passed": 323,
+    "smoke_flaky": 1,
+    "smoke_skipped": 67,
+    "customer_fixture_passed": 14,
+    "flaky_case": "premium-design.spec.ts:108 conversion paths and first-party tracking",
+    "initial_error": "route.fulfill: Fetch response has been disposed",
+    "retry": "passed"
+  }
+}

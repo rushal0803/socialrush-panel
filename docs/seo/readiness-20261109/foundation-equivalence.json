@@ -1,0 +1,31 @@
+{
+  "ancestry": {
+    "744": false,
+    "745": false,
+    "746": false
+  },
+  "changed_file_equivalence": {
+    "744": {
+      ".github/workflows/pre-merge-smoke-tests.yml": true,
+      "components/seo/SearchDemandPriceSection.tsx": true,
+      "docs/seo-discovery-audit-20261108.md": true,
+      "lib/seo/search-demand.ts": true,
+      "tests/unit/search-demand-pricing-precision.test.ts": true
+    },
+    "745": {
+      "components/analytics/PageAnalytics.tsx": true,
+      "docs/seo-google-referrer-fix-20261108.md": true,
+      "lib/analytics/events.ts": true,
+      "tests/unit/phase45-traffic-engine.test.ts": true
+    },
+    "746": {
+      "components/marketing/MarketingFooter.tsx": true,
+      "components/marketing/TelegramFollowersLanding.tsx": true,
+      "components/seo/IndiaCommercialServiceJsonLd.tsx": true,
+      "docs/seo-commercial-breadcrumb-audit-20261108.md": true,
+      "lib/seo/commercial-service-breadcrumbs.ts": true,
+      "package.json": true,
+      "tests/unit/commercial-service-breadcrumbs.test.ts": true
+    }
+  }
+}

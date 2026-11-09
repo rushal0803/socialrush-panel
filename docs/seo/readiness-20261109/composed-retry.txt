@@ -1,0 +1,17 @@
+
+Running 7 tests using 1 worker
+
+(node:11929) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+/ accumulated layout shifts including scroll: 0.0003783826409490422
+  ✓  1 [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on / (30.7s)
+/services accumulated layout shifts including scroll: 0.010240827722325218
+  ✓  2 [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /services (16.5s)
+  ✓  3 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on small-phone (7.3s)
+  ✓  4 [chromium] › tests/smoke/phase22-responsive-completion.spec.ts:41:9 › Phase 22 responsive completion matrix › previously uncovered public/auth/country routes avoid overflow on tablet-portrait (8.6s)
+  ✓  5 [chromium] › tests/smoke/premium-design.spec.ts:23:5 › hero actions, sample labels and keyboard focus are understandable (1.7s)
+  ✓  6 [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 320px (3.2s)
+  ✓  7 [chromium] › tests/smoke/premium-design.spec.ts:81:7 › preview, auth and service information stays readable at 390px (3.8s)
+[smoke server] owned process 11868 exited
+
+  7 passed (1.3m)

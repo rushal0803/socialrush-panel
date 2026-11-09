@@ -1,0 +1,5 @@
+{
+  "exit": 0,
+  "command": "playwright test tests/smoke/service-page-batch5.spec.ts --workers=1",
+  "build_id": "DIlk26Ec1fQsax0UdkWqT"
+}
