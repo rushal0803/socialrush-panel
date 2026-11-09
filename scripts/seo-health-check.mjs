@@ -1,5 +1,8 @@
 #!/usr/bin/env node
 
+import { fetchSeo } from "./lib/seo-request.mjs";
+import { legacyRedirects } from "./lib/seo-redirect-contract.mjs";
+
 const DEFAULT_BASE_URL = "https://www.getsocialrush.com";
 const REQUEST_TIMEOUT_MS = 30_000;
 const CONCURRENCY = 4;
@@ -86,102 +89,7 @@ const privateRobotsPaths = [
   "/packages/checkout",
 ];
 
-const legacyRedirects = [
-  ["/buy-instagram-followers", "/buy-instagram-followers-india"],
-  ["/instagram-followers", "/buy-instagram-followers-india"],
-  ["/services/instagram-audience-growth", "/buy-instagram-followers-india"],
-  ["/services/instagram-followers", "/buy-instagram-followers-india"],
-  ["/buy-instagram-likes-india", "/instagram-likes"],
-  ["/services/instagram-engagement-boost", "/instagram-likes"],
-  ["/services/instagram-likes", "/instagram-likes"],
-  ["/buy-instagram-views-india", "/instagram-views"],
-  ["/services/instagram-content-reach", "/instagram-views"],
-  ["/services/instagram-views", "/instagram-views"],
-  ["/buy-youtube-subscribers-india", "/youtube-subscribers"],
-  ["/services/youtube-channel-growth", "/youtube-subscribers"],
-  ["/services/youtube-subscribers", "/youtube-subscribers"],
-  ["/buy-youtube-likes-india", "/youtube-likes"],
-  ["/services/youtube-likes", "/youtube-likes"],
-  ["/buy-youtube-views-india", "/youtube-views"],
-  ["/services/youtube-video-promotion", "/youtube-views"],
-  ["/services/youtube-views", "/youtube-views"],
-  ["/youtube-watch-hours", "/buy-youtube-watch-hours-india"],
-  ["/buy-linkedin-followers-india", "/linkedin-followers"],
-  ["/services/linkedin-followers", "/linkedin-followers"],
-  ["/services/linkedin-professional-growth", "/linkedin-followers"],
-  ["/buy-linkedin-likes-india", "/linkedin-likes"],
-  ["/services/linkedin-likes", "/linkedin-likes"],
-  ["/buy-twitter-followers-india", "/twitter-followers"],
-  ["/x-followers", "/twitter-followers"],
-  ["/buy-x-followers", "/twitter-followers"],
-  ["/buy-x-followers-india", "/twitter-followers"],
-  ["/services/x-authority-growth", "/twitter-followers"],
-  ["/services/x-followers", "/twitter-followers"],
-  ["/facebook-followers", "/buy-facebook-followers-india"],
-  ["/services/facebook-brand-engagement", "/buy-facebook-followers-india"],
-  ["/services/facebook-followers", "/buy-facebook-followers-india"],
-  ["/buy-facebook-likes-india", "/facebook-likes"],
-  ["/services/facebook-likes", "/facebook-likes"],
-  ["/buy-facebook-views-india", "/facebook-views"],
-  ["/services/facebook-views", "/facebook-views"],
-  ["/services/facebook-shares", "/buy-facebook-shares-india"],
-  ["/buy-telegram-members-india", "/telegram-members"],
-  ["/services/telegram-members", "/telegram-members"],
-  ["/buy-tiktok-followers-india", "/tiktok-followers"],
-  ["/services/tiktok-followers", "/tiktok-followers"],
-  ["/services/smm-panel-india", "/services"],
-  ["/smm-panel-india", "/services"],
-  ["/social-media-services-india", "/services"],
-  ["/best-smm-panel-india", "/services"],
-  ["/reliable-smm-panel-india", "/services"],
-  ["/trusted-smm-panel-india", "/services"],
-  ["/smm-reseller-panel-india", "/for-agencies"],
-  ["/bulk-smm-orders-india", "/for-agencies"],
-  ["/bulk-smm-services-india", "/for-agencies"],
-  ["/bulk-social-media-services-india", "/for-agencies"],
-  ["/agency-social-media-fulfillment-india", "/for-agencies"],
-  ["/smm-panel-api-india", "/for-agencies"],
-  ["/smm-reseller-api-india", "/for-agencies"],
-  ["/smm-api-india", "/for-agencies"],
-  ["/instagram-smm-panel-india", "/instagram-growth-india"],
-  ["/smm-panel-for-instagram-india", "/instagram-growth-india"],
-  ["/youtube-smm-panel-india", "/youtube-growth-india"],
-  ["/smm-panel-for-youtube-india", "/youtube-growth-india"],
-  ["/linkedin-smm-panel-india", "/linkedin-growth-india"],
-  ["/smm-panel-for-linkedin-india", "/linkedin-growth-india"],
-  ["/facebook-smm-panel-india", "/facebook-growth-india"],
-  ["/smm-panel-for-facebook-india", "/facebook-growth-india"],
-  ["/twitter-smm-panel-india", "/x-growth-india"],
-  ["/x-smm-panel-india", "/x-growth-india"],
-  ["/tiktok-smm-panel-india", "/tiktok-growth-india"],
-  ["/smm-panel-for-tiktok-india", "/tiktok-growth-india"],
-  ["/telegram-smm-panel-india", "/services/telegram"],
-  ["/smm-panel-for-telegram-india", "/services/telegram"],
-  ["/smm-panel-price-list-india", "/pricing"],
-  ["/smm-panel-pricing-india", "/pricing"],
-  ["/smm-panel-rates-india", "/pricing"],
-  ["/upi-smm-panel-india", "/pricing"],
-  ["/smm-panel-with-upi-india", "/pricing"],
-  ["/cheap-smm-panel-india", "/pricing"],
-  ["/affordable-smm-panel-india", "/pricing"],
-  ["/low-cost-smm-panel-india", "/pricing"],
-  ["/budget-smm-panel-india", "/pricing"],
-  ["/smm-panel-for-agencies-india", "/for-agencies"],
-  ["/safe-smm-panel-india", "/trust"],
-  ["/smm-panel-without-password-india", "/trust"],
-  ["/no-password-smm-panel-india", "/trust"],
-  ["/public-link-smm-panel-india", "/trust"],
-  ["/social-media-growth-services-india", "/social-media-growth-india"],
-  ["/social-media-growth-service-india", "/social-media-growth-india"],
-  ["/social-media-engagement-services-india", "/social-media-growth-india"],
-  ["/social-media-engagement-service-india", "/social-media-growth-india"],
-  ["/social-media-promotion-services-india", "/social-media-growth-india"],
-  ["/social-media-promotion-service-india", "/social-media-growth-india"],
-  [
-    "/blog/linkedin-growth-tips-for-personal-brands",
-    "/blog/linkedin-growth-tips-personal-brands",
-  ],
-];
+
 
 const baseUrl = new URL(process.env.SEO_BASE_URL || DEFAULT_BASE_URL);
 const failures = [];
@@ -203,7 +111,7 @@ async function fetchWithTimeout(path, redirect = "follow") {
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
 
   try {
-    return await fetch(new URL(path, baseUrl), {
+    return await fetchSeo(path, baseUrl, process.env.SEO_TRANSPORT_ORIGIN, {
       redirect,
       signal: controller.signal,
       headers: {
@@ -377,6 +285,7 @@ async function runInBatches(items, task) {
 }
 
 console.log(`SocialRUSH SEO health check: ${baseUrl.origin}`);
+if (process.env.SEO_TRANSPORT_ORIGIN) console.log(`Local production-host simulation: ${new URL(process.env.SEO_TRANSPORT_ORIGIN).origin}`);
 await checkRobotsAndSitemap();
 await checkIndexNowKey();
 await runInBatches(priorityIndexablePaths, checkPage);

@@ -937,7 +937,10 @@ test("dashboard shell shares balance updates without browser order loading", asy
   await page.goto("/dashboard/orders");
   await expect(page.getByRole("heading",{name:"Your campaigns",exact:true})).toBeVisible();
   await expect(page.locator("main").getByRole("link",{name:"View Details",exact:true})).toHaveCount(2);
-  await page.getByRole("button",{name:"Currency: INR"}).click();
+  const currency = page.getByRole("combobox", { name: "Display currency" });
+  await expect(currency).toHaveAccessibleDescription("Display preference only. Wallet ledger and payments remain in INR.");
+  await currency.selectOption("INR");
+  await expect(currency).toHaveValue("INR");
   await page.keyboard.press("Escape");
   await page.evaluate(()=>window.dispatchEvent(new CustomEvent("wallet-balance-updated",{detail:1234.5})));
   await expect(page.locator("header").getByRole("link",{name:/Wallet \(INR\)/})).toContainText("1,234.50");
