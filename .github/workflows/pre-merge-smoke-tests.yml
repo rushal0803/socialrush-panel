@@ -10,6 +10,7 @@ on:
       - seo/service-evidence-batch3-20261109
       - chore/seo-composed-release-20261109
       - seo/service-evidence-batch5-20261109
+      - seo/crawled-not-indexed-recovery-20261109
 
 permissions:
   contents: read
@@ -147,6 +148,7 @@ jobs:
             test-results/service-page-batch3*/
             test-results/service-page-batch4*/
             test-results/service-page-batch5*/
+            test-results/service-page-batch6*/
             test-results/indexing-recovery*/
             test-results/service-page-evidence*/
           retention-days: 7
