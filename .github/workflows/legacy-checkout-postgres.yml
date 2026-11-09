@@ -1,0 +1,60 @@
+name: Isolated legacy checkout PostgreSQL fixture
+
+on:
+  pull_request:
+    paths:
+      - 'tests/postgres/legacy-place-order-disposable-fixture.sql'
+      - '.github/workflows/legacy-checkout-postgres.yml'
+      - 'tests/postgres/legacy-place-order-concurrency.sh'
+      - 'docs/audits/place-order-charge-correction-REVIEW-ONLY.sql'
+      - 'tests/unit/place-order-charge-review-contract.test.mjs'
+      - 'tests/postgres/place-order-exact-function-disposable.sql'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  isolated-legacy-checkout:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: fixture_only_password
+          POSTGRES_DB: legacy_checkout_fixture
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd "pg_isready -U postgres -d legacy_checkout_fixture"
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install PostgreSQL client
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y postgresql-client
+      - name: Run disposable checkout SQL fixture
+        env:
+          PGHOST: localhost
+          PGPORT: '5432'
+          PGUSER: postgres
+          PGPASSWORD: fixture_only_password
+          PGDATABASE: legacy_checkout_fixture
+        run: |
+          psql -X -v ON_ERROR_STOP=1 -f tests/postgres/legacy-place-order-disposable-fixture.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/postgres/place-order-exact-function-disposable.sql
+          test "$(psql -X -Atqc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public_fixture'")" = "0"
+
+      - name: Run simultaneous wallet purchase regression
+        env:
+          PGHOST: localhost
+          PGPORT: '5432'
+          PGUSER: postgres
+          PGPASSWORD: fixture_only_password
+          PGDATABASE: legacy_checkout_fixture
+        run: bash tests/postgres/legacy-place-order-concurrency.sh

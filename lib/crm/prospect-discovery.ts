@@ -81,7 +81,22 @@ export async function runProspectDiscovery({ trigger, createdBy = null }: { trig
   if (!remaining) { await finish({ status: "skipped", metadata: { reason: "daily_limit_reached", daily_limit: dailyLimit, already_used: used } }); return { runId: run.id, status: "skipped", reason: "Daily discovery limit reached." }; }
   const seed = buildSeedItem(settings.target_countries || [], settings.segment_rotation || []); let searchCount = 0, discoveredCount = 0, stagedCount = 0, duplicateCount = 0, invalidCount = 0, errorCount = 0; let firstError: string | null = null;
   const audit: { [key: string]: unknown; resolutions: Array<Record<string, unknown>> } = { daily_limit: dailyLimit, previously_used_today: used, seed_query: seed.query, seed_results_discovered: 0, names_extracted: 0, seed_names_rejected_before_resolution: 0, ranked_company_seeds: [], names_considered_for_resolution: 0, official_sites_resolved: 0, backlog_enriched: 0, verified_business_emails_found: 0, promoted_count: 0, rejected_or_skipped: 0, total_brave_request_count: 0, resolutions: [] };
-  const [candidateDomains, leadDomains] = await Promise.all([db.from("crm_lead_candidates").select("domain"), db.from("crm_leads").select("domain")]); const known = new Set<string>(); for (const row of [...(candidateDomains.data || []), ...(leadDomains.data || [])]) { const domain = normalizeDomain(row.domain); if (domain) known.add(domain); }
+  // Only check resolved domains, avoiding a full-table scan on every cron run.
+  const known = new Set<string>();
+  async function alreadyKnownDomain(domain: string) {
+    if (known.has(domain)) return true;
+    const [candidates, leads] = await Promise.all([
+      db.from("crm_lead_candidates").select("id").eq("domain", domain).limit(1),
+      db.from("crm_leads").select("id").eq("domain", domain).limit(1),
+    ]);
+    // Fail closed on lookup errors; never stage potentially duplicate prospects.
+    if (candidates.error || leads.error) throw new Error("CRM duplicate-domain lookup failed");
+    if ((candidates.data?.length || 0) > 0 || (leads.data?.length || 0) > 0) {
+      known.add(domain);
+      return true;
+    }
+    return false;
+  }
 
   const { data: backlogCandidates = [], error: backlogError } = await db
     .from("crm_lead_candidates")
@@ -110,7 +125,7 @@ export async function runProspectDiscovery({ trigger, createdBy = null }: { trig
     audit.names_extracted = names.size; const ranked = selectCompanySeeds([...names.values()], seed.segment, Math.min(MAX_RESOLUTIONS_PER_RUN, Math.max(0, remaining - 1)), MINIMUM_SEED_FIT_SCORE); const selected = ranked.filter((company) => company.selectedForResolution); audit.ranked_company_seeds = ranked.map(({ companyName, seedFitScore, seedFitReasons, seedRejectedReason, selectedForResolution }) => ({ company_name: companyName, seedFitScore, seedFitReasons, seedRejectedReason: seedRejectedReason || null, selected_for_resolution: selectedForResolution })); audit.seed_names_rejected_before_resolution = ranked.filter((company) => company.seedRejectedReason || company.seedFitScore < MINIMUM_SEED_FIT_SCORE).length; invalidCount += Number(audit.seed_names_rejected_before_resolution); audit.names_considered_for_resolution = selected.length;
     for (const company of selected) { const query = officialSiteQuery(company.companyName, seed.countryName), resolutionItem = { ...seed, query }; searchCount++; try { const results = await braveSearch(apiKey, resolutionItem, Number(settings.results_per_search || 10)); const hit = results.map((result) => ({ result, resolution: resolveOfficialWebsite(company.companyName, result) })).find((item) => item.resolution);
       if (!hit?.resolution) { invalidCount++; audit.resolutions.push({ company_name: company.companyName, seed_result_title: company.title, seed_result_url: company.url, resolution_query: query, skipped_reason: "no_high_confidence_official_site" }); continue; }
-      const { website, score, reasons } = hit.resolution; audit.official_sites_resolved = Number(audit.official_sites_resolved) + 1; if (known.has(website.domain)) { duplicateCount++; audit.resolutions.push({ company_name: company.companyName, resolution_query: query, selected_official_url: website.websiteUrl, resolver_confidence_score: score, confidence_reasons: reasons, skipped_reason: "known_domain_duplicate" }); continue; }
+      const { website, score, reasons } = hit.resolution; audit.official_sites_resolved = Number(audit.official_sites_resolved) + 1; if (await alreadyKnownDomain(website.domain)) { duplicateCount++; audit.resolutions.push({ company_name: company.companyName, resolution_query: query, selected_official_url: website.websiteUrl, resolver_confidence_score: score, confidence_reasons: reasons, skipped_reason: "known_domain_duplicate" }); continue; }
       const { data: candidate, error } = await db.from("crm_lead_candidates").insert({ business_name: company.companyName, domain: website.domain, website_url: website.websiteUrl, country: seed.countryName, company_type: companyTypeForSegment(seed.segment), business_email: null, email_type: "unknown", email_verification_status: "unverified", source: "brave_web", source_name: "Brave Search automated discovery", source_external_id: sourceExternalId(website.domain), source_url: website.websiteUrl, research_status: "new", qualification_status: "new", compliance_status: "review", research_notes: hit.result.description?.replace(/\s+/g, " ").trim().slice(0, 500) || null, created_by: createdBy }).select("id").single();
       if (error || !candidate) { if (error?.code === "23505") { duplicateCount++; known.add(website.domain); } else { errorCount++; firstError ||= error?.message || "Candidate insert failed."; } continue; }
       stagedCount++; known.add(website.domain);

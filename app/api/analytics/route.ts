@@ -41,6 +41,13 @@ const trim = (value: unknown, length: number) =>
 export async function POST(request: NextRequest) {
   const jsonError = requireJson(request, 8_192);
   if (jsonError) return jsonError;
+  // Browser beacons should originate from this site; direct RPC grants are audited separately.
+  const origin = request.headers.get("origin");
+  if (origin) {
+    let sameOrigin = false;
+    try { sameOrigin = new URL(origin).origin === request.nextUrl.origin; } catch { /* Reject malformed origins. */ }
+    if (!sameOrigin) return NextResponse.json({ error: "Invalid request origin." }, { status: 403 });
+  }
   const limited = rateLimit(request, "analytics", 120, 60_000);
   if (limited) return limited;
 
@@ -120,7 +127,7 @@ export async function POST(request: NextRequest) {
 
   const db = await createClient();
   try {
-    await db.rpc("record_analytics_event", {
+    const { error: analyticsError } = await db.rpc("record_analytics_event", {
       p_event_name: body.event,
       p_session_id: session,
       p_page_path: trim(body.pagePath, 300) || "/",
@@ -159,6 +166,11 @@ export async function POST(request: NextRequest) {
       p_referring_domain: referringDomain,
       p_metadata: metadata,
     });
+    if (analyticsError) {
+      // Supabase RPC errors are returned as data, not thrown exceptions.
+      // Log only the stable error code; never log customer metadata or attribution.
+      console.warn("Analytics event write failed", { code: analyticsError.code || "unknown" });
+    }
   } catch {
     /* Analytics never blocks navigation. */
   }
