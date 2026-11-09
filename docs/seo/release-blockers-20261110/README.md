@@ -30,6 +30,12 @@ SEO_TRANSPORT_ORIGIN=http://127.0.0.1:3004 npm run seo:check
 
 The reviewed91-entry contract is shared by the health monitor and a browser/API regression. Existing architecture guards read both the entry point and imported contract, assert that the entry point imports/executes it, and retain every alias/freshness assertion. The regression independently checks canonical ownership, all redirect statuses/targets/query preservation and rendered destination canonicals, plus a negative localhost-host control. Four unit checks verify normal hosted requests, safe transport configuration and real loopback Host/protocol/query delivery. The pre-commit monitor passed128/128 against the #758 build under production-host simulation.
 
+## Additional confirmed responsive blocker
+
+Enabling the entire opt-in matrix exposed an unchanged reseller monthly-planner defect at1024px. Its two-column hero activated while the dashboard sidebar left insufficient content width. The "Margin-safe planning" text reachedx1027.08 while the hero clipped atx992; this reproduced in an isolated run, unlike a separate transient connection reset. [Pre-fix geometry](monthly-planner-geometry-before.json).
+
+The hero now stays stacked untilxl and its navigation links wrap. Only responsive classes change; client markup, quote calculations, plan saves, order creation and payment behavior are unchanged. A regular customer-fixture regression checks actual heading text and every hero link at320/1024/1440px, records geometry/screenshots and is added to the CI fixture gate. Existing full-matrix assertions remain unchanged.
+
 ## Validation and release gates
 
 Pre-commit focused suite:8/8 (seven quantity checks plus the full91-route integration check). Unit transport:4/4. Negative quantity regression fails as expected on unmodified #758. Initial test-authoring corrections used the full accessible quantity name and the separate review-details card rather than the payment-summary card; assertions remain exact. Full suites, isolated PostgreSQL and exact-head CI are recorded in the draft PR after completion; these focused results do not substitute for them.

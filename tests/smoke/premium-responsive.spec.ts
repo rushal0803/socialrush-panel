@@ -947,3 +947,34 @@ test("dashboard shell shares balance updates without browser order loading", asy
   await expect(page.locator("aside")).toContainText("1,234.50");
   expect(orderReads).toBe(0);
 });
+
+// A 1024px dashboard leaves less content width than a public 1024px page.
+// Check the actual heading text as well as the link targets, without relying
+// on overflow:hidden to hide the two-column hero's intrinsic width.
+test("customer monthly planner keeps hero text and links inside the viewport", async ({ page, context, baseURL }) => {
+  await authenticate(context, baseURL!);
+  for (const width of [320, 1024, 1440]) {
+    await page.setViewportSize({ width, height: 900 });
+    await page.goto("/dashboard/reseller/monthly-planner");
+    await expect(page.getByRole("heading", { name: "Margin-safe planning", exact: true })).toBeVisible();
+    await page.evaluate(() => document.fonts.ready);
+    const hero = page.locator("main.dashboard-premium-page > section").first();
+    const clip = await hero.boundingBox();
+    const bounds = await hero.locator("h1,h2,a").evaluateAll(elements => elements.map(element => {
+      const box = element.getBoundingClientRect();
+      const range = document.createRange();
+      range.selectNodeContents(element);
+      const text = range.getBoundingClientRect();
+      return { label: element.textContent, left: box.left, right: box.right, textLeft: text.left, textRight: text.right, viewport: document.documentElement.clientWidth };
+    }));
+    for (const box of bounds) {
+      expect(box.left, `${box.label} at ${width}`).toBeGreaterThanOrEqual(Math.max(0, clip!.x - 1));
+      expect(box.right, `${box.label} at ${width}`).toBeLessThanOrEqual(Math.min(box.viewport, clip!.x + clip!.width) + 1);
+      expect(box.textLeft, `${box.label} text at ${width}`).toBeGreaterThanOrEqual(Math.max(0, clip!.x - 1));
+      expect(box.textRight, `${box.label} text at ${width}`).toBeLessThanOrEqual(Math.min(box.viewport, clip!.x + clip!.width) + 1);
+    }
+    fs.mkdirSync(outputRoot, { recursive: true });
+    fs.writeFileSync(path.join(outputRoot, `monthly-planner-hero-${width}.json`), JSON.stringify(bounds, null, 2));
+    await hero.screenshot({ path: path.join(outputRoot, `monthly-planner-hero-${width}.png`) });
+  }
+});
