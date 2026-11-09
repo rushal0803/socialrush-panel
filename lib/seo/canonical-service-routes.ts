@@ -1,9 +1,18 @@
 import { canonicalIndiaServicePaths, type IndiaServiceSlug } from "./canonical-india-services.ts";
 
-// These first-batch canonicals have dedicated page files. Generating them
+// These audited batch canonicals have dedicated page files. Generating them
 // again under [service] can overwrite their prerendered metadata/schema.
-// Other service-route collisions require their own rendered-content audit.
-const dedicatedBatchPaths = new Set(["/buy-instagram-followers-india", "/buy-facebook-followers-india"]);
+// Unaudited service-route collisions require their own rendered-content audit.
+const dedicatedBatchPaths = new Set([
+  "/buy-instagram-followers-india",
+  "/buy-facebook-followers-india",
+  "/buy-instagram-comments-india",
+  "/buy-instagram-saves-india",
+  "/buy-instagram-shares-india",
+  "/buy-youtube-comments-india",
+  "/buy-facebook-shares-india",
+  "/buy-facebook-group-members-india",
+]);
 export const canonicalServiceRoutes = Object.fromEntries(
   Object.entries(canonicalIndiaServicePaths)
     .filter(([, path]) => !dedicatedBatchPaths.has(path))

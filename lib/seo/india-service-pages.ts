@@ -541,7 +541,7 @@ const pages: Record<IndiaServiceSlug, IndiaServicePage> = {
     delivery: "1–5 days",
     refill: "Refill eligible",
     packageService: "shares",
-    intro: "Support the visible distribution of an eligible public Facebook post with a clear, trackable shares campaign for India.",
+    intro: "Compare Facebook share activity for an eligible public post. Review INR pricing, the exact post link and service terms; share counts do not guarantee organic reach or interested visitors.",
     overview: "Confirm your Facebook post is publicly accessible, copy its exact post permalink (not a profile or Page homepage), and review active service eligibility, quantity, live INR total and delivery terms before ordering. Keep the post public while processing.",
     value: "Share counts show an action, not verified reach, referrals, authentic interest or business results. Compare post-level shares with independent Facebook insights and actual referral traffic when evaluating a campaign.",
     safety: "Only the public Facebook post URL is required. SocialRUSH never asks for your Facebook password, login, OTP or private account access.",

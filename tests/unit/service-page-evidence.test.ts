@@ -24,7 +24,7 @@ test("existing per-1K offers retain their rate and identify the actual reference
 
 test("invalid rates and routes outside this batch receive no price specification", () => {
   for (const value of [0, -1, NaN, Infinity]) assert.deepEqual(servicePriceSpecification("/instagram-likes", value), {});
-  for (const path of ["/instagram-views", "/twitter-followers", "/buy-instagram-followers-india", "/youtube-likes"]) {
+  for (const path of ["/instagram-views", "/twitter-followers", "/buy-instagram-followers-india", "/not-a-service"]) {
     assert.deepEqual(servicePriceSpecification(path, 100), {});
   }
 });
