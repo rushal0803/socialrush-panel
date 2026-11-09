@@ -8,6 +8,7 @@ on:
       - 'tests/postgres/legacy-place-order-concurrency.sh'
       - 'docs/audits/place-order-charge-correction-REVIEW-ONLY.sql'
       - 'tests/unit/place-order-charge-review-contract.test.mjs'
+      - 'tests/postgres/place-order-exact-function-disposable.sql'
   workflow_dispatch:
 
 permissions:
@@ -46,6 +47,7 @@ jobs:
           PGDATABASE: legacy_checkout_fixture
         run: |
           psql -X -v ON_ERROR_STOP=1 -f tests/postgres/legacy-place-order-disposable-fixture.sql
+          psql -X -v ON_ERROR_STOP=1 -f tests/postgres/place-order-exact-function-disposable.sql
           test "$(psql -X -Atqc "SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='public_fixture'")" = "0"
 
       - name: Run simultaneous wallet purchase regression
