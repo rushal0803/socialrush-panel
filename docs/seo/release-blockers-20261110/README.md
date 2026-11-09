@@ -12,7 +12,7 @@ Seven deterministic browser checks cover mobile390 and desktop1440, early quanti
 
 ## Currency regression
 
-The skipped wallet-balance regression targeted a removed `Currency: INR` button. The product exposes the native `Display currency` combobox. The test now asserts its accessible explanation, selects INR, verifies selection, and retains both header/sidebar balance-update assertions and zero browser order reads. It is included in the normal authenticated fixture CI gate. The separate keyboard-currency test remains intact. No product behavior is changed for this fix.
+The skipped wallet-balance regression targeted a removed `Currency: INR` button. The product exposes the native `Display currency` combobox. The test now asserts its accessible explanation, selects INR, verifies selection, and retains both header/sidebar balance-update assertions and zero browser order reads. It is included in the normal authenticated fixture CI gate. The separate keyboard-currency test remains intact. Its CI fixture run has a separate output directory so Playwright cannot erase full-suite quantity/routing evidence before upload. No product behavior is changed for this fix.
 
 ## All79 redirect-monitor mismatches
 
