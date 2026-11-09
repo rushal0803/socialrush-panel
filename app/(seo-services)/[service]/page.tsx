@@ -1,3 +1,5 @@
+import { canonicalServiceRoutes } from "@/lib/seo/canonical-service-routes";
+import { telegramMembersFaqSchema } from "@/lib/seo/telegram-members-faq";
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import IndiaServiceLandingPage from "@/components/marketing/services/IndiaServiceLandingPage";
@@ -21,20 +23,11 @@ import { linkedInFollowersFaqs } from "@/lib/seo/linkedin-followers";
 import { tiktokFollowersFaqs } from "@/lib/seo/tiktok-followers";
 import { getServiceById } from "@/lib/smm-service-catalog";
 import {
-  canonicalIndiaServicePaths,
   getIndiaServiceFaqs,
   getIndiaServiceMetadata,
-  type IndiaServiceSlug,
 } from "@/lib/seo/india-service-pages";
 
-const serviceRoutes = Object.fromEntries(
-  Object.entries(canonicalIndiaServicePaths)
-    // This URL has a dedicated route with its own metadata and order panel.
-    // Keeping it out of the catch-all prevents a second route implementation
-    // from being generated for the same crawlable URL.
-    .filter(([slug]) => slug !== "buy-instagram-followers-india")
-    .map(([slug, path]) => [path.slice(1), slug as IndiaServiceSlug]),
-) as Record<string, IndiaServiceSlug>;
+const serviceRoutes = canonicalServiceRoutes;
 
 export function generateStaticParams() {
   return Object.keys(serviceRoutes).map((service) => ({ service }));
@@ -113,7 +106,7 @@ export default async function CanonicalServicePage({
   if (slug === "buy-youtube-comments-india") return <><IndiaCommercialServiceJsonLd code="youtube-comments" name="YouTube Comments" path="/buy-youtube-comments-india" platform="YouTube" serviceType="YouTube comments service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/buy-youtube-comments-india" /><MoneyPageAuthorityLinks platform="youtube" /></>;
   if (slug === "buy-facebook-group-members-india") return <><IndiaCommercialServiceJsonLd code="facebook-group-members" name="Facebook Group Members" path="/buy-facebook-group-members-india" platform="Facebook" serviceType="Facebook group members service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/buy-facebook-group-members-india" /><MoneyPageAuthorityLinks platform="facebook" /></>;
   if (slug === "buy-facebook-shares-india") return <><IndiaCommercialServiceJsonLd code="facebook-shares" name="Facebook Shares" path="/buy-facebook-shares-india" platform="Facebook" serviceType="Facebook shares service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/buy-facebook-shares-india" /><MoneyPageAuthorityLinks platform="facebook" /></>;
-  if (slug === "buy-telegram-members-india") return <><IndiaCommercialServiceJsonLd code="telegram-members" name="Telegram Members" path="/telegram-members" platform="Telegram" serviceType="Telegram members service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/telegram-members" /><MoneyPageAuthorityLinks platform="telegram" /></>;
+  if (slug === "buy-telegram-members-india") return <><script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(telegramMembersFaqSchema()).replace(/</g, "\\u003c") }} /><IndiaCommercialServiceJsonLd code="telegram-members" name="Telegram Members" path="/telegram-members" platform="Telegram" serviceType="Telegram members service" /><IndiaServiceLandingPage slug={slug} canonicalPath="/telegram-members" /><MoneyPageAuthorityLinks platform="telegram" /></>;
   if (slug === "buy-twitter-followers-india") {
     const faqs = getIndiaServiceFaqs(slug);
     const schema = JSON.stringify({ "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faqs.map(({ question, answer }) => ({ "@type": "Question", name: question, acceptedAnswer: { "@type": "Answer", text: answer } })) }).replace(/</g, "\\u003c");
