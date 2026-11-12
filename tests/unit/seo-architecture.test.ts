@@ -49,6 +49,15 @@ function metadataTitle(metadata: ReturnType<typeof getIndiaServiceMetadata>): st
   return "";
 }
 
+// The entry point imports its reviewed redirect contract. Preserve the existing
+// coverage assertions across both files and prove the imported data is executed.
+function readSeoMonitorSource() {
+  const entry = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  assert.match(entry, /import \{ legacyRedirects \} from "\.\/lib\/seo-redirect-contract\.mjs"/);
+  assert.match(entry, /runInBatches\(legacyRedirects, checkRedirect\)/);
+  return entry + "\n" + readFileSync(new URL("../../scripts/lib/seo-redirect-contract.mjs", import.meta.url), "utf8");
+}
+
 test("every deliberate SEO intent has exactly one preferred canonical target", () => {
   assert.equal(hasUniquePrimaryTargets(), true);
   assert.equal(seoIntentMap.every((intent) => intent.primaryTarget.startsWith("/") && !intent.primaryTarget.includes("?")), true);
@@ -228,10 +237,7 @@ test("thin operational pages explicitly stay out of search results", () => {
 });
 
 test("free production SEO monitoring covers every canonical India service page", () => {
-  const monitorSource = readFileSync(
-    new URL("../../scripts/seo-health-check.mjs", import.meta.url),
-    "utf8",
-  );
+  const monitorSource = readSeoMonitorSource();
   const workflowSource = readFileSync(
     new URL("../../.github/workflows/seo-health-monitor.yml", import.meta.url),
     "utf8",
@@ -524,7 +530,7 @@ test("phase 5G middleware and sitemap consume the canonical ownership guard", ()
 });
 
 test("phase 5G production SEO monitor checks every commercial alias redirect", () => {
-  const monitorSource = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitorSource = readSeoMonitorSource();
   for (const [alias, canonical] of Object.entries(commercialCanonicalRedirects)) {
     assert.ok(monitorSource.includes(`["${alias}", "${canonical}"]`), `${alias} redirect should be monitored`);
   }
@@ -727,7 +733,7 @@ test("phase 5N agency intent model stays factual and avoids unsupported reseller
 test("phase 5N /for-agencies exposes visible reseller authority and truthful freshness", () => {
   const pageSource = readFileSync(new URL("../../app/for-agencies/page.tsx", import.meta.url), "utf8");
   const authoritySource = readFileSync(new URL("../../components/marketing/audiences/AgencyResellerIntentSection.tsx", import.meta.url), "utf8");
-  const monitorSource = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitorSource = readSeoMonitorSource();
   const indexNowSource = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
   assert.match(pageSource, /Social Media Growth Platform for Agencies India/);
   assert.match(pageSource, /<AgencyResellerIntentSection\/>/);
@@ -776,7 +782,7 @@ test("phase 5O marks the canonical growth hub fresh and submits it for search re
   assert.ok(phase5SearchFreshnessPaths.includes("/social-media-growth-india"));
 
   const submitter = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   assert.match(submitter, /"\/social-media-growth-india"/);
   assert.match(monitor, /"\/social-media-growth-india"/);
   assert.match(monitor, /"\/social-media-growth-services-india", "\/social-media-growth-india"/);
@@ -810,7 +816,7 @@ test("phase 5P engagement model links only to clean canonical service paths", ()
 
 test("phase 5P growth hub exposes visible engagement-service intent without outcome guarantees", () => {
   const source = readFileSync(new URL("../../app/social-media-growth-india/page.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   assert.match(source, /Social media engagement services India/i);
   assert.match(source, /socialEngagementServiceGroups\.map/);
   assert.deepEqual(socialEngagementServiceGroups.map(group => group.title), ["Followers, subscribers and members", "Likes, views and content engagement", "Comments, saves and shares"]);
@@ -848,7 +854,7 @@ test("phase 5Q promotion criteria distinguish campaign services from management 
 
 test("phase 5Q growth hub exposes visible promotion intent and canonical redirect monitoring", () => {
   const source = readFileSync(new URL("../../app/social-media-growth-india/page.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
   assert.match(source, /Social media promotion services India/i);
   assert.match(source, /order-based audience and engagement campaigns/i);
@@ -877,7 +883,7 @@ test("phase 5R keeps social media services India on the existing services canoni
 test("phase 5R services page exposes visible social media services India authority", () => {
   const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
   const component = readFileSync(new URL("../../components/marketing/services/SocialMediaServicesIndiaAuthority.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   assert.match(source, /SocialMediaServicesIndiaAuthority/);
   assert.match(source, /socialMediaServicesIndiaKeywords/);
   assert.match(component, /Social media services India/);
@@ -911,7 +917,7 @@ test("phase 5S selection model uses factual criteria instead of self-awarded ran
 
 test("phase 5S legacy selection aliases remain monitored while visible services copy stays brand-safe", () => {
   const source = readFileSync(new URL("../../app/services/page.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   assert.doesNotMatch(source, /<SmmSelectionAuthority/);
   assert.doesNotMatch(source, /smmSelectionIndiaKeywords/);
   assert.match(monitor, /"\/best-smm-panel-india", "\/services"/);
@@ -997,7 +1003,7 @@ test("phase 5U pricing model stays factual and derives quantity totals", () => {
 test("phase 5U pricing page exposes visible SMM price-list authority and release safeguards", () => {
   const pricing = readFileSync(new URL("../../app/pricing/page.tsx", import.meta.url), "utf8");
   const authority = readFileSync(new URL("../../components/marketing/pricing/SmmPricingIndiaAuthority.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
 
   assert.match(pricing, /Social Media Service Price List India \| Live INR Rates/);
@@ -1044,7 +1050,7 @@ test("phase 5V safe-ordering model uses verifiable checks instead of ranking cla
 test("phase 5V Trust Center exposes visible no-password authority and release safeguards", () => {
   const page = readFileSync(new URL("../../app/trust/page.tsx", import.meta.url), "utf8");
   const authority = readFileSync(new URL("../../components/marketing/trust/SafeSmmOrderingAuthority.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
 
   assert.match(page, /Safe Social Media Growth Ordering India \| SocialRUSH/);
@@ -1093,7 +1099,7 @@ test("phase 5W agency page exposes visible SMM API authority and monitored alias
   const page = readFileSync(new URL("../../app/for-agencies/page.tsx", import.meta.url), "utf8");
   const authority = readFileSync(new URL("../../components/marketing/audiences/SmmApiIndiaAuthority.tsx", import.meta.url), "utf8");
   const apiDocs = readFileSync(new URL("../../app/dashboard/api-docs/page.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
 
   assert.match(page, /Social Media Growth Platform for Agencies India/);
   assert.match(page, /<SmmApiIndiaAuthority\/>/);
@@ -1141,7 +1147,7 @@ test("phase 5X affordability model compares real campaign cost without ranking c
 test("phase 5X pricing page exposes visible affordable SMM authority and monitored aliases", () => {
   const page = readFileSync(new URL("../../app/pricing/page.tsx", import.meta.url), "utf8");
   const authority = readFileSync(new URL("../../components/marketing/pricing/AffordableSmmIndiaAuthority.tsx", import.meta.url), "utf8");
-  const monitor = readFileSync(new URL("../../scripts/seo-health-check.mjs", import.meta.url), "utf8");
+  const monitor = readSeoMonitorSource();
   const indexNow = readFileSync(new URL("../../scripts/indexnow-phase5-release.mjs", import.meta.url), "utf8");
 
   assert.match(page, /Compare SocialRUSH social media growth pricing in India/i);

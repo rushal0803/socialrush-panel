@@ -1,3 +1,4 @@
+import { readFileSync } from "node:fs";
 import test from "node:test";
 import assert from "node:assert/strict";
 import { isInternalAnalyticsHost, shouldIgnoreAnalyticsCollection } from "../../lib/analytics/collection-environment.ts";
@@ -35,4 +36,18 @@ test("preview browser events create neither attribution storage nor network beac
       else Reflect.deleteProperty(globalThis, key);
     }
   }
+});
+
+// A guard in the common trusted-event writer prevents all callers from recording
+// preview login, checkout, and payment events, before privileged client creation.
+test("trusted server analytics skips preview before constructing the admin client", () => {
+  for (const environment of ["preview", "development"]) {
+    assert.equal(shouldIgnoreAnalyticsCollection(undefined, environment), true);
+  }
+  assert.equal(shouldIgnoreAnalyticsCollection(undefined, "production"), false);
+  const source = readFileSync(new URL("../../lib/analytics/server.ts", import.meta.url), "utf8");
+  const guard = source.indexOf("if (shouldIgnoreAnalyticsCollection(undefined, process.env.VERCEL_ENV)) return;");
+  const admin = source.indexOf("const admin = createAdminClient();");
+  assert.ok(guard >= 0, "trusted analytics must have an explicit preview guard");
+  assert.ok(admin > guard, "guard must run before privileged Supabase client creation");
 });
