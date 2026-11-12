@@ -1,3 +1,4 @@
+import { getGuideServiceLinks } from "@/lib/seo/authority-graph";
 import TrackedLink from "@/components/analytics/TrackedLink";
 import type { ContentCluster } from "@/lib/seo/content-clusters";
 
@@ -9,15 +10,16 @@ type Props = {
 export default function ArticleRevenueBridge({ articleSlug, cluster }: Props) {
   if (!cluster) return null;
 
-  const primary = cluster.serviceLinks.slice(0, 3);
+  const orderedServices = getGuideServiceLinks(cluster.platform, `/blog/${articleSlug}`);
+  const primary = orderedServices.slice(0, 3);
   // Link additional, relevant service options from informational articles without
   // replacing the existing primary conversion paths or creating new pages.
-  const related = cluster.serviceLinks
+  const related = orderedServices
     .filter((item) => !primary.some((current) => current.href === item.href))
     .slice(0, 3);
 
   return (
-    <section className="mt-8 rounded-[30px] border border-orange-400/20 bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.14),transparent_38%),#0E121B] p-6 shadow-[0_18px_40px_rgba(0,0,0,.22)] sm:p-7">
+    <section data-article-service-options className="mt-8 rounded-[30px] border border-orange-400/20 bg-[radial-gradient(circle_at_top_left,rgba(255,122,0,.14),transparent_38%),#0E121B] p-6 shadow-[0_18px_40px_rgba(0,0,0,.22)] sm:p-7">
       <p className="text-[10px] font-black uppercase tracking-[.16em] text-orange-300">From research to action</p>
       <h2 className="mt-2 text-2xl font-black text-white">Compare the relevant {cluster.label} options before ordering</h2>
       <p className="mt-3 max-w-3xl text-sm leading-7 text-slate-300">

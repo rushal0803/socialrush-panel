@@ -1,0 +1,4643 @@
+{
+  "observed_at_utc": "2026-11-08T19:42:34.772Z",
+  "prs": [
+    {
+      "number": 744,
+      "state": "open",
+      "draft": true,
+      "head": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be",
+      "branch": "fix/seo-discovery-pricing-audit-20261108",
+      "base": "main",
+      "base_sha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 745,
+      "state": "open",
+      "draft": true,
+      "head": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409",
+      "branch": "fix/seo-google-referrer-classification-20261108",
+      "base": "main",
+      "base_sha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 746,
+      "state": "open",
+      "draft": true,
+      "head": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2",
+      "branch": "fix/seo-commercial-breadcrumb-integrity-20261108",
+      "base": "main",
+      "base_sha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 747,
+      "state": "open",
+      "draft": true,
+      "head": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+      "branch": "chore/seo-foundation-release-20261108",
+      "base": "main",
+      "base_sha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 748,
+      "state": "open",
+      "draft": true,
+      "head": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+      "branch": "fix/seo-monitor-runtime-20261108",
+      "base": "main",
+      "base_sha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 749,
+      "state": "open",
+      "draft": true,
+      "head": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+      "branch": "seo/service-evidence-batch1-20261108",
+      "base": "chore/seo-foundation-release-20261108",
+      "base_sha": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 750,
+      "state": "open",
+      "draft": true,
+      "head": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+      "branch": "seo/service-evidence-batch2-20261108",
+      "base": "seo/service-evidence-batch1-20261108",
+      "base_sha": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 751,
+      "state": "open",
+      "draft": true,
+      "head": "68beb82ce2d61e43268461214d287f47abd3d88b",
+      "branch": "seo/service-evidence-batch3-20261109",
+      "base": "seo/service-evidence-batch2-20261108",
+      "base_sha": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+      "merged": false,
+      "mergeable": true
+    },
+    {
+      "number": 752,
+      "state": "open",
+      "draft": true,
+      "head": "da271e6cec45d69fca8ea2a2bc7f05858bfe866a",
+      "branch": "fix/analytics-preview-exclusion-20261109",
+      "base": "chore/seo-foundation-release-20261108",
+      "base_sha": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+      "merged": false,
+      "mergeable": true
+    }
+  ],
+  "runs": [
+    {
+      "number": 744,
+      "runs": [
+        {
+          "id": 42465642634,
+          "name": "Combined premium design paired performance (QA only)",
+          "head_sha": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642634",
+          "event": "pull_request",
+          "run_attempt": 1
+        },
+        {
+          "id": 42465642518,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 745,
+      "runs": [
+        {
+          "id": 42468248657,
+          "name": "Combined premium design paired performance (QA only)",
+          "head_sha": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248657",
+          "event": "pull_request",
+          "run_attempt": 1
+        },
+        {
+          "id": 42468248676,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 746,
+      "runs": [
+        {
+          "id": 42469801527,
+          "name": "Combined premium design paired performance (QA only)",
+          "head_sha": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801527",
+          "event": "pull_request",
+          "run_attempt": 1
+        },
+        {
+          "id": 42469801592,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 747,
+      "runs": [
+        {
+          "id": 42473476915,
+          "name": "Combined premium design paired performance (QA only)",
+          "head_sha": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476915",
+          "event": "pull_request",
+          "run_attempt": 1
+        },
+        {
+          "id": 42473476960,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 748,
+      "runs": [
+        {
+          "id": 42483943410,
+          "name": "Weekly SEO health monitor",
+          "head_sha": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483943410",
+          "event": "workflow_dispatch",
+          "run_attempt": 1
+        },
+        {
+          "id": 42483936058,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058",
+          "event": "pull_request",
+          "run_attempt": 1
+        },
+        {
+          "id": 42483936029,
+          "name": "Combined premium design paired performance (QA only)",
+          "head_sha": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936029",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 749,
+      "runs": [
+        {
+          "id": 42486968421,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 750,
+      "runs": [
+        {
+          "id": 42489917476,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 751,
+      "runs": [
+        {
+          "id": 42513860238,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "68beb82ce2d61e43268461214d287f47abd3d88b",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    },
+    {
+      "number": 752,
+      "runs": [
+        {
+          "id": 42513825026,
+          "name": "Pre-merge smoke tests",
+          "head_sha": "da271e6cec45d69fca8ea2a2bc7f05858bfe866a",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026",
+          "event": "pull_request",
+          "run_attempt": 1
+        }
+      ]
+    }
+  ],
+  "jobs": [
+    {
+      "number": 744,
+      "jobs": [
+        {
+          "id": 128684403411,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684403411",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T09:05:05Z",
+              "completed_at": "2026-11-08T09:05:05Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T09:05:05Z",
+              "completed_at": "2026-11-08T09:05:19Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T09:05:19Z",
+              "completed_at": "2026-11-08T09:05:22Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T09:05:22Z",
+              "completed_at": "2026-11-08T09:05:22Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T09:05:22Z",
+              "completed_at": "2026-11-08T09:05:23Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T09:05:23Z",
+              "completed_at": "2026-11-08T09:05:23Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T09:05:23Z",
+              "completed_at": "2026-11-08T09:05:23Z"
+            }
+          ]
+        },
+        {
+          "id": 128684403588,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684403588",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T09:05:04Z",
+              "completed_at": "2026-11-08T09:05:05Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T09:05:05Z",
+              "completed_at": "2026-11-08T09:05:08Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T09:05:08Z",
+              "completed_at": "2026-11-08T09:05:09Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T09:05:09Z",
+              "completed_at": "2026-11-08T09:05:35Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T09:05:35Z",
+              "completed_at": "2026-11-08T09:06:14Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T09:06:14Z",
+              "completed_at": "2026-11-08T09:06:16Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T09:06:16Z",
+              "completed_at": "2026-11-08T09:06:16Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T09:06:16Z",
+              "completed_at": "2026-11-08T09:06:16Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T09:06:16Z",
+              "completed_at": "2026-11-08T09:06:16Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T09:06:16Z",
+              "completed_at": "2026-11-08T09:06:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T09:06:17Z",
+              "completed_at": "2026-11-08T09:06:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T09:06:17Z",
+              "completed_at": "2026-11-08T09:06:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T09:06:17Z",
+              "completed_at": "2026-11-08T09:06:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T09:06:17Z",
+              "completed_at": "2026-11-08T09:06:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T09:06:17Z",
+              "completed_at": "2026-11-08T09:06:17Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T09:06:17Z",
+              "completed_at": "2026-11-08T09:06:18Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T09:06:18Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:21Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T09:06:21Z",
+              "completed_at": "2026-11-08T09:06:22Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T09:06:22Z",
+              "completed_at": "2026-11-08T09:06:22Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T09:06:22Z",
+              "completed_at": "2026-11-08T09:06:22Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T09:06:22Z",
+              "completed_at": "2026-11-08T09:06:22Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T09:06:22Z",
+              "completed_at": "2026-11-08T09:06:22Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T09:06:22Z",
+              "completed_at": "2026-11-08T09:06:22Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T09:06:22Z",
+              "completed_at": "2026-11-08T09:06:23Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T09:06:23Z",
+              "completed_at": "2026-11-08T09:06:23Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T09:06:23Z",
+              "completed_at": "2026-11-08T09:08:27Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T09:08:27Z",
+              "completed_at": "2026-11-08T09:08:43Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T09:08:43Z",
+              "completed_at": "2026-11-08T09:13:33Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T09:13:33Z",
+              "completed_at": "2026-11-08T09:14:00Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T09:14:00Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:03Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T09:14:03Z",
+              "completed_at": "2026-11-08T09:14:05Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T09:14:05Z",
+              "completed_at": "2026-11-08T09:14:07Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T09:14:07Z",
+              "completed_at": "2026-11-08T09:14:07Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T09:14:07Z",
+              "completed_at": "2026-11-08T09:14:07Z"
+            }
+          ]
+        },
+        {
+          "id": 128684404417,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684404417",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 745,
+      "jobs": [
+        {
+          "id": 128692686652,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692686652",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T09:41:34Z",
+              "completed_at": "2026-11-08T09:41:34Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T09:41:34Z",
+              "completed_at": "2026-11-08T09:41:48Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T09:41:48Z",
+              "completed_at": "2026-11-08T09:41:51Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T09:41:51Z",
+              "completed_at": "2026-11-08T09:41:51Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T09:41:51Z",
+              "completed_at": "2026-11-08T09:41:52Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T09:41:52Z",
+              "completed_at": "2026-11-08T09:41:52Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T09:41:52Z",
+              "completed_at": "2026-11-08T09:41:52Z"
+            }
+          ]
+        },
+        {
+          "id": 128692686777,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692686777",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T09:41:34Z",
+              "completed_at": "2026-11-08T09:41:34Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T09:41:34Z",
+              "completed_at": "2026-11-08T09:41:37Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T09:41:37Z",
+              "completed_at": "2026-11-08T09:41:41Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T09:41:41Z",
+              "completed_at": "2026-11-08T09:41:49Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T09:41:49Z",
+              "completed_at": "2026-11-08T09:42:27Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T09:42:27Z",
+              "completed_at": "2026-11-08T09:42:29Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T09:42:29Z",
+              "completed_at": "2026-11-08T09:42:29Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T09:42:29Z",
+              "completed_at": "2026-11-08T09:42:29Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T09:42:29Z",
+              "completed_at": "2026-11-08T09:42:29Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T09:42:29Z",
+              "completed_at": "2026-11-08T09:42:30Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T09:42:30Z",
+              "completed_at": "2026-11-08T09:42:30Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T09:42:30Z",
+              "completed_at": "2026-11-08T09:42:30Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T09:42:30Z",
+              "completed_at": "2026-11-08T09:42:30Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T09:42:30Z",
+              "completed_at": "2026-11-08T09:42:30Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T09:42:30Z",
+              "completed_at": "2026-11-08T09:42:30Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T09:42:30Z",
+              "completed_at": "2026-11-08T09:42:31Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T09:42:31Z",
+              "completed_at": "2026-11-08T09:42:33Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T09:42:33Z",
+              "completed_at": "2026-11-08T09:42:33Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T09:42:33Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:34Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T09:42:34Z",
+              "completed_at": "2026-11-08T09:42:35Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T09:42:35Z",
+              "completed_at": "2026-11-08T09:42:35Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T09:42:35Z",
+              "completed_at": "2026-11-08T09:42:35Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T09:42:35Z",
+              "completed_at": "2026-11-08T09:42:35Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T09:42:35Z",
+              "completed_at": "2026-11-08T09:42:35Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T09:42:35Z",
+              "completed_at": "2026-11-08T09:42:36Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T09:42:36Z",
+              "completed_at": "2026-11-08T09:44:45Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T09:44:45Z",
+              "completed_at": "2026-11-08T09:45:02Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T09:45:02Z",
+              "completed_at": "2026-11-08T09:50:08Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T09:50:08Z",
+              "completed_at": "2026-11-08T09:50:37Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T09:50:37Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:38Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T09:50:38Z",
+              "completed_at": "2026-11-08T09:50:40Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T09:50:40Z",
+              "completed_at": "2026-11-08T09:50:40Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T09:50:40Z",
+              "completed_at": "2026-11-08T09:50:40Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T09:50:40Z",
+              "completed_at": "2026-11-08T09:50:40Z"
+            }
+          ]
+        },
+        {
+          "id": 128692687959,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692687959",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 746,
+      "jobs": [
+        {
+          "id": 128697683253,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697683253",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T10:03:51Z",
+              "completed_at": "2026-11-08T10:03:52Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T10:03:52Z",
+              "completed_at": "2026-11-08T10:03:55Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T10:03:55Z",
+              "completed_at": "2026-11-08T10:03:56Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T10:03:56Z",
+              "completed_at": "2026-11-08T10:04:24Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T10:04:24Z",
+              "completed_at": "2026-11-08T10:05:11Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T10:05:11Z",
+              "completed_at": "2026-11-08T10:05:13Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T10:05:13Z",
+              "completed_at": "2026-11-08T10:05:13Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T10:05:13Z",
+              "completed_at": "2026-11-08T10:05:13Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T10:05:13Z",
+              "completed_at": "2026-11-08T10:05:13Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T10:05:13Z",
+              "completed_at": "2026-11-08T10:05:14Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T10:05:14Z",
+              "completed_at": "2026-11-08T10:05:14Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T10:05:14Z",
+              "completed_at": "2026-11-08T10:05:14Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T10:05:14Z",
+              "completed_at": "2026-11-08T10:05:14Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T10:05:14Z",
+              "completed_at": "2026-11-08T10:05:14Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T10:05:14Z",
+              "completed_at": "2026-11-08T10:05:14Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T10:05:14Z",
+              "completed_at": "2026-11-08T10:05:16Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T10:05:16Z",
+              "completed_at": "2026-11-08T10:05:20Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T10:05:20Z",
+              "completed_at": "2026-11-08T10:05:20Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T10:05:20Z",
+              "completed_at": "2026-11-08T10:05:20Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T10:05:20Z",
+              "completed_at": "2026-11-08T10:05:20Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T10:05:20Z",
+              "completed_at": "2026-11-08T10:05:20Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T10:05:20Z",
+              "completed_at": "2026-11-08T10:05:20Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T10:05:20Z",
+              "completed_at": "2026-11-08T10:05:21Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T10:05:21Z",
+              "completed_at": "2026-11-08T10:05:21Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T10:05:21Z",
+              "completed_at": "2026-11-08T10:05:21Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T10:05:21Z",
+              "completed_at": "2026-11-08T10:05:21Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T10:05:21Z",
+              "completed_at": "2026-11-08T10:05:21Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T10:05:21Z",
+              "completed_at": "2026-11-08T10:05:22Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T10:05:22Z",
+              "completed_at": "2026-11-08T10:05:22Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T10:05:22Z",
+              "completed_at": "2026-11-08T10:05:22Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T10:05:22Z",
+              "completed_at": "2026-11-08T10:05:22Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T10:05:22Z",
+              "completed_at": "2026-11-08T10:07:44Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T10:07:44Z",
+              "completed_at": "2026-11-08T10:08:01Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T10:08:01Z",
+              "completed_at": "2026-11-08T10:12:50Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T10:12:50Z",
+              "completed_at": "2026-11-08T10:13:17Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T10:13:17Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:19Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T10:13:19Z",
+              "completed_at": "2026-11-08T10:13:20Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T10:13:20Z",
+              "completed_at": "2026-11-08T10:13:21Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T10:13:21Z",
+              "completed_at": "2026-11-08T10:13:21Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T10:13:21Z",
+              "completed_at": "2026-11-08T10:13:21Z"
+            }
+          ]
+        },
+        {
+          "id": 128697683488,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697683488",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T10:03:52Z",
+              "completed_at": "2026-11-08T10:03:53Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T10:03:53Z",
+              "completed_at": "2026-11-08T10:04:06Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T10:04:06Z",
+              "completed_at": "2026-11-08T10:04:10Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T10:04:10Z",
+              "completed_at": "2026-11-08T10:04:10Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T10:04:10Z",
+              "completed_at": "2026-11-08T10:04:10Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T10:04:10Z",
+              "completed_at": "2026-11-08T10:04:10Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T10:04:10Z",
+              "completed_at": "2026-11-08T10:04:10Z"
+            }
+          ]
+        },
+        {
+          "id": 128697684527,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697684527",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 747,
+      "jobs": [
+        {
+          "id": 128709476315,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709476315",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T10:55:41Z",
+              "completed_at": "2026-11-08T10:55:41Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T10:55:41Z",
+              "completed_at": "2026-11-08T10:55:53Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T10:55:53Z",
+              "completed_at": "2026-11-08T10:55:56Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T10:55:56Z",
+              "completed_at": "2026-11-08T10:55:56Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T10:55:56Z",
+              "completed_at": "2026-11-08T10:55:56Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T10:55:56Z",
+              "completed_at": "2026-11-08T10:55:56Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T10:55:56Z",
+              "completed_at": "2026-11-08T10:55:56Z"
+            }
+          ]
+        },
+        {
+          "id": 128709476527,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709476527",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T10:55:41Z",
+              "completed_at": "2026-11-08T10:55:42Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T10:55:42Z",
+              "completed_at": "2026-11-08T10:55:44Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T10:55:44Z",
+              "completed_at": "2026-11-08T10:55:45Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T10:55:45Z",
+              "completed_at": "2026-11-08T10:56:12Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T10:56:12Z",
+              "completed_at": "2026-11-08T10:56:49Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T10:56:49Z",
+              "completed_at": "2026-11-08T10:56:51Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T10:56:51Z",
+              "completed_at": "2026-11-08T10:56:51Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T10:56:51Z",
+              "completed_at": "2026-11-08T10:56:51Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T10:56:51Z",
+              "completed_at": "2026-11-08T10:56:51Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T10:56:51Z",
+              "completed_at": "2026-11-08T10:56:52Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T10:56:52Z",
+              "completed_at": "2026-11-08T10:56:52Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T10:56:52Z",
+              "completed_at": "2026-11-08T10:56:52Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T10:56:52Z",
+              "completed_at": "2026-11-08T10:56:52Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T10:56:52Z",
+              "completed_at": "2026-11-08T10:56:52Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T10:56:52Z",
+              "completed_at": "2026-11-08T10:56:52Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T10:56:52Z",
+              "completed_at": "2026-11-08T10:56:54Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T10:56:54Z",
+              "completed_at": "2026-11-08T10:56:56Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T10:56:56Z",
+              "completed_at": "2026-11-08T10:56:56Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T10:56:56Z",
+              "completed_at": "2026-11-08T10:56:56Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T10:56:56Z",
+              "completed_at": "2026-11-08T10:56:56Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T10:56:56Z",
+              "completed_at": "2026-11-08T10:56:56Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T10:56:56Z",
+              "completed_at": "2026-11-08T10:56:56Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T10:56:56Z",
+              "completed_at": "2026-11-08T10:56:57Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T10:56:57Z",
+              "completed_at": "2026-11-08T10:56:57Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T10:56:57Z",
+              "completed_at": "2026-11-08T10:56:57Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T10:56:57Z",
+              "completed_at": "2026-11-08T10:56:57Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T10:56:57Z",
+              "completed_at": "2026-11-08T10:56:57Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T10:56:57Z",
+              "completed_at": "2026-11-08T10:56:57Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T10:56:57Z",
+              "completed_at": "2026-11-08T10:56:58Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T10:56:58Z",
+              "completed_at": "2026-11-08T10:56:58Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T10:56:58Z",
+              "completed_at": "2026-11-08T10:56:58Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T10:56:58Z",
+              "completed_at": "2026-11-08T10:59:00Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T10:59:00Z",
+              "completed_at": "2026-11-08T10:59:17Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T10:59:17Z",
+              "completed_at": "2026-11-08T11:04:21Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T11:04:21Z",
+              "completed_at": "2026-11-08T11:04:49Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T11:04:49Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:50Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T11:04:50Z",
+              "completed_at": "2026-11-08T11:04:52Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T11:04:52Z",
+              "completed_at": "2026-11-08T11:04:55Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T11:04:55Z",
+              "completed_at": "2026-11-08T11:04:55Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T11:04:55Z",
+              "completed_at": "2026-11-08T11:04:55Z"
+            }
+          ]
+        },
+        {
+          "id": 128709477523,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709477523",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 748,
+      "jobs": [
+        {
+          "id": 128741606024,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741606024",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T13:13:41Z",
+              "completed_at": "2026-11-08T13:13:41Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T13:13:41Z",
+              "completed_at": "2026-11-08T13:13:54Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T13:13:54Z",
+              "completed_at": "2026-11-08T13:13:57Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T13:13:57Z",
+              "completed_at": "2026-11-08T13:13:57Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T13:13:57Z",
+              "completed_at": "2026-11-08T13:13:57Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T13:13:57Z",
+              "completed_at": "2026-11-08T13:13:57Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T13:13:57Z",
+              "completed_at": "2026-11-08T13:13:57Z"
+            }
+          ]
+        },
+        {
+          "id": 128741606241,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741606241",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T13:13:41Z",
+              "completed_at": "2026-11-08T13:13:42Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T13:13:42Z",
+              "completed_at": "2026-11-08T13:13:45Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T13:13:45Z",
+              "completed_at": "2026-11-08T13:13:48Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T13:13:48Z",
+              "completed_at": "2026-11-08T13:14:32Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T13:14:32Z",
+              "completed_at": "2026-11-08T13:15:30Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T13:15:30Z",
+              "completed_at": "2026-11-08T13:15:32Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T13:15:32Z",
+              "completed_at": "2026-11-08T13:15:32Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T13:15:32Z",
+              "completed_at": "2026-11-08T13:15:32Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T13:15:32Z",
+              "completed_at": "2026-11-08T13:15:33Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T13:15:33Z",
+              "completed_at": "2026-11-08T13:15:34Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T13:15:34Z",
+              "completed_at": "2026-11-08T13:15:34Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T13:15:34Z",
+              "completed_at": "2026-11-08T13:15:34Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T13:15:34Z",
+              "completed_at": "2026-11-08T13:15:34Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T13:15:34Z",
+              "completed_at": "2026-11-08T13:15:34Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T13:15:34Z",
+              "completed_at": "2026-11-08T13:15:34Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T13:15:34Z",
+              "completed_at": "2026-11-08T13:15:36Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T13:15:36Z",
+              "completed_at": "2026-11-08T13:15:38Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T13:15:38Z",
+              "completed_at": "2026-11-08T13:15:39Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T13:15:39Z",
+              "completed_at": "2026-11-08T13:15:39Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T13:15:39Z",
+              "completed_at": "2026-11-08T13:15:39Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T13:15:39Z",
+              "completed_at": "2026-11-08T13:15:39Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T13:15:39Z",
+              "completed_at": "2026-11-08T13:15:40Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T13:15:40Z",
+              "completed_at": "2026-11-08T13:15:40Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T13:15:40Z",
+              "completed_at": "2026-11-08T13:15:40Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T13:15:40Z",
+              "completed_at": "2026-11-08T13:15:40Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T13:15:40Z",
+              "completed_at": "2026-11-08T13:15:40Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T13:15:40Z",
+              "completed_at": "2026-11-08T13:15:41Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T13:15:41Z",
+              "completed_at": "2026-11-08T13:15:41Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T13:15:41Z",
+              "completed_at": "2026-11-08T13:15:41Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T13:15:41Z",
+              "completed_at": "2026-11-08T13:15:42Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T13:15:42Z",
+              "completed_at": "2026-11-08T13:15:42Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T13:15:42Z",
+              "completed_at": "2026-11-08T13:18:27Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T13:18:27Z",
+              "completed_at": "2026-11-08T13:18:48Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T13:18:48Z",
+              "completed_at": "2026-11-08T13:25:36Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T13:25:36Z",
+              "completed_at": "2026-11-08T13:26:14Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T13:26:14Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:15Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T13:26:15Z",
+              "completed_at": "2026-11-08T13:26:16Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T13:26:16Z",
+              "completed_at": "2026-11-08T13:26:17Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T13:26:17Z",
+              "completed_at": "2026-11-08T13:26:17Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T13:26:17Z",
+              "completed_at": "2026-11-08T13:26:17Z"
+            }
+          ]
+        },
+        {
+          "id": 128741607310,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741607310",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 749,
+      "jobs": [
+        {
+          "id": 128750845209,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750845209",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T13:51:53Z",
+              "completed_at": "2026-11-08T13:51:54Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T13:51:54Z",
+              "completed_at": "2026-11-08T13:51:57Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T13:51:57Z",
+              "completed_at": "2026-11-08T13:51:58Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T13:51:58Z",
+              "completed_at": "2026-11-08T13:52:23Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T13:52:23Z",
+              "completed_at": "2026-11-08T13:52:56Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T13:52:56Z",
+              "completed_at": "2026-11-08T13:52:58Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T13:52:58Z",
+              "completed_at": "2026-11-08T13:52:58Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T13:52:58Z",
+              "completed_at": "2026-11-08T13:52:58Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T13:52:58Z",
+              "completed_at": "2026-11-08T13:52:58Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T13:52:58Z",
+              "completed_at": "2026-11-08T13:52:59Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T13:52:59Z",
+              "completed_at": "2026-11-08T13:52:59Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T13:52:59Z",
+              "completed_at": "2026-11-08T13:52:59Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T13:52:59Z",
+              "completed_at": "2026-11-08T13:52:59Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T13:52:59Z",
+              "completed_at": "2026-11-08T13:52:59Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T13:52:59Z",
+              "completed_at": "2026-11-08T13:52:59Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T13:52:59Z",
+              "completed_at": "2026-11-08T13:53:00Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T13:53:00Z",
+              "completed_at": "2026-11-08T13:53:03Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T13:53:03Z",
+              "completed_at": "2026-11-08T13:53:03Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T13:53:03Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:04Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T13:53:04Z",
+              "completed_at": "2026-11-08T13:53:05Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T13:53:05Z",
+              "completed_at": "2026-11-08T13:53:05Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T13:53:05Z",
+              "completed_at": "2026-11-08T13:53:05Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T13:53:05Z",
+              "completed_at": "2026-11-08T13:53:05Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T13:53:05Z",
+              "completed_at": "2026-11-08T13:53:05Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T13:53:05Z",
+              "completed_at": "2026-11-08T13:53:05Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T13:53:05Z",
+              "completed_at": "2026-11-08T13:55:00Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T13:55:00Z",
+              "completed_at": "2026-11-08T13:55:16Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T13:55:16Z",
+              "completed_at": "2026-11-08T14:00:06Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T14:00:06Z",
+              "completed_at": "2026-11-08T14:00:34Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T14:00:34Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:35Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T14:00:35Z",
+              "completed_at": "2026-11-08T14:00:37Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T14:00:37Z",
+              "completed_at": "2026-11-08T14:00:42Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T14:00:42Z",
+              "completed_at": "2026-11-08T14:00:42Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T14:00:42Z",
+              "completed_at": "2026-11-08T14:00:42Z"
+            }
+          ]
+        },
+        {
+          "id": 128750845540,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750845540",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T13:51:59Z",
+              "completed_at": "2026-11-08T13:52:00Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T13:52:00Z",
+              "completed_at": "2026-11-08T13:52:13Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T13:52:13Z",
+              "completed_at": "2026-11-08T13:52:16Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T13:52:16Z",
+              "completed_at": "2026-11-08T13:52:16Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T13:52:16Z",
+              "completed_at": "2026-11-08T13:52:16Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T13:52:16Z",
+              "completed_at": "2026-11-08T13:52:17Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T13:52:17Z",
+              "completed_at": "2026-11-08T13:52:17Z"
+            }
+          ]
+        },
+        {
+          "id": 128750846474,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750846474",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 750,
+      "jobs": [
+        {
+          "id": 128759841121,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759841121",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T14:27:47Z",
+              "completed_at": "2026-11-08T14:27:48Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T14:27:48Z",
+              "completed_at": "2026-11-08T14:28:00Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T14:28:00Z",
+              "completed_at": "2026-11-08T14:28:03Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T14:28:03Z",
+              "completed_at": "2026-11-08T14:28:03Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T14:28:03Z",
+              "completed_at": "2026-11-08T14:28:03Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T14:28:03Z",
+              "completed_at": "2026-11-08T14:28:04Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T14:28:04Z",
+              "completed_at": "2026-11-08T14:28:04Z"
+            }
+          ]
+        },
+        {
+          "id": 128759841364,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759841364",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T14:27:48Z",
+              "completed_at": "2026-11-08T14:27:49Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T14:27:49Z",
+              "completed_at": "2026-11-08T14:27:53Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T14:27:53Z",
+              "completed_at": "2026-11-08T14:27:54Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T14:27:54Z",
+              "completed_at": "2026-11-08T14:28:29Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T14:28:29Z",
+              "completed_at": "2026-11-08T14:29:24Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T14:29:24Z",
+              "completed_at": "2026-11-08T14:29:27Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T14:29:27Z",
+              "completed_at": "2026-11-08T14:29:27Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T14:29:27Z",
+              "completed_at": "2026-11-08T14:29:27Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T14:29:27Z",
+              "completed_at": "2026-11-08T14:29:27Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T14:29:27Z",
+              "completed_at": "2026-11-08T14:29:28Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T14:29:28Z",
+              "completed_at": "2026-11-08T14:29:28Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T14:29:28Z",
+              "completed_at": "2026-11-08T14:29:28Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T14:29:28Z",
+              "completed_at": "2026-11-08T14:29:28Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T14:29:28Z",
+              "completed_at": "2026-11-08T14:29:28Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T14:29:28Z",
+              "completed_at": "2026-11-08T14:29:28Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T14:29:28Z",
+              "completed_at": "2026-11-08T14:29:30Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T14:29:30Z",
+              "completed_at": "2026-11-08T14:29:33Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T14:29:33Z",
+              "completed_at": "2026-11-08T14:29:33Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T14:29:33Z",
+              "completed_at": "2026-11-08T14:29:33Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T14:29:33Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:34Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T14:29:34Z",
+              "completed_at": "2026-11-08T14:29:35Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T14:29:35Z",
+              "completed_at": "2026-11-08T14:29:35Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T14:29:35Z",
+              "completed_at": "2026-11-08T14:29:35Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T14:29:35Z",
+              "completed_at": "2026-11-08T14:29:35Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T14:29:35Z",
+              "completed_at": "2026-11-08T14:29:36Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T14:29:36Z",
+              "completed_at": "2026-11-08T14:31:56Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T14:31:56Z",
+              "completed_at": "2026-11-08T14:32:17Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T14:32:17Z",
+              "completed_at": "2026-11-08T14:38:07Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T14:38:07Z",
+              "completed_at": "2026-11-08T14:38:38Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T14:38:38Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:40Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T14:38:40Z",
+              "completed_at": "2026-11-08T14:38:42Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T14:38:42Z",
+              "completed_at": "2026-11-08T14:38:46Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T14:38:46Z",
+              "completed_at": "2026-11-08T14:38:46Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T14:38:46Z",
+              "completed_at": "2026-11-08T14:38:46Z"
+            }
+          ]
+        },
+        {
+          "id": 128759842387,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759842387",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 751,
+      "jobs": [
+        {
+          "id": 128832482510,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832482510",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T19:12:27Z",
+              "completed_at": "2026-11-08T19:12:28Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T19:12:28Z",
+              "completed_at": "2026-11-08T19:12:31Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T19:12:31Z",
+              "completed_at": "2026-11-08T19:12:32Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T19:12:32Z",
+              "completed_at": "2026-11-08T19:13:15Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T19:13:15Z",
+              "completed_at": "2026-11-08T19:14:12Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T19:14:12Z",
+              "completed_at": "2026-11-08T19:14:15Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T19:14:15Z",
+              "completed_at": "2026-11-08T19:14:15Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T19:14:15Z",
+              "completed_at": "2026-11-08T19:14:15Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T19:14:15Z",
+              "completed_at": "2026-11-08T19:14:16Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T19:14:16Z",
+              "completed_at": "2026-11-08T19:14:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T19:14:17Z",
+              "completed_at": "2026-11-08T19:14:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T19:14:17Z",
+              "completed_at": "2026-11-08T19:14:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T19:14:17Z",
+              "completed_at": "2026-11-08T19:14:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T19:14:17Z",
+              "completed_at": "2026-11-08T19:14:17Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T19:14:17Z",
+              "completed_at": "2026-11-08T19:14:17Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T19:14:17Z",
+              "completed_at": "2026-11-08T19:14:19Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T19:14:19Z",
+              "completed_at": "2026-11-08T19:14:22Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T19:14:22Z",
+              "completed_at": "2026-11-08T19:14:23Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T19:14:23Z",
+              "completed_at": "2026-11-08T19:14:23Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T19:14:23Z",
+              "completed_at": "2026-11-08T19:14:23Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T19:14:23Z",
+              "completed_at": "2026-11-08T19:14:23Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T19:14:23Z",
+              "completed_at": "2026-11-08T19:14:23Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T19:14:23Z",
+              "completed_at": "2026-11-08T19:14:24Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T19:14:24Z",
+              "completed_at": "2026-11-08T19:14:24Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T19:14:24Z",
+              "completed_at": "2026-11-08T19:14:24Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T19:14:24Z",
+              "completed_at": "2026-11-08T19:14:24Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T19:14:24Z",
+              "completed_at": "2026-11-08T19:14:24Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T19:14:24Z",
+              "completed_at": "2026-11-08T19:14:25Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T19:14:25Z",
+              "completed_at": "2026-11-08T19:14:25Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T19:14:25Z",
+              "completed_at": "2026-11-08T19:14:25Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T19:14:25Z",
+              "completed_at": "2026-11-08T19:14:26Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T19:14:26Z",
+              "completed_at": "2026-11-08T19:17:17Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T19:17:17Z",
+              "completed_at": "2026-11-08T19:17:37Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T19:17:37Z",
+              "completed_at": "2026-11-08T19:24:44Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T19:24:44Z",
+              "completed_at": "2026-11-08T19:25:21Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T19:25:21Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 37,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:22Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 43,
+              "started_at": "2026-11-08T19:25:22Z",
+              "completed_at": "2026-11-08T19:25:23Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 85,
+              "started_at": "2026-11-08T19:25:23Z",
+              "completed_at": "2026-11-08T19:25:25Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 86,
+              "started_at": "2026-11-08T19:25:25Z",
+              "completed_at": "2026-11-08T19:25:26Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T19:25:26Z",
+              "completed_at": "2026-11-08T19:25:26Z"
+            }
+          ]
+        },
+        {
+          "id": 128832482700,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832482700",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T19:12:28Z",
+              "completed_at": "2026-11-08T19:12:28Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T19:12:28Z",
+              "completed_at": "2026-11-08T19:12:40Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T19:12:40Z",
+              "completed_at": "2026-11-08T19:12:43Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T19:12:43Z",
+              "completed_at": "2026-11-08T19:12:43Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T19:12:43Z",
+              "completed_at": "2026-11-08T19:12:44Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T19:12:44Z",
+              "completed_at": "2026-11-08T19:12:44Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T19:12:44Z",
+              "completed_at": "2026-11-08T19:12:44Z"
+            }
+          ]
+        },
+        {
+          "id": 128832484097,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832484097",
+          "steps": []
+        }
+      ]
+    },
+    {
+      "number": 752,
+      "jobs": [
+        {
+          "id": 128832380072,
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832380072",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T19:12:04Z",
+              "completed_at": "2026-11-08T19:12:05Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T19:12:05Z",
+              "completed_at": "2026-11-08T19:12:09Z"
+            },
+            {
+              "name": "Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T19:12:09Z",
+              "completed_at": "2026-11-08T19:12:13Z"
+            },
+            {
+              "name": "Run npm ci",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T19:12:13Z",
+              "completed_at": "2026-11-08T19:12:49Z"
+            },
+            {
+              "name": "Run npx tsc --noEmit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 5,
+              "started_at": "2026-11-08T19:12:49Z",
+              "completed_at": "2026-11-08T19:13:38Z"
+            },
+            {
+              "name": "Complete unit regressions and live catalogue equivalence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 6,
+              "started_at": "2026-11-08T19:13:38Z",
+              "completed_at": "2026-11-08T19:13:40Z"
+            },
+            {
+              "name": "Analytics collection environment regressions",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T19:13:40Z",
+              "completed_at": "2026-11-08T19:13:40Z"
+            },
+            {
+              "name": "Phase 1 canonical and crawl contract tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T19:13:40Z",
+              "completed_at": "2026-11-08T19:13:40Z"
+            },
+            {
+              "name": "Verify PR 624 blog image assets",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T19:13:40Z",
+              "completed_at": "2026-11-08T19:13:40Z"
+            },
+            {
+              "name": "Package quantities, wallet states and customer navigation contracts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 10,
+              "started_at": "2026-11-08T19:13:40Z",
+              "completed_at": "2026-11-08T19:13:40Z"
+            },
+            {
+              "name": "Focused Q4 SEO regression tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 11,
+              "started_at": "2026-11-08T19:13:40Z",
+              "completed_at": "2026-11-08T19:13:41Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-technical-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 12,
+              "started_at": "2026-11-08T19:13:41Z",
+              "completed_at": "2026-11-08T19:13:41Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-instagram-sitemap-check.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 13,
+              "started_at": "2026-11-08T19:13:41Z",
+              "completed_at": "2026-11-08T19:13:41Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-sitewide-technical-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 14,
+              "started_at": "2026-11-08T19:13:41Z",
+              "completed_at": "2026-11-08T19:13:41Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-serp-ctr-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 15,
+              "started_at": "2026-11-08T19:13:41Z",
+              "completed_at": "2026-11-08T19:13:41Z"
+            },
+            {
+              "name": "Run node --check scripts/seo-aeo-audit.mjs",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 16,
+              "started_at": "2026-11-08T19:13:41Z",
+              "completed_at": "2026-11-08T19:13:41Z"
+            },
+            {
+              "name": "Run node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 17,
+              "started_at": "2026-11-08T19:13:41Z",
+              "completed_at": "2026-11-08T19:13:43Z"
+            },
+            {
+              "name": "Run npm run seo:instagram-sitemap",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 18,
+              "started_at": "2026-11-08T19:13:43Z",
+              "completed_at": "2026-11-08T19:13:51Z"
+            },
+            {
+              "name": "Run npm run seo:ownership",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 19,
+              "started_at": "2026-11-08T19:13:51Z",
+              "completed_at": "2026-11-08T19:13:51Z"
+            },
+            {
+              "name": "Run npm run seo:content-engine",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 20,
+              "started_at": "2026-11-08T19:13:51Z",
+              "completed_at": "2026-11-08T19:13:52Z"
+            },
+            {
+              "name": "Run npm run seo:authority",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 21,
+              "started_at": "2026-11-08T19:13:52Z",
+              "completed_at": "2026-11-08T19:13:52Z"
+            },
+            {
+              "name": "Run npm run seo:competitors",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 22,
+              "started_at": "2026-11-08T19:13:52Z",
+              "completed_at": "2026-11-08T19:13:52Z"
+            },
+            {
+              "name": "Run npm run seo:india-expansion",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 23,
+              "started_at": "2026-11-08T19:13:52Z",
+              "completed_at": "2026-11-08T19:13:52Z"
+            },
+            {
+              "name": "Run npm run seo:international",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 24,
+              "started_at": "2026-11-08T19:13:52Z",
+              "completed_at": "2026-11-08T19:13:52Z"
+            },
+            {
+              "name": "Run npm run seo:digital-pr",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 25,
+              "started_at": "2026-11-08T19:13:52Z",
+              "completed_at": "2026-11-08T19:13:52Z"
+            },
+            {
+              "name": "Run npm run seo:distribution",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 26,
+              "started_at": "2026-11-08T19:13:52Z",
+              "completed_at": "2026-11-08T19:13:53Z"
+            },
+            {
+              "name": "Run npm run trust:audit",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 27,
+              "started_at": "2026-11-08T19:13:53Z",
+              "completed_at": "2026-11-08T19:13:53Z"
+            },
+            {
+              "name": "Run npm run test:order-notifications",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 28,
+              "started_at": "2026-11-08T19:13:53Z",
+              "completed_at": "2026-11-08T19:13:53Z"
+            },
+            {
+              "name": "Run npm run test:crm-pipeline",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 29,
+              "started_at": "2026-11-08T19:13:53Z",
+              "completed_at": "2026-11-08T19:13:53Z"
+            },
+            {
+              "name": "Run npm run test:international-seo",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 30,
+              "started_at": "2026-11-08T19:13:53Z",
+              "completed_at": "2026-11-08T19:13:53Z"
+            },
+            {
+              "name": "Run npm run test:payment-confidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 31,
+              "started_at": "2026-11-08T19:13:53Z",
+              "completed_at": "2026-11-08T19:13:54Z"
+            },
+            {
+              "name": "Run npm run test:phase12",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 32,
+              "started_at": "2026-11-08T19:13:54Z",
+              "completed_at": "2026-11-08T19:13:54Z"
+            },
+            {
+              "name": "Run npm run build",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 33,
+              "started_at": "2026-11-08T19:13:54Z",
+              "completed_at": "2026-11-08T19:16:15Z"
+            },
+            {
+              "name": "Install Chromium for smoke tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 34,
+              "started_at": "2026-11-08T19:16:15Z",
+              "completed_at": "2026-11-08T19:16:43Z"
+            },
+            {
+              "name": "Run npm run test:smoke",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 35,
+              "started_at": "2026-11-08T19:16:43Z",
+              "completed_at": "2026-11-08T19:22:23Z"
+            },
+            {
+              "name": "Authenticated customer search, navigation and wallet review (fixture only)",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 36,
+              "started_at": "2026-11-08T19:22:23Z",
+              "completed_at": "2026-11-08T19:22:54Z"
+            },
+            {
+              "name": "Attach customer workspace regression evidence",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 37,
+              "started_at": "2026-11-08T19:22:54Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Capture brand-correct screenshots of the real current PR code (local fixture only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 38,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Attach current dark-orange visual-review screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 39,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Capture combined-phase support, reviews, tools and legal screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 40,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Attach combined Phase 2 public visual evidence",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 41,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Capture authenticated admin fixture layouts (isolated localhost only)",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 42,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Attach admin fixture screenshots",
+              "status": "completed",
+              "conclusion": "skipped",
+              "number": 43,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:55Z"
+            },
+            {
+              "name": "Retain Playwright release-gate diagnostics",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 44,
+              "started_at": "2026-11-08T19:22:55Z",
+              "completed_at": "2026-11-08T19:22:57Z"
+            },
+            {
+              "name": "Post Run actions/setup-node@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 87,
+              "started_at": "2026-11-08T19:22:57Z",
+              "completed_at": "2026-11-08T19:23:01Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 88,
+              "started_at": "2026-11-08T19:23:01Z",
+              "completed_at": "2026-11-08T19:23:01Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 89,
+              "started_at": "2026-11-08T19:23:01Z",
+              "completed_at": "2026-11-08T19:23:01Z"
+            }
+          ]
+        },
+        {
+          "id": 128832380259,
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832380259",
+          "steps": [
+            {
+              "name": "Set up job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 1,
+              "started_at": "2026-11-08T19:12:04Z",
+              "completed_at": "2026-11-08T19:12:04Z"
+            },
+            {
+              "name": "Initialize containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 2,
+              "started_at": "2026-11-08T19:12:04Z",
+              "completed_at": "2026-11-08T19:12:22Z"
+            },
+            {
+              "name": "Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 3,
+              "started_at": "2026-11-08T19:12:22Z",
+              "completed_at": "2026-11-08T19:12:25Z"
+            },
+            {
+              "name": "Execute isolated wallet database integration tests",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 4,
+              "started_at": "2026-11-08T19:12:25Z",
+              "completed_at": "2026-11-08T19:12:25Z"
+            },
+            {
+              "name": "Post Run actions/checkout@v4",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 7,
+              "started_at": "2026-11-08T19:12:25Z",
+              "completed_at": "2026-11-08T19:12:25Z"
+            },
+            {
+              "name": "Stop containers",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 8,
+              "started_at": "2026-11-08T19:12:25Z",
+              "completed_at": "2026-11-08T19:12:26Z"
+            },
+            {
+              "name": "Complete job",
+              "status": "completed",
+              "conclusion": "success",
+              "number": 9,
+              "started_at": "2026-11-08T19:12:26Z",
+              "completed_at": "2026-11-08T19:12:26Z"
+            }
+          ]
+        },
+        {
+          "id": 128832381122,
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "html_url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832381122",
+          "steps": []
+        }
+      ]
+    }
+  ],
+  "deployments": [
+    {
+      "number": 744,
+      "deployments": [
+        {
+          "id": "dpl_5pEgXQiNU2fd7zTdnMwHLdYdhCSD",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-aqvt3ykl5-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794128687300,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "fix/seo-discovery-pricing-audit-20261108",
+            "githubCommitSha": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be",
+            "githubCommitMessage": "fix(seo): preserve public planning price precision and record discovery baseline",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/5pEgXQiNU2fd7zTdnMwHLdYdhCSD",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 745,
+      "deployments": [
+        {
+          "id": "dpl_83sPTr3Gg2F9ck121BAAbcvCwtS1",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-5t8mm01bn-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794130886920,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "fix/seo-google-referrer-classification-20261108",
+            "githubCommitSha": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409",
+            "githubCommitMessage": "fix(analytics): separate paid search landings from organic acquisition",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/83sPTr3Gg2F9ck121BAAbcvCwtS1",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 746,
+      "deployments": [
+        {
+          "id": "dpl_7RLXG4sBrUou9hqsvxsVfRNW8sZF",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-qnp2fy3v6-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794132224203,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "fix/seo-commercial-breadcrumb-integrity-20261108",
+            "githubCommitSha": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2",
+            "githubCommitMessage": "fix(seo): link existing public resources from the footer",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/7RLXG4sBrUou9hqsvxsVfRNW8sZF",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 747,
+      "deployments": [
+        {
+          "id": "dpl_Bxpnf9tzvHrjZXyVhqakpXpqSxrz",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-8bns6ifn3-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794135316134,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "chore/seo-foundation-release-20261108",
+            "githubCommitSha": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+            "githubCommitMessage": "SEO foundation: combine verified pricing, acquisition and discovery fixes",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Bxpnf9tzvHrjZXyVhqakpXpqSxrz",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 748,
+      "deployments": [
+        {
+          "id": "dpl_GQ2V2bUCUFGucKspfS2qZNAyNJAC",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-74qtz0b8n-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794143614175,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "fix/seo-monitor-runtime-20261108",
+            "githubCommitSha": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+            "githubCommitMessage": "fix(seo): parse real JSON-LD in recovered Instagram monitor",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/GQ2V2bUCUFGucKspfS2qZNAyNJAC",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 749,
+      "deployments": [
+        {
+          "id": "dpl_4i15VTACkkyt437kAw3cCEMNFQ7Y",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-oqe39qmw5-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794145906862,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "seo/service-evidence-batch1-20261108",
+            "githubCommitSha": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+            "githubCommitMessage": "seo: limit canonical ownership repair to audited batch",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/4i15VTACkkyt437kAw3cCEMNFQ7Y",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 750,
+      "deployments": [
+        {
+          "id": "dpl_6U3vno5MLLW3fxykrPdaP7YHTxUB",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-113yrzye8-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794147998208,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "seo/service-evidence-batch2-20261108",
+            "githubCommitSha": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+            "githubCommitMessage": "seo: prepare second service batch with verified schema and buyer guidance",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/6U3vno5MLLW3fxykrPdaP7YHTxUB",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 751,
+      "deployments": [
+        {
+          "id": "dpl_42rzvfJZBpuV9oApfaecXJVtUwjP",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-nfsdaqtnp-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794165140513,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "seo/service-evidence-batch3-20261109",
+            "githubCommitSha": "68beb82ce2d61e43268461214d287f47abd3d88b",
+            "githubCommitMessage": "fix(seo): align X metadata while preserving the established live-order handoff",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/42rzvfJZBpuV9oApfaecXJVtUwjP",
+          "isRollbackCandidate": false
+        }
+      ]
+    },
+    {
+      "number": 752,
+      "deployments": [
+        {
+          "id": "dpl_Dq3UAzWsmuzk8m3ueeR8aCBBS1rD",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-k1lmzezak-rushalthakur240-6255s-projects.vercel.app",
+          "created": 1794165116511,
+          "state": "READY",
+          "target": null,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "meta": {
+            "githubCommitRef": "fix/analytics-preview-exclusion-20261109",
+            "githubCommitSha": "da271e6cec45d69fca8ea2a2bc7f05858bfe866a",
+            "githubCommitMessage": "test(analytics): verify production emission separately from local exclusion",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Dq3UAzWsmuzk8m3ueeR8aCBBS1rD",
+          "isRollbackCandidate": false
+        }
+      ]
+    }
+  ],
+  "note": "Read-only fresh snapshots, complete returned job/step summaries including skipped steps. Metadata fields omitted for compactness; run IDs/SHAs retained."
+}

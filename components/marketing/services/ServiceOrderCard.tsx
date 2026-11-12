@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Check, Headphones, Minus, Plus } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -39,6 +39,15 @@ export default function ServiceOrderCard({ service, title = "Configure your orde
   const step = service.quantityStep ?? 1;
   const money = (value: number) => formatCurrency(value, currency, rates);
   const href = `/dashboard/new-order?${new URLSearchParams({ platform: service.platform, service: service.code, resume: "1", quantity: String(quantity), link: link.trim() })}`;
+
+  useLayoutEffect(() => {
+    // Inputs are editable in the server HTML. React preserves an early DOM edit
+    // during hydration, but the initial state still contains the server defaults.
+    // Adopt both fields before any subsequent render can restore those defaults.
+    // Keep the normal input/validation rules; never clamp an early quantity.
+    if (quantityRef.current) setInput(quantityRef.current.value.replace(/\D/g, ""));
+    if (linkRef.current) setLink(linkRef.current.value);
+  }, []);
 
   useEffect(() => {
     track("package_viewed", { service_code: service.code, platform: service.platform, surface: "service_order_card" });

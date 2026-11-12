@@ -1,0 +1,305 @@
+{
+  "configuredServicePaths": 110,
+  "note": "Includes redirect aliases and catalog-only routes; live-only availability requires an active production row. Not a count of indexed pages.",
+  "platforms": {
+    "instagram": [
+      {
+        "code": "instagram-followers",
+        "liveOnly": false
+      },
+      {
+        "code": "instagram-likes",
+        "liveOnly": false
+      },
+      {
+        "code": "instagram-views",
+        "liveOnly": false
+      },
+      {
+        "code": "instagram-comments",
+        "liveOnly": false
+      },
+      {
+        "code": "instagram-saves",
+        "liveOnly": true
+      },
+      {
+        "code": "instagram-shares",
+        "liveOnly": true
+      }
+    ],
+    "youtube": [
+      {
+        "code": "youtube-subscribers",
+        "liveOnly": false
+      },
+      {
+        "code": "youtube-likes",
+        "liveOnly": false
+      },
+      {
+        "code": "youtube-views",
+        "liveOnly": false
+      },
+      {
+        "code": "youtube-comments",
+        "liveOnly": true
+      },
+      {
+        "code": "youtube-watch-hours",
+        "liveOnly": true
+      }
+    ],
+    "facebook": [
+      {
+        "code": "facebook-group-members",
+        "liveOnly": true
+      },
+      {
+        "code": "facebook-followers",
+        "liveOnly": false
+      },
+      {
+        "code": "facebook-likes",
+        "liveOnly": false
+      },
+      {
+        "code": "facebook-views",
+        "liveOnly": false
+      },
+      {
+        "code": "facebook-shares",
+        "liveOnly": false
+      }
+    ],
+    "linkedin": [
+      {
+        "code": "linkedin-followers",
+        "liveOnly": false
+      },
+      {
+        "code": "linkedin-usa-connections",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-usa-post-likes",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-usa-endorsements",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-usa-followers",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-usa-group-members",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-usa-custom-comments",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-usa-reposts",
+        "liveOnly": true
+      },
+      {
+        "code": "linkedin-likes",
+        "liveOnly": false
+      }
+    ],
+    "telegram": [
+      {
+        "code": "telegram-members",
+        "liveOnly": false
+      },
+      {
+        "code": "telegram-post-views",
+        "liveOnly": true
+      },
+      {
+        "code": "telegram-post-reactions",
+        "liveOnly": true
+      },
+      {
+        "code": "telegram-poll-votes",
+        "liveOnly": true
+      }
+    ],
+    "tiktok": [
+      {
+        "code": "tiktok-followers",
+        "liveOnly": true
+      },
+      {
+        "code": "tiktok-likes",
+        "liveOnly": true
+      },
+      {
+        "code": "tiktok-views",
+        "liveOnly": true
+      },
+      {
+        "code": "tiktok-custom-comments",
+        "liveOnly": true
+      },
+      {
+        "code": "tiktok-story-views",
+        "liveOnly": true
+      },
+      {
+        "code": "tiktok-saves",
+        "liveOnly": true
+      }
+    ],
+    "x": [
+      {
+        "code": "x-followers",
+        "liveOnly": false
+      },
+      {
+        "code": "twitter-likes",
+        "liveOnly": true
+      },
+      {
+        "code": "twitter-views",
+        "liveOnly": true
+      },
+      {
+        "code": "twitter-retweets",
+        "liveOnly": true
+      },
+      {
+        "code": "twitter-crypto-followers",
+        "liveOnly": true
+      },
+      {
+        "code": "twitter-crypto-likes",
+        "liveOnly": true
+      },
+      {
+        "code": "twitter-crypto-retweets",
+        "liveOnly": true
+      },
+      {
+        "code": "twitter-crypto-custom-comments",
+        "liveOnly": true
+      }
+    ]
+  },
+  "countryPages": 22,
+  "paths": [
+    "/ae/buy-instagram-followers",
+    "/ae/buy-linkedin-followers",
+    "/ae/buy-youtube-subscribers",
+    "/au/buy-instagram-followers",
+    "/au/buy-linkedin-followers",
+    "/au/buy-youtube-subscribers",
+    "/au/buy-youtube-views",
+    "/buy-facebook-followers-india",
+    "/buy-facebook-group-members-india",
+    "/buy-facebook-likes-india",
+    "/buy-facebook-shares-india",
+    "/buy-facebook-views-india",
+    "/buy-instagram-comments-india",
+    "/buy-instagram-followers-india",
+    "/buy-instagram-likes-india",
+    "/buy-instagram-saves-india",
+    "/buy-instagram-shares-india",
+    "/buy-instagram-views-india",
+    "/buy-linkedin-followers-india",
+    "/buy-linkedin-likes-india",
+    "/buy-telegram-members-india",
+    "/buy-tiktok-followers-india",
+    "/buy-twitter-followers-india",
+    "/buy-youtube-comments-india",
+    "/buy-youtube-likes-india",
+    "/buy-youtube-subscribers-india",
+    "/buy-youtube-views-india",
+    "/buy-youtube-watch-hours-india",
+    "/ca/buy-instagram-followers",
+    "/ca/buy-linkedin-followers",
+    "/ca/buy-youtube-subscribers",
+    "/ca/buy-youtube-views",
+    "/facebook-followers",
+    "/facebook-likes",
+    "/facebook-views",
+    "/instagram-followers",
+    "/instagram-likes",
+    "/instagram-views",
+    "/linkedin-followers",
+    "/linkedin-likes",
+    "/services/facebook-brand-engagement",
+    "/services/facebook-followers",
+    "/services/facebook-group-members",
+    "/services/facebook-likes",
+    "/services/facebook-shares",
+    "/services/facebook-views",
+    "/services/instagram-audience-growth",
+    "/services/instagram-comments",
+    "/services/instagram-content-reach",
+    "/services/instagram-engagement-boost",
+    "/services/instagram-followers",
+    "/services/instagram-likes",
+    "/services/instagram-saves",
+    "/services/instagram-shares",
+    "/services/instagram-views",
+    "/services/linkedin-followers",
+    "/services/linkedin-likes",
+    "/services/linkedin-professional-growth",
+    "/services/linkedin-usa-connections",
+    "/services/linkedin-usa-custom-comments",
+    "/services/linkedin-usa-endorsements",
+    "/services/linkedin-usa-followers",
+    "/services/linkedin-usa-group-members",
+    "/services/linkedin-usa-post-likes",
+    "/services/linkedin-usa-reposts",
+    "/services/smm-panel-india",
+    "/services/telegram-members",
+    "/services/telegram-poll-votes",
+    "/services/telegram-post-reactions",
+    "/services/telegram-post-views",
+    "/services/tiktok-custom-comments",
+    "/services/tiktok-followers",
+    "/services/tiktok-likes",
+    "/services/tiktok-saves",
+    "/services/tiktok-story-views",
+    "/services/tiktok-views",
+    "/services/twitter-crypto-custom-comments",
+    "/services/twitter-crypto-followers",
+    "/services/twitter-crypto-likes",
+    "/services/twitter-crypto-retweets",
+    "/services/twitter-likes",
+    "/services/twitter-retweets",
+    "/services/twitter-views",
+    "/services/x-authority-growth",
+    "/services/x-followers",
+    "/services/youtube-channel-growth",
+    "/services/youtube-comments",
+    "/services/youtube-likes",
+    "/services/youtube-subscribers",
+    "/services/youtube-video-promotion",
+    "/services/youtube-views",
+    "/services/youtube-watch-hours",
+    "/sg/buy-instagram-followers",
+    "/sg/buy-linkedin-followers",
+    "/sg/buy-youtube-subscribers",
+    "/telegram-members",
+    "/tiktok-followers",
+    "/twitter-followers",
+    "/uk/buy-instagram-followers",
+    "/uk/buy-linkedin-followers",
+    "/uk/buy-youtube-subscribers",
+    "/uk/buy-youtube-views",
+    "/us/buy-instagram-followers",
+    "/us/buy-linkedin-followers",
+    "/us/buy-youtube-subscribers",
+    "/us/buy-youtube-views",
+    "/youtube-likes",
+    "/youtube-subscribers",
+    "/youtube-views",
+    "/youtube-watch-hours"
+  ]
+}

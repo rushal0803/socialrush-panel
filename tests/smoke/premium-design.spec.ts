@@ -105,7 +105,30 @@ for (const width of [320, 390, 1440]) {
   });
 }
 
-test("all three conversion paths preserve destinations and first-party tracking", async ({ page }) => {
+test("all three conversion paths preserve destinations and first-party tracking", async ({ page, baseURL }) => {
+  // Exercise production collection on a reserved hostname, serving every byte
+  // from the owned local fixture server. No production request is performed.
+  const testOrigin = 'http://analytics.example.test';
+  const pending = new Set<Promise<void>>();
+  let draining = false;
+  await page.route(`${testOrigin}/**`, route => {
+    const task = (async () => {
+      const request = route.request();
+      // This fixture checks actual navigation/collection. Speculative cache
+      // warming is covered separately and must not outlive this proxy's owner.
+      if (draining || request.method() !== 'GET' || request.headers()['next-router-prefetch'] === '1') {
+        await route.abort();
+        return;
+      }
+      const url = new URL(request.url());
+      const response = await route.fetch({ url: `${baseURL}${url.pathname}${url.search}`, maxRedirects: 0 });
+      const headers = response.headers();
+      if (headers['content-security-policy']) headers['content-security-policy'] = headers['content-security-policy'].split(';').filter(value => value.trim() !== 'upgrade-insecure-requests').join(';');
+      await route.fulfill({ response, headers });
+    })();
+    pending.add(task);
+    return task.finally(() => pending.delete(task));
+  });
   await page.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { get: () => "0" }));
   const events: Array<{ event: string; metadata?: { surface?: string; step?: string } }> = [];
   await page.route("**/api/analytics", route => {
@@ -113,18 +136,26 @@ test("all three conversion paths preserve destinations and first-party tracking"
     events.push(data);
     return route.fulfill({ status: 200, json: { ok: true } });
   });
-  for (const path of [
-    { title: "I’m ready to order", href: "#order-demo", step: "order" },
-    { title: "I want to compare services", href: "/services", step: "compare" },
-    { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
-  ]) {
-    await page.goto("/");
-    const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
-    await expect(link).toHaveAttribute("href", path.href);
-    await link.click();
-    await expect.poll(() => events.some(event => event.event === "homepage_conversion_path_click" && event.metadata?.surface === "homepage_decision_rail" && event.metadata?.step === path.step)).toBe(true);
-    if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
-    else await expect(page).toHaveURL(new RegExp(`${path.href}$`));
+  try {
+    for (const path of [
+      { title: "I’m ready to order", href: "#order-demo", step: "order" },
+      { title: "I want to compare services", href: "/services", step: "compare" },
+      { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
+    ]) {
+      await page.goto(`${testOrigin}/`);
+      const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
+      await expect(link).toHaveAttribute("href", path.href);
+      await link.click();
+      await expect.poll(() => events.some(event => event.event === "homepage_conversion_path_click" && event.metadata?.surface === "homepage_decision_rail" && event.metadata?.step === path.step)).toBe(true);
+      if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
+      else await expect(page).toHaveURL(new RegExp(`${path.href}$`));
+    }
+  } finally {
+    // Stop new proxy fetches, then drain the work this test owns before
+    // removing handlers or letting Playwright dispose their API responses.
+    draining = true;
+    while (pending.size) await Promise.all([...pending]);
+    await page.unrouteAll({ behavior: 'wait' });
   }
 });
 

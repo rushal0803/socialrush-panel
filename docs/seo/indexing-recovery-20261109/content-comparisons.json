@@ -1,0 +1,56 @@
+[
+  {
+    "pages": [
+      "linkedin-growth-tips-personal-brands",
+      "linkedin-profile-growth-tips-for-business-owners"
+    ],
+    "before_source_fivegram_jaccard": 0.3175,
+    "after_source_fivegram_jaccard": 0.0,
+    "meaning": "Text overlap diagnostic only, not ranking/cannibalization evidence."
+  },
+  {
+    "pages": [
+      "how-to-grow-instagram-followers-in-india",
+      "how-to-grow-instagram-followers-organically-india"
+    ],
+    "before_source_fivegram_jaccard": 0.0011,
+    "after_source_fivegram_jaccard": 0.0,
+    "meaning": "Text overlap diagnostic only, not ranking/cannibalization evidence."
+  },
+  {
+    "pages": [
+      "how-to-increase-instagram-followers-safely-in-india",
+      "is-it-safe-to-buy-instagram-followers"
+    ],
+    "before_source_fivegram_jaccard": 0.4322,
+    "after_source_fivegram_jaccard": 0.0,
+    "meaning": "Text overlap diagnostic only, not ranking/cannibalization evidence."
+  },
+  {
+    "pages": [
+      "instagram-followers-price-in-india",
+      "youtube-views-price-in-india"
+    ],
+    "before_source_fivegram_jaccard": 0.424,
+    "after_source_fivegram_jaccard": 0.0053,
+    "meaning": "Text overlap diagnostic only, not ranking/cannibalization evidence."
+  },
+  {
+    "pages": [
+      "youtube-views-price-in-india",
+      "how-to-get-more-youtube-views-on-new-videos"
+    ],
+    "before_source_fivegram_jaccard": 0.4361,
+    "after_source_fivegram_jaccard": 0.0,
+    "meaning": "Text overlap diagnostic only, not ranking/cannibalization evidence."
+  },
+  {
+    "pages": [
+      "youtube-subscribers-vs-views-india",
+      "how-to-get-1000-youtube-subscribers"
+    ],
+    "before_source_fivegram_jaccard": 0.0005,
+    "after_source_fivegram_jaccard": 0.0005,
+    "meaning": "Text overlap diagnostic only, not ranking/cannibalization evidence."
+  }
+]

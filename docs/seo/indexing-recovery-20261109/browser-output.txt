@@ -1,0 +1,35 @@
+
+Running 25 tests using 2 workers
+
+(node:15501) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:15502) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   2 [chromium] › tests/smoke/indexing-recovery.spec.ts:15:5 › all 17 supplied HTML URLs retain their intended HTTP, canonical and sitemap ownership (1.4s)
+  ✓   1 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 390px › rendered article instagram-followers-price-in-india (5.6s)
+  ✓   3 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 390px › rendered article youtube-views-price-in-india (6.9s)
+  ✓   4 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 390px › rendered article how-to-grow-instagram-followers-in-india (4.8s)
+  ✓   5 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 390px › rendered article how-to-increase-instagram-followers-safely-in-india (4.8s)
+  ✓   6 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 390px › rendered article linkedin-profile-growth-tips-for-business-owners (5.1s)
+  ✓   7 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 390px › rendered article linkedin-growth-tips-personal-brands (4.3s)
+  ✓   9 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 1440px › rendered article instagram-followers-price-in-india (3.3s)
+  ✓   8 [chromium] › tests/smoke/indexing-recovery.spec.ts:87:9 › recovery content at 390px › LinkedIn Likes retains price authority, destination validation and one FAQ owner (6.2s)
+  ✓  10 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 1440px › rendered article youtube-views-price-in-india (4.1s)
+  ✓  11 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 1440px › rendered article how-to-grow-instagram-followers-in-india (4.0s)
+  ✓  12 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 1440px › rendered article how-to-increase-instagram-followers-safely-in-india (3.5s)
+  ✓  13 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 1440px › rendered article linkedin-profile-growth-tips-for-business-owners (3.4s)
+  ✓  14 [chromium] › tests/smoke/indexing-recovery.spec.ts:52:11 › recovery content at 1440px › rendered article linkedin-growth-tips-personal-brands (3.6s)
+  ✓  15 [chromium] › tests/smoke/indexing-recovery.spec.ts:87:9 › recovery content at 1440px › LinkedIn Likes retains price authority, destination validation and one FAQ owner (4.0s)
+  ✓  16 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /youtube-likes (1.5s)
+  ✓  17 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /facebook-views (1.7s)
+  ✓  18 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /linkedin-likes (1.8s)
+  ✓  19 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-youtube-watch-hours-india (1.2s)
+  ✓  20 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-instagram-comments-india (1.3s)
+  ✓  21 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-instagram-saves-india (1.2s)
+  ✓  22 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-instagram-shares-india (1.3s)
+  ✓  23 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-youtube-comments-india (1.2s)
+  ✓  25 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-facebook-group-members-india (1.0s)
+  ✓  24 [chromium] › tests/smoke/service-page-batch2.spec.ts:8:7 › batch-two mobile and schema /buy-facebook-shares-india (1.3s)
+[smoke server] owned process 15489 exited
+
+  25 passed (42.8s)

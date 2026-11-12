@@ -1,5 +1,6 @@
 import "server-only";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { shouldIgnoreAnalyticsCollection } from "./collection-environment";
 import { trustedAnalyticsEvents, type AnalyticsProperties } from "./events";
 
 export type TrustedAnalyticsEvent = (typeof trustedAnalyticsEvents)[number];
@@ -38,6 +39,9 @@ export async function recordTrustedEvent(input: {
   eventId: string;
   metadata?: AnalyticsProperties;
 }) {
+  // Suppress trusted events in all non-production deployments before admin client creation.
+  // Checkout and authentication outcomes still succeed; only analytics is skipped.
+  if (shouldIgnoreAnalyticsCollection(undefined, process.env.VERCEL_ENV)) return;
   try {
     const admin = createAdminClient();
     const { data } = await admin
