@@ -1,14 +1,17 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 
 export default function RecoverySessionPage() {
   const router = useRouter();
+  const attempted = useRef(false);
   const [message, setMessage] = useState("Verifying your recovery link...");
 
   useEffect(() => {
+    if (attempted.current) return;
+    attempted.current = true;
     let active = true;
 
     async function verifyRecovery() {
