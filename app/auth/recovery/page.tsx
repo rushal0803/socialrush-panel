@@ -6,15 +6,13 @@ import { createClient } from "@/lib/supabase/client";
 
 export default function RecoverySessionPage() {
   const router = useRouter();
-  const attempted = useRef(false);
+  const recoveryAttempt = useRef<Promise<boolean> | null>(null);
   const [message, setMessage] = useState("Verifying your recovery link...");
 
   useEffect(() => {
-    if (attempted.current) return;
-    attempted.current = true;
     let active = true;
 
-    async function verifyRecovery() {
+    async function verifyRecovery(): Promise<boolean> {
       // Supabase's default email template can return tokens in the URL hash.
       // Browser fragments are invisible to Next.js server route handlers.
       const hash = new URLSearchParams(window.location.hash.slice(1));
@@ -51,13 +49,18 @@ export default function RecoverySessionPage() {
 
         const { data: { user }, error } = await supabase.auth.getUser();
         if (error || !user) throw error || new Error("Recovery session not established");
-        if (active) router.replace("/reset-password");
+        return true;
       } catch {
-        if (active) setMessage("This reset link is invalid or expired. Request a new password reset email.");
+        return false;
       }
     }
 
-    void verifyRecovery();
+    if (!recoveryAttempt.current) recoveryAttempt.current = verifyRecovery();
+    void recoveryAttempt.current.then((success) => {
+      if (!active) return;
+      if (success) router.replace("/reset-password");
+      else setMessage("This reset link is invalid or expired. Request a new password reset email.");
+    });
     return () => { active = false; };
   }, [router]);
 
