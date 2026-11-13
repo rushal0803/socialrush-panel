@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link";
 import { createClient } from "@/lib/supabase/client";
 
 export default function RecoverySessionPage() {
@@ -68,7 +69,7 @@ export default function RecoverySessionPage() {
     <main className="mx-auto flex min-h-screen max-w-lg flex-col items-center justify-center gap-4 px-6 text-center">
       <h1 className="text-2xl font-semibold">Password recovery</h1>
       <p role="status" className="text-sm text-slate-700">{message}</p>
-      <a href="/forgot-password" className="underline">Request a new reset link</a>
+      <Link href="/forgot-password" className="underline">Request a new reset link</Link>
     </main>
   );
 }
