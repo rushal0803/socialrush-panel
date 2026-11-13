@@ -41,6 +41,10 @@ export async function resetPassword(formData: FormData) {
   if (password.length < 8) redirect(authErrorUrl(siteUrl, "/reset-password", "Password must be at least 8 characters."));
   if (password !== confirmation) redirect(authErrorUrl(siteUrl, "/reset-password", "Passwords do not match."));
   const supabase = await createClient();
+  const { data: { user }, error: sessionError } = await supabase.auth.getUser();
+  if (sessionError || !user) {
+    redirect(authErrorUrl(siteUrl, "/forgot-password", "Recovery session expired. Request a new link."));
+  }
   const { error } = await supabase.auth.updateUser({ password });
   if (error) redirect(authErrorUrl(siteUrl, "/reset-password", error.message));
   redirect(absoluteUrl("/dashboard?password_updated=1", siteUrl));
