@@ -44,6 +44,13 @@ export async function GET(request: NextRequest) {
     searchParams.get("next"),
   );
 
+  // Default Supabase recovery emails may return a browser-only hash fragment.
+  // Fragments are never sent to the server, so hand off to a client-only route.
+  // The browser preserves the original fragment across this same-origin redirect.
+  if (isPasswordReset && !code && !recoveryToken) {
+    return NextResponse.redirect(new URL("/auth/recovery", requestUrl.origin));
+  }
+
   if (code || recoveryToken) {
     const destination = new URL(
       isPasswordReset ? "/reset-password" : customerDestination,
