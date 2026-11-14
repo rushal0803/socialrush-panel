@@ -90,7 +90,7 @@ export function buildVerifiedRevenueDashboard({ paidOrders, refunds }: { paidOrd
     daily.set(day, dailyRow);
   }
 
-  const dailyRows = [...daily.values()].map((row) => ({ ...row, net: Math.max(0, row.gross - row.refunds) })).sort((a, b) => a.date.localeCompare(b.date));
+  const dailyRows = [...daily.values()].map((row) => ({ ...row, net: row.gross - row.refunds })).sort((a, b) => a.date.localeCompare(b.date));
   const platforms = [...platformMap.entries()].map(([platform, row]) => ({
     platform, revenue: row.revenue, orders: row.orders,
     aov: row.orders ? row.revenue / row.orders : 0,
