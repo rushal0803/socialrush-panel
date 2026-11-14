@@ -1332,9 +1332,16 @@ test("phase 14 LinkedIn guide strengthens existing canonicals without creating a
 
 
 test("Facebook and LinkedIn public order builders record only valid, privacy-safe order clicks", () => {
+  const linkedIn = readFileSync(new URL("../../components/marketing/LinkedInFollowersLanding.tsx", import.meta.url), "utf8");
+  const shared = readFileSync(new URL("../../components/marketing/services/ServiceOrderCard.tsx", import.meta.url), "utf8");
+  assert.match(linkedIn, /<ServiceOrderCard service=\{service\} trackingSurface="linkedin_followers_order_builder"/);
+  const click = shared.slice(shared.indexOf("function continueOrder"), shared.indexOf("  return <div"));
+  assert.match(click, /if \(!ready\)/);
+  assert.ok(click.indexOf("return;") < click.indexOf('track("new_order_clicked"'));
+  assert.match(click, /surface: trackingSurface/);
+  assert.doesNotMatch(click.slice(click.indexOf('track("new_order_clicked"')), /link:|email:|user_id:/);
   for (const [file, surface] of [
     ["FacebookFollowersLanding.tsx", "facebook_followers_order_builder"],
-    ["LinkedInFollowersLanding.tsx", "linkedin_followers_order_builder"],
   ] as const) {
     const source = readFileSync(new URL(`../../components/marketing/${file}`, import.meta.url), "utf8");
     assert.match(source, /import \{ track \} from "@\/lib\/analytics\/events";/);

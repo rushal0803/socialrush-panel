@@ -3,6 +3,7 @@ import PublicCodeLink from "@/components/marketing/PublicCodeLink";
 import { ArrowRight, Check, ChevronDown, Search, X } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import ServiceHealthBadge from "@/components/ServiceHealthBadge";
+import { previewOrderTotal } from "@/lib/cro/service-order-preview";
 import { formatCurrency, type Currency } from "@/lib/currency";
 import { platformMeta, type SmmPlatformId, type SmmService } from "@/lib/smm-service-catalog";
 import type { ServiceHealth } from "@/lib/service-health";
@@ -39,13 +40,15 @@ export function ServiceCard({ service, currency, health, detailHref }: { service
   const unavailable = health && (!health.acceptsNewOrders || health.status === "paused" || health.status === "maintenance");
   const orderHref = `/dashboard/new-order?${new URLSearchParams({ platform: service.platform, service: service.code, quantity: String(service.minQuantity), resume: "1" })}`;
   const category = serviceCategory(service.code);
+  const needsLiveFacts = service.requiresLiveCatalogFacts === true;
+  const minimumTotal = previewOrderTotal(service.pricePer1000, service.minQuantity, service);
   return <article className={styles.card} data-catalog-service={service.code}>
     <div className={styles.cardHeading}><span className={styles.icon}><PlatformIcon platform={platformMeta[service.platform].icon} className="h-5 w-5" /></span><h3><PublicCodeLink href={detailHref} prefetch={false}>{service.name}</PublicCodeLink></h3></div>
     {health && <div className={styles.health}><ServiceHealthBadge health={health} /></div>}
-    <p className={styles.description}>{service.description}</p>
-    <div className={styles.price}><span>Starting at</span><p><strong>{formatCurrency(service.pricePer1000, currency)}</strong> / 1K</p><small>Min. {service.minQuantity.toLocaleString("en-IN")} · from {formatCurrency(service.pricePer1000 * service.minQuantity / 1000, currency)} total</small></div>
-    <dl className={styles.meta}><div><dt>Delivery</dt><dd>{service.deliveryTime || "Confirm before ordering"}</dd></div><div><dt>Refill / support</dt><dd>{/^no refill$/i.test(service.refillPolicy.trim()) ? "Not included" : service.refillPolicy || "Confirm before ordering"}</dd></div></dl>
-    <div className={styles.cardActions}>{unavailable ? <span className={styles.unavailable}>Currently unavailable</span> : <Link className={styles.primary} href={orderHref}>Order {category === "other" ? "service" : categoryLabel(category).toLowerCase()}<ArrowRight size={15} aria-hidden="true" /></Link>}<PublicCodeLink className={styles.detail} href={detailHref} prefetch={false}>View details</PublicCodeLink></div>
+    <p className={styles.description}>{service.importantInstruction || service.description}</p>
+    <div className={styles.price}><span>{needsLiveFacts ? "Live catalog verification needed" : "Catalog rate"}</span><p><strong>{needsLiveFacts ? "Check in order review" : formatCurrency(service.pricePer1000, currency)}</strong>{!needsLiveFacts && " / 1,000 units"}</p><small>Min. {service.minQuantity.toLocaleString("en-IN")}{!needsLiveFacts && minimumTotal !== null ? ` · ${formatCurrency(minimumTotal, currency)} estimated minimum total` : " · confirm current rate and limits before ordering"}</small>{currency !== "INR" && <small>Display estimate · checkout charged in INR</small>}</div>
+    <dl className={styles.meta}><div><dt>Delivery estimate</dt><dd>{service.deliveryTime || "Confirm before ordering"}</dd></div><div><dt>Refill / support</dt><dd>{/^no refill$/i.test(service.refillPolicy.trim()) ? "Not included" : service.refillPolicy || "Confirm before ordering"}</dd></div></dl>
+    <div className={styles.cardActions}>{unavailable ? <span className={styles.unavailable}>Currently unavailable</span> : <Link className={styles.primary} href={needsLiveFacts ? detailHref : orderHref}>Order {category === "other" ? "service" : categoryLabel(category).toLowerCase()}<ArrowRight size={15} aria-hidden="true" /></Link>}<PublicCodeLink className={styles.detail} href={detailHref} prefetch={false}>Check price &amp; details</PublicCodeLink></div>
     <details className={styles.requirements}><summary>Before you order<ChevronDown size={15} aria-hidden="true" /></summary><p>{service.importantInstruction}</p><p>Quantity: {service.minQuantity.toLocaleString("en-IN")}–{service.maxQuantity.toLocaleString("en-IN")}</p></details>
   </article>;
 }

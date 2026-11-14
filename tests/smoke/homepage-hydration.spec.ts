@@ -14,9 +14,9 @@ for (const locale of ["en-US", "en-IN", "de-DE"]) {
       expect(html).toContain("10,00,000");
       // A working React interaction proves hydration completed without waiting
       // for unrelated deferred service-health requests to become idle.
-      const toggle = page.getByRole("button", { name: "How does ordering work?", exact: true });
+      const toggle = page.locator("summary").filter({ hasText: "How does ordering work?" });
       await toggle.click();
-      await expect(toggle).toHaveAttribute("aria-expanded", "true");
+      await expect(toggle.locator("..")).toHaveAttribute("open", "");
       expect(errors).toEqual([]);
     });
   });

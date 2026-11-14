@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { servicePaths } from "@/lib/seo/service-detail-paths";
 import { ArrowRight } from "lucide-react";
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import BlogShell from "@/components/marketing/blog/BlogShell";
@@ -16,16 +17,7 @@ const platforms: SmmPlatformId[] = ["instagram", "youtube", "facebook", "linkedi
 
 
 
-const servicePaths: Record<string, string> = {
-  "instagram-followers": "/buy-instagram-followers-india", "instagram-likes": "/instagram-likes", "instagram-views": "/instagram-views", "instagram-comments": "/buy-instagram-comments-india",
-  "instagram-saves": "/buy-instagram-saves-india",
-  "instagram-shares": "/buy-instagram-shares-india",
-  "youtube-subscribers": "/youtube-subscribers", "youtube-likes": "/youtube-likes", "youtube-views": "/youtube-views",
-  "youtube-comments": "/buy-youtube-comments-india",
-  "youtube-watch-hours": "/buy-youtube-watch-hours-india",
-  "facebook-followers": "/buy-facebook-followers-india", "facebook-group-members": "/buy-facebook-group-members-india", "facebook-likes": "/facebook-likes", "facebook-views": "/facebook-views", "facebook-shares": "/buy-facebook-shares-india", "linkedin-followers": "/linkedin-followers",
-  "linkedin-likes": "/linkedin-likes", "telegram-members": "/telegram-members", "tiktok-followers": "/tiktok-followers", "x-followers": "/twitter-followers",
-};
+
 
 const aliases: Record<string, SmmPlatformId> = { instagram: "instagram", youtube: "youtube", facebook: "facebook", linkedin: "linkedin", telegram: "telegram", tiktok: "tiktok", twitter: "x", x: "x", "twitter-x": "x" };
 
