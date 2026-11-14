@@ -28,6 +28,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: Offline net-profit scenario and incomplete-cost regressions
+        run: node --test tests/unit/profit-scenario-model.test.mjs
       - name: Complete unit regressions and live catalogue equivalence
         run: npm run test:unit && npm run test:live-service-facts
       - name: Phase 1 canonical and crawl contract tests
