@@ -33,6 +33,12 @@ export type VerifiedRevenueDashboard = {
 
 const TIME_ZONE = "Asia/Kolkata";
 
+/** Bar length represents magnitude; consumers must label/color the sign separately. */
+export function revenueBarWidth(net: number, maxMagnitude: number) {
+  if (!Number.isFinite(net) || !Number.isFinite(maxMagnitude) || maxMagnitude <= 0 || net === 0) return 0;
+  return Math.min(100, Math.max(2, (Math.abs(net) / maxMagnitude) * 100));
+}
+
 function asAmount(value: number | string | null) {
   const parsed = Number(value ?? 0);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;

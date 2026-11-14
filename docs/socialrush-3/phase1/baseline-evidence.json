@@ -1,0 +1,310 @@
+{
+  "date": "2026-11-15 Asia/Calcutta",
+  "repository": "rushal0803/socialrush-panel",
+  "prs": [
+    {
+      "number": 760,
+      "head": "04affabe4287cfa79eab6696ec53825c94714227",
+      "base": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "baseBranch": "main",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "Vercel Preview Comments",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/runs/131544922262"
+        },
+        {
+          "name": "compare",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006502/job/131482347855"
+        },
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006476/job/131482347670"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006476/job/131482345270"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006476/job/131482344721"
+        },
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43303710947/job/131481309742"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43303710947/job/131481306762"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43303710947/job/131481306322"
+        }
+      ]
+    },
+    {
+      "number": 761,
+      "head": "b07b484a3d24dd84f4047708d563e176efc9aaf2",
+      "base": "04affabe4287cfa79eab6696ec53825c94714227",
+      "baseBranch": "fix/seo-release-blockers-20261110",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "Vercel Preview Comments",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/runs/132201211646"
+        }
+      ]
+    },
+    {
+      "number": 762,
+      "head": "eecbe2b6fe3a35b62728ecdbfb6a9ee4700b323d",
+      "base": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "baseBranch": "main",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "compare",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914250/job/132588106499"
+        },
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914275/job/132588065585"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914275/job/132588064258"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914275/job/132588064056"
+        }
+      ]
+    }
+  ],
+  "preview": [
+    {
+      "result": {
+        "deployment": {
+          "id": "dpl_8gEqJvo2wYkSsATH4ser5bGrUZiZ",
+          "name": "socialrush-panel",
+          "url": "socialrush-panel-p5u2p63yp-rushalthakur240-6255s-projects.vercel.app",
+          "type": "LAMBDAS",
+          "state": "READY",
+          "createdAt": 1794522987385,
+          "creator": {
+            "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+            "username": "rushalthakur240-6255"
+          },
+          "project": {
+            "id": "prj_08aojXcj8e2i0L9WopWWo1TNORSo",
+            "name": "socialrush-panel",
+            "framework": "nextjs"
+          },
+          "meta": {
+            "githubCommitRef": "fix/seo-release-blockers-20261110",
+            "githubCommitSha": "04affabe4287cfa79eab6696ec53825c94714227",
+            "githubCommitMessage": "fix(auth): support QA password recovery token-hash callback for SSR",
+            "githubRepo": "socialrush-panel",
+            "githubOrg": "rushal0803"
+          },
+          "alias": [
+            "socialrush-panel-git-fix-10c133-rushalthakur240-6255s-projects.vercel.app"
+          ],
+          "target": null,
+          "regions": [
+            "syd1"
+          ],
+          "buildingAt": 1794522988464,
+          "ready": 1794523219230,
+          "readyState": "READY",
+          "aliasError": null
+        }
+      }
+    }
+  ],
+  "previewEnvironmentMetadata": [
+    {
+      "key": "RESEND_API_KEY",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CRON_SECRET",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "RAZORPAY_KEY_ID",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "RAZORPAY_KEY_SECRET",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "NEXT_PUBLIC_RAZORPAY_KEY_ID",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "RAZORPAY_WEBHOOK_SECRET",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CASHFREE_CLIENT_ID",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CASHFREE_CLIENT_SECRET",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CASHFREE_APP_ID",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CASHFREE_SECRET_KEY",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CASHFREE_ENV",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "ORDER_NOTIFICATIONS_ENABLED",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "CASHFREE_INTERNATIONAL_ENABLED",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "SMM_PROVIDER_API_URL",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "SMM_PROVIDER_API_KEY",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "NEXT_PUBLIC_SUPABASE_URL",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "SUPABASE_SERVICE_ROLE_KEY",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    },
+    {
+      "key": "DATABASE_URL",
+      "target": [
+        "preview"
+      ],
+      "branch": "fix/seo-release-blockers-20261110",
+      "decrypted": false
+    }
+  ],
+  "runtimeIsolation": "BLOCKED; preview HEAD302 to Vercel SSO; no bypass; no client/server/DB identity independently verified"
+}
