@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - audit/socialrush-phase0-profit-20261115
 
 permissions:
   contents: read
@@ -28,6 +29,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: Phase 1 stubbed security and recovery regressions
+        run: node --test tests/unit/phase1-security.test.cjs
       - name: Offline net-profit scenario and incomplete-cost regressions
         run: node --test tests/unit/profit-scenario-model.test.mjs
       - name: Complete unit regressions and live catalogue equivalence

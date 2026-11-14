@@ -1,7 +1,9 @@
 import { randomUUID } from "crypto";
 import { NextResponse, type NextRequest } from "next/server";
 import { CashfreeApiError, cashfreeMode, cashfreeRequest, type CashfreeOrder } from "@/lib/payments/cashfree";
-import { normalizePaymentMethod } from "@/lib/payments/methods";
+import { isPaymentMethodEnabled, normalizePaymentMethod, paymentMethodUnavailableMessage } from "@/lib/payments/methods";
+import { cashfreeNewPaymentsEnabled } from "@/lib/payments/cashfree-availability";
+import { requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { createClient } from "@/lib/supabase/server";
 
 function siteUrl(request: NextRequest) {
@@ -28,14 +30,20 @@ function cashfreePhone(phone: string | null | undefined) {
 }
 
 export async function POST(request: NextRequest) {
+  // Deny before session/profile/provider work while all gateway methods are off.
+  if (!cashfreeNewPaymentsEnabled()) return NextResponse.json({ error: "Cashfree wallet payments are unavailable.", code: "PAYMENT_METHOD_DISABLED" }, { status: 409, headers: { "Cache-Control": "no-store" } });
+  const originError = requireSameOrigin(request); if (originError) return originError;
+  const jsonError = requireJson(request); if (jsonError) return jsonError;
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const limited = rateLimit(request, "cashfree-wallet-order", 12, 60_000, user.id); if (limited) return limited;
   const body = await request.json().catch(() => null) as { amount?: number; method?: string; paymentMethod?: string; payment_method?: string; returnTo?: string } | null;
   const amount = Number(body?.amount);
   const method = normalizePaymentMethod(body?.method ?? body?.paymentMethod ?? body?.payment_method);
   if (!Number.isFinite(amount) || amount <= 0 || amount > 500000) return NextResponse.json({ error: "Enter an amount greater than ₹0 and up to ₹5,00,000" }, { status: 422 });
   if (!method || method === "wallet") return NextResponse.json({ error: "Choose UPI, card, or Net Banking for Cashfree checkout." }, { status: 400 });
+  if (!isPaymentMethodEnabled(method)) return NextResponse.json({ error: paymentMethodUnavailableMessage(method), code: "PAYMENT_METHOD_DISABLED" }, { status: 409 });
   if (method === "international_card" && process.env.CASHFREE_INTERNATIONAL_ENABLED !== "true") return NextResponse.json({ error: "International Cashfree payments are not enabled for this account." }, { status: 409 });
 
   const { data: profile, error: profileError } = await supabase
