@@ -51,6 +51,7 @@ test('privacy sanitizer rejects destinations tokens credentials under allowed an
  assert.deepEqual(JSON.parse(JSON.stringify(out)),{quantity:1000,total:99.5,currency:'INR'});
  assert.equal(privacy.analyticsPathBucket('/dashboard/orders/customer-token?jwt=secret'),'/other');
  assert.deepEqual(JSON.parse(JSON.stringify(privacy.coarseAttribution({source:'person@example.com',medium:'token',term:'password'}))),{source:'unknown',medium:'unknown'});
+  assert.deepEqual(JSON.parse(JSON.stringify(privacy.privateSafeMetadata({surface:'homepage_decision_rail',step:'budget'}))),{surface:'homepage_decision_rail',step:'budget'});
 });
 const security=load('lib/security/request.ts',{'server-only':{},'next/server':{NextResponse}});
 function captureFixture({enabled=true,repository=null}={}){let db=0,writes=[];
@@ -69,10 +70,15 @@ test('real route records only a validated grant, sanitizes and rejects event rep
  const body={event:'page_viewed',eventId:id(2),pagePath:'/services/private-customer?token=secret',serviceCode:'person@example.com',metadata:{step:'secret',quantity:1000},attribution:{source:'email@example.com',campaign:'secret'}};
  const request=()=>new NextRequest('https://www.getsocialrush.com/api/analytics',{method:'POST',headers:{origin:'https://www.getsocialrush.com','content-type':'application/json',cookie:`sr_optional_consent=${id(1)}`},body:JSON.stringify(body)});
  await capture.route.POST(request());await capture.route.POST(request());assert.equal(capture.calls().writes.length,1);const row=capture.calls().writes[0];assert.equal(row.page_path,'/services');assert.equal(row.service_code,null);assert.equal(row.campaign,null);assert.ok(!JSON.stringify(row).includes('secret'));assert.equal(row.safe_metadata.quantity,1000);assert.equal(row.customer_id,null);assert.equal(row.event_id,'client:'+require('node:crypto').createHash('sha256').update(id(2)).digest('hex'));
+ body.eventId='server:'+'b'.repeat(64);await capture.route.POST(request());assert.equal(f.seen.has(body.eventId),false);assert.equal(capture.calls().writes.length,1);
 });
 test('default trusted writer stops before privileged DB client construction',async()=>{
  let calls=0;const server=load('lib/analytics/server.ts',{'server-only':{},'./consent-runtime':{authorizeTrustedAnalytics:async()=>null},'./privacy':privacy,'./collection-environment':{shouldIgnoreAnalyticsCollection:()=>false},'@/lib/supabase/admin':{createAdminClient:()=>{calls++;throw Error('Unexpected DB');}},'./events':{trustedAnalyticsEvents:['payment_completed']}},{process:{env:{VERCEL_ENV:'production'}}});
  await server.recordTrustedEvent({eventName:'payment_completed',customerId:'fixture',eventId:'fixture',pagePath:'/private'});assert.equal(calls,0);
+});
+test('optional consent-authority failure cannot fail an already committed operation',async()=>{
+ let db=0;const server=load('lib/analytics/server.ts',{'server-only':{},'./consent-runtime':{authorizeTrustedAnalytics:async()=>{throw Error('synthetic authority outage');}},'./privacy':privacy,'./collection-environment':{shouldIgnoreAnalyticsCollection:()=>false},'@/lib/supabase/admin':{createAdminClient:()=>{db++;throw Error('Unexpected DB');}},'./events':{trustedAnalyticsEvents:['payment_completed']}},{process:{env:{VERCEL_ENV:'production'}},console:{error:()=>{}}});
+ await assert.doesNotReject(()=>server.recordTrustedEvent({eventName:'payment_completed',customerId:'fixture',eventId:'fixture',pagePath:'/other'}));assert.equal(db,0);
 });
 test('browser honors explicit consent and GPC, and withdrawal clears only optional state',async()=>{
  const values=new Map([['sr_first_touch_attribution_v1','fixture'],['sr_analytics_pending_session_v1','fixture'],['operational_order_draft','keep']]);

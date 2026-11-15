@@ -16,7 +16,8 @@ export async function POST(request: NextRequest) {
   if(request.headers.get("origin")!==request.nextUrl.origin)return new NextResponse(null,{status:403});
   const error=requireJson(request,8192)||rateLimit(request,"analytics",120,60_000);if(error)return error;
   const body=await request.json().catch(()=>null);
-  if(!body || !clientAnalyticsEvents.includes(body.event))return new NextResponse(null,{status:204});
+  // Clients cannot claim the trusted writer's server: namespace in replay state.
+  if(!body || !clientAnalyticsEvents.includes(body.event) || typeof body.eventId!=="string" || !/^[a-f0-9]{8}-[a-f0-9]{4}-4[a-f0-9]{3}-[89ab][a-f0-9]{3}-[a-f0-9]{12}$/i.test(body.eventId))return new NextResponse(null,{status:204});
   try {
     const receipt=request.cookies.get(CONSENT_COOKIE)?.value;
     if(!await authorizeOptionalEvent(request,receipt,body.eventId,repo,consentEnvironment()))return new NextResponse(null,{status:204});

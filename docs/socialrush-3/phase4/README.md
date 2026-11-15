@@ -28,7 +28,7 @@ Local and GitHub regression results are recorded separately. Source-contract fix
 
 The local launcher now prevents Next from loading any tracked/ambient dotenv values, in addition to denying outbound transport and setting synthetic backend keys in a cleared environment. A fixture regression checks this even with forced reload. Only payment-recipient key names were inspected; values were not copied or used. The preload follows the locked Next 15.5.26 API shape and must be reverified on upgrades. No production dotenv/configuration is changed.
 
-The integrated smoke inventory has 460 cases versus 350 in the predecessor. CI's job budget increases to 25 minutes; individual browser assertions/timeouts are unchanged. The sitemap CLI is run after the isolated build/server with the existing validated canonical-host-over-loopback transport. Its first offline diagnostic attempt was blocked when the legacy default targeted production; no request was allowed. All retained canonical/sitemap checks now target only the owned local build. The new fixture guard blocks external browser destinations, and readiness probes do not follow redirects.
+The integrated smoke inventory has 496 cases versus 350 in the predecessor. CI's job budget increases to 25 minutes; individual browser assertions/timeouts are unchanged. The sitemap CLI is run after the isolated build/server with the existing validated canonical-host-over-loopback transport. Its first offline diagnostic attempt was blocked when the legacy default targeted production; no request was allowed. All retained canonical/sitemap checks now target only the owned local build. The new fixture guard blocks external browser destinations, and readiness probes do not follow redirects.
 
 ```sh
 node --test tests/unit/phase4-consent.test.cjs tests/unit/phase4-isolation.test.cjs
@@ -54,3 +54,9 @@ Before activating anything: review the complete integration diff, durable consen
 ## Diagnostic harness history
 
 An initial complete-suite attempt was stopped after synthetic dashboard calls hit CSP: the compiled backend was 127.0.0.1:3001 while the browser origin was localhost:3108. The launcher now compiles and serves matching localhost ports (3108 locally;3001 in CI), with production CSP unchanged. Dotenv is also disabled in browser workers. The interrupted attempt is retained as diagnostic history and is not a complete regression PASS. Final results supersede it only at the tested head; assertions are unchanged.
+
+## Final harness verification
+
+Two old responsive cases put 18 navigations each inside one 30s budget; they are now 36 independent route cases with the same assertions and timeout. Conversion destination checks are preserved as three independent paths and now require zero events without consent/activation. Planner visibility/enabled/geometry/clipping/hit-test assertions are retained; the static control/content census is batched to avoid serialized browser protocol overhead. No product performance improvement or relaxed limit is claimed. A serialized focused rerun passes all48 cases. Prior interrupted and failing harness attempts are not counted as clean full regression passes; the final full496-case and fresh exact-head CI results are in the PR body.
+
+The trusted writer also contains consent-authority errors inside its best-effort boundary; a synthetic outage regression proves it cannot fail an already committed business operation. Client nonces are UUID-only and cannot claim the trusted server event namespace.

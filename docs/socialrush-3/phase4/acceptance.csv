@@ -16,7 +16,7 @@ I01,Exact heads dependencies and reviews,PASS,baseline-evidence.json,No independ
 I02,Five text conflicts resolved in isolated candidate,PASS,integration-resolution.json; four recovery/form paths retain765,Workflow extended explicitly; no existing PR merged
 I03,Independent source integration approval,BLOCKED,All predecessors remain draft and unmerged,Source selection for candidate is not release approval
 I04,Existing unit suite,PASS,263 tests; all14 local CI test command groups pass,Groups overlap; no inflated unique-test total
-I05,New consent isolation and finance regressions,PASS,16 consent/isolation and36 finance cases,36 includes30 prior Phase3 cases
+I05,New consent isolation and finance regressions,PASS,17 consent/isolation and36 finance cases,36 includes30 prior Phase3 cases
 I06,Complete integrated local browser regression,NOT RUN,Pending optimized frozen build and suite completion,Final result recorded in PR body
 I07,Exact-head GitHub CI,NOT RUN,Pending publication,Final CI recorded in PR body without rewriting tested commit
 I08,TypeScript targeted lint and optimized build,PASS,Explicit typecheck and targeted lint exit0; optimized build exit0,Aligned final browser build and current CI recorded in PR body

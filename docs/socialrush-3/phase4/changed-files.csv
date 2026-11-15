@@ -165,9 +165,11 @@ A,tests/fixtures/indexing-recovery-cohort.json
 A,tests/smoke/analytics-preview-exclusion.spec.ts
 M,tests/smoke/fixtures.ts
 A,tests/smoke/indexing-recovery.spec.ts
+M,tests/smoke/phase22-responsive-completion.spec.ts
 M,tests/smoke/premium-design.spec.ts
 M,tests/smoke/premium-responsive.spec.ts
 A,tests/smoke/seo-production-routing.spec.ts
+M,tests/smoke/seo-q4-phase1-release.spec.ts
 A,tests/smoke/service-page-batch2.spec.ts
 A,tests/smoke/service-page-batch3.spec.ts
 A,tests/smoke/service-page-batch4.spec.ts

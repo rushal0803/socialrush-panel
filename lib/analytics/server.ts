@@ -35,9 +35,9 @@ export async function recordTrustedEvent(input: {
   // Suppress trusted events in all non-production deployments before admin client creation.
   // Checkout and authentication outcomes still succeed; only analytics is skipped.
   if (shouldIgnoreAnalyticsCollection(undefined, process.env.VERCEL_ENV)) return;
-  const consent = await authorizeTrustedAnalytics(input.eventId);
-  if (!consent) return;
   try {
+    const consent = await authorizeTrustedAnalytics(input.eventId);
+    if (!consent) return;
     const admin = createAdminClient();
     const { data } = await admin
       .from("analytics_events")

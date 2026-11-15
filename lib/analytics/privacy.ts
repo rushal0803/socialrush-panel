@@ -21,7 +21,8 @@ const categorical: Record<string, readonly string[]> = {
   page_template: ["home","services","service-detail","packages","blog-article","blog-index","country-landing","country-hub","pricing","other-public"],
   method: ["wallet","upi","card","cashfree","razorpay","manual_upi"],
   currency: ["INR","USD","EUR","GBP","AED"],
-  step: ["compare","order","growth_check","how_it_works","review","details","payment"],
+  step: ["compare","order","budget","growth_check","how_it_works","review","details","payment"],
+  surface: ["homepage_hero","homepage_decision_rail","service_order_card"],
 };
 /** Unknown/free-text strings are discarded, even when supplied under a known key. */
 export function privateSafeMetadata(raw: Record<string, unknown> = {}) {

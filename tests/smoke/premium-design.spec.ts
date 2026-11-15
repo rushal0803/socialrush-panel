@@ -105,9 +105,13 @@ for (const width of [320, 390, 1440]) {
   });
 }
 
-test("all three conversion paths preserve destinations and first-party tracking", async ({ page, baseURL }) => {
-  // Exercise production collection on a reserved hostname, serving every byte
-  // from the owned local fixture server. No production request is performed.
+for (const path of [
+  { title: "I’m ready to order", href: "#order-demo", step: "order" },
+  { title: "I want to compare services", href: "/services", step: "compare" },
+  { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
+]) test(`conversion path ${path.step} preserves destination without unconsented tracking`, async ({ page, baseURL }) => {
+  // A reserved nonproduction hostname and no activated consent must not collect.
+  // Serve every byte from the owned fixture; never request production.
   const testOrigin = 'http://analytics.example.test';
   const pending = new Set<Promise<void>>();
   let draining = false;
@@ -137,19 +141,13 @@ test("all three conversion paths preserve destinations and first-party tracking"
     return route.fulfill({ status: 200, json: { ok: true } });
   });
   try {
-    for (const path of [
-      { title: "I’m ready to order", href: "#order-demo", step: "order" },
-      { title: "I want to compare services", href: "/services", step: "compare" },
-      { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
-    ]) {
       await page.goto(`${testOrigin}/`);
       const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
       await expect(link).toHaveAttribute("href", path.href);
       await link.click();
-      await expect.poll(() => events.some(event => event.event === "homepage_conversion_path_click" && event.metadata?.surface === "homepage_decision_rail" && event.metadata?.step === path.step)).toBe(true);
+      expect(events, "optional capture stays disabled without consent and activation").toEqual([]);
       if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
       else await expect(page).toHaveURL(new RegExp(`${path.href}$`));
-    }
   } finally {
     // Stop new proxy fetches, then drain the work this test owns before
     // removing handlers or letting Playwright dispose their API responses.

@@ -38,11 +38,11 @@ async function expectNoDocumentOverflow(page: import("@playwright/test").Page, p
 
 test.describe("Phase 22 responsive completion matrix", () => {
   for (const viewport of completionViewports) {
-    test(`previously uncovered public/auth/country routes avoid overflow on ${viewport.name}`, async ({ page }) => {
+    // Keep the normal per-test budget; do not hide route failures behind a
+    // cumulative 18-navigation timeout or increase the assertion timeout.
+    for (const path of missingCoverageRoutes) test(`uncovered route ${path} avoids overflow on ${viewport.name}`, async ({ page }) => {
       await page.setViewportSize({ width: viewport.width, height: viewport.height });
-      for (const path of missingCoverageRoutes) {
-        await expectNoDocumentOverflow(page, path);
-      }
+      await expectNoDocumentOverflow(page, path);
     });
   }
 
