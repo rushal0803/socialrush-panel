@@ -1,0 +1,42 @@
+(node:12620) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase3/tests/unit/phase3-intelligence.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase3/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ allow only approved categorical dimensions, never URLs/PII/free text (16.716633ms)
+✔ exclude {"consent":"unknown"} (0.178015ms)
+✔ exclude {"consent":"denied"} (4.744073ms)
+✔ exclude {"doNotTrack":true} (0.88176ms)
+✔ exclude {"globalPrivacyControl":true} (0.307015ms)
+✔ exclude {"internal":true} (0.165116ms)
+✔ exclude {"deployment":"preview"} (0.277599ms)
+✔ exclude {"deployment":"development"} (0.842761ms)
+✔ exclude {"synthetic":true} (0.390198ms)
+✔ exclude {"origin":"https://wrong.example"} (2.896093ms)
+✔ exclude {"origin":"https://www.getsocialrush.com.evil.example"} (2.005352ms)
+✔ exclude {"origin":"https://www.getsocialrush.com/path"} (0.101161ms)
+✔ exclude {"origin":"http://www.getsocialrush.com"} (0.045907ms)
+✔ exclude {"origin":"https://preview.vercel.app","canonicalOrigin":"https://preview.vercel.app"} (0.094435ms)
+✔ unknown privacy flags fail closed (1.006555ms)
+✔ client cannot assert auth or paid outcomes; wallet deposits are not paid orders (3.324211ms)
+✔ synthetic dataset cannot be silently relabeled production (0.180714ms)
+✔ sequential cohort deduplicates retries and excludes out-of-order outcomes (97.865323ms)
+✔ earned ex-tax waterfall, exact paise, customer mix and service contribution (5.891443ms)
+✔ refund-only period and costs preserve losses, no AOV or fake customers (2.005849ms)
+✔ missing costs are not zero, but known remainder stays diagnostic (0.248005ms)
+✔ unverified costs override contradictory upstream completeness (0.241997ms)
+✔ missing revenue and refund coverage blocks profit and comparable ratios (3.722251ms)
+✔ late refund belongs to its occurrence period and historical service (0.285319ms)
+✔ retry IDs deduplicate, conflicts and duplicate earned orders fail (0.5357ms)
+✔ unverified internal and wrong-dataset entries never become revenue (6.232832ms)
+✔ invalid amounts currencies wallet deposits and orphan refunds fail (0.632301ms)
+✔ unallocated direct costs withhold service ranking but not period total (4.849841ms)
+✔ unknown customer history withholds retention and CAC (0.385051ms)
+✔ date offsets and overflow validated (0.524934ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 938.187039

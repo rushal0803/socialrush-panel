@@ -102,8 +102,9 @@ test("quantity and public link typed before hydration survive JavaScript loading
   } finally { release(); }
 });
 
-test("scoped automated accessibility audit covers discovery and shared service forms", async ({ page }, info) => {
-  for (const route of routes) {
+// Each route retains the normal 30s budget. Four sequential audits previously
+// exhausted one shared timeout under contention, aborting the final navigation.
+for (const route of routes) test(`scoped automated accessibility audit covers ${route.name}`, async ({ page }, info) => {
     await page.goto(route.path, { waitUntil: "networkidle" });
     await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
     const selector = route.name === "home" ? "#services" : "[data-service-order-card]";
@@ -114,5 +115,4 @@ test("scoped automated accessibility audit covers discovery and shared service f
     }, selector);
     await info.attach(`axe-${route.name}`, { body: JSON.stringify(result), contentType: "application/json" });
     expect(result.violations, route.path).toEqual([]);
-  }
 });

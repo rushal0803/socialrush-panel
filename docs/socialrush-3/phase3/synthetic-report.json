@@ -1,0 +1,138 @@
+{
+  "label": "SYNTHETIC DEMONSTRATION — NOT BUSINESS RESULTS",
+  "complete": {
+    "dataset": "synthetic",
+    "start": "2026-11-01T00:00:00+05:30",
+    "endExclusive": "2026-12-01T00:00:00+05:30",
+    "basis": "earned_ex_indirect_tax",
+    "status": "COMPLETE_INPUTS_NOT_AUDITED",
+    "totalsPaise": {
+      "earned_order": 30000,
+      "refund": 4000,
+      "fulfillment": 6000,
+      "processing": 500,
+      "chargeback": 0,
+      "support": 0,
+      "marketing": 2000,
+      "operating": 3000,
+      "depreciation": 0,
+      "interest": 0,
+      "income_tax": 1000
+    },
+    "netRevenuePaise": 26000,
+    "knownCostPaise": 12500,
+    "knownRemainderPaise": 13500,
+    "netProfitPaise": 13500,
+    "missingInputs": [],
+    "excludedEntries": 0,
+    "deduplicatedEntries": 8,
+    "paidOrders": 2,
+    "grossAovPaise": 15000,
+    "customerMetrics": {
+      "status": "COMPLETE_HISTORY_NOT_AUDITED",
+      "newCustomers": 1,
+      "returningCustomers": 1,
+      "returningCustomerShare": 0.5,
+      "blendedCacPaise": 2000,
+      "unknownCustomerOrders": 0
+    },
+    "unallocatedDirectCostPaise": 0,
+    "services": [
+      {
+        "serviceCode": "fixture-instagram",
+        "grossPaise": 10000,
+        "refundsPaise": 4000,
+        "fulfillmentPaise": 6000,
+        "processingPaise": 500,
+        "orders": 1,
+        "netRevenuePaise": 6000,
+        "directContributionPaise": -500,
+        "basis": "before_shared_costs_not_net_profit"
+      },
+      {
+        "serviceCode": "fixture-linkedin",
+        "grossPaise": 20000,
+        "refundsPaise": 0,
+        "fulfillmentPaise": 0,
+        "processingPaise": 0,
+        "orders": 1,
+        "netRevenuePaise": 20000,
+        "directContributionPaise": 20000,
+        "basis": "before_shared_costs_not_net_profit"
+      }
+    ],
+    "target": {
+      "monthlyNetProfitPaise": 50000000,
+      "comparison": "Planning target only; no attainment or forecast inferred from this report window"
+    }
+  },
+  "incomplete": {
+    "dataset": "synthetic",
+    "start": "2026-11-01T00:00:00+05:30",
+    "endExclusive": "2026-12-01T00:00:00+05:30",
+    "basis": "earned_ex_indirect_tax",
+    "status": "INCOMPLETE",
+    "totalsPaise": {
+      "earned_order": 30000,
+      "refund": 4000,
+      "fulfillment": 6000,
+      "processing": 500,
+      "chargeback": 0,
+      "support": 0,
+      "marketing": 2000,
+      "operating": 3000,
+      "depreciation": 0,
+      "interest": 0,
+      "income_tax": 1000
+    },
+    "netRevenuePaise": 26000,
+    "knownCostPaise": 12500,
+    "knownRemainderPaise": 13500,
+    "netProfitPaise": null,
+    "missingInputs": [
+      "fulfillment",
+      "income_tax"
+    ],
+    "excludedEntries": 0,
+    "deduplicatedEntries": 8,
+    "paidOrders": 2,
+    "grossAovPaise": 15000,
+    "customerMetrics": {
+      "status": "COMPLETE_HISTORY_NOT_AUDITED",
+      "newCustomers": 1,
+      "returningCustomers": 1,
+      "returningCustomerShare": 0.5,
+      "blendedCacPaise": 2000,
+      "unknownCustomerOrders": 0
+    },
+    "unallocatedDirectCostPaise": 0,
+    "services": [
+      {
+        "serviceCode": "fixture-instagram",
+        "grossPaise": 10000,
+        "refundsPaise": 4000,
+        "fulfillmentPaise": 6000,
+        "processingPaise": 500,
+        "orders": 1,
+        "netRevenuePaise": 6000,
+        "directContributionPaise": null,
+        "basis": "before_shared_costs_not_net_profit"
+      },
+      {
+        "serviceCode": "fixture-linkedin",
+        "grossPaise": 20000,
+        "refundsPaise": 0,
+        "fulfillmentPaise": 0,
+        "processingPaise": 0,
+        "orders": 1,
+        "netRevenuePaise": 20000,
+        "directContributionPaise": null,
+        "basis": "before_shared_costs_not_net_profit"
+      }
+    ],
+    "target": {
+      "monthlyNetProfitPaise": 50000000,
+      "comparison": "Planning target only; no attainment or forecast inferred from this report window"
+    }
+  }
+}

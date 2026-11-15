@@ -1,0 +1,9 @@
+{
+  "source": "Read-only Vercel list_deployments",
+  "projectId": "prj_08aojXcj8e2i0L9WopWWo1TNORSo",
+  "teamId": "team_HsUiz3PGpJ4IsNwsk6cRSs7A",
+  "branch": "feat/socialrush-phase2-premium-20261115",
+  "matchingDeployments": 0,
+  "exactHead": "c77f6bded9e9c34252494930daf0eb1a3f7e4819",
+  "hostedIsolation": "BLOCKED: no matching deployment; runtime identities unproven"
+}
