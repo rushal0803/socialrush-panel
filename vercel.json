@@ -26,7 +26,8 @@
       "review/socialrush-premium-phases-1-2-integration": false,
       "feat/dashboard-premium-ux-overhaul": false,
       "audit/socialrush-phase0-profit-20261115": false,
-      "fix/socialrush-phase1-security-20261115": false
+      "fix/socialrush-phase1-security-20261115": false,
+      "feat/socialrush-phase2-premium-20261115": false
     }
   },
   "regions": [

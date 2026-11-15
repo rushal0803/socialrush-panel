@@ -1,0 +1,579 @@
+[
+  {
+    "run": "48-case run",
+    "stats": {
+      "startTime": "2026-11-15T10:50:48.881Z",
+      "duration": 383873.677,
+      "expected": 47,
+      "skipped": 0,
+      "unexpected": 1,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "title": "public navigation intent warms code without fetching live route data",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15776,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "lazy comparison preserves selections, filters and trigger focus",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15820,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "directory informational sections and FAQ remain in server HTML",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 803,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "deferred mobile content remains reachable on /",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15340,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "deferred mobile content remains reachable on /services",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 19601,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "deferred mobile content remains reachable on /packages",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11524,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "home reflows and exposes accessible controls at 320px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9103,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "instagram reflows and exposes accessible controls at 320px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11811,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "youtube reflows and exposes accessible controls at 320px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 14614,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "linkedin reflows and exposes accessible controls at 320px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 14471,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "home reflows and exposes accessible controls at 390px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9836,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "instagram reflows and exposes accessible controls at 390px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 13445,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "youtube reflows and exposes accessible controls at 390px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 12018,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "linkedin reflows and exposes accessible controls at 390px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 10611,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "home reflows and exposes accessible controls at 1440px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9171,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "instagram reflows and exposes accessible controls at 1440px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11678,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "youtube reflows and exposes accessible controls at 1440px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15931,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "linkedin reflows and exposes accessible controls at 1440px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15157,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "homepage search and categories retain the query and provide a recoverable empty state",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 13216,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "quantity, summary and login handoff use unchanged catalog arithmetic; invalid text is retained",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 13012,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "quantity and public link typed before hydration survive JavaScript loading",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 8657,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "scoped automated accessibility audit covers discovery and shared service forms",
+        "status": "unexpected",
+        "results": [
+          {
+            "status": "timedOut",
+            "duration": 36421,
+            "errors": [
+              {
+                "message": "\u001b[31mTest timeout of 30000ms exceeded.\u001b[39m"
+              },
+              {
+                "location": {
+                  "file": "/workspace/work/phase2/tests/smoke/phase2-premium.spec.ts",
+                  "column": 16,
+                  "line": 107
+                },
+                "message": "Error: page.goto: net::ERR_ABORTED; maybe frame was detached?\nCall log:\n\u001b[2m  - navigating to \"http://localhost:3107/buy-linkedin-followers-india\", waiting until \"networkidle\"\u001b[22m\n\n\n  105 | test(\"scoped automated accessibility audit covers discovery and shared service forms\", async ({ page }, info) => {\n  106 |   for (const route of routes) {\n> 107 |     await page.goto(route.path, { waitUntil: \"networkidle\" });\n      |                ^\n  108 |     await page.addScriptTag({ path: require.resolve(\"axe-core/axe.min.js\") });\n  109 |     const selector = route.name === \"home\" ? \"#services\" : \"[data-service-order-card]\";\n  110 |     await page.locator(selector).first().scrollIntoViewIfNeeded();\n    at /workspace/work/phase2/tests/smoke/phase2-premium.spec.ts:107:16"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 320px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 16926,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 360px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15579,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 375px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 20184,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 390px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 20858,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 412px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 14773,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 430px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 16522,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 600px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 13440,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 768px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 17904,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 1024px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 18309,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 1280px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 23318,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "services catalogue and comparison fit 1440px",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 21761,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest instagram order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 20994,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest youtube order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 17187,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest facebook order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 12162,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest linkedin order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 13209,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest x order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15292,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest tiktok order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15724,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "guest telegram order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15748,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in instagram order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 18788,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in youtube order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 21031,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in facebook order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 11725,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in linkedin order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15248,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in x order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15424,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in tiktok order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15453,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "signed-in telegram order CTA retains service and quantity",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 12302,
+            "errors": []
+          }
+        ]
+      },
+      {
+        "title": "search, real categories, missing health and saved activity remain usable",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 9545,
+            "errors": []
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "run": "isolated axe rerun",
+    "stats": {
+      "startTime": "2026-11-15T10:57:21.705Z",
+      "duration": 17559.958,
+      "expected": 1,
+      "skipped": 0,
+      "unexpected": 0,
+      "flaky": 0
+    },
+    "tests": [
+      {
+        "title": "scoped automated accessibility audit covers discovery and shared service forms",
+        "status": "expected",
+        "results": [
+          {
+            "status": "passed",
+            "duration": 15069,
+            "errors": []
+          }
+        ]
+      }
+    ]
+  }
+]

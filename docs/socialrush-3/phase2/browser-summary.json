@@ -1,0 +1,90 @@
+{
+  "stats": {
+    "startTime": "2026-11-14T22:16:11.916Z",
+    "duration": 52037.836,
+    "expected": 16,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "axe": [
+    {
+      "name": "axe-home",
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "axe-instagram",
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "axe-youtube",
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    },
+    {
+      "name": "axe-linkedin",
+      "violations": 0,
+      "incomplete": [
+        "color-contrast"
+      ]
+    }
+  ],
+  "comparisons": [
+    {
+      "route": "/",
+      "width": 390,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/buy-instagram-followers-india",
+      "width": 390,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/buy-youtube-subscribers-india",
+      "width": 390,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/buy-linkedin-followers-india",
+      "width": 390,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/",
+      "width": 1440,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/buy-instagram-followers-india",
+      "width": 1440,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/buy-youtube-subscribers-india",
+      "width": 1440,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    },
+    {
+      "route": "/buy-linkedin-followers-india",
+      "width": 1440,
+      "titleUnchanged": true,
+      "canonicalUnchanged": true
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+PASS: isolated local next build exited0; no deployment.
+Existing non-blocking lint / Supabase Edge warnings retained.
+
+   ▲ Next.js 15.5.26
+   - Environments: .env.production
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+ ✓ Compiled successfully in 35.9s
+   Linting and checking validity of types ...
+
+./app/admin/analytics/page.tsx
+42:742  Warning: 'starts' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/admin/seo/indexation/page.tsx
+2:65  Warning: 'RefreshCw' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/buy-instagram-followers-india/page.tsx
+3:80  Warning: 'ShieldCheck' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/new-order/page.tsx
+11:3  Warning: 'Hash' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'Info' is defined but never used.  @typescript-eslint/no-unused-vars
+14:11  Warning: 'LinkIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+
+├ ○ /trust                                                   3.08 kB         230 kB          5m      1y
+├ ○ /uk                                                      3.14 kB         230 kB
+├ ● /uk/[service]                                              507 B         229 kB
+├   ├ /uk/buy-instagram-followers
+├   ├ /uk/buy-youtube-subscribers
+├   ├ /uk/buy-youtube-views
+├   └ /uk/buy-linkedin-followers
+├ ○ /us                                                      3.14 kB         230 kB
+├ ● /us/[service]                                              507 B         229 kB
+├   ├ /us/buy-instagram-followers
+├   ├ /us/buy-youtube-subscribers
+├   ├ /us/buy-youtube-views
+├   └ /us/buy-linkedin-followers
+├ ƒ /verify-email                                              179 B         113 kB
+├ ○ /wallet                                                    356 B         104 kB
+├ ○ /x-growth-india                                            838 B         217 kB
+├ ○ /youtube-growth-india                                    3.08 kB         230 kB
+└ ○ /youtube-watch-hours                                       838 B         217 kB
++ First Load JS shared by all                                 104 kB
+  ├ chunks/8180-87e53c2c52944364.js                          46.7 kB
+  ├ chunks/daad30fc-90cca1fdc549cc44.js                      54.2 kB
+  └ other shared chunks (total)                              2.78 kB
+
+
+ƒ Middleware                                                 93.2 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

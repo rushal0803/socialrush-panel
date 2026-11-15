@@ -1,0 +1,38 @@
+[
+  {
+    "route": "/",
+    "zoom": 2,
+    "beforeWidth": 1440,
+    "width": 720,
+    "height": 456,
+    "scroll": 720,
+    "pixelRatio": 2
+  },
+  {
+    "route": "/buy-instagram-followers-india",
+    "zoom": 2,
+    "beforeWidth": 1440,
+    "width": 720,
+    "height": 456,
+    "scroll": 720,
+    "pixelRatio": 2
+  },
+  {
+    "route": "/buy-youtube-subscribers-india",
+    "zoom": 2,
+    "beforeWidth": 1440,
+    "width": 720,
+    "height": 456,
+    "scroll": 720,
+    "pixelRatio": 2
+  },
+  {
+    "route": "/buy-linkedin-followers-india",
+    "zoom": 2,
+    "beforeWidth": 1440,
+    "width": 720,
+    "height": 456,
+    "scroll": 720,
+    "pixelRatio": 2
+  }
+]

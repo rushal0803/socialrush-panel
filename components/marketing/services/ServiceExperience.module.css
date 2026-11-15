@@ -3,6 +3,7 @@
 .orderCard[data-platform="linkedin"], .orderCard[data-platform="facebook"] { --accent: #8cbcff; }
 .orderCard[data-platform="telegram"] { --accent: #79d5f5; }
 .orderCard[data-platform="tiktok"] { --accent: #8ae0d8; }
+.orderCard[data-platform] { --accent: #ff9b45; }
 .cardHeader { display: flex; align-items: center; gap: 12px; padding-bottom: 12px; border-bottom: 1px solid #ffffff17; }
 .platformIcon { display: grid; place-items: center; flex-shrink: 0; width: 42px; height: 42px; border: 1px solid #ffffff1c; border-radius: 12px; color: var(--accent); background: #ffffff05; }
 .eyebrow { font-size: 11px; font-weight: 700; color: var(--accent); letter-spacing: .04em; }
@@ -47,6 +48,22 @@
 .assurance span { display: inline-flex; align-items: center; gap: 5px; color: #e0e7ef; font-size: 10px; font-weight: 650; }
 .assurance svg { color: #86efac; }
 .support { display: flex; align-items: center; justify-content: center; gap: 7px; min-height: 44px; margin-top: 5px; color: #cbd5e1; font-size: 12px; }
+.policyLinks { display:flex; flex-wrap:wrap; align-items:center; gap:6px 12px; margin-top:8px; color:#ffc58a; font-size:14px; }
+.policyLinks a { display:inline-flex; align-items:center; min-height:44px; text-decoration:underline; text-underline-offset:4px; }
+.orderCard .cardDescription,.orderCard .help,.orderCard .error,.orderCard .facts,.orderCard .nextStep { font-size:14px; line-height:1.7; }
+.orderCard .inputLabel,.orderCard .fieldset legend,.orderCard .linkLabel { font-size:16px; }
+.orderCard .stepper input,.orderCard .linkInput { font-size:16px; min-height:48px; }
+.orderCard .linkInput::placeholder { font-size:14px; color:#a8b3c4; }
+.orderCard .quantities small { font-size:12px; line-height:1.5; }
+.orderCard .orderFlow { gap:6px; }
+.orderCard .orderFlow span { flex-wrap:wrap; font-size:12px; line-height:1.5; }
+.orderCard .orderFlow strong { font-size:12px; }
+.orderCard .assurance span,.orderCard .readiness { font-size:12px; line-height:1.6; }
+.orderCard .facts div { flex-wrap:wrap; }
+.orderCard .facts dd { max-width:100%; }
+.page.page :global(h1) { text-wrap:balance; }
+.page.page :global(.service-money-page > section:first-of-type) { background-image:none; }
+@media(prefers-reduced-motion:reduce) { .orderCard * { transition:none !important; animation:none !important; } }
 .orderCard a:focus-visible, .orderCard button:focus-visible, .linkInput:focus-visible, .stepper:focus-within { outline: 2px solid var(--accent); outline-offset: 3px; }
 @media (max-width: 480px) {
   .quantities { grid-template-columns: repeat(2, minmax(0, 1fr)); }
