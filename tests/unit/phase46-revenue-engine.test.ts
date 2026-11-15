@@ -98,7 +98,11 @@ test("Post-launch trusted payment and order events use the partial unique event_
   assert.match(writer, /writeError\.code !== "23505"/);
   assert.match(writer, /console\.error\("\[trusted-analytics\] insert failed"/);
   assert.match(writer, /safeMetadata\(metadata\)/);
-  assert.match(writer, /event_id:\s*input\.eventId/);
+  // The same stable outcome identity is now hashed by the consent authority;
+  // raw order/customer identifiers must not be sent to optional analytics.
+  assert.match(writer, /event_id:\s*consent\.eventId/);
+  assert.match(writer, /authorizeTrustedAnalytics\(input\.eventId\)/);
+  assert.match(read("lib/analytics/consent-runtime.ts"), /createHash\("sha256"\)\.update\(eventId\)/);
   assert.match(wallet, /eventName:\s*"order_created"/);
   assert.match(verified, /eventName:\s*"payment_completed"/);
   // Verified outcomes remain server-side; never add client payment-success writes.

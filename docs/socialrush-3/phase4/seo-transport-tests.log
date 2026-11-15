@@ -1,0 +1,12 @@
+✔ ordinary hosted SEO reads receive no simulated routing headers (2.477683ms)
+✔ loopback transport retains canonical production routing and query (0.311858ms)
+✔ simulated headers cannot target a protected preview, remote origin or alternate canonical host (4.474428ms)
+✔ real loopback HTTP preserves Host, protocol and query, and follows only canonical redirects (185.222838ms)
+ℹ tests 4
+ℹ suites 0
+ℹ pass 4
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 909.879371

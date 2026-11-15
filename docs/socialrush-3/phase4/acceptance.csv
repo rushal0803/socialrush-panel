@@ -1,0 +1,32 @@
+id,acceptance,status,evidence,limit
+C01,Optional analytics disabled by default,PASS,Real capture and trusted writer fixture denial before database or session allocation,No flags or live adapter configured
+C02,Explicit consent required,PASS,Consent authority and API fixtures require durable valid receipt,A readable cookie cannot authorize server
+C03,Consent denial DNT and GPC,PASS,Browser and server negative fixtures,Hosted behavior untested
+C04,Withdrawal and replacement invalidate old receipt,PASS,Old receipt replay denied after withdrawal and regrant,Durable shared adapter required before activation
+C05,Concurrent event replay prevention,PASS,Atomic consume fixture permits one duplicate only,No production store installed
+C06,Withdrawal race and disabled-feature revocation,PASS,Atomic recheck fixture and revoked receipt after reactivation,Future repository must enforce transaction contract
+C07,Failed withdrawal acknowledgement,PASS,API returns503; browser returns unconfirmed and stops locally,No false completed claim
+C08,Preview QA internal synthetic and unknown exclusion,PASS,Exact-origin deployment dataset and trusted classification fixture negatives,Runtime classification adapter not installed
+C09,Personal destinations tokens payment references and raw IDs excluded,PASS,Client and server sanitizer plus trusted writer fixtures,Legacy stored data not rewritten
+C10,All first-party and third-party source capture paths audited,PASS,privacy-audit.md and source inventory,Hosted injection or provider scripts not independently verified
+C11,Necessary operational security and financial records preserved,PASS,Payment recovery security schema and business-operation source comparison,Optional telemetry can be dropped without undoing operations
+C12,Durable consent backend preference UI and live activation,BLOCKED,No provision or production settings changed,Requires explicit approval and retention/security review
+I01,Exact heads dependencies and reviews,PASS,baseline-evidence.json,No independent approval inferred from empty review lists
+I02,Five text conflicts resolved in isolated candidate,PASS,integration-resolution.json; four recovery/form paths retain765,Workflow extended explicitly; no existing PR merged
+I03,Independent source integration approval,BLOCKED,All predecessors remain draft and unmerged,Source selection for candidate is not release approval
+I04,Existing unit suite,PASS,263 tests; all14 local CI test command groups pass,Groups overlap; no inflated unique-test total
+I05,New consent isolation and finance regressions,PASS,16 consent/isolation and36 finance cases,36 includes30 prior Phase3 cases
+I06,Complete integrated local browser regression,NOT RUN,Pending optimized frozen build and suite completion,Final result recorded in PR body
+I07,Exact-head GitHub CI,NOT RUN,Pending publication,Final CI recorded in PR body without rewriting tested commit
+I08,TypeScript targeted lint and optimized build,PASS,Explicit typecheck and targeted lint exit0; optimized build exit0,Aligned final browser build and current CI recorded in PR body
+Q01,Dedicated QA metadata read-only inspection,PASS,qa-metadata.json; project healthy; no Edge Functions/branches listed,No credentials or customer rows read
+Q02,Exact preview client server direct-database identity,BLOCKED,No candidate deployment created,Metadata names or protection do not prove runtime identities
+Q03,Payments fulfillment worker cron and notifications isolated,BLOCKED,Provider variable names present on older preview; runtime unknown,No calls jobs email or configuration changes
+Q04,Authenticated checkout QA,BLOCKED,Isolation and separate authorization prerequisites absent,No real account or transaction used
+Q05,Local dotenv and network isolation,PASS,Generated env sentinel regression; denied outbound transport,Hosted isolation not inferred
+F01,Signed prior-period corrections and losses,PASS,Synthetic posted-period and replay tests,Historical orders unmodified
+F02,Wallet balances classified as liabilities,PASS,Deposit application refund and negative-liability tests,Never earned revenue
+F03,Incomplete financial coverage explicitly unknown,PASS,Missing unverified and base revenue coverage cases,No live ledger or accountant audit
+F04,Admin profit CAC retention and service dashboard specifications,PASS,business-roadmap.md,Adapters authorization and reconciliation not enabled
+R01,Manual accessibility and field business improvement,NOT RUN,Previous manual and field gates remain open,No compliance conversion or profit uplift claim
+R02,Production release GO,BLOCKED,HOLD despite local and CI results,No merge deploy production mutation email indexing or bypass

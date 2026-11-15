@@ -1,19 +1,13 @@
 import "server-only";
+import { authorizeTrustedAnalytics } from "./consent-runtime";
+import { analyticsPathBucket, coarseAttribution, privateSafeMetadata } from "./privacy";
 import { createAdminClient } from "@/lib/supabase/admin";
+import { shouldIgnoreAnalyticsCollection } from "./collection-environment";
 import { trustedAnalyticsEvents, type AnalyticsProperties } from "./events";
 
 export type TrustedAnalyticsEvent = (typeof trustedAnalyticsEvents)[number];
 
-const safeMetadata = (value: AnalyticsProperties = {}) =>
-  Object.fromEntries(
-    Object.entries(value)
-      .filter(
-        ([key, item]) =>
-          /^[a-z_]{1,40}$/.test(key) &&
-          ["string", "number", "boolean"].includes(typeof item),
-      )
-      .slice(0, 12),
-  );
+const safeMetadata = privateSafeMetadata;
 
 type AttributionRow = {
   anonymous_session_id?: string | null;
@@ -38,6 +32,11 @@ export async function recordTrustedEvent(input: {
   eventId: string;
   metadata?: AnalyticsProperties;
 }) {
+  // Suppress trusted events in all non-production deployments before admin client creation.
+  // Checkout and authentication outcomes still succeed; only analytics is skipped.
+  if (shouldIgnoreAnalyticsCollection(undefined, process.env.VERCEL_ENV)) return;
+  const consent = await authorizeTrustedAnalytics(input.eventId);
+  if (!consent) return;
   try {
     const admin = createAdminClient();
     const { data } = await admin
@@ -45,7 +44,7 @@ export async function recordTrustedEvent(input: {
       .select(
         "anonymous_session_id,source,medium,campaign,content,term,referring_domain,safe_metadata",
       )
-      .eq("customer_id", input.customerId)
+      .eq("anonymous_session_id", consent.sessionId)
       .not("source", "is", null)
       .order("occurred_at", { ascending: false })
       .limit(1)
@@ -72,19 +71,17 @@ export async function recordTrustedEvent(input: {
     const { error: writeError } = await admin.from("analytics_events").insert(
       {
         event_name: input.eventName,
-        anonymous_session_id: attribution?.anonymous_session_id || null,
-        customer_id: input.customerId,
-        event_id: input.eventId,
-        page_path: input.pagePath.startsWith("/")
-          ? input.pagePath.slice(0, 300)
-          : "/",
+        anonymous_session_id: consent.sessionId,
+        customer_id: null,
+        event_id: consent.eventId,
+        page_path: analyticsPathBucket(input.pagePath),
         device_category: "unknown",
-        source: attribution?.source || null,
-        medium: attribution?.medium || null,
-        campaign: attribution?.campaign || null,
-        content: attribution?.content || null,
-        term: attribution?.term || null,
-        referring_domain: attribution?.referring_domain || null,
+        source: coarseAttribution({source: attribution?.source}).source,
+        medium: coarseAttribution({medium: attribution?.medium}).medium,
+        campaign: null,
+        content: null,
+        term: null,
+        referring_domain: null,
         safe_metadata: safeMetadata(metadata),
       },
     );

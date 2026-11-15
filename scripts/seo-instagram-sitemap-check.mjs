@@ -1,4 +1,5 @@
 #!/usr/bin/env node
+import { fetchSeo } from "./lib/seo-request.mjs";
 
 const BASE_URL = new URL(process.env.SEO_BASE_URL || "https://www.getsocialrush.com");
 const REQUEST_TIMEOUT_MS = 30000;
@@ -102,7 +103,7 @@ async function fetchUrl(url, redirect = "manual") {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), REQUEST_TIMEOUT_MS);
   try {
-    return await fetch(url, {
+    return await fetchSeo(url, BASE_URL, process.env.SEO_TRANSPORT_ORIGIN, {
       redirect,
       signal: controller.signal,
       headers: {

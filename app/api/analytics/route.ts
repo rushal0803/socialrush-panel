@@ -1,177 +1,37 @@
+import { shouldIgnoreAnalyticsCollection } from "@/lib/analytics/collection-environment";
 import { NextRequest, NextResponse } from "next/server";
 import { createClient } from "@/lib/supabase/server";
 import { clientAnalyticsEvents } from "@/lib/analytics/events";
-import { isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "@/lib/analytics/session";
+import { authorizeOptionalEvent } from "@/lib/analytics/consent-authority";
+import { consentRepository, consentEnvironment } from "@/lib/analytics/consent-runtime";
+import { CONSENT_COOKIE, analyticsPathBucket, coarseAttribution, privateSafeMetadata, productionCollectionAllowed } from "@/lib/analytics/privacy";
+import { activeSmmServices } from "@/lib/smm-service-catalog";
 import { requireJson, rateLimit } from "@/lib/security/request";
 
-const safeKeys = new Set([
-  "step",
-  "payment_path",
-  "link_type",
-  "validation_passed",
-  "error_category",
-  "technical_reference",
-  "currency",
-  "method",
-  "reorder",
-  "metric",
-  "value",
-  "release",
-  "page_template",
-  "navigation_type",
-  "rating",
-  "surface",
-  "market",
-  "country_page_type",
-  "referrer_type",
-  "landing_path",
-  "attribution_model",
-  "campaign",
-  "recovery_campaign",
-  "http_status",
-  "action",
-  "reward",
-  "minimum",
-  "quantity",
-  "total",
-]);
-const trim = (value: unknown, length: number) =>
-  typeof value === "string" ? value.trim().slice(0, length) || null : null;
-
 export async function POST(request: NextRequest) {
-  const jsonError = requireJson(request, 8_192);
-  if (jsonError) return jsonError;
-  const limited = rateLimit(request, "analytics", 120, 60_000);
-  if (limited) return limited;
-
-  const body = (await request.json().catch(() => null)) as Record<
-    string,
-    unknown
-  > | null;
-  if (!body || !clientAnalyticsEvents.includes(body.event as never)) {
-    return new NextResponse(null, { status: 204 });
-  }
-
-  const cookie = request.cookies.get("sr_analytics_session")?.value;
-  // Two initial sendBeacon requests can arrive before either receives Set-Cookie.
-  // The validated client token correlates those requests; an existing cookie wins.
-  const session = resolveAnalyticsSessionId(cookie, body.sessionId, () => crypto.randomUUID());
-  const width = Number(request.headers.get("sec-ch-viewport-width") || 0);
-  const mobile = request.headers.get("sec-ch-ua-mobile") === "?1";
-  const device = mobile
-    ? "mobile"
-    : width && width < 1024
-      ? "tablet"
-      : "desktop";
-  const ua = request.headers.get("user-agent") || "";
-  const browser = /Edg/i.test(ua)
-    ? "Edge"
-    : /Chrome/i.test(ua)
-      ? "Chrome"
-      : /Firefox/i.test(ua)
-        ? "Firefox"
-        : /Safari/i.test(ua)
-          ? "Safari"
-          : "Other";
-
-  const rawMetadata =
-    body.metadata && typeof body.metadata === "object" ? body.metadata : {};
-  const metadata = Object.fromEntries(
-    Object.entries(rawMetadata as Record<string, unknown>)
-      .filter(
-        ([key, value]) =>
-          safeKeys.has(key) &&
-          ["string", "number", "boolean"].includes(typeof value),
-      )
-      .slice(0, 12),
-  ) as Record<string, string | number | boolean>;
-
-  const rawAttribution =
-    body.attribution &&
-    typeof body.attribution === "object" &&
-    !Array.isArray(body.attribution)
-      ? (body.attribution as Record<string, unknown>)
-      : {};
-
-  const source = trim(rawAttribution.source, 100);
-  const medium = trim(rawAttribution.medium, 100);
-  const campaign = trim(rawAttribution.campaign, 150);
-  const content = trim(rawAttribution.content, 150);
-  const term = trim(rawAttribution.term, 150);
-  const referringDomain = trim(rawAttribution.referringDomain, 150);
-  const landingPathRaw = trim(rawAttribution.landingPath, 300);
-  const landingPath =
-    landingPathRaw?.startsWith("/") ? landingPathRaw.split("?")[0] : null;
-
-  let requestPage: URL | null = null;
+  // Deny before parsing, optional session allocation, auth or database access.
+  if (shouldIgnoreAnalyticsCollection(request.nextUrl.hostname, process.env.VERCEL_ENV) || !productionCollectionAllowed(request.nextUrl.origin,consentEnvironment())) return new NextResponse(null,{status:204});
+  const repo=consentRepository(); if(!repo)return new NextResponse(null,{status:204});
+  if(request.headers.get("origin")!==request.nextUrl.origin)return new NextResponse(null,{status:403});
+  const error=requireJson(request,8192)||rateLimit(request,"analytics",120,60_000);if(error)return error;
+  const body=await request.json().catch(()=>null);
+  if(!body || !clientAnalyticsEvents.includes(body.event))return new NextResponse(null,{status:204});
   try {
-    const referrer = request.headers.get("referer");
-    requestPage = referrer ? new URL(referrer) : null;
-  } catch {
-    // The request referer is an optional compatibility fallback only.
-  }
-
-  if (landingPath && !metadata.landing_path) {
-    metadata.landing_path = landingPath;
-  }
-  if ((source || medium || campaign || referringDomain) && !metadata.attribution_model) {
-    metadata.attribution_model = "first_touch";
-  }
-
-  const db = await createClient();
-  try {
-    await db.rpc("record_analytics_event", {
-      p_event_name: body.event,
-      p_session_id: session,
-      p_page_path: trim(body.pagePath, 300) || "/",
-      p_platform: trim(body.platform, 40),
-      p_service_code: trim(body.serviceCode, 100),
-      p_package_id: trim(body.packageId, 100),
-      p_device_category: device,
-      p_browser_family: browser,
-      p_screen_width_category: width
-        ? width < 480
-          ? "compact"
-          : width < 1024
-            ? "medium"
-            : "wide"
-        : "unknown",
-      p_source:
-        source ||
-        requestPage?.searchParams.get("utm_source")?.slice(0, 100) ||
-        null,
-      p_medium:
-        medium ||
-        requestPage?.searchParams.get("utm_medium")?.slice(0, 100) ||
-        null,
-      p_campaign:
-        campaign ||
-        requestPage?.searchParams.get("utm_campaign")?.slice(0, 150) ||
-        null,
-      p_content:
-        content ||
-        requestPage?.searchParams.get("utm_content")?.slice(0, 150) ||
-        null,
-      p_term:
-        term ||
-        requestPage?.searchParams.get("utm_term")?.slice(0, 150) ||
-        null,
-      p_referring_domain: referringDomain,
-      p_metadata: metadata,
+    const receipt=request.cookies.get(CONSENT_COOKIE)?.value;
+    if(!await authorizeOptionalEvent(request,receipt,body.eventId,repo,consentEnvironment()))return new NextResponse(null,{status:204});
+    const db=await createClient();
+    const raw=body.attribution && typeof body.attribution==="object"?body.attribution:{};
+    const attribution=coarseAttribution(raw);
+    await db.rpc("record_analytics_event",{
+      p_event_name:body.event,p_session_id:receipt,
+      p_page_path:analyticsPathBucket(typeof body.pagePath==="string"?body.pagePath:"/other"),
+      p_service_code:activeSmmServices.some(s=>s.code===body.serviceCode)?body.serviceCode:null,
+      p_platform:["instagram","youtube","linkedin","facebook","tiktok","telegram","x"].includes(body.platform)?body.platform:null,
+      p_package_id:null,p_device_category:request.headers.get("sec-ch-ua-mobile")==="?1"?"mobile":"unknown",
+      p_browser_family:"unknown",p_screen_width_category:"unknown",p_source:attribution.source,p_medium:attribution.medium,
+      p_campaign:null,p_content:null,p_term:null,p_referring_domain:null,
+      p_metadata:privateSafeMetadata(body.metadata && typeof body.metadata==="object"?body.metadata:{}),
     });
-  } catch {
-    /* Analytics never blocks navigation. */
-  }
-
-  const response = new NextResponse(null, { status: 204 });
-  if (!isValidAnalyticsSessionId(cookie)) {
-    response.cookies.set("sr_analytics_session", session, {
-      httpOnly: true,
-      sameSite: "lax",
-      secure: process.env.NODE_ENV === "production",
-      maxAge: 60 * 60 * 24 * 30,
-      path: "/",
-    });
-  }
-  return response;
+  } catch { /* Optional telemetry cannot block a customer action; no unsafe fallback. */ }
+  const response=new NextResponse(null,{status:204});response.headers.set("Cache-Control","no-store");return response;
 }

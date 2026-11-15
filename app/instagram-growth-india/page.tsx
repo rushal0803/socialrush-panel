@@ -1,3 +1,4 @@
+import PlatformBuyerDecisions from "@/components/seo/PlatformBuyerDecisions";
 import type { Metadata } from "next";
 import Link from "next/link";
 import {
@@ -339,6 +340,6 @@ export default function InstagramGrowthIndiaPage() {
           </div>
         </section>
       </div>
-    </PublicShell>
+    <PlatformBuyerDecisions platform="instagram" /></PublicShell>
   );
 }

@@ -1,0 +1,36 @@
+[
+  {
+    "pr": 744,
+    "identical_source_files_in_747": [
+      ".github/workflows/pre-merge-smoke-tests.yml",
+      "components/seo/SearchDemandPriceSection.tsx",
+      "docs/seo-discovery-audit-20261108.md",
+      "lib/seo/search-demand.ts",
+      "tests/unit/search-demand-pricing-precision.test.ts"
+    ],
+    "combined_files_differing": []
+  },
+  {
+    "pr": 745,
+    "identical_source_files_in_747": [
+      "components/analytics/PageAnalytics.tsx",
+      "docs/seo-google-referrer-fix-20261108.md",
+      "lib/analytics/events.ts",
+      "tests/unit/phase45-traffic-engine.test.ts"
+    ],
+    "combined_files_differing": []
+  },
+  {
+    "pr": 746,
+    "identical_source_files_in_747": [
+      "components/marketing/MarketingFooter.tsx",
+      "components/marketing/TelegramFollowersLanding.tsx",
+      "components/seo/IndiaCommercialServiceJsonLd.tsx",
+      "docs/seo-commercial-breadcrumb-audit-20261108.md",
+      "lib/seo/commercial-service-breadcrumbs.ts",
+      "package.json",
+      "tests/unit/commercial-service-breadcrumbs.test.ts"
+    ],
+    "combined_files_differing": []
+  }
+]

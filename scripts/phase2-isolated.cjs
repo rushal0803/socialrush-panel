@@ -11,9 +11,12 @@ const child = spawn(process.execPath, args, {
   stdio: 'inherit',
   env: {
     PATH: process.env.PATH, NEXT_TELEMETRY_DISABLED: '1', VERCEL_ENV: 'development',
-    NEXT_PUBLIC_SUPABASE_URL: 'http://127.0.0.1:3001',
+    // Match the browser authority exactly; retain production CSP unchanged.
+    NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:' + port,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: 'synthetic-anon', SUPABASE_SERVICE_ROLE_KEY: 'synthetic-service',
-    NODE_OPTIONS: '--require=' + path.resolve('scripts/phase2-offline-transport.cjs'),
+    // Whitelisted in-memory fixture modes only; never inherit provider secrets.
+    ...(process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' ? { RESPONSIVE_PAYMENT_FIXTURE: '1' } : {}),
+    NODE_OPTIONS: '--require=' + path.resolve('scripts/phase2-offline-transport.cjs') + ' --require=' + path.resolve('scripts/phase4-no-dotenv.cjs'),
   },
 });
 for (const signal of ['SIGINT', 'SIGTERM']) process.on(signal, () => child.kill(signal));

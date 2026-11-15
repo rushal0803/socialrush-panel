@@ -1,0 +1,15 @@
+{
+  "state": "publication-time evidence; complete browser and GitHub CI are updated in PR body",
+  "unitPass": 263,
+  "consentAndIsolation": 16,
+  "financial": 36,
+  "financialIncludesPriorPhase3": 30,
+  "allCiUnitSecuritySeoCommandGroups": 14,
+  "failedGroups": [],
+  "localStaticGroups": 16,
+  "failedStaticGroups": [],
+  "seoTransportFixtures": 4,
+  "browser": "RUNNING: all 460 integrated cases, loopback, retries0",
+  "githubCi": "NOT RUN before publication",
+  "release": "HOLD"
+}

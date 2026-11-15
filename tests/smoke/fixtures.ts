@@ -8,6 +8,12 @@ export const test = base.extend<{ privacyPreference: void }>({
     // TLS listener, so remove only that directive from local navigation headers.
     // APIRequestContext still reads the original policy for the CSP smoke check.
     if (baseURL && baseURL.startsWith("http://") && ["localhost", "127.0.0.1"].includes(new URL(baseURL).hostname)) {
+      // Fixture QA must never follow third-party analytics/provider traffic.
+      await context.route("**/*", route => {
+        const url = new URL(route.request().url());
+        return ["localhost", "127.0.0.1", "[::1]"].includes(url.hostname) || ["data:","blob:"].includes(url.protocol)
+          ? route.fallback() : route.abort();
+      });
       await context.route(`${new URL(baseURL).origin}/**`, async route => {
         if (route.request().resourceType() !== "document" || route.request().method() !== "GET") return route.continue();
         const response = await route.fetch({ maxRedirects: 0 });

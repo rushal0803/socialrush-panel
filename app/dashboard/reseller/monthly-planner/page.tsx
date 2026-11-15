@@ -200,12 +200,12 @@ export default function MonthlyPlanBuilderPage() {
   return (
     <main className="dashboard-premium-page mx-auto w-full max-w-[1500px] px-4 pb-12 pt-5 text-white sm:px-6 lg:px-8">
       <section className="overflow-hidden rounded-[1.6rem] border border-orange-400/20 bg-[radial-gradient(circle_at_top_right,rgba(255,153,0,.18),transparent_34%),linear-gradient(125deg,#17150f,#0f1117_62%)] p-5 sm:p-7 lg:p-8">
-        <div className="grid gap-7 lg:grid-cols-[1.2fr_.8fr] lg:items-end">
+        <div className="grid gap-7 xl:grid-cols-[1.2fr_.8fr] xl:items-end">
           <div>
             <p className="text-[10px] font-black uppercase tracking-[.18em] text-orange-300">Agency revenue conversion</p>
             <h1 className="mt-3 max-w-4xl text-3xl font-black tracking-[-.035em] sm:text-4xl lg:text-5xl">Build a monthly client plan with margin before you quote.</h1>
             <p className="mt-4 max-w-3xl text-sm leading-7 text-slate-300 sm:text-base">Choose a client, use the current SocialRUSH catalog stack as your fulfillment-cost baseline, add your own agency markup, then copy a client-ready monthly scope. Orders still run one by one through normal checkout with final validation.</p>
-            <div className="mt-6 flex flex-col gap-3 sm:flex-row">
+            <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
               <Link href="/dashboard/reseller" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">← Reseller Hub</Link>
               <Link href="/dashboard/reseller/portfolio" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><CalendarClock className="h-4 w-4"/>Portfolio</Link><Link href="/dashboard/reseller/monthly-plans" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm"><History className="h-4 w-4"/>Saved plans</Link>
               <Link href="/dashboard/retainers" className="btn-dashboard-secondary inline-flex min-h-12 items-center justify-center gap-2 px-5 text-sm">Recurring Revenue Center</Link>
