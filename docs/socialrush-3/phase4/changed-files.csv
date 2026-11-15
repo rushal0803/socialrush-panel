@@ -104,6 +104,7 @@ A,docs/seo/site-crawl-20261109.json
 A,docs/seo/vercel-head-verification-20261109.json
 A,docs/socialrush-3/phase4/README.md
 A,docs/socialrush-3/phase4/acceptance.csv
+A,docs/socialrush-3/phase4/analytics-ingestion-permissions.proposed.sql
 A,docs/socialrush-3/phase4/baseline-evidence.json
 A,docs/socialrush-3/phase4/business-roadmap.md
 A,docs/socialrush-3/phase4/changed-files.csv
@@ -174,6 +175,7 @@ A,tests/smoke/service-page-batch5.spec.ts
 A,tests/smoke/service-page-batch6.spec.ts
 A,tests/smoke/service-page-evidence.spec.ts
 A,tests/smoke/service-quantity-hydration.spec.ts
+A,tests/sql/phase4-analytics-permissions.integration.sql
 A,tests/unit/analytics-collection-environment.test.ts
 A,tests/unit/commercial-service-breadcrumbs.test.ts
 A,tests/unit/indexing-recovery.test.ts

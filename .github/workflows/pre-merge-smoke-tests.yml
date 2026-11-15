@@ -191,6 +191,10 @@ jobs:
         env:
           PGPASSWORD: wallet_fixture_only
         run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/manual-wallet-review.integration.sql
+      - name: Test proposed analytics permissions in disposable PostgreSQL only
+        env:
+          PGPASSWORD: wallet_fixture_only
+        run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/phase4-analytics-permissions.integration.sql
 
   perf-evidence:
     name: PR 630 mobile/desktop performance evidence (non-release)

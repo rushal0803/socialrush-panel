@@ -1,6 +1,7 @@
 import { shouldIgnoreAnalyticsCollection } from "@/lib/analytics/collection-environment";
 import { NextRequest, NextResponse } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { createHash } from "node:crypto";
+import { createAdminClient } from "@/lib/supabase/admin";
 import { clientAnalyticsEvents } from "@/lib/analytics/events";
 import { authorizeOptionalEvent } from "@/lib/analytics/consent-authority";
 import { consentRepository, consentEnvironment } from "@/lib/analytics/consent-runtime";
@@ -19,18 +20,19 @@ export async function POST(request: NextRequest) {
   try {
     const receipt=request.cookies.get(CONSENT_COOKIE)?.value;
     if(!await authorizeOptionalEvent(request,receipt,body.eventId,repo,consentEnvironment()))return new NextResponse(null,{status:204});
-    const db=await createClient();
+    const db=createAdminClient();
     const raw=body.attribution && typeof body.attribution==="object"?body.attribution:{};
     const attribution=coarseAttribution(raw);
-    await db.rpc("record_analytics_event",{
-      p_event_name:body.event,p_session_id:receipt,
-      p_page_path:analyticsPathBucket(typeof body.pagePath==="string"?body.pagePath:"/other"),
-      p_service_code:activeSmmServices.some(s=>s.code===body.serviceCode)?body.serviceCode:null,
-      p_platform:["instagram","youtube","linkedin","facebook","tiktok","telegram","x"].includes(body.platform)?body.platform:null,
-      p_package_id:null,p_device_category:request.headers.get("sec-ch-ua-mobile")==="?1"?"mobile":"unknown",
-      p_browser_family:"unknown",p_screen_width_category:"unknown",p_source:attribution.source,p_medium:attribution.medium,
-      p_campaign:null,p_content:null,p_term:null,p_referring_domain:null,
-      p_metadata:privateSafeMetadata(body.metadata && typeof body.metadata==="object"?body.metadata:{}),
+    await db.from("analytics_events").insert({
+      customer_id:null,event_id:"client:"+createHash("sha256").update(body.eventId).digest("hex"),
+      event_name:body.event,anonymous_session_id:receipt,
+      page_path:analyticsPathBucket(typeof body.pagePath==="string"?body.pagePath:"/other"),
+      service_code:activeSmmServices.some(s=>s.code===body.serviceCode)?body.serviceCode:null,
+      platform:["instagram","youtube","linkedin","facebook","tiktok","telegram","x"].includes(body.platform)?body.platform:null,
+      package_id:null,device_category:request.headers.get("sec-ch-ua-mobile")==="?1"?"mobile":"unknown",
+      browser_family:"unknown",screen_width_category:"unknown",source:attribution.source,medium:attribution.medium,
+      campaign:null,content:null,term:null,referring_domain:null,
+      safe_metadata:privateSafeMetadata(body.metadata && typeof body.metadata==="object"?body.metadata:{}),
     });
   } catch { /* Optional telemetry cannot block a customer action; no unsafe fallback. */ }
   const response=new NextResponse(null,{status:204});response.headers.set("Cache-Control","no-store");return response;

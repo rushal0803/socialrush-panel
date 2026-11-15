@@ -11,6 +11,7 @@ C09,Personal destinations tokens payment references and raw IDs excluded,PASS,Cl
 C10,All first-party and third-party source capture paths audited,PASS,privacy-audit.md and source inventory,Hosted injection or provider scripts not independently verified
 C11,Necessary operational security and financial records preserved,PASS,Payment recovery security schema and business-operation source comparison,Optional telemetry can be dropped without undoing operations
 C12,Durable consent backend preference UI and live activation,BLOCKED,No provision or production settings changed,Requires explicit approval and retention/security review
+C13,Legacy direct database analytics ingress,BLOCKED,Source RPC grants anon/authenticated; unapplied restriction proposal and disposable CI test,No current hosted privilege verification or approved rollout
 I01,Exact heads dependencies and reviews,PASS,baseline-evidence.json,No independent approval inferred from empty review lists
 I02,Five text conflicts resolved in isolated candidate,PASS,integration-resolution.json; four recovery/form paths retain765,Workflow extended explicitly; no existing PR merged
 I03,Independent source integration approval,BLOCKED,All predecessors remain draft and unmerged,Source selection for candidate is not release approval

@@ -6,7 +6,7 @@
 |---|---|
 | PageAnalytics, tracked links, checkout trackers, experiment exposure, WebVitals and all `track()` callers | Central browser consent gate before attribution/session storage or beacon/fetch; GPC/DNT and canonical deployment/dataset activation |
 | LoginForm / RegisterForm auth analytics POST | Same browser gate; authentication itself remains independent |
-| `/api/analytics` | Environment and absent-adapter denial before parsing/auth/DB/session allocation; explicit receipt, trusted public classification and atomic replay claim before sanitized RPC |
+| `/api/analytics` | Environment and absent-adapter denial before parsing/auth/DB/session allocation; explicit receipt, trusted public classification and atomic replay claim before minimized server-only insert |
 | `/api/analytics/auth-completed` | Privacy/environment/receipt/classification denial before auth lookup; writer also authorizes consent |
 | `recordTrustedEvent` callers after operational commits | Preview guard plus consent authority before privileged client; workers without a consent context cannot fall back to marketing capture |
 | Consent preference endpoint/helper | Same-origin explicit choice, necessary revocation handling, Secure/HttpOnly opaque receipt, no automatic grant; failed durable withdrawal is not acknowledged as complete |
@@ -32,5 +32,13 @@ Client IDs come from a new per-event random UUID; correlation is issued by the s
 Only coarse source/medium are retained. Paid-click **presence** can classify a paid source, but click identifiers are neither stored nor transmitted. Coarse established attribution survives ordinary navigation; explicit new paid markers can override stale organic attribution. Raw referrer domains and landing paths are not retained. This intentionally changes report dimensions; historical and consented/coarse cohorts cannot be treated as directly comparable.
 
 The old client-triggered authenticated signup/login telemetry is not independent proof of a fresh signup/login transaction. Verified funnel outcomes and any future paid-order adapter must reconcile committed authoritative facts, not trust the event name, a wallet funding event, UTR submission or an authenticated client assertion. Activation remains blocked until provenance/consent handling is reviewed.
+
+## Legacy database ingress — explicit activation blocker
+
+The repository's latest `record_analytics_event` SQL definition grants EXECUTE to anon/authenticated, runs SECURITY DEFINER and derives `auth.uid()`. Direct database callers could therefore bypass the app consent boundary; source grants are not proof of current deployed privileges. The candidate API no longer invokes that RPC or forwards user authentication to its analytics data transport. It inserts minimized rows through a server-only client **after** authorization and explicitly sets customer_id null. Necessary request authentication/classification is separate from analytics payloads/rows; no request cookies or authorization headers are logged or copied into events.
+
+[Permission restriction proposal](analytics-ingestion-permissions.proposed.sql) revokes all legacy RPC overloads from PUBLIC/anon/authenticated and direct analytics table mutation for those roles, retaining server-only table access. It is **not installed as a migration and not applied to any hosted database**. A disposable GitHub PostgreSQL fixture tests the actual SQL privilege effect. Production rollout and independent privilege verification remain BLOCKED pending explicit approval. Default-off app capture alone does not certify this legacy database ingress as closed.
+
+The local Supabase CLI could not initialize its settings directory on the read-only home filesystem. No home permissions or credentials were changed. The SQL is deliberately a review proposal outside the migration directory; supported-tool migration creation and its rollout require a separate authorized step. No invented migration filename or live SQL execution is used as a workaround.
 
 See consent fixture logs and the acceptance matrix for actual cases. No production identifiers or credentials are used in the fixtures.

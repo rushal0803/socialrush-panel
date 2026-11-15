@@ -11,5 +11,8 @@
   "seoTransportFixtures": 4,
   "browser": "RUNNING: all 460 integrated cases, loopback, retries0",
   "githubCi": "NOT RUN before publication",
-  "release": "HOLD"
+  "release": "HOLD",
+  "legacyDatabaseIngress": "BLOCKED: unapplied restriction proposal; disposable CI permission test pending",
+  "localBrowserBuildHead": "8e894ebd6284ee0de43c83e088302004deb1dafe",
+  "localBrowserScope": "default-disabled app capture; final permission writer path is separately source-executed in consent tests and rebuilt in final CI"
 }
