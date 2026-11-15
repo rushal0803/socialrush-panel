@@ -119,7 +119,9 @@ async function auditPlannerControls(page: Page) {
   }));
   for(const geometry of controls){
     expect(geometry.visible,JSON.stringify(geometry)).toBe(true);expect(geometry.enabled,JSON.stringify(geometry)).toBe(true);
-    expect(geometry.height,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.compact?36:44);
+    // DOMRect can differ by ~0.00003px after scrolling at fractional layout coordinates.
+    // A 0.001px numerical tolerance preserves the 36/44px CSS minimum.
+    expect(geometry.height + 0.001,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.compact?36:44);
     expect(geometry.width,JSON.stringify(geometry)).toBeGreaterThanOrEqual(36);
     expect(geometry.left,JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1);
     expect(geometry.right,JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.viewport+1);
