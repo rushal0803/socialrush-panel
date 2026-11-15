@@ -1,0 +1,90 @@
+
+Running 48 tests using 2 workers
+
+(node:4564) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:4565) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:3:5 › public navigation intent warms code without fetching live route data (15.8s)
+  ✓   2 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:17:5 › lazy comparison preserves selections, filters and trigger focus (15.8s)
+  ✓   3 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:34:5 › directory informational sections and FAQ remain in server HTML (803ms)
+  ✓   4 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:47:7 › deferred mobile content remains reachable on / (15.3s)
+  ✓   5 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:47:7 › deferred mobile content remains reachable on /services (19.6s)
+  ✓   6 [chromium] › tests/smoke/performance-mobile-followup.spec.ts:47:7 › deferred mobile content remains reachable on /packages (11.5s)
+  ✓   7 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › home reflows and exposes accessible controls at 320px (9.1s)
+  ✓   8 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › instagram reflows and exposes accessible controls at 320px (11.8s)
+  ✓   9 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › youtube reflows and exposes accessible controls at 320px (14.6s)
+  ✓  10 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › linkedin reflows and exposes accessible controls at 320px (14.5s)
+  ✓  11 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › home reflows and exposes accessible controls at 390px (9.8s)
+  ✓  13 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › youtube reflows and exposes accessible controls at 390px (12.0s)
+  ✓  12 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › instagram reflows and exposes accessible controls at 390px (13.4s)
+  ✓  15 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › home reflows and exposes accessible controls at 1440px (9.2s)
+  ✓  14 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › linkedin reflows and exposes accessible controls at 390px (10.6s)
+  ✓  16 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › instagram reflows and exposes accessible controls at 1440px (11.7s)
+  ✓  17 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › youtube reflows and exposes accessible controls at 1440px (15.9s)
+  ✓  18 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › linkedin reflows and exposes accessible controls at 1440px (15.2s)
+  ✓  19 [chromium] › tests/smoke/phase2-premium.spec.ts:49:5 › homepage search and categories retain the query and provide a recoverable empty state (13.2s)
+  ✓  21 [chromium] › tests/smoke/phase2-premium.spec.ts:88:5 › quantity and public link typed before hydration survive JavaScript loading (8.7s)
+  ✓  20 [chromium] › tests/smoke/phase2-premium.spec.ts:68:5 › quantity, summary and login handoff use unchanged catalog arithmetic; invalid text is retained (13.0s)
+  ✓  23 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 320px (16.9s)
+  ✓  24 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 360px (15.6s)
+  ✘  22 [chromium] › tests/smoke/phase2-premium.spec.ts:105:5 › scoped automated accessibility audit covers discovery and shared service forms (36.4s)
+(node:6077) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  25 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 375px (20.2s)
+  ✓  26 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 390px (20.9s)
+  ✓  27 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 412px (14.8s)
+  ✓  28 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 430px (16.5s)
+  ✓  29 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 600px (13.4s)
+  ✓  30 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 768px (17.9s)
+  ✓  31 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 1024px (18.3s)
+  ✓  33 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 1440px (21.8s)
+  ✓  32 [chromium] › tests/smoke/services-v2.spec.ts:20:7 › services catalogue and comparison fit 1280px (23.3s)
+  ✓  35 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest youtube order CTA retains service and quantity (17.2s)
+  ✓  34 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest instagram order CTA retains service and quantity (21.0s)
+  ✓  36 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest facebook order CTA retains service and quantity (12.2s)
+  ✓  37 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest linkedin order CTA retains service and quantity (13.2s)
+  ✓  38 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest x order CTA retains service and quantity (15.3s)
+  ✓  39 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest tiktok order CTA retains service and quantity (15.7s)
+  ✓  40 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › guest telegram order CTA retains service and quantity (15.7s)
+  ✓  41 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in instagram order CTA retains service and quantity (18.8s)
+  ✓  43 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in facebook order CTA retains service and quantity (11.7s)
+  ✓  42 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in youtube order CTA retains service and quantity (21.0s)
+  ✓  44 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in linkedin order CTA retains service and quantity (15.2s)
+  ✓  45 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in x order CTA retains service and quantity (15.4s)
+  ✓  47 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in telegram order CTA retains service and quantity (12.3s)
+  ✓  46 [chromium] › tests/smoke/services-v2.spec.ts:74:7 › signed-in tiktok order CTA retains service and quantity (15.5s)
+  ✓  48 [chromium] › tests/smoke/services-v2.spec.ts:97:5 › search, real categories, missing health and saved activity remain usable (9.5s)
+
+
+  1) [chromium] › tests/smoke/phase2-premium.spec.ts:105:5 › scoped automated accessibility audit covers discovery and shared service forms 
+
+    Test timeout of 30000ms exceeded.
+
+    Error: page.goto: net::ERR_ABORTED; maybe frame was detached?
+    Call log:
+      - navigating to "http://localhost:3107/buy-linkedin-followers-india", waiting until "networkidle"
+
+
+      105 | test("scoped automated accessibility audit covers discovery and shared service forms", async ({ page }, info) => {
+      106 |   for (const route of routes) {
+    > 107 |     await page.goto(route.path, { waitUntil: "networkidle" });
+          |                ^
+      108 |     await page.addScriptTag({ path: require.resolve("axe-core/axe.min.js") });
+      109 |     const selector = route.name === "home" ? "#services" : "[data-service-order-card]";
+      110 |     await page.locator(selector).first().scrollIntoViewIfNeeded();
+        at /workspace/work/phase2/tests/smoke/phase2-premium.spec.ts:107:16
+
+    Error Context: artifacts/phase2/ci-followup/browser/phase2-premium-scoped-auto-63b01-ry-and-shared-service-forms-chromium/error-context.md
+
+    attachment #5: trace (application/zip) ─────────────────────────────────────────────────────────
+    artifacts/phase2/ci-followup/browser/phase2-premium-scoped-auto-63b01-ry-and-shared-service-forms-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace artifacts/phase2/ci-followup/browser/phase2-premium-scoped-auto-63b01-ry-and-shared-service-forms-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  1 failed
+    [chromium] › tests/smoke/phase2-premium.spec.ts:105:5 › scoped automated accessibility audit covers discovery and shared service forms 
+  47 passed (6.4m)

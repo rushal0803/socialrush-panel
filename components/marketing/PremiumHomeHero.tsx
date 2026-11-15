@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/marketing/PublicCodeLink";
 import { ArrowRight, Check, LayoutDashboard, ListOrdered, Wallet } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import TrackedLink from "@/components/analytics/TrackedLink";

@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import Link from "@/components/marketing/PublicCodeLink";
 import { servicePaths } from "@/lib/seo/service-detail-paths";
 import { useMemo, useState } from "react";
 import { Search, ArrowRight } from "lucide-react";

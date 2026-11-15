@@ -38,7 +38,7 @@ test("Phase 31 retains first-party conversion-path tracking in both hero and cho
 test("Phase 31 keeps price-oriented CTAs without vague preview labels", () => {
   assert.match(hero, /Check Price &amp; Start/);
   assert.match(home, /<ServiceDiscovery/);
-  assert.match(read("components/marketing/services/ServicesCatalog.tsx"), /Check price &amp; details/);
+  assert.match(read("components/marketing/services/ServicesCatalog.tsx"), /Price &amp; terms/);
   assert.match(home, />Check Live Price <ArrowRight/);
   assert.doesNotMatch(home, />Preview <ArrowRight/);
 });

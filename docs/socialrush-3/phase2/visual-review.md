@@ -1,5 +1,7 @@
 # Local visual review — before and after
 
+Original after captures belong to initial Phase2 head `e2a6ee1a`. See [CI follow-up](ci-followup.md) for later card corrections and new captures. They are not silently reattributed to a newer head.
+
 Before = exact #763 (`94a2b39f`); after = this implementation. Both are local synthetic fixtures, not production/account screenshots. Click any image for its original size. No payment is submitted.
 
 ## Home

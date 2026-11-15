@@ -2,6 +2,8 @@
 
 **Release HOLD. Draft only.** This is a local, synthetic-data UI implementation, not an approved release or authenticated hosted QA result. No production change, merge, deployment, account test, real payment, email or indexing request was performed.
 
+> **Full-CI follow-up:** initial head `e2a6ee1a` later failed five broader browser tests. See [failure analysis and correction](ci-followup.md). Earlier focused PASS results below retain their original scope; they were not full CI approval.
+
 ## Verified starting point and dependency chain
 
 Fresh GitHub reads on 15 November 2026 (Asia/Calcutta) confirmed all four PRs draft and unmerged:

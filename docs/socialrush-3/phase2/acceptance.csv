@@ -18,3 +18,6 @@ P2-16,Hosted authenticated and backend/payment isolation,BLOCKED,No isolated aut
 P2-17,Full assistive-technology and composited contrast audit,NOT RUN,Axe reports color-contrast incompletes; no full manual AT session,Required before release certification
 P2-18,Field CWV conversion revenue uplift,NOT RUN,No live analytics or experiment execution,Only measurement hypotheses supplied
 P2-19,Production account checkout email indexing merge deployment,NOT RUN,Prohibited; local transport/browser mutation guards; branch deployment disabled,Keep draft and releaseHOLD
+P2-20,Original full GitHub smoke at e2a6ee1a,FAIL,273 passed; 67 skipped; five UI regressions; run43648912528,Historical result preserved; see ci-followup.md
+P2-21,Local follow-up regression cases,PASS,All five original failures pass; 47 of 48 first attempt plus unchanged axe rerun pass,One initial LinkedIn navigation abort remains disclosed
+P2-22,Fresh GitHub CI on follow-up,NOT RUN,Pending publication and execution; live status in PR,Not counted as PASS until completed
