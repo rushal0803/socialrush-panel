@@ -1,0 +1,32 @@
+id,acceptance,status,evidence,limitation
+A01,Exact heads and dependency chain,PASS,baseline-evidence.json,All remain draft and unmerged
+A02,Current core CI at predecessor heads,PASS,GitHub exact-head checks for760762763764,761 has no smoke or SQL result; optional performance skipped
+A03,Independent review approval,BLOCKED,Submitted reviews and inline threads empty,No approval inferred from absence of feedback
+A04,Overlap and conflict-resolution strategy,PASS,7 overlapping paths;5 conflicts; resolved simulation tree and109 contracts plus15 security,No merge or full integration certification
+A05,Exact protected hosted preview,BLOCKED,Vercel branch history returned0 deployments,Do not test an older SEO deployment as current head
+A06,Client server direct-database identity,BLOCKED,No matching runtime available,Variable names and protection are insufficient
+A07,Isolated synthetic fixture ownership,BLOCKED,Local fixtures only,No independently verified hosted tenant
+A08,Payment fulfillment and worker isolation,BLOCKED,Repository guards and crons inspected,No hosted runtime or independent egress proof
+A09,Authenticated mobile and desktop hosted QA,BLOCKED,Preconditions A05-A08 unproven,No real account or checkout attempted
+A10,Manual human keyboard and screen-reader audit,NOT RUN,No interactive desktop or installed screen reader,Scripted keyboard and axe cannot substitute
+A11,LinkedIn intermittent failure investigation,PASS,Original log explicitly30s timeout; split tests;12 repeat passes,No arbitrary-load reliability guarantee
+A12,Scripted responsive keyboard and scoped axe,PASS,21 browser tests plus2 keyboard rerun; browser-evidence.json,Local synthetic optimized764 build; contrast incompletes remain
+A13,Field performance and conversion gains,NOT RUN,Optional predecessor performance CI skipped; only raw local navigation samples,No CWV uplift or conversion claim
+A14,Release GO,BLOCKED,release-readiness.md,Release HOLD despite green local tests
+B01,Existing analytics audit,PASS,measurement-design.md source inventory,No live analytics queried
+B02,Consent and privacy-safe policy prototype,PASS,30 synthetic intelligence tests,Not wired to production capture
+B03,Existing capture meets consent and exclusion contract,FAIL,764 capture lacks explicit opt-in and complete exclusion gates,760 preview guards must survive integration; future adapter required
+B04,Sequential consented cohort prototype,PASS,Same-session ordered stages; replay and mixed-dataset tests,Discovery-entry cohort only; auth and direct-entry branches need adapters
+B05,Synthetic preview internal exclusion prototype,PASS,Context negative tests and distinct dataset labels,Authoritative runtime context still required
+B06,Net-profit cost and refund reconciliation prototype,PASS,Integer paise;9 cost classes; missing inputs null;losses and late refunds preserved,Supplied earned ex-tax facts and coverage are not independent audit proof
+B07,Admin retention AOV CAC and service report design,PASS,measurement-design.md and synthetic-report.json,Returning mix is not cohort retention; direct contribution is not service net profit
+B08,Live ledger adapters and admin authorization,BLOCKED,No endpoint or migration added,Accounting reconciliation and staff-access review required
+B09,Real profit revenue or conversion uplift,NOT RUN,Synthetic fixtures only,No business outcome claim
+D01,New isolated branch and draft PR,PASS,Exact head and file manifest in PR body,No merge or deployment
+D02,Existing design auth payment security SEO and prices preserved,PASS,Source comparison against c77f6bde,New pure modules unused by runtime
+D03,New unit fixture tests,PASS,30 intelligence cases; intelligence-tests.log,Offline only
+D04,Existing local regressions,PASS,237 unit and21 security-finance cases,Core CI required at new exact head
+D05,TypeScript and targeted lint,PASS,Explicit exits0,Existing repository build warnings retained
+D06,Isolated optimized build,PASS,Network-denied synthetic optimized build exit0,Existing warnings retained; no deployment
+D07,New exact-head GitHub CI,NOT RUN,Pending publication at evidence preparation,PR body supersedes this publication-time state
+D08,Production transactions emails indexing merge deployment,NOT RUN,Prohibited; branch deployment opt-out and synthetic transport,No safety prerequisite waived

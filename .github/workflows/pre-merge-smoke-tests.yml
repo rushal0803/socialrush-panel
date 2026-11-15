@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/socialrush-phase2-premium-20261115
       - fix/socialrush-phase1-security-20261115
       - audit/socialrush-phase0-profit-20261115
 
@@ -30,6 +31,8 @@ jobs:
           cache: npm
       - run: npm ci
       - run: npx tsc --noEmit
+      - name: Offline Phase 3 consent funnel and profit reconciliation fixtures
+        run: node --experimental-strip-types --test tests/unit/phase3-intelligence.test.ts
       - name: Phase 1 stubbed security and recovery regressions
         run: node --test tests/unit/phase1-security.test.cjs
       - name: Offline net-profit scenario and incomplete-cost regressions
