@@ -188,6 +188,7 @@ A,tests/fixtures/indexing-recovery-cohort.json
 A,tests/smoke/analytics-preview-exclusion.spec.ts
 M,tests/smoke/fixtures.ts
 A,tests/smoke/indexing-recovery.spec.ts
+M,tests/smoke/performance-mobile-scroll.spec.ts
 M,tests/smoke/phase22-responsive-completion.spec.ts
 M,tests/smoke/premium-design.spec.ts
 M,tests/smoke/premium-responsive.spec.ts
