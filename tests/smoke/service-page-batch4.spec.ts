@@ -41,15 +41,33 @@ for (const path of paths) {
         await detail.locator('summary').click();
         await expect(detail.locator('p')).toHaveText(answer);
       }
-      // Preserve the existing catch-all live-only handoff; no inline checkout mutation.
-      for (const selector of ['[data-service-primary-cta="live-dashboard"]','[data-service-live-handoff]']) {
-        const href = await page.locator(selector).getAttribute('href');
-        const target = new URL(href!, 'http://localhost');
-        expect(target.pathname).toBe('/dashboard/new-order');
-        expect(target.searchParams.get('service')).toBe(slug);
-        expect(target.searchParams.get('platform')).toBe(slug.startsWith('telegram') ? 'telegram' : 'x');
+      // Dedicated batch-four landings intentionally differ from the older
+      // catch-all: four have a local builder and two require live dashboard facts.
+      // Assert each service's intended handoff rather than obsolete catch-all selectors.
+      const inlineBuilderSlugs = new Set([
+        'telegram-post-views',
+        'telegram-post-reactions',
+        'twitter-crypto-likes',
+        'twitter-crypto-retweets',
+      ]);
+      const expectedPlatform = slug.startsWith('telegram') ? 'telegram' : 'x';
+      if (inlineBuilderSlugs.has(slug)) {
+        await expect(page.locator('[data-service-order-card]')).toHaveCount(1);
+        await expect(page.locator('main a[href="#order-builder"]')).toHaveCount(1);
+        await expect(page.locator('[data-service-order-card]')).toHaveAttribute('data-platform', expectedPlatform);
+        await expect(page.locator('[data-service-order-card] a').filter({ hasText: 'Continue to Secure Order' })).toHaveAttribute('href', '#');
+        await expect(page.locator('[data-service-live-handoff]')).toHaveCount(0);
+      } else {
+        await expect(page.locator('[data-service-order-card]')).toHaveCount(0);
+        const checkoutLinks = page.locator('main a[href^="/dashboard/new-order?"]');
+        expect(await checkoutLinks.count()).toBeGreaterThan(0);
+        for (const href of await checkoutLinks.evaluateAll(nodes => nodes.map(node => node.getAttribute('href')!))) {
+          const target = new URL(href, 'http://localhost');
+          expect(target.pathname).toBe('/dashboard/new-order');
+          expect(target.searchParams.get('service')).toBe(slug);
+          expect(target.searchParams.get('platform')).toBe(expectedPlatform);
+        }
       }
-      await expect(page.locator('[data-service-order-card]')).toHaveCount(0);
       const links = page.locator('[data-service-requirement-links]');
       await expect(links.getByRole('link', {name:'Read refund conditions'})).toHaveAttribute('href','/refund-policy');
       for (const href of await links.locator('a').evaluateAll(nodes => nodes.map(node => node.getAttribute('href')!))) expect((await request.get(href)).status()).toBe(200);
