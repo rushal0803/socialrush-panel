@@ -1,0 +1,18 @@
+
+Running 10 tests using 1 worker
+
+(node:53926) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/10] [chromium] › tests/smoke/performance-mobile-followup.spec.ts:34:5 › directory informational sections and FAQ remain in server HTML
+[2/10] [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:4:7 › Phase 32 service-page CRO system › static catalog service exposes inline exact-service builder
+[3/10] [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:23:7 › Phase 32 service-page CRO system › protected live-fact service avoids stale static price and hands off to live order
+[4/10] [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:47:9 › Phase 5 protected catalog landing journeys › /services/tiktok-likes keeps a safe 390px mobile order journey
+[5/10] [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:47:9 › Phase 5 protected catalog landing journeys › /services/telegram-post-views keeps a safe 390px mobile order journey
+[6/10] [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:47:9 › Phase 5 protected catalog landing journeys › /services/twitter-crypto-retweets keeps a safe 390px mobile order journey
+[7/10] [chromium] › tests/smoke/phase32-service-page-cro.spec.ts:91:7 › Phase 5 protected catalog landing journeys › specialty crypto comments never render the generic inline builder
+[8/10] [chromium] › tests/smoke/premium-design.spec.ts:23:5 › hero actions, sample labels and skip focus are understandable
+[9/10] [chromium] › tests/smoke/premium-design.spec.ts:32:5 › login email-to-recovery keyboard focus is understandable
+[10/10] [chromium] › tests/smoke/service-experience.spec.ts:54:5 › mobile order action clears support and can be dismissed
+  10 passed (28.5s)

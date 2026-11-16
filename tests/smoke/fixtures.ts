@@ -18,7 +18,12 @@ export const test = base.extend<{ privacyPreference: void }>({
       });
       await context.route(`${new URL(baseURL).origin}/**`, async route => {
         if (route.request().resourceType() !== "document" || route.request().method() !== "GET") return route.continue();
-        const response = await route.fetch({ maxRedirects: 0 });
+        const pathname = new URL(route.request().url()).pathname;
+        // The extra loopback proxy can race a closed keep-alive socket. Retry
+        // only ECONNRESET once for observed read-only public documents; never
+        // retry auth, account, API or payment operations, or HTTP errors.
+        const publicRead = pathname === "/" || pathname === "/services" || pathname.startsWith("/services/") || pathname.startsWith("/blog/") || /^\/buy-[a-z0-9-]+$/.test(pathname);
+        const response = await route.fetch({ maxRedirects: 0, maxRetries: publicRead ? 1 : 0 });
         // Windows WebKit cannot fulfill an intercepted redirect response.
         // Let the browser follow the real redirect; intercept its final document.
         if (response.status() >= 300 && response.status() < 400) return route.continue();

@@ -33,6 +33,10 @@ import LinkedInUsaFollowersLanding, {
  
 } from "@/components/marketing/LinkedInUsaFollowersLanding";
 
+// Catalog availability/pricing uses fresh no-store reads, including fallback
+// slugs. Keep this route request-rendered rather than switching after SSG.
+export const dynamic = "force-dynamic";
+
 const siteUrl = SEO_SITE_URL;
 
 // These catalog details are available to customers, but they do not yet have

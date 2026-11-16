@@ -20,13 +20,16 @@ for (const width of widths) {
   });
 }
 
-test("hero actions, sample labels and keyboard focus are understandable", async ({ page }) => {
+test("hero actions, sample labels and skip focus are understandable", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Check Price & Start", exact: true })).toHaveAttribute("href", "#order-demo");
   await expect(page.getByRole("link", { name: "Browse Services", exact: true }).first()).toHaveAttribute("href", "#services");
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
+});
+
+test("login email-to-recovery keyboard focus is understandable", async ({ page }) => {
   await page.goto("/login");
   await page.locator('input[name="email"]').focus();
   await expect(page.locator('input[name="email"]')).toBeFocused();

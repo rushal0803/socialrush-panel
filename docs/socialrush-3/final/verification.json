@@ -1,6 +1,6 @@
 {
   "date": "2026-11-16",
-  "scope": "Security-patched private install: Next15.5.29. Final exact-head CI/browser/build results in PR766 body. Earlier website/browser/zoom captures are pre-security-patch unless explicitly rerun.",
+  "scope": "Request-rendered catalog correction on private Next15.5.29; fresh complete524-case gate/CI pending in PR body. All incomplete/failed diagnostics preserved.",
   "tests": [
     {
       "name": "Existing unit suite",
@@ -165,6 +165,21 @@
       "retries": 0,
       "workers": 1,
       "log": "security-related-http.log"
+    },
+    {
+      "name": "Catalog rendering, scoped hero, readonly transport and keyboard regression",
+      "status": "PASS",
+      "passed": 10,
+      "workers": 1,
+      "retries": 0,
+      "log": "catalog-fixed-browser.log"
+    },
+    {
+      "name": "Catalog valid/unknown HTTP and canonical proof",
+      "status": "PASS",
+      "valid200": 4,
+      "unknown404": 1,
+      "log": "catalog-http-proof.json"
     }
   ],
   "historical_failures": [
@@ -204,6 +219,14 @@
       "flaky": 0,
       "durationMinutes": 9.98,
       "limit": "Article test combined keyboard checks with independent related HTTP checks. Restarted full suite after preserving all assertions and separating destination audits."
+    },
+    {
+      "scope": "Frozen523 diagnostic before catalog request-rendering correction",
+      "passed": 231,
+      "failed": 7,
+      "notRun": 285,
+      "flaky": 0,
+      "limit": "4 generic static-to-dynamic HTTP500s,2 connection resets,1 two-page hero deadline.2 interrupted cases are included in NOT RUN."
     }
   ],
   "reproduction": [

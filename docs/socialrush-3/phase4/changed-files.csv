@@ -103,6 +103,11 @@ A,docs/seo/service-batch5-remaining-20261109.json
 A,docs/seo/site-crawl-20261109.json
 A,docs/seo/vercel-head-verification-20261109.json
 A,docs/socialrush-3/final/README.md
+A,docs/socialrush-3/final/catalog-build.log
+A,docs/socialrush-3/final/catalog-fixed-browser.log
+A,docs/socialrush-3/final/catalog-http-proof.json
+A,docs/socialrush-3/final/catalog-native-zoom.log
+A,docs/socialrush-3/final/catalog-runtime-diagnostic.txt
 A,docs/socialrush-3/final/consent-isolation.log
 A,docs/socialrush-3/final/dependency-audit-after-all.json
 A,docs/socialrush-3/final/dependency-audit-after-production.json
@@ -202,8 +207,10 @@ A,tests/smoke/analytics-preview-exclusion.spec.ts
 M,tests/smoke/fixtures.ts
 A,tests/smoke/indexing-recovery.spec.ts
 M,tests/smoke/packages-v2.spec.ts
+M,tests/smoke/performance-mobile-followup.spec.ts
 M,tests/smoke/performance-mobile-scroll.spec.ts
 M,tests/smoke/phase22-responsive-completion.spec.ts
+M,tests/smoke/phase32-service-page-cro.spec.ts
 M,tests/smoke/premium-design.spec.ts
 M,tests/smoke/premium-responsive.spec.ts
 A,tests/smoke/profit-dashboard-preview.spec.ts
