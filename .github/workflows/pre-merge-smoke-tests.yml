@@ -39,7 +39,7 @@ jobs:
       - name: Phase 4 consent denial withdrawal replay and posted-period finance
         run: |
           node --test tests/unit/phase4-consent.test.cjs tests/unit/phase4-isolation.test.cjs
-          node --experimental-strip-types --test tests/unit/phase4-profit.test.ts
+          node --experimental-strip-types --test tests/unit/phase4-profit.test.ts tests/unit/profit-dashboard.test.ts
           node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/analytics-collection-environment.test.ts
       - name: Offline Phase 3 consent funnel and profit reconciliation fixtures
         run: node --experimental-strip-types --test tests/unit/phase3-intelligence.test.ts
@@ -97,7 +97,11 @@ jobs:
         run: |
           node scripts/phase4-qa-server.cjs stop 3001
           node scripts/phase4-qa-server.cjs start 3001
-          npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding' --workers=2 --global-timeout=150000
+          npx playwright test tests/smoke/premium-responsive.spec.ts --config playwright.phase4.config.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding' --workers=2 --global-timeout=150000 --output artifacts/phase4/customer-workspace --reporter=line
+      - name: Native Chromium 200 percent zoom (synthetic localhost only)
+        env:
+          NODE_OPTIONS: --require=./scripts/phase4-no-dotenv.cjs
+        run: node scripts/phase2-native-zoom.cjs
       - name: Attach customer workspace regression evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -159,6 +163,8 @@ jobs:
             test-results/services-v2*/
             test-results/phase2-premium*/
             artifacts/phase4/
+            artifacts/phase2/native-zoom/*.png
+            artifacts/phase2/native-zoom/results.json
             artifacts/service-final/chromium.log
             artifacts/service-final/smoke-server.log
             artifacts/packages-v2/

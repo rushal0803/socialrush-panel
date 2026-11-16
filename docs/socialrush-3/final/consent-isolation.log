@@ -1,0 +1,26 @@
+✔ deny by default, absent durable store, preview, QA and unknown environment (26.553343ms)
+✔ privacy choice {"dnt":"1"} denies grant/capture (5.128941ms)
+✔ privacy choice {"sec-gpc":"1"} denies grant/capture (1.584738ms)
+✔ grant, concurrent replay, withdrawal and new grant do not revive old receipt (9.198376ms)
+✔ expired or wrong policy consent, internal/synthetic/unknown classification deny (1.796677ms)
+✔ withdrawal while feature disabled revokes durable receipt before future reactivation (1.471801ms)
+✔ withdrawal racing with authorization is checked atomically during consume (1.601196ms)
+✔ privacy sanitizer rejects destinations tokens credentials under allowed and unknown keys (1.896194ms)
+✔ real capture route rejects without activation or consent before DB/cookie allocation (99.036784ms)
+✔ real route records only a validated grant, sanitizes and rejects event replay (41.681092ms)
+✔ default trusted writer stops before privileged DB client construction (15.6259ms)
+✔ optional consent-authority failure cannot fail an already committed operation (74.17924ms)
+✔ browser honors explicit consent and GPC, and withdrawal clears only optional state (57.3968ms)
+✔ consent endpoint denies cross-origin and does not falsely acknowledge failed revocation (54.164063ms)
+✔ auth telemetry does not initialize authentication without consent repository (12.268593ms)
+✔ consented trusted writer emits no raw customer order destination or campaign tokens (13.024831ms)
+✔ synthetic launcher never loads ambient Next dotenv payment/backend values (121.949673ms)
+✔ isolated server retains only explicit read-only fixture modes and drops inherited secrets (117.333102ms)
+ℹ tests 18
+ℹ suites 0
+ℹ pass 18
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1997.705877

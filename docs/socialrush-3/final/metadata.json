@@ -1,0 +1,36 @@
+{
+  "date": "2026-11-16",
+  "observations": [
+    {
+      "id": "imcysruvfjsexdppxcwc",
+      "ref": "imcysruvfjsexdppxcwc",
+      "organization_id": "ibhqyjlgbzdbfwcmpzbm",
+      "organization_slug": "ibhqyjlgbzdbfwcmpzbm",
+      "name": "SocialRUSH QA Isolated",
+      "region": "ap-south-1",
+      "status": "ACTIVE_HEALTHY",
+      "database": {
+        "host": "db.imcysruvfjsexdppxcwc.supabase.co",
+        "version": "17.11.0.018",
+        "postgres_engine": "17",
+        "release_channel": "ga"
+      },
+      "created_at": "2026-11-10T19:03:58.720587Z"
+    },
+    {
+      "functions": []
+    },
+    {
+      "result": {
+        "deployments": {
+          "pagination": {
+            "count": 0
+          },
+          "deployments": []
+        }
+      }
+    }
+  ],
+  "gsc": "Read-only list_sites refused: payment_required / subscription_required. No paid tool enabled.",
+  "limits": "No credentials, customer rows, stateful SQL, workers, provider calls or settings changed. Metadata is not runtime isolation."
+}

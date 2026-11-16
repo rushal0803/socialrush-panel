@@ -1,0 +1,23 @@
+✔ all disabled gateway methods deny before auth, DB, provider or body parsing (744.434501ms)
+✔ requested disabled method remains denied if another gateway method is enabled (stub only) (103.992911ms)
+✔ enabled-path preconditions reject cross-origin, non-JSON, anonymous and invalid amounts without provider calls (198.790684ms)
+✔ provider adapter blocks create-order calls before credentials/fetch; preserves GET reconciliation (114.414061ms)
+✔ webhook HMAC rejects tampered payloads and missing credentials without network access (52.74205ms)
+✔ fragment/code/token-hash flows scrub credentials before client creation and require verified user (2.919698ms)
+✔ missing, expired, malformed, wrong-type or mixed recovery credentials fail without fallback to an existing session (2.223491ms)
+✔ SSR recovery preserves cookies and private headers; failed user validation never takes success redirect (518.458066ms)
+✔ callback cannot redirect to an external next destination (167.662203ms)
+✔ server password mutation denies absent sessions before updateUser (97.933401ms)
+✔ negative and zero daily chart values render distinct signs with bounded magnitude bars (674.078726ms)
+✔ reset page awaits Next15 query parameters and guards anonymous rendering (159.354024ms)
+✔ StrictMode effect replay exchanges recovery credentials once and only active effect navigates (205.671608ms)
+✔ invalid Cashfree webhook signature never constructs an admin client (69.378594ms)
+✔ historical signed webhook settlement validates order and payment identity; never gates reconciliation by new-payment flags (1038.515359ms)
+ℹ tests 15
+ℹ suites 0
+ℹ pass 15
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 6579.422298

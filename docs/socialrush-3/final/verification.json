@@ -1,0 +1,134 @@
+{
+  "date": "2026-11-16",
+  "scope": "Frozen source preparation; exact final SHA/tree/CI recorded in PR766 body/checks.",
+  "tests": [
+    {
+      "name": "Existing unit suite",
+      "status": "PASS",
+      "passed": 263,
+      "log": "units.log"
+    },
+    {
+      "name": "Consent/isolation",
+      "status": "PASS",
+      "passed": 18,
+      "log": "consent-isolation.log"
+    },
+    {
+      "name": "Financial models/dashboard",
+      "status": "PASS",
+      "passed": 39,
+      "log": "finance-dashboard.log"
+    },
+    {
+      "name": "Stubbed security/recovery",
+      "status": "PASS",
+      "passed": 15,
+      "log": "security.log"
+    },
+    {
+      "name": "Repository lint",
+      "status": "PASS",
+      "limit": "Existing warnings; not warning-free",
+      "log": "lint.log"
+    },
+    {
+      "name": "Optimized isolated Next build",
+      "status": "PASS",
+      "command": "node scripts/phase2-isolated.cjs build 3108"
+    },
+    {
+      "name": "Populated customer workspace",
+      "status": "PASS",
+      "passed": 14,
+      "retries": 0,
+      "log": "workspace-browser.log"
+    },
+    {
+      "name": "Offline admin review",
+      "status": "PASS",
+      "passed": 3,
+      "widths": [
+        320,
+        390,
+        1440
+      ],
+      "retries": 0,
+      "log": "profit-browser.log"
+    },
+    {
+      "name": "Standalone post-build TypeScript",
+      "status": "NOT RUN",
+      "limit": "Running at snapshot; build type validation passed. Final result in PR body."
+    },
+    {
+      "name": "Native 200% browser zoom",
+      "status": "NOT RUN",
+      "limit": "Final result in PR body/CI artifact."
+    },
+    {
+      "name": "Full frozen local browser suite",
+      "status": "NOT RUN",
+      "limit": "Final result in PR body; do not equate focused reruns with full gate."
+    },
+    {
+      "name": "Final exact-head GitHub CI",
+      "status": "NOT RUN",
+      "limit": "Runs after publication; exact SHA/results in PR body."
+    },
+    {
+      "name": "Human screen-reader/independent accessibility audit",
+      "status": "BLOCKED",
+      "limit": "No suitable human-operated AT session available."
+    },
+    {
+      "name": "Authenticated hosted checkout/provider/worker isolation",
+      "status": "BLOCKED",
+      "limit": "No independent runtime proof or stateful-QA authorization."
+    },
+    {
+      "name": "GSC business performance",
+      "status": "BLOCKED",
+      "limit": "GSC Wizard subscription_required; no paid plan enabled/export supplied."
+    },
+    {
+      "name": "Field CWV/live financial business improvement",
+      "status": "NOT RUN",
+      "limit": "No invented real-user performance or revenue gain."
+    }
+  ],
+  "historical_failures": [
+    {
+      "scope": "Prior c3b9 GitHub main browsers",
+      "passed": 428,
+      "skipped": 68,
+      "failed": 0
+    },
+    {
+      "scope": "Prior c3b9 GitHub workspace",
+      "passed": 12,
+      "failed": 2,
+      "cause": "Missing populated fixture switch; corrected and local14pass"
+    },
+    {
+      "scope": "Older local full run",
+      "passed": 422,
+      "failed": 6,
+      "skipped": 68,
+      "cause": "Timeout/transport diagnostics retained; not a clean pass"
+    }
+  ],
+  "reproduction": [
+    "node --test tests/unit/phase4-consent.test.cjs tests/unit/phase4-isolation.test.cjs",
+    "node --experimental-strip-types --test tests/unit/phase3-intelligence.test.ts tests/unit/phase4-profit.test.ts tests/unit/profit-dashboard.test.ts",
+    "npm run test:unit",
+    "node --test tests/unit/phase1-security.test.cjs",
+    "npx next lint",
+    "node scripts/phase2-isolated.cjs build 3108",
+    "npx tsc --noEmit",
+    "node scripts/phase4-qa-server.cjs start 3108",
+    "PLAYWRIGHT_BASE_URL=http://localhost:3108 NEXT_PUBLIC_SUPABASE_URL=http://localhost:3108 NODE_OPTIONS=--require=./scripts/phase4-no-dotenv.cjs CHROMIUM_EXECUTABLE=/usr/bin/chromium npx playwright test --config playwright.phase4.config.ts",
+    "PLAYWRIGHT_BASE_URL=http://localhost:3108 CHROMIUM_EXECUTABLE=/usr/bin/chromium node scripts/phase2-native-zoom.cjs",
+    "node scripts/phase4-qa-server.cjs stop 3108"
+  ]
+}

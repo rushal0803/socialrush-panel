@@ -15,7 +15,7 @@ const child = spawn(process.execPath, args, {
     NEXT_PUBLIC_SUPABASE_URL: 'http://localhost:' + port,
     NEXT_PUBLIC_SUPABASE_ANON_KEY: 'synthetic-anon', SUPABASE_SERVICE_ROLE_KEY: 'synthetic-service',
     // Whitelisted in-memory fixture modes only; never inherit provider secrets.
-    ...(process.env.RESPONSIVE_PAYMENT_FIXTURE === '1' ? { RESPONSIVE_PAYMENT_FIXTURE: '1' } : {}),
+    ...Object.fromEntries(['RESPONSIVE_PAYMENT_FIXTURE', 'DASHBOARD_UPGRADE_AUDIT'].filter(name => process.env[name] === '1').map(name => [name, '1'])),
     NODE_OPTIONS: '--require=' + path.resolve('scripts/phase2-offline-transport.cjs') + ' --require=' + path.resolve('scripts/phase4-no-dotenv.cjs'),
   },
 });

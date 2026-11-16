@@ -11,7 +11,7 @@ const root=path.resolve('artifacts/phase4');fs.mkdirSync(root,{recursive:true});
  const url=`http://127.0.0.1:${port}`;
  try{await fetch(url,{redirect:'manual',signal:AbortSignal.timeout(1000)});throw Error('Loopback port already occupied');}catch(error){if(error.message==='Loopback port already occupied')throw error;}
  const fd=fs.openSync(path.join(root,`server-${port}.log`),'w');
- const child=spawn(process.execPath,[path.resolve('scripts/phase2-isolated.cjs'),'serve',String(port)],{detached:true,stdio:['ignore',fd,fd],env:{PATH:process.env.PATH,...(process.env.RESPONSIVE_PAYMENT_FIXTURE==='1'?{RESPONSIVE_PAYMENT_FIXTURE:'1'}:{})}});
+ const child=spawn(process.execPath,[path.resolve('scripts/phase2-isolated.cjs'),'serve',String(port)],{detached:true,stdio:['ignore',fd,fd],env:{PATH:process.env.PATH,...Object.fromEntries(['RESPONSIVE_PAYMENT_FIXTURE','DASHBOARD_UPGRADE_AUDIT'].filter(name=>process.env[name]==='1').map(name=>[name,'1']))}});
  fs.closeSync(fd);fs.writeFileSync(pidFile,String(child.pid));child.unref();
  const deadline=Date.now()+60000;
  while(Date.now()<deadline){try{const response=await fetch(url,{redirect:'manual',signal:AbortSignal.timeout(3000)});if(response.status>=200&&response.status<400){console.log('Synthetic loopback server ready on port '+port);return;}}catch{}await new Promise(r=>setTimeout(r,200));}
