@@ -112,15 +112,14 @@ for (const path of [
   { title: "I’m ready to order", href: "#order-demo", step: "order" },
   { title: "I want to compare services", href: "/services", step: "compare" },
   { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
-]) test(`conversion path ${path.step} preserves destination without unconsented tracking`, async ({ page }) => {
-  // Use the existing loopback fixture and its single owned outbound deny route.
-  // The previous second-host proxy raced the shared route handler during teardown.
-  // Separate synthetic policy tests cover nonproduction host classification.
+]) test(`conversion path ${path.step} preserves destination without unconsented tracking`, async ({ page, baseURL }) => {
+  // The shared fixture already denies outbound traffic and owns local CSP handling.
+  // Do not proxy navigation through another host: overlapping route handlers
+  // previously raced on abort during teardown.
   await page.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { get: () => "0" }));
   const events: Array<{ event: string; metadata?: { surface?: string; step?: string } }> = [];
   await page.route("**/api/analytics", route => {
-    const data = route.request().postDataJSON();
-    events.push(data);
+    events.push(route.request().postDataJSON());
     return route.fulfill({ status: 200, json: { ok: true } });
   });
   await page.goto("/");
@@ -128,132 +127,7 @@ for (const path of [
   await expect(link).toHaveAttribute("href", path.href);
   await link.click();
   if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
-  else await expect(page).toHaveURL(new RegExp(`${path.href}import { test, expect } from "./fixtures";
-
-const widths = [320, 360, 375, 390, 412, 430, 768, 1024, 1280, 1440, 1920];
-const routes = ["/", "/services", "/packages", "/login", "/register", "/buy-instagram-followers-india", "/us/buy-instagram-followers", "/blog"];
-
-for (const width of widths) {
-  test(`premium presentation remains usable at ${width}px`, async ({ page }) => {
-    test.setTimeout(180000);
-    await page.setViewportSize({ width, height: 900 });
-    const errors: string[] = [];
-    page.on("pageerror", error => errors.push(error.message));
-    for (const route of routes) {
-      const response = await page.goto(route, { waitUntil: "domcontentloaded" });
-      expect(response?.status(), route).toBe(200);
-      await expect(page.locator("h1")).toHaveCount(1);
-      await expect(page.locator("h1")).toBeVisible();
-      await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth), { message: route }).toBeLessThanOrEqual(1);
-    }
-    expect(errors).toEqual([]);
-  });
-}
-
-test("hero actions, sample labels and skip focus are understandable", async ({ page }) => {
-  await page.goto("/");
-  await expect(page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" })).toBeVisible();
-  await expect(page.getByRole("link", { name: "Check Price & Start", exact: true })).toHaveAttribute("href", "#order-demo");
-  await expect(page.getByRole("link", { name: "Browse Services", exact: true }).first()).toHaveAttribute("href", "#services");
-  await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
-});
-
-test("login email-to-recovery keyboard focus is understandable", async ({ page }) => {
-  await page.goto("/login");
-  await page.locator('input[name="email"]').focus();
-  await expect(page.locator('input[name="email"]')).toBeFocused();
-  await page.keyboard.press("Tab");
-  await expect(page.getByRole("link", { name: /Forgot password/i })).toBeFocused();
-});
-
-
-test("premium redesign keeps graphite surfaces and orange CTA instead of cream panels", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/");
-  const preview = page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" });
-  await expect(preview).toBeVisible();
-  const previewStyles = await preview.evaluate(node => {
-    const style = getComputedStyle(node);
-    return { background: style.backgroundImage, color: style.color };
-  });
-  expect(previewStyles.background).toContain("linear-gradient");
-  expect(previewStyles.background).toContain("rgb(16, 18, 25)");
-  expect(previewStyles.color).toBe("rgb(248, 250, 252)");
-
-  await page.goto("/services");
-  const servicesGuide = page.getByRole("complementary", { name: "Service selection guide" });
-  await expect(servicesGuide).toBeVisible();
-  expect(await servicesGuide.evaluate(node => getComputedStyle(node).backgroundColor)).toBe("rgb(16, 18, 25)");
-
-  await page.goto("/login");
-  const authVisual = page.getByRole("complementary", { name: "SocialRUSH account features" });
-  await expect(authVisual).toBeVisible();
-  expect(await authVisual.evaluate(node => getComputedStyle(node).backgroundColor)).toBe("rgb(16, 18, 25)");
-});
-
-test("login feature heading retains accessible contrast on its dark surface", async ({ page }) => {
-  await page.setViewportSize({ width: 1440, height: 900 });
-  await page.goto("/login");
-  const ratio = await page.getByRole("complementary", { name: "SocialRUSH account features" }).evaluate(aside => {
-    const luminance = (color: string) => {
-      const rgb = color.match(/[\d.]+/g)!.slice(0, 3).map(Number).map(value => {
-        const channel = value / 255;
-        return channel <= .04045 ? channel / 12.92 : ((channel + .055) / 1.055) ** 2.4;
-      });
-      return rgb[0] * .2126 + rgb[1] * .7152 + rgb[2] * .0722;
-    };
-    const foreground = luminance(getComputedStyle(aside.querySelector("h2")!).color);
-    const background = luminance(getComputedStyle(aside).backgroundColor);
-    return (Math.max(foreground, background) + .05) / (Math.min(foreground, background) + .05);
-  });
-  expect(ratio).toBeGreaterThanOrEqual(3);
-});
-
-for (const width of [320, 390, 1440]) {
-  test(`preview, auth and service information stays readable at ${width}px`, async ({ page }) => {
-    await page.setViewportSize({ width, height: 900 });
-    await page.goto("/");
-    const preview = page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" });
-    for (const label of await preview.locator("p, small, strong, span").all()) {
-      if (await label.isVisible()) expect(await label.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(12);
-    }
-    for (const route of ["/login", "/register"]) {
-      await page.goto(route);
-      for (const label of await page.locator("form label, form a, form [role=alert]").all()) {
-        if (await label.isVisible()) expect(await label.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(14);
-      }
-      for (const input of await page.locator('form input:not([type="checkbox"])').all()) {
-        expect(await input.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(16);
-      }
-    }
-    await page.goto("/services");
-    const card = page.locator("[data-catalog-service]").first();
-    for (const label of await card.locator("span").all()) {
-      if (await label.isVisible()) expect(await label.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(12);
-    }
-    for (const detail of await card.locator("p, small, dt, dd, summary").all()) {
-      if (await detail.isVisible()) expect(await detail.evaluate(el => parseFloat(getComputedStyle(el).fontSize))).toBeGreaterThanOrEqual(13);
-    }
-  });
-}
-
-for (const path of [
-  { title: "I’m ready to order", href: "#order-demo", step: "order" },
-  { title: "I want to compare services", href: "/services", step: "compare" },
-  { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
-]) test(`conversion path ${path.step} preserves destination without unconsented tracking`, async ({ page }) => {
-  // Use the existing loopback fixture and its single owned outbound deny route.
-  // The previous second-host proxy raced the shared route handler during teardown.
-  // Separate synthetic policy tests cover nonproduction host classification.
-  await page.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { get: () => "0" }));
-  const events: Array<{ event: string; metadata?: { surface?: string; step?: string } }> = [];
-  await page.route("**/api/analytics", route => {
-    const data = route.request().postDataJSON();
-    events.push(data);
-    return route.fulfill({ status: 200, json: { ok: true } });
-  });
-));
+  else await expect(page).toHaveURL(new RegExp(path.href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"));
   expect(events, "optional capture stays disabled without consent and activation").toEqual([]);
 });
 
