@@ -1,0 +1,28 @@
+
+Running 12 tests using 1 worker
+
+(node:29649) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/12] [chromium] › tests/smoke/packages-v2.spec.ts:132:5 › insufficient wallet directs to add funds without sending an order
+[2/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path order preserves destination without unconsented tracking
+[3/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path compare preserves destination without unconsented tracking
+[4/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path budget preserves destination without unconsented tracking
+(node:29946) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[5/12] [chromium] › tests/smoke/packages-v2.spec.ts:132:5 › insufficient wallet directs to add funds without sending an order
+[6/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path order preserves destination without unconsented tracking
+[7/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path compare preserves destination without unconsented tracking
+[8/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path budget preserves destination without unconsented tracking
+(node:30245) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[9/12] [chromium] › tests/smoke/packages-v2.spec.ts:132:5 › insufficient wallet directs to add funds without sending an order
+[10/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path order preserves destination without unconsented tracking
+[11/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path compare preserves destination without unconsented tracking
+[12/12] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path budget preserves destination without unconsented tracking
+  12 passed (58.8s)

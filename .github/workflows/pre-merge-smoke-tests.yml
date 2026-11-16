@@ -20,6 +20,7 @@ jobs:
     # Individual assertion/route timeouts are unchanged.
     timeout-minutes: 25
     env:
+      NEXT_TELEMETRY_DISABLED: '1'
       # Smoke tests exercise auth-aware UI without needing a real Supabase project.
       # Pointing these at the local test server keeps unauthenticated requests
       # deterministic (404/no session) while preserving the real redirects.
@@ -35,6 +36,10 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Locked dependency high and critical advisory gate
+        run: |
+          mkdir -p artifacts/phase4
+          npm audit --audit-level=high --ignore-scripts --registry=https://registry.npmjs.org --json > artifacts/phase4/dependency-audit.json
       - run: npx tsc --noEmit
       - name: Phase 4 consent denial withdrawal replay and posted-period finance
         run: |

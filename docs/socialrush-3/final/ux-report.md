@@ -21,3 +21,5 @@ No human-operated screen reader or independent human keyboard/contrast session w
 Scroll-layout/hydration and responsive browser checks are local lab regression evidence. They do not establish real-user LCP/INP/CLS/TTFB, database latency or a comparative performance improvement. No field telemetry or conversion experiment ran. Appropriate later measures are consented eligible discovery-to-review completion, independently verified earned orders, refunds/support burden and contribution per eligible visitor, with selection-bias/missing-join disclosures. Do not claim conversion or revenue gains from visual changes or synthetic fixtures.
 
 Hosted authenticated checkout remains BLOCKED until independent backend/payment/worker/email isolation and separate stateful-test authorization. **Release HOLD.**
+
+The security follow-up patches Next.js and CSS/image dependencies. Historical screenshots do not certify the patched bundle; fresh final-head browser/zoom artifacts are required. No comparative rendering/performance gain is inferred from patching.

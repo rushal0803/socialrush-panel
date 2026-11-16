@@ -2,405 +2,405 @@
 > socialrush-panel@1.0.0 test:unit
 > node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/prospecting.test.ts tests/unit/crm-outreach-autopilot.test.ts tests/unit/lifecycle.test.ts tests/unit/international-seo.test.ts tests/unit/international-authority.test.ts tests/unit/country-service-seo.test.ts tests/unit/seo-architecture.test.ts tests/unit/search-demand-guides.test.ts tests/unit/service-cost-calculator.test.ts tests/unit/pricing-authority.test.ts tests/unit/facebook-followers-499-pricing.test.ts tests/unit/social-media-roi.test.ts tests/unit/social-ad-metrics.test.ts tests/unit/youtube-subscriber-growth.test.ts tests/unit/youtube-view-growth.test.ts tests/unit/youtube-engagement.test.ts tests/unit/instagram-story-engagement.test.ts tests/unit/instagram-engagement.test.ts tests/unit/linkedin-engagement.test.ts tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/premium-brand-palette.test.ts tests/unit/premium-phase2-layout.test.ts tests/unit/web-vital-dimensions.test.ts tests/unit/dashboard-navigation.test.ts tests/unit/phase19-fx-provider-timeout.test.ts tests/unit/commercial-service-breadcrumbs.test.ts tests/unit/service-page-evidence.test.ts tests/unit/service-page-batch2.test.ts tests/unit/service-page-batch3.test.ts tests/unit/service-page-batch4.test.ts tests/unit/service-page-batch5.test.ts tests/unit/indexing-recovery.test.ts tests/unit/service-page-batch6.test.ts
 
-(node:3123) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/commercial-service-breadcrumbs.test.ts is not specified and it doesn't parse as CommonJS.
+(node:28126) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/commercial-service-breadcrumbs.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ commercial breadcrumb hubs point to existing pages instead of invented routes (3.085917ms)
-✔ route-owned breadcrumb trails are not emitted again by the shared helper (0.639459ms)
-✔ Telegram visible and structured breadcrumbs consume the same canonical trail (0.945814ms)
-(node:3131) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/country-service-seo.test.ts is not specified and it doesn't parse as CommonJS.
+✔ commercial breadcrumb hubs point to existing pages instead of invented routes (2.28762ms)
+✔ route-owned breadcrumb trails are not emitted again by the shared helper (0.449355ms)
+✔ Telegram visible and structured breadcrumbs consume the same canonical trail (0.521638ms)
+(node:28133) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/country-service-seo.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ only explicit enabled country-service combinations publish (1.886555ms)
-✔ every published page maps to a safe static catalog service (43.41775ms)
-✔ hreflang clusters contain only real reciprocal equivalents (2.074006ms)
-✔ published country-service pages have isolated transactional metadata (6.210989ms)
-✔ country-service metadata uses concise market search language without duplication (2.704027ms)
-✔ international Instagram pages have distinct market planning intent (0.579044ms)
-✔ international YouTube subscriber pages have distinct market planning intent (0.290991ms)
-✔ international YouTube views pages have distinct market planning intent (0.407472ms)
-✔ international LinkedIn follower pages have distinct market planning intent (1.898712ms)
-(node:3138) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/crm-outreach-autopilot.test.ts is not specified and it doesn't parse as CommonJS.
+✔ only explicit enabled country-service combinations publish (1.785552ms)
+✔ every published page maps to a safe static catalog service (0.377781ms)
+✔ hreflang clusters contain only real reciprocal equivalents (2.235641ms)
+✔ published country-service pages have isolated transactional metadata (6.558665ms)
+✔ country-service metadata uses concise market search language without duplication (2.006701ms)
+✔ international Instagram pages have distinct market planning intent (0.649376ms)
+✔ international YouTube subscriber pages have distinct market planning intent (2.828923ms)
+✔ international YouTube views pages have distinct market planning intent (0.787103ms)
+✔ international LinkedIn follower pages have distinct market planning intent (0.965611ms)
+(node:28140) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/crm-outreach-autopilot.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ autopilot accepts only a verified compliance-eligible business contact (2.407195ms)
-✔ autopilot blocks personal or non-business addresses even when technically valid (0.532353ms)
-✔ autopilot blocks uncertain contact basis (0.233722ms)
-✔ autopilot blocks suppression and opt-out before any send (0.780684ms)
-✔ autonomous outreach adds a clear reply-to-unsubscribe instruction (3.503454ms)
-(node:3145) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/dashboard-navigation.test.ts is not specified and it doesn't parse as CommonJS.
+✔ autopilot accepts only a verified compliance-eligible business contact (1.867297ms)
+✔ autopilot blocks personal or non-business addresses even when technically valid (0.17987ms)
+✔ autopilot blocks uncertain contact basis (0.113878ms)
+✔ autopilot blocks suppression and opt-out before any send (0.582316ms)
+✔ autonomous outreach adds a clear reply-to-unsubscribe instruction (3.130632ms)
+(node:28147) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/dashboard-navigation.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ customer dashboard navigation groups live routes without duplicates (2.01144ms)
-✔ dashboard highlights exact or nested pages, not lookalikes and query-specific shortcuts (0.388094ms)
-✔ workspace menu stays discoverable and expands when visiting nested workspace pages (3.053334ms)
-✔ mobile drawer provides quick actions, close and accessible fixed navigation (0.267556ms)
-✔ query shortcuts and money continuations retain one correct active destination (0.468989ms)
-✔ wallet balance and money actions precede lengthy payment-confidence explanations (0.434924ms)
-✔ narrow desktop header preserves action space and uses the shared route helper correctly (20.193612ms)
-✔ money-page checkout contrast and route-scoped UPI overlay (0.670744ms)
-✔ billing details remain above mobile navigation and support keyboard focus (0.407326ms)
-(node:3152) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/facebook-followers-499-pricing.test.ts is not specified and it doesn't parse as CommonJS.
+✔ customer dashboard navigation groups live routes without duplicates (2.206153ms)
+✔ dashboard highlights exact or nested pages, not lookalikes and query-specific shortcuts (0.95454ms)
+✔ workspace menu stays discoverable and expands when visiting nested workspace pages (1.313103ms)
+✔ mobile drawer provides quick actions, close and accessible fixed navigation (5.002823ms)
+✔ query shortcuts and money continuations retain one correct active destination (0.342678ms)
+✔ wallet balance and money actions precede lengthy payment-confidence explanations (1.536804ms)
+✔ narrow desktop header preserves action space and uses the shared route helper correctly (0.384786ms)
+✔ money-page checkout contrast and route-scoped UPI overlay (0.929677ms)
+✔ billing details remain above mobile navigation and support keyboard focus (2.824083ms)
+(node:28154) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/facebook-followers-499-pricing.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ Facebook Followers has the same INR 499 per 1K in catalog, calculators and package cards (1.285022ms)
-✔ checkout uses active database service rate, rather than old display price (0.978623ms)
-(node:3159) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/indexing-recovery.test.ts is not specified and it doesn't parse as CommonJS.
+✔ Facebook Followers has the same INR 499 per 1K in catalog, calculators and package cards (1.594469ms)
+✔ checkout uses active database service rate, rather than old display price (0.671358ms)
+(node:28161) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/indexing-recovery.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ six explicit article improvements stay inside the supplied exclusion cohort (2.545937ms)
-✔ legacy personal-brand alias remains a redirect, not a second article or sitemap owner (2.672985ms)
-✔ pricing guides contain no invented rupee rates and separate counts from outcomes (5.27301ms)
-✔ business-owner and personal-brand guides have reciprocal links and different jobs (1.444115ms)
-✔ LinkedIn Likes preserves canonical ownership and truthful post-eligibility FAQ schema (3.327802ms)
-✔ guide CTA follows the declared intent while preserving every platform service (70.632599ms)
-✔ rewritten Instagram guides retain contextual commercial links inside article sections (0.250672ms)
-(node:3166) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/instagram-engagement.test.ts is not specified and it doesn't parse as CommonJS.
+✔ six explicit article improvements stay inside the supplied exclusion cohort (7.685921ms)
+✔ legacy personal-brand alias remains a redirect, not a second article or sitemap owner (21.795018ms)
+✔ pricing guides contain no invented rupee rates and separate counts from outcomes (5.016799ms)
+✔ business-owner and personal-brand guides have reciprocal links and different jobs (3.706614ms)
+✔ LinkedIn Likes preserves canonical ownership and truthful post-eligibility FAQ schema (6.442758ms)
+✔ guide CTA follows the declared intent while preserving every platform service (122.063618ms)
+✔ rewritten Instagram guides retain contextual commercial links inside article sections (4.017978ms)
+(node:28168) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/instagram-engagement.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ post engagement calculates interaction and component rates (3.612924ms)
-✔ reel engagement calculates optional interactions per play (0.586483ms)
-✔ reel play rate is omitted when plays are not supplied (0.571633ms)
-✔ instagram engagement rejects a zero denominator (0.550605ms)
-(node:3173) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/instagram-story-engagement.test.ts is not specified and it doesn't parse as CommonJS.
+✔ post engagement calculates interaction and component rates (3.179738ms)
+✔ reel engagement calculates optional interactions per play (0.263612ms)
+✔ reel play rate is omitted when plays are not supplied (0.413256ms)
+✔ instagram engagement rejects a zero denominator (0.13966ms)
+(node:28175) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/instagram-story-engagement.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ instagram story engagement calculates total interaction rate and component rates (3.298504ms)
-✔ instagram story engagement allows zero optional interactions (0.391657ms)
-✔ instagram story engagement rejects missing or invalid view denominator (0.274386ms)
-(node:3180) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/international-authority.test.ts is not specified and it doesn't parse as CommonJS.
+✔ instagram story engagement calculates total interaction rate and component rates (10.451131ms)
+✔ instagram story engagement allows zero optional interactions (0.335681ms)
+✔ instagram story engagement rejects missing or invalid view denominator (0.286109ms)
+(node:28182) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/international-authority.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ international authority links mirror the published market inventory (1.609608ms)
-(node:3187) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/international-seo.test.ts is not specified and it doesn't parse as CommonJS.
+✔ international authority links mirror the published market inventory (13.574458ms)
+(node:28189) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/international-seo.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ international hubs use valid locale codes and absolute self-referential URLs (3.002217ms)
-✔ hub alternate cluster is reciprocal and contains only published hubs (0.841621ms)
-✔ future country service pages cannot be published as placeholders (0.441631ms)
-✔ international hub metadata uses natural market labels and one SocialRUSH suffix (1.378771ms)
-✔ international hubs expose unique market-specific search intent (0.585433ms)
-✔ international hub and service paths are unique and never overlap (2.646498ms)
-✔ every published international service has a self canonical and reciprocal same-service hreflang cluster (7.341386ms)
-✔ localized international service metadata stays unique across published pages (3.581626ms)
-✔ sitemap keeps both international hubs and published country service paths in discovery (1.907247ms)
-✔ international service pages distinguish currency display from geographic audience targeting (1.616671ms)
-(node:3195) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/lifecycle.test.ts is not specified and it doesn't parse as CommonJS.
+✔ international hubs use valid locale codes and absolute self-referential URLs (2.597583ms)
+✔ hub alternate cluster is reciprocal and contains only published hubs (0.449828ms)
+✔ future country service pages cannot be published as placeholders (0.804556ms)
+✔ international hub metadata uses natural market labels and one SocialRUSH suffix (1.480122ms)
+✔ international hubs expose unique market-specific search intent (0.490399ms)
+✔ international hub and service paths are unique and never overlap (1.121593ms)
+✔ every published international service has a self canonical and reciprocal same-service hreflang cluster (4.083659ms)
+✔ localized international service metadata stays unique across published pages (1.496446ms)
+✔ sitemap keeps both international hubs and published country service paths in discovery (0.471863ms)
+✔ international service pages distinguish currency display from geographic audience targeting (1.844404ms)
+(node:28196) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/lifecycle.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ first-order eligibility is delayed and removed by a qualifying order (3.536685ms)
-✔ inactive customers require an old qualifying order (0.544102ms)
-✔ activation boundary excludes historical lifecycle recipients and permits post-activation recipients (0.634958ms)
-✔ send-time lifecycle eligibility rejects stale events and fails closed without an activation boundary (0.561284ms)
-✔ suppression-like preference, internal accounts, and invalid orders are excluded (0.47715ms)
-✔ missing unsubscribe secret blocks promotional delivery eligibility (0.393176ms)
-✔ lifecycle recipients must match the current normalized profile email (0.398402ms)
-✔ inactive email selects supported recent platforms and falls back safely (2.582282ms)
-✔ VIP and High Value CRM context override platform lifecycle copy (0.752832ms)
-✔ customer service issues suppress promotional lifecycle sends but not transactional types (1.114315ms)
-✔ migration preserves strict targets, one onboarding flow, and an atomic lifecycle cap (1.12606ms)
-✔ final claim function locks config and honors the lifecycle kill switch (0.810701ms)
-✔ admin lifecycle controls and RLS distinguish delivered from skipped events (1.062055ms)
-✔ lifecycle metrics grant is admin SELECT-only and UI exposes query failure (1.16958ms)
-✔ customer email operational RPCs are service-role only (0.719765ms)
-✔ enabling lifecycle sets activation time, enabled settings updates do not reset it, and lifecycle defaults disabled (1.819618ms)
-✔ send-time revalidation reads and passes the activation boundary (0.488637ms)
-(node:3202) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/linkedin-engagement.test.ts is not specified and it doesn't parse as CommonJS.
+✔ first-order eligibility is delayed and removed by a qualifying order (1.943289ms)
+✔ inactive customers require an old qualifying order (0.254512ms)
+✔ activation boundary excludes historical lifecycle recipients and permits post-activation recipients (0.302294ms)
+✔ send-time lifecycle eligibility rejects stale events and fails closed without an activation boundary (0.291154ms)
+✔ suppression-like preference, internal accounts, and invalid orders are excluded (0.295422ms)
+✔ missing unsubscribe secret blocks promotional delivery eligibility (0.18754ms)
+✔ lifecycle recipients must match the current normalized profile email (0.579885ms)
+✔ inactive email selects supported recent platforms and falls back safely (1.321138ms)
+✔ VIP and High Value CRM context override platform lifecycle copy (0.78964ms)
+✔ customer service issues suppress promotional lifecycle sends but not transactional types (0.724039ms)
+✔ migration preserves strict targets, one onboarding flow, and an atomic lifecycle cap (2.776761ms)
+✔ final claim function locks config and honors the lifecycle kill switch (3.127221ms)
+✔ admin lifecycle controls and RLS distinguish delivered from skipped events (0.817707ms)
+✔ lifecycle metrics grant is admin SELECT-only and UI exposes query failure (0.947408ms)
+✔ customer email operational RPCs are service-role only (2.09372ms)
+✔ enabling lifecycle sets activation time, enabled settings updates do not reset it, and lifecycle defaults disabled (3.375249ms)
+✔ send-time revalidation reads and passes the activation boundary (0.348048ms)
+(node:28203) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/linkedin-engagement.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ linkedin engagement includes reactions comments reposts and optional clicks (4.113042ms)
-✔ linkedin engagement works without clicks (0.6173ms)
-✔ linkedin engagement rejects zero impressions (0.580287ms)
-✔ linkedin engagement clamps negative interaction inputs to zero (0.374174ms)
-(node:3209) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase16-technical-seo.test.ts is not specified and it doesn't parse as CommonJS.
+✔ linkedin engagement includes reactions comments reposts and optional clicks (4.053204ms)
+✔ linkedin engagement works without clicks (0.592321ms)
+✔ linkedin engagement rejects zero impressions (0.407953ms)
+✔ linkedin engagement clamps negative interaction inputs to zero (5.555708ms)
+(node:28210) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase16-technical-seo.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ phase 16 monitors every important Instagram canonical (2.381521ms)
-✔ phase 16 checks the technical signals required by the roadmap (0.426854ms)
-✔ phase 16 validates canonical Instagram redirect aliases (0.537183ms)
-✔ phase 16 production audit is wired into the weekly monitor and npm scripts (0.559067ms)
-✔ schema checks accept compact, spaced, graph and array JSON-LD (1.835057ms)
-✔ schema checks reject missing, malformed and non-JSON-LD evidence (0.501314ms)
-(node:3216) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase17-instagram-sitemap.test.ts is not specified and it doesn't parse as CommonJS.
+✔ phase 16 monitors every important Instagram canonical (4.227328ms)
+✔ phase 16 checks the technical signals required by the roadmap (1.148282ms)
+✔ phase 16 validates canonical Instagram redirect aliases (3.218199ms)
+✔ phase 16 production audit is wired into the weekly monitor and npm scripts (1.214037ms)
+✔ schema checks accept compact, spaced, graph and array JSON-LD (3.619636ms)
+✔ schema checks reject missing, malformed and non-JSON-LD evidence (2.236646ms)
+(node:28217) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase17-instagram-sitemap.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ phase 17 sitemap audit covers the canonical Instagram commercial cluster (2.696334ms)
-✔ phase 17 sitemap audit covers Instagram tools, editorial guides and country pages (1.288571ms)
-✔ phase 17 rejects redirects, duplicate/query URLs, private routes and noncanonical pages (2.031977ms)
-✔ phase 17 keeps sitemap generation on canonical source inventories and schedules the production guard (2.156458ms)
-(node:3223) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase19-fx-provider-timeout.test.ts is not specified and it doesn't parse as CommonJS.
+✔ phase 17 sitemap audit covers the canonical Instagram commercial cluster (14.628765ms)
+✔ phase 17 sitemap audit covers Instagram tools, editorial guides and country pages (0.449501ms)
+✔ phase 17 rejects redirects, duplicate/query URLs, private routes and noncanonical pages (0.713381ms)
+✔ phase 17 keeps sitemap generation on canonical source inventories and schedules the production guard (13.99058ms)
+(node:28224) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase19-fx-provider-timeout.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ optional FX lookup has a bounded 4-second deadline (2.000988ms)
-✔ FX fetch/provider failures preserve the INR-only safe fallback (0.585033ms)
-(node:3230) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/premium-brand-palette.test.ts is not specified and it doesn't parse as CommonJS.
+✔ optional FX lookup has a bounded 4-second deadline (3.044749ms)
+✔ FX fetch/provider failures preserve the INR-only safe fallback (2.5877ms)
+(node:28231) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/premium-brand-palette.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ premium templates retain original SocialRUSH charcoal/orange, never cream panels (3.829881ms)
-✔ the preview, auth panel, services guide and final CTA are intentionally dark (0.407544ms)
-✔ homepage discovery and ordering handoff are preserved independently of theme CSS (0.531001ms)
-(node:3237) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/premium-phase2-layout.test.ts is not specified and it doesn't parse as CommonJS.
+✔ premium templates retain original SocialRUSH charcoal/orange, never cream panels (4.376406ms)
+✔ the preview, auth panel, services guide and final CTA are intentionally dark (0.769462ms)
+✔ homepage discovery and ordering handoff are preserved independently of theme CSS (0.687464ms)
+(node:28239) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/premium-phase2-layout.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ Phase 2 policy layout renders static crawlable headings and complete section text (4.264355ms)
-✔ Phase 2 public reviews never invent entries or hide the empty state (0.562349ms)
-✔ Phase 2 support keeps all six customer help routes (0.706894ms)
-✔ Phase 2 creator tools change only hub visuals and keep real tools routing (1.600299ms)
-✔ Phase 2 admin navigation remains complete and only cosmetic (1.124858ms)
-✔ Phase 2 actual Terms, Privacy and Refund routes retain copy and dark brand surfaces (11.212782ms)
-✔ Phase 2 creator-tools preview cards exclude alternate pastel hues (0.95747ms)
-(node:3244) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/pricing-authority.test.ts is not specified and it doesn't parse as CommonJS.
+✔ Phase 2 policy layout renders static crawlable headings and complete section text (4.293457ms)
+✔ Phase 2 public reviews never invent entries or hide the empty state (0.391072ms)
+✔ Phase 2 support keeps all six customer help routes (0.322109ms)
+✔ Phase 2 creator tools change only hub visuals and keep real tools routing (0.85259ms)
+✔ Phase 2 admin navigation remains complete and only cosmetic (24.499979ms)
+✔ Phase 2 actual Terms, Privacy and Refund routes retain copy and dark brand surfaces (3.273828ms)
+✔ Phase 2 creator-tools preview cards exclude alternate pastel hues (1.584512ms)
+(node:28246) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/pricing-authority.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ pricing authority definitions keep one canonical service target per platform card (3.319758ms)
-✔ pricing authority guide links resolve to published search-demand guides (0.718856ms)
-✔ pricing authority entries calculate 1K and 5K planning totals from the supplied rate (5.507684ms)
-✔ pricing page exposes the authority hub and structured item list (3.460926ms)
-(node:3251) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/prospecting.test.ts is not specified and it doesn't parse as CommonJS.
+✔ pricing authority definitions keep one canonical service target per platform card (2.547173ms)
+✔ pricing authority guide links resolve to published search-demand guides (1.185657ms)
+✔ pricing authority entries calculate 1K and 5K planning totals from the supplied rate (1.962547ms)
+✔ pricing page exposes the authority hub and structured item list (0.936347ms)
+(node:28253) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/prospecting.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ normalizes domains and emails for duplicate lookup (1.697695ms)
-✔ candidate company types map to crm_leads constraint values (0.22603ms)
-✔ CSV aliases, blanks and invalid required rows are deterministic (1.046332ms)
-✔ CSV rejects more than 500 rows (0.594683ms)
-✔ clean public-business candidate is promotion eligible (0.337309ms)
-✔ suppressed and compliance blocked candidates cannot promote (0.135591ms)
-✔ invalid, promoted, rejected and internal candidates cannot promote (0.203465ms)
-✔ unresolved duplicate blocks but approved separate permits promotion (0.18686ms)
-✔ CSV never produces a guessed email (0.494889ms)
-✔ duplicate override never bypasses safety blockers (0.292969ms)
-✔ internal test business name is blocked even without source marker (0.23641ms)
-✔ discovery rejects known low-quality source domains (0.378738ms)
-✔ discovery allows a normal business website (1.397932ms)
-✔ discovery rejects obvious company-list result (0.639366ms)
-✔ discovery staging never supplies a guessed email (0.133965ms)
-✔ LinkedIn company titles extract deterministic business names (0.568731ms)
-✔ LinkedIn people/posts are rejected while company pages remain valid seeds (0.482224ms)
-✔ high-confidence official business sites can become discovery seeds (1.399655ms)
-✔ resolver rejects weak sources and non-company results (0.354971ms)
-✔ resolver requires a strong company-domain match (0.539257ms)
-✔ resolver recognizes punctuation, hyphen, and acronym brand-domain forms conservatively (1.522673ms)
-✔ IST datetime-local follow-up values do not depend on server timezone (0.896203ms)
-✔ seed ranking rejects publication, listing, and article-style names (1.354236ms)
-✔ seed ranking keeps concise legitimate-looking company names (0.796083ms)
-✔ seed ranking applies current segment signals (0.381907ms)
-✔ seed selection ranks strong companies ahead of publications and permits fewer than three (0.300936ms)
-✔ seed selection resolution budget remains capped at three (9.202475ms)
-(node:3258) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/search-demand-guides.test.ts is not specified and it doesn't parse as CommonJS.
+✔ normalizes domains and emails for duplicate lookup (8.921342ms)
+✔ candidate company types map to crm_leads constraint values (4.278404ms)
+✔ CSV aliases, blanks and invalid required rows are deterministic (6.005137ms)
+✔ CSV rejects more than 500 rows (3.207856ms)
+✔ clean public-business candidate is promotion eligible (0.387946ms)
+✔ suppressed and compliance blocked candidates cannot promote (2.472086ms)
+✔ invalid, promoted, rejected and internal candidates cannot promote (1.00123ms)
+✔ unresolved duplicate blocks but approved separate permits promotion (0.206067ms)
+✔ CSV never produces a guessed email (0.375997ms)
+✔ duplicate override never bypasses safety blockers (0.443112ms)
+✔ internal test business name is blocked even without source marker (0.448246ms)
+✔ discovery rejects known low-quality source domains (2.63493ms)
+✔ discovery allows a normal business website (4.339904ms)
+✔ discovery rejects obvious company-list result (4.541626ms)
+✔ discovery staging never supplies a guessed email (0.180667ms)
+✔ LinkedIn company titles extract deterministic business names (0.655423ms)
+✔ LinkedIn people/posts are rejected while company pages remain valid seeds (3.708162ms)
+✔ high-confidence official business sites can become discovery seeds (9.186573ms)
+✔ resolver rejects weak sources and non-company results (0.294034ms)
+✔ resolver requires a strong company-domain match (27.712991ms)
+✔ resolver recognizes punctuation, hyphen, and acronym brand-domain forms conservatively (0.615053ms)
+✔ IST datetime-local follow-up values do not depend on server timezone (0.882181ms)
+✔ seed ranking rejects publication, listing, and article-style names (5.047166ms)
+✔ seed ranking keeps concise legitimate-looking company names (1.110541ms)
+✔ seed ranking applies current segment signals (1.339172ms)
+✔ seed selection ranks strong companies ahead of publications and permits fewer than three (2.798864ms)
+✔ seed selection resolution budget remains capped at three (30.84755ms)
+(node:28260) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/search-demand-guides.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ phase 5B publishes one distinct price guide per target intent (4.101674ms)
-✔ phase 5B price guides keep checkout authoritative (3.467507ms)
-✔ phase 5I keeps India payment intent on canonical service pages (7.194074ms)
-✔ phase 5A canonical follower and subscriber pages render the shared price-demand section (40.592618ms)
-(node:3265) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/seo-architecture.test.ts is not specified and it doesn't parse as CommonJS.
+✔ phase 5B publishes one distinct price guide per target intent (1.440406ms)
+✔ phase 5B price guides keep checkout authoritative (2.986537ms)
+✔ phase 5I keeps India payment intent on canonical service pages (4.068746ms)
+✔ phase 5A canonical follower and subscriber pages render the shared price-demand section (24.093592ms)
+(node:28267) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/seo-architecture.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ every deliberate SEO intent has exactly one preferred canonical target (6.850734ms)
-✔ protected India service targets remain present and canonical (0.82549ms)
-✔ platform hubs link directly to canonical service pages (1.02469ms)
-✔ Services hub directly links key commercial pages awaiting Google's first crawl (0.59479ms)
-✔ legacy growth planner URL redirects permanently to the published canonical tool (0.94732ms)
-✔ platform hubs link to published, unique authority guides (0.579831ms)
-✔ GSC crawled evergreen guides are linked from their relevant platform hubs (0.593029ms)
-✔ GSC Phase 4 guides offer practical editorial detail beyond a basic introduction (1.055056ms)
-✔ growth hubs expose crawlable authority-guide links (5.712391ms)
-✔ technical SEO routes avoid redirect loops and sitemap omissions (1.34703ms)
-✔ thin operational pages explicitly stay out of search results (0.761553ms)
-✔ free production SEO monitoring covers every canonical India service page (0.655358ms)
-✔ priority India pages keep Search Console query language in metadata (3.546476ms)
-✔ international routes are allowlisted, catalog-backed, and have no unpublished variants (2.470495ms)
-✔ US and UK Instagram pages provide distinct, accurate market guidance (0.333255ms)
-✔ country service schema remains INR-authoritative (8.160957ms)
-✔ search-demand quantity planning derives 1K 5K and 10K totals from the confirmed per-1K rate (0.373621ms)
-✔ search-demand service units stay readable for long-tail price headings (0.167144ms)
-✔ platform authority graph routes research to clean canonical targets (1.039953ms)
-✔ authority graph deduplicates repeated destinations without changing order (0.212869ms)
-✔ blog authority links stay canonical and avoid tracking-query crawl noise (0.506322ms)
-✔ phase 5F crawl priority points only to canonical India money pages (0.330563ms)
-✔ phase 5F commercial search descriptions cover price, public-link safety and tracking (0.192698ms)
-✔ homepage and services expose the canonical crawl-priority module (0.147744ms)
-✔ phase 5G gives every India transaction intent one canonical owner (0.359589ms)
-✔ phase 5G commercial aliases always resolve to their single canonical owner (0.330626ms)
-✔ phase 5G middleware and sitemap consume the canonical ownership guard (0.171552ms)
-✔ phase 5G production SEO monitor checks every commercial alias redirect (1.295137ms)
-✔ phase 5H freshness registry marks only clean canonical-style paths with a real release date (0.88218ms)
-✔ phase 5H sitemap consumes explicit freshness instead of request-time dates (0.487769ms)
-✔ phase 5H IndexNow release submits canonical Phase 5 URLs only after the root key is live (0.900302ms)
-✔ phase 5J models delivery and refill long-tail search intent without guarantees (0.493325ms)
-✔ phase 5J priority money pages expose the visible delivery and refill intent module (3.732189ms)
-✔ phase 5J metadata models include delivery and refill query language (1.198394ms)
-✔ phase 5K models minimum-order and quantity-limit search intent from catalog facts (0.499721ms)
-✔ phase 5K priority money pages expose the visible order-requirements module (4.749095ms)
-✔ phase 5K metadata includes minimum-order search language (6.341056ms)
-✔ phase 5M assigns SMM panel India intent to the existing services canonical (0.532688ms)
-✔ phase 5M comparison model covers practical panel-selection criteria without ranking claims (0.433654ms)
-✔ phase 5M legacy panel aliases remain consolidated without controlling visible services positioning (0.282634ms)
-✔ phase 5N assigns agency reseller intent to /for-agencies without a doorway page (0.245789ms)
-✔ phase 5N agency intent model stays factual and avoids unsupported reseller claims (0.289093ms)
-✔ phase 5N /for-agencies exposes visible reseller authority and truthful freshness (0.51221ms)
-✔ phase 5O assigns social media growth services India to one canonical hub (0.227292ms)
-✔ phase 5O architecture and visible page own cross-platform growth intent without agency confusion (0.981404ms)
-✔ phase 5O marks the canonical growth hub fresh and submits it for search release (0.557528ms)
-✔ phase 5P consolidates social media engagement services India onto the growth hub (0.277418ms)
-✔ phase 5P engagement model links only to clean canonical service paths (0.266667ms)
-✔ phase 5P growth hub exposes visible engagement-service intent without outcome guarantees (0.87532ms)
-✔ phase 5Q assigns social media promotion services India to the existing growth hub (0.355741ms)
-✔ phase 5Q promotion criteria distinguish campaign services from management retainers (0.493337ms)
-✔ phase 5Q growth hub exposes visible promotion intent and canonical redirect monitoring (0.954354ms)
-✔ phase 5R keeps social media services India on the existing services canonical (0.469059ms)
-✔ phase 5R services page exposes visible social media services India authority (0.423199ms)
-✔ phase 5S consolidates best reliable and trusted SMM panel India queries onto /services (0.271363ms)
-✔ phase 5S selection model uses factual criteria instead of self-awarded ranking claims (0.802154ms)
-✔ phase 5S legacy selection aliases remain monitored while visible services copy stays brand-safe (7.103408ms)
-✔ phase 5T assigns platform SMM panel queries to existing canonical hubs (0.654204ms)
-✔ phase 5T renders platform SMM authority on every target hub (0.464012ms)
-✔ phase 5U assigns SMM pricing and UPI intent to /pricing (0.172929ms)
-✔ phase 5U pricing model stays factual and derives quantity totals (0.184083ms)
-✔ phase 5U pricing page exposes visible SMM price-list authority and release safeguards (0.471572ms)
-✔ phase 5V assigns safe no-password SMM ordering intent to /trust (0.168277ms)
-✔ phase 5V safe-ordering model uses verifiable checks instead of ranking claims (0.399281ms)
-✔ phase 5V Trust Center exposes visible no-password authority and release safeguards (1.072749ms)
-✔ phase 5W assigns SMM API India intent to the existing agency canonical (0.203046ms)
-✔ phase 5W API model uses only documented workflow capabilities (0.258627ms)
-✔ phase 5W agency page exposes visible SMM API authority and monitored aliases (0.779928ms)
-✔ phase 5X assigns cheap and affordable SMM India intent to /pricing (0.238543ms)
-✔ phase 5X affordability model compares real campaign cost without ranking claims (0.771157ms)
-✔ phase 5X pricing page exposes visible affordable SMM authority and monitored aliases (0.85334ms)
-✔ phase 5Y services canonical uses brand-safe growth-platform authority (0.336422ms)
-✔ phase 5Y growth-platform intent covers commercial discovery without ranking claims (0.305119ms)
-✔ phase 5Z maps bulk SMM search intent to the existing agency canonical (0.213677ms)
-✔ phase 5Z bulk intent copy stays operational and avoids unsupported reseller claims (0.395922ms)
-✔ phase 5Z agency page exposes the bulk authority section and FAQ schema input (0.308586ms)
-✔ phase 13 implements only distinct Instagram content gaps (0.184477ms)
-✔ phase 13 does not duplicate already-covered Instagram intents (0.143381ms)
-✔ phase 13 Instagram gap target is published and linked from the authority cluster (0.098771ms)
-✔ phase 14 LinkedIn content gap keeps one distinct implemented target (0.151457ms)
-✔ phase 14 LinkedIn gap target is published and linked from the authority cluster (0.085292ms)
-✔ phase 14 LinkedIn guide strengthens existing canonicals without creating a transaction route (0.40847ms)
-✔ Facebook and LinkedIn public order builders record only valid, privacy-safe order clicks (1.892451ms)
-✔ phase 11 preserves the historical growth-goal-planner URL with one canonical redirect (0.637823ms)
-✔ phase 13 editorial guides give platform-specific actionable advice beyond shared boilerplate (0.422325ms)
-✔ Twitter follower recovery keeps keyword intent and a crawlable canonical hub breadcrumb (1.30136ms)
-✔ Instagram Likes canonical page has one breadcrumb owner and consistent search snippet (0.687631ms)
-✔ uncrawled Instagram Saves, Shares and Facebook Group Members pages render one live-fact schema owner (1.094335ms)
-✔ YouTube Comments and Watch Hours point breadcrumbs to the canonical growth hub (1.2334ms)
-✔ six indexing-priority service pages have distinct search snippets and useful buyer decision guidance (1.308972ms)
-✔ creator calculators provide accurate contextual service links without implying ranking or eligibility (0.826443ms)
-✔ educational blog guides link to all six priority service destinations with accurate caveats (0.73648ms)
-(node:3273) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-cost-calculator.test.ts is not specified and it doesn't parse as CommonJS.
+✔ every deliberate SEO intent has exactly one preferred canonical target (14.734224ms)
+✔ protected India service targets remain present and canonical (1.264229ms)
+✔ platform hubs link directly to canonical service pages (0.594277ms)
+✔ Services hub directly links key commercial pages awaiting Google's first crawl (15.635625ms)
+✔ legacy growth planner URL redirects permanently to the published canonical tool (3.116584ms)
+✔ platform hubs link to published, unique authority guides (2.156934ms)
+✔ GSC crawled evergreen guides are linked from their relevant platform hubs (1.459613ms)
+✔ GSC Phase 4 guides offer practical editorial detail beyond a basic introduction (1.853316ms)
+✔ growth hubs expose crawlable authority-guide links (11.771237ms)
+✔ technical SEO routes avoid redirect loops and sitemap omissions (2.137063ms)
+✔ thin operational pages explicitly stay out of search results (3.314742ms)
+✔ free production SEO monitoring covers every canonical India service page (13.224655ms)
+✔ priority India pages keep Search Console query language in metadata (8.107148ms)
+✔ international routes are allowlisted, catalog-backed, and have no unpublished variants (1.446559ms)
+✔ US and UK Instagram pages provide distinct, accurate market guidance (3.987283ms)
+✔ country service schema remains INR-authoritative (4.970924ms)
+✔ search-demand quantity planning derives 1K 5K and 10K totals from the confirmed per-1K rate (0.461614ms)
+✔ search-demand service units stay readable for long-tail price headings (2.241027ms)
+✔ platform authority graph routes research to clean canonical targets (7.304871ms)
+✔ authority graph deduplicates repeated destinations without changing order (1.945581ms)
+✔ blog authority links stay canonical and avoid tracking-query crawl noise (1.995271ms)
+✔ phase 5F crawl priority points only to canonical India money pages (1.852017ms)
+✔ phase 5F commercial search descriptions cover price, public-link safety and tracking (1.963916ms)
+✔ homepage and services expose the canonical crawl-priority module (0.995442ms)
+✔ phase 5G gives every India transaction intent one canonical owner (1.027547ms)
+✔ phase 5G commercial aliases always resolve to their single canonical owner (15.328784ms)
+✔ phase 5G middleware and sitemap consume the canonical ownership guard (0.774925ms)
+✔ phase 5G production SEO monitor checks every commercial alias redirect (5.344201ms)
+✔ phase 5H freshness registry marks only clean canonical-style paths with a real release date (4.78309ms)
+✔ phase 5H sitemap consumes explicit freshness instead of request-time dates (0.828659ms)
+✔ phase 5H IndexNow release submits canonical Phase 5 URLs only after the root key is live (5.306613ms)
+✔ phase 5J models delivery and refill long-tail search intent without guarantees (13.971689ms)
+✔ phase 5J priority money pages expose the visible delivery and refill intent module (20.516405ms)
+✔ phase 5J metadata models include delivery and refill query language (2.658921ms)
+✔ phase 5K models minimum-order and quantity-limit search intent from catalog facts (0.511146ms)
+✔ phase 5K priority money pages expose the visible order-requirements module (8.55914ms)
+✔ phase 5K metadata includes minimum-order search language (34.419416ms)
+✔ phase 5M assigns SMM panel India intent to the existing services canonical (0.254798ms)
+✔ phase 5M comparison model covers practical panel-selection criteria without ranking claims (0.569106ms)
+✔ phase 5M legacy panel aliases remain consolidated without controlling visible services positioning (6.831344ms)
+✔ phase 5N assigns agency reseller intent to /for-agencies without a doorway page (0.287196ms)
+✔ phase 5N agency intent model stays factual and avoids unsupported reseller claims (0.265324ms)
+✔ phase 5N /for-agencies exposes visible reseller authority and truthful freshness (0.534511ms)
+✔ phase 5O assigns social media growth services India to one canonical hub (0.351935ms)
+✔ phase 5O architecture and visible page own cross-platform growth intent without agency confusion (0.359556ms)
+✔ phase 5O marks the canonical growth hub fresh and submits it for search release (0.291357ms)
+✔ phase 5P consolidates social media engagement services India onto the growth hub (0.195249ms)
+✔ phase 5P engagement model links only to clean canonical service paths (10.086737ms)
+✔ phase 5P growth hub exposes visible engagement-service intent without outcome guarantees (6.437314ms)
+✔ phase 5Q assigns social media promotion services India to the existing growth hub (0.464768ms)
+✔ phase 5Q promotion criteria distinguish campaign services from management retainers (1.71404ms)
+✔ phase 5Q growth hub exposes visible promotion intent and canonical redirect monitoring (0.464695ms)
+✔ phase 5R keeps social media services India on the existing services canonical (1.501665ms)
+✔ phase 5R services page exposes visible social media services India authority (1.481476ms)
+✔ phase 5S consolidates best reliable and trusted SMM panel India queries onto /services (1.739426ms)
+✔ phase 5S selection model uses factual criteria instead of self-awarded ranking claims (1.331057ms)
+✔ phase 5S legacy selection aliases remain monitored while visible services copy stays brand-safe (0.230761ms)
+✔ phase 5T assigns platform SMM panel queries to existing canonical hubs (0.348874ms)
+✔ phase 5T renders platform SMM authority on every target hub (3.731374ms)
+✔ phase 5U assigns SMM pricing and UPI intent to /pricing (1.006962ms)
+✔ phase 5U pricing model stays factual and derives quantity totals (0.299792ms)
+✔ phase 5U pricing page exposes visible SMM price-list authority and release safeguards (2.525315ms)
+✔ phase 5V assigns safe no-password SMM ordering intent to /trust (0.983943ms)
+✔ phase 5V safe-ordering model uses verifiable checks instead of ranking claims (6.006974ms)
+✔ phase 5V Trust Center exposes visible no-password authority and release safeguards (6.66581ms)
+✔ phase 5W assigns SMM API India intent to the existing agency canonical (0.352172ms)
+✔ phase 5W API model uses only documented workflow capabilities (0.50713ms)
+✔ phase 5W agency page exposes visible SMM API authority and monitored aliases (9.290883ms)
+✔ phase 5X assigns cheap and affordable SMM India intent to /pricing (0.300982ms)
+✔ phase 5X affordability model compares real campaign cost without ranking claims (7.856735ms)
+✔ phase 5X pricing page exposes visible affordable SMM authority and monitored aliases (2.534737ms)
+✔ phase 5Y services canonical uses brand-safe growth-platform authority (2.019679ms)
+✔ phase 5Y growth-platform intent covers commercial discovery without ranking claims (16.346995ms)
+✔ phase 5Z maps bulk SMM search intent to the existing agency canonical (0.321466ms)
+✔ phase 5Z bulk intent copy stays operational and avoids unsupported reseller claims (0.398848ms)
+✔ phase 5Z agency page exposes the bulk authority section and FAQ schema input (2.423511ms)
+✔ phase 13 implements only distinct Instagram content gaps (1.669367ms)
+✔ phase 13 does not duplicate already-covered Instagram intents (1.552313ms)
+✔ phase 13 Instagram gap target is published and linked from the authority cluster (0.239846ms)
+✔ phase 14 LinkedIn content gap keeps one distinct implemented target (1.092994ms)
+✔ phase 14 LinkedIn gap target is published and linked from the authority cluster (1.910944ms)
+✔ phase 14 LinkedIn guide strengthens existing canonicals without creating a transaction route (1.534828ms)
+✔ Facebook and LinkedIn public order builders record only valid, privacy-safe order clicks (3.264021ms)
+✔ phase 11 preserves the historical growth-goal-planner URL with one canonical redirect (0.492635ms)
+✔ phase 13 editorial guides give platform-specific actionable advice beyond shared boilerplate (1.970423ms)
+✔ Twitter follower recovery keeps keyword intent and a crawlable canonical hub breadcrumb (14.596616ms)
+✔ Instagram Likes canonical page has one breadcrumb owner and consistent search snippet (2.059069ms)
+✔ uncrawled Instagram Saves, Shares and Facebook Group Members pages render one live-fact schema owner (10.904011ms)
+✔ YouTube Comments and Watch Hours point breadcrumbs to the canonical growth hub (2.628131ms)
+✔ six indexing-priority service pages have distinct search snippets and useful buyer decision guidance (4.239759ms)
+✔ creator calculators provide accurate contextual service links without implying ranking or eligibility (0.679504ms)
+✔ educational blog guides link to all six priority service destinations with accurate caveats (7.42158ms)
+(node:28274) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-cost-calculator.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ service cost calculator computes quantity totals from a per-1K rate (9.001759ms)
-✔ only confirmed public services auto-fill a price (1.711178ms)
-✔ every calculator service points to one canonical public money page (0.64946ms)
-(node:3280) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch2.test.ts is not specified and it doesn't parse as CommonJS.
+✔ service cost calculator computes quantity totals from a per-1K rate (3.215173ms)
+✔ only confirmed public services auto-fill a price (0.279074ms)
+✔ every calculator service points to one canonical public money page (0.493466ms)
+(node:28281) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch2.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ batch-two existing offers identify their delivery unit without altering rates (4.587842ms)
-✔ dedicated batch-two canonical owners remain outside generated catch-all pages (1.060551ms)
-✔ buyer answers and FAQ schemas share exact wording without static price claims (0.57362ms)
-(node:3287) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch3.test.ts is not specified and it doesn't parse as CommonJS.
+✔ batch-two existing offers identify their delivery unit without altering rates (3.187271ms)
+✔ dedicated batch-two canonical owners remain outside generated catch-all pages (1.833826ms)
+✔ buyer answers and FAQ schemas share exact wording without static price claims (1.298105ms)
+(node:28288) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch3.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ audited X canonical owners exist and buyer questions retain distinct intent (2.248896ms)
-✔ platform decisions explain separate buyer requirements without fabricated prices (0.485107ms)
-(node:3294) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch4.test.ts is not specified and it doesn't parse as CommonJS.
+✔ audited X canonical owners exist and buyer questions retain distinct intent (2.997359ms)
+✔ platform decisions explain separate buyer requirements without fabricated prices (1.01987ms)
+(node:28295) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch4.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ buyer guidance distinguishes the six actions without financial or survey endorsement (2.19845ms)
-✔ catalog comparison links retain distinct destinations and bounded claims (0.738285ms)
-(node:3301) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch5.test.ts is not specified and it doesn't parse as CommonJS.
+✔ buyer guidance distinguishes the six actions without financial or survey endorsement (9.746301ms)
+✔ catalog comparison links retain distinct destinations and bounded claims (0.523743ms)
+(node:28302) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch5.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ buyer guidance affects only the ten existing LinkedIn and video-view variants (5.603982ms)
-(node:3308) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch6.test.ts is not specified and it doesn't parse as CommonJS.
+✔ buyer guidance affects only the ten existing LinkedIn and video-view variants (69.211674ms)
+(node:28309) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-batch6.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ country follower and subscriber guidance preserves offer authority and action-specific eligibility (14.462537ms)
-✔ existing country metadata, eligibility, routes and catalog owners are unchanged (1.385998ms)
-(node:3315) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-evidence.test.ts is not specified and it doesn't parse as CommonJS.
+✔ country follower and subscriber guidance preserves offer authority and action-specific eligibility (9.752956ms)
+✔ existing country metadata, eligibility, routes and catalog owners are unchanged (2.785538ms)
+(node:28316) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/service-page-evidence.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ existing per-1K offers retain their rate and identify the actual reference quantity (37.004292ms)
-✔ invalid rates and routes outside this batch receive no price specification (2.046621ms)
-✔ Telegram structured answers match the visible FAQ source and state outcome limits (1.17631ms)
-✔ first-batch generated routes never shadow their dedicated canonical page files (1.007314ms)
-(node:3322) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/social-ad-metrics.test.ts is not specified and it doesn't parse as CommonJS.
+✔ existing per-1K offers retain their rate and identify the actual reference quantity (10.667951ms)
+✔ invalid rates and routes outside this batch receive no price specification (1.882542ms)
+✔ Telegram structured answers match the visible FAQ source and state outcome limits (5.525714ms)
+✔ first-batch generated routes never shadow their dedicated canonical page files (3.441501ms)
+(node:28323) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/social-ad-metrics.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ social ad metrics calculate CPM CPC CTR and funnel costs transparently (3.959603ms)
-✔ social ad metrics return null where a denominator is unavailable (0.536752ms)
-✔ social ad metrics clamp invalid negative inputs to zero (0.583089ms)
-(node:3329) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/social-media-roi.test.ts is not specified and it doesn't parse as CommonJS.
+✔ social ad metrics calculate CPM CPC CTR and funnel costs transparently (7.982477ms)
+✔ social ad metrics return null where a denominator is unavailable (2.30501ms)
+✔ social ad metrics clamp invalid negative inputs to zero (1.112238ms)
+(node:28330) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/social-media-roi.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ social media ROI uses gross profit rather than treating all revenue as profit (3.100539ms)
-✔ social media ROI can show a negative return without hiding the loss (0.601773ms)
-✔ social media ROI refuses a meaningless zero-cost denominator (1.002201ms)
-✔ social media ROI caps impossible gross margin inputs at 100 percent (0.359952ms)
-(node:3336) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/web-vital-dimensions.test.ts is not specified and it doesn't parse as CommonJS.
+✔ social media ROI uses gross profit rather than treating all revenue as profit (6.863905ms)
+✔ social media ROI can show a negative return without hiding the loss (0.346492ms)
+✔ social media ROI refuses a meaningless zero-cost denominator (0.200506ms)
+✔ social media ROI caps impossible gross margin inputs at 100 percent (0.843163ms)
+(node:28337) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/web-vital-dimensions.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ public templates are stable for homepage, directory, checkout-adjacent pages and international hubs (2.67473ms)
-✔ private path templates never return identifiers, tokens, query strings or personal routes (0.759392ms)
-✔ deployment attribution accepts only a git SHA and never sends arbitrary values (0.541733ms)
-✔ navigation attribution uses a bounded, non-identifying set of values (0.2692ms)
-(node:3343) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/youtube-engagement.test.ts is not specified and it doesn't parse as CommonJS.
+✔ public templates are stable for homepage, directory, checkout-adjacent pages and international hubs (2.515192ms)
+✔ private path templates never return identifiers, tokens, query strings or personal routes (0.364721ms)
+✔ deployment attribution accepts only a git SHA and never sends arbitrary values (1.180337ms)
+✔ navigation attribution uses a bounded, non-identifying set of values (0.415358ms)
+(node:28345) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/youtube-engagement.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ video engagement includes likes comments and shares (4.284311ms)
-✔ shorts mode calculates optional engaged-view rate (1.001839ms)
-✔ engaged-view rate is not emitted for regular video mode (1.025498ms)
-✔ youtube engagement rejects a zero view denominator (1.190942ms)
-(node:3350) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/youtube-subscriber-growth.test.ts is not specified and it doesn't parse as CommonJS.
+✔ video engagement includes likes comments and shares (3.539512ms)
+✔ shorts mode calculates optional engaged-view rate (0.3944ms)
+✔ engaged-view rate is not emitted for regular video mode (0.287554ms)
+✔ youtube engagement rejects a zero view denominator (0.17544ms)
+(node:28352) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/youtube-subscriber-growth.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ youtube subscriber growth calculates period and 30-day pace (1.874331ms)
-✔ youtube subscriber growth handles decline without inventing target timing (0.371376ms)
-✔ youtube subscriber growth reports an already reached target (0.306047ms)
-✔ youtube subscriber growth rejects invalid starting count or duration (0.286384ms)
-(node:3357) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/youtube-view-growth.test.ts is not specified and it doesn't parse as CommonJS.
+✔ youtube subscriber growth calculates period and 30-day pace (4.359204ms)
+✔ youtube subscriber growth handles decline without inventing target timing (0.231321ms)
+✔ youtube subscriber growth reports an already reached target (18.830329ms)
+✔ youtube subscriber growth rejects invalid starting count or duration (0.776341ms)
+(node:28359) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/youtube-view-growth.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ youtube view growth calculates period and 30-day pace (4.103518ms)
-✔ youtube view growth handles decline without inventing target timing (0.495569ms)
-✔ youtube view growth reports an already reached target (0.530213ms)
-✔ youtube view growth rejects invalid starting count or duration (0.751469ms)
+✔ youtube view growth calculates period and 30-day pace (10.404746ms)
+✔ youtube view growth handles decline without inventing target timing (0.387977ms)
+✔ youtube view growth reports an already reached target (7.341673ms)
+✔ youtube view growth rejects invalid starting count or duration (1.829553ms)
 ℹ tests 263
 ℹ suites 0
 ℹ pass 263
@@ -408,7 +408,7 @@ To eliminate this warning, add "type": "module" to /workspace/work/phase4/packag
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 16512.67023
+ℹ duration_ms 21370.992332
 npm notice
 npm notice New major version of npm available! 11.9.0 -> 12.2.2
 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.2

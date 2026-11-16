@@ -1,6 +1,6 @@
 {
   "date": "2026-11-16",
-  "scope": "Frozen source preparation; exact final SHA/tree/CI recorded in PR766 body/checks.",
+  "scope": "Security-patched private install: Next15.5.29. Final exact-head CI/browser/build results in PR766 body. Earlier website/browser/zoom captures are pre-security-patch unless explicitly rerun.",
   "tests": [
     {
       "name": "Existing unit suite",
@@ -35,46 +35,50 @@
     {
       "name": "Optimized isolated Next build",
       "status": "PASS",
-      "command": "node scripts/phase2-isolated.cjs build 3108"
+      "command": "node scripts/phase2-isolated.cjs build 3108",
+      "limit": "Patched private Next15.5.29 isolated build completed with exit0.",
+      "log": "security-build.log"
     },
     {
       "name": "Populated customer workspace",
-      "status": "PASS",
-      "passed": 14,
+      "status": "NOT RUN",
       "retries": 0,
-      "log": "workspace-browser.log"
+      "log": "workspace-browser.log",
+      "limit": "Fresh patched-bundle verification pending at publication snapshot; current results in PR body.",
+      "prePatchPassed": 14
     },
     {
       "name": "Offline admin review",
-      "status": "PASS",
-      "passed": 3,
+      "status": "NOT RUN",
       "widths": [
         320,
         390,
         1440
       ],
       "retries": 0,
-      "log": "profit-browser.log"
+      "log": "profit-browser.log",
+      "limit": "Fresh patched-bundle verification pending at publication snapshot; current results in PR body.",
+      "prePatchPassed": 3
     },
     {
       "name": "Standalone post-build TypeScript",
-      "status": "NOT RUN",
-      "limit": "Running at snapshot; build type validation passed. Final result in PR body."
+      "status": "PASS",
+      "limit": "Patched private-install post-build standalone tsc completed with exit0."
     },
     {
       "name": "Native 200% browser zoom",
       "status": "NOT RUN",
-      "limit": "Final result in PR body/CI artifact."
+      "limit": "Fresh patched-bundle verification pending at publication snapshot; current results in PR body."
     },
     {
       "name": "Full frozen local browser suite",
       "status": "NOT RUN",
-      "limit": "Final result in PR body; do not equate focused reruns with full gate."
+      "limit": "Fresh patched-bundle verification pending at publication snapshot; current results in PR body."
     },
     {
       "name": "Final exact-head GitHub CI",
       "status": "NOT RUN",
-      "limit": "Runs after publication; exact SHA/results in PR body."
+      "limit": "Fresh patched-bundle verification pending at publication snapshot; current results in PR body."
     },
     {
       "name": "Human screen-reader/independent accessibility audit",
@@ -95,6 +99,53 @@
       "name": "Field CWV/live financial business improvement",
       "status": "NOT RUN",
       "limit": "No invented real-user performance or revenue gain."
+    },
+    {
+      "name": "Patched production dependency advisory scan",
+      "status": "PASS",
+      "counts": {
+        "critical": 0,
+        "high": 0,
+        "moderate": 0,
+        "low": 0
+      },
+      "log": "dependency-audit-after-production.json"
+    },
+    {
+      "name": "Full dependency high/critical gate",
+      "status": "PASS",
+      "counts": {
+        "critical": 0,
+        "high": 0,
+        "moderate": 6
+      },
+      "limit": "One underlying moderate minimatch advisory propagated through6 dev-tooling packages is unresolved.",
+      "log": "dependency-audit-after-all.json"
+    },
+    {
+      "name": "Private frozen install",
+      "status": "PASS",
+      "limit": "npm ci --ignore-scripts succeeded; candidate Next15.5.29; unchanged baseline Next15.5.26.",
+      "log": "installed-security-graph.json"
+    },
+    {
+      "name": "Corrected failure-path browser checks on patched bundle",
+      "status": "PASS",
+      "passed": 16,
+      "retries": 0,
+      "workers": 1,
+      "log": "security-focused-browser.log",
+      "limit": "Focused results do not erase failed prior full run; final full remains pending."
+    },
+    {
+      "name": "Repeated navigation and wallet regression after fixture correction",
+      "status": "PASS",
+      "passed": 12,
+      "retries": 0,
+      "repeatEach": 3,
+      "workers": 1,
+      "log": "security-repeat-browser.log",
+      "limit": "Three repetitions of4 actual journeys; no product or business performance gain claimed."
     }
   ],
   "historical_failures": [
@@ -116,6 +167,15 @@
       "failed": 6,
       "skipped": 68,
       "cause": "Timeout/transport diagnostics retained; not a clean pass"
+    },
+    {
+      "scope": "Master diagnostic local499 run begun at28111d79",
+      "passed": 426,
+      "failed": 5,
+      "skipped": 68,
+      "flaky": 0,
+      "durationMinutes": 39.4,
+      "cause": "Package/wallet deadlines, two scroll timeouts and comparison fixture teardown; preserved before patched bundle verification."
     }
   ],
   "reproduction": [

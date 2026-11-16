@@ -1,54 +1,54 @@
-(node:3028) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase3-intelligence.test.ts is not specified and it doesn't parse as CommonJS.
+(node:28016) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase3-intelligence.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ allow only approved categorical dimensions, never URLs/PII/free text (12.433804ms)
-✔ exclude {"consent":"unknown"} (4.910058ms)
-✔ exclude {"consent":"denied"} (1.497344ms)
-✔ exclude {"doNotTrack":true} (0.126631ms)
-✔ exclude {"globalPrivacyControl":true} (0.396261ms)
-✔ exclude {"internal":true} (0.314763ms)
-✔ exclude {"deployment":"preview"} (0.169088ms)
-✔ exclude {"deployment":"development"} (2.909066ms)
-✔ exclude {"synthetic":true} (2.002466ms)
-✔ exclude {"origin":"https://wrong.example"} (0.2394ms)
-✔ exclude {"origin":"https://www.getsocialrush.com.evil.example"} (1.000472ms)
-✔ exclude {"origin":"https://www.getsocialrush.com/path"} (0.112642ms)
-✔ exclude {"origin":"http://www.getsocialrush.com"} (0.046035ms)
-✔ exclude {"origin":"https://preview.vercel.app","canonicalOrigin":"https://preview.vercel.app"} (0.290917ms)
-✔ unknown privacy flags fail closed (0.117537ms)
-✔ client cannot assert auth or paid outcomes; wallet deposits are not paid orders (1.016554ms)
-✔ synthetic dataset cannot be silently relabeled production (0.184932ms)
-✔ sequential cohort deduplicates retries and excludes out-of-order outcomes (19.419886ms)
-✔ earned ex-tax waterfall, exact paise, customer mix and service contribution (1.388419ms)
-✔ refund-only period and costs preserve losses, no AOV or fake customers (0.8294ms)
-✔ missing costs are not zero, but known remainder stays diagnostic (0.374601ms)
-✔ unverified costs override contradictory upstream completeness (0.450512ms)
-✔ missing revenue and refund coverage blocks profit and comparable ratios (0.449822ms)
-✔ late refund belongs to its occurrence period and historical service (0.178106ms)
-✔ retry IDs deduplicate, conflicts and duplicate earned orders fail (0.430161ms)
-✔ unverified internal and wrong-dataset entries never become revenue (0.143386ms)
-✔ invalid amounts currencies wallet deposits and orphan refunds fail (0.467119ms)
-✔ unallocated direct costs withhold service ranking but not period total (0.325333ms)
-✔ unknown customer history withholds retention and CAC (0.145959ms)
-✔ date offsets and overflow validated (0.308956ms)
-(node:3036) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase4-profit.test.ts is not specified and it doesn't parse as CommonJS.
+✔ allow only approved categorical dimensions, never URLs/PII/free text (3.017763ms)
+✔ exclude {"consent":"unknown"} (0.205991ms)
+✔ exclude {"consent":"denied"} (0.207045ms)
+✔ exclude {"doNotTrack":true} (0.09317ms)
+✔ exclude {"globalPrivacyControl":true} (0.122384ms)
+✔ exclude {"internal":true} (0.078672ms)
+✔ exclude {"deployment":"preview"} (0.108673ms)
+✔ exclude {"deployment":"development"} (0.094524ms)
+✔ exclude {"synthetic":true} (0.164662ms)
+✔ exclude {"origin":"https://wrong.example"} (0.185405ms)
+✔ exclude {"origin":"https://www.getsocialrush.com.evil.example"} (0.458467ms)
+✔ exclude {"origin":"https://www.getsocialrush.com/path"} (0.234863ms)
+✔ exclude {"origin":"http://www.getsocialrush.com"} (0.072038ms)
+✔ exclude {"origin":"https://preview.vercel.app","canonicalOrigin":"https://preview.vercel.app"} (0.062706ms)
+✔ unknown privacy flags fail closed (0.114408ms)
+✔ client cannot assert auth or paid outcomes; wallet deposits are not paid orders (0.359963ms)
+✔ synthetic dataset cannot be silently relabeled production (0.219863ms)
+✔ sequential cohort deduplicates retries and excludes out-of-order outcomes (11.769308ms)
+✔ earned ex-tax waterfall, exact paise, customer mix and service contribution (1.28556ms)
+✔ refund-only period and costs preserve losses, no AOV or fake customers (0.266244ms)
+✔ missing costs are not zero, but known remainder stays diagnostic (0.303546ms)
+✔ unverified costs override contradictory upstream completeness (0.37823ms)
+✔ missing revenue and refund coverage blocks profit and comparable ratios (0.205726ms)
+✔ late refund belongs to its occurrence period and historical service (0.131535ms)
+✔ retry IDs deduplicate, conflicts and duplicate earned orders fail (0.972536ms)
+✔ unverified internal and wrong-dataset entries never become revenue (0.315181ms)
+✔ invalid amounts currencies wallet deposits and orphan refunds fail (0.63177ms)
+✔ unallocated direct costs withhold service ranking but not period total (0.456245ms)
+✔ unknown customer history withholds retention and CAC (0.575542ms)
+✔ date offsets and overflow validated (0.630592ms)
+(node:28030) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase4-profit.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ posted prior-period losses preserved without rewriting historical earned orders (77.189019ms)
-✔ cost credits reverse expenses once and unknown coverage withholds profit (15.620526ms)
-✔ window, dataset, replay and malformed correction checks (2.615651ms)
-✔ unverified corrections and wallet movements withhold complete totals (2.154501ms)
-✔ wallet deposits and applications reconcile liability without creating sales (0.394529ms)
-✔ unknown liability and negative reconciliation are not silently zeroed (0.355414ms)
-(node:3043) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/profit-dashboard.test.ts is not specified and it doesn't parse as CommonJS.
+✔ posted prior-period losses preserved without rewriting historical earned orders (42.421251ms)
+✔ cost credits reverse expenses once and unknown coverage withholds profit (3.223182ms)
+✔ window, dataset, replay and malformed correction checks (2.281957ms)
+✔ unverified corrections and wallet movements withhold complete totals (1.131185ms)
+✔ wallet deposits and applications reconcile liability without creating sales (0.455224ms)
+✔ unknown liability and negative reconciliation are not silently zeroed (0.33811ms)
+(node:28038) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/profit-dashboard.test.ts is not specified and it doesn't parse as CommonJS.
 Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
 To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
 (Use `node --trace-warnings ...` to show where the warning was created)
-✔ offline dashboard refuses production data (1.454054ms)
-✔ incomplete coverage is UNKNOWN, keeps wallet liability and does not invent retention (12.159852ms)
-✔ review surface escapes missing coverage strings (1.971758ms)
+✔ offline dashboard refuses production data (3.522707ms)
+✔ incomplete coverage is UNKNOWN, keeps wallet liability and does not invent retention (65.711657ms)
+✔ review surface escapes missing coverage strings (1.927334ms)
 ℹ tests 39
 ℹ suites 0
 ℹ pass 39
@@ -56,4 +56,4 @@ To eliminate this warning, add "type": "module" to /workspace/work/phase4/packag
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1603.054789
+ℹ duration_ms 1117.188327
