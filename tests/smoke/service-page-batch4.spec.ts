@@ -53,7 +53,9 @@ for (const path of paths) {
       const expectedPlatform = slug.startsWith('telegram') ? 'telegram' : 'x';
       if (inlineBuilderSlugs.has(slug)) {
         await expect(page.locator('[data-service-order-card]')).toHaveCount(1);
-        await expect(page.locator('main a[href="#order-builder"]')).toHaveCount(1);
+        await expect(page.locator('main a[href="#order-builder"]').first()).toBeVisible();
+        await expect(page.locator('main [data-service-primary-cta="inline-builder"]')).toHaveAttribute("href", "#order-builder");
+        await expect(page.locator('#order-builder')).toHaveCount(1);
         await expect(page.locator('[data-service-order-card]')).toHaveAttribute('data-platform', expectedPlatform);
         await expect(page.locator('[data-service-order-card] a').filter({ hasText: 'Continue to Secure Order' })).toHaveAttribute('href', '#');
         await expect(page.locator('[data-service-live-handoff]')).toHaveCount(0);
