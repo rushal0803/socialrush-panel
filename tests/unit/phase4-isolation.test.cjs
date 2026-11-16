@@ -12,3 +12,14 @@ test('isolated server retains only explicit read-only fixture modes and drops in
  assert.equal(result.DASHBOARD_UPGRADE_AUDIT,'1');assert.equal(result.RESPONSIVE_PAYMENT_FIXTURE,'1');
  assert.equal(result.SUPABASE_SERVICE_ROLE_KEY,'synthetic-service');assert.equal(result.RESEND_API_KEY,undefined);assert.equal(result.DATABASE_URL,undefined);assert.equal(result.OPTIONAL_ANALYTICS_ENABLED,undefined);
 });
+
+test('Phase 4 candidate stays opted out of automatic Vercel deployment until QA isolation is verified',()=>{
+ const config=JSON.parse(fs.readFileSync(path.resolve('vercel.json'),'utf8'));
+ const branch='feat/socialrush-phase4-integration-20261116';
+ assert.equal(config.git?.deploymentEnabled?.[branch],false,'Candidate branch must remain deployment-disabled');
+ assert.deepEqual(
+   [...new Set((config.crons??[]).map(job=>job.path))].sort(),
+   ['/api/cron/email','/api/cron/monitoring','/api/cron/order-notifications','/api/cron/prospect-discovery'].sort(),
+   'Review any new scheduled egress before isolated QA or release'
+ );
+});
