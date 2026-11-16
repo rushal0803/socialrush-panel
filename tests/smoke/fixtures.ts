@@ -3,7 +3,9 @@ import { test as base, expect } from "@playwright/test";
 // Exercise the existing privacy opt-out rather than changing live analytics.
 // An isolated opt-in run can still verify analytics via SMOKE_ANALYTICS_ENABLED=1.
 export const test = base.extend<{ privacyPreference: void }>({
-  privacyPreference: [async ({ context, baseURL }, use) => {
+  privacyPreference: [async ({ context, page, baseURL }, use) => {
+    // Own page setup first so route handlers drain before Playwright closes it.
+    void page;
     // Production keeps upgrade-insecure-requests. This loopback server has no
     // TLS listener, so remove only that directive from local navigation headers.
     // APIRequestContext still reads the original policy for the CSP smoke check.
@@ -28,7 +30,8 @@ export const test = base.extend<{ privacyPreference: void }>({
     if (process.env.SMOKE_ANALYTICS_ENABLED !== "1") {
       await context.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { configurable: true, get: () => "1" }));
     }
-    await use();
+    try { await use(); }
+    finally { await context.unrouteAll({ behavior: "wait" }); }
   }, { auto: true }],
 });
 export { expect };
