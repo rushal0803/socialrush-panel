@@ -67,8 +67,10 @@
     },
     {
       "name": "Native 200% browser zoom",
-      "status": "NOT RUN",
-      "limit": "Fresh patched-bundle verification pending at publication snapshot; current results in PR body."
+      "status": "PASS",
+      "limit": "Patched Next15.5.29 bundle; actual Chromium zoom2 with reduced CSS viewport verified.",
+      "passed": 4,
+      "log": "security-native-zoom.log"
     },
     {
       "name": "Full frozen local browser suite",
@@ -146,6 +148,23 @@
       "workers": 1,
       "log": "security-repeat-browser.log",
       "limit": "Three repetitions of4 actual journeys; no product or business performance gain claimed."
+    },
+    {
+      "name": "Article content/keyboard plus related destination correction",
+      "status": "PASS",
+      "passed": 19,
+      "workers": 1,
+      "retries": 0,
+      "limit": "Two LinkedIn viewport checks +17 unique destination checks; redirect guard subsequently verified separately and in final full suite.",
+      "log": "security-article-browser.log"
+    },
+    {
+      "name": "Independent related-destination HTTP checks with bounded same-origin redirects",
+      "status": "PASS",
+      "passed": 17,
+      "retries": 0,
+      "workers": 1,
+      "log": "security-related-http.log"
     }
   ],
   "historical_failures": [
@@ -176,6 +195,15 @@
       "flaky": 0,
       "durationMinutes": 39.4,
       "cause": "Package/wallet deadlines, two scroll timeouts and comparison fixture teardown; preserved before patched bundle verification."
+    },
+    {
+      "scope": "Security-patched506 diagnostic interrupted for test-budget correction",
+      "passed": 130,
+      "failed": 1,
+      "notRun": 375,
+      "flaky": 0,
+      "durationMinutes": 9.98,
+      "limit": "Article test combined keyboard checks with independent related HTTP checks. Restarted full suite after preserving all assertions and separating destination audits."
     }
   ],
   "reproduction": [

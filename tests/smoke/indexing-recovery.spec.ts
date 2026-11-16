@@ -45,6 +45,25 @@ test('all 17 supplied HTML URLs retain their intended HTTP, canonical and sitema
   }
 });
 
+// HTTP destination availability is independent of viewport and keyboard state.
+// Keep DOM link assertions in both browser widths; audit each unique destination
+// separately so unrelated cold-route requests cannot exhaust the FAQ deadline.
+const relatedDestinations=[...new Set(Object.values(indexingRecoveryUpdates).flatMap(update=>(update.relatedLinks??[]).map(link=>link.href)))];
+for(const href of relatedDestinations) test(`recovery related destination returns200: ${href}`,async({request,baseURL})=>{
+  const origin=new URL(baseURL!).origin;
+  let target=new URL(href,baseURL!);
+  for(let hop=0;hop<6;hop++) {
+    expect(target.origin).toBe(origin);
+    const response=await request.get(target.href,{maxRedirects:0});
+    if([301,302,303,307,308].includes(response.status())) {
+      const location=response.headers().location;expect(location).toBeTruthy();
+      target=new URL(location!,target);continue;
+    }
+    expect(response.status(),href).toBe(200);return;
+  }
+  throw new Error(`Related destination redirect limit: ${href}`);
+});
+
 for(const width of [390,1440]) {
   test.describe(`recovery content at ${width}px`,()=>{
     test.use({viewport:{width,height:900}});
@@ -73,7 +92,6 @@ for(const width of [390,1440]) {
         }
         for(const href of indexingRecoveryUpdates[slug].relatedLinks!.map(l=>l.href)) {
           await expect(page.locator(`a[href="${href}"]`).first()).toBeAttached();
-          expect((await request.get(href)).status(),href).toBe(200);
         }
         if(slug==='youtube-views-price-in-india') {
           const bridge=page.locator('[data-article-service-options]');

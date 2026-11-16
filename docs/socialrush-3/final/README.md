@@ -2,7 +2,7 @@
 
 **Release HOLD. Draft PR #766 only.** The candidate preserves #760–#765 and completes additional safe offline work requested by the master brief. It does not claim all release prerequisites are complete. Exact final SHA, tree, file count and completed CI results are maintained in the PR body/checks without rewriting the tested commit solely to record its own test outcome.
 
-- [43-item consolidated work register](work-register.csv): every item has severity, impact, cause, implementation, solution, dependencies, acceptance, tests, evidence and status.
+- [45-item consolidated work register](work-register.csv): every item has severity, impact, cause, implementation, solution, dependencies, acceptance, tests, evidence and status.
 - [Engineering report and dependency graph](engineering-report.md), [heads/reviews](heads-and-reviews.json), [predecessor CI](predecessor-ci.json).
 - [UX and accessibility limits](ux-report.md); synthetic admin screenshots: [320px](screenshots/profit-320.png), [390px](screenshots/profit-390.png), [1440px](screenshots/profit-1440.png).
 - [Standalone offline profit interface](profit-dashboard.html). Download/open locally, or generate with `node --experimental-strip-types scripts/render-profit-dashboard-preview.ts > /tmp/socialrush-profit-review.html`. All values are synthetic; no live admin route or API is installed.

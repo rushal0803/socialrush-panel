@@ -1,0 +1,27 @@
+
+Running 19 tests using 1 worker
+
+(node:37578) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /buy-instagram-followers-india
+[2/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/how-to-increase-instagram-followers-safely-in-india
+[3/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/instagram-followers-vs-engagement
+[4/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /pricing
+[5/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /youtube-views
+[6/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/youtube-subscribers-vs-views-india
+[7/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/is-it-safe-to-buy-youtube-views
+[8/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /youtube-growth-india
+[9/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/how-to-grow-instagram-followers-organically-india
+[10/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/why-public-link-ordering-is-safer
+[11/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /refund-policy
+[12/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/linkedin-growth-tips-personal-brands
+[13/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/linkedin-followers-vs-connections
+[14/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /linkedin-likes
+[15/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /linkedin-followers
+[16/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/linkedin-profile-growth-tips-for-business-owners
+[17/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:52:44 › recovery related destination returns200: /blog/linkedin-followers-vs-engagement-india
+[18/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:62:11 › recovery content at 390px › rendered article linkedin-growth-tips-personal-brands
+[19/19] [chromium] › tests/smoke/indexing-recovery.spec.ts:62:11 › recovery content at 1440px › rendered article linkedin-growth-tips-personal-brands
+  19 passed (24.9s)

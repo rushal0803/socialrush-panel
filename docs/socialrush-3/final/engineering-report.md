@@ -28,7 +28,7 @@ graph LR
 
 ## Verification and known failures
 
-The comprehensive [43-item work register](work-register.csv) includes severity, business impact, root cause, existing status, solution, dependencies, criteria, tests, evidence and PASS/FAIL/BLOCKED/NOT RUN. [Verification snapshot](verification.json) and PR body distinguish scopes, skips and exact tested commits.
+The comprehensive [45-item work register](work-register.csv) includes severity, business impact, root cause, existing status, solution, dependencies, criteria, tests, evidence and PASS/FAIL/BLOCKED/NOT RUN. [Verification snapshot](verification.json) and PR body distinguish scopes, skips and exact tested commits.
 
 Prior exact head `c3b9d7203ada667681217851afb2b9af5b4eae35`, GitHub run43760853095: **428 browser PASS, 68 SKIPPED**, then targeted customer workspace **12 PASS / 2 FAIL** from missing populated fixtures; SQL job PASS. The older local full run was **422 PASS / 6 FAIL / 68 SKIPPED** (timeouts/transport reset), not a clean pass. Corrected workspace checks are rerun, and the final integrated gate is executed again. Passing focused reruns do not erase earlier failures. No retry-only success is presented as a clean full-suite result.
 
@@ -45,3 +45,5 @@ Required source gates include TypeScript, lint, optimized isolated build, units,
 Read-only QA metadata is [recorded separately](metadata.json); detailed [isolation gaps](../phase4/qa-isolation.md) remain open. A healthy named QA project and environment-variable records do not prove runtime isolation. Authenticated hosted and financial QA remain BLOCKED. No new projects, keys, environment changes, emails, live payments, indexing requests, merges or deployments occurred. **Release HOLD.**
 
 A later registry scan found1 critical/4 high production vulnerable-package groups. The compatible security patch and explicit PostCSS override are documented in [dependency-security.md](dependency-security.md). Patched production scan:0 findings; all-package high/critical gate:0, with one moderate advisory propagated through6 development packages still unresolved. All fresh source groups/lint/build/TypeScript and16 focused plus12 repeated browser checks passed on private Next15.5.29 before publication. Fresh final-head full browser/CI outcomes are updated in the PR body; old426PASS/5FAIL/68NOT RUN local diagnostics remain failed.
+
+A patched diagnostic run was interrupted after130PASS/1FAIL/375NOT RUN when an article keyboard/FAQ audit exhausted30s while also fetching independent related destinations. Related link attachment remains asserted at both viewports;17 unique destination-status checks now run independently with bounded same-origin redirects. FAQ keyboard, content, canonical/schema and30s per-test deadlines stay unchanged. The corrected19-case subset passed; final full coverage is523 cases.
