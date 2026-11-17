@@ -36,7 +36,13 @@ export const test = base.extend<{ privacyPreference: void }>({
       await context.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { configurable: true, get: () => "1" }));
     }
     try { await use(); }
-    finally { await context.unrouteAll({ behavior: "wait" }); }
+    finally {
+      // Close the owned page before waiting for network route handlers to
+      // drain. Late /us document traffic otherwise keeps the fixture alive.
+      // Keep strict "wait" cleanup: never ignore failures to hide races.
+      if (!page.isClosed()) await page.close({ runBeforeUnload: false });
+      await context.unrouteAll({ behavior: "wait" });
+    }
   }, { auto: true }],
 });
 export { expect };
