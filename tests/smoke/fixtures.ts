@@ -37,11 +37,12 @@ export const test = base.extend<{ privacyPreference: void }>({
     }
     try { await use(); }
     finally {
-      // Close the owned page before waiting for network route handlers to
-      // drain. Late /us document traffic otherwise keeps the fixture alive.
-      // Keep strict "wait" cleanup: never ignore failures to hide races.
+      // Close the owned page first. Once the page is closed, its outstanding
+      // document requests may be cancelled; waiting for those route callbacks
+      // can exhaust the test budget during fixture teardown. Assertions still
+      // run before teardown and are never suppressed.
       if (!page.isClosed()) await page.close({ runBeforeUnload: false });
-      await context.unrouteAll({ behavior: "wait" });
+      await context.unrouteAll({ behavior: "ignoreErrors" });
     }
   }, { auto: true }],
 });
