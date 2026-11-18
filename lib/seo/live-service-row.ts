@@ -20,7 +20,7 @@ export function mapLiveServiceRow(data: LiveServiceRow) {
     qualityType: data.quality_type || "Premium",
     available: data.health_status !== "paused",
     healthStatus: data.health_status || "stable",
-    importantInstruction: data.important_instruction || "Use the exact public YouTube video URL and keep the video public while processing.",
+    importantInstruction: data.important_instruction || "Use the exact public link required by the selected service and keep the destination public while processing.",
   };
 }
 

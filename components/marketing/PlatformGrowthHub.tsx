@@ -1,3 +1,4 @@
+import PlatformBuyerDecisions from "@/components/seo/PlatformBuyerDecisions";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 
@@ -87,6 +88,7 @@ export default function PlatformGrowthHub({ platform }: { platform: ContentPlatf
           </section>
 
           {platform === "twitter" && <TwitterIntentGuide />}
+          {(platform === "tiktok" || platform === "twitter") && <PlatformBuyerDecisions platform={platform} />}
           <PlatformSmmIntentSection platform={platform} />
           <PlatformAuthorityLinks platform={platform} />
         </div>

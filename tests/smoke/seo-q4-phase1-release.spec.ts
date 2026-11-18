@@ -67,13 +67,14 @@ async function readableContent(page: Page) {
   expect((await page.locator("body").innerText()).trim().length).toBeGreaterThan(200);
   // Bounds and internal scroll dimensions detect clipping; this does not claim
   // pixel-perfect visual approval or absence of every possible overlap.
-  for (const element of await page.locator("h1, main p, main h2").all()) {
-    if (!await element.isVisible()) continue;
-    const bounds = await element.evaluate(node => {
-      const rect = node.getBoundingClientRect();
-      return { left: rect.left, right: rect.right, width: document.documentElement.clientWidth,
-        scroll: node.scrollWidth, client: node.clientWidth };
-    });
+  // Measure the same visible elements in one browser round trip rather than
+  // serial visibility/evaluate calls exhausting the interaction's 30s budget.
+  const measurements = await page.locator("h1, main p, main h2").evaluateAll(nodes => nodes.flatMap(node => {
+    const rect=node.getBoundingClientRect(),style=getComputedStyle(node);
+    if(style.visibility!=="visible"||style.display==="none"||rect.width<=0||rect.height<=0)return [];
+    return [{left:rect.left,right:rect.right,width:document.documentElement.clientWidth,scroll:node.scrollWidth,client:node.clientWidth}];
+  }));
+  for (const bounds of measurements) {
     expect(bounds.left, `Content bounds: ${JSON.stringify(bounds)}`).toBeGreaterThanOrEqual(-1);
     expect(bounds.right, `Content bounds: ${JSON.stringify(bounds)}`).toBeLessThanOrEqual(bounds.width + 1);
     expect(bounds.scroll, `Content clipping: ${JSON.stringify(bounds)}`).toBeLessThanOrEqual(bounds.client + 1);
@@ -102,6 +103,31 @@ async function usableControl(control: Locator, minimumHeight = 44) {
   expect(geometry.right, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.viewport + 1);
   expect(geometry.scroll, JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.client + 1);
   expect(geometry.unobstructed, `Control center overlapped: ${JSON.stringify(geometry)}`).toBe(true);
+}
+
+async function auditPlannerControls(page: Page) {
+  // Keep every visibility/enabled/size/clipping/hit-test assertion, but avoid
+  // dozens of serialized protocol round trips for the static control census.
+  const controls=await page.locator("main input, main select, main button, main a.btn-primary, main a.btn-secondary").evaluateAll(nodes=>nodes.map(node=>{
+    node.scrollIntoView({block:"center",inline:"nearest",behavior:"instant"});
+    const rect=node.getBoundingClientRect(),style=getComputedStyle(node),hit=document.elementFromPoint(rect.left+rect.width/2,rect.top+rect.height/2);
+    return {visible:style.visibility==="visible"&&style.display!=="none"&&rect.width>0&&rect.height>0,
+      enabled:!node.matches(":disabled")&&!node.closest('[aria-disabled="true"]'),
+      compact:node.tagName==="BUTTON"&&/^₹/.test(node.textContent||""),left:rect.left,right:rect.right,height:rect.height,width:rect.width,
+      viewport:document.documentElement.clientWidth,scroll:node.scrollWidth,client:node.clientWidth,
+      unobstructed:!!hit&&(hit===node||node.contains(hit))};
+  }));
+  for(const geometry of controls){
+    expect(geometry.visible,JSON.stringify(geometry)).toBe(true);expect(geometry.enabled,JSON.stringify(geometry)).toBe(true);
+    // DOMRect can differ by ~0.00003px after scrolling at fractional layout coordinates.
+    // A 0.001px numerical tolerance preserves the 36/44px CSS minimum.
+    expect(geometry.height + 0.001,JSON.stringify(geometry)).toBeGreaterThanOrEqual(geometry.compact?36:44);
+    expect(geometry.width,JSON.stringify(geometry)).toBeGreaterThanOrEqual(36);
+    expect(geometry.left,JSON.stringify(geometry)).toBeGreaterThanOrEqual(-1);
+    expect(geometry.right,JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.viewport+1);
+    expect(geometry.scroll,JSON.stringify(geometry)).toBeLessThanOrEqual(geometry.client+1);
+    expect(geometry.unobstructed,JSON.stringify(geometry)).toBe(true);
+  }
 }
 
 async function load(page: Page, path: string) {
@@ -191,10 +217,7 @@ test.describe("Q4 Phase 1 SEO browser release gate", () => {
       const cta = plan.getByRole("link", { name: "Start This Growth Plan" });
       await expect(cta).toHaveAttribute("href", /platform=instagram.*quantity=1000/);
       await expect(plan.locator("p.text-xl")).toHaveText(/₹[\d,]+/);
-      for (const control of await page.locator("main input, main select, main button, main a.btn-primary, main a.btn-secondary").all()) {
-        const compact = await control.evaluate(node => node.tagName === "BUTTON" && /^₹/.test(node.textContent || ""));
-        await usableControl(control, compact ? 36 : 44);
-      }
+      await auditPlannerControls(page);
       await usableControl(cta);
       await readableContent(page);
       if (loopback) {

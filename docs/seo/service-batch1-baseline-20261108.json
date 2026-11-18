@@ -1,0 +1,1736 @@
+[
+  {
+    "path": "/instagram-likes",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy Instagram Likes in India | INR Pricing | SocialRUSH",
+    "description": "Buy Instagram likes in India for public posts and Reels. Compare INR prices, delivery and refill eligibility, and review the total before checkout. No password.",
+    "canonical": "https://www.getsocialrush.com/instagram-likes",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Instagram Likes  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Instagram Growth India",
+            "item": "https://www.getsocialrush.com/instagram-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Instagram Likes",
+            "item": "https://www.getsocialrush.com/instagram-likes"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Instagram Likes India",
+        "serviceType": "Instagram likes service",
+        "url": "https://www.getsocialrush.com/instagram-likes",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 249,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/instagram-likes"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I buy Instagram likes in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose a valid quantity, paste the public Instagram post or Reel link, review the live INR total, then continue through the SocialRUSH order flow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to provide my Instagram password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. This service uses the public link to the post or Reel. SocialRUSH does not require your Instagram password."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which Instagram link should I submit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Submit the exact public URL for the Instagram post, Reel, or supported video content that should receive likes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is the price calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The total is calculated from the active Instagram Likes catalog rate and your selected quantity. Your chosen display currency is applied by the existing currency system."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current delivery estimate is displayed in the live order summary and can vary with the active service and order quantity."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. After continuing through the existing order flow, you can follow status from your SocialRUSH dashboard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What does refill mean?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Refill eligibility and terms are shown by the active catalog before you continue. Review them before placing an order."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are Instagram likes guaranteed to come from India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. INR pricing is for customers ordering from India and does not guarantee likes from Indian users or a relevant Indian audience."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do purchased Instagram likes guarantee reach or sales?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A like count does not guarantee reach, authentic engagement, customers or sales. Instagram may remove artificial engagement. Review the platform rules before ordering."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I order likes using only my Instagram profile link?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Submit the exact public post or Reel URL, not an Instagram profile URL. Keep the content publicly accessible while the order is processing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I order likes for Reels?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, where the Reel has a valid public Instagram URL. Use the exact Reel link in the order builder."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens if I submit the wrong link?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Review the public link before continuing. If it is not a supported Instagram post or Reel URL, the builder will ask you to correct it."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/youtube-subscribers",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy YouTube Subscribers India | Live INR Plans | SocialRUSH",
+    "description": "Buy YouTube Subscribers in India with live INR pricing and quantity-based totals. public YouTube channel link; no password required. Delivery, refill and dashboard tracking.",
+    "canonical": "https://www.getsocialrush.com/youtube-subscribers",
+    "robots": "index, follow",
+    "h1": [
+      "Buy YouTube Subscribers  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "YouTube Growth India",
+            "item": "https://www.getsocialrush.com/youtube-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "YouTube Subscribers",
+            "item": "https://www.getsocialrush.com/youtube-subscribers"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "YouTube Subscribers India",
+        "serviceType": "YouTube subscribers service",
+        "url": "https://www.getsocialrush.com/youtube-subscribers",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 6999,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/youtube-subscribers"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How can I buy YouTube subscribers in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose a subscriber package, provide the required public YouTube channel link, review the live INR total, and continue through the SocialRUSH order flow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much do YouTube subscribers cost in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Pricing varies by selected quantity and the active service option. The package selector displays the current catalog rate and your exact total before checkout."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to provide my YouTube password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Only your public YouTube channel link is required. SocialRUSH never needs your Google login or channel credentials."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which YouTube channel link should I submit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use a public youtube.com/@handle, /channel/, /c/, or /user/ channel URL supported by the order form."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The active service estimate is 3-10 days. Timing can vary by order size and channel availability."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is refill/support available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current catalog lists 30 days refill. Check the order summary for the applicable detail."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Continue through the secure SocialRUSH flow and track your order from the dashboard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can this guarantee YouTube monetization?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Subscriber services do not guarantee monetization approval, watch hours, revenue, ranking, or YouTube Partner Program eligibility."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it safe to buy YouTube subscribers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Any third-party growth service has platform and retention considerations. SocialRUSH reduces account-access risk by requiring only a public channel link and showing the current service terms before checkout. Never share your YouTube or Google password."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What should I compare before choosing a YouTube subscriber package?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Compare the quantity, exact INR total, current delivery estimate, refill or support terms, and the channel URL you plan to submit. Review all of these together before payment."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if I submit the wrong channel link?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Verify the public channel link carefully before payment. Contact support from your dashboard if you need help with an order."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/buy-instagram-followers-india",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy Instagram Followers India | Pricing &amp; Terms | SocialRUSH",
+    "description": "Buy Instagram followers in India with clear INR pricing, public-profile ordering and secure checkout. Compare delivery and no-refill terms before paying.",
+    "canonical": "https://www.getsocialrush.com/buy-instagram-followers-india",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Instagram Followers  India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Instagram Services",
+            "item": "https://www.getsocialrush.com/services?platform=instagram"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Buy Instagram Followers India",
+            "item": "https://www.getsocialrush.com/buy-instagram-followers-india"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How much do Instagram followers cost in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The live order builder shows the current INR rate and calculates the exact total for your selected quantity before checkout. Use it instead of relying on an old or static price list."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What are Instagram Real Followers?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Instagram Real Followers is the name of this SocialRUSH service. The rate is ₹999.90 per 1,000 followers with no refill support. We do not guarantee followers from India, engagement, or retention; review the live checkout terms before ordering."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How do I order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose a quantity in the live order builder, paste the correct public Instagram profile URL, review the total and delivery estimate, and note that this service has no refill support before checkout."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which profile URL should I use?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Use the complete public URL of the Instagram profile where followers should be delivered, such as https://instagram.com/yourprofile. Check that it is the correct profile before continuing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need my password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. SocialRUSH only needs a public Instagram profile URL for this service. We never ask for your Instagram password, OTP, or recovery code."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current delivery estimate is shown in the live order builder before checkout. Timing can vary with the selected quantity, service availability and profile accessibility."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the minimum order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The active minimum is 100 followers. Use the live order builder for the current quantity limits."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the maximum order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The active maximum is 10,00,000 followers. Use the live order builder for the current quantity limits."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What is the refill policy?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The currently listed refill information is No refill. Review the active service details before payment."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. After ordering, you can follow your order through the existing SocialRUSH dashboard workflow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I order for a private account?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. This service requires a public Instagram profile. Keep the profile publicly accessible while delivery is in progress."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can followers guarantee engagement?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A follower order does not guarantee likes, comments, reach, or other engagement outcomes."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does a higher follower count prove a genuine audience?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Displayed followers alone do not prove real audience interest, qualified reach, sales or organic engagement. Review Instagram Insights separately."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can followers guarantee sales?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Sales depend on many factors beyond follower count, including your offer, audience, content and customer experience."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Instagram Real Followers",
+        "url": "https://www.getsocialrush.com/buy-instagram-followers-india",
+        "description": "Instagram follower packages for customers in India with INR pricing, public-profile ordering, delivery estimates and no refill support.",
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "areaServed": "IN",
+        "serviceType": "Instagram follower packages"
+      }
+    ]
+  },
+  {
+    "path": "/youtube-views",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy YouTube Views India | Live INR Plans | SocialRUSH",
+    "description": "Buy YouTube Views in India with live INR pricing and quantity-based totals. public YouTube video link; no password required. Delivery, refill and dashboard tracking.",
+    "canonical": "https://www.getsocialrush.com/youtube-views",
+    "robots": "index, follow",
+    "h1": [
+      "Buy YouTube Views  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "YouTube Services",
+            "item": "https://www.getsocialrush.com/youtube-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "YouTube Views",
+            "item": "https://www.getsocialrush.com/youtube-views"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "YouTube Views India",
+        "serviceType": "YouTube Views service",
+        "url": "https://www.getsocialrush.com/youtube-views",
+        "areaServed": "IN",
+        "provider": {
+          "@type": "Organization",
+          "name": "SocialRUSH",
+          "url": "https://www.getsocialrush.com"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 249,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/youtube-views"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How can I buy YouTube views in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose an available view quantity, enter the exact public YouTube video or Short URL, review the live INR total and current service details, then continue through the SocialRUSH order flow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is it safe to buy YouTube views?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Any third-party growth service has platform and retention considerations. SocialRUSH does not require your YouTube or Google password; use only the public video URL and review the current service terms before checkout."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What should I compare before choosing a YouTube views package?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Compare the exact INR total, quantity, delivery estimate, refill or support terms, and the public video URL you plan to submit. Review all of these together before payment."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need my YouTube password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. SocialRUSH only needs the public video URL. Never share your YouTube or Google password."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which YouTube video link should I submit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Submit the exact public YouTube video or Short URL supported by the order form."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is the price calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The active catalog rate is applied to your selected quantity and the current total is shown before checkout."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The active service estimate is 2-7 days. Timing can vary by quantity and video availability."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is refill/support available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Refill eligible"
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Continue through the secure order flow and track the order in your SocialRUSH dashboard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can views guarantee ranking or monetization?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Views do not guarantee ranking, reach, virality, monetization, watch hours, revenue, or any platform outcome."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens if I submit the wrong video link?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Please check the public link before payment. Contact dashboard support if you need help with an order."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/instagram-views",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy Instagram Views India | Live INR Plans | SocialRUSH",
+    "description": "Buy Instagram views in India with live INR pricing when available. Compare public Reel link requirements, delivery and refill terms before checkout.",
+    "canonical": "https://www.getsocialrush.com/instagram-views",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Instagram  Views in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Instagram Growth India",
+            "item": "https://www.getsocialrush.com/instagram-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Instagram Views",
+            "item": "https://www.getsocialrush.com/instagram-views"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Instagram Views India",
+        "serviceType": "Instagram views service",
+        "url": "https://www.getsocialrush.com/instagram-views",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I buy Instagram views in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Instagram Views is listed for Indian customers. Confirm current ordering availability, the final INR total and service-specific terms in checkout before payment."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need to provide my Instagram password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. SocialRUSH only needs the exact public Instagram Reel, post, or supported video URL."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which Instagram link should I submit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Submit the exact public Reel or video URL. Private, profile-only, or unsupported links cannot be used."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I order views for a Reel?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Use the exact public Reel URL in the order builder."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How is my price calculated?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The active Instagram Views catalog rate and your selected quantity calculate the total in your selected display currency."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current active service delivery estimate is shown in the live order summary."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Continue through SocialRUSH’s existing order flow, then follow it in your dashboard."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is refill/support available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current active-catalog refill or support terms are shown before you continue."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What happens if I submit the wrong link?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The builder validates supported public Instagram content URLs before you can continue."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Are viewers guaranteed to be from India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. INR billing does not mean views will come from Indian accounts. Geographical targeting is not guaranteed for this service."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Will Instagram views increase followers, watch time or sales?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A higher view count cannot guarantee unique viewers, meaningful watch time, followers, leads or sales. Platform rules may prohibit artificial engagement."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/buy-facebook-followers-india",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy Facebook Followers India | Plans in ₹ | SocialRUSH",
+    "description": "Buy Facebook Followers in India with live INR pricing and quantity-based totals. public Facebook page or profile link; no password required. Delivery, refill and dashboard tracking.",
+    "canonical": "https://www.getsocialrush.com/buy-facebook-followers-india",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Facebook Followers  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Facebook Growth India",
+            "item": "https://www.getsocialrush.com/facebook-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Facebook Followers",
+            "item": "https://www.getsocialrush.com/buy-facebook-followers-india"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Facebook Followers India",
+        "serviceType": "Facebook followers service",
+        "url": "https://www.getsocialrush.com/buy-facebook-followers-india",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 499,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/buy-facebook-followers-india"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How can I buy Facebook followers in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Select a quantity in the order builder, provide the required public Facebook Page or profile URL, review the live INR total, and continue through the secure SocialRUSH order flow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much do Facebook followers cost in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Pricing depends on the quantity you select. The order builder shows the active INR rate and your exact live total before you continue to checkout. You can also review current service pricing on the pricing page."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Do I need my Facebook password?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. SocialRUSH only requires the public Facebook page or profile URL requested by the service. Never share a password or login credential."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which Facebook link should I submit?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Submit the public Facebook Page or profile link you want to use. Verify it opens publicly before continuing."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I order followers for a Facebook Page?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes, provided the page is public and its URL meets the service requirements shown in the order builder."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does buying followers guarantee engagement or organic reach?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A follower order does not guarantee engagement, organic reach, sales, or account growth. Keep expectations realistic and continue your normal content work."
+            }
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "path": "/linkedin-followers",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy LinkedIn Followers India | Live INR Packages | SocialRUSH",
+    "description": "Buy LinkedIn followers in India for eligible public profiles. Check company-page support, INR pricing, delivery and refill terms before ordering. No password needed.",
+    "canonical": "https://www.getsocialrush.com/linkedin-followers",
+    "robots": "index, follow",
+    "h1": [
+      "Buy LinkedIn Followers  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "LinkedIn Services",
+            "item": "https://www.getsocialrush.com/services"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "LinkedIn Followers",
+            "item": "https://www.getsocialrush.com/linkedin-followers"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "Can I buy LinkedIn followers for a company page?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "A company page and a personal profile are different destinations. The current catalog lists LinkedIn Profile Followers and requests a public profile URL. Do not assume this covers a company page; confirm company-page support and the correct service with SocialRUSH before paying."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How can I buy LinkedIn followers in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose a follower quantity, provide the public LinkedIn profile URL supported by the active service, review the live INR total, and continue through the secure SocialRUSH order flow."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much do LinkedIn followers cost in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Pricing depends on the quantity you select. The live rate and your exact INR total are shown in the order builder before you continue to checkout."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Which LinkedIn URL should I provide?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current LinkedIn Profile Followers service requests a public linkedin.com/in/ profile URL. A linkedin.com/company/ page is a different destination; confirm company-page eligibility in the active instructions or with support before ordering."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is a LinkedIn password required?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. SocialRUSH only requires the public LinkedIn profile or company page URL for this service. Never share a password, email credential, or OTP."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does LinkedIn follower delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current delivery estimate is shown with the active service before checkout. Timing can vary with quantity and destination availability."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my LinkedIn followers order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. After continuing through the SocialRUSH order flow, use your dashboard to review order status and history."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is refill or support available?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Review the active service details before ordering for the current refill eligibility and coverage. Dashboard support is available for help with an existing order."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does buying LinkedIn followers guarantee engagement or leads?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. Followers do not guarantee engagement, leads, sales, or platform outcomes. Continue investing in useful content, clear positioning, and genuine professional relationships."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "LinkedIn Growth India",
+            "item": "https://www.getsocialrush.com/linkedin-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "LinkedIn Followers",
+            "item": "https://www.getsocialrush.com/linkedin-followers"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "LinkedIn Followers India",
+        "serviceType": "LinkedIn followers service",
+        "url": "https://www.getsocialrush.com/linkedin-followers",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 3999,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/linkedin-followers"
+        }
+      }
+    ]
+  },
+  {
+    "path": "/facebook-likes",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy Facebook Likes India | Live INR Plans | SocialRUSH",
+    "description": "Buy Facebook Likes in India with live INR pricing and quantity-based totals. public Facebook post link; no password required. Delivery, refill and dashboard tracking.",
+    "canonical": "https://www.getsocialrush.com/facebook-likes",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Facebook Likes  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Facebook Growth India",
+            "item": "https://www.getsocialrush.com/facebook-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Facebook Likes",
+            "item": "https://www.getsocialrush.com/facebook-likes"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Facebook Likes India",
+        "serviceType": "Facebook likes service",
+        "url": "https://www.getsocialrush.com/facebook-likes",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 149,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/facebook-likes"
+        }
+      }
+    ]
+  },
+  {
+    "path": "/twitter-followers",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "public, max-age=0, must-revalidate",
+      "x-vercel-cache": "HIT"
+    },
+    "title": "Buy Twitter Followers India (X) | INR Plans | SocialRUSH",
+    "description": "Buy Twitter/X followers in India with live INR pricing, public-profile ordering and clear delivery and refill details. Check your total before checkout.",
+    "canonical": "https://www.getsocialrush.com/twitter-followers",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Twitter (X) Followers  in India "
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "X / Twitter Services",
+            "item": "https://www.getsocialrush.com/x-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "X / Twitter Followers",
+            "item": "https://www.getsocialrush.com/twitter-followers"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How can I buy Twitter/X followers in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Choose a Twitter/X follower package, provide the correct public profile link, review the current INR total, and complete the order through your SocialRUSH account."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How much do Twitter/X followers cost in India?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current rate and exact INR total depend on the selected quantity and service availability. SocialRUSH shows the live price before you confirm the order."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Should I provide a Twitter or X profile link?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Either a public twitter.com or x.com profile link can be used when it points to the correct public profile. Keep the profile public and avoid changing the handle while delivery is active."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Is my Twitter/X password required?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. SocialRUSH only needs the public profile link required for the campaign. Never share a password, recovery code, OTP, or private account access."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "How long does Twitter/X follower delivery take?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "The current delivery estimate is shown with the selected service before confirmation. Timing can vary with quantity, profile availability, and platform conditions."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I track my Twitter/X follower order?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Yes. Your SocialRUSH dashboard keeps the order status, quantity, charge, and campaign record together after you place an order."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "What if followers drop after delivery?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "Review the live service details before ordering. Refill or support coverage applies only where it is listed for the selected campaign."
+            }
+          },
+          {
+            "@type": "Question",
+            "name": "Does buying Twitter/X followers guarantee engagement or reach?",
+            "acceptedAnswer": {
+              "@type": "Answer",
+              "text": "No. A follower campaign does not guarantee engagement, organic reach, trending posts, leads, sales, or platform rankings. Continue to use useful content and responsible account management."
+            }
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "X / Twitter Followers India",
+        "serviceType": "X / Twitter followers service",
+        "url": "https://www.getsocialrush.com/twitter-followers",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        }
+      }
+    ]
+  },
+  {
+    "path": "/telegram-members",
+    "status": 200,
+    "headers": {
+      "x-robots-tag": null,
+      "cache-control": "private, no-cache, no-store, max-age=0, must-revalidate",
+      "x-vercel-cache": "MISS"
+    },
+    "title": "Buy Telegram Members India | Live INR Plans | SocialRUSH",
+    "description": "Buy Telegram Members in India with live INR pricing and quantity-based totals. public Telegram channel or group link; no password required. Delivery, refill and dashboard tracking.",
+    "canonical": "https://www.getsocialrush.com/telegram-members",
+    "robots": "index, follow",
+    "h1": [
+      "Buy Telegram  Members  in India"
+    ],
+    "schemas": [
+      {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "@id": "https://www.getsocialrush.com/#organization",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "logo": "https://www.getsocialrush.com/images/brand/socialrush-logo.png",
+        "sameAs": [
+          "https://www.instagram.com/getsocialrush?igsh=bTBuNmNlNjkyd3Qw",
+          "https://www.facebook.com/share/18VDDFqWzY/"
+        ],
+        "contactPoint": {
+          "@type": "ContactPoint",
+          "telephone": "+91-88603-30771",
+          "contactType": "customer support",
+          "areaServed": "IN",
+          "availableLanguage": [
+            "English",
+            "Hindi"
+          ]
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "@id": "https://www.getsocialrush.com/#website",
+        "name": "SocialRUSH",
+        "url": "https://www.getsocialrush.com",
+        "publisher": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "potentialAction": {
+          "@type": "SearchAction",
+          "target": {
+            "@type": "EntryPoint",
+            "urlTemplate": "https://www.getsocialrush.com/services?search={search_term_string}"
+          },
+          "query-input": "required name=search_term_string"
+        }
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "BreadcrumbList",
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "Home",
+            "item": "https://www.getsocialrush.com/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": "Telegram Growth India",
+            "item": "https://www.getsocialrush.com/telegram-growth-india"
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": "Telegram Members",
+            "item": "https://www.getsocialrush.com/telegram-members"
+          }
+        ]
+      },
+      {
+        "@context": "https://schema.org",
+        "@type": "Service",
+        "name": "Telegram Members India",
+        "serviceType": "Telegram members service",
+        "url": "https://www.getsocialrush.com/telegram-members",
+        "areaServed": {
+          "@type": "Country",
+          "name": "India"
+        },
+        "provider": {
+          "@id": "https://www.getsocialrush.com/#organization"
+        },
+        "offers": {
+          "@type": "Offer",
+          "priceCurrency": "INR",
+          "price": 799,
+          "availability": "https://schema.org/InStock",
+          "url": "https://www.getsocialrush.com/telegram-members"
+        }
+      }
+    ]
+  }
+]

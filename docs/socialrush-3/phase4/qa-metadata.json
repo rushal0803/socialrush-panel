@@ -1,0 +1,204 @@
+{
+  "qaProject": {
+    "id": "imcysruvfjsexdppxcwc",
+    "ref": "imcysruvfjsexdppxcwc",
+    "organization_id": "ibhqyjlgbzdbfwcmpzbm",
+    "organization_slug": "ibhqyjlgbzdbfwcmpzbm",
+    "name": "SocialRUSH QA Isolated",
+    "region": "ap-south-1",
+    "status": "ACTIVE_HEALTHY",
+    "database": {
+      "host": "db.imcysruvfjsexdppxcwc.supabase.co",
+      "version": "17.11.0.018",
+      "postgres_engine": "17",
+      "release_channel": "ga"
+    },
+    "created_at": "2026-11-10T19:03:58.720587Z"
+  },
+  "olderSeoBranch": {
+    "branch": "fix/seo-release-blockers-20261110",
+    "metadata": [
+      {
+        "key": "RESEND_API_KEY",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CRON_SECRET",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "RAZORPAY_KEY_ID",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "RAZORPAY_KEY_SECRET",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "NEXT_PUBLIC_RAZORPAY_KEY_ID",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "RAZORPAY_WEBHOOK_SECRET",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CASHFREE_CLIENT_ID",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CASHFREE_CLIENT_SECRET",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CASHFREE_APP_ID",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CASHFREE_SECRET_KEY",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CASHFREE_ENV",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "ORDER_NOTIFICATIONS_ENABLED",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "CASHFREE_INTERNATIONAL_ENABLED",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "SMM_PROVIDER_API_URL",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "SMM_PROVIDER_API_KEY",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350371893
+      },
+      {
+        "key": "NEXT_PUBLIC_SUPABASE_URL",
+        "type": "encrypted",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350150334
+      },
+      {
+        "key": "NEXT_PUBLIC_SUPABASE_ANON_KEY",
+        "type": "sensitive",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350150334
+      },
+      {
+        "key": "SUPABASE_SERVICE_ROLE_KEY",
+        "type": "sensitive",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794522872521
+      },
+      {
+        "key": "DATABASE_URL",
+        "type": "sensitive",
+        "target": [
+          "preview"
+        ],
+        "gitBranch": "fix/seo-release-blockers-20261110",
+        "updatedAt": 1794350150334
+      }
+    ],
+    "responseKeys": [
+      "envs",
+      "hiddenProductionEnvCount"
+    ]
+  },
+  "phase4BranchEnvironmentMetadata": [],
+  "readOnly": true,
+  "valuesDecrypted": false,
+  "customerRowsQueried": false,
+  "credentialsCopied": false,
+  "runtimeIsolation": "BLOCKED"
+}

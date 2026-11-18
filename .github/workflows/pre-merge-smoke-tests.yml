@@ -4,6 +4,7 @@ on:
   pull_request:
     branches:
       - main
+      - feat/socialrush-phase3-readiness-20261115
       - feat/socialrush-phase2-premium-20261115
       - fix/socialrush-phase1-security-20261115
       - audit/socialrush-phase0-profit-20261115
@@ -15,14 +16,19 @@ jobs:
   smoke:
     name: Typecheck, CRM pipeline tests, international SEO, build, and smoke test
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # Integrated stack adds 110 browser cases and a local live-HTML SEO audit.
+    # Individual assertion/route timeouts are unchanged.
+    timeout-minutes: 25
     env:
+      NEXT_TELEMETRY_DISABLED: '1'
       # Smoke tests exercise auth-aware UI without needing a real Supabase project.
       # Pointing these at the local test server keeps unauthenticated requests
       # deterministic (404/no session) while preserving the real redirects.
       NEXT_PUBLIC_SUPABASE_URL: http://localhost:3001
       NEXT_PUBLIC_SUPABASE_ANON_KEY: smoke-test-anon-key
       SUPABASE_SERVICE_ROLE_KEY: smoke-test-service-role-key
+      PLAYWRIGHT_BASE_URL: http://localhost:3001
+      SEO_TRANSPORT_ORIGIN: http://localhost:3001
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -30,7 +36,16 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      - name: Locked dependency high and critical advisory gate
+        run: |
+          mkdir -p artifacts/phase4
+          npm audit --audit-level=high --ignore-scripts --registry=https://registry.npmjs.org --json > artifacts/phase4/dependency-audit.json
       - run: npx tsc --noEmit
+      - name: Phase 4 consent denial withdrawal replay and posted-period finance
+        run: |
+          node --test tests/unit/phase4-consent.test.cjs tests/unit/phase4-isolation.test.cjs
+          node --experimental-strip-types --test tests/unit/phase4-profit.test.ts tests/unit/profit-dashboard.test.ts
+          node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/analytics-collection-environment.test.ts
       - name: Offline Phase 3 consent funnel and profit reconciliation fixtures
         run: node --experimental-strip-types --test tests/unit/phase3-intelligence.test.ts
       - name: Phase 1 stubbed security and recovery regressions
@@ -53,6 +68,10 @@ jobs:
       - run: node --check scripts/seo-serp-ctr-audit.mjs
       - run: node --check scripts/seo-aeo-audit.mjs
       - run: node --experimental-strip-types --test tests/unit/phase16-technical-seo.test.ts tests/unit/phase17-instagram-sitemap.test.ts tests/unit/phase18-instagram-cwv.test.ts tests/unit/phase19-instagram-mobile-ux.test.ts tests/unit/phase20-instagram-cro.test.ts tests/unit/phase21-security-completion.test.ts tests/unit/phase22-responsive-shell.test.ts tests/unit/phase23-performance.test.ts tests/unit/phase24-indexation-command-center.test.ts tests/unit/phase25-technical-seo.test.ts tests/unit/phase26-keyword-ownership.test.ts tests/unit/phase27-content-engine.test.ts tests/unit/phase28-google-ctr.test.ts tests/unit/phase31-homepage-conversion.test.ts tests/unit/phase29-authority-graph.test.ts tests/unit/phase30-competitor-intelligence.test.ts tests/unit/phase32-service-page-cro.test.ts tests/unit/phase33-package-psychology.test.ts tests/unit/phase34-first-order-conversion.test.ts tests/unit/phase35-checkout-optimization.test.ts tests/unit/phase36-retention-engine.test.ts tests/unit/phase37-agency-reseller-growth.test.ts tests/unit/phase38-trust-engine.test.ts tests/unit/phase39-india-expansion.test.ts tests/unit/phase40-international-seo.test.ts tests/unit/phase41-digital-pr.test.ts tests/unit/phase42-content-distribution.test.ts tests/unit/phase43-referral-growth-loop.test.ts tests/unit/phase44-revenue-dashboard.test.ts tests/unit/phase45-traffic-engine.test.ts tests/unit/phase46-revenue-engine.test.ts tests/unit/phase47-quality-monitoring.test.ts tests/unit/phase48-ai-search-aeo.test.ts
+      - name: Build integrated candidate with dotenv and outbound transport disabled
+        run: node scripts/phase2-isolated.cjs build 3001
+      - name: Start owned synthetic server for SEO and browser regression
+        run: node scripts/phase4-qa-server.cjs start 3001
       - run: npm run seo:instagram-sitemap
       - run: npm run seo:ownership
       - run: npm run seo:content-engine
@@ -68,17 +87,26 @@ jobs:
       - run: npm run test:international-seo
       - run: npm run test:payment-confidence
       - run: npm run test:phase12
-      - run: npm run build
       - name: Install Chromium for smoke tests
         run: npx playwright install --with-deps chromium
-      - run: npm run test:smoke
+      - run: npx playwright test --config playwright.phase4.config.ts
+        env:
+          NODE_OPTIONS: --require=./scripts/phase4-no-dotenv.cjs
       - name: Authenticated customer search, navigation and wallet review (fixture only)
         timeout-minutes: 3
         env:
+          NODE_OPTIONS: --require=./scripts/phase4-no-dotenv.cjs
           RESPONSIVE_PAYMENT_FIXTURE: '1'
           DASHBOARD_UPGRADE_AUDIT: '1'
           RESPONSIVE_STAGE: customer-release-gate
-        run: npx playwright test tests/smoke/premium-responsive.spec.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding' --workers=2 --global-timeout=150000
+        run: |
+          node scripts/phase4-qa-server.cjs stop 3001
+          node scripts/phase4-qa-server.cjs start 3001
+          npx playwright test tests/smoke/premium-responsive.spec.ts --config playwright.phase4.config.ts --grep 'dashboard search|dashboard drawer|order review preserves|customer order review keeps readable|customer orders prioritize|customer billing details|customer service search|customer funding' --workers=2 --global-timeout=150000 --output artifacts/phase4/customer-workspace --reporter=line
+      - name: Native Chromium 200 percent zoom (synthetic localhost only)
+        env:
+          NODE_OPTIONS: --require=./scripts/phase4-no-dotenv.cjs
+        run: node scripts/phase2-native-zoom.cjs
       - name: Attach customer workspace regression evidence
         if: always()
         uses: actions/upload-artifact@v4
@@ -139,11 +167,17 @@ jobs:
             test-results/seo-q4-phase2*/
             test-results/services-v2*/
             test-results/phase2-premium*/
+            artifacts/phase4/
+            artifacts/phase2/native-zoom/*.png
+            artifacts/phase2/native-zoom/results.json
             artifacts/service-final/chromium.log
             artifacts/service-final/smoke-server.log
             artifacts/packages-v2/
           retention-days: 7
           if-no-files-found: warn
+      - name: Stop owned synthetic server
+        if: always()
+        run: node scripts/phase4-qa-server.cjs stop 3001
 
   wallet-db-integration:
     name: Isolated PostgreSQL wallet approval and replay checks
@@ -168,6 +202,10 @@ jobs:
         env:
           PGPASSWORD: wallet_fixture_only
         run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/manual-wallet-review.integration.sql
+      - name: Test proposed analytics permissions in disposable PostgreSQL only
+        env:
+          PGPASSWORD: wallet_fixture_only
+        run: psql -v ON_ERROR_STOP=1 -h localhost -U postgres -d wallet_fixture -f tests/sql/phase4-analytics-permissions.integration.sql
 
   perf-evidence:
     name: PR 630 mobile/desktop performance evidence (non-release)

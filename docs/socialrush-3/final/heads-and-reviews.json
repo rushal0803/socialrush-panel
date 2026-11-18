@@ -1,0 +1,169 @@
+{
+  "date": "2026-11-16",
+  "heads": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 760,
+        "head": "04affabe4287cfa79eab6696ec53825c94714227",
+        "base": "main",
+        "baseSha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 155,
+        "mergeable": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 761,
+        "head": "b07b484a3d24dd84f4047708d563e176efc9aaf2",
+        "base": "fix/seo-release-blockers-20261110",
+        "baseSha": "04affabe4287cfa79eab6696ec53825c94714227",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 5,
+        "mergeable": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 762,
+        "head": "eecbe2b6fe3a35b62728ecdbfb6a9ee4700b323d",
+        "base": "main",
+        "baseSha": "35fcaf731447a948b69a9ae917b5af596d22711e",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 17,
+        "mergeable": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 763,
+        "head": "94a2b39ff64bb6c81a7ed96396f8d19e92c6d6d0",
+        "base": "audit/socialrush-phase0-profit-20261115",
+        "baseSha": "eecbe2b6fe3a35b62728ecdbfb6a9ee4700b323d",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 23,
+        "mergeable": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 764,
+        "head": "c77f6bded9e9c34252494930daf0eb1a3f7e4819",
+        "base": "fix/socialrush-phase1-security-20261115",
+        "baseSha": "94a2b39ff64bb6c81a7ed96396f8d19e92c6d6d0",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 68,
+        "mergeable": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 765,
+        "head": "408584e95d4620dae7ce83c4a7e6d685b508ef93",
+        "base": "feat/socialrush-phase2-premium-20261115",
+        "baseSha": "c77f6bded9e9c34252494930daf0eb1a3f7e4819",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 39,
+        "mergeable": true
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 766,
+        "head": "c3b9d7203ada667681217851afb2b9af5b4eae35",
+        "base": "feat/socialrush-phase3-readiness-20261115",
+        "baseSha": "408584e95d4620dae7ce83c4a7e6d685b508ef93",
+        "draft": true,
+        "merged": false,
+        "changedFiles": 200,
+        "mergeable": true
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 760,
+        "results": [
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 761,
+        "results": [
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 762,
+        "results": [
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 763,
+        "results": [
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 764,
+        "results": [
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 765,
+        "results": [
+          [],
+          []
+        ]
+      }
+    },
+    {
+      "status": "fulfilled",
+      "value": {
+        "pr": 766,
+        "results": [
+          [],
+          []
+        ]
+      }
+    }
+  ],
+  "limit": "Publication-time audit; final exact candidate head/results are in PR766 body. No review approval inferred."
+}

@@ -1,3 +1,4 @@
+import { servicePriceSpecification } from "@/lib/seo/service-price-specification";
 import Link from "next/link";
 import ServiceSearchDecisionGuide from "@/components/seo/ServiceSearchDecisionGuide";
 import {
@@ -239,7 +240,7 @@ export default async function IndiaServiceLandingPage({
     const pageUrl = new URL(canonicalPath, `${SEO_SITE_URL}/`).toString();
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Facebook Growth", item: `${SEO_SITE_URL}/facebook-growth-india` }, { "@type": "ListItem", position: 3, name: "Facebook Group Members", item: pageUrl }] },
-      { "@context": "https://schema.org", "@type": "Service", name: "Facebook Group Members India", serviceType: "Facebook Group Members service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock", url: pageUrl } } : {}) },
+      { "@context": "https://schema.org", "@type": "Service", name: "Facebook Group Members India", serviceType: "Facebook Group Members service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, ...servicePriceSpecification(canonicalPath, live.rate), availability: "https://schema.org/InStock", url: pageUrl } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: facebookGroupMembersFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
     return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<FacebookGroupMembersWorkspace live={live} buyerGuide={<FacebookGroupMembersBuyerGuide />} /><ServiceSearchDecisionGuide service="facebook-group-members" /></PublicShell>;
@@ -262,7 +263,7 @@ export default async function IndiaServiceLandingPage({
     ];
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "YouTube Growth", item: `${SEO_SITE_URL}/youtube-growth-india` }, { "@type": "ListItem", position: 3, name: "YouTube Comments", item: pageUrl }] },
-      { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
+      { "@context": "https://schema.org", "@type": "Service", name: "YouTube Comments India", serviceType: "YouTube comments service", url: pageUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, ...servicePriceSpecification(canonicalPath, live.rate), availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: faq.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
     return <PublicShell serviceExperience tone="light3d">{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<YouTubeCommentsWorkspace live={live} buyerGuide={<YouTubeCommentsBuyerGuide />} /><ServiceSearchDecisionGuide service="youtube-comments" /></PublicShell>;
@@ -281,7 +282,7 @@ export default async function IndiaServiceLandingPage({
     ];
     const schemas = [
       { "@context": "https://schema.org", "@type": "BreadcrumbList", itemListElement: [{ "@type": "ListItem", position: 1, name: "Home", item: SEO_SITE_URL }, { "@type": "ListItem", position: 2, name: "Instagram Growth", item: `${SEO_SITE_URL}/instagram-growth-india` }, { "@type": "ListItem", position: 3, name: "Instagram Shares", item: shareUrl }] },
-      { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, availability: "https://schema.org/InStock" } } : {}) },
+      { "@context": "https://schema.org", "@type": "Service", name: "Instagram Shares India", serviceType: "Instagram Shares service", url: shareUrl, areaServed: "IN", provider: { "@id": `${SEO_SITE_URL}/#organization` }, ...(live?.available && Number.isFinite(live.rate) ? { offers: { "@type": "Offer", priceCurrency: "INR", price: live.rate, ...servicePriceSpecification(canonicalPath, live.rate), availability: "https://schema.org/InStock" } } : {}) },
       { "@context": "https://schema.org", "@type": "FAQPage", mainEntity: shareFaqs.map(([name, text]) => ({ "@type": "Question", name, acceptedAnswer: { "@type": "Answer", text } })) },
     ];
     return <PublicShell serviceExperience>{schemas.map((schema, index) => <script key={index} type="application/ld+json" dangerouslySetInnerHTML={{ __html: jsonLd(schema) }} />)}<InstagramSharesLanding live={live} buyerGuide={<InstagramSharesBuyerGuide />} /><ServiceSearchDecisionGuide service="instagram-shares" /></PublicShell>;
@@ -443,6 +444,7 @@ export default async function IndiaServiceLandingPage({
             "@type": "Offer",
             priceCurrency: "INR",
             price: currentPrice,
+            ...servicePriceSpecification(canonicalPath, currentPrice),
             availability: available ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
             url: `${SEO_SITE_URL}${packagesHref}`,
           },

@@ -1,7 +1,11 @@
-import test from "node:test";
+import test, {before,after} from "node:test";
+const fixtureEnvironmentKeys=["NEXT_PUBLIC_OPTIONAL_ANALYTICS_ENABLED","NEXT_PUBLIC_VERCEL_ENV","NEXT_PUBLIC_ANALYTICS_DATASET"];
+const priorEnvironment=fixtureEnvironmentKeys.map(k=>process.env[k]);
+before(()=>{process.env.NEXT_PUBLIC_OPTIONAL_ANALYTICS_ENABLED="true";process.env.NEXT_PUBLIC_VERCEL_ENV="production";process.env.NEXT_PUBLIC_ANALYTICS_DATASET="production";});
+after(()=>fixtureEnvironmentKeys.forEach((k,i)=>{if(priorEnvironment[i]===undefined)delete process.env[k];else process.env[k]=priorEnvironment[i];}));
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { isOrganicSearchReferrer, isPublicOrganicLandingPath, track } from "../../lib/analytics/events.ts";
+import { isOrganicSearchReferrer, isOrganicSearchLanding, isPublicOrganicLandingPath, primeAttribution, track } from "../../lib/analytics/events.ts";
 import { createClientAnalyticsSessionIdProvider, isValidAnalyticsSessionId, resolveAnalyticsSessionId } from "../../lib/analytics/session.ts";
 import {
   MONTHLY_TRAFFIC_TARGET,
@@ -71,7 +75,9 @@ test("Phase 45 records a generic consent-aware page view on route changes", () =
 
   assert.match(events, /"page_viewed"/);
   assert.match(pageAnalytics, /track\("page_viewed"\)/);
-  assert.match(events, /navigator\.doNotTrack === "1"/);
+  assert.match(events, /browserAnalyticsAllowed\(\)/);
+  assert.match(read("lib/analytics/browser-consent.ts"), /privacyOptOut\(navigator\.doNotTrack/);
+  assert.match(read("lib/analytics/privacy.ts"), /dnt === "1"/);
 });
 
 test("Phase 8 identifies only external search referrers for organic landings", () => {
@@ -113,7 +119,7 @@ test("Phase 20 excludes private or auth paths from public organic landing acquis
     assert.equal(isPublicOrganicLandingPath(path), false, path);
   }
   const analytics = read("components/analytics/PageAnalytics.tsx");
-  assert.match(analytics, /isOrganicSearchReferrer\(document\.referrer, window\.location\.hostname\) && isPublicOrganicLandingPath\(path\)/);
+  assert.match(analytics, /isOrganicSearchLanding\(document\.referrer, window\.location\.hostname, path, window\.location\.search\)/);
 });
 
 test("Phase 8 tracks organic landings once per document but page views on navigation", () => {
@@ -121,7 +127,7 @@ test("Phase 8 tracks organic landings once per document but page views on naviga
   assert.match(analytics, /const checkedInitialLanding = useRef\(false\)/);
   assert.match(analytics, /if \(!checkedInitialLanding\.current\) \{/);
   assert.match(analytics, /checkedInitialLanding\.current = true/);
-  assert.match(analytics, /isOrganicSearchReferrer\(document\.referrer, window\.location\.hostname\)/);
+  assert.match(analytics, /isOrganicSearchLanding\(document\.referrer, window\.location\.hostname, path, window\.location\.search\)/);
   assert.match(analytics, /track\("organic_landing_view", \{ referrer_type: "search" \}\)/);
   assert.match(analytics, /track\("page_viewed"\)/);
 });
@@ -206,13 +212,17 @@ test("Phase 15 tolerates blocked tab storage and retains the existing privacy an
 
   const events = read("lib/analytics/events.ts");
   const route = read("app/api/analytics/route.ts");
-  assert.match(events, /navigator\.doNotTrack === "1"/);
-  assert.match(events, /sessionId: getBrowserAnalyticsSessionId\(\)/);
-  assert.match(route, /requireJson\(request, 8_192\)/);
-  assert.match(route, /rateLimit\(request, "analytics", 120, 60_000\)/);
-  assert.match(route, /resolveAnalyticsSessionId\(cookie, body\.sessionId/);
-  assert.match(route, /if \(!isValidAnalyticsSessionId\(cookie\)\)/);
-  assert.match(route, /httpOnly: true/);
+  assert.match(events, /browserAnalyticsAllowed\(\)/);
+  assert.match(read("lib/analytics/browser-consent.ts"), /privacyOptOut\(navigator\.doNotTrack/);
+  assert.match(read("lib/analytics/privacy.ts"), /dnt === "1"/);
+  assert.match(events, /eventId: window\.crypto\.randomUUID\(\)/);
+  assert.doesNotMatch(events, /sessionId: getBrowserAnalyticsSessionId/);
+  assert.match(route, /requireJson\(request,\s*8192\)/);
+  assert.match(route, /rateLimit\(request,\s*"analytics",\s*120,\s*60_000\)/);
+  assert.match(route, /authorizeOptionalEvent\(request,receipt,body\.eventId/);
+  assert.match(read("app/api/analytics/consent/route.ts"), /httpOnly:true/);
+  assert.doesNotMatch(route, /response\.cookies\.set/); // no optional identity before validated consent
+
 });
 
 test("Phase 16 records return page visits while keeping organic landings once per document", async () => {
@@ -222,8 +232,8 @@ test("Phase 16 records return page visits while keeping organic landings once pe
   const route = { pathname: "/phase16-return-visit-a" };
   const beacons: Blob[] = [];
   const browser = {
-    crypto: { randomUUID: () => "512047cb-27ea-4bbc-9ab0-29d27db43633" },
-    location: { hostname: "www.getsocialrush.com", search: "" },
+    crypto: { randomUUID: () => crypto.randomUUID() },
+    location: { origin: "https://www.getsocialrush.com", hostname: "www.getsocialrush.com", search: "" },
     sessionStorage: {
       getItem: (key: string) => storage.get(key) ?? null,
       setItem: (key: string, value: string) => { storage.set(key, value); },
@@ -238,7 +248,7 @@ test("Phase 16 records return page visits while keeping organic landings once pe
   };
   try {
     for (const [name, value] of Object.entries({
-      window: browser, location: route, navigator: navigation, document: { referrer: "" },
+      window: browser, location: route, navigator: navigation, document: { cookie: "sr_optional_choice=granted.v1", referrer: "" },
     })) {
       Object.defineProperty(globalThis, name, { configurable: true, value });
     }
@@ -258,15 +268,13 @@ test("Phase 16 records return page visits while keeping organic landings once pe
 
     const payloads = await Promise.all(beacons.map(async (blob) => JSON.parse(await blob.text())));
     assert.deepEqual(payloads.map((row) => row.pagePath), [
-      "/phase16-return-visit-a",
-      "/phase16-return-visit-b",
-      "/phase16-return-visit-a",
-      "/phase16-return-visit-a",
+      "/other", "/other", "/other", "/other",
     ]);
     assert.deepEqual(payloads.map((row) => row.event), [
       "page_viewed", "page_viewed", "page_viewed", "organic_landing_view",
     ]);
-    assert.equal(new Set(payloads.map((row) => row.sessionId)).size, 1);
+    assert.ok(payloads.every(row=>!("sessionId" in row)), "server consent receipt owns correlation");
+    assert.equal(new Set(payloads.map(row=>row.eventId)).size,payloads.length,"every capture has a unique replay ID");
     navigation.doNotTrack = "1";
     track("page_viewed");
     assert.equal(beacons.length, 4, "Do Not Track must still suppress analytics");
@@ -290,8 +298,8 @@ test("Phase 18 counts repeat deliberate order actions without duplicating impres
   try {
     for (const [name, value] of Object.entries({
       window: {
-        crypto: { randomUUID: () => "512047cb-27ea-4bbc-9ab0-29d27db43633" },
-        location: { hostname: "www.getsocialrush.com", search: "" },
+        crypto: { randomUUID: () => crypto.randomUUID() },
+        location: { origin: "https://www.getsocialrush.com", hostname: "www.getsocialrush.com", search: "" },
         sessionStorage: {
           getItem: (key: string) => storage.get(key) ?? null,
           setItem: (key: string, value: string) => { storage.set(key, value); },
@@ -299,7 +307,7 @@ test("Phase 18 counts repeat deliberate order actions without duplicating impres
       },
       location: { pathname: "/phase18-repeat-order-actions" },
       navigator: navigation,
-      document: { referrer: "" },
+      document: { cookie: "sr_optional_choice=granted.v1", referrer: "" },
     })) Object.defineProperty(globalThis, name, { configurable: true, value });
 
     const properties = { service_code: "instagram-followers", platform: "instagram", quantity: 1000, surface: "service_order_card" };
@@ -313,13 +321,114 @@ test("Phase 18 counts repeat deliberate order actions without duplicating impres
     assert.deepEqual(payloads.map((row) => row.event), [
       "package_viewed", "package_selected", "package_selected", "new_order_clicked", "new_order_clicked",
     ]);
-    assert.ok(payloads.every((row) => row.pagePath === "/phase18-repeat-order-actions"));
-    assert.equal(new Set(payloads.map((row) => row.sessionId)).size, 1);
+    assert.ok(payloads.every((row) => row.pagePath === "/other"));
+    assert.ok(payloads.every(row=>!("sessionId" in row)), "server consent receipt owns correlation");
+    assert.equal(new Set(payloads.map(row=>row.eventId)).size,payloads.length,"every capture has a unique replay ID");
 
     navigation.doNotTrack = "1";
     track("new_order_clicked", properties);
     track("package_selected", properties);
     assert.equal(beacons.length, 5, "Do Not Track must continue to suppress clicks");
+  } finally {
+    for (const [name, descriptor] of previous) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else Reflect.deleteProperty(globalThis, name);
+    }
+  }
+});
+
+
+test("Google account, app and lookalike domains are not organic search", () => {
+  for (const host of [
+    "accounts.google.com", "accounts.google.co.in", "mail.google.com",
+    "drive.google.com", "docs.google.com", "calendar.google.com",
+    "translate.google.com", "ads.google.com", "google.com.evil.example",
+    "www.google.com.evil.example", "google.evil.com", "notgoogle.com",
+  ]) assert.equal(isOrganicSearchReferrer(`https://${host}/`, "www.getsocialrush.com"), false, host);
+  for (const host of [
+    "www.google.com", "google.co.in", "www.google.co.uk", "google.com.au",
+    "www.google.de", "www.google.cat", "www.google.co.jp", "images.google.com", "news.google.co.in",
+  ]) assert.equal(isOrganicSearchReferrer(`https://${host}/`, "www.getsocialrush.com"), true, host);
+});
+
+test("first-touch storage preserves Google app referrals, search and explicit paid campaigns", () => {
+  const names = ["window", "location", "navigator", "document"] as const;
+  const previous = names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const);
+  try {
+    for (const scenario of [
+      { referrer: "https://accounts.google.com/", search: "", source: "referral", medium: "referral" },
+      { referrer: "https://www.google.co.in/", search: "", source: "google", medium: "organic" },
+      { referrer: "https://www.google.com/", search: "?gclid=test", source: "google", medium: "paid" },
+      { referrer: "https://accounts.google.com/", search: "?utm_source=newsletter&utm_medium=email", source: "unknown", medium: "unknown" },
+    ]) {
+      const storage = new Map<string, string>();
+      Object.defineProperty(globalThis, "window", { configurable: true, value: {
+        location: { origin: "https://www.getsocialrush.com", hostname: "www.getsocialrush.com", search: scenario.search },
+        sessionStorage: { getItem: (key: string) => storage.get(key) ?? null, setItem: (key: string, value: string) => storage.set(key, value) },
+      } });
+      Object.defineProperty(globalThis, "location", { configurable: true, value: { pathname: "/instagram-likes" } });
+      Object.defineProperty(globalThis, "navigator", { configurable: true, value: { doNotTrack: "0" } });
+      Object.defineProperty(globalThis, "document", { configurable: true, value: { cookie: "sr_optional_choice=granted.v1", referrer: scenario.referrer } });
+      primeAttribution();
+      const result = JSON.parse(storage.get("sr_first_touch_attribution_v1")!);
+      assert.equal(result.source, scenario.source, scenario.referrer);
+      assert.equal(result.medium, scenario.medium, scenario.referrer);
+      assert.equal(result.landingPath, undefined, "raw landing paths are not stored");
+      assert.equal(result.referringDomain, undefined, "raw referrer hosts are not stored");
+      assert.deepEqual(Object.keys(result).sort(),["medium","source"]);
+      assert.equal(JSON.stringify(result).includes("gclid"), false, "do not store click identifiers or full referrer URLs");
+    }
+  } finally {
+    for (const [name, descriptor] of previous) {
+      if (descriptor) Object.defineProperty(globalThis, name, descriptor);
+      else Reflect.deleteProperty(globalThis, name);
+    }
+  }
+});
+
+
+test("organic landing eligibility excludes paid clicks and competing campaign attribution", () => {
+  const google = "https://www.google.co.in/search?q=socialrush";
+  const host = "www.getsocialrush.com";
+  for (const query of [
+    "?gclid=click", "?gbraid=click", "?wbraid=click", "?dclid=click", "?msclkid=click",
+    "?gclid=", "?gclid=x&utm_medium=organic", "?utm_medium=cpc", "?utm_medium=paid",
+    "?utm_medium=EMAIL", "?utm_source=newsletter", "?utm_source=facebook&utm_medium=organic",
+  ]) assert.equal(isOrganicSearchLanding(google, host, "/instagram-likes", query), false, query);
+  for (const query of ["", "?page=2", "?utm_source=Google&utm_medium=Organic", "?utm_medium=organic"]) {
+    assert.equal(isOrganicSearchLanding(google, host, "/instagram-likes", query), true, query);
+  }
+  assert.equal(isOrganicSearchLanding(google, host, "/dashboard", ""), false);
+  assert.equal(isOrganicSearchLanding("https://accounts.google.com/", host, "/", ""), false);
+  assert.equal(isOrganicSearchLanding("https://example.com/", host, "/", "?utm_medium=organic"), false);
+  assert.equal(isOrganicSearchLanding("", host, "/", "?utm_source=google&utm_medium=organic"), false);
+});
+
+test("new paid click markers override stale stored organic attribution without storing identifiers", () => {
+  const names = ["window", "location", "navigator", "document"] as const;
+  const previous = names.map(name => [name, Object.getOwnPropertyDescriptor(globalThis, name)] as const);
+  try {
+    for (const key of ["gclid", "gbraid", "wbraid", "dclid", "msclkid"]) {
+      const storage = new Map<string, string>([["sr_first_touch_attribution_v1", JSON.stringify({ source: "google", medium: "organic", landingPath: "/old" })]]);
+      const browser = {
+        location: { origin: "https://www.getsocialrush.com", hostname: "www.getsocialrush.com", search: `?${key}=private-click-token` },
+        sessionStorage: { getItem: (name: string) => storage.get(name) ?? null, setItem: (name: string, value: string) => storage.set(name, value) },
+      };
+      for (const [name, value] of Object.entries({ window: browser, location: { pathname: "/instagram-likes" }, navigator: { doNotTrack: "0" }, document: { cookie: "sr_optional_choice=granted.v1", referrer: "https://www.google.com/" } })) {
+        Object.defineProperty(globalThis, name, { configurable: true, value });
+      }
+      primeAttribution();
+      const raw = storage.get("sr_first_touch_attribution_v1")!;
+      const result = JSON.parse(raw);
+      assert.equal(result.medium, "paid", key);
+      assert.equal(result.source, key === "msclkid" ? "bing" : "google", key);
+      assert.equal(result.landingPath, undefined, "raw landing paths are not stored");
+      assert.equal(raw.includes("private-click-token"), false);
+      assert.equal(raw.includes(key), false);
+      browser.location.search = "";
+      primeAttribution();
+      assert.equal(storage.get("sr_first_touch_attribution_v1"), raw, "ordinary navigation preserves established attribution");
+    }
   } finally {
     for (const [name, descriptor] of previous) {
       if (descriptor) Object.defineProperty(globalThis, name, descriptor);

@@ -1,0 +1,35 @@
+{
+  "original_cohort": 69,
+  "previously_reviewed_in_cohort": 49,
+  "new_detailed_reviews": 20,
+  "new_improved": [
+    "/ae/buy-instagram-followers",
+    "/ae/buy-youtube-subscribers",
+    "/au/buy-instagram-followers",
+    "/au/buy-youtube-subscribers",
+    "/ca/buy-instagram-followers",
+    "/ca/buy-youtube-subscribers",
+    "/sg/buy-instagram-followers",
+    "/sg/buy-youtube-subscribers",
+    "/uk/buy-instagram-followers",
+    "/uk/buy-youtube-subscribers",
+    "/us/buy-instagram-followers",
+    "/us/buy-youtube-subscribers"
+  ],
+  "new_retained": [
+    "/services/linkedin-usa-connections",
+    "/services/linkedin-usa-custom-comments",
+    "/services/linkedin-usa-endorsements",
+    "/services/linkedin-usa-followers",
+    "/services/linkedin-usa-group-members",
+    "/services/linkedin-usa-post-likes",
+    "/services/linkedin-usa-reposts",
+    "/tiktok-followers"
+  ],
+  "reviewed_in_cohort": 69,
+  "outside_cohort": [
+    "/x-growth-india"
+  ],
+  "remaining_unreviewed_in_original_cohort": 0,
+  "note": "Review coverage, not release readiness, verified demand or indexing. Eight retained pages remain subject to service availability and provider targeting verification; no new targeting claims made."
+}

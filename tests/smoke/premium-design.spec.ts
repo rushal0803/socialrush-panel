@@ -20,13 +20,16 @@ for (const width of widths) {
   });
 }
 
-test("hero actions, sample labels and keyboard focus are understandable", async ({ page }) => {
+test("hero actions, sample labels and skip focus are understandable", async ({ page }) => {
   await page.goto("/");
   await expect(page.getByRole("complementary", { name: "SocialRUSH workspace preview with illustrative sample data" })).toBeVisible();
   await expect(page.getByRole("link", { name: "Check Price & Start", exact: true })).toHaveAttribute("href", "#order-demo");
   await expect(page.getByRole("link", { name: "Browse Services", exact: true }).first()).toHaveAttribute("href", "#services");
   await page.keyboard.press("Tab");
   await expect(page.getByRole("link", { name: "Skip to main content" })).toBeFocused();
+});
+
+test("login email-to-recovery keyboard focus is understandable", async ({ page }) => {
   await page.goto("/login");
   await page.locator('input[name="email"]').focus();
   await expect(page.locator('input[name="email"]')).toBeFocused();
@@ -105,27 +108,27 @@ for (const width of [320, 390, 1440]) {
   });
 }
 
-test("all three conversion paths preserve destinations and first-party tracking", async ({ page }) => {
+for (const path of [
+  { title: "I’m ready to order", href: "#order-demo", step: "order" },
+  { title: "I want to compare services", href: "/services", step: "compare" },
+  { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
+]) test(`conversion path ${path.step} preserves destination without unconsented tracking`, async ({ page, baseURL }) => {
+  // The shared fixture already denies outbound traffic and owns local CSP handling.
+  // Do not proxy navigation through another host: overlapping route handlers
+  // previously raced on abort during teardown.
   await page.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { get: () => "0" }));
   const events: Array<{ event: string; metadata?: { surface?: string; step?: string } }> = [];
   await page.route("**/api/analytics", route => {
-    const data = route.request().postDataJSON();
-    events.push(data);
+    events.push(route.request().postDataJSON());
     return route.fulfill({ status: 200, json: { ok: true } });
   });
-  for (const path of [
-    { title: "I’m ready to order", href: "#order-demo", step: "order" },
-    { title: "I want to compare services", href: "/services", step: "compare" },
-    { title: "I need to plan a budget", href: "/tools/social-media-service-cost-calculator", step: "budget" },
-  ]) {
-    await page.goto("/");
-    const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
-    await expect(link).toHaveAttribute("href", path.href);
-    await link.click();
-    await expect.poll(() => events.some(event => event.event === "homepage_conversion_path_click" && event.metadata?.surface === "homepage_decision_rail" && event.metadata?.step === path.step)).toBe(true);
-    if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
-    else await expect(page).toHaveURL(new RegExp(`${path.href}$`));
-  }
+  await page.goto("/");
+  const link = page.getByRole("navigation", { name: "Choose your next step" }).getByRole("link", { name: new RegExp(path.title) });
+  await expect(link).toHaveAttribute("href", path.href);
+  await link.click();
+  if (path.href.startsWith("#")) await expect(page.locator(path.href)).toBeInViewport();
+  else await expect(page).toHaveURL(new RegExp(path.href.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "$"));
+  expect(events, "optional capture stays disabled without consent and activation").toEqual([]);
 });
 
 for (const width of [1280, 1440, 1920]) {

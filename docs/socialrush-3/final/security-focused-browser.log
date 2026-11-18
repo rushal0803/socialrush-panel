@@ -1,0 +1,36 @@
+
+Running 16 tests using 1 worker
+
+(node:28688) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/16] [chromium] › tests/smoke/packages-v2.spec.ts:132:5 › insufficient wallet directs to add funds without sending an order
+[2/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for instagram-saves
+[3/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for youtube-comments
+[4/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for youtube-watch-hours
+[5/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for facebook-group-members
+[6/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for linkedin-followers
+[7/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for x-followers
+[8/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for tiktok-followers
+[9/16] [chromium] › tests/smoke/packages-v2.spec.ts:159:7 › server validates package intent for telegram-members
+[10/16] [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /
+[chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /
+/ accumulated layout shifts including scroll: 0
+
+[11/16] [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /services
+[chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /services
+/services accumulated layout shifts including scroll: 0.0015767281962588671
+
+[12/16] [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /packages
+[chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /packages
+/packages accumulated layout shifts including scroll: 0.0000026777418564791377
+
+[13/16] [chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /buy-instagram-followers-india
+[chromium] › tests/smoke/performance-mobile-scroll.spec.ts:4:7 › mobile scrolling keeps stable layout on /buy-instagram-followers-india
+/buy-instagram-followers-india accumulated layout shifts including scroll: 0.0003387358634127715
+
+[14/16] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path order preserves destination without unconsented tracking
+[15/16] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path compare preserves destination without unconsented tracking
+[16/16] [chromium] › tests/smoke/premium-design.spec.ts:112:8 › conversion path budget preserves destination without unconsented tracking
+  16 passed (2.2m)
