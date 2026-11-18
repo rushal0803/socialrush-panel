@@ -4,7 +4,7 @@ import { test as base, expect } from "@playwright/test";
 // An isolated opt-in run can still verify analytics via SMOKE_ANALYTICS_ENABLED=1.
 export const test = base.extend<{ privacyPreference: void }>({
   privacyPreference: [async ({ context, page, baseURL }, use) => {
-    // Own page setup first so route handlers drain before Playwright closes it.
+    // The page belongs to Playwright's isolated test context.
     void page;
     // Production keeps upgrade-insecure-requests. This loopback server has no
     // TLS listener, so remove only that directive from local navigation headers.
@@ -35,15 +35,12 @@ export const test = base.extend<{ privacyPreference: void }>({
     if (process.env.SMOKE_ANALYTICS_ENABLED !== "1") {
       await context.addInitScript(() => Object.defineProperty(navigator, "doNotTrack", { configurable: true, get: () => "1" }));
     }
-    try { await use(); }
-    finally {
-      // Close the owned page first. Once the page is closed, its outstanding
-      // document requests may be cancelled; waiting for those route callbacks
-      // can exhaust the test budget during fixture teardown. Assertions still
-      // run before teardown and are never suppressed.
-      if (!page.isClosed()) await page.close({ runBeforeUnload: false });
-      await context.unrouteAll({ behavior: "ignoreErrors" });
-    }
+    // Routes and page are scoped to Playwright's per-test browser context.
+    // Playwright closes that context after the fixture completes. Manually
+    // closing the page or draining intercepted requests here can stall fixture
+    // teardown when a document request is still in flight under CI load.
+    // Do not alter assertion timeouts or skip responsive/security checks.
+    await use();
   }, { auto: true }],
 });
 export { expect };
