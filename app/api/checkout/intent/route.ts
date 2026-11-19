@@ -140,8 +140,8 @@ export async function POST(request: NextRequest) {
   }
   const linkError = linkRules[service.code] ? validateCampaignLink(link, linkRules[service.code]) : null;
   if (linkError) return NextResponse.json({ error: linkError }, { status: 400 });
-  if (service.code === "youtube-watch-hours") {
-    const checkedLink = validateOrderLink({ platform: "youtube", serviceCode: service.code, destinationUrl: link });
+  if (service.code === "youtube-watch-hours" || service.platform.toLowerCase() === "facebook") {
+    const checkedLink = validateOrderLink({ platform: service.platform.toLowerCase(), serviceCode: service.code, destinationUrl: link });
     if (!checkedLink.valid) return NextResponse.json({ error: checkedLink.message }, { status: 400 });
   }
 
