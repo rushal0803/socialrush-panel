@@ -15,7 +15,7 @@ function detectType(platform: string, url: URL) {
   const host = url.hostname.toLowerCase();
   if (platform === "instagram") return /\/(p|reel|tv)\//.test(path) ? (path.includes("reel") ? "reel" : "post") : "profile";
   if (platform === "youtube") return host === "youtu.be" || path.includes("/watch") || path.includes("/shorts/") ? (path.includes("shorts") ? "short" : "video") : /\/(@|channel\/|c\/|user\/)/.test(path) ? "channel" : "unknown";
-  if (platform === "facebook") return /\/groups\//.test(path) ? "group" : /\/(posts|reel|videos|watch)\//.test(path) || url.searchParams.has("v") ? "post or video" : "page or profile";
+  if (platform === "facebook") return /\/groups\//.test(path) ? "group" : /^\/share\/(?:p|r|v)\/[a-z0-9_-]+\/?$/i.test(path) || /\/(posts|reel|reels|videos|watch)\//.test(path) || url.searchParams.has("v") ? "post or video" : "page or profile";
   if (platform === "linkedin") return /\/(posts|feed\/update)\//.test(path) ? "post" : /\/(in|company)\//.test(path) ? "profile or company" : "unknown";
   if (platform === "tiktok") return /\/video\//.test(path) ? "video" : /\/@[^/]+/.test(path) ? "profile" : "unknown";
   if (platform === "telegram") return /^\/(?:s\/)?[^/]+\/\d+\/?$/.test(path) ? "post" : /\/[^/]+/.test(path) ? "channel or group" : "unknown";
