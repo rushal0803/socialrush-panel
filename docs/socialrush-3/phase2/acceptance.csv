@@ -1,0 +1,23 @@
+id,acceptance,status,evidence,limit
+P2-01,Brand-preserving homepage hierarchy,PASS,Before/after390 and1440; existing black/orange tokens and logo preserved,Bounded visual review not measured uplift
+P2-02,Search platform/category query retention and empty state,PASS,Dedicated Playwright discovery case,Client-local filters; no new indexed search route
+P2-03,Transparent rates minimum totals and terms,PASS,Unchanged catalog/helper; screenshot and browser999.90 per1000 assertion,Final server price remains authoritative; live-fact rates withheld
+P2-04,Representative Instagram YouTube LinkedIn pages,PASS,12 viewport cases and shared ServiceOrderCard,Shared consumers outside representatives require broad CI and further QA
+P2-05,Quantity input and order handoff,PASS,1000 retained; blank99max+1fractionnegative rejected; public link encoded,No order or real account navigation executed
+P2-06,Slow JavaScript hydration preserves early input,PASS,Script-gated actual browser typing before hydration;1000 and synthetic URL survive,Narrow #760 UI adoption port only
+P2-07,Mobile focus and order bar,PASS,Form validation moves focus; sticky order bar absent while editing,Real OS virtual keyboard NOT RUN
+P2-08,320px and390px reflow,PASS,All four routes scrollWidth within viewport,Selected view/state scope
+P2-09,1440px responsive layout,PASS,All four routes; retained screenshots,Not every below-fold pixel manually approved
+P2-10,Native200percent zoom,PASS,Chrome defaultZoom2;1440CSSviewport becomes720; all four routes no overflow,Disposable profile only
+P2-11,Keyboard and automated accessibility,PASS,Search-to-category Tab; field error focus; axe0 scoped violations,Contrast incompletes and full screen-reader review remain
+P2-12,Preserve SEO URLs titles canonicals and content,PASS,8 before/after metadata comparisons; unchanged route files and destination-map values,No indexing or ranking claim
+P2-13,Preserve auth security payment and actual prices,PASS,Byte-identical protected-source comparison to94a2b39f;15 prior security tests,No hosted runtime certification
+P2-14,TypeScript build lint regression,PASS,Explicit TypeScript; network-denied optimized build; targeted lint;237 units,Historical repository warnings remain
+P2-15,Before/after visual evidence,PASS,Gallery8 pairs plus320nativezoom and detail captures,Synthetic local backend not production evidence
+P2-16,Hosted authenticated and backend/payment isolation,BLOCKED,No isolated authorized hosted session or runtime tenant/provider proof,Do not infer from protected URL or READY
+P2-17,Full assistive-technology and composited contrast audit,NOT RUN,Axe reports color-contrast incompletes; no full manual AT session,Required before release certification
+P2-18,Field CWV conversion revenue uplift,NOT RUN,No live analytics or experiment execution,Only measurement hypotheses supplied
+P2-19,Production account checkout email indexing merge deployment,NOT RUN,Prohibited; local transport/browser mutation guards; branch deployment disabled,Keep draft and releaseHOLD
+P2-20,Original full GitHub smoke at e2a6ee1a,FAIL,273 passed; 67 skipped; five UI regressions; run43648912528,Historical result preserved; see ci-followup.md
+P2-21,Local follow-up regression cases,PASS,All five original failures pass; 47 of 48 first attempt plus unchanged axe rerun pass,One initial LinkedIn navigation abort remains disclosed
+P2-22,Fresh GitHub CI on follow-up,NOT RUN,Pending publication and execution; live status in PR,Not counted as PASS until completed

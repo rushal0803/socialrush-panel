@@ -27,6 +27,7 @@ export default function ServiceOrderStickyCta({
   const { currency, rates } = usePreferredCurrency("INR");
   const [targetVisible, setTargetVisible] = useState(false);
   const [dismissed, setDismissed] = useState(false);
+  const [editing, setEditing] = useState(false);
 
   useEffect(() => {
     if (!href.startsWith("#")) return;
@@ -37,10 +38,18 @@ export default function ServiceOrderStickyCta({
       { threshold: 0.08, rootMargin: "-72px 0px -20% 0px" },
     );
     observer.observe(target);
-    return () => observer.disconnect();
+    const updateFocus = () => setEditing(target.contains(document.activeElement));
+    document.addEventListener("focusin", updateFocus);
+    document.addEventListener("focusout", updateFocus);
+    updateFocus();
+    return () => {
+      observer.disconnect();
+      document.removeEventListener("focusin", updateFocus);
+      document.removeEventListener("focusout", updateFocus);
+    };
   }, [href]);
 
-  if (!available || targetVisible || dismissed) return null;
+  if (!available || targetVisible || editing || dismissed) return null;
 
   const price = typeof startingPrice === "number" && Number.isFinite(startingPrice)
     ? `${formatCurrency(startingPrice, currency, rates)} / 1K`

@@ -1,9 +1,11 @@
 import type { VerifiedRevenueDashboard } from "@/lib/analytics/revenue-dashboard";
+import { revenueBarWidth } from "@/lib/analytics/revenue-dashboard";
 
 const money = (value: number) => value.toLocaleString("en-IN", { style: "currency", currency: "INR", maximumFractionDigits: 0 });
 
 export default function RevenueIntelligencePanel({ dashboard }: { dashboard: VerifiedRevenueDashboard }) {
   const customer = dashboard.customerContribution;
+  const maxMagnitude = Math.max(0, ...dashboard.daily.map(row => Math.abs(row.net)));
   const qualityIssues = dashboard.quality.invalidChargeOrders + dashboard.quality.missingPlatformOrders + dashboard.quality.missingCustomerOrders;
 
   return (
@@ -31,22 +33,22 @@ export default function RevenueIntelligencePanel({ dashboard }: { dashboard: Ver
           <div className="flex items-end justify-between gap-3">
             <div>
               <h3 className="text-sm font-black text-white">Daily verified revenue</h3>
-              <p className="mt-1 text-[11px] leading-5 text-slate-500">Net = paid-order gross minus completed refunds recorded on that day.</p>
+              <p className="mt-1 text-[11px] leading-5 text-slate-500">Net = paid-order gross minus completed refunds recorded on that day. Bar length shows magnitude; red bars indicate a net loss.</p>
             </div>
             <span className="text-[10px] uppercase tracking-wide text-slate-500">Asia/Kolkata</span>
           </div>
           {dashboard.daily.length ? (
             <div className="mt-4 space-y-3">
               {dashboard.daily.slice(-14).map((row) => {
-                const width = dashboard.maxDailyNet ? Math.max(2, (row.net / dashboard.maxDailyNet) * 100) : 0;
+                const width = revenueBarWidth(row.net, maxMagnitude);
                 return (
                   <div key={row.date}>
                     <div className="mb-1.5 flex items-center justify-between gap-3 text-[11px]">
                       <span className="font-bold text-slate-300">{row.date}</span>
-                      <span className="text-right text-slate-500">{row.orders} order{row.orders === 1 ? "" : "s"} · {money(row.net)} net</span>
+                      <span className="text-right text-slate-500">{row.orders} order{row.orders === 1 ? "" : "s"} · {money(row.net)} net{row.net < 0 ? " (loss)" : ""}</span>
                     </div>
                     <div className="h-2 overflow-hidden rounded-full bg-white/[.06]">
-                      <div className="h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400" style={{ width: String(width) + "%" }} />
+                      <div className={row.net < 0 ? "h-full rounded-full bg-rose-500" : "h-full rounded-full bg-gradient-to-r from-violet-500 to-fuchsia-400"} style={{ width: String(width) + "%" }} />
                     </div>
                     {row.refunds > 0 ? <p className="mt-1 text-[10px] text-amber-300">Gross {money(row.gross)} · refunds {money(row.refunds)}</p> : null}
                   </div>

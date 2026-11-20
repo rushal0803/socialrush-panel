@@ -1,0 +1,414 @@
+{
+  "buildUnderTest": "c77f6bded9e9c34252494930daf0eb1a3f7e4819; Phase 3 runtime/UI identical; test harness modified",
+  "stats": {
+    "startTime": "2026-11-15T17:45:40.997Z",
+    "duration": 87893.43999999999,
+    "expected": 21,
+    "skipped": 0,
+    "unexpected": 0,
+    "flaky": 0
+  },
+  "tests": [
+    {
+      "title": "home reflows and exposes accessible controls at 320px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 6683,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "instagram reflows and exposes accessible controls at 320px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8502,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "youtube reflows and exposes accessible controls at 320px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8127,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "linkedin reflows and exposes accessible controls at 320px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8157,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "home reflows and exposes accessible controls at 390px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 7376,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "instagram reflows and exposes accessible controls at 390px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 9353,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "youtube reflows and exposes accessible controls at 390px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 7830,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "linkedin reflows and exposes accessible controls at 390px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 6770,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "home reflows and exposes accessible controls at 1440px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 5657,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "instagram reflows and exposes accessible controls at 1440px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8070,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "youtube reflows and exposes accessible controls at 1440px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8699,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "linkedin reflows and exposes accessible controls at 1440px",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 7482,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "homepage search and categories retain the query and provide a recoverable empty state",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8890,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "quantity, summary and login handoff use unchanged catalog arithmetic; invalid text is retained",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 9896,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "quantity and public link typed before hydration survive JavaScript loading",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 5370,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "scoped automated accessibility audit covers home",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 7970,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "scoped automated accessibility audit covers instagram",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 7054,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "scoped automated accessibility audit covers youtube",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8926,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "scoped automated accessibility audit covers linkedin",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8040,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "keyboard service form and navigation evidence 390",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 9604,
+          "errors": []
+        }
+      ]
+    },
+    {
+      "title": "keyboard service form and navigation evidence 1440",
+      "status": "expected",
+      "attempts": [
+        {
+          "status": "passed",
+          "duration": 8495,
+          "errors": []
+        }
+      ]
+    }
+  ],
+  "auditDetails": [
+    {
+      "audit": "axe-home",
+      "violations": 0,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 103
+        }
+      ]
+    },
+    {
+      "audit": "axe-instagram",
+      "violations": 0,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 45
+        }
+      ]
+    },
+    {
+      "audit": "axe-youtube",
+      "violations": 0,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 45
+        }
+      ]
+    },
+    {
+      "audit": "axe-linkedin",
+      "violations": 0,
+      "incomplete": [
+        {
+          "id": "color-contrast",
+          "nodes": 45
+        }
+      ]
+    },
+    {
+      "width": 390,
+      "focusAfterQuantity": {
+        "tag": "BUTTON",
+        "label": "Increase quantity",
+        "type": "button"
+      },
+      "tree": "- img \"linkedin\"\n- heading \"Build Your LinkedIn Followers Order\" [level=2]\n- paragraph: LinkedIn Profile Followers\n- paragraph: Choose a quantity and add the eligible public LinkedIn profile URL. Confirm company-page eligibility with support before ordering.\n- group \"Order steps\":\n  - strong: \"01\"\n  - text: Choose quantity\n  - strong: \"02\"\n  - text: Add link\n  - strong: \"03\"\n  - text: Review\n- text: Estimated total\n- strong: \u20b93,999.00\n- text: 1,000 units \u20b93,999.00 / 1,000\n- group \"1. Choose quantity\":\n  - text: 1. Choose quantity\n  - 'button \"100 LinkedIn Profile Followers: \u20b9399.90 estimated total\"': 100 Starter \u00b7 \u20b9399.90\n  - 'button \"500 LinkedIn Profile Followers: \u20b91,999.50 estimated total\"': 500 \u20b91,999.50\n  - 'button \"5,000 LinkedIn Profile Followers: \u20b919,995.00 estimated total\"': 5,000 Balanced \u00b7 \u20b919,995.00\n  - 'button \"25,000 LinkedIn Profile Followers: \u20b999,975.00 estimated total\"': 25,000 \u20b999,975.00\n  - 'button \"1,00,000 LinkedIn Profile Followers: \u20b93,99,900.00 estimated total\"': 1,00,000 Scale \u00b7 \u20b93,99,900.00\n  - text: Custom quantity\n  - button \"Decrease quantity\"\n  - textbox \"Custom quantity\": \"1000\"\n  - button \"Increase quantity\"\n  - paragraph: 100\u201310,00,000 units\n- text: 2. Enter your LinkedIn profile/company page link\n- textbox \"2. Enter your LinkedIn profile/company page link\" [invalid]:\n  - /placeholder: https://linkedin.com/in/your-profile\n  - text: invalid\n- alert: Enter a valid LinkedIn profile or company page link.\n- term: Delivery estimate\n- definition: 2-9 days\n- term: Refill terms\n- definition: Refill eligible\n- paragraph:\n  - link \"Refund eligibility\":\n    - /url: /refund-policy\n  - link \"Service terms\":\n    - /url: /terms-and-conditions\n- paragraph:\n  - strong: \"Before you continue:\"\n  - text: Use public profile URL and avoid URL changes.\n- status: 2/3 ready \u00b7 Enter a valid quantity and public link\n- link \"Continue to Secure Order\":\n  - /url: \"#\"\n- paragraph: No payment is taken on this page. Your selection carries into secure order review, where the current INR total is confirmed.\n- text: No password required Dashboard order tracking\n- link \"Need help choosing?\":\n  - /url: /contact",
+      "timing": [
+        {
+          "name": "http://localhost:3107/linkedin-followers",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 4114.099999997765,
+          "navigationId": 806,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "gzip",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 0.5999999977648258,
+          "redirectEnd": 468.19999999925494,
+          "fetchStart": 468.19999999925494,
+          "domainLookupStart": 468.19999999925494,
+          "domainLookupEnd": 468.19999999925494,
+          "connectStart": 468.19999999925494,
+          "secureConnectionStart": 0,
+          "connectEnd": 468.19999999925494,
+          "requestStart": 479.3999999985099,
+          "responseStart": 592.5,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 592.5,
+          "responseEnd": 609.0999999977648,
+          "transferSize": 32285,
+          "encodedBodySize": 31985,
+          "decodedBodySize": 213497,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 4100,
+          "domContentLoadedEventStart": 4100,
+          "domContentLoadedEventEnd": 4100.5,
+          "domComplete": 4113.89999999851,
+          "loadEventStart": 4114.099999997765,
+          "loadEventEnd": 4114.099999997765,
+          "type": "navigate",
+          "redirectCount": 1,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ]
+    },
+    {
+      "width": 1440,
+      "focusAfterQuantity": {
+        "tag": "BUTTON",
+        "label": "Increase quantity",
+        "type": "button"
+      },
+      "tree": "- img \"linkedin\"\n- heading \"Build Your LinkedIn Followers Order\" [level=2]\n- paragraph: LinkedIn Profile Followers\n- paragraph: Choose a quantity and add the eligible public LinkedIn profile URL. Confirm company-page eligibility with support before ordering.\n- group \"Order steps\":\n  - strong: \"01\"\n  - text: Choose quantity\n  - strong: \"02\"\n  - text: Add link\n  - strong: \"03\"\n  - text: Review\n- text: Estimated total\n- strong: \u20b93,999.00\n- text: 1,000 units \u20b93,999.00 / 1,000\n- group \"1. Choose quantity\":\n  - text: 1. Choose quantity\n  - 'button \"100 LinkedIn Profile Followers: \u20b9399.90 estimated total\"': 100 Starter \u00b7 \u20b9399.90\n  - 'button \"500 LinkedIn Profile Followers: \u20b91,999.50 estimated total\"': 500 \u20b91,999.50\n  - 'button \"5,000 LinkedIn Profile Followers: \u20b919,995.00 estimated total\"': 5,000 Balanced \u00b7 \u20b919,995.00\n  - 'button \"25,000 LinkedIn Profile Followers: \u20b999,975.00 estimated total\"': 25,000 \u20b999,975.00\n  - 'button \"1,00,000 LinkedIn Profile Followers: \u20b93,99,900.00 estimated total\"': 1,00,000 Scale \u00b7 \u20b93,99,900.00\n  - text: Custom quantity\n  - button \"Decrease quantity\"\n  - textbox \"Custom quantity\": \"1000\"\n  - button \"Increase quantity\"\n  - paragraph: 100\u201310,00,000 units\n- text: 2. Enter your LinkedIn profile/company page link\n- textbox \"2. Enter your LinkedIn profile/company page link\" [invalid]:\n  - /placeholder: https://linkedin.com/in/your-profile\n  - text: invalid\n- alert: Enter a valid LinkedIn profile or company page link.\n- term: Delivery estimate\n- definition: 2-9 days\n- term: Refill terms\n- definition: Refill eligible\n- paragraph:\n  - link \"Refund eligibility\":\n    - /url: /refund-policy\n  - link \"Service terms\":\n    - /url: /terms-and-conditions\n- paragraph:\n  - strong: \"Before you continue:\"\n  - text: Use public profile URL and avoid URL changes.\n- status: 2/3 ready \u00b7 Enter a valid quantity and public link\n- link \"Continue to Secure Order\":\n  - /url: \"#\"\n- paragraph: No payment is taken on this page. Your selection carries into secure order review, where the current INR total is confirmed.\n- text: No password required Dashboard order tracking\n- link \"Need help choosing?\":\n  - /url: /contact",
+      "timing": [
+        {
+          "name": "http://localhost:3107/linkedin-followers",
+          "entryType": "navigation",
+          "startTime": 0,
+          "duration": 2287.60000000149,
+          "navigationId": 2726,
+          "initiatorType": "navigation",
+          "deliveryType": "",
+          "nextHopProtocol": "http/1.1",
+          "renderBlockingStatus": "non-blocking",
+          "contentType": "text/html",
+          "contentEncoding": "gzip",
+          "workerStart": 0,
+          "workerRouterEvaluationStart": 0,
+          "workerCacheLookupStart": 0,
+          "workerMatchedSourceType": "",
+          "workerFinalSourceType": "",
+          "redirectStart": 7.600000001490116,
+          "redirectEnd": 494.69999999925494,
+          "fetchStart": 494.69999999925494,
+          "domainLookupStart": 494.69999999925494,
+          "domainLookupEnd": 494.69999999925494,
+          "connectStart": 494.69999999925494,
+          "secureConnectionStart": 0,
+          "connectEnd": 494.69999999925494,
+          "requestStart": 544.6999999992549,
+          "responseStart": 599.1999999992549,
+          "firstInterimResponseStart": 0,
+          "finalResponseHeadersStart": 599.1999999992549,
+          "responseEnd": 646.8000000007451,
+          "transferSize": 32285,
+          "encodedBodySize": 31985,
+          "decodedBodySize": 213497,
+          "responseStatus": 200,
+          "serverTiming": [],
+          "unloadEventStart": 0,
+          "unloadEventEnd": 0,
+          "domInteractive": 2285,
+          "domContentLoadedEventStart": 2285.10000000149,
+          "domContentLoadedEventEnd": 2285.300000000745,
+          "domComplete": 2287.300000000745,
+          "loadEventStart": 2287.60000000149,
+          "loadEventEnd": 2287.60000000149,
+          "type": "navigate",
+          "redirectCount": 1,
+          "activationStart": 0,
+          "criticalCHRestart": 0,
+          "notRestoredReasons": null,
+          "confidence": {
+            "randomizedTriggerRate": 0.4994798,
+            "value": "low"
+          }
+        }
+      ]
+    }
+  ]
+}

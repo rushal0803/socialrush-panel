@@ -33,6 +33,12 @@ export type VerifiedRevenueDashboard = {
 
 const TIME_ZONE = "Asia/Kolkata";
 
+/** Bar length represents magnitude; consumers must label/color the sign separately. */
+export function revenueBarWidth(net: number, maxMagnitude: number) {
+  if (!Number.isFinite(net) || !Number.isFinite(maxMagnitude) || maxMagnitude <= 0 || net === 0) return 0;
+  return Math.min(100, Math.max(2, (Math.abs(net) / maxMagnitude) * 100));
+}
+
 function asAmount(value: number | string | null) {
   const parsed = Number(value ?? 0);
   return Number.isFinite(parsed) && parsed > 0 ? parsed : 0;
@@ -90,7 +96,7 @@ export function buildVerifiedRevenueDashboard({ paidOrders, refunds }: { paidOrd
     daily.set(day, dailyRow);
   }
 
-  const dailyRows = [...daily.values()].map((row) => ({ ...row, net: Math.max(0, row.gross - row.refunds) })).sort((a, b) => a.date.localeCompare(b.date));
+  const dailyRows = [...daily.values()].map((row) => ({ ...row, net: row.gross - row.refunds })).sort((a, b) => a.date.localeCompare(b.date));
   const platforms = [...platformMap.entries()].map(([platform, row]) => ({
     platform, revenue: row.revenue, orders: row.orders,
     aov: row.orders ? row.revenue / row.orders : 0,

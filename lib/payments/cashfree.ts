@@ -1,5 +1,6 @@
 import "server-only";
 import { createHmac, randomUUID, timingSafeEqual } from "crypto";
+import { cashfreeNewPaymentsEnabled } from "./cashfree-availability";
 
 const API_VERSION = "2025-01-01";
 
@@ -54,6 +55,11 @@ export function cashfreeConfig() {
 }
 
 export async function cashfreeRequest<T>(path: string, init: RequestInit = {}) {
+  // Defense in depth for future callers. Historical GET reconciliation stays available.
+  const method = (init.method || "GET").toUpperCase();
+  if (method === "POST" && /^\/orders\/?(?:\?|$)/.test(path) && !cashfreeNewPaymentsEnabled()) {
+    throw new Error("Cashfree new payments are disabled");
+  }
   const { clientId, clientSecret, baseUrl } = cashfreeConfig();
   const requestId = randomUUID();
   const response = await fetch(`${baseUrl}${path}`, {

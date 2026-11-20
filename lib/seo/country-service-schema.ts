@@ -14,9 +14,10 @@ export function createCountryServiceFaqs(page: PublishedCountryServicePage, serv
     ["When does delivery begin?", `The current service information shows an estimated ${service.deliveryTime} delivery window. Keep the destination public while processing.`],
     ["Is a refill included?", `This service currently shows: ${service.refillPolicy}. Contact support with an order ID if eligible support is needed.`],
   ] as const;
+  const withBuyerFaqs = [...base, ...(page.copy.buyerFaqs ?? [])];
   return page.copy.planningChecks?.length
-    ? [...base, [`What should ${page.market.searchLabel} buyers compare before choosing a package?`, page.copy.planningChecks.join(" ")] as const]
-    : base;
+    ? [...withBuyerFaqs, [`What should ${page.market.searchLabel} buyers compare before choosing a package?`, page.copy.planningChecks.join(" ")] as const]
+    : withBuyerFaqs;
 }
 
 /** The Offer is intentionally INR-authoritative even when display currency differs. */

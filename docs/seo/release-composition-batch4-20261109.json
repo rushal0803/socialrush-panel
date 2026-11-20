@@ -1,0 +1,137 @@
+{
+  "observed_at_utc": "2026-11-08T19:43:13.524751+00:00",
+  "steps": [
+    {
+      "pr": 748,
+      "left": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "right": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+      "exit_code": 0,
+      "output": "8977d395ff70e87fb8ff55b9da48eda28ea60fa4\n",
+      "stderr": ""
+    },
+    {
+      "pr": 747,
+      "left": "ebbc715ce14e1ba72b052d90c55c9ae7da98cf64",
+      "right": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+      "exit_code": 0,
+      "output": "e5b85cbb7f485ec32736291432d73d76df1edd2d\n",
+      "stderr": ""
+    },
+    {
+      "pr": 749,
+      "left": "50614e7d3bf9835e01035f3b8bb06781e92b027c",
+      "right": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+      "exit_code": 0,
+      "output": "b1630ea615305ff337b22054d9e535029a9d0142\n",
+      "stderr": ""
+    },
+    {
+      "pr": 750,
+      "left": "bda7bd8b60d27dd9ca5cd9245ab1d8240574857f",
+      "right": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+      "exit_code": 0,
+      "output": "85dd21120ba2d892e466bb491a49919f318158d1\n",
+      "stderr": ""
+    },
+    {
+      "pr": 751,
+      "left": "f31db810fc8ba80edb92a5d5353319007116faac",
+      "right": "68beb82ce2d61e43268461214d287f47abd3d88b",
+      "exit_code": 0,
+      "output": "ee113e5248d9063745f79c6e2d2a6445492053e6\n",
+      "stderr": ""
+    },
+    {
+      "pr": 752,
+      "left": "53a5b0cfb9be27ff1448a5818d2ef28e912c8cfa",
+      "right": "da271e6cec45d69fca8ea2a2bc7f05858bfe866a",
+      "exit_code": 0,
+      "output": "83e67d6ca399a44f2aeac88349f7d7a8d811acb5\n",
+      "stderr": ""
+    }
+  ],
+  "source_overlap": [
+    {
+      "pr": 744,
+      "path": ".github/workflows/pre-merge-smoke-tests.yml",
+      "identical": true
+    },
+    {
+      "pr": 744,
+      "path": "components/seo/SearchDemandPriceSection.tsx",
+      "identical": true
+    },
+    {
+      "pr": 744,
+      "path": "docs/seo-discovery-audit-20261108.md",
+      "identical": true
+    },
+    {
+      "pr": 744,
+      "path": "lib/seo/search-demand.ts",
+      "identical": true
+    },
+    {
+      "pr": 744,
+      "path": "tests/unit/search-demand-pricing-precision.test.ts",
+      "identical": true
+    },
+    {
+      "pr": 745,
+      "path": "components/analytics/PageAnalytics.tsx",
+      "identical": true
+    },
+    {
+      "pr": 745,
+      "path": "docs/seo-google-referrer-fix-20261108.md",
+      "identical": true
+    },
+    {
+      "pr": 745,
+      "path": "lib/analytics/events.ts",
+      "identical": true
+    },
+    {
+      "pr": 745,
+      "path": "tests/unit/phase45-traffic-engine.test.ts",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "components/marketing/MarketingFooter.tsx",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "components/marketing/TelegramFollowersLanding.tsx",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "components/seo/IndiaCommercialServiceJsonLd.tsx",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "docs/seo-commercial-breadcrumb-audit-20261108.md",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "lib/seo/commercial-service-breadcrumbs.ts",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "package.json",
+      "identical": true
+    },
+    {
+      "pr": 746,
+      "path": "tests/unit/commercial-service-breadcrumbs.test.ts",
+      "identical": true
+    }
+  ],
+  "combined_commit": "b5b939068bedc3b8f460984bfe4921afd709be48",
+  "note": "Unreferenced local objects only; no refs changed, no merge/deploy. Runtime validation still required."
+}

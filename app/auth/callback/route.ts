@@ -35,54 +35,83 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const { searchParams } = requestUrl;
   const code = searchParams.get("code");
-  const isPasswordReset = searchParams.get("next") === "/reset-password";
+  // Token-hash recovery links work with SSR: verification establishes cookies on the response.
+  const tokenHash = searchParams.get("token_hash");
+  const recoveryToken = Boolean(tokenHash && searchParams.get("type") === "recovery");
+  const isPasswordReset = recoveryToken || searchParams.get("next") === "/reset-password";
   const referralCode = normalizeReferralCode(searchParams.get("ref"));
   const customerDestination = getSafeCustomerDestination(
     searchParams.get("next"),
   );
 
-  if (code) {
-    const destination = new URL(
-      isPasswordReset ? "/reset-password" : customerDestination,
-      requestUrl.origin,
-    );
-    const response = NextResponse.redirect(destination);
-    const { url, key } = getSupabaseConfig();
-    const supabase = createServerClient(url, key, {
-      cookies: {
-        getAll: () => request.cookies.getAll(),
-        setAll(cookiesToSet) {
-          cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
-          cookiesToSet.forEach(({ name, value, options }) =>
-            response.cookies.set(name, value, options),
-          );
+  // Default Supabase recovery emails may return a browser-only hash fragment.
+  // Fragments are never sent to the server, so hand off to a client-only route.
+  // The browser preserves the original fragment across this same-origin redirect.
+  if (isPasswordReset && !code && !recoveryToken) {
+    return privateRedirect(new URL("/auth/recovery", requestUrl.origin));
+  }
+
+  if (code || recoveryToken) {
+    try {
+      const destination = new URL(
+        isPasswordReset ? "/reset-password" : customerDestination,
+        requestUrl.origin,
+      );
+      const response = privateRedirect(destination);
+      const { url, key } = getSupabaseConfig();
+      const supabase = createServerClient(url, key, {
+        cookies: {
+          getAll: () => request.cookies.getAll(),
+          setAll(cookiesToSet) {
+            cookiesToSet.forEach(({ name, value }) => request.cookies.set(name, value));
+            cookiesToSet.forEach(({ name, value, options }) =>
+              response.cookies.set(name, value, options),
+            );
+          },
         },
-      },
-    });
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
-    if (!error) {
-      const { data: { user } } = await supabase.auth.getUser();
-      if (user && !isPasswordReset) {
-        if (referralCode) {
-          await claimReferralForUser({
-            userId: user.id,
-            userCreatedAt: user.created_at,
-            code: referralCode,
-          }).catch(() => null);
+      });
+      const { error } = recoveryToken
+        ? await supabase.auth.verifyOtp({ token_hash: tokenHash!, type: "recovery" })
+        : await supabase.auth.exchangeCodeForSession(code!);
+      if (!error) {
+        const { data: { user }, error: userError } = await supabase.auth.getUser();
+        if (userError || !user) return failedCallback(requestUrl.origin);
+        if (user && !isPasswordReset) {
+          if (referralCode) {
+            await claimReferralForUser({
+              userId: user.id,
+              userCreatedAt: user.created_at,
+              code: referralCode,
+            }).catch(() => null);
+          }
+          const profile = await ensureUserProfile(supabase, user).catch(() => null);
+          if (profile?.role === "admin") {
+            destination.pathname = ADMIN_DESTINATION;
+            destination.search = "";
+            destination.hash = "";
+            response.headers.set("location", destination.toString());
+          }
         }
-        const profile = await ensureUserProfile(supabase, user).catch(() => null);
-        if (profile?.role === "admin") {
-          destination.pathname = ADMIN_DESTINATION;
-          destination.search = "";
-          destination.hash = "";
-          response.headers.set("location", destination.toString());
-        }
+        return response;
       }
-      return response;
+    } catch {
+      // Do not expose provider/network errors or recovery credentials to the user.
+      return failedCallback(requestUrl.origin);
     }
   }
 
-  const loginUrl = new URL("/login", requestUrl.origin);
+  return failedCallback(requestUrl.origin);
+}
+
+function privateRedirect(destination: URL) {
+  const response = NextResponse.redirect(destination);
+  response.headers.set("Cache-Control", "no-store");
+  response.headers.set("Referrer-Policy", "no-referrer");
+  return response;
+}
+
+function failedCallback(origin: string) {
+  const loginUrl = new URL("/login", origin);
   loginUrl.searchParams.set("authError", "oauth_callback_failed");
-  return NextResponse.redirect(loginUrl);
+  return privateRedirect(loginUrl);
 }

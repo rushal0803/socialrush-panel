@@ -1,0 +1,423 @@
+   ▲ Next.js 15.5.29
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (102kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings in 3.4s
+
+./node_modules/@supabase/supabase-js/dist/index.mjs
+A Node.js API is used (process.version at line: 27) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+./node_modules/@supabase/supabase-js/dist/index.mjs
+./node_modules/@supabase/ssr/dist/module/createServerClient.js
+./node_modules/@supabase/ssr/dist/module/index.js
+./lib/supabase/middleware.ts
+
+ ✓ Compiled successfully in 2.2min
+   Linting and checking validity of types ...
+
+./app/admin/analytics/page.tsx
+42:742  Warning: 'starts' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./app/admin/seo/indexation/page.tsx
+2:65  Warning: 'RefreshCw' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/buy-instagram-followers-india/page.tsx
+3:80  Warning: 'ShieldCheck' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./app/dashboard/new-order/page.tsx
+11:3  Warning: 'Hash' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'Info' is defined but never used.  @typescript-eslint/no-unused-vars
+14:11  Warning: 'LinkIcon' is defined but never used.  @typescript-eslint/no-unused-vars
+17:3  Warning: 'MessageSquare' is defined but never used.  @typescript-eslint/no-unused-vars
+20:3  Warning: 'Sparkles' is defined but never used.  @typescript-eslint/no-unused-vars
+34:3  Warning: 'growthMethod' is defined but never used.  @typescript-eslint/no-unused-vars
+206:10  Warning: 'savedProfiles' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+231:10  Warning: 'resumeNotice' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+341:9  Warning: 'selectedServiceUnavailable' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+349:9  Warning: 'safeAlternative' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+587:6  Warning: React Hook useEffect has a missing dependency: 'searchParams'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/admin/LeadsWorkspace.tsx
+10:518  Warning: React Hook useMemo has a missing dependency: 'primary'. Either include it or remove the dependency array.  react-hooks/exhaustive-deps
+
+./components/dashboard/DirectUpiPaymentClient.tsx
+204:143  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/marketing/YouTubeViewsLanding.tsx
+23:7  Warning: 'whatsapp' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/marketing/services/InstagramSavesLanding.tsx
+19:7  Warning: 'compact' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/marketing/services/InstagramSharesLanding.tsx
+17:7  Warning: 'compact' is assigned a value but never used.  @typescript-eslint/no-unused-vars
+
+./components/marketing/tools/ImageResizerWorkspace.tsx
+39:1067  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/marketing/tools/ToolsContent.tsx
+43:3219  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+45:2554  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/marketing/tools/YouTubeThumbnailWorkspace.tsx
+42:116  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./components/wallet/DesktopUpiQrCheckout.tsx
+103:510  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+104:104  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+108:123  Warning: Using `<img>` could result in slower LCP and higher bandwidth. Consider using `<Image />` from `next/image` or a custom image loader to automatically optimize images. This may incur additional usage or cost from your provider. See: https://nextjs.org/docs/messages/no-img-element  @next/next/no-img-element
+
+./lib/crm/resend.ts
+6:41  Warning: 'formatOutreachEmail' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/cro/checkout-optimization.ts
+31:3  Warning: 'payableNow' is defined but never used.  @typescript-eslint/no-unused-vars
+
+./lib/seo/india-service-pages.ts
+11:3  Warning: 'canonicalIndiaServicePaths' is defined but never used.  @typescript-eslint/no-unused-vars
+13:3  Warning: 'indiaServiceSlugs' is defined but never used.  @typescript-eslint/no-unused-vars
+
+info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/app/api-reference/config/eslint#disabling-rules
+   Collecting page data ...
+   Generating static pages (0/317) ...
+   Generating static pages (79/317)
+   Generating static pages (158/317)
+   Generating static pages (237/317)
+ ✓ Generating static pages (317/317)
+   Finalizing page optimization ...
+   Collecting build traces ...
+
+Route (app)                                                     Size  First Load JS  Revalidate  Expire
+┌ ○ /                                                        7.63 kB         237 kB          5m      1y
+├ ○ /_not-found                                                723 B         104 kB
+├ ƒ /.well-known/assetlinks.json                               361 B         104 kB
+├ ● /[service]                                               33.2 kB         345 kB
+├   ├ /instagram-likes
+├   ├ /instagram-views
+├   ├ /youtube-subscribers
+├   └ [+9 more paths]
+├ ○ /about                                                   3.08 kB         230 kB
+├ ○ /account                                                   361 B         104 kB
+├ ƒ /admin                                                   1.03 kB         157 kB
+├ ƒ /admin/analytics                                           166 B         107 kB
+├ ƒ /admin/case-studies                                        361 B         104 kB
+├ ƒ /admin/categories                                           1 kB         153 kB
+├ ƒ /admin/command-center                                    1.57 kB         108 kB
+├ ƒ /admin/crm                                                 917 B         108 kB
+├ ƒ /admin/crm/automation-health                               176 B         107 kB
+├ ƒ /admin/crm/automations                                   4.68 kB         108 kB
+├ ƒ /admin/crm/customers                                       917 B         108 kB
+├ ƒ /admin/crm/customers/[customerId]                          917 B         108 kB
+├ ƒ /admin/crm/distribution                                    917 B         108 kB
+├ ƒ /admin/crm/follow-ups                                      917 B         108 kB
+├ ƒ /admin/crm/growth-hub                                      917 B         108 kB
+├ ƒ /admin/crm/growth-hub/recovery                             917 B         108 kB
+├ ƒ /admin/crm/leads                                         5.13 kB         112 kB
+├ ƒ /admin/crm/leads/[leadId]                                3.69 kB         110 kB
+├ ƒ /admin/crm/outreach                                      4.37 kB         108 kB
+├ ƒ /admin/crm/pipeline                                        917 B         108 kB
+├ ƒ /admin/crm/prospecting                                   1.76 kB         108 kB
+├ ƒ /admin/crm/prospecting/[candidateId]                       176 B         107 kB
+├ ƒ /admin/crm/reactivation                                    917 B         108 kB
+├ ƒ /admin/crm/replies                                       2.85 kB         106 kB
+├ ƒ /admin/dashboard                                         1.03 kB         157 kB
+├ ƒ /admin/growth/revenue                                      917 B         108 kB
+├ ƒ /admin/growth/traffic                                      917 B         108 kB
+├ ƒ /admin/incidents                                           361 B         104 kB
+├ ƒ /admin/login                                             2.68 kB         179 kB
+├ ƒ /admin/orders                                            1.03 kB         157 kB
+├ ƒ /admin/orders/[id]                                       4.33 kB         160 kB
+├ ƒ /admin/packages                                          1.08 kB         153 kB
+├ ƒ /admin/payments                                          1.03 kB         157 kB
+├ ƒ /admin/profitability                                     2.18 kB         109 kB
+├ ƒ /admin/quality                                             917 B         108 kB
+├ ƒ /admin/refills                                           1.03 kB         157 kB
+├ ƒ /admin/reviews                                             361 B         104 kB
+├ ƒ /admin/rewards                                             361 B         104 kB
+├ ƒ /admin/seo/aeo                                             805 B         104 kB
+├ ƒ /admin/seo/authority                                       917 B         108 kB
+├ ƒ /admin/seo/competitors                                     917 B         108 kB
+├ ƒ /admin/seo/content                                         917 B         108 kB
+├ ƒ /admin/seo/ctr                                             917 B         108 kB
+├ ƒ /admin/seo/digital-pr                                      917 B         108 kB
+├ ƒ /admin/seo/indexation                                    1.55 kB         108 kB
+├ ƒ /admin/seo/international                                   917 B         108 kB
+├ ƒ /admin/services                                          1.08 kB         153 kB
+├ ƒ /admin/settings                                             1 kB         153 kB
+├ ƒ /admin/support                                           1.03 kB         157 kB
+├ ƒ /admin/transactions                                      1.03 kB         157 kB
+├ ƒ /admin/users                                                1 kB         153 kB
+├ ○ /ads.txt                                                   361 B         104 kB
+├ ○ /ae                                                      3.15 kB         230 kB
+├ ● /ae/[service]                                              510 B         230 kB
+├   ├ /ae/buy-instagram-followers
+├   ├ /ae/buy-youtube-subscribers
+├   └ /ae/buy-linkedin-followers
+├ ƒ /api/admin/crm/autopilot/refresh                           361 B         104 kB
+├ ƒ /api/admin/orders                                          361 B         104 kB
+├ ƒ /api/admin/orders/[id]                                     361 B         104 kB
+├ ƒ /api/admin/orders/[id]/refresh-count                       361 B         104 kB
+├ ƒ /api/admin/orders/[id]/status                              361 B         104 kB
+├ ƒ /api/admin/refill-requests/[id]                            361 B         104 kB
+├ ƒ /api/analytics                                             361 B         104 kB
+├ ƒ /api/analytics/auth-completed                              361 B         104 kB
+├ ƒ /api/analytics/consent                                     361 B         104 kB
+├ ƒ /api/api-key                                               361 B         104 kB
+├ ƒ /api/checkout/cashfree/order                               361 B         104 kB
+├ ƒ /api/checkout/cashfree/return                              361 B         104 kB
+├ ƒ /api/checkout/cashfree/verify                              361 B         104 kB
+├ ƒ /api/checkout/intent                                       361 B         104 kB
+├ ƒ /api/checkout/payment                                      361 B         104 kB
+├ ƒ /api/checkout/payment/verify                               361 B         104 kB
+├ ƒ /api/contact                                               361 B         104 kB
+├ ƒ /api/crm/inbound-reply                                     361 B         104 kB
+├ ƒ /api/cron/crm-outreach                                     361 B         104 kB
+├ ƒ /api/cron/email                                            361 B         104 kB
+├ ƒ /api/cron/monitoring                                       361 B         104 kB
+├ ƒ /api/cron/order-notifications                              361 B         104 kB
+├ ƒ /api/cron/prospect-discovery                               361 B         104 kB
+├ ƒ /api/display-currency                                      361 B         104 kB
+├ ƒ /api/email/test                                            361 B         104 kB
+├ ƒ /api/email/unsubscribe                                     361 B         104 kB
+├ ○ /api/fx-rates                                              361 B         104 kB          6h      1y
+├ ƒ /api/health                                                361 B         104 kB
+├ ƒ /api/notifications                                         361 B         104 kB
+├ ƒ /api/notifications/[id]                                    361 B         104 kB
+├ ƒ /api/notifications/read-all                                361 B         104 kB
+├ ƒ /api/order-draft                                           361 B         104 kB
+├ ƒ /api/orders                                                361 B         104 kB
+├ ƒ /api/orders/[id]/invoice                                   361 B         104 kB
+├ ƒ /api/orders/[id]/refill                                    361 B         104 kB
+├ ƒ /api/orders/manual-upi                                     361 B         104 kB
+├ ƒ /api/payments/cashfree/order                               361 B         104 kB
+├ ƒ /api/payments/cashfree/verify                              361 B         104 kB
+├ ƒ /api/payments/cashfree/webhook                             361 B         104 kB
+├ ƒ /api/payments/razorpay/order                               361 B         104 kB
+├ ƒ /api/payments/razorpay/refund                              361 B         104 kB
+├ ƒ /api/payments/razorpay/verify                              361 B         104 kB
+├ ƒ /api/payments/razorpay/webhook                             361 B         104 kB
+├ ƒ /api/provider/check-status                                 361 B         104 kB
+├ ƒ /api/provider/place-order                                  361 B         104 kB
+├ ƒ /api/razorpay/create-order                                 361 B         104 kB
+├ ƒ /api/razorpay/verify-payment                               361 B         104 kB
+├ ƒ /api/referrals/claim                                       361 B         104 kB
+├ ƒ /api/rewards/first-order-offer                             361 B         104 kB
+├ ƒ /api/service-health                                        361 B         104 kB
+├ ƒ /api/services/live-catalog                                 361 B         104 kB
+├ ƒ /api/support/tickets                                       361 B         104 kB
+├ ƒ /api/support/tickets/[id]/reply                            361 B         104 kB
+├ ƒ /api/wallet/manual-upi                                     361 B         104 kB
+├ ƒ /api/webhooks/resend                                       361 B         104 kB
+├ ○ /apple-icon.png                                              0 B            0 B
+├ ○ /au                                                      3.15 kB         230 kB
+├ ● /au/[service]                                              510 B         230 kB
+├   ├ /au/buy-instagram-followers
+├   ├ /au/buy-youtube-subscribers
+├   ├ /au/buy-youtube-views
+├   └ /au/buy-linkedin-followers
+├ ƒ /auth/callback                                             361 B         104 kB
+├ ○ /auth/recovery                                           1.41 kB         172 kB
+├ ○ /billing                                                   361 B         104 kB
+├ ○ /blog                                                     114 kB         334 kB
+├ ● /blog/[slug]                                             6.48 kB         226 kB
+├   ├ /blog/instagram-followers-upi-payment-guide-india
+├   ├ /blog/how-small-businesses-build-social-proof-online
+├   ├ /blog/best-time-to-post-on-instagram-india
+├   └ [+44 more paths]
+├ ○ /blog/best-social-media-growth-services-indian-creators    361 B         104 kB
+├ ○ /blog/social-media-growth-strategy-for-indian-creators     361 B         104 kB
+├ ○ /buy-facebook-followers-india                            5.84 kB         248 kB
+├ ƒ /buy-facebook-group-members-india                          184 B         268 kB
+├ ○ /buy-facebook-likes-india                                2.29 kB         240 kB
+├ ƒ /buy-facebook-shares-india                                 184 B         268 kB
+├ ○ /buy-facebook-views-india                                1.73 kB         236 kB
+├ ƒ /buy-instagram-comments-india                            13.6 kB         237 kB
+├ ○ /buy-instagram-followers-india                           1.81 kB         231 kB
+├ ○ /buy-instagram-likes-india                                1.8 kB         231 kB
+├ ƒ /buy-instagram-saves-india                               17.1 kB         240 kB
+├ ƒ /buy-instagram-shares-india                                184 B         268 kB
+├ ○ /buy-instagram-views-india                               2.97 kB         233 kB
+├ ○ /buy-linkedin-followers-india                             5.6 kB         253 kB
+├ ƒ /buy-linkedin-likes-india                                  184 B         268 kB
+├ ƒ /buy-telegram-members-india                                184 B         268 kB
+├ ○ /buy-tiktok-followers-india                                361 B         104 kB
+├ ○ /buy-twitter-followers-india                               361 B         104 kB
+├ ƒ /buy-youtube-comments-india                                183 B         268 kB
+├ ○ /buy-youtube-likes-india                                 3.61 kB         238 kB
+├ ○ /buy-youtube-subscribers-india                             361 B         104 kB
+├ ○ /buy-youtube-views-india                                 5.81 kB         248 kB
+├ ƒ /buy-youtube-watch-hours-india                           19.1 kB         250 kB
+├ ○ /ca                                                      3.15 kB         230 kB
+├ ● /ca/[service]                                              510 B         230 kB
+├   ├ /ca/buy-instagram-followers
+├   ├ /ca/buy-youtube-subscribers
+├   ├ /ca/buy-youtube-views
+├   └ /ca/buy-linkedin-followers
+├ ƒ /case-studies                                            7.38 kB         223 kB
+├ ƒ /case-studies/[slug]                                       839 B         217 kB
+├ ○ /compare                                                   808 B         217 kB
+├ ● /compare/[competitor]                                      839 B         217 kB
+├   ├ /compare/ytviews
+├   ├ /compare/socialking
+├   └ /compare/media-mister
+├ ○ /contact                                                   14 kB         247 kB
+├ ○ /creator-growth                                            839 B         217 kB
+├ ƒ /dashboard                                                8.3 kB         125 kB
+├ ƒ /dashboard/account                                       6.22 kB         177 kB
+├ ƒ /dashboard/add-funds                                      5.6 kB         112 kB
+├ ƒ /dashboard/api-docs                                       3.3 kB         107 kB
+├ ƒ /dashboard/billing                                        8.6 kB         115 kB
+├ ƒ /dashboard/billing/transactions/[id]                     3.04 kB         110 kB
+├ ƒ /dashboard/campaign-stacks                               10.1 kB         125 kB
+├ ƒ /dashboard/campaigns                                       917 B         108 kB
+├ ƒ /dashboard/campaigns/[id]                                  917 B         108 kB
+├ ƒ /dashboard/clients                                         917 B         108 kB
+├ ƒ /dashboard/clients/[id]                                    917 B         108 kB
+├ ƒ /dashboard/direct-upi                                    10.6 kB         121 kB
+├ ƒ /dashboard/new-campaign                                    361 B         104 kB
+├ ƒ /dashboard/new-order                                     22.2 kB         211 kB
+├ ƒ /dashboard/notifications                                 3.06 kB         110 kB
+├ ƒ /dashboard/order-history                                   155 B         196 kB
+├ ƒ /dashboard/order-summary                                 10.5 kB         189 kB
+├ ƒ /dashboard/orders                                          154 B         196 kB
+├ ƒ /dashboard/orders/[id]                                   8.65 kB         199 kB
+├ ƒ /dashboard/packages                                        215 B         231 kB
+├ ƒ /dashboard/referrals                                     4.59 kB         115 kB
+├ ƒ /dashboard/repeat-campaigns                              6.02 kB         121 kB
+├ ƒ /dashboard/reseller                                      5.45 kB         116 kB
+├ ƒ /dashboard/reseller/bulk-planner                         3.86 kB         179 kB
+├ ƒ /dashboard/reseller/monthly-planner                      12.9 kB         192 kB
+├ ƒ /dashboard/reseller/monthly-plans                          917 B         108 kB
+├ ƒ /dashboard/reseller/portfolio                              917 B         108 kB
+├ ƒ /dashboard/retainers                                       917 B         108 kB
+├ ƒ /dashboard/reviews                                         176 B         107 kB
+├ ƒ /dashboard/reviews/new                                     176 B         107 kB
+├ ƒ /dashboard/rewards                                          1 kB         108 kB
+├ ƒ /dashboard/saved-profiles                                7.17 kB         116 kB
+├ ƒ /dashboard/services                                        361 B         104 kB
+├ ƒ /dashboard/settings                                      3.65 kB         223 kB
+├ ƒ /dashboard/support                                       10.5 kB         230 kB
+├ ƒ /dashboard/wallet                                        10.4 kB         117 kB
+├ ƒ /download/android                                          361 B         104 kB
+├ ○ /facebook-growth-india                                   3.08 kB         230 kB
+├ ○ /faq                                                        9 kB         238 kB
+├ ƒ /feed.xml                                                  361 B         104 kB
+├ ○ /for-agencies                                            8.36 kB         228 kB
+├ ○ /for-brands                                              1.68 kB         218 kB
+├ ○ /for-creators                                            3.78 kB         231 kB
+├ ƒ /forgot-password                                           381 B         112 kB
+├ ○ /help-center                                             5.55 kB         233 kB
+├ ○ /icon.png                                                    0 B            0 B
+├ ○ /instagram-growth-india                                    839 B         217 kB
+├ ○ /linkedin-growth-india                                   3.08 kB         230 kB
+├ ƒ /login                                                   5.38 kB         181 kB
+├ ○ /manifest.webmanifest                                      361 B         104 kB
+├ ○ /new-campaign                                              361 B         104 kB
+├ ○ /offline                                                   361 B         104 kB
+├ ƒ /order-summary                                           8.13 kB         228 kB
+├ ○ /orders                                                    361 B         104 kB
+├ ƒ /packages                                                  215 B         231 kB
+├ ƒ /packages/checkout                                       8.89 kB         231 kB
+├ ƒ /packages/summary                                         3.8 kB         226 kB
+├ ○ /partners                                                  839 B         217 kB
+├ ○ /press                                                     839 B         217 kB
+├ ƒ /pricing                                                 5.94 kB         237 kB
+├ ○ /privacy                                                   361 B         104 kB
+├ ○ /privacy-policy                                          3.08 kB         230 kB
+├ ○ /refund                                                    361 B         104 kB
+├ ○ /refund-policy                                           8.75 kB         236 kB
+├ ƒ /register                                                6.44 kB         186 kB
+├ ƒ /reset-password                                            381 B         112 kB
+├ ○ /reviews                                                   808 B         217 kB          5m      1y
+├ ○ /robots.txt                                                361 B         104 kB
+├ ƒ /services                                                5.39 kB         233 kB
+├ ● /services/[slug]                                           172 B         257 kB
+├   ├ /services/instagram-audience-growth
+├   ├ /services/instagram-engagement-boost
+├   ├ /services/instagram-content-reach
+├   └ [+49 more paths]
+├ ○ /services/linkedin                                         839 B         217 kB
+├ ○ /services/linkedin-followers                               361 B         104 kB
+├ ○ /services/linkedin-likes                                   361 B         104 kB
+├ ○ /services/linkedin-usa-connections                         172 B         257 kB
+├ ƒ /services/linkedin-usa-custom-comments                     172 B         257 kB
+├ ƒ /services/linkedin-usa-endorsements                        172 B         257 kB
+├ ○ /services/linkedin-usa-followers                           172 B         257 kB
+├ ○ /services/linkedin-usa-group-members                       172 B         257 kB
+├ ƒ /services/linkedin-usa-post-likes                          171 B         257 kB
+├ ƒ /services/linkedin-usa-reposts                             172 B         257 kB
+├ ○ /services/telegram                                         839 B         217 kB
+├ ○ /services/telegram-poll-votes                            1.73 kB         231 kB
+├ ○ /services/telegram-post-reactions                        1.73 kB         231 kB
+├ ○ /services/telegram-post-views                            1.73 kB         231 kB
+├ ○ /services/tiktok                                           839 B         217 kB
+├ ○ /services/tiktok-custom-comments                         1.73 kB         231 kB
+├ ○ /services/tiktok-followers                                 361 B         104 kB
+├ ○ /services/tiktok-likes                                   1.73 kB         231 kB
+├ ○ /services/tiktok-saves                                   1.73 kB         231 kB
+├ ○ /services/tiktok-story-views                             1.73 kB         231 kB
+├ ○ /services/tiktok-views                                   1.73 kB         231 kB
+├ ○ /services/twitter-crypto-custom-comments                 1.73 kB         231 kB
+├ ○ /services/twitter-crypto-followers                         172 B         257 kB
+├ ○ /services/twitter-crypto-likes                           1.73 kB         231 kB
+├ ○ /services/twitter-crypto-retweets                        1.73 kB         231 kB
+├ ○ /services/twitter-likes                                    172 B         257 kB
+├ ○ /services/twitter-retweets                                 172 B         257 kB
+├ ○ /services/twitter-views                                    172 B         257 kB
+├ ○ /services/twitter-x                                        839 B         217 kB
+├ ○ /sg                                                      3.15 kB         230 kB
+├ ● /sg/[service]                                              510 B         230 kB
+├   ├ /sg/buy-instagram-followers
+├   ├ /sg/buy-youtube-subscribers
+├   └ /sg/buy-linkedin-followers
+├ ƒ /sitemap.xml                                               361 B         104 kB
+├ ○ /social-media-growth-india                                 839 B         217 kB
+├ ○ /status                                                  4.42 kB         146 kB
+├ ○ /support                                                   808 B         217 kB
+├ ○ /terms                                                     361 B         104 kB
+├ ○ /terms-and-conditions                                    3.08 kB         230 kB
+├ ○ /testimonials                                              808 B         217 kB          5m      1y
+├ ƒ /tiktok-followers                                        1.73 kB         231 kB
+├ ○ /tiktok-growth-india                                       839 B         217 kB
+├ ○ /tools                                                    2.5 kB         283 kB
+├ ● /tools/[slug]                                              252 B         269 kB
+├   ├ /tools/youtube-view-growth-rate-calculator
+├   ├ /tools/instagram-story-engagement-rate-calculator
+├   ├ /tools/instagram-reach-rate-calculator
+├   └ [+17 more paths]
+├ ○ /tools/social-media-growth-audit                           248 B         226 kB
+├ ○ /tools/social-media-growth-planner                         248 B         226 kB
+├ ○ /trust                                                   3.08 kB         230 kB          5m      1y
+├ ○ /uk                                                      3.15 kB         230 kB
+├ ● /uk/[service]                                              510 B         230 kB
+├   ├ /uk/buy-instagram-followers
+├   ├ /uk/buy-youtube-subscribers
+├   ├ /uk/buy-youtube-views
+├   └ /uk/buy-linkedin-followers
+├ ○ /us                                                      3.15 kB         230 kB
+├ ● /us/[service]                                              510 B         230 kB
+├   ├ /us/buy-instagram-followers
+├   ├ /us/buy-youtube-subscribers
+├   ├ /us/buy-youtube-views
+├   └ /us/buy-linkedin-followers
+├ ƒ /verify-email                                              178 B         112 kB
+├ ○ /wallet                                                    361 B         104 kB
+├ ○ /x-growth-india                                            839 B         217 kB
+├ ○ /youtube-growth-india                                    3.08 kB         230 kB
+└ ○ /youtube-watch-hours                                       839 B         217 kB
++ First Load JS shared by all                                 103 kB
+  ├ chunks/1255-d8a1861c775d9bcc.js                          46.3 kB
+  ├ chunks/4bd1b696-100b9d70ed4e49c1.js                      54.2 kB
+  └ other shared chunks (total)                              2.83 kB
+
+
+ƒ Middleware                                                 93.1 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

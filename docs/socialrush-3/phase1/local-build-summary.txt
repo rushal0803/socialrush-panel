@@ -1,0 +1,62 @@
+PASS: next build exited 0. Local optimized build only; no deployment.
+Synthetic Supabase variables; fetch/HTTP/socket egress denied; existing in-memory backend preloader.
+Existing lint and Supabase Edge-runtime warnings remain.
+
+   ▲ Next.js 15.5.26
+   - Environments: .env.production
+   - Experiments (use with caution):
+     · optimizePackageImports
+
+   Creating an optimized production build ...
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (102kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+<w> [webpack.cache.PackFileCacheStrategy] Serializing big strings (250kiB) impacts deserialization performance (consider using Buffer instead and decode when needed)
+ ⚠ Compiled with warnings in 2.4s
+
+../socialrush-panel/node_modules/@supabase/supabase-js/dist/index.mjs
+A Node.js API is used (process.version at line: 27) which is not supported in the Edge Runtime.
+Learn more: https://nextjs.org/docs/api-reference/edge-runtime
+
+Import trace for requested module:
+../socialrush-panel/node_modules/@supabase/supabase-js/dist/index.mjs
+../socialrush-panel/node_modules/@supabase/ssr/dist/module/createBrowserClient.js
+../socialrush-panel/node_modules/@supabase/ssr/dist/module/index.js
+./lib/supabase/middleware.ts
+
+ ✓ Compiled successfully in 59s
+   Linting and checking validity of types ...
+
+Final build output:
+├   ├ /tools/instagram-story-engagement-rate-calculator
+├   ├ /tools/instagram-reach-rate-calculator
+├   └ [+17 more paths]
+├ ○ /tools/social-media-growth-audit                           251 B         226 kB
+├ ○ /tools/social-media-growth-planner                         250 B         226 kB
+├ ○ /trust                                                   3.05 kB         230 kB          5m      1y
+├ ○ /uk                                                      3.13 kB         230 kB
+├ ● /uk/[service]                                              511 B         229 kB
+├   ├ /uk/buy-instagram-followers
+├   ├ /uk/buy-youtube-subscribers
+├   ├ /uk/buy-youtube-views
+├   └ /uk/buy-linkedin-followers
+├ ○ /us                                                      3.13 kB         230 kB
+├ ● /us/[service]                                              511 B         229 kB
+├   ├ /us/buy-instagram-followers
+├   ├ /us/buy-youtube-subscribers
+├   ├ /us/buy-youtube-views
+├   └ /us/buy-linkedin-followers
+├ ƒ /verify-email                                              179 B         113 kB
+├ ○ /wallet                                                    356 B         104 kB
+├ ○ /x-growth-india                                            820 B         217 kB
+├ ○ /youtube-growth-india                                    3.05 kB         230 kB
+└ ○ /youtube-watch-hours                                       820 B         217 kB
++ First Load JS shared by all                                 104 kB
+  ├ chunks/8180-87e53c2c52944364.js                          46.7 kB
+  ├ chunks/daad30fc-90cca1fdc549cc44.js                      54.2 kB
+  └ other shared chunks (total)                              2.77 kB
+
+
+ƒ Middleware                                                 93.2 kB
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

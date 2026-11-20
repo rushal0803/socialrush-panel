@@ -1,5 +1,7 @@
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
-import { getBrowserAnalyticsSessionId } from "./session.ts";
+import { browserAnalyticsAllowed } from "./browser-consent.ts";
+import { analyticsPathBucket, coarseAttribution, privateSafeMetadata } from "./privacy.ts";
+import { activeSmmServices } from "../smm-service-catalog.ts";
 
 export const clientAnalyticsEvents = [
   "page_viewed",
@@ -108,21 +110,26 @@ const repeatableInteractionEvents = new Set<ClientAnalyticsEvent>([
 ]);
 
 const safePath = () =>
-  typeof location === "undefined" ? "/" : location.pathname.slice(0, 300);
-
-const clip = (value: string | null | undefined, length: number) => {
-  const cleaned = value?.trim();
-  return cleaned ? cleaned.slice(0, length) : undefined;
-};
+  typeof location === "undefined" ? "/" : analyticsPathBucket(location.pathname);
 
 const searchSource = (hostname: string) => {
   const host = hostname.toLowerCase().replace(/^www\./, "");
-  if (/(^|\.)google\./.test(host)) return "google";
+  // Search uses the public root/country hosts and dedicated search surfaces.
+  // Other Google products (accounts, mail, docs, ads, etc.) are referrals.
+  // Anchor the whole hostname so google.com.example cannot count as search.
+  if (/^(?:(?:images|news|search)\.)?google\.(?:com|cat|[a-z]{2}|(?:co|com)\.[a-z]{2})$/.test(host)) return "google";
   if (/(^|\.)bing\.com$/.test(host)) return "bing";
   if (/(^|\.)duckduckgo\.com$/.test(host)) return "duckduckgo";
   if (/(^|\.)search\.yahoo\./.test(host) || /(^|\.)yahoo\./.test(host)) return "yahoo";
   if (/(^|\.)yandex\./.test(host)) return "yandex";
   if (/(^|\.)baidu\.com$/.test(host)) return "baidu";
+  return undefined;
+};
+
+// Click markers are used only for classification; their values are never stored.
+const paidSearchSource = (params: URLSearchParams) => {
+  if (["gclid", "gbraid", "wbraid", "dclid"].some(key => params.has(key))) return "google";
+  if (params.has("msclkid")) return "bing";
   return undefined;
 };
 
@@ -160,96 +167,53 @@ export function isOrganicSearchReferrer(referrerUrl: string, currentHostname: st
   }
 }
 
-const sanitizeAttribution = (value: unknown): ClientAttribution | null => {
-  if (!value || typeof value !== "object" || Array.isArray(value)) return null;
-  const raw = value as Record<string, unknown>;
-  const landingPath =
-    typeof raw.landingPath === "string" && raw.landingPath.startsWith("/")
-      ? raw.landingPath.split("?")[0].slice(0, 300)
-      : undefined;
-  const result: ClientAttribution = {
-    source: typeof raw.source === "string" ? clip(raw.source, 100) : undefined,
-    medium: typeof raw.medium === "string" ? clip(raw.medium, 100) : undefined,
-    campaign: typeof raw.campaign === "string" ? clip(raw.campaign, 150) : undefined,
-    content: typeof raw.content === "string" ? clip(raw.content, 150) : undefined,
-    term: typeof raw.term === "string" ? clip(raw.term, 150) : undefined,
-    referringDomain:
-      typeof raw.referringDomain === "string"
-        ? clip(raw.referringDomain, 150)
-        : undefined,
-    landingPath,
-  };
-  return Object.values(result).some(Boolean) ? result : null;
-};
+/** Classify the current public landing, independently of stored first-touch data. */
+export function isOrganicSearchLanding(
+  referrerUrl: string,
+  currentHostname: string,
+  pathname: string,
+  landingSearch: string,
+): boolean {
+  if (!isOrganicSearchReferrer(referrerUrl, currentHostname) || !isPublicOrganicLandingPath(pathname)) return false;
+  const params = new URLSearchParams(landingSearch);
+  if (paidSearchSource(params)) return false;
+  const medium = params.get("utm_medium")?.trim().toLowerCase();
+  if (medium && medium !== "organic") return false;
+  const source = params.get("utm_source")?.trim().toLowerCase();
+  const referrerSource = searchSource(new URL(referrerUrl).hostname);
+  return !source || source === referrerSource;
+}
 
 function getFirstTouchAttribution(): ClientAttribution {
-  if (typeof window === "undefined") return {};
-
+  if (!browserAnalyticsAllowed()) return {};
   try {
     const params = new URLSearchParams(window.location.search);
-    const explicitCampaign = [
-      "utm_source",
-      "utm_medium",
-      "utm_campaign",
-      "utm_content",
-      "utm_term",
-    ].some((key) => Boolean(params.get(key)?.trim()));
-
-    if (!explicitCampaign) {
-      const stored = sanitizeAttribution(
-        JSON.parse(window.sessionStorage.getItem(ATTRIBUTION_KEY) || "null"),
-      );
-      if (stored) return stored;
-    }
-
-    let referringDomain: string | undefined;
-    try {
-      const referrer = document.referrer ? new URL(document.referrer) : null;
-      if (referrer && referrer.hostname !== window.location.hostname) {
-        referringDomain = clip(referrer.hostname.toLowerCase(), 150);
+    const googlePaid = ["gclid","gbraid","wbraid","dclid"].some(key=>params.has(key));
+    const bingPaid = params.has("msclkid");
+    const explicit = ["utm_source","utm_medium"].some(key=>params.has(key));
+    if(!googlePaid && !bingPaid && !explicit) {
+      const stored=JSON.parse(window.sessionStorage.getItem(ATTRIBUTION_KEY)||"null");
+      if(stored && typeof stored.source==="string" && typeof stored.medium==="string") {
+        const safe=coarseAttribution(stored);
+        window.sessionStorage.setItem(ATTRIBUTION_KEY,JSON.stringify(safe));
+        return safe;
       }
-    } catch {
-      // A malformed browser referrer is ignored.
     }
-
-    const organicSource = referringDomain ? searchSource(referringDomain) : undefined;
-    const hasGoogleAdClick =
-      params.has("gclid") || params.has("gbraid") || params.has("wbraid");
-    const hasBingAdClick = params.has("msclkid");
-
-    const attribution: ClientAttribution = {
-      source:
-        clip(params.get("utm_source"), 100) ||
-        (hasGoogleAdClick ? "google" : undefined) ||
-        (hasBingAdClick ? "bing" : undefined) ||
-        organicSource ||
-        referringDomain ||
-        "direct",
-      medium:
-        clip(params.get("utm_medium"), 100) ||
-        (hasGoogleAdClick || hasBingAdClick
-          ? "paid"
-          : organicSource
-            ? "organic"
-            : referringDomain
-              ? "referral"
-              : "none"),
-      campaign: clip(params.get("utm_campaign"), 150),
-      content: clip(params.get("utm_content"), 150),
-      term: clip(params.get("utm_term"), 150),
-      referringDomain,
-      landingPath: safePath(),
-    };
-
-    window.sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(attribution));
-    return attribution;
-  } catch {
-    return {};
-  }
+    let source = googlePaid ? "google" : bingPaid ? "bing" : params.get("utm_source") || "direct";
+    let medium = googlePaid || bingPaid ? "paid" : params.get("utm_medium") || "none";
+    if (!googlePaid && !bingPaid && !explicit && document.referrer) {
+      const referrer = new URL(document.referrer);
+      const organic = searchSource(referrer.hostname);
+      source = organic || "referral"; medium = organic ? "organic" : "referral";
+    }
+    const safe = coarseAttribution({source,medium});
+    window.sessionStorage.setItem(ATTRIBUTION_KEY, JSON.stringify(safe));
+    return safe;
+  } catch { return {}; }
 }
 
 export function primeAttribution() {
-  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  if (!browserAnalyticsAllowed()) { sent.clear(); return; }
   void getFirstTouchAttribution();
 }
 
@@ -257,7 +221,7 @@ export function track(
   event: ClientAnalyticsEvent,
   metadata: AnalyticsProperties = {},
 ) {
-  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  if (!browserAnalyticsAllowed()) { sent.clear(); return; }
 
   // Count real return visits (A -> B -> A) instead of deduplicating all page
   // views on the same URL for the lifetime of this document.
@@ -275,11 +239,11 @@ export function track(
   const { service_code, platform, ...safeMetadata } = metadata;
   const body = JSON.stringify({
     event,
-    sessionId: getBrowserAnalyticsSessionId(),
+    eventId: window.crypto.randomUUID(),
     pagePath: safePath(),
-    serviceCode: typeof service_code === "string" ? service_code : undefined,
-    platform: typeof platform === "string" ? platform : undefined,
-    metadata: safeMetadata,
+    serviceCode: typeof service_code === "string" && activeSmmServices.some(s => s.code === service_code) ? service_code : undefined,
+    platform: typeof platform === "string" && ["instagram","youtube","linkedin","facebook","tiktok","telegram","x"].includes(platform) ? platform : undefined,
+    metadata: privateSafeMetadata(safeMetadata),
     attribution: getFirstTouchAttribution(),
   });
   if (body.length > 4096) return;

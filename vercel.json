@@ -24,7 +24,13 @@
       "feat/socialrush-premium-design-transformation": false,
       "feat/premium-customer-dashboard-v2": false,
       "review/socialrush-premium-phases-1-2-integration": false,
-      "feat/dashboard-premium-ux-overhaul": false
+      "feat/dashboard-premium-ux-overhaul": false,
+      "audit/socialrush-phase0-profit-20261115": false,
+      "fix/socialrush-phase1-security-20261115": false,
+      "feat/socialrush-phase2-premium-20261115": false,
+      "feat/socialrush-phase3-readiness-20261115": false,
+      "feat/socialrush-phase4-integration-20261116": false,
+      "release/socialrush-phase4-main-integration-20261121": false
     }
   },
   "regions": [

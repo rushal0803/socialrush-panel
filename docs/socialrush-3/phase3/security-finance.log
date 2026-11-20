@@ -1,0 +1,29 @@
+✔ all disabled gateway methods deny before auth, DB, provider or body parsing (384.850771ms)
+✔ requested disabled method remains denied if another gateway method is enabled (stub only) (20.33846ms)
+✔ enabled-path preconditions reject cross-origin, non-JSON, anonymous and invalid amounts without provider calls (84.152856ms)
+✔ provider adapter blocks create-order calls before credentials/fetch; preserves GET reconciliation (25.229345ms)
+✔ webhook HMAC rejects tampered payloads and missing credentials without network access (13.596898ms)
+✔ fragment/code/token-hash flows scrub credentials before client creation and require verified user (1.033208ms)
+✔ missing, expired, malformed, wrong-type or mixed recovery credentials fail without fallback to an existing session (0.636849ms)
+✔ SSR recovery preserves cookies and private headers; failed user validation never takes success redirect (101.817011ms)
+✔ callback cannot redirect to an external next destination (47.356157ms)
+✔ server password mutation denies absent sessions before updateUser (30.370058ms)
+✔ negative and zero daily chart values render distinct signs with bounded magnitude bars (82.449536ms)
+✔ reset page awaits Next15 query parameters and guards anonymous rendering (18.052377ms)
+✔ StrictMode effect replay exchanges recovery credentials once and only active effect navigates (19.054997ms)
+✔ invalid Cashfree webhook signature never constructs an admin client (15.827732ms)
+✔ historical signed webhook settlement validates order and payment identity; never gates reconciliation by new-payment flags (114.691433ms)
+✔ net profit target requires revenue above the target at 20–50% margins (4.991868ms)
+✔ orders and customer conversion use distinct denominators (2.153ms)
+✔ waterfall reconciles costs once and ignores wallet deposits/unpaid values (0.469675ms)
+✔ refund-only periods and losses stay negative (0.196065ms)
+✔ missing costs cannot silently become zero profit expenses (0.199975ms)
+✔ invalid assumptions and nonfinite or negative expenses fail closed (4.85211ms)
+ℹ tests 21
+ℹ suites 0
+ℹ pass 21
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2208.542256

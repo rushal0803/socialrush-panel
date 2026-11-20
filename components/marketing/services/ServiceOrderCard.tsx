@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { ArrowRight, Check, Headphones, Minus, Plus } from "lucide-react";
-import { useEffect, useId, useRef, useState } from "react";
+import { useEffect, useId, useLayoutEffect, useRef, useState } from "react";
 import PlatformIcon from "@/components/PlatformIcon";
 import { formatCurrency } from "@/lib/currency";
 import { usePreferredCurrency } from "@/lib/currency/use-currency";
@@ -19,8 +19,8 @@ export type OrderCardService = {
   deliveryTime: string; refillPolicy: string; importantInstruction?: string;
 };
 
-export default function ServiceOrderCard({ service, title = "Configure your order", summaryName = service.name, description = "Choose your quantity and review the total before continuing." }: {
-  service: OrderCardService; title?: string; summaryName?: string; description?: string;
+export default function ServiceOrderCard({ service, title = "Configure your order", summaryName = service.name, description = "Choose your quantity and review the total before continuing.", trackingSurface = "service_order_card" }: {
+  service: OrderCardService; title?: string; summaryName?: string; description?: string; trackingSurface?: string;
 }) {
   const id = useId();
   const quantityRef = useRef<HTMLInputElement>(null);
@@ -30,23 +30,30 @@ export default function ServiceOrderCard({ service, title = "Configure your orde
   const [link, setLink] = useState("");
   const [attempted, setAttempted] = useState(false);
   const quantity = Number(input);
-  const qtyError = validateQuantity(quantity, service);
+  const qtyError = /^\d+$/.test(input) ? validateQuantity(quantity, service) : "Enter a whole quantity using digits only.";
   const rule = linkRules[service.code];
   const linkError = link.trim() ? validateCampaignLink(link, rule) : `Enter your ${rule.label} to continue.`;
-  const total = previewOrderTotal(service.pricePer1000, quantity, service);
+  const total = qtyError ? null : previewOrderTotal(service.pricePer1000, quantity, service);
   const quantityOptions = buildQuantityMerchandising(service);
   const ready = total !== null && !linkError;
   const step = service.quantityStep ?? 1;
   const money = (value: number) => formatCurrency(value, currency, rates);
   const href = `/dashboard/new-order?${new URLSearchParams({ platform: service.platform, service: service.code, resume: "1", quantity: String(quantity), link: link.trim() })}`;
 
+  useLayoutEffect(() => {
+    // Preserve edits made to server-rendered inputs while JavaScript is loading.
+    // Port the reviewed #760 adoption fix; retain invalid text for explicit validation.
+    if (quantityRef.current) setInput(quantityRef.current.value);
+    if (linkRef.current) setLink(linkRef.current.value);
+  }, []);
+
   useEffect(() => {
-    track("package_viewed", { service_code: service.code, platform: service.platform, surface: "service_order_card" });
-  }, [service.code, service.platform]);
+    track("package_viewed", { service_code: service.code, platform: service.platform, surface: trackingSurface });
+  }, [service.code, service.platform, trackingSurface]);
 
   function selectQuantity(value: number) {
     setInput(String(value));
-    track("package_selected", { service_code: service.code, platform: service.platform, quantity: value, surface: "service_order_card" });
+    track("package_selected", { service_code: service.code, platform: service.platform, quantity: value, surface: trackingSurface });
   }
   function nudge(direction: number) {
     const base = Number.isFinite(quantity) ? quantity : service.minQuantity;
@@ -59,25 +66,26 @@ export default function ServiceOrderCard({ service, title = "Configure your orde
       (qtyError ? quantityRef : linkRef).current?.focus();
       return;
     }
-    track("new_order_clicked", { service_code: service.code, platform: service.platform, quantity, surface: "service_order_card" });
+    track("new_order_clicked", { service_code: service.code, platform: service.platform, quantity, surface: trackingSurface });
   }
 
   return <div className={styles.orderCard} data-service-order-card data-platform={service.platform}>
     <div className={styles.cardHeader}><span className={styles.platformIcon}><PlatformIcon platform={service.platform} className="h-5 w-5" /></span><div><h2 className={styles.cardTitle}>{title}</h2><p className={styles.eyebrow}>{summaryName}</p></div></div>
     <p className={styles.cardDescription}>{description}</p>
-    <div className={styles.orderFlow} aria-label="Order steps"><span><strong>01</strong> Choose quantity</span><span><strong>02</strong> Add link</span><span><strong>03</strong> Review</span></div>
+    <div className={styles.orderFlow} role="group" aria-label="Order steps"><span><strong>01</strong> Choose quantity</span><span><strong>02</strong> Add link</span><span><strong>03</strong> Review</span></div>
     <div className={styles.total}><div><span>Estimated total</span><strong aria-live="polite" aria-atomic="true">{total === null ? "—" : money(total)}</strong></div><div><span>{qtyError ? "Check quantity" : `${quantity.toLocaleString("en-IN")} units`}</span><small>{money(service.pricePer1000)} / 1,000</small></div></div>
     {currency !== "INR" && <p className={styles.help}>Display estimate · checkout charged in INR{total !== null ? ` (${formatCurrency(total, "INR")})` : ""}.</p>}
     <fieldset className={styles.fieldset}><legend>1. Choose quantity</legend>
       <div className={styles.quantities} data-cro-quantity-grid>{quantityOptions.map(option => <button key={option.value} type="button" data-cro-quantity-option aria-label={`${option.value.toLocaleString("en-IN")} ${service.name}: ${money(previewOrderTotal(service.pricePer1000, option.value, service)!)} estimated total`} aria-pressed={quantity === option.value} onClick={() => selectQuantity(option.value)}><span>{option.value.toLocaleString("en-IN")}</span><small>{option.label ? `${option.label} · ` : ""}{money(previewOrderTotal(service.pricePer1000, option.value, service)!)}</small>{quantity === option.value && <Check className="h-3.5 w-3.5" aria-hidden="true" />}</button>)}</div>
       <label htmlFor={`${id}-quantity`} className={styles.inputLabel}>Custom quantity</label>
-      <div className={styles.stepper}><button type="button" aria-label="Decrease quantity" onClick={() => nudge(-1)} disabled={quantity <= service.minQuantity}><Minus className="h-4 w-4" /></button><input ref={quantityRef} id={`${id}-quantity`} value={input} onChange={event => setInput(event.target.value.replace(/\D/g, ""))} inputMode="numeric" aria-invalid={attempted && Boolean(qtyError)} aria-describedby={`${id}-quantity-help`} /><button type="button" aria-label="Increase quantity" onClick={() => nudge(1)} disabled={quantity >= service.maxQuantity}><Plus className="h-4 w-4" /></button></div>
-      <p id={`${id}-quantity-help`} className={attempted && qtyError ? styles.error : styles.help} role={attempted && qtyError ? "alert" : undefined}>{attempted && qtyError ? qtyError : `${service.minQuantity.toLocaleString("en-IN")}–${service.maxQuantity.toLocaleString("en-IN")} units${step > 1 ? ` · increments of ${step}` : ""}`}</p>
+      <div className={styles.stepper}><button type="button" aria-label="Decrease quantity" onClick={() => nudge(-1)} disabled={quantity <= service.minQuantity}><Minus className="h-4 w-4" /></button><input ref={quantityRef} id={`${id}-quantity`} value={input} onChange={event => setInput(event.target.value)} inputMode="numeric" pattern="[0-9]*" aria-invalid={(attempted || input !== "") && Boolean(qtyError)} aria-describedby={`${id}-quantity-help`} /><button type="button" aria-label="Increase quantity" onClick={() => nudge(1)} disabled={quantity >= service.maxQuantity}><Plus className="h-4 w-4" /></button></div>
+      <p id={`${id}-quantity-help`} className={(attempted || input !== "") && qtyError ? styles.error : styles.help} role={(attempted || input !== "") && qtyError ? "alert" : undefined}>{(attempted || input !== "") && qtyError ? qtyError : `${service.minQuantity.toLocaleString("en-IN")}–${service.maxQuantity.toLocaleString("en-IN")} units${step > 1 ? ` · increments of ${step}` : ""}`}</p>
     </fieldset>
     <label className={styles.linkLabel} htmlFor={`${id}-link`}>2. Enter your {rule.label}</label>
     <input ref={linkRef} className={styles.linkInput} id={`${id}-link`} value={link} onChange={event => setLink(event.target.value)} placeholder={rule.placeholder} autoCapitalize="none" autoCorrect="off" spellCheck={false} inputMode="url" aria-invalid={attempted && Boolean(linkError)} aria-describedby={`${id}-link-help`} />
     <p id={`${id}-link-help`} className={attempted && linkError ? styles.error : styles.help} role={attempted && linkError ? "alert" : undefined}>{attempted && linkError ? linkError : rule.helper}</p>
     <dl className={styles.facts}><div><dt>Delivery estimate</dt><dd>{service.deliveryTime}</dd></div><div><dt>Refill terms</dt><dd>{service.refillPolicy}</dd></div></dl>
+    <p className={styles.policyLinks}><Link href="/refund-policy">Refund eligibility</Link><span aria-hidden="true">·</span><Link href="/terms-and-conditions">Service terms</Link></p>
     {service.importantInstruction ? <p className={styles.help} data-cro-service-instruction><strong>Before you continue:</strong> {service.importantInstruction}</p> : null}
     <div className={styles.readiness} data-cro-readiness role="status"><Check className="h-3.5 w-3.5" aria-hidden="true" />{1 + Number(!qtyError && total !== null) + Number(!linkError)}/3 ready · {ready ? "Review current INR price before payment" : "Enter a valid quantity and public link"}</div>
     <Link href={ready ? href : "#"} onClick={continueOrder} className={styles.primary}>Continue to Secure Order <ArrowRight className="h-4 w-4" aria-hidden="true" /></Link>

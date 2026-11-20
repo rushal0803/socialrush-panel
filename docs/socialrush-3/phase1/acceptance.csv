@@ -1,0 +1,23 @@
+id,acceptance,status,scope,evidence_or_steps,remaining_limit
+P1-01,Disabled Cashfree methods reject before side effects,PASS,local actual route with stubs,All external methods plus wallet and unknown return409 with zero auth DB provider calls,No live route invocation
+P1-02,Requested method remains disabled when another is enabled,PASS,local synthetic flag stub,Requested UPI rejected before profile/provider,No flags actually changed
+P1-03,Creation preconditions enforce origin JSON auth amount,PASS,local actual route with stubs,403 cross-origin 415 nonJSON 401 anonymous 422 invalid amounts; zero provider calls,Rate limit is best-effort per-process
+P1-04,Provider create adapter fails closed,PASS,local stubbed fetch,POST orders with trailing slash/query rejected before fetch; historical GET succeeds with stub,No actual provider request
+P1-05,Webhook signature and identity validation,PASS,local cryptographic and provider/DB fixtures,HMAC tamper rejected; bad signature no admin; wrong order/payment/currency zero settlements,Both wallet/direct branches exercised; no hosted concurrency proof
+P1-06,Recovery fragment code and token hash,PASS,local fake Auth and actual helper,URL scrub precedes client/exchange and verified user required,Real SDK and cookies BLOCKED
+P1-07,Invalid expired mixed or incomplete recovery fails,PASS,local fixtures,No credential fallback or existing-session success; error returns false,Actual expired/replayed Supabase links BLOCKED
+P1-08,StrictMode recovery effect replay exchanges once,PASS,component hook harness,One scrub exchange and active navigation across effect cleanup/replay,Real mounted browser SDK integration BLOCKED
+P1-09,SSR callback user cookies redirect and headers,PASS,actual route with SDK stub,Successful fixture redirects with cookie; missing/error user denied; same-origin next no-store no-referrer,Hosted cookie/config not verified
+P1-10,Server reset mutation requires user,PASS,actual server action with auth stub,Absent session redirects before updateUser,Real password mutation NOT RUN
+P1-11,Reset form promised query and auth guard,PASS,actual async page static render,Promise error visible and anonymous render denied,Hosted account form BLOCKED
+P1-12,Negative chart and zero handling,PASS,synthetic financial fixtures and static React render,Refund-only net-100 labeled loss red full magnitude; zero width0; positive proportional,390/1440 authenticated browser visual QA BLOCKED
+P1-13,Existing financial/payment/model regressions,PASS,local30 tests,See local-regression.log,Not full app regression
+P1-14,TypeScript,PASS,local compiler,tsc --noEmit --incremental false exit0,Build result and exact-head CI in PR body
+P1-15,Optimized local build,PASS,synthetic backend with outbound network denied,next build exit0; see local-build-summary.txt,Existing lint and Supabase Edge warnings; no deployment
+P1-16,Hosted Google/password login logout recovery,BLOCKED,protected preview,Exact preview HEAD302 to VercelSSO; no authorized isolated session,Do not weaken protection or change auth configuration
+P1-17,Independent backend payment worker isolation,BLOCKED,exact protected preview,Masked metadata and READY are insufficient,Need independent browser/server/DB identity plus side-effect safeguards
+P1-18,Hosted checkout quantity pricing and protected layouts390/1440,BLOCKED,protected preview,No live checkout attempted,Need synthetic fixtures and isolated provider evidence
+P1-19,Production or sandbox provider checkout,NOT RUN,external provider,Intentionally excluded; provider functions stubbed,User prohibits live checkout
+P1-20,Emails indexing merge deploy production changes,NOT RUN,external production,Intentionally excluded,All PRs stay draft and releaseHOLD
+P1-21,Phase2 specification,PASS,documentation,Brand-preserving architecture and explicit P2 acceptance tests prepared,Redesign implementation NOT RUN
+P1-22,Live RLS auth settings and exhaustive security audit,BLOCKED,production or unverified preview,No runtime DB inspection or auth configuration edits,Source checks are bounded not comprehensive certification

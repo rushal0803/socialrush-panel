@@ -1,4 +1,5 @@
 ﻿"use client";
+import { browserAnalyticsAllowed } from "@/lib/analytics/browser-consent";
 
 import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -72,7 +73,7 @@ export default function RegisterForm() {
 
       if (data.session) {
         // Account creation is confirmed by Supabase; no credentials are tracked.
-        void fetch("/api/analytics/auth-completed", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "sign_up_completed" }) });
+        if (browserAnalyticsAllowed()) void fetch("/api/analytics/auth-completed", { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ type: "sign_up_completed" }) });
         if (referralCode) {
           const referralResponse = await fetch("/api/referrals/claim", {
             method: "POST",

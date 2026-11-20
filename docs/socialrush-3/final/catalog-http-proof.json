@@ -1,0 +1,35 @@
+{
+  "scope": "Synthetic loopback production-build only; no production impact inferred",
+  "rows": [
+    {
+      "path": "/services/tiktok-likes",
+      "status": 200,
+      "canonical": "https://www.getsocialrush.com/services/tiktok-likes",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/services/telegram-post-views",
+      "status": 200,
+      "canonical": "https://www.getsocialrush.com/services/telegram-post-views",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/services/twitter-crypto-retweets",
+      "status": 200,
+      "canonical": "https://www.getsocialrush.com/services/twitter-crypto-retweets",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/services/twitter-crypto-custom-comments",
+      "status": 200,
+      "canonical": "https://www.getsocialrush.com/services/twitter-crypto-custom-comments",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    },
+    {
+      "path": "/services/not-a-real-socialrush-service",
+      "status": 404,
+      "canonical": "https://www.getsocialrush.com",
+      "cacheControl": "private, no-cache, no-store, max-age=0, must-revalidate"
+    }
+  ]
+}

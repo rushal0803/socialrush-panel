@@ -122,7 +122,7 @@ test("Service readiness counts remain compatible with existing public order smok
 
 test("All fallback catalog detail links have a dedicated route rather than an unknown slug", () => {
   const catalog = read("lib/smm-service-catalog.ts");
-  const directory = read("components/marketing/services/ServicesPageContent.tsx");
+  const directory = read("lib/seo/service-detail-paths.ts");
   const codes = [...catalog.matchAll(/code:\s*"([a-z0-9-]+)"/g)].map(match => match[1]);
   const pathMap = directory.match(/const servicePaths: Record<string, string> = \{([\s\S]*?)\};/);
   assert.ok(pathMap, "The canonical detail route ownership map must exist");

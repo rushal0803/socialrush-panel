@@ -5,6 +5,20 @@ import { buildVerifiedRevenueDashboard } from "../../lib/analytics/revenue-dashb
 
 const read = (path: string) => readFileSync(new URL("../../" + path, import.meta.url), "utf8");
 
+test("refund-only days preserve negative net revenue and reconcile across days", () => {
+  const dashboard = buildVerifiedRevenueDashboard({
+    paidOrders: [{ id: "synthetic-order", user_id: "synthetic-user", platform: "instagram", service_name: "Fixture", charge: 50, created_at: "2026-11-01T12:00:00Z" }],
+    refunds: [{ amount: 100, created_at: "2026-11-02T12:00:00Z" }],
+  });
+  assert.deepEqual(dashboard.daily.map(day => day.net), [50, -100]);
+  assert.equal(dashboard.daily.reduce((sum, day) => sum + day.net, 0), -50);
+  assert.equal(dashboard.bestDay?.net, 50);
+  assert.equal(dashboard.maxDailyNet, 50);
+  const refundOnly = buildVerifiedRevenueDashboard({ paidOrders: [], refunds: [{ amount: 100, created_at: "2026-11-02T12:00:00Z" }] });
+  assert.equal(refundOnly.bestDay?.net, -100);
+  assert.equal(refundOnly.maxDailyNet, 0, "chart scale ceiling remains nonnegative; financial values do not");
+});
+
 test("Phase 44 builds verified daily, platform and multi-order revenue metrics", () => {
   const dashboard = buildVerifiedRevenueDashboard({
     paidOrders: [

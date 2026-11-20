@@ -70,7 +70,7 @@ test.describe("Phase 5 protected catalog landing journeys", () => {
         // Dedicated catalog route: active validated service has an on-page builder.
         const builder = page.locator("#order-builder");
         await expect(builder.locator("[data-service-order-card]")).toBeVisible();
-        await expect(page.getByRole("link", { name: "Start Order", exact: true })).toHaveAttribute("href", "#order-builder");
+        await expect(page.locator("#main-content").getByRole("link", { name: "Start Order", exact: true })).toHaveAttribute("href", "#order-builder");
         await page.locator("footer").scrollIntoViewIfNeeded();
         const mobile = page.locator("[data-service-mobile-action]");
         await expect(mobile).toBeVisible();
@@ -79,7 +79,7 @@ test.describe("Phase 5 protected catalog landing journeys", () => {
         // Dedicated catalog route without confirmed live facts must block ordering.
         await expect(unavailable).toBeVisible();
         await expect(page.locator("[data-service-mobile-action]")).toHaveCount(0);
-        await expect(page.getByRole("link", { name: "Start Order", exact: true })).toHaveCount(0);
+        await expect(page.locator("#main-content").getByRole("link", { name: "Start Order", exact: true })).toHaveCount(0);
         await expect(page.getByText("Live pricing and availability are not confirmed.", { exact: false })).toBeVisible();
       }
 
@@ -106,9 +106,9 @@ test.describe("Phase 5 protected catalog landing journeys", () => {
       await expect(liveDashboard.locator("[data-service-live-handoff]")).toHaveAttribute("href", /\/dashboard\/new-order\?/);
     } else if (await page.getByText("This service is currently unavailable", { exact: true }).count()) {
       await expect(page.locator("[data-service-mobile-action]")).toHaveCount(0);
-      await expect(page.getByRole("link", { name: "Start Order", exact: true })).toHaveCount(0);
+      await expect(page.locator("#main-content").getByRole("link", { name: "Start Order", exact: true })).toHaveCount(0);
     } else {
-      await expect(page.getByRole("link", { name: "Start Order", exact: true })).toHaveAttribute("href", /\/dashboard\/new-order\?/);
+      await expect(page.locator("#main-content").getByRole("link", { name: "Start Order", exact: true })).toHaveAttribute("href", /\/dashboard\/new-order\?/);
     }
   });
 });

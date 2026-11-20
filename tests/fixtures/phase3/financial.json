@@ -1,0 +1,120 @@
+{
+  "dataset": "synthetic",
+  "start": "2026-11-01T00:00:00+05:30",
+  "endExclusive": "2026-12-01T00:00:00+05:30",
+  "coverage": {
+    "earned_revenue": true,
+    "refunds": true,
+    "customer_history": true,
+    "fulfillment": true,
+    "processing": true,
+    "chargeback": true,
+    "support": true,
+    "marketing": true,
+    "operating": true,
+    "depreciation": true,
+    "interest": true,
+    "income_tax": true
+  },
+  "orders": [
+    {
+      "id": "fixture-order-1",
+      "serviceCode": "fixture-instagram",
+      "customerKey": "fixture-customer-1",
+      "firstPaidAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "id": "fixture-order-2",
+      "serviceCode": "fixture-linkedin",
+      "customerKey": "fixture-customer-2",
+      "firstPaidAt": "2026-11-03T00:00:00Z"
+    }
+  ],
+  "entries": [
+    {
+      "id": "fixture-earned-1",
+      "kind": "earned_order",
+      "amountPaise": 10000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false,
+      "orderId": "fixture-order-1"
+    },
+    {
+      "id": "fixture-earned-2",
+      "kind": "earned_order",
+      "amountPaise": 20000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false,
+      "orderId": "fixture-order-2"
+    },
+    {
+      "id": "fixture-refund",
+      "kind": "refund",
+      "amountPaise": 4000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false,
+      "orderId": "fixture-order-1"
+    },
+    {
+      "id": "fixture-fulfillment",
+      "kind": "fulfillment",
+      "amountPaise": 6000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false,
+      "orderId": "fixture-order-1"
+    },
+    {
+      "id": "fixture-fee",
+      "kind": "processing",
+      "amountPaise": 500,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false,
+      "orderId": "fixture-order-1"
+    },
+    {
+      "id": "fixture-spend",
+      "kind": "marketing",
+      "amountPaise": 2000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false
+    },
+    {
+      "id": "fixture-overhead",
+      "kind": "operating",
+      "amountPaise": 3000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false
+    },
+    {
+      "id": "fixture-tax",
+      "kind": "income_tax",
+      "amountPaise": 1000,
+      "occurredAt": "2026-11-03T00:00:00Z",
+      "currency": "INR",
+      "dataset": "synthetic",
+      "verified": true,
+      "internal": false
+    }
+  ]
+}

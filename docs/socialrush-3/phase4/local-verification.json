@@ -1,0 +1,35 @@
+{
+  "state": "publication-time evidence; complete browser and GitHub CI are updated in PR body",
+  "unitPass": 263,
+  "consentAndIsolation": 17,
+  "financial": 36,
+  "financialIncludesPriorPhase3": 30,
+  "allCiUnitSecuritySeoCommandGroups": 14,
+  "failedGroups": [],
+  "localStaticGroups": 16,
+  "failedStaticGroups": [],
+  "seoTransportFixtures": 4,
+  "browser": "RUNNING: all 460 integrated cases, loopback, retries0",
+  "githubCi": "NOT RUN before publication",
+  "release": "HOLD",
+  "legacyDatabaseIngress": "BLOCKED: unapplied restriction proposal; disposable CI permission test pending",
+  "localBrowserBuildHead": "8e894ebd6284ee0de43c83e088302004deb1dafe",
+  "localBrowserScope": "default-disabled app capture; final permission writer path is separately source-executed in consent tests and rebuilt in final CI",
+  "serializedFocusedBrowser": {
+    "passed": 48,
+    "failed": 0,
+    "retries": 0
+  },
+  "finalIntegratedBrowserInventory": 496,
+  "finalLocalFullBrowser": "pending fresh frozen build",
+  "supersededCi": {
+    "head": "ea7a296e339bd662e67a9b0f93624558bf16e7af",
+    "run": 43756004253,
+    "browserPassed": 391,
+    "browserFailed": 1,
+    "browserSkipped": 68,
+    "failure": "legacy test expected optional tracking without consent; corrected by final source",
+    "postgresWalletAndPermissionTest": "PASS"
+  },
+  "finalGithubCi": "pending final publication"
+}

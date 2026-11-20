@@ -1,0 +1,37 @@
+[
+  {
+    "name": "typecheck",
+    "command": "npx tsc --noEmit",
+    "exit": 0
+  },
+  {
+    "name": "lint",
+    "command": "npm run lint",
+    "exit": 0
+  },
+  {
+    "name": "unit",
+    "command": "npm run test:unit",
+    "exit": 0
+  },
+  {
+    "name": "live-facts",
+    "command": "npm run test:live-service-facts",
+    "exit": 0
+  },
+  {
+    "name": "payment",
+    "command": "npm run test:payment-confidence",
+    "exit": 0
+  },
+  {
+    "name": "focused",
+    "command": "node --experimental-strip-types --import ./scripts/test-path-aliases.mjs --test tests/unit/service-page-evidence.test.ts tests/unit/service-page-batch2.test.ts tests/unit/service-page-batch3.test.ts tests/unit/service-page-batch4.test.ts tests/unit/analytics-collection-environment.test.ts tests/unit/search-demand-pricing-precision.test.ts tests/unit/commercial-service-breadcrumbs.test.ts",
+    "exit": 0
+  },
+  {
+    "name": "build",
+    "command": "npm run build",
+    "exit": 0
+  }
+]

@@ -1,0 +1,29 @@
+
+Running 12 tests using 2 workers
+
+(node:10346) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10340) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers instagram (13.0s)
+  ✓   2 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers home (14.6s)
+  ✓   3 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers youtube (12.3s)
+  ✓   4 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers linkedin (11.9s)
+(node:10799) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:10808) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   6 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers instagram (12.4s)
+  ✓   5 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers home (16.0s)
+  ✓   7 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers youtube (17.3s)
+  ✓   8 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers linkedin (17.7s)
+(node:11260) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:11299) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓  10 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers instagram (8.6s)
+  ✓   9 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers home (16.5s)
+  ✓  11 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers youtube (11.7s)
+  ✓  12 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers linkedin (9.1s)
+
+  12 passed (1.7m)
