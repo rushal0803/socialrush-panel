@@ -31,7 +31,7 @@ export async function POST(request: NextRequest) {
       ]);
       const payment = payments.find((item) => item.cf_payment_id === webhookPayment.cf_payment_id && item.payment_status === "SUCCESS" && item.is_captured !== false);
       const expectedAmount = Number(directPayment.required_top_up_paise) / 100;
-      if (!payment || order.order_status !== "PAID" || order.order_currency !== "INR" || Number(order.order_amount) !== expectedAmount || payment.order_id !== orderId || payment.payment_currency !== "INR" || payment.order_currency !== "INR" || Number(payment.order_amount) !== expectedAmount || Number(payment.payment_amount) !== expectedAmount) return NextResponse.json({ error: "Payment details mismatch" }, { status: 409 });
+      if (!payment || order.order_id !== orderId || order.order_status !== "PAID" || order.order_currency !== "INR" || Number(order.order_amount) !== expectedAmount || payment.order_id !== orderId || payment.payment_currency !== "INR" || payment.order_currency !== "INR" || Number(payment.order_amount) !== expectedAmount || Number(payment.payment_amount) !== expectedAmount) return NextResponse.json({ error: "Payment details mismatch" }, { status: 409 });
       const { error } = await admin.rpc("settle_cashfree_checkout_intent_payment_system", { p_provider_order_id: orderId, p_provider_payment_id: payment.cf_payment_id });
       if (error) return NextResponse.json({ error: "Direct checkout settlement failed" }, { status: 500 });
       return NextResponse.json({ received: true });
@@ -43,7 +43,7 @@ export async function POST(request: NextRequest) {
     const [order, payments] = await Promise.all([cashfreeRequest<CashfreeOrder>(`/orders/${encodeURIComponent(orderId)}`), cashfreeRequest<CashfreePayment[]>(`/orders/${encodeURIComponent(orderId)}/payments`)]);
     const payment = payments.find((item) => item.cf_payment_id === webhookPayment.cf_payment_id && item.payment_status === "SUCCESS" && item.is_captured !== false);
     const expectedAmount = Number(transaction.amount);
-    if (!payment || order.order_status !== "PAID" || order.order_currency !== "INR" || Number(order.order_amount) !== expectedAmount || payment.payment_currency !== "INR" || Number(payment.payment_amount) !== expectedAmount || Number(payment.order_amount) !== expectedAmount) return NextResponse.json({ error: "Payment details mismatch" }, { status: 409 });
+    if (!payment || order.order_id !== orderId || order.order_status !== "PAID" || order.order_currency !== "INR" || Number(order.order_amount) !== expectedAmount || payment.order_id !== orderId || payment.order_currency !== "INR" || payment.payment_currency !== "INR" || Number(payment.payment_amount) !== expectedAmount || Number(payment.order_amount) !== expectedAmount) return NextResponse.json({ error: "Payment details mismatch" }, { status: 409 });
     const { error } = await admin.rpc("credit_wallet_payment_system", { p_provider_order_id: orderId, p_provider_payment_id: payment.cf_payment_id });
     if (error) return NextResponse.json({ error: "Wallet settlement failed" }, { status: 500 });
     return NextResponse.json({ received: true });

@@ -1,4 +1,4 @@
-import Link from "next/link";
+import Link from "@/components/marketing/PublicCodeLink";
 import { ArrowRight, Check, LayoutDashboard, ListOrdered, Wallet } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
 import TrackedLink from "@/components/analytics/TrackedLink";
@@ -14,10 +14,10 @@ export default function PremiumHomeHero() {
         <div className={styles.heroCopy}>
           <p className={styles.kicker}><span /> Social media growth platform</p>
           <h1 id="home-heading">Social media growth,{" "}<br /><em>made simple.</em></h1>
-          <p className={styles.intro}>Discover social media growth and engagement services across leading platforms, review transparent pricing, and manage every order from one professional workspace.</p>
+          <p className={styles.intro}>Compare services, understand the terms and review your price before you order. Manage your campaign from one clear workspace.</p>
           <div className={styles.actions}>
-            <TrackedLink href="#order-demo" event="homepage_conversion_path_click" metadata={{ surface: "homepage_hero", step: "order" }} className={styles.primary}>Check Price &amp; Start <ArrowRight size={18} aria-hidden="true" /></TrackedLink>
-            <TrackedLink href="#services" event="homepage_conversion_path_click" metadata={{ surface: "homepage_hero", step: "compare" }} className={styles.secondary}>Browse Services <ArrowRight size={18} aria-hidden="true" /></TrackedLink>
+            <TrackedLink href="#services" event="homepage_conversion_path_click" metadata={{ surface: "homepage_hero", step: "compare" }} className={styles.primary}>Browse Services <ArrowRight size={18} aria-hidden="true" /></TrackedLink>
+            <TrackedLink href="#order-demo" event="homepage_conversion_path_click" metadata={{ surface: "homepage_hero", step: "order" }} className={styles.secondary}>Check Price &amp; Start <ArrowRight size={18} aria-hidden="true" /></TrackedLink>
           </div>
           <ul className={styles.assurances}>{["Public link only", "No password required", "Price shown first", "Track in dashboard"].map(label => <li key={label}><Check size={15} aria-hidden="true" />{label}</li>)}</ul>
           <div className={styles.guide}><span>Not sure where to start?</span><TrackedLink href="/tools/social-media-growth-audit" event="homepage_conversion_path_click" metadata={{ surface: "homepage_hero", step: "growth_check" }}>Get a Free Growth Check <ArrowRight size={14} aria-hidden="true" /></TrackedLink><TrackedLink href="#how-it-works" event="homepage_conversion_path_click" metadata={{ surface: "homepage_hero", step: "how_it_works" }}>See how ordering works</TrackedLink></div>

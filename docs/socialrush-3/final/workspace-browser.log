@@ -1,0 +1,26 @@
+
+Running 14 tests using 2 workers
+
+(node:1203) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[1/14] [chromium] › tests/smoke/premium-responsive.spec.ts:282:5 › customer service search recovers from an empty result
+(node:1202) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+
+
+[2/14] [chromium] › tests/smoke/premium-responsive.spec.ts:160:5 › dashboard drawer remains keyboard accessible on a short phone
+[3/14] [chromium] › tests/smoke/premium-responsive.spec.ts:307:5 › customer orders prioritize filters and preserve tracking and repeat handoff
+[4/14] [chromium] › tests/smoke/premium-responsive.spec.ts:363:5 › customer billing details preserve pending status, focus and filter recovery
+[5/14] [chromium] › tests/smoke/premium-responsive.spec.ts:405:7 › dashboard search request budget and dialog at 390px
+[6/14] [chromium] › tests/smoke/premium-responsive.spec.ts:405:7 › dashboard search request budget and dialog at 1440px
+[7/14] [chromium] › tests/smoke/premium-responsive.spec.ts:508:5 › dashboard drawer preserves every destination and closes after query navigation
+[8/14] [chromium] › tests/smoke/premium-responsive.spec.ts:543:5 › customer funding confirmation remains pending after browser-only mocked submission
+[9/14] [chromium] › tests/smoke/premium-responsive.spec.ts:585:5 › customer funding starts with amount selection at every requested width
+[10/14] [chromium] › tests/smoke/premium-responsive.spec.ts:604:5 › customer order review keeps readable labels and summary amounts
+[11/14] [chromium] › tests/smoke/premium-responsive.spec.ts:666:5 › dashboard search retries only on request and cancels when dismissed
+[12/14] [chromium] › tests/smoke/premium-responsive.spec.ts:711:7 › order review preserves the wallet split with balance 0
+[13/14] [chromium] › tests/smoke/premium-responsive.spec.ts:711:7 › order review preserves the wallet split with balance 200
+[14/14] [chromium] › tests/smoke/premium-responsive.spec.ts:711:7 › order review preserves the wallet split with balance 100000
+  14 passed (3.0m)

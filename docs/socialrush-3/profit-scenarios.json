@@ -1,0 +1,50 @@
+{
+  "assumptions": {
+    "status": "ASSUMPTIONS_ONLY_NOT_A_FORECAST",
+    "currency": "INR",
+    "period": "month",
+    "targetNetProfit": 500000,
+    "netRevenuePerOrder": 500,
+    "ordersPerPayingCustomer": 1.5,
+    "visitorToPayingCustomerRate": 0.02,
+    "note": "Net revenue excludes indirect tax and refunds; final net margin includes all costs and income tax. Visitors convert to unique paying customers, not orders. Repeat orders are not a customer retention rate."
+  },
+  "scenarios": [
+    {
+      "netMargin": 0.2,
+      "targetNetProfit": 500000,
+      "requiredNetRevenue": 2500000,
+      "orders": 5000,
+      "payingCustomers": 3334,
+      "repeatOrders": 1666,
+      "qualifiedVisitors": 166700
+    },
+    {
+      "netMargin": 0.3,
+      "targetNetProfit": 500000,
+      "requiredNetRevenue": 1666666.6666666667,
+      "orders": 3334,
+      "payingCustomers": 2223,
+      "repeatOrders": 1111,
+      "qualifiedVisitors": 111150
+    },
+    {
+      "netMargin": 0.4,
+      "targetNetProfit": 500000,
+      "requiredNetRevenue": 1250000,
+      "orders": 2500,
+      "payingCustomers": 1667,
+      "repeatOrders": 833,
+      "qualifiedVisitors": 83350
+    },
+    {
+      "netMargin": 0.5,
+      "targetNetProfit": 500000,
+      "requiredNetRevenue": 1000000,
+      "orders": 2000,
+      "payingCustomers": 1334,
+      "repeatOrders": 666,
+      "qualifiedVisitors": 66700
+    }
+  ]
+}

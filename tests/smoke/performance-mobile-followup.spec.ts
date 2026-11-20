@@ -32,7 +32,7 @@ test("lazy comparison preserves selections, filters and trigger focus", async ({
 });
 
 test("directory informational sections and FAQ remain in server HTML", async ({ request }) => {
-  const response = await request.get("/services");
+  const response = await request.get("/services", { maxRetries: 1 });
   expect(response.status()).toBe(200);
   const html = await response.text();
   for (const text of ["Clear information before you order.", "How to Choose a Service", "Explore services by platform", "Social Media Growth Services in India", "Services FAQ", "Do I need to provide my password?"]) expect(html).toContain(text);

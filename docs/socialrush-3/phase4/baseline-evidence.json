@@ -1,0 +1,233 @@
+{
+  "observed": "2026-11-16 Asia/Calcutta",
+  "pullRequests": [
+    {
+      "pr": 760,
+      "head": "04affabe4287cfa79eab6696ec53825c94714227",
+      "base": "main",
+      "baseHead": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "Vercel Preview Comments",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/runs/131544922262"
+        },
+        {
+          "name": "compare",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006502/job/131482347855"
+        },
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006476/job/131482347670"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006476/job/131482345270"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43304006476/job/131482344721"
+        },
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43303710947/job/131481309742"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43303710947/job/131481306762"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43303710947/job/131481306322"
+        }
+      ],
+      "reviews": {
+        "reviews": []
+      },
+      "threads": {
+        "review_threads": []
+      }
+    },
+    {
+      "pr": 761,
+      "head": "b07b484a3d24dd84f4047708d563e176efc9aaf2",
+      "base": "fix/seo-release-blockers-20261110",
+      "baseHead": "04affabe4287cfa79eab6696ec53825c94714227",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "Vercel Preview Comments",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/runs/132201211646"
+        }
+      ],
+      "reviews": {
+        "reviews": []
+      },
+      "threads": {
+        "review_threads": []
+      }
+    },
+    {
+      "pr": 762,
+      "head": "eecbe2b6fe3a35b62728ecdbfb6a9ee4700b323d",
+      "base": "main",
+      "baseHead": "35fcaf731447a948b69a9ae917b5af596d22711e",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "compare",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914250/job/132588106499"
+        },
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914275/job/132588065585"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914275/job/132588064258"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43640914275/job/132588064056"
+        }
+      ],
+      "reviews": {
+        "reviews": []
+      },
+      "threads": {
+        "review_threads": []
+      }
+    },
+    {
+      "pr": 763,
+      "head": "94a2b39ff64bb6c81a7ed96396f8d19e92c6d6d0",
+      "base": "audit/socialrush-phase0-profit-20261115",
+      "baseHead": "eecbe2b6fe3a35b62728ecdbfb6a9ee4700b323d",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43642776319/job/132593788535"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43642776319/job/132593787366"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43642776319/job/132593787256"
+        }
+      ],
+      "reviews": {
+        "reviews": []
+      },
+      "threads": {
+        "review_threads": []
+      }
+    },
+    {
+      "pr": 764,
+      "head": "c77f6bded9e9c34252494930daf0eb1a3f7e4819",
+      "base": "fix/socialrush-phase1-security-20261115",
+      "baseHead": "94a2b39ff64bb6c81a7ed96396f8d19e92c6d6d0",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43706691399/job/132789225270"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43706691399/job/132789224667"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43706691399/job/132789224389"
+        }
+      ],
+      "reviews": {
+        "reviews": []
+      },
+      "threads": {
+        "review_threads": []
+      }
+    },
+    {
+      "pr": 765,
+      "head": "408584e95d4620dae7ce83c4a7e6d685b508ef93",
+      "base": "feat/socialrush-phase2-premium-20261115",
+      "baseHead": "c77f6bded9e9c34252494930daf0eb1a3f7e4819",
+      "draft": true,
+      "merged": false,
+      "checks": [
+        {
+          "name": "PR 630 mobile/desktop performance evidence (non-release)",
+          "status": "completed",
+          "conclusion": "skipped",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43744384355/job/132904340793"
+        },
+        {
+          "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43744384355/job/132904339520"
+        },
+        {
+          "name": "Isolated PostgreSQL wallet approval and replay checks",
+          "status": "completed",
+          "conclusion": "success",
+          "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/43744384355/job/132904339152"
+        }
+      ],
+      "reviews": {
+        "reviews": []
+      },
+      "threads": {
+        "review_threads": []
+      }
+    }
+  ]
+}

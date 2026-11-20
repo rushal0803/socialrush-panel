@@ -1,0 +1,23 @@
+{
+  "source": "Owner-provided transcription of official Google Search Console indexed URL Inspection",
+  "received_date": "2026-11-09",
+  "independent_screenshot_review": false,
+  "inspection_datetime": "not supplied",
+  "url": "https://www.getsocialrush.com/linkedin-likes",
+  "status": "URL is not on Google",
+  "reason": "Crawled — currently not indexed",
+  "last_crawl_as_displayed": "September 7, 2026, 5:29:22 AM",
+  "last_crawl_timezone": "not supplied; no timezone conversion inferred",
+  "crawled_as": "Googlebot smartphone",
+  "crawl_allowed": "Yes",
+  "page_fetch": "Successful",
+  "indexing_allowed": "Yes",
+  "sitemap": "https://www.getsocialrush.com/sitemap.xml",
+  "user_declared_canonical": "https://www.getsocialrush.com/linkedin-likes",
+  "google_selected_canonical_as_displayed": "Inspected URL",
+  "google_selected_canonical_resolved": "https://www.getsocialrush.com/linkedin-likes",
+  "referring_page": "not supplied",
+  "live_test": "not supplied",
+  "interpretation": "Reported indexed Inspection shows exclusion despite successful permitted crawl/fetch/indexing and a matching canonical. Exclusion cause is not established. Draft improvements postdate the recorded crawl and remain undeployed.",
+  "indexing_request_submitted": false
+}

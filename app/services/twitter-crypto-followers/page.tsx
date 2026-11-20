@@ -1,8 +1,8 @@
-import PremiumCatalogServiceLanding from "@/components/marketing/services/PremiumCatalogServiceLanding";
+import ServiceSeoPage from "../[slug]/page";
 import { createCatalogServiceMetadata } from "@/lib/seo/catalog-service-metadata";
 
 export const metadata = createCatalogServiceMetadata("twitter-crypto-followers");
 
 export default function Page() {
-  return <PremiumCatalogServiceLanding serviceCode="twitter-crypto-followers" />;
+  return <ServiceSeoPage params={Promise.resolve({ slug: "twitter-crypto-followers" })} />;
 }

@@ -1,0 +1,44 @@
+{
+  "base": "c77f6bded9e9c34252494930daf0eb1a3f7e4819",
+  "node": "v24.22.1",
+  "chromium": "Chromium 156.0.8078.79 built on Debian GNU/Linux 13 (trixie)",
+  "unit": {
+    "pass": 237,
+    "fail": 0
+  },
+  "intelligence": {
+    "pass": 30,
+    "fail": 0
+  },
+  "securityAndPriorProfitModel": {
+    "pass": 21,
+    "fail": 0
+  },
+  "integrationSimulation": {
+    "securityPass": 15,
+    "contractPass": 109,
+    "scope": "Focused only; not full integration certification"
+  },
+  "browser": {
+    "pass": 21,
+    "fail": 0,
+    "retries": 0,
+    "runtime": "Optimized #764; application source unchanged"
+  },
+  "axeRepeated": {
+    "pass": 12,
+    "fail": 0,
+    "retries": 0
+  },
+  "keyboardCaptureRerun": {
+    "pass": 2,
+    "fail": 0
+  },
+  "typecheckExit": 0,
+  "frozenModelTypecheckExit": 0,
+  "lintExit": 0,
+  "isolatedBuildExit": 0,
+  "release": "HOLD",
+  "manualScreenReader": "NOT RUN",
+  "hostedQA": "BLOCKED"
+}

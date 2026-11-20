@@ -1,0 +1,52 @@
+(node:18207) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase3-intelligence.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ allow only approved categorical dimensions, never URLs/PII/free text (2.906575ms)
+✔ exclude {"consent":"unknown"} (0.159186ms)
+✔ exclude {"consent":"denied"} (0.168115ms)
+✔ exclude {"doNotTrack":true} (1.34001ms)
+✔ exclude {"globalPrivacyControl":true} (0.15075ms)
+✔ exclude {"internal":true} (0.09387ms)
+✔ exclude {"deployment":"preview"} (0.099319ms)
+✔ exclude {"deployment":"development"} (0.152864ms)
+✔ exclude {"synthetic":true} (0.290105ms)
+✔ exclude {"origin":"https://wrong.example"} (0.54629ms)
+✔ exclude {"origin":"https://www.getsocialrush.com.evil.example"} (0.213013ms)
+✔ exclude {"origin":"https://www.getsocialrush.com/path"} (0.167771ms)
+✔ exclude {"origin":"http://www.getsocialrush.com"} (0.049249ms)
+✔ exclude {"origin":"https://preview.vercel.app","canonicalOrigin":"https://preview.vercel.app"} (0.054441ms)
+✔ unknown privacy flags fail closed (0.074079ms)
+✔ client cannot assert auth or paid outcomes; wallet deposits are not paid orders (1.210241ms)
+✔ synthetic dataset cannot be silently relabeled production (0.222771ms)
+✔ sequential cohort deduplicates retries and excludes out-of-order outcomes (11.289578ms)
+✔ earned ex-tax waterfall, exact paise, customer mix and service contribution (1.600785ms)
+✔ refund-only period and costs preserve losses, no AOV or fake customers (1.763638ms)
+✔ missing costs are not zero, but known remainder stays diagnostic (0.254826ms)
+✔ unverified costs override contradictory upstream completeness (0.173632ms)
+✔ missing revenue and refund coverage blocks profit and comparable ratios (0.381866ms)
+✔ late refund belongs to its occurrence period and historical service (0.238734ms)
+✔ retry IDs deduplicate, conflicts and duplicate earned orders fail (0.635857ms)
+✔ unverified internal and wrong-dataset entries never become revenue (0.290016ms)
+✔ invalid amounts currencies wallet deposits and orphan refunds fail (0.613236ms)
+✔ unallocated direct costs withhold service ranking but not period total (0.425018ms)
+✔ unknown customer history withholds retention and CAC (1.517912ms)
+✔ date offsets and overflow validated (0.488735ms)
+(node:18214) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase4/tests/unit/phase4-profit.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase4/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ posted prior-period losses preserved without rewriting historical earned orders (23.471318ms)
+✔ cost credits reverse expenses once and unknown coverage withholds profit (1.261137ms)
+✔ window, dataset, replay and malformed correction checks (3.077941ms)
+✔ unverified corrections and wallet movements withhold complete totals (1.065986ms)
+✔ wallet deposits and applications reconcile liability without creating sales (0.290998ms)
+✔ unknown liability and negative reconciliation are not silently zeroed (0.366773ms)
+ℹ tests 36
+ℹ suites 0
+ℹ pass 36
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 643.079887

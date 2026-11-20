@@ -1,0 +1,30 @@
+
+Running 21 tests using 2 workers
+
+(node:8787) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:8786) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › home reflows and exposes accessible controls at 320px (6.7s)
+  ✓   2 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › instagram reflows and exposes accessible controls at 320px (8.5s)
+  ✓   3 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › youtube reflows and exposes accessible controls at 320px (8.1s)
+  ✓   4 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › linkedin reflows and exposes accessible controls at 320px (8.2s)
+  ✓   5 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › home reflows and exposes accessible controls at 390px (7.4s)
+  ✓   6 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › instagram reflows and exposes accessible controls at 390px (9.4s)
+  ✓   7 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › youtube reflows and exposes accessible controls at 390px (7.8s)
+  ✓   8 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › linkedin reflows and exposes accessible controls at 390px (6.8s)
+  ✓   9 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › home reflows and exposes accessible controls at 1440px (5.7s)
+  ✓  10 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › instagram reflows and exposes accessible controls at 1440px (8.1s)
+  ✓  11 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › youtube reflows and exposes accessible controls at 1440px (8.7s)
+  ✓  12 [chromium] › tests/smoke/phase2-premium.spec.ts:20:7 › linkedin reflows and exposes accessible controls at 1440px (7.5s)
+  ✓  13 [chromium] › tests/smoke/phase2-premium.spec.ts:49:5 › homepage search and categories retain the query and provide a recoverable empty state (8.9s)
+  ✓  14 [chromium] › tests/smoke/phase2-premium.spec.ts:68:5 › quantity, summary and login handoff use unchanged catalog arithmetic; invalid text is retained (9.9s)
+  ✓  15 [chromium] › tests/smoke/phase2-premium.spec.ts:88:5 › quantity and public link typed before hydration survive JavaScript loading (5.4s)
+  ✓  17 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers instagram (7.1s)
+  ✓  16 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers home (8.0s)
+  ✓  19 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers linkedin (8.0s)
+  ✓  18 [chromium] › tests/smoke/phase2-premium.spec.ts:107:33 › scoped automated accessibility audit covers youtube (8.9s)
+  ✓  21 [chromium] › tests/smoke/phase3-readiness.spec.ts:4:38 › keyboard service form and navigation evidence 1440 (8.5s)
+  ✓  20 [chromium] › tests/smoke/phase3-readiness.spec.ts:4:38 › keyboard service form and navigation evidence 390 (9.6s)
+
+  21 passed (1.5m)

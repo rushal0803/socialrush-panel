@@ -1,0 +1,35 @@
+{
+  "viewport": 1024,
+  "element": {
+    "left": 829.34375,
+    "right": 1027.0625,
+    "width": 197.71875
+  },
+  "text": {
+    "left": 829.34375,
+    "right": 1027.078125,
+    "width": 197.734375
+  },
+  "parents": [
+    {
+      "class": "flex items-center gap-3",
+      "right": 905.46875,
+      "overflow": "visible"
+    },
+    {
+      "class": "rounded-2xl border border-emerald-400/15 bg-emerald-500/[.06] p-5",
+      "right": 926.46875,
+      "overflow": "visible"
+    },
+    {
+      "class": "grid gap-7 lg:grid-cols-[1.2fr_.8fr] lg:items-end",
+      "right": 959,
+      "overflow": "visible"
+    },
+    {
+      "class": "overflow-hidden rounded-[1.6rem] border border-orange-400/20 bg-[radial-gradient(circle_at_top_right,rgba(255,153,0,.18),transparent_34%),linear-gradient(125deg,#17150f,#0f1117_62%)] p-5 sm:p-7 lg:p-8",
+      "right": 992,
+      "overflow": "hidden"
+    }
+  ]
+}

@@ -1,0 +1,50 @@
+✔ manual deposit review supports all three methods (5.242819ms)
+✔ only service role can invoke atomic review RPC (0.326599ms)
+✔ wallet balance update and transaction status share one locked transaction (0.419629ms)
+✔ approval rejects non-positive deposit amounts (0.235771ms)
+✔ transaction ID and review evidence are required (0.231497ms)
+✔ admin server action uses privileged atomic RPC after receipt confirmation (0.242805ms)
+✔ legacy admin order form cannot bypass pending payment verification (0.295734ms)
+✔ one-click order approval derives transaction reference from stored submission (0.451061ms)
+✔ one-click wallet approval records admin identity and preserves atomic RPC (0.437749ms)
+(node:3548) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase1/tests/unit/payment-confidence.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase1/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ payment confidence classifies common payment states (1.333721ms)
+✔ old pending payments tell the customer not to pay again and route to support (0.838669ms)
+✔ recent pending payments route to the owned billing receipt (0.41874ms)
+✔ failed payments provide a safe retry path without implying a completed credit (0.307311ms)
+✔ payment confidence summary keeps refunded separate from failed (1.029185ms)
+(node:3556) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase1/tests/unit/phase44-revenue-dashboard.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase1/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ refund-only days preserve negative net revenue and reconcile across days (26.488437ms)
+✔ Phase 44 builds verified daily, platform and multi-order revenue metrics (2.622183ms)
+✔ Phase 44 keeps the existing analytics page as the single revenue command center (5.551801ms)
+✔ Phase 44 does not invent revenue when order charges are invalid (0.723381ms)
+(node:3569) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase1/tests/unit/phase46-revenue-engine.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase1/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Phase 46 computes the ₹5L monthly target from verified revenue inputs (65.280725ms)
+✔ Phase 46 uses India calendar months for revenue attribution (2.212548ms)
+✔ Phase 46 prioritizes pace, AOV and repeat revenue when they are weak (0.5339ms)
+✔ Phase 46 reads verified paid orders and completed refunds without changing commerce logic (3.1773ms)
+✔ Phase 46 exposes the revenue control center in admin (0.495428ms)
+✔ Post-launch trusted payment and order events use the partial unique event_id index safely (0.854125ms)
+✔ net profit target requires revenue above the target at 20–50% margins (2.264351ms)
+✔ orders and customer conversion use distinct denominators (0.45848ms)
+✔ waterfall reconciles costs once and ignores wallet deposits/unpaid values (0.594977ms)
+✔ refund-only periods and losses stay negative (0.339962ms)
+✔ missing costs cannot silently become zero profit expenses (0.411168ms)
+✔ invalid assumptions and nonfinite or negative expenses fail closed (0.936787ms)
+ℹ tests 30
+ℹ suites 0
+ℹ pass 30
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1536.869276

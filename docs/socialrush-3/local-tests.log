@@ -1,0 +1,32 @@
+(node:1751) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase0/tests/unit/phase44-revenue-dashboard.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase0/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ refund-only days preserve negative net revenue and reconcile across days (27.861632ms)
+✔ Phase 44 builds verified daily, platform and multi-order revenue metrics (1.176253ms)
+✔ Phase 44 keeps the existing analytics page as the single revenue command center (2.192913ms)
+✔ Phase 44 does not invent revenue when order charges are invalid (0.466516ms)
+(node:1758) [MODULE_TYPELESS_PACKAGE_JSON] Warning: Module type of file:///workspace/work/phase0/tests/unit/phase46-revenue-engine.test.ts is not specified and it doesn't parse as CommonJS.
+Reparsing as ES module because module syntax was detected. This incurs a performance overhead.
+To eliminate this warning, add "type": "module" to /workspace/work/phase0/package.json.
+(Use `node --trace-warnings ...` to show where the warning was created)
+✔ Phase 46 computes the ₹5L monthly target from verified revenue inputs (19.297816ms)
+✔ Phase 46 uses India calendar months for revenue attribution (0.555571ms)
+✔ Phase 46 prioritizes pace, AOV and repeat revenue when they are weak (0.42798ms)
+✔ Phase 46 reads verified paid orders and completed refunds without changing commerce logic (0.684071ms)
+✔ Phase 46 exposes the revenue control center in admin (0.595357ms)
+✔ Post-launch trusted payment and order events use the partial unique event_id index safely (1.008411ms)
+✔ net profit target requires revenue above the target at 20–50% margins (1.949761ms)
+✔ orders and customer conversion use distinct denominators (0.200421ms)
+✔ waterfall reconciles costs once and ignores wallet deposits/unpaid values (0.421878ms)
+✔ refund-only periods and losses stay negative (0.266689ms)
+✔ missing costs cannot silently become zero profit expenses (0.225717ms)
+✔ invalid assumptions and nonfinite or negative expenses fail closed (0.717505ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 412.217052

@@ -1,0 +1,36 @@
+
+Running 10 tests using 2 workers
+
+(node:19319) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19320) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   1 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (12.8s)
+  ✓   2 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (12.7s)
+(node:19487) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19494) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   3 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (11.1s)
+(node:19659) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   4 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (12.1s)
+(node:19679) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   5 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (12.4s)
+  ✓   6 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (12.3s)
+(node:19829) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:19841) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   7 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (11.9s)
+(node:20013) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   8 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (13.4s)
+(node:20060) Warning: The 'NO_COLOR' env is ignored due to the 'FORCE_COLOR' env being set.
+(Use `node --trace-warnings ...` to show where the warning was created)
+  ✓   9 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (10.7s)
+  ✓  10 [chromium] › tests/smoke/premium-design.spec.ts:108:5 › all three conversion paths preserve destinations and first-party tracking (10.3s)
+[smoke server] owned process 19307 exited
+
+  10 passed (1.1m)

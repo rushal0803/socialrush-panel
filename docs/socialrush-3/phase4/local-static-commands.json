@@ -1,0 +1,66 @@
+[
+  {
+    "command": "node scripts/seo-blog-assets-check.mjs",
+    "exit": 0
+  },
+  {
+    "command": "node --check scripts/seo-instagram-technical-check.mjs",
+    "exit": 0
+  },
+  {
+    "command": "node --check scripts/seo-instagram-sitemap-check.mjs",
+    "exit": 0
+  },
+  {
+    "command": "node --check scripts/seo-sitewide-technical-audit.mjs",
+    "exit": 0
+  },
+  {
+    "command": "node --check scripts/seo-serp-ctr-audit.mjs",
+    "exit": 0
+  },
+  {
+    "command": "node --check scripts/seo-aeo-audit.mjs",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:instagram-sitemap",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:ownership",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:content-engine",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:authority",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:competitors",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:india-expansion",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:international",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:digital-pr",
+    "exit": 0
+  },
+  {
+    "command": "npm run seo:distribution",
+    "exit": 0
+  },
+  {
+    "command": "npm run trust:audit",
+    "exit": 0
+  }
+]

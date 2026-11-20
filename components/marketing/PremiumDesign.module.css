@@ -88,3 +88,60 @@
 .platformStrip a:hover { background:rgba(255,118,0,.08); }
 @media(min-width:1024px) { .hero h1 { max-width:660px; } .heroCopy { position:relative; } }
 @media(prefers-reduced-motion:reduce) { .platformStrip a { transition:none; } }
+
+/* Phase 2: one clear discovery path, built on the existing dark/orange system. */
+.hero { padding-top:clamp(32px,5vw,64px); padding-bottom:40px; }
+.heroInner { grid-template-columns:1.08fr .92fr; }
+.hero h1 { max-width:640px; font-weight:700; }
+.hero .previewTitle h2 { font-size:26px; }
+.previewTiles { margin-top:18px; }
+.previewContent { padding-top:20px; }
+.previewTiles svg { margin-bottom:8px; }
+.hero .guide { font-size:14px; }
+.platformStrip { padding-block:14px; }
+.discovery { max-width:1280px; margin:auto; padding:56px var(--sr-page-gutter); scroll-margin-top:96px; }
+.discoveryHeading { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; }
+.discoveryHeading h2 { margin-top:12px; font-size:clamp(28px,3.2vw,44px); line-height:1.15; letter-spacing:-.04em; }
+.discoveryHeading p:not(.kicker) { max-width:660px; margin-top:16px; font-size:16px; line-height:1.75; color:#b8c0cd; }
+.discoveryHeading > a { display:inline-flex; align-items:center; gap:8px; flex-shrink:0; min-height:44px; color:#ffb17a; font-size:14px; }
+.searchControls { display:grid; grid-template-columns:minmax(0,1fr) 240px; gap:16px; margin-top:28px; padding:20px; background:#101219; border:1px solid #ffffff25; border-radius:16px; }
+.searchField,.categoryField { display:block; min-width:0; font-size:14px; color:#d3d9e4; font-weight:600; }
+.searchField > div { display:flex; align-items:center; gap:12px; margin-top:8px; padding-inline:14px; border:1px solid #ffffff30; border-radius:9px; background:#090b10; }
+.searchField svg { flex-shrink:0; color:#ffb17a; }
+.searchField input { min-width:0; width:100%; min-height:48px; background:transparent; color:#f8fafc; font-size:16px; outline:none; }
+.searchField input::placeholder { color:#9fa8b6; }
+.categoryField select { display:block; width:100%; min-height:48px; margin-top:8px; padding:10px 12px; border:1px solid #ffffff30; border-radius:9px; background:#090b10; color:#f8fafc; font-size:16px; }
+.searchField > div:focus-within { outline:2px solid #ffb17a; outline-offset:3px; }
+.platformFilters { display:flex; flex-wrap:wrap; gap:8px; margin-top:20px; }
+.platformFilters button { min-height:44px; padding:9px 15px; border:1px solid #ffffff25; border-radius:9px; color:#c9d2df; font-size:14px; }
+.platformFilters button[aria-pressed=true] { background:#ff7600; color:#0c0e14; border-color:#ff7600; font-weight:700; }
+.resultSummary { display:flex; align-items:center; justify-content:space-between; gap:16px; min-height:52px; margin-top:12px; font-size:14px; color:#b8c0cd; }
+.resultSummary button,.emptyResults button { color:#ffb17a; min-height:44px; text-decoration:underline; text-underline-offset:4px; }
+.discoveryGrid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:16px; align-items:stretch; }
+.discoveryGrid > article { min-width:0; background:#101219; border:1px solid #ffffff25; border-radius:16px; padding:24px; display:flex; flex-direction:column; }
+.discoveryGrid :is(h3,p,dd,small,a) { overflow-wrap:anywhere; }
+.directoryNote { margin-top:24px; font-size:14px; line-height:1.7; color:#b8c0cd; }
+.directoryNote a { color:#ffb17a; text-decoration:underline; text-underline-offset:3px; }
+.emptyResults { padding:32px 20px; border:1px dashed #ffffff40; border-radius:12px; text-align:center; color:#c9d2df; }
+.emptyResults h3 { color:#f8fafc; font-size:20px; }
+.emptyResults p { margin-top:12px; line-height:1.7; }
+.discovery :is(a,button,select):focus-visible { outline:2px solid #ffb17a; outline-offset:3px; }
+@media(max-width:1023px) {
+  .heroInner { grid-template-columns:1fr; }
+  .hero .preview { display:none; }
+  .discoveryGrid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:600px) {
+  .hero h1 { font-size:clamp(36px,10vw,52px); }
+  .intro { font-size:16px; }
+  .actions { flex-direction:column; }
+  .actions a { flex:auto; }
+  .discovery { padding-top:36px; padding-bottom:36px; }
+  .discoveryHeading { display:block; }
+  .discoveryHeading > a { margin-top:12px; }
+  .searchControls { grid-template-columns:minmax(0,1fr); padding:16px; }
+  .discoveryGrid { grid-template-columns:minmax(0,1fr); }
+  .platformFilters { gap:6px; }
+  .platformFilters button { padding-inline:12px; }
+  .kicker { font-size:12px; letter-spacing:.09em; }
+}

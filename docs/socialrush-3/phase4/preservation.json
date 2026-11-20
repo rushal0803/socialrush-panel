@@ -1,0 +1,21 @@
+{
+  "base": "408584e95d4620dae7ce83c4a7e6d685b508ef93",
+  "protectedPaths": [
+    "lib/payments",
+    "lib/security",
+    "lib/service-pricing.ts",
+    "lib/smm-service-catalog.ts",
+    "app/api/payments",
+    "app/api/orders",
+    "app/auth",
+    "lib/auth",
+    "supabase",
+    "components/marketing/services/ServiceOrderCard.tsx"
+  ],
+  "changedProtectedPaths": [],
+  "dependencyVersionsUnchanged": true,
+  "lockfileUnchanged": true,
+  "activationFlagsChanged": false,
+  "consentRepository": "unconfigured/null",
+  "production": "HOLD"
+}

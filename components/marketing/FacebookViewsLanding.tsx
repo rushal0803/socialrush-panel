@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, type ReactNode } from "react";
 import { ArrowRight, BarChart3, Check, ChevronDown, CircleCheck, Link2, LockKeyhole, MessageCircle, Minus, Pause, Play, Plus, ShieldCheck, Users, WalletCards } from "lucide-react";
 import { FaFacebookF as Facebook } from "react-icons/fa6";
 import PublicShell from "@/components/marketing/PublicShell";
@@ -27,7 +27,7 @@ const faqs = [
 
 const num = (value: number) => value >= 1000 ? `${value / 1000}K` : value.toLocaleString("en-IN");
 
-export default function FacebookViewsLanding() {
+export default function FacebookViewsLanding({ buyerGuide }: { buyerGuide?: ReactNode } = {}) {
   const { currency } = usePreferredCurrency("INR");
   const [playing, setPlaying] = useState(true);
   const [progress, setProgress] = useState(38);
@@ -48,6 +48,7 @@ export default function FacebookViewsLanding() {
     <section className="border-b border-white/10 bg-[#11141b] px-4 py-4 sm:px-6"><div className="mx-auto flex max-w-7xl flex-wrap justify-center gap-x-7 gap-y-3 text-xs font-bold text-slate-300">{[[LockKeyhole,"No password required"],[Link2,"Public video link"],[WalletCards,"Secure checkout"],[BarChart3,"Dashboard tracking"],[ShieldCheck,"Live service details"]].map(([Icon,label]) => { const I = Icon as typeof LockKeyhole; return <span className="flex items-center gap-2" key={label as string}><I className="h-4 w-4 text-orange-300" />{label as string}</span>; })}</div></section>
     <SearchDemandPriceSection displayName="Facebook Views" serviceCode="facebook-views" platform="facebook" pricePer1000={service.pricePer1000} destination="public Facebook video or post URL" packagesHref="/packages?platform=facebook&service=views" tone="dark" />
     <OrderBuilder />
+    {buyerGuide}
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto grid max-w-7xl gap-8 lg:grid-cols-[.82fr_1.18fr] lg:items-center"><div><p className="text-xs font-black uppercase tracking-[.16em] text-orange-300">Interactive UI Preview</p><h2 className="mt-3 text-3xl font-black">Preview the Facebook video experience</h2><p className="mt-4 max-w-md text-sm leading-7 text-slate-300">An original interface-only video preview. Play controls animate sample activity only, not customer performance or results.</p><button type="button" onClick={() => setPlaying(x => !x)} className="mt-6 inline-flex min-h-11 items-center gap-2 rounded-xl border border-[#1877f2]/35 bg-[#1877f2]/10 px-4 text-sm font-black text-blue-100">{playing ? <Pause className="h-4 w-4" /> : <Play className="h-4 w-4" />}{playing ? "Pause Preview" : "Play Preview"}</button></div><VideoPreview playing={playing} progress={progress} /></div></section>
     <Content price={price} progress={progress} />
     <section className="px-4 py-14 sm:px-6 lg:px-8"><div className="mx-auto max-w-4xl"><p className="text-center text-xs font-black uppercase tracking-[.16em] text-orange-300">Helpful answers</p><h2 className="mt-3 text-center text-3xl font-black">Facebook Views FAQs</h2><div className="mt-7 space-y-3">{faqs.map(([q,a], i) => <details key={q} open={i === 0} className="group rounded-2xl border border-white/10 bg-white/[.035] p-5"><summary className="flex cursor-pointer list-none items-center justify-between gap-4 text-sm font-black"><span>{q}</span><ChevronDown className="h-5 w-5 text-orange-300 transition group-open:rotate-180" /></summary><p className="mt-3 border-t border-white/10 pt-3 text-sm leading-7 text-slate-300">{a}</p></details>)}</div></div></section>

@@ -142,9 +142,7 @@ test("insufficient wallet directs to add funds without sending an order", async 
   expect(writes).toBe(0);
 });
 
-test("server validates package intents across platforms and live-only services", async ({ page, context, baseURL }) => {
-  await authenticate(context, baseURL!);
-  const cases = [
+const packageIntentCases = [
     ["instagram-saves", "https://www.instagram.com/p/package_qa/"],
     ["youtube-comments", "https://www.youtube.com/watch?v=abcdefghijk"],
     ["youtube-watch-hours", "https://www.youtube.com/watch?v=abcdefghijk"],
@@ -153,8 +151,13 @@ test("server validates package intents across platforms and live-only services",
     ["x-followers", "https://x.com/package_qa"],
     ["tiktok-followers", "https://www.tiktok.com/@package_qa"],
     ["telegram-members", "https://t.me/package_qa"],
-  ];
-  for (const [serviceCode, link] of cases) {
+  ] as const;
+
+// Each platform retains the normal per-test budget and every server assertion.
+// Eight complete journeys previously shared one 30s deadline.
+for (const [serviceCode, link] of packageIntentCases) {
+  test(`server validates package intent for ${serviceCode}`, async ({ page, context, baseURL }) => {
+    await authenticate(context, baseURL!);
     await page.goto(`/dashboard/packages?service=${serviceCode}`);
     await page.getByRole("button", { name: "Choose Growth package" }).click();
     await expect(page).toHaveURL(/package=/);
@@ -163,8 +166,8 @@ test("server validates package intents across platforms and live-only services",
     const result = await response.json();
     expect(response.status(), `${serviceCode}: ${JSON.stringify(result)}`).toBe(201);
     expect(result.data.total_paise).toBeGreaterThan(0);
-  }
-});
+  });
+}
 
 test("a changed server total blocks the order until the customer reviews pricing", async ({ page, context, baseURL }) => {
   await authenticate(context, baseURL!);

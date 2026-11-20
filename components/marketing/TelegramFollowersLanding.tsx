@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import { telegramMembersFaqs } from "@/lib/seo/telegram-members-faq";
 import { useMemo, useState } from "react";
 import {
   ArrowRight, Check, ChevronDown, CirclePause,
@@ -20,18 +21,12 @@ import { usePreferredCurrency } from "@/lib/currency/use-currency";
 import { validateQuantity } from "@/lib/service-pricing";
 import { linkRules, validateCampaignLink } from "@/lib/order-service-experience";
 import { getServiceById } from "@/lib/smm-service-catalog";
+import { getCommercialServiceBreadcrumbs } from "@/lib/seo/commercial-service-breadcrumbs";
 type LiveServiceFacts = { rate: number; min: number; max: number; deliveryTime: string; refillPolicy: string; available: boolean };
 
 const fallback = getServiceById("telegram-members");
-const faqs = [
-  ["How do I order Telegram members in India?", "Choose a member quantity, enter the correct public Telegram channel or group link, review the live INR total, and continue through the secure SocialRUSH order flow."],
-  ["Do I need to share my Telegram password?", "No. SocialRUSH only needs the public Telegram channel or group URL required by the service. Never share a password, OTP, phone login, or recovery code."],
-  ["Can I order for a Telegram channel or group?", "Yes, when the destination is a valid public Telegram channel or group link supported by the service. Check that the link opens correctly before ordering."],
-  ["How do I track my order?", "Once your order is placed, its status and details remain available in your SocialRUSH dashboard."],
-  ["How long does delivery take?", "The current delivery estimate is displayed alongside the active service before you continue to checkout. Timing can vary by quantity and link availability."],
-  ["What happens if my link is private or incorrect?", "A private, inaccessible, or incorrect link may prevent the order from being processed. Confirm the public destination before submitting it, then contact support with your order ID if you need help."],
-  ["Is refill or support available?", "The current refill or support information is displayed with the active service. Check the service details before placing your order because eligibility can vary."],
-];
+const breadcrumbs = getCommercialServiceBreadcrumbs("Telegram", "Telegram Members", "/telegram-members");
+const faqs = telegramMembersFaqs;
 
 export default function TelegramFollowersLanding({ live }: { live: LiveServiceFacts | null }) {
   const service = fallback;
@@ -60,7 +55,7 @@ export default function TelegramFollowersLanding({ live }: { live: LiveServiceFa
     <section className="relative overflow-hidden bg-[#07080D] px-4 pb-16 pt-12 sm:px-6 lg:px-8 lg:pb-24 lg:pt-20">
       <div className="pointer-events-none absolute left-[-12rem] top-0 h-[32rem] w-[32rem] rounded-full bg-orange-500/15 blur-[130px]" /><div className="pointer-events-none absolute right-[-10rem] top-12 h-[28rem] w-[28rem] rounded-full bg-sky-500/15 blur-[130px]" />
       <div className="relative mx-auto grid max-w-7xl items-start gap-10 lg:grid-cols-[1.05fr_.95fr]">
-        <div><span className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-[10px] font-black tracking-[.16em] text-sky-100"><Send className="h-3.5 w-3.5" /> TELEGRAM MEMBERS SERVICE</span>
+        <div><nav aria-label="Breadcrumb" className="mb-5 text-xs font-bold text-slate-300"><ol className="flex flex-wrap items-center gap-x-2 gap-y-1">{breadcrumbs.map((item, index) => <li key={item.path} className="flex items-center gap-2">{index > 0 ? <span aria-hidden="true">/</span> : null}{index === breadcrumbs.length - 1 ? <span aria-current="page" className="text-white">{item.name}</span> : <Link href={item.path} className="inline-flex min-h-11 items-center rounded px-1 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-orange-300">{item.name}</Link>}</li>)}</ol></nav><span className="inline-flex items-center gap-2 rounded-full border border-sky-300/25 bg-sky-300/10 px-3 py-2 text-[10px] font-black tracking-[.16em] text-sky-100"><Send className="h-3.5 w-3.5" /> TELEGRAM MEMBERS SERVICE</span>
           <h1 className="mt-6 max-w-3xl text-4xl font-black leading-[1.04] tracking-[-.05em] text-white sm:text-6xl">Buy Telegram <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-200">Members</span> in India</h1>
           <p className="mt-6 max-w-2xl text-base leading-8 text-slate-300">SocialRUSH provides Telegram growth services for India. Choose a member package, order online with transparent INR pricing, and submit only the public channel or group link required by the service—never your Telegram password.</p>
           <div className="mt-7 flex flex-wrap gap-2 text-xs font-bold text-slate-200">{["No Password Required", "Transparent Pricing", "Order Tracking"].map(x => <span key={x} className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/[.05] px-3 py-2"><Check className="h-3.5 w-3.5 text-orange-300" />{x}</span>)}</div>
@@ -87,7 +82,7 @@ export default function TelegramFollowersLanding({ live }: { live: LiveServiceFa
         <div className="mt-8 grid gap-4 lg:grid-cols-3">
           <article className="rounded-2xl border border-orange-400/20 bg-white/[.035] p-5">
             <h3 className="text-lg font-black text-white">Members</h3>
-            <p className="mt-3 text-sm leading-7 text-slate-400">Use members when the main gap is visible audience size around a public channel or group. This is a community-size signal, not a guarantee of post activity or replies.</p>
+            <p className="mt-3 text-sm leading-7 text-slate-400">A member package changes a displayed count on an eligible public channel or group. It does not establish authentic audience interest or guarantee that members will read posts, reply or stay. Compare post views and useful conversations separately.</p>
             <a href="#order" className="mt-5 inline-flex min-h-11 items-center font-black text-orange-200 underline decoration-orange-300/35 underline-offset-4">Build a members order</a>
           </article>
           <article className="rounded-2xl border border-sky-300/20 bg-white/[.035] p-5">

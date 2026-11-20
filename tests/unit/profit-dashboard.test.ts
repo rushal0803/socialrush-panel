@@ -1,0 +1,12 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import {readFileSync} from 'node:fs';
+import {buildAdjustedProfitReport,buildWalletLiability} from '../../lib/intelligence/period-adjustments.ts';
+import {renderProfitDashboard} from '../../lib/intelligence/profit-dashboard.ts';
+import type {ProfitInput} from '../../lib/intelligence/profit-report.ts';
+const input=JSON.parse(readFileSync(new URL('../fixtures/phase3/financial.json',import.meta.url),'utf8')) as ProfitInput;
+const complete=buildAdjustedProfitReport(input,[],true),incomplete=buildAdjustedProfitReport(input,[],false);
+const wallet=buildWalletLiability({dataset:'synthetic',start:input.start,endExclusive:input.endExclusive,openingPaise:null,coverageComplete:false,movements:[]});
+test('offline dashboard refuses production data',()=>{assert.throws(()=>renderProfitDashboard({complete:{...complete,dataset:'production'},incomplete,wallet}),/synthetic/);});
+test('incomplete coverage is UNKNOWN, keeps wallet liability and does not invent retention',()=>{const html=renderProfitDashboard({complete,incomplete,wallet});assert.match(html,/Profit and comparable corrected revenue are UNKNOWN/);assert.match(html,/Customer lifetime value/);assert.match(html,/never earned sales/);assert.doesNotMatch(html,/<script|<iframe|<img|<form/i);assert.match(html,/default-src &#39;none&#39;|default-src 'none'/);});
+test('review surface escapes missing coverage strings',()=>{const html=renderProfitDashboard({complete,incomplete:{...incomplete,basePeriod:{...incomplete.basePeriod,missingInputs:['<img src=x onerror=alert(1)>']}},wallet});assert.ok(html.includes('&lt;img'));assert.ok(!html.includes('<img'));});

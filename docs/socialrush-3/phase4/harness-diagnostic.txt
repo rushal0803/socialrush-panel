@@ -1,0 +1,29 @@
+Interrupted run; not accepted as complete regression. Cause: synthetic backend authority mismatch with CSP.
+      87 |     await expect(page.locator("[data-package-card]").first()).toBeVisible();
+        at /workspace/work/phase4/tests/smoke/packages-v2.spec.ts:84:14
+
+    Error Context: artifacts/phase4/browser/packages-v2-every-supporte-83adc-ice-has-selectable-packages-chromium/error-context.md
+
+    attachment #2: trace (application/zip) ─────────────────────────────────────────────────────────
+    artifacts/phase4/browser/packages-v2-every-supporte-83adc-ice-has-selectable-packages-chromium/trace.zip
+    Usage:
+
+        npx playwright show-trace artifacts/phase4/browser/packages-v2-every-supporte-83adc-ice-has-selectable-packages-chromium/trace.zip
+
+    ────────────────────────────────────────────────────────────────────────────────────────────────
+
+  10 failed
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 320px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 360px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 375px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 390px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 412px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 430px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 768px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 1024px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 1280px with reachable review
+    [chromium] › tests/smoke/packages-v2.spec.ts:38:9 › dashboard packages fit 1440px with reachable review
+  1 interrupted
+    [chromium] › tests/smoke/packages-v2.spec.ts:83:5 › every supported platform and live-priced service has selectable packages
+  413 did not run
+  36 passed (4.6m)
