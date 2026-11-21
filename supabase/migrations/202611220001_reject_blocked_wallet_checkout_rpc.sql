@@ -141,5 +141,4 @@ begin
 
   return jsonb_build_object('id',v_order_id,'charge',v_charge,'balance',v_balance,'duplicate',false);
 end
-$function$
-
+$function$;
