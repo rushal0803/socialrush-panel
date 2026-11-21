@@ -50,5 +50,5 @@ test("direct authenticated wallet RPC also rejects blocked users", () => {
   assert.match(sql, /checkout_custom_intent_with_wallet/);
   assert.match(sql, /is_blocked = true/);
   assert.match(sql, /raise exception 'Account blocked'/);
-  assert.match(sql, /v_user_id := auth.uid\(\)/);
+  assert.match(sql, /v_user_id\s+uuid\s*:=\s*auth\.uid\(\)/);
 });
