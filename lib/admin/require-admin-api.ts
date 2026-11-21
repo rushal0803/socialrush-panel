@@ -15,11 +15,11 @@ export async function requireAdminApi() {
 
   const { data: profile, error: profileError } = await supabase
     .from("profiles")
-    .select("role")
+    .select("role,is_blocked")
     .eq("id", user.id)
     .maybeSingle();
 
-  if (profileError || profile?.role !== "admin") {
+  if (profileError || profile?.role !== "admin" || profile.is_blocked) {
     return { response: NextResponse.json({ error: "Admin access required" }, { status: 403 }) } as const;
   }
 

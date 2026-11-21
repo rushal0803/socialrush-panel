@@ -1,3 +1,4 @@
+import { requireActiveAccountApi } from "@/lib/security/active-account-api";
 import { NextResponse, type NextRequest } from "next/server";
 import { revalidatePath } from "next/cache";
 import { createClient } from "@/lib/supabase/server";
@@ -13,6 +14,8 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await requireActiveAccountApi(supabase, user.id);
+  if (denied) return denied;
 
   const originError = requireSameOrigin(request); if (originError) return originError;
   const jsonError = requireJson(request); if (jsonError) return jsonError;
