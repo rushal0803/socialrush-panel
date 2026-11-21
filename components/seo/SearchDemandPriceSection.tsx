@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { ArrowRight, IndianRupee, Link2, ShieldCheck } from "lucide-react";
-import { buildQuantityPlanning, serviceUnitFromCode } from "@/lib/seo/search-demand";
+import { buildQuantityPlanning, formatQuantityPlanningInr, serviceUnitFromCode } from "@/lib/seo/search-demand";
 
 const serviceGuideLinks: Record<string, Array<{ label:string; href:string }>> = {
   "instagram-followers": [{ label: "Instagram follower price guide", href: "/blog/instagram-followers-price-in-india" }],
@@ -42,10 +42,6 @@ const guideLinks: Record<string, Array<{ label:string; href:string }>> = {
   ],
 };
 
-function money(value:number){
-  return new Intl.NumberFormat("en-IN",{style:"currency",currency:"INR",maximumFractionDigits:0}).format(value);
-}
-
 export default function SearchDemandPriceSection({
   displayName,
   serviceCode,
@@ -79,7 +75,7 @@ export default function SearchDemandPriceSection({
           <div className="mt-6 grid gap-3 sm:grid-cols-3">
             {rows.length?rows.map(row=><article key={row.quantity} className={dark?"rounded-2xl border border-white/10 bg-white/[.035] p-5":"rounded-2xl border border-orange-100 bg-white p-5 shadow-sm"}>
               <p className={dark?"text-[10px] font-black uppercase tracking-[.13em] text-orange-200":"text-[10px] font-black uppercase tracking-[.13em] text-orange-600"}>{row.quantity.toLocaleString("en-IN")} {unit}</p>
-              <p className={dark?"mt-2 text-2xl font-black text-white":"mt-2 text-2xl font-black text-[#0B0B0F]"}>{money(row.total)}</p>
+              <p className={dark?"mt-2 text-2xl font-black text-white":"mt-2 text-2xl font-black text-[#0B0B0F]"}>{formatQuantityPlanningInr(row.total)}</p>
               <p className={dark?"mt-2 text-[11px] leading-5 text-[#9CA3AF]":"mt-2 text-[11px] leading-5 text-[#111827]"}>Planning total at the confirmed per-1K rate.</p>
             </article>):<article className={dark?"rounded-2xl border border-white/10 bg-white/[.035] p-5 sm:col-span-3":"rounded-2xl border border-orange-100 bg-white p-5 shadow-sm sm:col-span-3"}><p className={dark?"text-sm font-bold text-[#D1D5DB]":"text-sm font-bold text-[#111827]"}>This service uses live catalog pricing. Open Packages to review the latest confirmed rate and exact quantity total.</p></article>}
           </div>

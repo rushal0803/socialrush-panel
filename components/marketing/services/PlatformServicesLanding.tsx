@@ -1,3 +1,4 @@
+import CatalogBuyerGuide from "@/components/seo/CatalogBuyerGuide";
 import Link from "next/link";
 import { ArrowRight, CheckCircle2, Clock3, Search, ShieldCheck } from "lucide-react";
 import PlatformIcon from "@/components/PlatformIcon";
@@ -154,6 +155,8 @@ export default function PlatformServicesLanding({ platform }: { platform: "linke
             </div>
           </section>
         )}
+
+        <CatalogBuyerGuide platform={platform === "x" ? "twitter-x" : platform} />
 
         <section className="relative px-4 pb-16 sm:px-6 sm:pb-20 lg:px-8">
           <div className="mx-auto max-w-7xl rounded-[1.7rem] border border-orange-400/20 bg-gradient-to-br from-orange-500/[.12] to-white/[.025] p-6 sm:p-9">

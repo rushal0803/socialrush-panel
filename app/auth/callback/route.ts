@@ -35,13 +35,16 @@ export async function GET(request: NextRequest) {
   const requestUrl = new URL(request.url);
   const { searchParams } = requestUrl;
   const code = searchParams.get("code");
-  const isPasswordReset = searchParams.get("next") === "/reset-password";
+  // Token-hash recovery links work with SSR: verification establishes cookies on the response.
+  const tokenHash = searchParams.get("token_hash");
+  const recoveryToken = Boolean(tokenHash && searchParams.get("type") === "recovery");
+  const isPasswordReset = recoveryToken || searchParams.get("next") === "/reset-password";
   const referralCode = normalizeReferralCode(searchParams.get("ref"));
   const customerDestination = getSafeCustomerDestination(
     searchParams.get("next"),
   );
 
-  if (code) {
+  if (code || recoveryToken) {
     const destination = new URL(
       isPasswordReset ? "/reset-password" : customerDestination,
       requestUrl.origin,
@@ -59,7 +62,9 @@ export async function GET(request: NextRequest) {
         },
       },
     });
-    const { error } = await supabase.auth.exchangeCodeForSession(code);
+    const { error } = recoveryToken
+      ? await supabase.auth.verifyOtp({ token_hash: tokenHash!, type: "recovery" })
+      : await supabase.auth.exchangeCodeForSession(code!);
     if (!error) {
       const { data: { user } } = await supabase.auth.getUser();
       if (user && !isPasswordReset) {

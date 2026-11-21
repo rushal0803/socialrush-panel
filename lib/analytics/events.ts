@@ -1,3 +1,4 @@
+import { isInternalAnalyticsHost } from "./collection-environment.ts";
 /** First-party, consent-aware interaction events. Financial outcomes are server-only. */
 import { getBrowserAnalyticsSessionId } from "./session.ts";
 
@@ -117,12 +118,22 @@ const clip = (value: string | null | undefined, length: number) => {
 
 const searchSource = (hostname: string) => {
   const host = hostname.toLowerCase().replace(/^www\./, "");
-  if (/(^|\.)google\./.test(host)) return "google";
+  // Search uses the public root/country hosts and dedicated search surfaces.
+  // Other Google products (accounts, mail, docs, ads, etc.) are referrals.
+  // Anchor the whole hostname so google.com.example cannot count as search.
+  if (/^(?:(?:images|news|search)\.)?google\.(?:com|cat|[a-z]{2}|(?:co|com)\.[a-z]{2})$/.test(host)) return "google";
   if (/(^|\.)bing\.com$/.test(host)) return "bing";
   if (/(^|\.)duckduckgo\.com$/.test(host)) return "duckduckgo";
   if (/(^|\.)search\.yahoo\./.test(host) || /(^|\.)yahoo\./.test(host)) return "yahoo";
   if (/(^|\.)yandex\./.test(host)) return "yandex";
   if (/(^|\.)baidu\.com$/.test(host)) return "baidu";
+  return undefined;
+};
+
+// Click markers are used only for classification; their values are never stored.
+const paidSearchSource = (params: URLSearchParams) => {
+  if (["gclid", "gbraid", "wbraid", "dclid"].some(key => params.has(key))) return "google";
+  if (params.has("msclkid")) return "bing";
   return undefined;
 };
 
@@ -160,6 +171,23 @@ export function isOrganicSearchReferrer(referrerUrl: string, currentHostname: st
   }
 }
 
+/** Classify the current public landing, independently of stored first-touch data. */
+export function isOrganicSearchLanding(
+  referrerUrl: string,
+  currentHostname: string,
+  pathname: string,
+  landingSearch: string,
+): boolean {
+  if (!isOrganicSearchReferrer(referrerUrl, currentHostname) || !isPublicOrganicLandingPath(pathname)) return false;
+  const params = new URLSearchParams(landingSearch);
+  if (paidSearchSource(params)) return false;
+  const medium = params.get("utm_medium")?.trim().toLowerCase();
+  if (medium && medium !== "organic") return false;
+  const source = params.get("utm_source")?.trim().toLowerCase();
+  const referrerSource = searchSource(new URL(referrerUrl).hostname);
+  return !source || source === referrerSource;
+}
+
 const sanitizeAttribution = (value: unknown): ClientAttribution | null => {
   if (!value || typeof value !== "object" || Array.isArray(value)) return null;
   const raw = value as Record<string, unknown>;
@@ -187,7 +215,8 @@ function getFirstTouchAttribution(): ClientAttribution {
 
   try {
     const params = new URLSearchParams(window.location.search);
-    const explicitCampaign = [
+    const paidSource = paidSearchSource(params);
+    const explicitCampaign = Boolean(paidSource) || [
       "utm_source",
       "utm_medium",
       "utm_campaign",
@@ -213,21 +242,17 @@ function getFirstTouchAttribution(): ClientAttribution {
     }
 
     const organicSource = referringDomain ? searchSource(referringDomain) : undefined;
-    const hasGoogleAdClick =
-      params.has("gclid") || params.has("gbraid") || params.has("wbraid");
-    const hasBingAdClick = params.has("msclkid");
 
     const attribution: ClientAttribution = {
       source:
         clip(params.get("utm_source"), 100) ||
-        (hasGoogleAdClick ? "google" : undefined) ||
-        (hasBingAdClick ? "bing" : undefined) ||
+        paidSource ||
         organicSource ||
         referringDomain ||
         "direct",
       medium:
         clip(params.get("utm_medium"), 100) ||
-        (hasGoogleAdClick || hasBingAdClick
+        (paidSource
           ? "paid"
           : organicSource
             ? "organic"
@@ -249,7 +274,7 @@ function getFirstTouchAttribution(): ClientAttribution {
 }
 
 export function primeAttribution() {
-  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  if (typeof window === "undefined" || navigator.doNotTrack === "1" || isInternalAnalyticsHost(window.location.hostname)) return;
   void getFirstTouchAttribution();
 }
 
@@ -257,7 +282,7 @@ export function track(
   event: ClientAnalyticsEvent,
   metadata: AnalyticsProperties = {},
 ) {
-  if (typeof window === "undefined" || navigator.doNotTrack === "1") return;
+  if (typeof window === "undefined" || navigator.doNotTrack === "1" || isInternalAnalyticsHost(window.location.hostname)) return;
 
   // Count real return visits (A -> B -> A) instead of deduplicating all page
   // views on the same URL for the lifetime of this document.

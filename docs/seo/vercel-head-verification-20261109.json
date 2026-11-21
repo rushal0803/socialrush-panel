@@ -1,0 +1,156 @@
+[
+  {
+    "pr": 744,
+    "id": "dpl_5pEgXQiNU2fd7zTdnMwHLdYdhCSD",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-aqvt3ykl5-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794128687300,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "fix/seo-discovery-pricing-audit-20261108",
+      "githubCommitSha": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be",
+      "githubCommitMessage": "fix(seo): preserve public planning price precision and record discovery baseline",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/5pEgXQiNU2fd7zTdnMwHLdYdhCSD",
+    "isRollbackCandidate": false
+  },
+  {
+    "pr": 745,
+    "id": "dpl_83sPTr3Gg2F9ck121BAAbcvCwtS1",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-5t8mm01bn-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794130886920,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "fix/seo-google-referrer-classification-20261108",
+      "githubCommitSha": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409",
+      "githubCommitMessage": "fix(analytics): separate paid search landings from organic acquisition",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/83sPTr3Gg2F9ck121BAAbcvCwtS1",
+    "isRollbackCandidate": false
+  },
+  {
+    "pr": 746,
+    "id": "dpl_7RLXG4sBrUou9hqsvxsVfRNW8sZF",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-qnp2fy3v6-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794132224203,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "fix/seo-commercial-breadcrumb-integrity-20261108",
+      "githubCommitSha": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2",
+      "githubCommitMessage": "fix(seo): link existing public resources from the footer",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/7RLXG4sBrUou9hqsvxsVfRNW8sZF",
+    "isRollbackCandidate": false
+  },
+  {
+    "pr": 747,
+    "id": "dpl_Bxpnf9tzvHrjZXyVhqakpXpqSxrz",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-8bns6ifn3-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794135316134,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "chore/seo-foundation-release-20261108",
+      "githubCommitSha": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+      "githubCommitMessage": "SEO foundation: combine verified pricing, acquisition and discovery fixes",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Bxpnf9tzvHrjZXyVhqakpXpqSxrz",
+    "isRollbackCandidate": false
+  },
+  {
+    "pr": 748,
+    "id": "dpl_GQ2V2bUCUFGucKspfS2qZNAyNJAC",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-74qtz0b8n-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794143614175,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "fix/seo-monitor-runtime-20261108",
+      "githubCommitSha": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+      "githubCommitMessage": "fix(seo): parse real JSON-LD in recovered Instagram monitor",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/GQ2V2bUCUFGucKspfS2qZNAyNJAC",
+    "isRollbackCandidate": false
+  },
+  {
+    "pr": 749,
+    "id": "dpl_4i15VTACkkyt437kAw3cCEMNFQ7Y",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-oqe39qmw5-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794145906862,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "seo/service-evidence-batch1-20261108",
+      "githubCommitSha": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+      "githubCommitMessage": "seo: limit canonical ownership repair to audited batch",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/4i15VTACkkyt437kAw3cCEMNFQ7Y",
+    "isRollbackCandidate": false
+  },
+  {
+    "pr": 750,
+    "id": "dpl_6U3vno5MLLW3fxykrPdaP7YHTxUB",
+    "name": "socialrush-panel",
+    "url": "socialrush-panel-113yrzye8-rushalthakur240-6255s-projects.vercel.app",
+    "created": 1794147998208,
+    "state": "READY",
+    "target": null,
+    "creator": {
+      "uid": "3WFEGNoqavHIaOCRUBUKVF0p",
+      "username": "rushalthakur240-6255"
+    },
+    "meta": {
+      "githubCommitRef": "seo/service-evidence-batch2-20261108",
+      "githubCommitSha": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+      "githubCommitMessage": "seo: prepare second service batch with verified schema and buyer guidance",
+      "githubRepo": "socialrush-panel",
+      "githubOrg": "rushal0803"
+    },
+    "inspectorUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/6U3vno5MLLW3fxykrPdaP7YHTxUB",
+    "isRollbackCandidate": false
+  }
+]

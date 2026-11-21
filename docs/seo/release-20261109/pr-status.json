@@ -1,0 +1,1962 @@
+[
+  {
+    "baseRefName": "main",
+    "body": "The Instagram Followers page displayed \u20b91,000 and \u20b95,000 in quantity-planning cards despite the live \u20b9999.90 per-1K rate. Preserve paise in the shared server-rendered section, yielding \u20b9999.90 and \u20b94,999.50. Existing rate calculations and checkout remain authoritative.\n\nIncludes regression tests wired into PR CI and [the full audit](https://github.com/rushal0803/socialrush-panel/blob/fix/seo-discovery-pricing-audit-20261108/docs/seo-discovery-audit-20261108.md): 172 sitemap URLs, 69 service/platform landing pages, measurement limitations, first-party CWV baseline and a 30/60/90-day roadmap.\n\nValidation:\n- Local: 237 existing unit tests plus six focused checks, TypeScript, lint (existing warnings), production build and whitespace check passed.\n- GitHub run 42465642518: full Pre-merge smoke tests workflow completed SUCCESS, including browser smoke tests and isolated wallet PostgreSQL checks. Reverified on 8 November 2026.\n- Exact head: 2736c825f92970f1bfbbf410f6f781ad8bf2d9be.\n- Vercel dpl_5pEgXQiNU2fd7zTdnMwHLdYdhCSD is READY. Preview: https://socialrush-panel-aqvt3ykl5-rushalthakur240-6255s-projects.vercel.app . Preview content access recovered on follow-up: authenticated GET returned 200 for /buy-instagram-followers-india; verified canonical, H1 and rendered planning values \u20b9999.90 / \u20b94,999.50 / \u20b99,999.00. Preview X-Robots-Tag noindex is expected deployment protection, not a production indexing finding. No visual/mobile or real-order browser QA claimed.\n\nPublic crawl: all 172 sitemap URLs returned 200 with matching canonicals, titles and one H1; no meta-robots noindex or duplicate titles. Google indexing remains UNKNOWN: GSC Wizard is subscription-blocked; use free Search Console exports. Header robots, full orphan graph and semantic schema require further audit. Mobile p75 LCP 3464ms in stored 28-day events; not CrUX. Organic-labelled events include auth/direct attribution and must not be reported as clean organic sessions/revenue.\n\nNo payment, order, catalog rate, database, training-crawler permission or production changes. Draft and unmerged. Require passing CI, rendered preview verification and explicit owner approval before merge. First bounded sprint only; full SEO transformation remains in progress.\n\nRelease coordination: consolidated draft #747 (https://github.com/rushal0803/socialrush-panel/pull/747) includes this exact source head. The combined candidate passed workflow 42473476960 and hosted preview HTML verification. This source PR remains draft/unmerged; the proposed single-release approval should target #747.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T09:04:41Z",
+        "authors": [
+          {
+            "email": "143038451+rushal0803@users.noreply.github.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal0803"
+          }
+        ],
+        "committedDate": "2026-11-08T09:04:41Z",
+        "messageBody": "\u2026ry baseline",
+        "messageHeadline": "fix(seo): preserve public planning price precision and record discove\u2026",
+        "oid": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "components/seo/SearchDemandPriceSection.tsx",
+        "additions": 2,
+        "deletions": 6
+      },
+      {
+        "path": "docs/seo-discovery-audit-20261108.md",
+        "additions": 172,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/search-demand.ts",
+        "additions": 10,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/search-demand-pricing-precision.test.ts",
+        "additions": 14,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "fix/seo-discovery-pricing-audit-20261108",
+    "headRefOid": "2736c825f92970f1bfbbf410f6f781ad8bf2d9be",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 744,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:05:01Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642634/job/128684405071",
+        "name": "compare",
+        "startedAt": "2026-11-08T09:05:01Z",
+        "status": "COMPLETED",
+        "workflowName": "Combined premium design paired performance (QA only)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:14:09Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684403588",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T09:05:03Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:05:26Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684403411",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T09:05:04Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:05:01Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684404417",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T09:05:01Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T09:07:40Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/5pEgXQiNU2fd7zTdnMwHLdYdhCSD"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:07:41Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T09:07:41Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: preserve price precision and establish verified discovery baseline",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/744",
+    "check_summary": [
+      {
+        "name": "compare",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642634/job/128684405071"
+      },
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684403588"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684403411"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42465642518/job/128684404417"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/5pEgXQiNU2fd7zTdnMwHLdYdhCSD"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "main",
+    "body": "Google account/app referrals and paid-search landings could be counted as organic acquisition. Use anchored Google search-host recognition, exclude paid click markers and competing UTM attribution from organic_landing_view, and refresh stale first-touch attribution when a new Google/Bing paid-click marker arrives. Ordinary navigation retains established attribution.\n\nChanges:\n- Shared pure landing predicate combines search referrer, public destination and current campaign signals.\n- Google/Bing click-marker classification is shared by landing eligibility and first-touch attribution; identifier values are not stored or transmitted.\n- Google account/mail/docs/app and deceptive hostname exclusions retained; valid country/search hosts preserved.\n- Existing privacy, once-per-document deduplication, campaign overrides and public/private path rules retained.\n- Regression coverage for Google apps/lookalikes, paid markers including contradictory organic UTM, email/competing sources, stale organic-to-paid refresh, navigation preservation and identifier non-retention. Existing PR workflow runs the test file.\n\nLatest head: f09f7e6199e2dea0ad4c8921f5cc002c1393d409. Local 18 traffic tests, 237 existing unit tests, TypeScript and lint passed. Local production build passed. Rendered metadata/canonical/robots/schema/headings contracts preserved across 93 static service routes. TikTok Followers is dynamic in this build and needs separate preview verification; the raw 94-route snapshot comparison flagged its missing static artifact, so no 94-route all-pass claim is made. Latest-head GitHub CI run 42468248676 completed SUCCESS: unit/SEO/CRM/payment checks, TypeScript, build, browser smoke tests, final customer navigation/wallet fixtures and isolated PostgreSQL checks all passed. Vercel dpl_83sPTr3Gg2F9ck121BAAbcvCwtS1 is READY at f09f7e6199e2dea0ad4c8921f5cc002c1393d409. Authenticated preview GETs of /instagram-likes and dynamic /tiktok-followers returned 200 with expected canonicals/titles, one H1 each, JSON-LD blocks and preview-only X-Robots-Tag noindex. Preview: https://socialrush-panel-5t8mm01bn-rushalthakur240-6255s-projects.vercel.app . Earlier CI results do not validate this new head.\n\nHistorical analytics are not reprocessed. Existing session attribution changes only for explicit new campaign/paid signals; classification remains a heuristic. No checkout, payment, catalog rate, database, public content, robots, sitemap or production changes. Keep draft and unmerged until latest CI/preview pass and owner explicitly approves.\n\nRead-only baseline: service-detail mobile LCP p75 2344ms across 3325 stored events; the overall 3464ms includes admin/customer templates. These event aggregates are not CrUX. Four priority production URLs returned 200, self-canonical and no X-Robots-Tag indexing restriction on this pass. Google index status remains unknown pending free Search Console evidence.\n\nExpanded live crawl: all 69 inventoried service/platform pages returned HTTP 200 with self-canonicals, exactly one meta description, no meta/header noindex and no JSON-LD parse errors. These are syntax/crawl checks, not Google indexing, schema semantic eligibility, rich results or AI citation verification.\n\nBaseline reproduction against the previous committed code confirmed a Google gclid landing would emit organic_landing_view and retain stored medium=organic; the new tests reject both outcomes. An additional local Chromium install failed because its downloaded archive was truncated; no custom local browser pass is claimed. CI browser checks remain the browser release gate. No preview/production analytics events or orders were submitted during HTTP verification.\n\nRelease coordination: consolidated draft #747 (https://github.com/rushal0803/socialrush-panel/pull/747) includes this exact source head. The combined candidate passed workflow 42473476960 and hosted preview HTML verification. This source PR remains draft/unmerged; the proposed single-release approval should target #747.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T09:21:23Z",
+        "authors": [
+          {
+            "email": "143038451+rushal0803@users.noreply.github.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal0803"
+          }
+        ],
+        "committedDate": "2026-11-08T09:21:23Z",
+        "messageBody": "",
+        "messageHeadline": "fix(analytics): exclude Google app referrals from organic search",
+        "oid": "d5e6a596679ab8828ab1d019384f534af6715863"
+      },
+      {
+        "authoredDate": "2026-11-08T09:41:19Z",
+        "authors": [
+          {
+            "email": "143038451+rushal0803@users.noreply.github.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal0803"
+          }
+        ],
+        "committedDate": "2026-11-08T09:41:19Z",
+        "messageBody": "",
+        "messageHeadline": "fix(analytics): separate paid search landings from organic acquisition",
+        "oid": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409"
+      }
+    ],
+    "files": [
+      {
+        "path": "components/analytics/PageAnalytics.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "docs/seo-google-referrer-fix-20261108.md",
+        "additions": 29,
+        "deletions": 0
+      },
+      {
+        "path": "lib/analytics/events.ts",
+        "additions": 32,
+        "deletions": 8
+      },
+      {
+        "path": "tests/unit/phase45-traffic-engine.test.ts",
+        "additions": 102,
+        "deletions": 3
+      }
+    ],
+    "headRefName": "fix/seo-google-referrer-classification-20261108",
+    "headRefOid": "f09f7e6199e2dea0ad4c8921f5cc002c1393d409",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 745,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:41:30Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248657/job/128692688129",
+        "name": "compare",
+        "startedAt": "2026-11-08T09:41:31Z",
+        "status": "COMPLETED",
+        "workflowName": "Combined premium design paired performance (QA only)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:50:42Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692686777",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T09:41:33Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:41:54Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692686652",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T09:41:33Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:41:30Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692687959",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T09:41:31Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T09:44:42Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/83sPTr3Gg2F9ck121BAAbcvCwtS1"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T09:44:42Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T09:44:42Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "Analytics: distinguish organic search from Google apps and paid campaigns",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/745",
+    "check_summary": [
+      {
+        "name": "compare",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248657/job/128692688129"
+      },
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692686777"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692686652"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42468248676/job/128692687959"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/83sPTr3Gg2F9ck121BAAbcvCwtS1"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "main",
+    "body": "The live Telegram Members BreadcrumbList links to /telegram-growth-india, which returns 404. Point it to the existing /services/telegram catalog and add matching visible, keyboard-accessible breadcrumb links. Use one pure trail function for visible/schema data, explicit existing platform hubs and a safe /services fallback. Respect LinkedIn/Twitter/TikTok route-owned breadcrumb markup; LinkedIn keeps its visible /services trail without the extra shared-helper trail. Multiple valid trails are supported by Google; no penalty claim is made.\n\nPublic discovery audit fetched all 172 sitemap URLs. Homepage traversal through their response-HTML anchor graph reached 169; all 69 inventoried service/platform pages were reached. /press and /tools/social-media-growth-planner had no incoming links in this fetched set; /partners was linked only from unreached /press. Add Partners/Press to Company footer links and Growth Planner to Resources. These are existing public sitemap pages, not newly generated SEO pages. This graph does not cover every non-sitemap URL.\n\nFinal head: d72bb3d8ba65b5ca46c42c011a3f835c389493f2. Local 240 unit tests, TypeScript, lint (existing warnings), whitespace checks passed after footer changes. Ten focused SEO regressions passed for the breadcrumb change. Final local production build passed. HTTP assertions against the built app using the isolated fixture backend verified all three footer destinations in homepage anchor HTML and exactly one correct BreadcrumbList each for Telegram and LinkedIn, matching visible links and one H1. Latest-head GitHub CI run 42469801592 completed SUCCESS, including unit/SEO/CRM/payment regressions, TypeScript, production build, browser smoke tests, final customer navigation/wallet fixtures and isolated PostgreSQL checks. Vercel dpl_7RLXG4sBrUou9hqsvxsVfRNW8sZF is READY at the final head. Authenticated preview GETs of /, /telegram-members and /linkedin-followers returned 200 with retained production canonicals and all three new footer anchors. Telegram and LinkedIn each have exactly one expected BreadcrumbList; Telegram's middle item is /services/telegram and LinkedIn's is /services. Preview X-Robots-Tag noindex is expected for this preview environment. Preview: https://socialrush-panel-qnp2fy3v6-rushalthakur240-6255s-projects.vercel.app . No production orders or analytics beacons were submitted by these HTTP checks.\n\nNo rate, offer, checkout, payment, database, canonical URL, sitemap, redirect or production changes. Current sampled catalog prices matched Supabase, so no speculative pricing edit was made. Independent branch from main. Keep draft until latest CI/preview pass and explicit owner merge approval.\n\nEvidence and limits: docs/seo-commercial-breadcrumb-audit-20261108.md; https://developers.google.com/search/docs/appearance/structured-data/breadcrumb . Google URL Inspection, official Rich Results Test and ranking/AI citation outcomes remain unverified. No production indexing submissions performed.\n\nExpanded public-destination audit (8 November 2026): fetched all 172 sitemap source URLs and extracted 196 unique internal anchor destinations. Excluding private/auth/order paths, the five additional public destinations outside the sitemap were /services/tiktok-likes, /services/tiktok-views, /services/tiktok-custom-comments, /services/tiktok-story-views and /services/tiktok-saves. All five returned HTTP 200; each has its own canonical and live meta robots noindex,follow, consistent with the existing catalog-only policy in tests/unit/phase26-keyword-ownership.test.ts and the dynamic service route. No broken public destinations were found in this 177-URL audited set. External links, private paths, JavaScript-created links, click interactions and Google indexing are outside this check. No new code or indexing-policy changes were needed for this follow-up. PR head and previously verified CI/preview remain unchanged.\n\nRelease coordination: consolidated draft #747 (https://github.com/rushal0803/socialrush-panel/pull/747) includes this exact source head. The combined candidate passed workflow 42473476960 and hosted preview HTML verification. This source PR remains draft/unmerged; the proposed single-release approval should target #747.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T09:58:08Z",
+        "authors": [
+          {
+            "email": "143038451+rushal0803@users.noreply.github.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal0803"
+          }
+        ],
+        "committedDate": "2026-11-08T09:58:08Z",
+        "messageBody": "",
+        "messageHeadline": "fix(seo): align commercial breadcrumbs with real navigation",
+        "oid": "f2cab858460e558a7bdfc9385f8bfd3c7fbafd3b"
+      },
+      {
+        "authoredDate": "2026-11-08T10:03:36Z",
+        "authors": [
+          {
+            "email": "143038451+rushal0803@users.noreply.github.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal0803"
+          }
+        ],
+        "committedDate": "2026-11-08T10:03:36Z",
+        "messageBody": "",
+        "messageHeadline": "fix(seo): link existing public resources from the footer",
+        "oid": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2"
+      }
+    ],
+    "files": [
+      {
+        "path": "components/marketing/MarketingFooter.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "components/marketing/TelegramFollowersLanding.tsx",
+        "additions": 3,
+        "deletions": 1
+      },
+      {
+        "path": "components/seo/IndiaCommercialServiceJsonLd.tsx",
+        "additions": 4,
+        "deletions": 9
+      },
+      {
+        "path": "docs/seo-commercial-breadcrumb-audit-20261108.md",
+        "additions": 33,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/commercial-service-breadcrumbs.ts",
+        "additions": 23,
+        "deletions": 0
+      },
+      {
+        "path": "package.json",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "tests/unit/commercial-service-breadcrumbs.test.ts",
+        "additions": 35,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "fix/seo-commercial-breadcrumb-integrity-20261108",
+    "headRefOid": "d72bb3d8ba65b5ca46c42c011a3f835c389493f2",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 746,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:03:48Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801527/job/128697719562",
+        "name": "compare",
+        "startedAt": "2026-11-08T10:03:58Z",
+        "status": "COMPLETED",
+        "workflowName": "Combined premium design paired performance (QA only)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:13:23Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697683253",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T10:03:50Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:04:13Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697683488",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T10:03:51Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:03:48Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697684527",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T10:03:48Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T10:07:04Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/7RLXG4sBrUou9hqsvxsVfRNW8sZF"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:07:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T10:07:04Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: repair commercial breadcrumbs and public resource discovery",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/746",
+    "check_summary": [
+      {
+        "name": "compare",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801527/job/128697719562"
+      },
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697683253"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697683488"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42469801592/job/128697684527"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/7RLXG4sBrUou9hqsvxsVfRNW8sZF"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "main",
+    "body": "Combine the exact reviewed fixes from #744, #745 and #746 into one release candidate, so their interaction is tested before one owner-approved production release.\n\nIncluded behavior:\n- Public quantity examples retain paise: \u20b9999.90 / \u20b94,999.50 / \u20b99,999.00 for the verified Instagram follower rate.\n- Organic landing qualification excludes Google app referrals and paid/competing campaigns. New Google/Bing paid clicks refresh stale stored organic attribution; raw click identifiers are not retained.\n- Telegram breadcrumb uses the existing /services/telegram hub with matching visible links; route-owned LinkedIn breadcrumbs are not emitted again.\n- Footer links expose existing Partners, Press and Growth Planner pages found unreached in the 172-URL HTML graph.\n\nExact source heads: #744 2736c825f92970f1bfbbf410f6f781ad8bf2d9be; #745 f09f7e6199e2dea0ad4c8921f5cc002c1393d409; #746 d72bb3d8ba65b5ca46c42c011a3f835c389493f2. All merged locally without conflicts. Combined GitHub tree matches the locally tested tree exactly. Base main: 35fcaf731447a948b69a9ae917b5af596d22711e. Candidate head: cc12b5a746e330dc8689b6e05dbba12edc29090b.\n\nLocal combined checks passed: 240 unit tests, 24 focused pricing/acquisition checks, TypeScript, lint (existing warnings), whitespace check. Local production build passed. Runtime HTTP assertions on the built combined app using the isolated fixture backend confirmed Instagram cards \u20b9999.90 / \u20b94,999.50 / \u20b99,999.00, one correct Telegram and LinkedIn BreadcrumbList each, retained H1/canonicals and all three footer discovery links. Hosted combined preview dpl_Bxpnf9tzvHrjZXyVhqakpXpqSxrz is READY at candidate head cc12b5a746e330dc8689b6e05dbba12edc29090b. Authenticated HTTP checks of /, /buy-instagram-followers-india, /telegram-members and /linkedin-followers passed: expected production canonicals, precise Instagram price cards, one expected Telegram/LinkedIn breadcrumb and three discovery footer anchors on each page. Preview X-Robots-Tag noindex is expected for preview. URL: https://socialrush-panel-8bns6ifn3-rushalthakur240-6255s-projects.vercel.app . Combined-head GitHub CI run 42473476960 completed SUCCESS, including unit/SEO/CRM/payment regressions, TypeScript, build, browser smoke tests, final customer navigation/wallet fixtures and isolated PostgreSQL tests. This is verification of the combined candidate itself.\n\nRead-only terms audit: all 15 ordinary catalog-fallback services matched current database rates, quantity limits, delivery and refill terms. Protected live-only placeholders were left intact; Facebook Group Members was verified by name rather than inferring availability from its missing code. No database changes or new pricing assumptions.\n\nNo catalog rate, payment method, wallet calculation, checkout payload, database, canonical URL, sitemap, training-crawler permission or historical analytics mutations. No real orders, payments or outreach. Search Console indexing/rankings and AI citation outcomes remain unverified.\n\nKeep this candidate and source PRs draft/unmerged pending combined CI, preview evidence and explicit owner approval. This candidate is intended to replace separate merges of #744\u2013#746; leave those source PRs unmerged during review. Release scope and methodology: docs/seo-foundation-release-20261108.md. No production release has occurred.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T10:55:08Z",
+        "authors": [
+          {
+            "email": "143038451+rushal0803@users.noreply.github.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal0803"
+          }
+        ],
+        "committedDate": "2026-11-08T10:55:08Z",
+        "messageBody": "\u2026ixes",
+        "messageHeadline": "SEO foundation: combine verified pricing, acquisition and discovery f\u2026",
+        "oid": "cc12b5a746e330dc8689b6e05dbba12edc29090b"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "components/analytics/PageAnalytics.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "components/marketing/MarketingFooter.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "components/marketing/TelegramFollowersLanding.tsx",
+        "additions": 3,
+        "deletions": 1
+      },
+      {
+        "path": "components/seo/IndiaCommercialServiceJsonLd.tsx",
+        "additions": 4,
+        "deletions": 9
+      },
+      {
+        "path": "components/seo/SearchDemandPriceSection.tsx",
+        "additions": 2,
+        "deletions": 6
+      },
+      {
+        "path": "docs/seo-commercial-breadcrumb-audit-20261108.md",
+        "additions": 33,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo-discovery-audit-20261108.md",
+        "additions": 172,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo-foundation-release-20261108.md",
+        "additions": 29,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo-google-referrer-fix-20261108.md",
+        "additions": 29,
+        "deletions": 0
+      },
+      {
+        "path": "lib/analytics/events.ts",
+        "additions": 32,
+        "deletions": 8
+      },
+      {
+        "path": "lib/seo/commercial-service-breadcrumbs.ts",
+        "additions": 23,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/search-demand.ts",
+        "additions": 10,
+        "deletions": 0
+      },
+      {
+        "path": "package.json",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "tests/unit/commercial-service-breadcrumbs.test.ts",
+        "additions": 35,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/phase45-traffic-engine.test.ts",
+        "additions": 102,
+        "deletions": 3
+      },
+      {
+        "path": "tests/unit/search-demand-pricing-precision.test.ts",
+        "additions": 14,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "chore/seo-foundation-release-20261108",
+    "headRefOid": "cc12b5a746e330dc8689b6e05dbba12edc29090b",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 747,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:55:37Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476915/job/128709477274",
+        "name": "compare",
+        "startedAt": "2026-11-08T10:55:38Z",
+        "status": "COMPLETED",
+        "workflowName": "Combined premium design paired performance (QA only)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T11:04:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709476527",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T10:55:40Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:55:58Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709476315",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T10:55:40Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:55:37Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709477523",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T10:55:38Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T10:58:49Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Bxpnf9tzvHrjZXyVhqakpXpqSxrz"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T10:58:51Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T10:58:51Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO foundation: accurate prices, acquisition tracking and public discovery",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/747",
+    "check_summary": [
+      {
+        "name": "compare",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476915/job/128709477274"
+      },
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709476527"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709476315"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42473476960/job/128709477523"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Bxpnf9tzvHrjZXyVhqakpXpqSxrz"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "main",
+    "body": "The weekly SEO monitor failed on Node 20 at its first TypeScript command (`node: bad option: --experimental-strip-types`), skipping ten later checks. Latest original failure: [41438214991](https://github.com/rushal0803/socialrush-panel/actions/runs/41438214991).\n\nUse Node 24 LTS, run independent checks unless cancelled, and retain each check's logs for 14 days. Bash pipefail preserves failure status through tee. Recovering the full workflow exposed an over-escaped schema matcher: it falsely rejected valid Service/BlogPosting JSON-LD on twelve pages. Parse actual JSON-LD blocks, including graphs and array types, with behavioral regressions rejecting malformed and unrelated text.\n\nValidation on final head `94a0c1a5754faef41aeb1408fc9604c1727caab7`:\n- [Weekly monitor 42483943410](https://github.com/rushal0803/socialrush-panel/actions/runs/42483943410): SUCCESS; all 15 checks executed and passed, evidence artifact retained.\n- Local: 239 unit tests, TypeScript and whitespace checks pass; lint passes with existing warnings. Instagram technical audit: 31/31. Full-sitemap audit: 174/174, zero warnings.\n- [Full PR workflow 42483936058](https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058): SUCCESS; production build, browser smoke, final customer-navigation/wallet fixtures and isolated PostgreSQL checks passed. Optional visual/performance jobs were skipped.\n- Vercel `dpl_GQ2V2bUCUFGucKspfS2qZNAyNJAC`: READY at the exact head, preview target only. Authenticated GET of [Instagram Followers preview](https://socialrush-panel-74qtz0b8n-rushalthakur240-6255s-projects.vercel.app/buy-instagram-followers-india) returned 200 with expected title, one H1 and production canonical. Hosted mobile visual QA is not claimed.\n\n[Implementation evidence and performance triage](https://github.com/rushal0803/socialrush-panel/blob/fix/seo-monitor-runtime-20261108/docs/seo-monitor-runtime-20261108.md).\n\nCurrent execution batch:\n\n| Field | Result |\n|---|---|\n| Sprint | A verification, B performance diagnosis, D discovery verification, F monitor repair |\n| Scope | PRs #744\u2013#747; 172 sitemap pages, eight discovered non-sitemap pages; five priority preview pages; first-party analytics; weekly workflow |\n| Confirmed issues | Node runtime prevented complete monitoring; malformed checker regex produced false missing-schema alerts. Attribution contamination persists in historical/current production data; source fix #745 remains unmerged. |\n| Fixes | Node 24, independent execution, retained logs, parsed JSON-LD, two behavioral regression tests |\n| Tests | Monitor and local checks pass; full PR build/browser/customer-fixture workflow passes; optional visual/performance jobs skipped |\n| GitHub | This separate draft branch; existing #744\u2013#747 remain draft/unmerged |\n| Vercel | Exact-head preview READY, authenticated HTML verified; no production deployment |\n| SEO impact | Monitoring executes all checks and correctly recognizes valid JSON-LD. No ranking, indexing, citation or revenue uplift claimed. |\n| Production | No production changes, database mutations, orders or payments |\n| Blockers | Search Console connector requires subscription; no saved first-party GSC export/table found. Required-check configuration returns GitHub 403. Protected hosted mobile visual review remains outstanding. |\n| Next | Review the verified draft release candidates; obtain free GSC exports for demand/indexing and trace the unreproduced Instagram field INP miss |\n\nInventory and measurement status:\n- All 69 previously inventoried service/platform URLs reconciled to the live crawl: HTTP 200 and no noindex. No service-page copy changed in this monitoring PR; all 69 remain pending comprehensive page-level optimization. Five priority pages received fresh protected-preview HTML and public mobile checks.\n- Discovery crawl fetched 180 pages (172 sitemap + eight additional). Five catalog-only TikTok routes and three auth pages are noindex. Unknown-path probe returns HTTP 404. Homepage-reachable HTML graph still misses Partners, Press and Growth Planner; existing #746/#747 supplies the proposed footer links. Duplicate BreadcrumbList trails remain a review item on production LinkedIn and Facebook Shares; #747 preview LinkedIn emits one trail.\n- Google/Bing indexing known: zero of 69; unknown: 69. No current AI citation evidence. Robot access/AEO checks pass, which does not prove retrieval or citation.\n- Stored current-release mobile service-detail navigate cohort: LCP p75 2292ms (970 events), TTFB 978.5ms (1026), INP 192ms (566), CLS 0.0002 (819). Instagram Followers INP is 208ms (137). These are stored first-party event cohorts, not a verified CrUX pass or causal before/after comparison.\n- Public mobile lab: 3 cold-context trials/page at 390x844, 150ms latency, 1.6Mbps down, 4x CPU. Median LCP: Instagram Followers 3472ms; Instagram Likes 3492ms; YouTube Subscribers 2544ms; YouTube Views 3480ms; LinkedIn Followers 2208ms. All 15 returned 200 with one H1, canonical, no document overflow and CLS 0 during the observation window. DNT and non-read-request blocking enabled; managed proxy influences timings. No performance improvement claimed.\n- Five read-only quantity-input/stepper trials reproduced correct quantity state and 40\u201364ms observed interaction duration at 4x CPU; this does not reproduce or rule out the field INP issue.\n- Organic conversion measurement is not ready: last-28-day organic_landing_view has 6483 events versus 4728 distinct session IDs, including direct, Google-auth and Vercel referrals. These counts are not validated organic sessions or revenue. No historical events were rewritten.\n- digispeed.in currently presents a digital marketing/web development/training agency. Its homepage is not verified as matching service-package purchase intent; no ranking, volume or competitor-traffic claims.\n\nNo application, database, checkout, payment, catalog, production deployment or crawler-policy changes. Separate from existing foundation draft #747. Keep draft and unmerged pending exact-head verification and explicit owner approval. Broader attribution dashboards, paid-order reconciliation, demand-led service-page optimization and AI-citation evaluation remain unfinished.\n",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T13:09:27Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T13:09:27Z",
+        "messageBody": "",
+        "messageHeadline": "fix(seo): restore weekly monitoring runtime and retain failure evidence",
+        "oid": "a0a5ad4158dbad9984e432fdf0442661a4721947"
+      },
+      {
+        "authoredDate": "2026-11-08T13:13:30Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T13:13:30Z",
+        "messageBody": "",
+        "messageHeadline": "fix(seo): parse real JSON-LD in recovered Instagram monitor",
+        "oid": "94a0c1a5754faef41aeb1408fc9604c1727caab7"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/seo-health-monitor.yml",
+        "additions": 99,
+        "deletions": 16
+      },
+      {
+        "path": "docs/seo-monitor-runtime-20261108.md",
+        "additions": 43,
+        "deletions": 0
+      },
+      {
+        "path": "scripts/lib/seo-jsonld.mjs",
+        "additions": 20,
+        "deletions": 0
+      },
+      {
+        "path": "scripts/seo-instagram-technical-check.mjs",
+        "additions": 2,
+        "deletions": 4
+      },
+      {
+        "path": "tests/unit/phase16-technical-seo.test.ts",
+        "additions": 26,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "fix/seo-monitor-runtime-20261108",
+    "headRefOid": "94a0c1a5754faef41aeb1408fc9604c1727caab7",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 748,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:13:38Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936029/job/128741642157",
+        "name": "compare",
+        "startedAt": "2026-11-08T13:13:47Z",
+        "status": "COMPLETED",
+        "workflowName": "Combined premium design paired performance (QA only)"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:26:18Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741606241",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T13:13:40Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:13:59Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741606024",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T13:13:40Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:13:38Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741607310",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T13:13:38Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T13:16:56Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/GQ2V2bUCUFGucKspfS2qZNAyNJAC"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:16:57Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T13:16:57Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: restore complete weekly monitoring and validate actual JSON-LD",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/748",
+    "check_summary": [
+      {
+        "name": "compare",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936029/job/128741642157"
+      },
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741606241"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741606024"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42483936058/job/128741607310"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/GQ2V2bUCUFGucKspfS2qZNAyNJAC"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "chore/seo-foundation-release-20261108",
+    "body": "Existing service offers did not specify that their price applies to 1,000 units, and a duplicate generated route could replace Facebook Followers' dedicated page and omit its Service/FAQ metadata. Preserve the audited canonical owners, clarify existing offer units, and give Telegram buyers accurate geographic and audience-quality limits.\n\nChanges:\n- Add `UnitPriceSpecification.referenceQuantity` to seven existing offers in the ten-page batch. Rates are unchanged; no live-only offers are created.\n- Keep the dedicated Instagram Followers and Facebook Followers routes out of catch-all generation. Other service-route collisions remain unchanged pending their own content/order-flow audit.\n- Share Telegram's nine visible answers with server-rendered FAQPage schema. Clarify that member counts do not prove authentic interest, an Indian audience, conversations or revenue.\n- Preserve two currency decimals and fix destination grammar in shared quick answers. Other callers benefit from formatting but are not counted as audited pages.\n- Add four behavioral unit tests and ten mobile browser checks with retained screenshots. Enable existing full CI for this stacked foundation base.\n\n[Full ten-page audit, first-party measurements, prior PR verification, GSC export requirements and AI evaluation method](https://github.com/rushal0803/socialrush-panel/blob/seo/service-evidence-batch1-20261108/docs/seo/service-batch1-20261108.md). [Public baseline metadata/schema evidence](https://github.com/rushal0803/socialrush-panel/blob/seo/service-evidence-batch1-20261108/docs/seo/service-batch1-baseline-20261108.json).\n\nValidation on final head `caca5200b19a6bfc56e919f4df1a34ce570219a0`:\n- [Full CI 42486968421](https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421): SUCCESS. Build, TypeScript, unit/SEO/pricing/payment regressions, 272 browser smoke tests, 14 final customer fixtures and isolated PostgreSQL checks passed. Browser suite reports 67 skipped tests; the optional PR-630 visual/performance job was also skipped. These skips are not represented as passes.\n- Local: 244 unit tests, TypeScript, lint (existing warnings), production build and all ten new mobile checks passed. Manually reviewed the local 390px screenshots; all ten retain H1/canonical, service schema and horizontal layout. The first runtime failure exposed the Facebook route-ownership defect; that assertion remains and now passes.\n- `playwright-smoke-diagnostics` artifact retained, including the new screenshot path; artifact ID 13619828840. `customer-workspace-fixture-qa` retained separately. Local screenshots were inspected; the managed artifact download returned 403, so independently viewing hosted artifact images is not claimed.\n- Vercel preview `dpl_4i15VTACkkyt437kAw3cCEMNFQ7Y` is READY at the exact head. [Preview](https://socialrush-panel-oqe39qmw5-rushalthakur240-6255s-projects.vercel.app). Protected hosted HTML/mobile rendering remains BLOCKED by unavailable existing authenticated access; READY is not a rendered-content pass.\n- Local composition with #748 passed 246 unit tests and TypeScript; conflict-free combined tree `b1630ea615305ff337b22054d9e535029a9d0142`. This is not a hosted combined release pass.\n\nDependencies and release order:\n- Base is #747 at `cc12b5a746e330dc8689b6e05dbba12edc29090b`.\n- #747 already contains #744\u2013#746's application changes; compared their files rather than relying on ancestry because #747 is squashed. Do not also merge those three source PRs.\n- Proposed owner-approved order: #748 independently, then #747, then this draft after retargeting/rechecking against main. All existing PRs remain draft/unmerged. No source PR was closed.\n- All five earlier PRs have successful exact-head build/browser/customer/database workflows and matching READY previews; optional visual/performance jobs were skipped. Protected mobile QA is not verified.\n- Main's read-only branch metadata reports protected=false with status-check enforcement off and no check contexts; effective branch rules are empty. The separate admin endpoint previously returned 403. No settings changed. Explicit owner approval and documented release gates still apply.\n\n| Execution field | Result |\n|---|---|\n| Sprint | First ten-page SEO/AI audit, dependency verification and INP investigation |\n| Scope | Instagram Followers/Likes/Views; YouTube Subscribers/Views; Facebook Followers/Likes; LinkedIn Followers; X/Twitter Followers; Telegram Members |\n| Confirmed issues | Ambiguous offer reference units, missing generated Facebook schema, Telegram audience/geography clarity, quick-answer precision/grammar |\n| Fixes | Scoped route ownership, unit-aware offers, matching Telegram FAQ/content, precise quick answers |\n| Tests | Exact-head CI passes; 244 local unit tests; ten mobile checks; skips separately identified |\n| GitHub | This stacked draft; prior source heads preserved |\n| Vercel | Exact-head preview READY; protected rendering/visual QA blocked |\n| SEO impact | Nine pages receive targeted changes; Instagram Views retained after audit. No rankings, indexing, AI citations, CWV improvement or conversion uplift claimed. |\n| Production | No production, checkout/order logic, catalog rates, database-record or crawler-policy changes; no real order/payment |\n| Blockers | Protected access approval; GSC subscription restriction; missing field interaction attribution |\n| Next | Complete approved protected visual QA; obtain official GSC exports; profile field INP causally; then review drafts for owner approval |\n\nMeasurement limits and remaining work:\n- All ten current public pages are technically index-eligible: 200, matching canonical, one H1, index/follow and no response noindex. Actual Google/Bing indexing remains UNKNOWN for all ten. GSC returns `subscription_required`; no purchase was made. The audit specifies exact free performance, page-query and URL Inspection exports.\n- Thirty public requests (ten pages per OAI-SearchBot/Googlebot/bingbot user-agent) returned expected HTML without noindex. These are user-agent accessibility tests, not verified crawler-IP access, retrieval or citations. IndexNow key file returns 200; no URLs were submitted.\n- Instagram Followers' current-release mobile INP remains p75 208ms (138 events / 132 stored session IDs). Field metadata has no interaction target or timing attribution. Initial 4x traces were 56/64/88ms; 6x traces were 104/264/112ms. Eight additional 6x traces reached 360/384ms in two trials, with long-animation-frame script time concentrated in React's discrete-event dispatcher (244.5/276.7ms), but that does not identify the underlying work or establish the field cause. Four profiled trials observed 64/72/160/72ms. No speculative INP or checkout fix is included.\n- First-party filtered landing events guide selection, not verified search demand or clean organic revenue. Historic attribution contamination remains. No historical records were rewritten.\n- Nine pages improved; one audited and deliberately retained; the remaining 59 inventory pages are outside this content batch. Official indexing/query data, actual AI-citation evaluation and causal INP diagnosis remain outstanding.\n\nProtected mobile QA remains blocked. The owner now explicitly prohibits shareable preview bypass links; none will be created or reused. Existing authenticated desktop access could not be verified because desktop-control tools are unavailable and no scoped testing credential is configured. Local/CI fixture screenshots are not protected hosted QA. No protection setting was changed.\n\nKeep draft and unmerged. No production release is authorized.\n",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T13:49:06Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T13:49:06Z",
+        "messageBody": "",
+        "messageHeadline": "seo: clarify service price units and preserve canonical page ownership",
+        "oid": "17507b0ae53c80d63f142aad051bffa33cedba04"
+      },
+      {
+        "authoredDate": "2026-11-08T13:51:41Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T13:51:41Z",
+        "messageBody": "",
+        "messageHeadline": "seo: limit canonical ownership repair to audited batch",
+        "oid": "caca5200b19a6bfc56e919f4df1a34ce570219a0"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 4,
+        "deletions": 1
+      },
+      {
+        "path": "app/(seo-services)/[service]/page.tsx",
+        "additions": 4,
+        "deletions": 11
+      },
+      {
+        "path": "components/marketing/TelegramFollowersLanding.tsx",
+        "additions": 3,
+        "deletions": 10
+      },
+      {
+        "path": "components/seo/AeoQuickAnswer.tsx",
+        "additions": 3,
+        "deletions": 3
+      },
+      {
+        "path": "components/seo/IndiaCommercialServiceJsonLd.tsx",
+        "additions": 2,
+        "deletions": 0
+      },
+      {
+        "path": "components/seo/YouTubeEngagementJsonLd.tsx",
+        "additions": 2,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch1-20261108.md",
+        "additions": 91,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch1-baseline-20261108.json",
+        "additions": 1736,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/canonical-service-routes.ts",
+        "additions": 11,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/service-price-specification.ts",
+        "additions": 23,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/telegram-members-faq.ts",
+        "additions": 22,
+        "deletions": 0
+      },
+      {
+        "path": "package.json",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "tests/smoke/service-page-evidence.spec.ts",
+        "additions": 38,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/service-page-evidence.test.ts",
+        "additions": 53,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "seo/service-evidence-batch1-20261108",
+    "headRefOid": "caca5200b19a6bfc56e919f4df1a34ce570219a0",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 749,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T14:00:44Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750845209",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T13:51:53Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:52:19Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750845540",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T13:51:58Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:51:51Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750846474",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T13:51:51Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T13:55:30Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/4i15VTACkkyt437kAw3cCEMNFQ7Y"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T13:55:30Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T13:55:30Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: clarify first-batch service prices and protect canonical page schema",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/749",
+    "check_summary": [
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750845209"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750845540"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42486968421/job/128750846474"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/4i15VTACkkyt437kAw3cCEMNFQ7Y"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "seo/service-evidence-batch1-20261108",
+    "body": "Clarify purchase units and outcome limits in the second ten-page service batch, and preserve the audited dedicated pages that publish their metadata/schema. Facebook Shares previously emitted duplicate Service/BreadcrumbList definitions; retain its landing-owned schema and state that share counts do not guarantee reach.\n\nChanges:\n- Add reference quantities to eight existing offers without changing rates or introducing a Watch Hours offer.\n- Add distinct Facebook Views and LinkedIn Likes buyer checks, matching visible FAQ/schema and eight verified service/research/terms links.\n- Protect six audited dedicated canonical owners; retain existing workspaces, validators, totals and checkout payloads.\n- Add three behavioral unit tests and ten mobile tests; retain first-batch tests. Enable full CI on this stacked #749 base and retain screenshot paths.\n- Preserve actual React Profiler commit records and representative CPU profiles from an isolated diagnostic build. Profiling instrumentation is not application code; no speculative INP fix is included.\n\n[Batch audit/readiness report](https://github.com/rushal0803/socialrush-panel/blob/seo/service-evidence-batch2-20261108/docs/seo/service-batch2-20261108.md) \u00b7 [Public baseline metadata/schema](https://github.com/rushal0803/socialrush-panel/blob/seo/service-evidence-batch2-20261108/docs/seo/service-batch2-baseline-20261108.json) \u00b7 [Actual React traces and findings](https://github.com/rushal0803/socialrush-panel/blob/seo/service-evidence-batch2-20261108/docs/seo/inp-react-traces-20261108.md).\n\nValidation on exact head `e37a6b2fadf8994ed579a5d0b51afc205848aa07`:\n- [Full CI 42489917476](https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476): SUCCESS. Build, TypeScript, unit/SEO/pricing/payment regressions, 282 browser smoke tests, 14 final customer fixtures and isolated PostgreSQL checks passed. Browser suite reports 67 skipped tests; optional PR-630 performance/visual job also skipped. Skips are not passes.\n- Local: 247 unit tests, TypeScript, lint (existing warnings), production build and all twenty mobile runtime checks across both batches PASS. Screenshots manually reviewed. Independent raw-HTML GET checks of all twenty pages also PASS: 200, expected canonical, one H1, one Service and one BreadcrumbList before hydration.\n- New tests cover nested @graph schemas, duplicate prevention, reference units, withheld Watch Hours offer, FAQ/visible-text parity, eight link destinations and horizontal layout.\n- `playwright-smoke-diagnostics` retained (artifact 13620474551), including both mobile screenshot paths; customer fixture evidence retained separately (13621700219). Local screenshots were reviewed; no independent hosted-artifact visual inspection is claimed.\n- Vercel [preview](https://socialrush-panel-113yrzye8-rushalthakur240-6255s-projects.vercel.app), deployment `dpl_6U3vno5MLLW3fxykrPdaP7YHTxUB`, is READY at the exact head with preview target. Protected rendered content/mobile QA remains BLOCKED; READY is not a rendered-content pass.\n- Local composition with independent #748 passed 249 unit tests and TypeScript; conflict-free combined tree `85dd21120ba2d892e466bb491a49919f318158d1`. This is not hosted combined-release approval.\n- Thirty public user-agent requests (ten pages per OAI-SearchBot/Googlebot/bingbot) returned 200, one H1, canonical and no noindex. These do not verify actual crawler IPs, indexing, retrieval or citation.\n\nDependencies:\n- Stacked on #749 at `caca5200b19a6bfc56e919f4df1a34ce570219a0`, which remains draft and has successful exact-head CI/READY deployment metadata.\n- Proposed owner-approved order: #748, #747, #749, this draft. #747 already contains #744\u2013#746; do not merge those three source PRs again. Retarget/rebase/reverify remaining exact heads after any approved merge.\n- #744\u2013#749 remain draft/unmerged at their previously verified SHAs. Older #714/#721/#722 overlap Watch Hours/Group Members and require separate review; none was imported or merged.\n\n| Execution field | Result |\n|---|---|\n| Sprint | Second ten-page SEO/AI batch; actual React trace investigation; dependency recheck |\n| Scope | YouTube Likes; Facebook Views; LinkedIn Likes; Watch Hours; Instagram Comments/Saves/Shares; YouTube Comments; Facebook Shares/Group Members |\n| Confirmed issues | Ambiguous offer reference units; duplicate Facebook Shares entities; audited route-owner collisions; missing buyer outcome/geographic limits |\n| Fixes | Unit-aware offers; single landing-owned schema; canonical-owner guards; accurate buyer checks/FAQ/internal links |\n| Tests | Exact-head CI passes; 247 local unit tests; twenty mobile checks; raw initial HTML; skips reported separately |\n| GitHub | This focused stacked draft; all task PRs remain draft/unmerged |\n| Vercel | Exact-head preview READY; protected rendering/visual QA blocked by available authenticated access |\n| SEO impact | Nine pages receive targeted changes; Watch Hours retained pending unit confirmation. No ranking, indexing, AI citation, CWV or conversion uplift claimed. |\n| Production | No production, database-record, catalog-rate, order/payment, protection-setting or crawler-policy changes |\n| Blockers | Authenticated protected QA facility; GSC subscription restriction; unresolved Watch Hours billed unit; field INP attribution |\n| Next | Use an existing authenticated/scoped QA facility, obtain official GSC exports and billed-unit confirmation, then review drafts for owner approval |\n\nReact performance findings:\n- Actual React production profiling build of caca5200, twelve cold-context trials at 4x/6x CPU, with React onRender callbacks, Chrome CPU profiles and Event Timing.\n- Early interactions (before mount commits) take 200\u2013408ms; mounted controls take 72\u2013120ms. Initial root/card mount commits overlap early interactions; subsequent card updates are much smaller.\n- This supports a reproducible hydration/render-related lab pattern. It does not identify all blocking component/module work or prove the cause of production p75=208ms. No speculative Suspense, caching, event-delay, arithmetic, checkout or telemetry fix was implemented. Trace evidence and limitations are linked above.\n\nRemaining evidence gaps:\n- Google/Bing indexing and queries remain UNKNOWN for all ten; GSC returns subscription_required. Exact free exports are documented; no subscription was purchased.\n- Watch Hours' catalog name and existing view-based workspace do not establish the billed delivery unit. Confirmation was requested. Existing eligibility warnings and withheld offer remain; no per-hour price claim was fabricated.\n- First-party filtered landing counts are sparse and historically contaminated; they guide an editorial batch, not a demand ranking or clean organic conversion report. No historical records were rewritten.\n- Nine pages improved, one audited/retained; 49 inventory pages remain outside both batches. No actual AI recommendation or citation is claimed.\n\nProtected QA boundary: the owner explicitly prohibits shareable preview bypass links. None were created or reused; no protection settings changed. Desktop-control tools and environment testing credentials are unavailable. No existing protected-QA workflow was found, and reading repository test-secret names returned HTTP 403; repository credential availability is therefore unknown, not assumed absent. Local/CI fixture screenshots do not substitute for protected hosted mobile QA.\n\nKeep draft and unmerged. No production release is authorized.\n",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T14:26:33Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T14:26:33Z",
+        "messageBody": "\u2026ance",
+        "messageHeadline": "seo: prepare second service batch with verified schema and buyer guid\u2026",
+        "oid": "e37a6b2fadf8994ed579a5d0b51afc205848aa07"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 4,
+        "deletions": 1
+      },
+      {
+        "path": "app/(india-seo-services)/buy-facebook-shares-india/page.tsx",
+        "additions": 0,
+        "deletions": 8
+      },
+      {
+        "path": "app/(seo-services)/[service]/page.tsx",
+        "additions": 4,
+        "deletions": 3
+      },
+      {
+        "path": "components/marketing/FacebookViewsLanding.tsx",
+        "additions": 3,
+        "deletions": 2
+      },
+      {
+        "path": "components/marketing/LinkedInLikesLanding.tsx",
+        "additions": 3,
+        "deletions": 2
+      },
+      {
+        "path": "components/marketing/services/IndiaServiceLandingPage.tsx",
+        "additions": 5,
+        "deletions": 3
+      },
+      {
+        "path": "components/marketing/services/InstagramSavesLanding.tsx",
+        "additions": 2,
+        "deletions": 1
+      },
+      {
+        "path": "components/seo/EngagementBuyerChecks.tsx",
+        "additions": 17,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/evidence/inp-react-20261108/early-6x.cpuprofile.gz",
+        "additions": 0,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/evidence/inp-react-20261108/mounted-6x.cpuprofile.gz",
+        "additions": 0,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/evidence/inp-react-20261108/react-commit-events.json",
+        "additions": 1395,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/inp-react-traces-20261108.md",
+        "additions": 38,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch2-20261108.md",
+        "additions": 77,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch2-baseline-20261108.json",
+        "additions": 1630,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/canonical-service-routes.ts",
+        "additions": 12,
+        "deletions": 3
+      },
+      {
+        "path": "lib/seo/engagement-buyer-checks.ts",
+        "additions": 42,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/india-service-pages.ts",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "lib/seo/service-price-specification.ts",
+        "additions": 8,
+        "deletions": 0
+      },
+      {
+        "path": "package.json",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "tests/smoke/service-page-batch2.spec.ts",
+        "additions": 51,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/service-page-batch2.test.ts",
+        "additions": 44,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/service-page-evidence.test.ts",
+        "additions": 1,
+        "deletions": 1
+      }
+    ],
+    "headRefName": "seo/service-evidence-batch2-20261108",
+    "headRefOid": "e37a6b2fadf8994ed579a5d0b51afc205848aa07",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 750,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T14:38:48Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759841364",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T14:27:47Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T14:28:05Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759841121",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T14:27:47Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T14:27:44Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759842387",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T14:27:45Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T14:30:18Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/6U3vno5MLLW3fxykrPdaP7YHTxUB"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T14:30:19Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T14:30:19Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: prepare second service batch with precise units and buyer guidance",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/750",
+    "check_summary": [
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759841364"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759841121"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42489917476/job/128759842387"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/6U3vno5MLLW3fxykrPdaP7YHTxUB"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "seo/service-evidence-batch2-20261108",
+    "body": "Four X service URLs rendered generic metadata despite existing tailored metadata. Both route entry paths now share the existing renderer and metadata factory, preserving their protected live-order handoff. Add original buyer FAQs through the same source used for visible answers and FAQPage. Six platform hubs gain distinct buyer decisions. Missing catalog instructions use a platform-neutral fallback, while explicit catalog facts, prices, availability, link validators and checkout rules remain unchanged.\n\nExact head: 68beb82ce2d61e43268461214d287f47abd3d88b. Draft stacked on #750, open/unmerged.\n\n[Per-page audit, before/after metadata, schema/pricing decisions and free search-export checklist](https://github.com/rushal0803/socialrush-panel/blob/68beb82ce2d61e43268461214d287f47abd3d88b/docs/seo/service-batch3-20261109.md). [INP profile attribution follow-up](https://github.com/rushal0803/socialrush-panel/blob/68beb82ce2d61e43268461214d287f47abd3d88b/docs/seo/inp-profile-attribution-20261109.md).\n\n| Metric | Verified result |\n|---|---|\n| Recorded service/platform inventory | 69 URLs; all still present in the fresh 172-URL sitemap crawl |\n| Previous detailed audits | 20 |\n| Newly audited / improved | 10 / 10 |\n| Remaining | 39 inventory candidates requiring detailed eligibility/content review |\n| Google/Bing indexing | UNKNOWN; GSC connector requires payment, no purchase |\n| AI visibility | Actual citations UNKNOWN |\n| Organic conversions / revenue | UNKNOWN; no historical rewrite or estimates |\n| INP | Historical field p75 about 208ms; preserved traces refined, no field improvement claimed |\n\n[Final-head workflow 42513860238](https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238) completed SUCCESS. TypeScript, unit/source/SEO/payment regressions, production build, isolated PostgreSQL checks, 292 browser checks and 14 separate customer fixtures passed. 67 opt-in premium-responsive tests, six optional visual-capture steps and the non-release performance job were skipped; those are not passed QA. Local checks also passed: 249 unit tests, 193 broader SEO/CRO regressions, six live-facts tests, lint (existing warnings), build and 50 focused browser tests, including the unchanged live-order regression. [CI mobile/schema screenshots and diagnostics](https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/artifacts/13630354906) are local fixture evidence only.\n\nMatching Vercel deployment dpl_42rzvfJZBpuV9oApfaecXJVtUwjP is READY at this SHA. Protected hosted/mobile QA remains BLOCKED: a plain request redirects to vercel.com/sso-api, and no authenticated desktop/browser control tool is offered. The selected cloud environment ccarenv_b64_Y2NhcmVudl85N2NiZTQ5MmIxMjA4MTkxYmFmMGJiYzFhMDZkZTBkMQ reports remote_desktop enabled/state unknown, without callable desktop js or open_in_codex. No share/bypass link or protection change was created. READY establishes build status, not hosted rendering approval.\n\nAll #744\u2013#750 remain draft/unmerged at their recorded exact heads with successful main CI and matching READY previews. Byte-for-byte comparison verifies #747 includes every file changed by #744\u2013#746. Current-head local merge-tree simulation is conflict-free for #748 \u2192 #747 \u2192 #749 \u2192 #750 \u2192 #751 \u2192 #752. This is a proposed sequence, not approval; retarget/rebase and reverify after each owner-approved merge. Do not separately merge #744\u2013#746.\n\nProduction main and the current READY production deployment remain 35fcaf731447a948b69a9ae917b5af596d22711e. No PR merge, manual production deployment, payment, database mutation, historical analytics rewrite, crawler-policy change or indexing submission. Keep draft/unmerged until hosted QA, remaining release gates and explicit owner approval.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T18:50:24Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T18:50:24Z",
+        "messageBody": "\u2026ership",
+        "messageHeadline": "seo: clarify platform buyer decisions and restore audited X route own\u2026",
+        "oid": "6cce660f8175be3f4bdd25b2323ecf7d06c73b8a"
+      },
+      {
+        "authoredDate": "2026-11-08T18:51:04Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T18:51:04Z",
+        "messageBody": "",
+        "messageHeadline": "fix: keep missing service instructions platform-neutral",
+        "oid": "c5149309457b64f014203a6ed1bd4b70797a73d9"
+      },
+      {
+        "authoredDate": "2026-11-08T19:12:17Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T19:12:17Z",
+        "messageBody": "\u2026r handoff",
+        "messageHeadline": "fix(seo): align X metadata while preserving the established live-orde\u2026",
+        "oid": "68beb82ce2d61e43268461214d287f47abd3d88b"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 2,
+        "deletions": 0
+      },
+      {
+        "path": "app/facebook-growth-india/page.tsx",
+        "additions": 2,
+        "deletions": 1
+      },
+      {
+        "path": "app/instagram-growth-india/page.tsx",
+        "additions": 2,
+        "deletions": 1
+      },
+      {
+        "path": "app/linkedin-growth-india/page.tsx",
+        "additions": 2,
+        "deletions": 1
+      },
+      {
+        "path": "app/services/[slug]/page.tsx",
+        "additions": 7,
+        "deletions": 2
+      },
+      {
+        "path": "app/services/twitter-crypto-followers/page.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "app/services/twitter-likes/page.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "app/services/twitter-retweets/page.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "app/services/twitter-views/page.tsx",
+        "additions": 2,
+        "deletions": 2
+      },
+      {
+        "path": "app/youtube-growth-india/page.tsx",
+        "additions": 2,
+        "deletions": 1
+      },
+      {
+        "path": "components/marketing/PlatformGrowthHub.tsx",
+        "additions": 2,
+        "deletions": 0
+      },
+      {
+        "path": "components/seo/PlatformBuyerDecisions.tsx",
+        "additions": 13,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/foundation-source-overlap-20261109.json",
+        "additions": 36,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/inp-profile-attribution-20261109.md",
+        "additions": 58,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/release-merge-simulation-20261109.json",
+        "additions": 26,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/release-pr-verification-20261109.json",
+        "additions": 2666,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch3-20261109.md",
+        "additions": 104,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch3-after-local-20261109.json",
+        "additions": 1812,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch3-baseline-20261109.json",
+        "additions": 1798,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/site-crawl-20261109.json",
+        "additions": 15279,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/vercel-head-verification-20261109.json",
+        "additions": 156,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/live-service-row.ts",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "lib/seo/platform-buyer-decisions.ts",
+        "additions": 53,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/x-service-buyer-faqs.ts",
+        "additions": 19,
+        "deletions": 0
+      },
+      {
+        "path": "package.json",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "tests/smoke/service-page-batch3.spec.ts",
+        "additions": 75,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/live-service-row.test.ts",
+        "additions": 9,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/service-page-batch3.test.ts",
+        "additions": 30,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "seo/service-evidence-batch3-20261109",
+    "headRefOid": "68beb82ce2d61e43268461214d287f47abd3d88b",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 751,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:25:27Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832482510",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T19:12:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:12:45Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832482700",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T19:12:27Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:12:24Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832484097",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T19:12:25Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T19:15:37Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/42rzvfJZBpuV9oApfaecXJVtUwjP"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:15:38Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T19:15:38Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: clarify ten platform/service pages and align X metadata with live ordering",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/751",
+    "check_summary": [
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832482510"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832482700"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513860238/job/128832484097"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/42rzvfJZBpuV9oApfaecXJVtUwjP"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "chore/seo-foundation-release-20261108",
+    "body": "Preview/local events lacked an explicit collection exclusion. Stop attribution storage/beacons on default preview/local browser hosts; return empty 204 from the endpoint before parsing, session allocation or database work for local hosts and VERCEL_ENV preview/development. The server environment check covers custom-domain Vercel previews. Production custom-domain tracking, source classification and event deduplication retain their behavior.\n\nExact head: da271e6cec45d69fca8ea2a2bc7f05858bfe866a. Draft based on #747, open/unmerged. [Evidence and reporting limits](https://github.com/rushal0803/socialrush-panel/blob/da271e6cec45d69fca8ea2a2bc7f05858bfe866a/docs/seo/analytics-preview-exclusion-20261109.md).\n\nValidation: [final-head workflow 42513825026](https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026) completed SUCCESS. TypeScript, complete unit/source/SEO/payment regressions, production build, isolated PostgreSQL checks, 264 browser checks and 14 separate customer fixtures passed. 67 opt-in premium-responsive tests, six optional visual-capture steps and the non-release performance job were skipped; those are not passed QA. Local environment/sender regressions and three focused browser checks also passed, covering endpoint no-op, zero localhost conversion beacons and correct production-style events for all three conversion paths. The production-style test uses a reserved hostname served entirely by the local fixture with collection calls intercepted; no production event is posted.\n\nMatching Vercel deployment dpl_Dq3UAzWsmuzk8m3ueeR8aCBBS1rD is READY at this SHA. Protected hosted/mobile QA remains BLOCKED: Vercel SSO requires authenticated browser access, which is not available through the offered tools. No share/bypass link or protection change was created. READY is build evidence only.\n\nCurrent-head local merge-tree simulation is conflict-free for #748 \u2192 #747 \u2192 #749 \u2192 #750 \u2192 #751 \u2192 #752. This is a proposed sequence, not merge approval. Retarget/rebase and reverify after each approved merge; #747 already includes #744\u2013#746.\n\nNo database schema/migration, historical rewrite, order/payment change, package change or new Supabase API call. Production remains unchanged. Organic sessions, verified organic paid orders/revenue, abandonment and service conversion rates remain UNKNOWN pending independently verified datasets. Keep draft and unmerged until release gates and explicit owner approval.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T18:53:44Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T18:53:44Z",
+        "messageBody": "",
+        "messageHeadline": "fix(analytics): exclude local and Vercel preview collection",
+        "oid": "5e77751c885ee75012f21d6f35fdf5b1302d8235"
+      },
+      {
+        "authoredDate": "2026-11-08T18:55:34Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T18:55:34Z",
+        "messageBody": "",
+        "messageHeadline": "ci: run analytics regression checks on the foundation draft base",
+        "oid": "f65542b60f493d1c09ca704db66257466df949ce"
+      },
+      {
+        "authoredDate": "2026-11-08T19:11:53Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T19:11:53Z",
+        "messageBody": "\u2026lusion",
+        "messageHeadline": "test(analytics): verify production emission separately from local exc\u2026",
+        "oid": "da271e6cec45d69fca8ea2a2bc7f05858bfe866a"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 5,
+        "deletions": 0
+      },
+      {
+        "path": "app/api/analytics/route.ts",
+        "additions": 5,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/analytics-preview-exclusion-20261109.md",
+        "additions": 31,
+        "deletions": 0
+      },
+      {
+        "path": "lib/analytics/collection-environment.ts",
+        "additions": 12,
+        "deletions": 0
+      },
+      {
+        "path": "lib/analytics/events.ts",
+        "additions": 3,
+        "deletions": 2
+      },
+      {
+        "path": "tests/smoke/analytics-preview-exclusion.spec.ts",
+        "additions": 22,
+        "deletions": 0
+      },
+      {
+        "path": "tests/smoke/premium-design.spec.ts",
+        "additions": 13,
+        "deletions": 2
+      },
+      {
+        "path": "tests/unit/analytics-collection-environment.test.ts",
+        "additions": 38,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "fix/analytics-preview-exclusion-20261109",
+    "headRefOid": "da271e6cec45d69fca8ea2a2bc7f05858bfe866a",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 752,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:23:04Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832380072",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T19:12:03Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:12:29Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832380259",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T19:12:03Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:12:00Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832381122",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T19:12:01Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T19:14:50Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Dq3UAzWsmuzk8m3ueeR8aCBBS1rD"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:14:50Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T19:14:50Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "Analytics: exclude local and Vercel preview events before collection",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/752",
+    "check_summary": [
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832380072"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832380259"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42513825026/job/128832381122"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/Dq3UAzWsmuzk8m3ueeR8aCBBS1rD"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  },
+  {
+    "baseRefName": "seo/service-evidence-batch3-20261109",
+    "body": "Six Telegram/X detail pages rendered generic metadata and lacked action-specific guidance. Add twelve distinct buyer answers shared with the existing FAQPage, apply accurate metadata to both route entry paths, and connect canonical service requirements and refund terms. Four existing LinkedIn/X/TikTok/Telegram catalogs gain eight distinct destination/scope checks inside their main layout. Preserve canonical URLs, catalog-only restrictions, live-order handoffs, prices, quantities, payments and checkout.\n\nExact head: `24d80f18288c69c3981859db7cd178636befef6c`. Draft on #751; open and unmerged.\n\nValidation: [exact-head workflow 42517007061](https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061) completed **SUCCESS**. TypeScript, unit/source/SEO/payment regressions, production build and isolated PostgreSQL wallet checks passed. **302 browser checks and 14 separate customer fixtures passed**. 67 opt-in tests, six optional visual-capture/upload steps and the non-release performance job were skipped; these are not passed QA. The complete-unit step passed 251 tests and the live-service step passed six.\n\nFinal-head local production build and **32 browser checks passed**, including all ten new pages, initial-response JSON-LD, exact rendered metadata/canonicals, visible FAQ/schema equivalence, mobile overflow, working internal links, existing live-order contracts and desktop/mobile order/login journeys. Additional local payment-confidence and focused pricing/checkout/analytics contracts passed. No real charge or paid order was made.\n\nPreview/evidence:\n- Vercel deployment `dpl_GUwrXZL1VYoQDRri8QkLHbnEeg29` is **READY** at this exact SHA; the commit's Vercel status is successful.\n- [All ten new mobile captures and smoke diagnostics](https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/artifacts/13632420397) and [customer fixture evidence](https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/artifacts/13632480270) are uploaded. Local service and corrected catalog screenshots were visually reviewed.\n- **Protected hosted/mobile QA remains BLOCKED.** A plain request to the new preview's Telegram Poll Votes page redirects to Vercel sign-in. The environment advertises a desktop but offers no desktop control or authenticated browser access. READY is build evidence only; local/CI fixtures are separate evidence. No share/bypass link or protection change was created.\n\n[Consolidated release-readiness report](https://github.com/rushal0803/socialrush-panel/blob/24d80f18288c69c3981859db7cd178636befef6c/docs/seo/release-readiness-batch4-20261109.md) includes the exact free GSC exports, unresolved INP evidence, ten-page scope, source/CI verification and remaining work. [Remaining-path manifest](https://github.com/rushal0803/socialrush-panel/blob/24d80f18288c69c3981859db7cd178636befef6c/docs/seo/service-batch4-remaining-20261109.json) corrects prior inventory arithmetic: 40 distinct URLs reviewed, 39 within the original 69 plus /x-growth-india outside it; **30 original-cohort candidates remain**.\n\nProposed sequence **only after explicit owner approval**: #748 \u2192 #747 \u2192 #749 \u2192 #750 \u2192 #751 \u2192 #752 \u2192 #753. #747 includes all changed files from #744\u2013#746 byte-for-byte; do not also merge those source PRs. All nine earlier exact heads retain successful full CI and matching READY previews. All ten PRs remain draft/open/unmerged. Full local merge-tree composition through #753 is conflict-free (tree `1c7a399d45fd0f3db7bfc4740dadc6e4c42a9689`). A detached combined-stack check passed TypeScript, 253 unit tests, six live-service regressions and 26 focused analytics checks including #752 exclusions. This is not combined hosted QA. Retarget/rebase and reverify after each approved merge.\n\nRelease remains **HOLD** pending authenticated hosted QA and owner approval. INP component attribution and fresh field p75 remain unresolved; no INP improvement is claimed. Google/Bing indexing and selected canonicals, AI citations, verified organic conversions and revenue growth remain unknown. No merge, production deployment, indexing submission or database mutation was performed.",
+    "commits": [
+      {
+        "authoredDate": "2026-11-08T19:49:32Z",
+        "authors": [
+          {
+            "email": "rushalthakur240@gmail.com",
+            "id": "U_kgDOCIaX8w",
+            "login": "rushal0803",
+            "name": "rushal thakur"
+          }
+        ],
+        "committedDate": "2026-11-08T19:49:32Z",
+        "messageBody": "\u2026dence",
+        "messageHeadline": "seo: clarify ten remaining service and catalog pages with release evi\u2026",
+        "oid": "24d80f18288c69c3981859db7cd178636befef6c"
+      }
+    ],
+    "files": [
+      {
+        "path": ".github/workflows/pre-merge-smoke-tests.yml",
+        "additions": 2,
+        "deletions": 0
+      },
+      {
+        "path": "app/services/[slug]/page.tsx",
+        "additions": 8,
+        "deletions": 8
+      },
+      {
+        "path": "components/marketing/services/PlatformServicesLanding.tsx",
+        "additions": 3,
+        "deletions": 0
+      },
+      {
+        "path": "components/marketing/services/PremiumCatalogServiceLanding.tsx",
+        "additions": 4,
+        "deletions": 0
+      },
+      {
+        "path": "components/seo/CatalogBuyerGuide.tsx",
+        "additions": 11,
+        "deletions": 0
+      },
+      {
+        "path": "components/seo/ServiceRequirementLinks.tsx",
+        "additions": 13,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/evidence/service-batch4-20261109/telegram-post-reactions.png",
+        "additions": 0,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/hosted-qa-batch4-20261109.json",
+        "additions": 19,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/release-composition-batch4-20261109.json",
+        "additions": 137,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/release-readiness-batch4-20261109.md",
+        "additions": 85,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/release-stack-batch4-20261109.json",
+        "additions": 4643,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch4-baseline-20261109.json",
+        "additions": 393,
+        "deletions": 0
+      },
+      {
+        "path": "docs/seo/service-batch4-remaining-20261109.json",
+        "additions": 84,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/catalog-service-metadata.ts",
+        "additions": 4,
+        "deletions": 0
+      },
+      {
+        "path": "lib/seo/service-batch4-content.ts",
+        "additions": 190,
+        "deletions": 0
+      },
+      {
+        "path": "package.json",
+        "additions": 1,
+        "deletions": 1
+      },
+      {
+        "path": "tests/smoke/service-page-batch4.spec.ts",
+        "additions": 75,
+        "deletions": 0
+      },
+      {
+        "path": "tests/unit/service-page-batch4.test.ts",
+        "additions": 28,
+        "deletions": 0
+      }
+    ],
+    "headRefName": "seo/service-evidence-batch4-20261109",
+    "headRefOid": "24d80f18288c69c3981859db7cd178636befef6c",
+    "isDraft": true,
+    "mergeStateStatus": "CLEAN",
+    "number": 753,
+    "state": "OPEN",
+    "statusCheckRollup": [
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:59:38Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/job/128842124107",
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "startedAt": "2026-11-08T19:50:07Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:50:25Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/job/128842124343",
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "startedAt": "2026-11-08T19:50:07Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:50:04Z",
+        "conclusion": "SKIPPED",
+        "detailsUrl": "https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/job/128842125294",
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "startedAt": "2026-11-08T19:50:05Z",
+        "status": "COMPLETED",
+        "workflowName": "Pre-merge smoke tests"
+      },
+      {
+        "__typename": "StatusContext",
+        "context": "Vercel",
+        "startedAt": "2026-11-08T19:53:19Z",
+        "state": "SUCCESS",
+        "targetUrl": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/GUwrXZL1VYoQDRri8QkLHbnEeg29"
+      },
+      {
+        "__typename": "CheckRun",
+        "completedAt": "2026-11-08T19:53:19Z",
+        "conclusion": "SUCCESS",
+        "detailsUrl": "https://vercel.com/github",
+        "name": "Vercel Preview Comments",
+        "startedAt": "2026-11-08T19:53:19Z",
+        "status": "COMPLETED",
+        "workflowName": ""
+      }
+    ],
+    "title": "SEO: clarify ten Telegram, X and catalog pages with consolidated release gates",
+    "url": "https://github.com/rushal0803/socialrush-panel/pull/753",
+    "check_summary": [
+      {
+        "name": "Typecheck, CRM pipeline tests, international SEO, build, and smoke test",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/job/128842124107"
+      },
+      {
+        "name": "Isolated PostgreSQL wallet approval and replay checks",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/job/128842124343"
+      },
+      {
+        "name": "PR 630 mobile/desktop performance evidence (non-release)",
+        "status": "COMPLETED",
+        "conclusion": "SKIPPED",
+        "url": "https://github.com/rushal0803/socialrush-panel/actions/runs/42517007061/job/128842125294"
+      },
+      {
+        "name": "Vercel",
+        "status": "SUCCESS",
+        "conclusion": null,
+        "url": "https://vercel.com/rushalthakur240-6255s-projects/socialrush-panel/GUwrXZL1VYoQDRri8QkLHbnEeg29"
+      },
+      {
+        "name": "Vercel Preview Comments",
+        "status": "COMPLETED",
+        "conclusion": "SUCCESS",
+        "url": "https://vercel.com/github"
+      }
+    ]
+  }
+]
