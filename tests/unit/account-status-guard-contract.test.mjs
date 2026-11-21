@@ -44,3 +44,11 @@ test("login-only bypass header is stripped from arbitrary incoming admin request
   assert.match(middleware, /requestHeaders\.set\("x-socialrush-admin-login", "1"\)/);
   assert.match(middleware, /accessProfile\.role !== "admin"/);
 });
+
+test("direct authenticated wallet RPC also rejects blocked users", () => {
+  const sql=read("supabase/migrations/202611220001_reject_blocked_wallet_checkout_rpc.sql");
+  assert.match(sql, /checkout_custom_intent_with_wallet/);
+  assert.match(sql, /is_blocked = true/);
+  assert.match(sql, /raise exception 'Account blocked'/);
+  assert.match(sql, /v_user_id := auth.uid\(\)/);
+});
