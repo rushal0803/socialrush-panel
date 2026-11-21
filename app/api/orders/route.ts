@@ -1,3 +1,4 @@
+import { requireActiveAccountApi } from "@/lib/security/active-account-api";
 import { NextResponse, type NextRequest } from "next/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { createClient } from "@/lib/supabase/server";
@@ -47,6 +48,8 @@ export async function GET(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await requireActiveAccountApi(supabase, user.id);
+  if (denied) return denied;
 
   const limit = Math.min(Number(request.nextUrl.searchParams.get("limit")) || 50, 100);
   const { data, error } = await supabase
@@ -63,6 +66,8 @@ export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
   if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  const denied = await requireActiveAccountApi(supabase, user.id);
+  if (denied) return denied;
   const originError = requireSameOrigin(request); if (originError) return originError;
   const jsonError = requireJson(request); if (jsonError) return jsonError;
   const limited = rateLimit(request, "wallet-checkout", 12, 60_000, user.id); if (limited) return limited;

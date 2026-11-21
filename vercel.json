@@ -30,7 +30,8 @@
       "feat/socialrush-phase2-premium-20261115": false,
       "feat/socialrush-phase3-readiness-20261115": false,
       "feat/socialrush-phase4-integration-20261116": false,
-      "release/socialrush-phase4-main-integration-20261121": false
+      "release/socialrush-phase4-main-integration-20261121": false,
+      "security/atomic-manual-checkout-review-20261121": false
     }
   },
   "regions": [

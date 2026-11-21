@@ -1,12 +1,11 @@
 import { NextResponse, type NextRequest } from "next/server";
-import { createClient } from "@/lib/supabase/server";
+import { requireAdminApi } from "@/lib/admin/require-admin-api";
 import { providerClient } from "@/lib/provider/client";
 
 export async function POST(request: NextRequest) {
-  const supabase = await createClient(); const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-  const { data: profile } = await supabase.from("profiles").select("role").eq("id", user.id).single();
-  if (profile?.role !== "admin") return NextResponse.json({ error: "Admin access required" }, { status: 403 });
+  const auth = await requireAdminApi();
+  if ("response" in auth) return auth.response;
+  const supabase = auth.supabase;
   const body = await request.json().catch(() => null) as { orderId?: string; providerOrderId?: string } | null;
   if (!body?.orderId) return NextResponse.json({ error: "Local order ID is required" }, { status: 422 });
   const { data: order } = await supabase.from("orders").select("id, link, quantity, service_id, services(id)").eq("id", body.orderId).single();
