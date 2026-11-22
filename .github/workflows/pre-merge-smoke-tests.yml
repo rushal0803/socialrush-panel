@@ -5,6 +5,7 @@ on:
     branches:
       - main
       - release/socialrush-phase4-main-integration-20261121
+      - security/atomic-manual-checkout-review-20261121
       - feat/socialrush-phase3-readiness-20261115
       - feat/socialrush-phase2-premium-20261115
       - fix/socialrush-phase1-security-20261115
