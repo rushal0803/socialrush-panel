@@ -5,19 +5,11 @@ import { createClient } from "@/lib/supabase/server";
 import { createAdminClient } from "@/lib/supabase/admin";
 import { isUuid, requireJson, requireSameOrigin, rateLimit } from "@/lib/security/request";
 import { recordTrustedEvent } from "@/lib/analytics/server";
+import { isSameManualPayment } from "@/lib/payments/manual-payment-replay";
 
 const UTR_PATTERN = /^[A-Za-z0-9-]{8,80}$/;
 const PAYMENT_REF_PATTERN = /^SR-[A-Z0-9-]{8,40}$/;
 const PAYMENT_METHODS = new Set(["upi", "bank_transfer", "usdt_trc20"]);
-
-type ReplayOrder = { payment_status?: string | null; customer_note?: string | null };
-function isSameManualPayment(order: ReplayOrder, reference: string, utr: string, method: string) {
-  const label = method === "bank_transfer"
-    ? "Bank transfer (IMPS/NEFT)"
-    : method === "usdt_trc20" ? "USDT (TRC20)" : "UPI";
-  return order.payment_status === "verification_pending"
-    && (order.customer_note || "").startsWith(`${label} payment submitted for verification. Payment Ref: ${reference}. UTR: ${utr}.`);
-}
 
 function replayConflict() {
   return NextResponse.json(
