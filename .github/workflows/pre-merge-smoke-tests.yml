@@ -51,7 +51,7 @@ jobs:
       - name: Offline Phase 3 consent funnel and profit reconciliation fixtures
         run: node --experimental-strip-types --test tests/unit/phase3-intelligence.test.ts
       - name: QA checkout no-egress safety regression (offline)
-        run: node --test tests/unit/qa-checkout-no-egress-gate.test.mjs
+        run: node --experimental-strip-types --test tests/unit/qa-checkout-no-egress-gate.test.mjs tests/unit/manual-payment-replay.test.mjs
       - name: Phase 1 stubbed security and recovery regressions
         run: node --test tests/unit/phase1-security.test.cjs
       - name: Offline net-profit scenario and incomplete-cost regressions
