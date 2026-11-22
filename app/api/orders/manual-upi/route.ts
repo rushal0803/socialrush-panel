@@ -10,6 +10,22 @@ const UTR_PATTERN = /^[A-Za-z0-9-]{8,80}$/;
 const PAYMENT_REF_PATTERN = /^SR-[A-Z0-9-]{8,40}$/;
 const PAYMENT_METHODS = new Set(["upi", "bank_transfer", "usdt_trc20"]);
 
+type ReplayOrder = { payment_status?: string | null; customer_note?: string | null };
+function isSameManualPayment(order: ReplayOrder, reference: string, utr: string, method: string) {
+  const label = method === "bank_transfer"
+    ? "Bank transfer (IMPS/NEFT)"
+    : method === "usdt_trc20" ? "USDT (TRC20)" : "UPI";
+  return order.payment_status === "verification_pending"
+    && (order.customer_note || "").startsWith(`${label} payment submitted for verification. Payment Ref: ${reference}. UTR: ${utr}.`);
+}
+
+function replayConflict() {
+  return NextResponse.json(
+    { error: "This checkout was already submitted with different payment details. Please contact support." },
+    { status: 409, headers: { "Cache-Control": "no-store" } },
+  );
+}
+
 export async function POST(request: NextRequest) {
   const supabase = await createClient();
   const { data: { user } } = await supabase.auth.getUser();
@@ -43,8 +59,11 @@ export async function POST(request: NextRequest) {
   if (intentError) return NextResponse.json({ error: "Unable to load checkout details." }, { status: 503 });
   if (!intent || intent.user_id !== user.id || intent.client_request_id !== clientRequestId) return NextResponse.json({ error: "Checkout details do not match this account." }, { status: 404 });
   if (intent.status === "completed" && intent.order_id) {
-    const { data: existingOrder } = await admin.from("orders").select("id,public_order_id,status,payment_status").eq("id", intent.order_id).eq("user_id", user.id).maybeSingle();
-    if (existingOrder) return NextResponse.json({ data: existingOrder, duplicate: true });
+    const { data: existingOrder, error: replayError } = await admin.from("orders").select("id,public_order_id,status,payment_status,customer_note").eq("id", intent.order_id).eq("user_id", user.id).maybeSingle();
+    if (replayError) return NextResponse.json({ error: "Unable to verify the existing checkout." }, { status: 503 });
+    if (!existingOrder || !isSameManualPayment(existingOrder, paymentReference, utr, paymentMethod)) return replayConflict();
+    const { customer_note: _note, ...safeOrder } = existingOrder;
+    return NextResponse.json({ data: safeOrder, duplicate: true }, { headers: { "Cache-Control": "no-store" } });
   }
   if (intent.status !== "created" || new Date(intent.expires_at).getTime() <= Date.now()) return NextResponse.json({ error: "This checkout session has expired. Please review the order again." }, { status: 409 });
   if (intent.currency !== "INR" || Number(intent.total_paise) <= 0) return NextResponse.json({ error: "Checkout amount is invalid." }, { status: 409 });
@@ -62,13 +81,22 @@ export async function POST(request: NextRequest) {
   const { data: service } = await admin.from("services").select("id,name,platform,rate,min,max,status,is_active,accepts_new_orders,health_status").eq("id", intent.service_id).maybeSingle();
   if (!service || service.status !== "active" || service.accepts_new_orders === false || service.health_status === "paused") return NextResponse.json({ error: "This service is temporarily unavailable. Please contact support before paying again." }, { status: 409 });
 
-  const { data: existingByRequest } = await admin.from("orders").select("id,public_order_id,status,payment_status").eq("user_id", user.id).eq("client_request_id", clientRequestId).maybeSingle();
-  if (existingByRequest) return NextResponse.json({ data: existingByRequest, duplicate: true });
+  const { data: existingByRequest, error: existingByRequestError } = await admin.from("orders").select("id,public_order_id,status,payment_status,customer_note").eq("user_id", user.id).eq("client_request_id", clientRequestId).maybeSingle();
+  if (existingByRequestError) return NextResponse.json({ error: "Unable to verify the existing checkout." }, { status: 503 });
+  if (existingByRequest) {
+    if (!isSameManualPayment(existingByRequest, paymentReference, utr, paymentMethod)) return replayConflict();
+    const { customer_note: _note, ...safeOrder } = existingByRequest;
+    return NextResponse.json({ data: safeOrder, duplicate: true }, { headers: { "Cache-Control": "no-store" } });
+  }
 
-  const { data: existingUtr, error: duplicateUtrError } = await admin.from("orders").select("id,user_id,public_order_id,client_request_id").ilike("customer_note", `%UTR: ${utr}.%`).limit(1).maybeSingle();
+  const { data: existingUtr, error: duplicateUtrError } = await admin.from("orders").select("id,user_id,public_order_id,client_request_id,status,payment_status,customer_note").ilike("customer_note", `%UTR: ${utr}.%`).limit(1).maybeSingle();
   if (duplicateUtrError) return NextResponse.json({ error: "Unable to verify this transaction ID right now. Please try again." }, { status: 503 });
   if (existingUtr) {
-    if (existingUtr.user_id === user.id && existingUtr.client_request_id === clientRequestId) return NextResponse.json({ data: existingUtr, duplicate: true });
+    if (existingUtr.user_id === user.id && existingUtr.client_request_id === clientRequestId) {
+      if (!isSameManualPayment(existingUtr, paymentReference, utr, paymentMethod)) return replayConflict();
+      const { customer_note: _note, user_id: _userId, client_request_id: _clientRequestId, ...safeOrder } = existingUtr;
+      return NextResponse.json({ data: safeOrder, duplicate: true }, { headers: { "Cache-Control": "no-store" } });
+    }
     return NextResponse.json({ error: "This UTR / Transaction ID has already been submitted for another order." }, { status: 409 });
   }
   const { data: existingWalletPayment, error: existingWalletPaymentError } = await admin.from("transactions").select("id").eq("provider_payment_id", utr).maybeSingle();
