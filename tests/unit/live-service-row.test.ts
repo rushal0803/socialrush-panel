@@ -28,3 +28,12 @@ test("missing public details retain the existing individual-query defaults", () 
   assert.equal(facts.qualityType, "Premium");
   assert.equal(facts.healthStatus, "stable");
 });
+
+
+test("missing catalog instructions never assign another platform's destination", () => {
+  const row = { id: 1, rate: 499, min: 100, max: 1000, delivery_time: null, refill_policy: null, quality_type: null, health_status: null, important_instruction: null };
+  const facts = mapLiveServiceRow(row);
+  assert.match(facts.importantInstruction, /public link required by the selected service/);
+  assert.doesNotMatch(facts.importantInstruction, /YouTube|Instagram|Twitter/);
+  assert.equal(mapLiveServiceRow({ ...row, important_instruction: 'Use the public X post permalink.' }).importantInstruction, 'Use the public X post permalink.');
+});
